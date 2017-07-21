@@ -29,8 +29,3 @@ regenerate `data/schema.json`, and restart the server:
 npm run update-schema
 npm start
 ```
-
-
-## License
-
-Relay Starter Kit is [BSD licensed](./LICENSE). We also provide an additional [patent grant](./PATENTS).
