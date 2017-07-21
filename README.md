@@ -1,71 +1,36 @@
-# Quickstart with Relay Modern
+# Relay Starter Kit
 
-* [React](https://facebook.github.io/react/): Frontend framework for building user interfaces
-* [Relay](https://facebook.github.io/relay/): Powerful GraphQL client developed by Facebook
-* [Graphcool](https://www.graph.cool): Flexible backend platform combining GraphQL + AWS Lambda
+This kit includes an app server, a GraphQL server implementing a tiny example schema, and a transpiler that you can use to get started building an app with Relay. For a walkthrough with a slightly larger schema, see the [Relay tutorial](https://facebook.github.io/relay/docs/tutorial.html).
 
-## Example 
+## Installation
 
-![](http://imgur.com/3S6fUeI.gif)
-
-## Quickstart
-
-For more information on how to get started [refer to the full react-relay-instagram tutorial](https://www.graph.cool/docs/quickstart/react-relay-instagram/).
-
-### 1. Clone example repository
-
-```sh
-git clone https://github.com/graphcool-examples/react-graphql.git
-cd react-graphql/quickstart-with-relay-modern
+```
+gem install sass
+npm install
 ```
 
-### 2. Create GraphQL API with [`graphcool`](https://www.npmjs.com/package/graphcool)
+## Running
 
-```sh
-# Install Graphcool CLI
-npm install -g graphcool
+Start a local server:
 
-# Create a new project based on the Instagram schema
-graphcool init --schema https://graphqlbin.com/instagram.graphql 
+```
+npm start
 ```
 
-This creates a GraphQL API for the following schema:
+## Developing
 
-```graphql
-type Post {
-  description: String!
-  imageUrl: String!
-}
+Any changes you make to files in the `js/` directory will cause the server to
+automatically rebuild the app and refresh your browser.
+
+If at any time you make changes to `data/schema.js`, stop the server,
+regenerate `data/schema.json`, and restart the server:
+
+```
+npm run update-schema
+npm start
 ```
 
-### 3. Connect the app with your GraphQL API
 
-Copy the `Relay API` endpoint to `./src/createRelayEnvironment.js` as the argument for the call to `fetch` replacing `__RELAY_API_ENDPOINT__ `:
+## License
 
-```js
-// replace `__RELAY_API_ENDPOINT__ ` with the endpoint from the previous step
-return fetch('__RELAY_API_ENDPOINT__', {
- ...
-})  
-```
-
-### 4. Install depdendencies & run locally
-
-```sh
-yarn install
-yarn relay # invoke relay compiler
-yarn start # open http://localhost:3000 in your browser
-```
-
-## Next steps
-
-* [Advanced GraphQL features](https://www.graph.cool/docs/tutorials/advanced-features-eath7duf7d/)
-* [Authentication & Permissions](https://www.graph.cool/docs/reference/authorization/overview-iegoo0heez/)
-* [Implementing business logic with serverless functions](https://www.graph.cool/docs/reference/functions/overview-boo6uteemo/)
-
-
-## Help & Community [![Slack Status](https://slack.graph.cool/badge.svg)](https://slack.graph.cool)
-
-Join our [Slack community](http://slack.graph.cool/) if you run into issues or have questions. We love talking to you!
-
-![](http://i.imgur.com/5RHR6Ku.png)
+Relay Starter Kit is [BSD licensed](./LICENSE). We also provide an additional [patent grant](./PATENTS).
