@@ -1,7 +1,6 @@
 //vendor
 @import '../../node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
 @import '../../node_modules/normalize-sass/normalize';
-@import  'vendor/materialize.scss';
 //generic
 @import '_utilities';
 @import '_variables';
@@ -10,8 +9,6 @@
 //components
 @import 'components/header';
 @import  'components/datasetsLabbooksContainer';
-@import  'components/labbooksets.scss';
-@import  'components/createLabbook.scss';
 
 html, body {
   width: 100%;

@@ -38,7 +38,7 @@ const network = Network.create(fetchQuery)
 
 const source = new RecordSource()
 const store = new Store(source)
-console.log(store, source)
+
 export default new Environment({
   network,
   store,

@@ -6,7 +6,9 @@ import {
 import environment from '../../createRelayEnvironment'
 
 import DatasetsLabbooksContainer from '../datasetsLabbooks/DatasetsLabbooksContainer';
+//import ListPage from './ListPage'
 
+const LabbookQuery = graphql`query HomeQuery($first: Int!){localLabbooks(first:$first){edges{node{name}}}}`
 
 
 export default class Home extends Component {
@@ -23,8 +25,22 @@ export default class Home extends Component {
       <div>
         {
         isAuthenticated() && (
-          <DatasetsLabbooksContainer history={this.props.history} environment={environment}/>
-        )
+        <QueryRenderer
+          environment={environment}
+          query={LabbookQuery}
+          variables={{
+            first: 4
+          }}
+          render={({error, props}) => {
+            console.log(props)
+            if (error) {
+              return <div>{error.message}</div>
+            } else if (props) {
+              return <div></div>
+            }
+            return <div>Loading</div>
+          }}
+        />)
       }
       {
         !isAuthenticated() && (
@@ -41,7 +57,7 @@ export default class Home extends Component {
           )
       }
       </div>
-
+      <DatasetsLabbooksContainer />
     </div>
     )
   }

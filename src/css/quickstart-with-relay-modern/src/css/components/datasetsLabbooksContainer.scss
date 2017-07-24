@@ -1,0 +1,14 @@
+.datasets-labbooks__nav{
+  width: 300px;
+  list-style: none;
+  color: $vermillion;
+  font-size: 22px;
+  font-weight: 200;
+}
+
+.datasets-labbooks__nav-item{
+  cursor: pointer;
+}
+.datasets-labbooks__nav-item.selected{
+  text-decoration: underline;
+}
