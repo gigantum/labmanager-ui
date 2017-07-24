@@ -15,21 +15,34 @@ export default class CreateLabbook extends React.Component {
   constructor(props){
   	super(props.props);
     console.log(props)
-  	this.state = {'modal_visible': false};
+  	this.state = {
+      'modal_visible': false,
+      'name': '',
+      'description': ''
+    };
   }
   _createLabbook(){
-    let description = 'describe it';
-    let name = 'tempLabbook3'// + Math.floor((Math.random()*1000));
+
     let viewerId = 'calum';
     console.log(this)
-    //CreateLabbookMutation(description, name, viewerId,  () => this.props.history.replace(`/home`))
+    CreateLabbookMutation(this.state.description, this.state.name, viewerId,  () => this.props.history.replace(`/home`))
   }
+
+  _updateTextState(evt, field){
+    console.log(evt, field)
+    let state = {}
+    state[field] = evt.target.value;
+    this.setState(state)
+  }
+
   _showModal(){
     this.setState({'modal_visible': true})
   }
+
   _hideModal(){
     this.setState({'modal_visible': false})
   }
+
   render(){
 
     return(
@@ -37,13 +50,13 @@ export default class CreateLabbook extends React.Component {
             <div className={!this.state.modal_visible ? 'create-labbook__modal hidden' : 'create-labbook__modal'}>
               <div className='create-labbook__modal-inner-container flex flex-column justify--space-around'>
                 <div>
-                  <label>Name</label><input type='text'></input>
+                  <label>Name</label><input type='text' onChange={(evt) => this._updateTextState(evt, 'name')}></input>
                 </div>
                 <div>
-                  <label>Description</label><input type='text'></input>
+                  <label>Description</label><input type='text' onChange={(evt) => this._updateTextState(evt, 'description')}></input>
                 </div>
                 <div>
-                  <button className='pa3 bg-black-10 bn dim ttu pointer' onClick={() => this._createLabbook()}>
+                  <button className='pa3 bg-black-10 bn dim ttu pointer' onClick={(x, evt) => this._createLabbook(evt)}>
                   Create Labbook</button>
                 </div>
               </div>
