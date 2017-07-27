@@ -12,7 +12,9 @@ export default class NotesCard extends React.Component {
 
     this.state = {showExtraInfo: false}
   }
-
+  /*
+    function(): reverse state of showExtraInfo
+  */
   _toggleExtraInfo(){
     this.setState({showExtraInfo: !this.state.showExtraInfo})
   }

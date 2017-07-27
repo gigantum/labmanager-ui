@@ -14,7 +14,6 @@ export default class Code extends Component {
   }
 
   render(){
-    console.log(this.props)
     return(
         <div className='code__container'>
 

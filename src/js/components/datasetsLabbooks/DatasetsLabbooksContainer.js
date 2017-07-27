@@ -3,13 +3,11 @@ import { QueryRenderer, graphql } from 'react-relay'
 import environment from '../../createRelayEnvironment'
 import { Link } from 'react-router-dom';
 //components
-
 import DatasetSets from './datasets/DatasetSets';
 import LabbookSets from './labbooks/LabbookSets';
 
 export default class DatasetsLabbooksContainer extends Component {
   constructor(props){
-    console.log(props)
     super(props);
     this.state = {
       selectedComponent: props.match.params.id
@@ -25,10 +23,8 @@ export default class DatasetsLabbooksContainer extends Component {
 
   displaySelectedComponent(){
     if(this.state.selectedComponent === 'datasets'){
-      console.log(this.props)
       return <DatasetSets />
     }else{
-      console.log(this.props)
       return (<QueryRenderer environment={environment} variables={{}} render={({error, props}) => {
             if (error) {
               return <div>{error.message}</div>

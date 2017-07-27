@@ -7,18 +7,11 @@ exports[`Header Reners Correctly 1`] = `
   <div
     className="flex-1-0-auto"
   >
-    <h1
+    <h3
       className="header__title text-center"
     >
       Gigantum
-    </h1>
-  </div>
-  <div>
-    <img
-      alt="gigantum logo"
-      height="60"
-      src="gigantum.png"
-    />
+    </h3>
   </div>
 </div>
 `;

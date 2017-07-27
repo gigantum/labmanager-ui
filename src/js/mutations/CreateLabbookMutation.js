@@ -4,18 +4,6 @@ import {
 } from 'react-relay'
 import environment from '../createRelayEnvironment'
 import {ConnectionHandler} from 'relay-runtime'
-//
-// const mutation = graphql`
-//   mutation CreateLabbookMutation($input: CreateLabbookInput!) {
-//     createLabbook(input: $input) {
-//       labbook {
-//         id
-//         name
-//         description
-//       }
-//     }
-//   }
-// `;
 
 const mutation = graphql`
   mutation CreateLabbookMutation($input: CreateLabbookInput!){
@@ -27,7 +15,6 @@ const mutation = graphql`
   }
 `;
 
-let tempID = 0;
 
 export default function CreateLabbookMutation(description, name, viewerId, callback) {
   const variables = {
