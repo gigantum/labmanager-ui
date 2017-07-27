@@ -74,6 +74,9 @@ function getClientEnvironment(publicUrl) {
         // This should only be used as an escape hatch. Normally you would put
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
+
+        GIGANTUM_API: (process.env.NODE_ENV === 'development') ? 'http://127.0.0.1:5000/labbook/' : 'http://api.localhost/labbook/'
+
       }
     );
   // Stringify all values so we can feed into Webpack DefinePlugin
