@@ -15,7 +15,7 @@ function fetchQuery(
   myHeaders.append("Content-Type", "text/plain");
   // myHeaders.append("Content-Length", content.length.toString());
   // myHeaders.append("X-Custom-Header", "ProcessThisImmediately")
-
+  console.log(process.env.PORT)
   var queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
   return fetch('http://127.0.0.1:5000/labbook/', {
     method: 'POST',
