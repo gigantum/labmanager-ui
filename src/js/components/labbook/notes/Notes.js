@@ -17,6 +17,8 @@ class Notes extends Component {
      10, // Fetch the next 10 feed items
      e => {
        console.log(e);
+     },{
+       name: 'labbook'
      }
    );
   }
@@ -86,11 +88,10 @@ export default createPaginationContainer(
      };
    },
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-    console.log(props, first, cursor, name, owner, fragmentVariables)
-    // first = 50;
-    // name = props.labbook_name;
-    // owner = 'default';
-    // cursor = props.notes.edges[props.notes.edges.length -1].cursor
+    //console.log(props, first, cursor, name, owner, fragmentVariables)
+    first = 10;
+    name = props.labbook_name;
+    owner = 'default';
      return {
        first,
        cursor,

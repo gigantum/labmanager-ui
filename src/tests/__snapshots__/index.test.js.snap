@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test if isAuthenticated == false 1`] = `
+<div>
+  <button
+    className="btn-margin"
+    onClick={[Function]}
+  >
+    Log In
+  </button>
+</div>
+`;
+
+exports[`Test if isAuthenticated == true 1`] = `
+<div>
+  <button
+    className="btn-margin"
+    onClick={[Function]}
+  >
+    Log Out
+  </button>
+</div>
+`;

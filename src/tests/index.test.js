@@ -5,8 +5,9 @@ import Auth from './../js/Auth/Auth';
 
 test('Test if isAuthenticated == true', () => {
 
-  const isAuthenticated =  function(){return true};
+  //const isAuthenticated = function(){return true};
   const auth = new Auth();
+  auth.isAuthenticated = function(){return true};
   const component = renderer.create(
     <App auth={auth} />
   );
@@ -27,10 +28,10 @@ test('Test if isAuthenticated == true', () => {
 });
 
 test('Test if isAuthenticated == false', () => {
-
-  const isAuthenticated = function(){return false};
+  const auth = new Auth();
+  auth.isAuthenticated = function(){return false};
   const component = renderer.create(
-    <App isAuthenticated={isAuthenticated}/>
+    <App auth={auth}/>
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();

@@ -13,6 +13,7 @@ test('DatasetsLabbooksContainer Renders Correctly', () => {
   let tree = component.toJSON();
 
   expect(tree).toMatchSnapshot();
+  console.log(tree.children[0].children[0].children[0].props)
   // manually trigger the callback
   tree.children[0].children[0].children[0].props.onClick()
   //re-rendering

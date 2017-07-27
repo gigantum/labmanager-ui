@@ -10,12 +10,13 @@ import Home from './../js/components/home/Home';
 import App from './../js/components/App';
 import Header from './../js/components/shared/Header';
 const context = {}
-
+const auth = new Auth();
+auth.isAuthenticated = function(){return false};
 
     test('Link changes the class when hovered', () => {
       const component = renderer.create(
 
-          <Routes />
+          <Routes auth={auth}/>
 
       );
       let tree = component.toJSON();
