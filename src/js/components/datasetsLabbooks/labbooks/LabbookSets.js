@@ -17,13 +17,26 @@ const LabbookQuery = graphql`query LabbookSetsQuery($first: Int!){
     }
   }
 }`
-console.log(this)
+
 class LabbookSets extends Component {
-  // constructor(props){
-  //   props.environment = environment;
-  //   super(props)
-  //   this.this.setState({environment:environment})
-  // }
+  constructor(props){
+
+    super(props)
+
+    this.handler = this.handler.bind(this)
+
+  }
+
+  handler(e) {
+    e.preventDefault()
+     this.setState({
+       'value': "dsds"
+     })
+  }
+
+  goToLabbook(labbookName){
+    this.props.history.replace(`/labbook/${labbookName}`)
+  }
 
   render(){
     console.log(this.props)
@@ -35,7 +48,7 @@ class LabbookSets extends Component {
           environment={environment}
           query={LabbookQuery}
           variables={{
-            first: 10
+            first: 20
           }}
           render={({error, props}) => {
             console.log(error, props)
@@ -43,17 +56,17 @@ class LabbookSets extends Component {
               return <div>{error.message}</div>
             } else if (props) {
               return (<div>
-                <CreateLabbook  history={this.props.history}/>
-                <div className='labbooks__container flex flex-row flex wrap justify--space-around'>
+                <CreateLabbook handler={this.handler}  history={this.props.history}/>
+                <div className='labbooks__container flex flex--row flex--wrap justify--space-around'>
                   {
                     props.localLabbooks.edges.map((edge) => {
-                      return (<div className='labbook__panel'>{edge.node.name}</div>)
+                      return (<div onClick={() => this.goToLabbook(edge.node.name)} className='labbook__panel'>{edge.node.name}</div>)
                     })
                   }
                 </div>
               </div>)
             }
-            return <div><CreateLabbook history={this.props.history}/></div>
+            return <div><CreateLabbook handler={this.handler} history={this.props.history}/></div>
           }}
         />
         {/* <div className='w-100' style={{ maxWidth: 400 }}>
@@ -68,7 +81,7 @@ class LabbookSets extends Component {
 
 export default createFragmentContainer(LabbookSets, graphql`
 fragment LabbookSets_viewer on Query {
-  localLabbooks(first: 10) @connection(key: "LabbookSets_localLabbooks", filters: []) {
+  localLabbooks(first: 20) @connection(key: "LabbookSets_localLabbooks", filters: []) {
    edges {
      node {
        description

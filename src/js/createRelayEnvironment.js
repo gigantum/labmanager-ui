@@ -34,12 +34,14 @@ function fetchQuery(
   }).catch(error => {console.log(error)})
 }
 
-const network = Network.create(fetchQuery)
+const network = Network.create(fetchQuery);
+const handlerProvider = null;
 
 const source = new RecordSource()
 const store = new Store(source)
 console.log(store, source)
 export default new Environment({
+  handlerProvider,
   network,
   store,
 })

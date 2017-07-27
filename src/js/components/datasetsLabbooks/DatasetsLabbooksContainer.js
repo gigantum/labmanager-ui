@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { QueryRenderer, graphql } from 'react-relay'
 import environment from '../../createRelayEnvironment'
+import { Link } from 'react-router-dom';
 //components
 
 import DatasetSets from './datasets/DatasetSets';
@@ -8,9 +9,10 @@ import LabbookSets from './labbooks/LabbookSets';
 
 export default class DatasetsLabbooksContainer extends Component {
   constructor(props){
+    console.log(props)
     super(props);
     this.state = {
-      selectedComponent: 'datasets'
+      selectedComponent: props.match.params.id
     }
   }
   componentWillMount() {
@@ -44,8 +46,10 @@ export default class DatasetsLabbooksContainer extends Component {
       <div className='datasets-labbooks__container flex flex-column'>
         <div className='datasets-labbooks__nav-container flex justify-center flex-0-0-auto'>
           <ul className='datasets-labbooks__nav flex flex--row justify--space-between'>
-            <li onClick={() => this.setSelectedComponent(this, 'datasets')} className={this.state.selectedComponent === 'datasets' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'}>Datasets</li>
-            <li onClick={() => this.setSelectedComponent(this, 'labbooks')} className={this.state.selectedComponent === 'labbooks' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'}>Labbooks</li>
+            <Link onClick={() => this.setSelectedComponent(this, 'datasets')} className={this.state.selectedComponent === 'datasets' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'} to='../home/datasets'>Datasets</Link>
+            <Link onClick={() => this.setSelectedComponent(this, 'labbooks')} className={this.state.selectedComponent === 'labbooks' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'} to='../home/labbooks'>Labbooks</Link>
+            {/* <li onClick={() => this.setSelectedComponent(this, 'datasets')} className={this.state.selectedComponent === 'datasets' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'}>Datasets</li>
+            <li onClick={() => this.setSelectedComponent(this, 'labbooks')} className={this.state.selectedComponent === 'labbooks' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'}>Labbooks</li> */}
           </ul>
         </div>
         <div className='datasets-labbooks__view-container flex-1-0-auto'>

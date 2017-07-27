@@ -1,17 +1,27 @@
 .create-labbook__modal{
   position: absolute;
-  background-color: white;
-  height: 500px;
+  left: 50%;
+
   width: 600px;
+  height: 500px;
+  margin: 0 0 0 -300px;
+
   border: 1px solid $vermillion;
   border-radius: 3px;
+  background-color: white;
   box-shadow: 10px 10px 5px #888888;
-  left: 50%;
-  margin: 0 0 0 -300px;
 }
 
 
 .create-labbook__modal-inner-container{
-    padding: 20px;
     height: calc(100% - 40px);
+    padding: 20px;
+}
+
+
+.create-labbook__modal-close{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
 }

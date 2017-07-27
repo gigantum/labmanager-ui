@@ -1,0 +1,49 @@
+.labbook__container{
+  padding: 20px;
+}
+
+
+.labbook__navigation{
+  width: 200px;
+  li{
+    color: $charcoal;
+    padding: 15px;
+
+    cursor: pointer;
+
+    border-right: 3px solid $clean;
+    border-bottom: 1px solid $clean;
+    background: $white;
+  }
+  li:hover{
+    color: $sunchine;
+    border-right: 3px solid $sunchine;
+  }
+  //
+  // .labbook__navigation-item--notes{
+  //   color: $notes;
+  // }
+  // .labbook__navigation-item--code{
+  //   color: $yellow;
+  // }
+  // .labbook__navigation-item--environment{
+  //
+  //   color: $red;
+  // }
+  // .labbook__navigation-item--input-data{
+  //   color: $vermillion;
+  // }
+  // .labbook__navigation-item--output-data{
+  //
+  //   color: $teal;
+  // }
+  // .labbook__navigation-item--workflow{
+  //   color: $lightblue;
+  // }
+
+  li.selected{
+    background: $fresh;
+    border-right: 3px solid $fresh;
+    color: $white;
+  }
+}

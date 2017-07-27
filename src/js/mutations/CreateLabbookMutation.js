@@ -35,7 +35,7 @@ export default function CreateLabbookMutation(description, name, viewerId, callb
       description,
       name,
       clientMutationId: ""
-    },
+    }
   }
   commitMutation(
     environment,
@@ -50,7 +50,6 @@ export default function CreateLabbookMutation(description, name, viewerId, callb
       optimisticUpdater: (proxyStore) => {
         // 1 - create the `newPost` as a mock that can be added to the store
         const id = viewerId
-        console.log(id)
         const newPost = proxyStore.create(id, 'Post')
         newPost.setValue(name, 'name')
         newPost.setValue(description, 'description')

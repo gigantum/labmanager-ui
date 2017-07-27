@@ -23,7 +23,7 @@ export default class Home extends Component {
       <div>
         {
         isAuthenticated() && (
-          <DatasetsLabbooksContainer history={this.props.history} environment={environment}/>
+          <DatasetsLabbooksContainer match={this.props.match} history={this.props.history} environment={environment}/>
         )
       }
       {

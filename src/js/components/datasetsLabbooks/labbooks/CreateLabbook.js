@@ -14,22 +14,22 @@ import CreateLabbookMutation from '../../../mutations/CreateLabbookMutation'
 export default class CreateLabbook extends React.Component {
   constructor(props){
   	super(props.props);
-    console.log(props)
   	this.state = {
       'modal_visible': false,
       'name': '',
       'description': ''
     };
   }
-  _createLabbook(){
-
+  _createLabbook(evt){
     let viewerId = 'calum';
-    console.log(this)
     CreateLabbookMutation(this.state.description, this.state.name, viewerId,  () => this.props.history.replace(`/home`))
+    this._hideModal();
+    this.props.handler(evt);
   }
-
+  /*
+    evt:object, field:string - updates text in a state object and passes object to setState method
+  */
   _updateTextState(evt, field){
-    console.log(evt, field)
     let state = {}
     state[field] = evt.target.value;
     this.setState(state)
@@ -49,6 +49,7 @@ export default class CreateLabbook extends React.Component {
         <div className='create-labbook__container'>
             <div className={!this.state.modal_visible ? 'create-labbook__modal hidden' : 'create-labbook__modal'}>
               <div className='create-labbook__modal-inner-container flex flex-column justify--space-around'>
+                <div className='create-labbook__modal-close' onClick={() => this._hideModal()}>X</div>
                 <div>
                   <label>Name</label><input type='text' onChange={(evt) => this._updateTextState(evt, 'name')}></input>
                 </div>

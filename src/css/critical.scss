@@ -12,22 +12,14 @@
 @import  'components/datasetsLabbooksContainer';
 @import  'components/labbooksets.scss';
 @import  'components/createLabbook.scss';
+@import  'components/labbook.scss';
+@import  'components/notes.scss';
 
 html, body {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-
+  color: $charcoal;
   font-family: arial;
-}
-
-h1{
-  color: red;
-  margin: 0;
-  padding: 0.5em;
-}
-
-h3{
-  color: yellow;
 }
