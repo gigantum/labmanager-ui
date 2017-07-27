@@ -6,9 +6,6 @@ const {
   Store,
 } = require('relay-runtime')
 
-
-
-
 function fetchQuery(
   operation,
   variables,
@@ -43,7 +40,7 @@ const handlerProvider = null;
 
 const source = new RecordSource()
 const store = new Store(source)
-console.log(store, source)
+
 export default new Environment({
   handlerProvider,
   network,

@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import GigantumLogo from '../images/logos/gigantum.png';
 import Header from './../js/components/shared/Header';
 
-test('Header Reners Correctly', () => {
+test('Test header rendering', () => {
   const component = renderer.create(
     <Header />
   );

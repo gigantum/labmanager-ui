@@ -14,17 +14,6 @@ test('Test if isAuthenticated == true', () => {
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 
-  // manually trigger the callback
-  //tree.props.onMouseEnter();
-  // re-rendering
-  // tree = component.toJSON();
-  // expect(tree).toMatchSnapshot();
-  //
-  // // manually trigger the callback
-  // //tree.props.onMouseLeave();
-  // // re-rendering
-  // tree = component.toJSON();
-  // expect(tree).toMatchSnapshot();
 });
 
 test('Test if isAuthenticated == false', () => {
@@ -36,15 +25,4 @@ test('Test if isAuthenticated == false', () => {
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 
-  // manually trigger the callback
-  //tree.props.onMouseEnter();
-  // re-rendering
-  // tree = component.toJSON();
-  // expect(tree).toMatchSnapshot();
-  //
-  // // manually trigger the callback
-  // //tree.props.onMouseLeave();
-  // // re-rendering
-  // tree = component.toJSON();
-  // expect(tree).toMatchSnapshot();
 });

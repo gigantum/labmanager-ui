@@ -13,15 +13,12 @@ export default class DatasetsLabbooksContainer extends Component {
       selectedComponent: props.match.params.id
     }
   }
-  componentWillMount() {
 
-  }
-
-  setSelectedComponent(that, component){
+  _setSelectedComponent(that, component){
     this.setState({selectedComponent: component})
   }
 
-  displaySelectedComponent(){
+  _displaySelectedComponent(){
     if(this.state.selectedComponent === 'datasets'){
       return <DatasetSets />
     }else{
@@ -42,15 +39,15 @@ export default class DatasetsLabbooksContainer extends Component {
       <div className='datasets-labbooks__container flex flex-column'>
         <div className='datasets-labbooks__nav-container flex justify-center flex-0-0-auto'>
           <ul className='datasets-labbooks__nav flex flex--row justify--space-between'>
-            <Link onClick={(event) => this.setSelectedComponent(this, 'datasets')} className={this.state.selectedComponent === 'datasets' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'} to='../home/datasets'>Datasets</Link>
-            <Link onClick={(event) => this.setSelectedComponent(this, 'labbooks')} className={this.state.selectedComponent === 'labbooks' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'} to='../home/labbooks'>Labbooks</Link>
+            <Link onClick={(t,event) => this._setSelectedComponent(this, 'datasets')} className={this.state.selectedComponent === 'datasets' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'} to='../home/datasets'>Datasets</Link>
+            <Link onClick={(t, event) => this._setSelectedComponent(this, 'labbooks')} className={this.state.selectedComponent === 'labbooks' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'} to='../home/labbooks'>Labbooks</Link>
             {/* <li onClick={() => this.setSelectedComponent(this, 'datasets')} className={this.state.selectedComponent === 'datasets' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'}>Datasets</li>
             <li onClick={() => this.setSelectedComponent(this, 'labbooks')} className={this.state.selectedComponent === 'labbooks' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'}>Labbooks</li> */}
           </ul>
         </div>
         <div className='datasets-labbooks__view-container flex-1-0-auto'>
           {
-            this.displaySelectedComponent()
+            this._displaySelectedComponent()
           }
         </div>
       </div>

@@ -33,20 +33,20 @@ export default class Routes extends Component {
 
     return(
       <div>
-      <Header />
-      <Router history={history}>
-        <Switch>
-          <Route exact path="/" render={(props) => <App auth={auth} {...props} />} />
-          {/* <Route path="/home" render={(props) => <Home auth={auth} {...props} />} /> */}
-          <Route path="/home/:id" render={(props) => <Home auth={auth} {...props} />} />
-          <Route path="/labbook/:labbook_name" render={(props) => <Labbook auth={auth} {...props} />} />
-          <Route path="/callback" render={(props) => {
-            handleAuthentication(props);
-            return <Callback {...props} />
-          }}/>
-        </Switch>
-      </Router>
-    </div>
+        <Header />
+        <Router history={history}>
+          <Switch>
+            <Route exact path="/" render={(props) => <App auth={auth} {...props} />} />
+            {/* <Route path="/home" render={(props) => <Home auth={auth} {...props} />} /> */}
+            <Route path="/home/:id" render={(props) => <Home auth={auth} {...props} />} />
+            <Route path="/labbook/:labbook_name" render={(props) => <Labbook auth={auth} {...props} />} />
+            <Route path="/callback" render={(props) => {
+              handleAuthentication(props);
+              return <Callback {...props} />
+            }}/>
+          </Switch>
+        </Router>
+      </div>
     )
   }
 }

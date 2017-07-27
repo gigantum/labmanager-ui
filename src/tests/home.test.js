@@ -8,11 +8,10 @@ const auth = new Auth();
 auth.isAuthenticated = function(){return false};
 
 
-test('Link changes the class when hovered', () => {
+test('Test Home Rendering', () => {
       const component = renderer.create(
 
-          <Home auth={auth} history={history}/>
-
+          <Home auth={auth}/>
       );
       let tree = component.toJSON();
       expect(tree).toMatchSnapshot();
