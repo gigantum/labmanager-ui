@@ -22,9 +22,10 @@ class Notes extends Component {
   }
 
   render(){
+    console.log(this.props)
     if(this.props.labbook){
       return(
-        <div className='notes__container'>
+        <div key={this.props.labbook} className='notes__container'>
           <div className='labbooks__container flex flex--row flex--wrap justify--space-around'>
             <div className='flex-1-0-auto'>
               <p>Labbook ID: {this.props.labbook.id}</p>

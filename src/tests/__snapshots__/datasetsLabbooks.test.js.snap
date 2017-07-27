@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DatasetsLabbooksContainer Renders Correctly 1`] = `
+<div
+  className="datasets-labbooks__container flex flex-column"
+>
+  <div
+    className="datasets-labbooks__nav-container flex justify-center flex-0-0-auto"
+  >
+    <ul
+      className="datasets-labbooks__nav flex flex--row justify--space-between"
+    >
+      <a
+        className="datasets-labbooks__nav-item selected"
+        href="/../home/datasets"
+        onClick={[Function]}
+      >
+        Datasets
+      </a>
+      <a
+        className="datasets-labbooks__nav-item"
+        href="/../home/labbooks"
+        onClick={[Function]}
+      >
+        Labbooks
+      </a>
+    </ul>
+  </div>
+  <div
+    className="datasets-labbooks__view-container flex-1-0-auto"
+  >
+    <div
+      className="datasets__container"
+    >
+      <h1>
+        Datasets
+      </h1>
+    </div>
+  </div>
+</div>
+`;

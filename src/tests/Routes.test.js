@@ -1,22 +1,22 @@
+import Routes from './../js/components/Routes';
 import React, {Component} from 'react';
+import {StaticRouter, Link} from 'react-router';
 import { ServerRouter as Router, Route, Switch } from 'react-router-server';
 import Callback from './../js/Callback/Callback';
 import Auth from './../js/Auth/Auth';
-import {createHistory } from './../js/history';
+import renderer from 'react-test-renderer';
 // components
 import Home from './../js/components/home/Home';
 import App from './../js/components/App';
 import Header from './../js/components/shared/Header';
-
-const history = createHistory();
-
-import Routes from './../js/components/Routes';
-
+const context = {}
 
 
     test('Link changes the class when hovered', () => {
       const component = renderer.create(
-        <Routes />
+
+          <Routes />
+
       );
       let tree = component.toJSON();
       expect(tree).toMatchSnapshot();

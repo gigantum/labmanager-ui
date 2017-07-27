@@ -9,7 +9,6 @@ import upSVG from '../../../../images/icons/up-arrow.svg'
 export default class NotesCard extends React.Component {
   constructor(props){
   	super(props);
-
     this.state = {showExtraInfo: false}
   }
   /*
@@ -18,7 +17,6 @@ export default class NotesCard extends React.Component {
   _toggleExtraInfo(){
     this.setState({showExtraInfo: !this.state.showExtraInfo})
   }
-
   /*
     function(string): inputs a timestamp
     return (string) returns a string in the for of 'X {seconds, hours, days, months, years} ago'

@@ -39,6 +39,7 @@
     "postcss-flexbugs-fixes": "3.0.0",
     "postcss-loader": "2.0.5",
     "promise": "7.1.1",
+    "react-addons-test-utils": "^15.6.0",
     "react-dev-utils": "^3.0.0",
     "react-error-overlay": "^1.0.7",
     "react-router-server": "^4.2.1",
@@ -82,7 +83,12 @@
       "<rootDir>/src/**/__tests__/**/*.js?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).js?(x)"
     ],
-    "testEnvironment": "node",
+    "verbose": true,
+    "browser": true,
+    "globals": {
+        "__DEV__": true
+    },
+    "testEnvironment": "jsdom",
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest",
@@ -94,7 +100,8 @@
     ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web"
-    }
+    },
+    "setupTestFrameworkScriptFile":"./src/tests/localStorage.js"
   },
   "babel": {
     "presets": [
