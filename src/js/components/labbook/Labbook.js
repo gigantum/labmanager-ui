@@ -20,9 +20,9 @@ query LabbookQuery($name: String!, $owner: String!, $first: Int!, $cursor: Strin
   labbook(name: $name, owner: $owner){
     id
     description
-    notes(first: $first, after: $cursor) {
-      ...Notes_notes
-    }
+
+    ...Notes_labbook
+
   }
 }`
 
@@ -36,7 +36,7 @@ const navigation_items = [
   {id:'output-data', name: 'Output Data'}
 ]
 
-export default class Labbook extends React.Component {
+export default class Labbook extends Component {
   constructor(props){
   	super(props);
 
@@ -57,12 +57,12 @@ export default class Labbook extends React.Component {
           query={LabbookQuery}
           variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20, cursor: ''}}
           render={({error, props}) => {
-            
+            console.log(error, props)
             if (error) {
               return <div>{error.message}</div>
             } else if (props) {
 
-              return <Notes notes={props.labbook.notes} {...props} labbook_name={this.props.match.params.labbook_name} />
+              return <Notes labbook={props.labbook} notes={props.labbook.notes} {...props} labbook_name={this.props.match.params.labbook_name} />
             }
             return <div>Loading</div>
           }}

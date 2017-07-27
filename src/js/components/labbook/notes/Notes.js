@@ -14,13 +14,6 @@ class Notes extends Component {
 
   _loadMore() {
     console.log(this.props.relay.hasMore())
-  //  if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
-  //    return;
-  //  }
-   console.log(this.props.notes.edges[19].cursor)
-  //  this.props.relay.setVariables({
-  //   cursor: this.props.notes.edges[19].cursor
-  //   });
 
    this.props.relay.loadMore(
      10, // Fetch the next 10 feed items
@@ -31,6 +24,8 @@ class Notes extends Component {
   }
 
   render(){
+    console.log(this.props)
+    if(this.props.labbook){
     return(
       <div className='notes__container'>
         <div className='labbooks__container flex flex--row flex--wrap justify--space-around'>
@@ -39,49 +34,51 @@ class Notes extends Component {
             <p>{this.props.labbook.description}</p>
             {
 
-              this.props.notes.edges.map((edge) => {return(<NotesCard key={edge.commit} edge={edge}/>)})
+
+              this.props.labbook.notes.edges.map((edge) => {return(<NotesCard key={edge.commit} edge={edge}/>)})
             }
         </div>
-
-
-
       </div>
       <button onClick={() => this._loadMore()} title="Load More">Next 20</button>
     </div>
       )
+    }else{
+      return(<div>loading</div>)
+    }
   }
 }
 
 export default createPaginationContainer(
   Notes,
   {
-    notes: graphql`
-      fragment Notes_notes on NoteConnection{
-        edges{
-          node{
-            linkedCommit
-            commit
-            level
-            tags
-            timestamp
-            message
-            id
-            author
+    labbook: graphql`
+      fragment Notes_labbook on Labbook{
+        notes(first: $first, after: $cursor)  @connection(key: "Notes_notes"){
+          edges{
+            node{
+              linkedCommit
+              commit
+              level
+              tags
+              timestamp
+              message
+              id
+              author
+            }
+            cursor
           }
-          cursor
-        }
-        pageInfo{
-          hasNextPage
-          hasPreviousPage
-          startCursor
+          pageInfo{
+            hasNextPage
+            hasPreviousPage
+          }
         }
       }`
   },
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-        console.log(props)
-        return props.labbook.notes;
+        console.log(props);
+        return props.labbook;
     },
     getFragmentVariables(prevVars, totalCount) {
       console.log(totalCount)
@@ -92,10 +89,10 @@ export default createPaginationContainer(
    },
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
     console.log(props, first, cursor, name, owner, fragmentVariables)
-    first = 50;
-    name = props.labbook_name;
-    owner = 'default';
-    cursor = props.notes.edges[props.notes.edges.length -1].cursor
+    // first = 50;
+    // name = props.labbook_name;
+    // owner = 'default';
+    // cursor = props.notes.edges[props.notes.edges.length -1].cursor
      return {
        first,
        cursor,
@@ -111,9 +108,7 @@ export default createPaginationContainer(
      labbook(name: $name, owner: $owner){
        id
        description
-       notes(first: $first, after: $cursor)  @connection(key: "Notes_notes"){
-         ...Notes_notes
-       }
+       ...Notes_labbook
      }
    }`
 
