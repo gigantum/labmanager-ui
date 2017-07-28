@@ -60,7 +60,7 @@ export default class Labbook extends Component {
           return <div>{error.message}</div>
         } else if (props) {
 
-          return <Notes labbook={props.labbook} {...props} labbook_name={this.props.match.params.labbook_name} />
+          return <Notes key={props.labbook} labbook={props.labbook} {...props} labbook_name={this.props.match.params.labbook_name} />
         }
         return <div>Loading</div>
       }}
@@ -96,7 +96,7 @@ export default class Labbook extends Component {
   */
   _getNavItem(item){
     return (
-      <li onClick={()=> this._setSelectedComponent(item.id)}
+      <li key={item.id} onClick={()=> this._setSelectedComponent(item.id)}
         className={(this.state.selectedComponent === item.id) ? 'selected' : 'labbook__navigation-item--' + item.id}>
         {item.name}
       </li>

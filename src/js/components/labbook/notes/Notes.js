@@ -24,17 +24,16 @@ class Notes extends Component {
   }
 
   render(){
-    console.log(this.props)
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='notes__container'>
 
-          <div className="labbooks__container flex flex--row flex--wrap justify--space-around">
+          <div key={this.props.labbook + '_labbooks__container'} className="labbooks__container flex flex--row flex--wrap justify--space-around">
 
-            <div className="flex-1-0-auto">
-              <p>Labbook ID: {this.props.labbook.id}</p>
+            <div key={this.props.labbook + '_labbooks__labook-id-container'} className="flex-1-0-auto">
+              <p key={this.props.labbook + '_labbooks__labook-id'}>Labbook ID: {this.props.labbook.id}</p>
 
-              <p>{this.props.labbook.description}</p>
+              <p key={this.props.labbook + '_labbooks__description'}>{this.props.labbook.description}</p>
 
               {
                 this.props.labbook.notes.edges.map((edge) => {

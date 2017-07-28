@@ -9,7 +9,7 @@
   align-self: flex-end;
 }
 
-.notes-card__extra-info{
+.notes-card__expanded-view{
   border: 1px solid $sunchine;
   border-radius: 3px;
   padding: 10px;
@@ -18,7 +18,7 @@
   height: 220px;
   overflow: hidden;
 }
-.notes-card__extra-info.no-height{
+.notes-card__expanded-view.no-height{
   height: 0px;
   border: 0px;
   padding: 0px;

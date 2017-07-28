@@ -12,7 +12,6 @@ test('Test DatasetsLabbooksContainer rendering and state changes', () => {
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();//initail snapshot
-  console.log(component)
   //overwrite default onCLick to prevent preventedDefault bug
   tree.children[0].children[0].children[0].props.onClick = jest.genMockFunction();
   //add click for datasets
