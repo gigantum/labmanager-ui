@@ -37,9 +37,10 @@ class Notes extends Component {
 
               {
                 this.props.labbook.notes.edges.map((edge) => {
+
                   return(
                     <NotesCard
-                      key={edge.commit}
+                      key={edge.node.id}
                       edge={edge}
                     />)
                   })
@@ -48,7 +49,7 @@ class Notes extends Component {
 
           </div>
 
-          <button
+          <button key="load_more"
             onClick={() => this._loadMore()}
             title="Load More"
           >
@@ -58,7 +59,7 @@ class Notes extends Component {
         </div>
       )
     }else{
-      return(<div>loading</div>)
+      return(<div key="loading">loading</div>)
     }
   }
 }

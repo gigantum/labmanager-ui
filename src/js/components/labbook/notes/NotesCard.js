@@ -47,29 +47,25 @@ export default class NotesCard extends React.Component {
   render(){
 
     return(
-        <div key={this.props.edge.node.commit + '_notes-card'} className="notes-card__container card">
+        <div className="notes-card__container card">
 
-          <div key={this.props.edge.node.commit + '_notes-card__basic-view'}
-              className="notes-card__basic-view flex flex--row justify--space-between">
+          <div className="flex flex--row justify--space-between">
 
-            <div key={this.props.edge.node.commit + '_notes-card__time-message'}
-              className="notes-card__time-message flex flex--column justify--space-between">
-              <p key={this.props.edge.node.commit + '_notes-card__message'}>
+            <div className="flex flex--column justify--space-between">
+              <p>
                 {this.props.edge.node.message}
               </p>
-              <p key={this.props.edge.node.commit + '_notes-card__time'}>
+              <p>
                 {this._timeAgo(this.props.edge.node.timestamp)}
               </p>
             </div>
 
-            <div key={this.props.edge.node.commit + '_notes-card__commit-toggle'}
-              className="notes-card__commit-toggle flex flex--column justify--space-between">
-              <p key={this.props.edge.node.commit + '_notes-card__commit'}>
+            <div className="flex flex--column justify--space-between">
+              <p>
                 Commit Id: {this.props.edge.node.commit}
               </p>
 
-              <div key={this.props.edge.node.commit + '_notes-card__toggle'}
-                  className="notes-card__toggle-button"
+              <div className="notes-card__toggle-button"
                   style={!this.state.showExtraInfo ? {'background': 'url(' + downSVG + ') no-repeat'} : {'background': 'url(' + upSVG + ') no-repeat'}}
                   onClick={() => this._toggleExtraInfo()}
               >
@@ -77,27 +73,23 @@ export default class NotesCard extends React.Component {
             </div>
           </div>
 
-          <div key={this.props.edge.node.commit + '_notes-card__expanded-view'}
-            className={this.state.showExtraInfo ? 'notes-card__expanded-view' : 'notes-card__expanded-view no-height'}>
-            <p key={this.props.edge.node.commit + '_notes-card__level'}>
+          <div className={this.state.showExtraInfo ? 'notes-card__extra-info' : 'notes-card__extra-info no-height'}>
+            <p>
               Level: {this.props.edge.node.level}
             </p>
-            <p key={this.props.edge.node.commit + '_notes-card__commit-id'}
-              className={this.props.edge.node.level}>
+            <p className={this.props.edge.node.level}>
               Commit Id: {this.props.edge.node.id}
             </p>
-            <p key={this.props.edge.node.commit + '_notes-card__linked-commit'}>
+            <p>
               {this.props.edge.node.linkedCommit}
             </p>
-            <p key={this.props.edge.node.commit + '_notes-card__timestamp'}>
+            <p>
               {this.props.edge.node.timestamp}
             </p>
 
-            <div key={this.props.edge.node.commit + '_notes-card__tags-container'}
-              className="notes-card__tags-container">
-              <ul key={this.props.edge.node.commit + '_notes-card__tags-list'}
-                className="notes--card__tags-list flex flex--row flex--wrap">
-                <div key={this.props.edge.node.commit + '_notes-card__tags-key'}>Tags: {' '}</div>
+            <div>
+              <ul className="notes--card__tags-list flex flex--row flex--wrap">
+                <div>Tags: {' '}</div>
                 {this.props.edge.node.tags.map((tag, index) => {
                   return(
                     <li

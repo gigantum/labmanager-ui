@@ -52,6 +52,7 @@ export default class Labbook extends Component {
   */
   _getNotesRenderer(){
     return (<QueryRenderer
+      key={this.props.match.params.labbook_name + '_query_renderer_labbook'}
       environment={environment}
       query={LabbookQuery}
       variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}

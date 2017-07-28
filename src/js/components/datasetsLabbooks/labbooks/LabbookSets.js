@@ -70,7 +70,7 @@ class LabbookSets extends Component {
                       props.localLabbooks.edges.map((edge) => {
                         return (
                           <div
-                            key={edge.node.id}
+                            key={edge.node.name}
                             onClick={() => this._goToLabbook(edge.node.name)}
                             className='labbook__panel'>
                               {edge.node.name}
