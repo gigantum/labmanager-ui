@@ -6,18 +6,21 @@ import renderer from 'react-test-renderer';
 // components
 const context = {}
 
+//const routes = new Routes()
+//console.log(routes)
+//
 test('Test routes component', () => {
-      const auth = new Auth();
-      auth.isAuthenticated = function(){return true};
-      const component = renderer.create(
-
-          <Routes auth={auth}/>
-
-      );
-      let tree = component.toJSON();
-
-
-
-      expect(tree).toMatchSnapshot();
-
-  });
+//       const auth = new Auth();
+//       auth.isAuthenticated = function(){return true};
+//       const component = renderer.create(
+//
+//           <Routes auth={auth}/>
+//
+//       );
+//       let tree = component.toJSON();
+//
+//
+//
+//       expect(tree).toMatchSnapshot();
+//
+});
