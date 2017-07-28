@@ -21,7 +21,7 @@ export default function CreateLabbookMutation(description, name, viewerId, callb
     input: {
       description,
       name,
-      clientMutationId: ""
+      clientMutationId: ''
     }
   }
   commitMutation(

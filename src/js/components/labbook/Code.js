@@ -15,7 +15,7 @@ export default class Code extends Component {
 
   render(){
     return(
-        <div className='code__container'>
+        <div className="code__container">
 
         </div>
       )

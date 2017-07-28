@@ -16,7 +16,7 @@ export default class Workflow extends Component {
   render(){
     console.log(this.props)
     return(
-        <div className='wokrflow__container'>
+        <div className="wokrflow__container">
 
         </div>
       )

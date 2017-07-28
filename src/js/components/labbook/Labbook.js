@@ -96,7 +96,10 @@ export default class Labbook extends Component {
   */
   _getNavItem(item){
     return (
-      <li onClick={()=> this._setSelectedComponent(item.id)} className={(this.state.selectedComponent === item.id) ? 'selected' : 'labbook__navigation-item--' + item.id}>{item.name}</li>
+      <li onClick={()=> this._setSelectedComponent(item.id)}
+        className={(this.state.selectedComponent === item.id) ? 'selected' : 'labbook__navigation-item--' + item.id}>
+        {item.name}
+      </li>
     )
   }
 
@@ -105,22 +108,26 @@ export default class Labbook extends Component {
     let labbook_name = this.props.match.params.labbook_name;
 
     return(
-      <div className='labbook__container'>
-           <h4>{labbook_name}</h4>
-           <div className='labbook__inner-container flex flex--row '>
-             <div className='labbook__navigation-container mui-container flex-0-0-auto'>
-               <ul className='labbook__navigation'>
-                 {
-                   navigation_items.map((item) => {
-                     return (this._getNavItem(item))
-                   })
-                 }
-               </ul>
-             </div>
-             <div className='labbook__view-container mui-container flex-1-0-auto'>
-                {this._getSelectedComponent()}
-             </div>
+      <div className="labbook__container">
+        <h4>{labbook_name}</h4>
+
+         <div className="labbook__inner-container flex flex--row ">
+
+           <div className="labbook__navigation-container mui-container flex-0-0-auto">
+             <ul className="labbook__navigation">
+               {
+                 navigation_items.map((item) => {
+                   return (this._getNavItem(item))
+                 })
+               }
+             </ul>
            </div>
+
+           <div className="labbook__view-container mui-container flex-1-0-auto">
+              {this._getSelectedComponent()}
+           </div>
+
+        </div>
       </div>
     )
   }

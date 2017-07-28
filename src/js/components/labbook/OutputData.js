@@ -16,7 +16,7 @@ export default class OutputData extends Component {
   render(){
     console.log(this.props)
     return(
-        <div className='output-data__container'>
+        <div className="output-data__container">
 
         </div>
       )
