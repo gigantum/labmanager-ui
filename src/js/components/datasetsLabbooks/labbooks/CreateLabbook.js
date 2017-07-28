@@ -21,8 +21,11 @@ export default class CreateLabbook extends React.Component {
     };
   }
   _createLabbook(evt){
-    let viewerId = 'calum';
-    CreateLabbookMutation(this.state.description, this.state.name, viewerId,  () => this.props.history.replace(`/home`))
+    let viewerId = 'calum';//Todo: figure out what to do with viewerId in the mutation context
+    let name = this.state.name
+    CreateLabbookMutation(this.state.description, this.state.name, viewerId,  () =>
+
+    this.props.history.replace(`/labbooks/${name}`))
     this._hideModal();
     this.props.handler(evt);
   }

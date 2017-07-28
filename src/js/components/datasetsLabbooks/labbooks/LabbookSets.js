@@ -35,11 +35,10 @@ class LabbookSets extends Component {
   }
 
   goToLabbook(labbookName){
-    this.props.history.replace(`/labbook/${labbookName}`)
+    this.props.history.replace(`/labbooks/${labbookName}`)
   }
 
   render(){
-    console.log(this.props)
     console.log('ListPage - render - environment', this.props.relay.environment)
     return(
       <div className='labbooks__container'>

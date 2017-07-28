@@ -1,11 +1,9 @@
 //vendor
 import React, { Component } from 'react'
 import {
-  createFragmentContainer,
   QueryRenderer,
   graphql
 } from 'react-relay'
-import { Link } from 'react-router-dom';
 //components
 import Notes from './notes/Notes'
 import Code from './Code'
@@ -18,7 +16,7 @@ import environment from '../../createRelayEnvironment'
 
 //labbook query with notes fragment
 const LabbookQuery =  graphql`
-query LabbookQuery($name: String!, $owner: String!, $first: Int!, $cursor: String!){
+query LabbookQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
   labbook(name: $name, owner: $owner){
     id
     description
@@ -48,12 +46,15 @@ export default class Labbook extends Component {
   _setSelectedComponent(componentName){
     this.setState({'selectedComponent': componentName})
   }
-
+  /*
+    function():
+    return QueryRenderer with parsed props
+  */
   _getNotesRenderer(){
     return (<QueryRenderer
       environment={environment}
       query={LabbookQuery}
-      variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20, cursor: 'MTk='}}
+      variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
       render={({error, props}) => {
         if (error) {
           return <div>{error.message}</div>

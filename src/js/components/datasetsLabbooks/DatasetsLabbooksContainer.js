@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { QueryRenderer, graphql } from 'react-relay'
 import environment from '../../createRelayEnvironment'
 import { Link } from 'react-router-dom';
+//import { browserHistory } from 'react-router'
 //components
 import DatasetSets from './datasets/DatasetSets';
 import LabbookSets from './labbooks/LabbookSets';
@@ -16,6 +17,7 @@ export default class DatasetsLabbooksContainer extends Component {
 
   _setSelectedComponent(that, component){
     this.setState({selectedComponent: component})
+    this.props.history.push(`../home/${component}`)
   }
 
   _displaySelectedComponent(){
