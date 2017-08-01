@@ -217,6 +217,11 @@ module.exports = {
 
         ],*/
       },
+      {
+       test: /\.ipynb$/,
+       exclude: /node_modules/,
+       loader: ['file-loader']
+      }
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "file" loader exclusion list.
     ],
@@ -267,4 +272,7 @@ module.exports = {
   performance: {
     hints: false,
   },
+  externals:[{
+    xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
+  }]
 };

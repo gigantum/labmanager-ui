@@ -33,10 +33,11 @@ export default class DatasetsLabbooksContainer extends Component {
             if (error) {
               return <div>{error.message}</div>
             } else if (props) {
+              console.log(this.props)
               return (
+
                 <LabbookSets
                   history={this.props.history}
-                  viewer={props.viewer}
                 />)
             }
             return (<div>Loading</div>)
@@ -65,7 +66,7 @@ export default class DatasetsLabbooksContainer extends Component {
             >
               Labbooks
             </Link>
-        
+
           </ul>
         </div>
         <div className='datasets-labbooks__view-container flex-1-0-auto'>

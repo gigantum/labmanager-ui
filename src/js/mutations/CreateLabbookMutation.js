@@ -36,7 +36,7 @@ export default function CreateLabbookMutation(description, name, viewerId, callb
       onError: err => console.error(err),
       optimisticUpdater: (proxyStore) => {
         // 1 - create the `newPost` as a mock that can be added to the store
-        const id = viewerId
+        const id = viewerId;
         const newPost = proxyStore.create(id, 'Post')
         newPost.setValue(name, 'name')
         newPost.setValue(description, 'description')
@@ -57,7 +57,8 @@ export default function CreateLabbookMutation(description, name, viewerId, callb
         // 2 - add `newPost` to the store
         const viewerProxy = proxyStore.get("client:root")
 
-        const connection = ConnectionHandler.getConnection(viewerProxy, 'LabbookSets_localLabbooks')
+        const connection = ConnectionHandler.getConnection(viewerProxy, 'LabbookSets_localLabbooks');
+        
         if (connection) {
           //ConnectionHandler.insertEdgeAfter(connection, newPost)
         }

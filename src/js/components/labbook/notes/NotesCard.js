@@ -73,7 +73,7 @@ export default class NotesCard extends React.Component {
             </div>
           </div>
 
-          <div className={this.state.showExtraInfo ? 'notes-card__extra-info' : 'notes-card__extra-info no-height'}>
+          <div className={this.state.showExtraInfo ? 'notes-card__expanded-view' : 'notes-card__expanded-view no-height'}>
             <p>
               Level: {this.props.edge.node.level}
             </p>

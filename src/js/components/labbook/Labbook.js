@@ -57,7 +57,9 @@ export default class Labbook extends Component {
       query={LabbookQuery}
       variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
       render={({error, props}) => {
+        console.log(props)
         if (error) {
+          console.log(error)
           return <div>{error.message}</div>
         } else if (props) {
 
