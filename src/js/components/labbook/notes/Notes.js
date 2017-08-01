@@ -37,7 +37,7 @@ class Notes extends Component {
 
               {
                 this.props.labbook.notes.edges.map((edge) => {
-
+                  console.log(edge)
                   return(
                     <NotesCard
                       key={edge.node.id}

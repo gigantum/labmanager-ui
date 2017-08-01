@@ -1,7 +1,7 @@
-import Routes from './../js/components/Routes';
+import Routes from './../src/js/components/Routes';
 import React from 'react';
 import {StaticRouter, Link} from 'react-router';
-import Auth from './../js/Auth/Auth';
+import Auth from './../src/js/Auth/Auth';
 import renderer from 'react-test-renderer';
 // components
 const context = {}

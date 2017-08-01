@@ -51,13 +51,14 @@ export default class Labbook extends Component {
     return QueryRenderer with parsed props
   */
   _getNotesRenderer(){
+    console.log(LabbookQuery)
     return (<QueryRenderer
       key={this.props.match.params.labbook_name + '_query_renderer_labbook'}
       environment={environment}
       query={LabbookQuery}
       variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
       render={({error, props}) => {
-        console.log(props)
+
         if (error) {
           console.log(error)
           return <div>{error.message}</div>
@@ -73,9 +74,10 @@ export default class Labbook extends Component {
   //gets component for view section
   _getSelectedComponent(){
     let selectedComponent = this.state.selectedComponent;
+    let notes;
     switch(selectedComponent){
       case 'notes':
-        let notes = this._getNotesRenderer() //returns <Notes /> component in a QueryRenderer
+        notes = this._getNotesRenderer() //returns <Notes /> component in a QueryRenderer
         return notes;
       case 'environment':
         return(<Environment />)
@@ -88,8 +90,8 @@ export default class Labbook extends Component {
       case 'output-data':
         return(<OutputData />)
       default:
-        //return(<Notes />)
-      break;
+        notes = this._getNotesRenderer()
+        return(notes);
     }
   }
 

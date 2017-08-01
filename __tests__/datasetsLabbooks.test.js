@@ -1,7 +1,7 @@
 import React from 'react'
 import renderer from 'react-test-renderer';
 import {StaticRouter, Link} from 'react-router';
-import DatasetsLabbooksContainer from './../js/components/datasetsLabbooks/DatasetsLabbooksContainer';
+import DatasetsLabbooksContainer from './../src/js/components/datasetsLabbooks/DatasetsLabbooksContainer';
 
 test('Test DatasetsLabbooksContainer rendering and state changes', () => {
   const context = {}
