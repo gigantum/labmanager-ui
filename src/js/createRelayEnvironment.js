@@ -1,10 +1,10 @@
+import CONFIG from './config'
 const {
   Environment,
   Network,
   RecordSource,
   Store,
 } = require('relay-runtime')
-
 
 function fetchQuery(
   operation,
@@ -16,8 +16,9 @@ function fetchQuery(
   // myHeaders.append("Content-Length", content.length.toString());
   // myHeaders.append("X-Custom-Header", "ProcessThisImmediately")
 
+
   var queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
-  return fetch('http://127.0.0.1:5000/labbook/', {
+  return fetch(process.env.GIGANTUM_API, {
     method: 'POST',
     //mode: 'no-cors',
     headers: {
@@ -34,12 +35,14 @@ function fetchQuery(
   }).catch(error => {console.log(error)})
 }
 
-const network = Network.create(fetchQuery)
+const network = Network.create(fetchQuery);
+const handlerProvider = null;
 
 const source = new RecordSource()
 const store = new Store(source)
 
 export default new Environment({
+  handlerProvider,
   network,
   store,
 })

@@ -14,7 +14,21 @@ npm install
 Start a local server:
 
 ```
-npm start
+npm run start | yarn start
+```
+
+## Compile Relay
+
+To compile queries and mutations
+
+```
+npm run relay | yarn relay
+```
+
+## Run Tests
+Jest runs snapshot tests
+```
+jest
 ```
 
 ## Developing

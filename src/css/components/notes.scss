@@ -1,0 +1,48 @@
+.notes-card__container{
+  padding: 20px;
+}
+
+.notes-card__toggle-button{
+  height: 30px;
+  width: 40px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.notes-card__extra-info{
+  border: 1px solid $sunchine;
+  border-radius: 3px;
+  padding: 10px;
+  margin-top: 5px;
+  transition: height 0.5s;
+  height: 220px;
+  overflow: hidden;
+}
+.notes-card__extra-info.no-height{
+  height: 0px;
+  border: 0px;
+  padding: 0px;
+  // overflow: hidden;
+  // visibility: hidden;
+}
+
+.notes--card__tags-list{
+
+  li{
+    padding: 0 10px 0 0
+  }
+  li:before{
+   content: '';
+   display: inline-block;
+   height: 12px;
+   width: 12px;
+   margin: 0 5px;
+   background-image: url('../images/icons/price-tag.svg');
+ }
+}
+//
+// USER_MAJOR
+// USER_MINOR
+// AUTO_MAJOR
+// AUTO_MINOR
+// AUTO_DETAIL
