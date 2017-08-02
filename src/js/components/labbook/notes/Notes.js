@@ -24,24 +24,42 @@ class Notes extends Component {
   }
 
   render(){
-    console.log(this.props)
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='notes__container'>
-          <div className='labbooks__container flex flex--row flex--wrap justify--space-around'>
-            <div className='flex-1-0-auto'>
-              <p>Labbook ID: {this.props.labbook.id}</p>
-              <p>{this.props.labbook.description}</p>
+
+          <div key={this.props.labbook + '_labbooks__container'} className="labbooks__container flex flex--row flex--wrap justify--space-around">
+
+            <div key={this.props.labbook + '_labbooks__labook-id-container'} className="flex-1-0-auto">
+              <p key={this.props.labbook + '_labbooks__labook-id'}>Labbook ID: {this.props.labbook.id}</p>
+
+              <p key={this.props.labbook + '_labbooks__description'}>{this.props.labbook.description}</p>
+
               {
-                this.props.labbook.notes.edges.map((edge) => {return(<NotesCard key={edge.commit} edge={edge}/>)})
+                this.props.labbook.notes.edges.map((edge) => {
+
+                  return(
+                    <NotesCard
+                      key={edge.node.id}
+                      edge={edge}
+                    />)
+                  })
               }
             </div>
+
           </div>
-          <button onClick={() => this._loadMore()} title="Load More">Next 20</button>
+
+          <button key="load_more"
+            onClick={() => this._loadMore()}
+            title="Load More"
+          >
+            Next 20
+          </button>
+
         </div>
       )
     }else{
-      return(<div>loading</div>)
+      return(<div key="loading">loading</div>)
     }
   }
 }
@@ -77,7 +95,7 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-        console.log(props);
+        // console.log(props);
         return props.labbook && props.labbook.notes;
     },
     getFragmentVariables(prevVars, first) {

@@ -1,11 +1,9 @@
 //vendor
 import React, { Component } from 'react'
 import {
-  createFragmentContainer,
   QueryRenderer,
   graphql
 } from 'react-relay'
-import { Link } from 'react-router-dom';
 //components
 import Notes from './notes/Notes'
 import Code from './Code'
@@ -18,7 +16,7 @@ import environment from '../../createRelayEnvironment'
 
 //labbook query with notes fragment
 const LabbookQuery =  graphql`
-query LabbookQuery($name: String!, $owner: String!, $first: Int!, $cursor: String!){
+query LabbookQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
   labbook(name: $name, owner: $owner){
     id
     description
@@ -48,18 +46,24 @@ export default class Labbook extends Component {
   _setSelectedComponent(componentName){
     this.setState({'selectedComponent': componentName})
   }
-
+  /*
+    function():
+    return QueryRenderer with parsed props
+  */
   _getNotesRenderer(){
     return (<QueryRenderer
+      key={this.props.match.params.labbook_name + '_query_renderer_labbook'}
       environment={environment}
       query={LabbookQuery}
-      variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20, cursor: 'MTk='}}
+      variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
       render={({error, props}) => {
+        console.log(props)
         if (error) {
+          console.log(error)
           return <div>{error.message}</div>
         } else if (props) {
 
-          return <Notes labbook={props.labbook} {...props} labbook_name={this.props.match.params.labbook_name} />
+          return <Notes key={props.labbook} labbook={props.labbook} {...props} labbook_name={this.props.match.params.labbook_name} />
         }
         return <div>Loading</div>
       }}
@@ -95,7 +99,10 @@ export default class Labbook extends Component {
   */
   _getNavItem(item){
     return (
-      <li onClick={()=> this._setSelectedComponent(item.id)} className={(this.state.selectedComponent === item.id) ? 'selected' : 'labbook__navigation-item--' + item.id}>{item.name}</li>
+      <li key={item.id} onClick={()=> this._setSelectedComponent(item.id)}
+        className={(this.state.selectedComponent === item.id) ? 'selected' : 'labbook__navigation-item--' + item.id}>
+        {item.name}
+      </li>
     )
   }
 
@@ -104,22 +111,26 @@ export default class Labbook extends Component {
     let labbook_name = this.props.match.params.labbook_name;
 
     return(
-      <div className='labbook__container'>
-           <h4>{labbook_name}</h4>
-           <div className='labbook__inner-container flex flex--row '>
-             <div className='labbook__navigation-container mui-container flex-0-0-auto'>
-               <ul className='labbook__navigation'>
-                 {
-                   navigation_items.map((item) => {
-                     return (this._getNavItem(item))
-                   })
-                 }
-               </ul>
-             </div>
-             <div className='labbook__view-container mui-container flex-1-0-auto'>
-                {this._getSelectedComponent()}
-             </div>
+      <div className="labbook__container">
+        <h4>{labbook_name}</h4>
+
+         <div className="labbook__inner-container flex flex--row ">
+
+           <div className="labbook__navigation-container mui-container flex-0-0-auto">
+             <ul className="labbook__navigation">
+               {
+                 navigation_items.map((item) => {
+                   return (this._getNavItem(item))
+                 })
+               }
+             </ul>
            </div>
+
+           <div className="labbook__view-container mui-container flex-1-0-auto">
+              {this._getSelectedComponent()}
+           </div>
+
+        </div>
       </div>
     )
   }

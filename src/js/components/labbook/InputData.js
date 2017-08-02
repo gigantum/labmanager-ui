@@ -16,7 +16,7 @@ export default class InputData extends Component {
   render(){
     console.log(this.props)
     return(
-        <div className='input-data__container'>
+        <div className="input-data__container">
           input data
         </div>
       )

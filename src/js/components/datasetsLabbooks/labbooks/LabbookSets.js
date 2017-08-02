@@ -34,13 +34,16 @@ class LabbookSets extends Component {
      })
   }
 
-  goToLabbook(labbookName){
-    this.props.history.replace(`/labbook/${labbookName}`)
+  /*
+    function(string) inputs a labbook name
+    routes to that labbook
+  */
+  _goToLabbook(labbookName){
+    this.props.history.replace(`/labbooks/${labbookName}`)
   }
 
   render(){
-    console.log(this.props)
-    console.log('ListPage - render - environment', this.props.relay.environment)
+
     return(
       <div className='labbooks__container'>
 
@@ -51,29 +54,44 @@ class LabbookSets extends Component {
             first: 20
           }}
           render={({error, props}) => {
-            console.log(error, props)
+
             if (error) {
+
               return <div>{error.message}</div>
             } else if (props) {
-              return (<div>
-                <CreateLabbook handler={this.handler}  history={this.props.history}/>
-                <div className='labbooks__container flex flex--row flex--wrap justify--space-around'>
-                  {
-                    props.localLabbooks.edges.map((edge) => {
-                      return (<div onClick={() => this.goToLabbook(edge.node.name)} className='labbook__panel'>{edge.node.name}</div>)
-                    })
-                  }
+              return (
+                <div>
+                  <CreateLabbook
+                    handler={this.handler}
+                    history={this.props.history}
+                  />
+                  <div className='labbooks__container flex flex--row flex--wrap justify--space-around'>
+                    {
+                      props.localLabbooks.edges.map((edge) => {
+                        return (
+                          <div
+                            key={edge.node.name}
+                            onClick={() => this._goToLabbook(edge.node.name)}
+                            className='labbook__panel'>
+                              {edge.node.name}
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
                 </div>
-              </div>)
+              )
             }
-            return <div><CreateLabbook handler={this.handler} history={this.props.history}/></div>
+            return (
+              <div>
+                <CreateLabbook
+                  handler={this.handler}
+                  history={this.props.history}
+                />
+              </div>
+            )
           }}
         />
-        {/* <div className='w-100' style={{ maxWidth: 400 }}>
-          {this.props.viewer.allPosts.edges.map(({node}) =>
-            <div key={node.name} post={node} viewer={this.props.viewer}>node.name</div>
-          )}
-        </div> */}
       </div>
     )
   }
