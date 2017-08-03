@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
+import dateformat from 'dateformat'
 
 import downSVG from '../../../../images/icons/down-arrow.svg'
 import upSVG from '../../../../images/icons/up-arrow.svg'
-//import environment from '../../../createRelayEnvironment'
-//import CreateLabbook from './CreateLabbook'
 
 
 export default class NotesCard extends React.Component {
@@ -47,7 +46,7 @@ export default class NotesCard extends React.Component {
   render(){
 
     return(
-        <div className="notes-card__container card">
+        <div className="NotesCard card">
 
           <div className="flex flex--row justify--space-between">
 
@@ -65,7 +64,7 @@ export default class NotesCard extends React.Component {
                 Commit Id: {this.props.edge.node.commit}
               </p>
 
-              <div className="notes-card__toggle-button"
+              <div className="NotesCard__toggle-button"
                   style={!this.state.showExtraInfo ? {'background': 'url(' + downSVG + ') no-repeat'} : {'background': 'url(' + upSVG + ') no-repeat'}}
                   onClick={() => this._toggleExtraInfo()}
               >
@@ -73,7 +72,7 @@ export default class NotesCard extends React.Component {
             </div>
           </div>
 
-          <div className={this.state.showExtraInfo ? 'notes-card__expanded-view' : 'notes-card__expanded-view no-height'}>
+          <div className={this.state.showExtraInfo ? 'NotesCard__expanded-view' : 'NotesCard__expanded-view no-height'}>
             <p>
               Level: {this.props.edge.node.level}
             </p>
@@ -84,11 +83,11 @@ export default class NotesCard extends React.Component {
               {this.props.edge.node.linkedCommit}
             </p>
             <p>
-              {this.props.edge.node.timestamp}
+              {dateformat(this.props.edge.node.timestamp, "dddd, mmmm dS, yyyy, h:MM:ss TT")}
             </p>
 
             <div>
-              <ul className="notes--card__tags-list flex flex--row flex--wrap">
+              <ul className="NotesCard__tags-list flex flex--row flex--wrap">
                 <div>Tags: {' '}</div>
                 {this.props.edge.node.tags.map((tag, index) => {
                   return(

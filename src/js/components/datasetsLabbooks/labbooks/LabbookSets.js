@@ -8,7 +8,7 @@ import environment from '../../../createRelayEnvironment'
 import CreateLabbook from './CreateLabbook'
 
 const LabbookQuery = graphql`query LabbookSetsQuery($first: Int!){
-  localLabbooks(first:$first){
+  localLabbooks(first:$first) @connection(key: "LabbookSets_localLabbooks", filters: []) {
     edges{
       node{
         name
@@ -45,7 +45,7 @@ class LabbookSets extends Component {
   render(){
 
     return(
-      <div className='labbooks__container'>
+      <div className='Labbooks'>
 
         <QueryRenderer
           environment={environment}
@@ -53,8 +53,9 @@ class LabbookSets extends Component {
           variables={{
             first: 20
           }}
-          render={({error, props}) => {
 
+          render={({error, props}) => {
+            console.log(props)
             if (error) {
 
               return <div>{error.message}</div>
@@ -62,17 +63,19 @@ class LabbookSets extends Component {
               return (
                 <div>
                   <CreateLabbook
-                    handler={this.handler}
                     history={this.props.history}
+                    handler={this.handler}
+                    {...props}
                   />
-                  <div className='labbooks__container flex flex--row flex--wrap justify--space-around'>
+                  <div className='LabbooksSets flex flex--row flex--wrap justify--space-around'>
                     {
+
                       props.localLabbooks.edges.map((edge) => {
                         return (
                           <div
                             key={edge.node.name}
                             onClick={() => this._goToLabbook(edge.node.name)}
-                            className='labbook__panel'>
+                            className='LabbooksSets__panel'>
                               {edge.node.name}
                           </div>
                         )
@@ -87,6 +90,7 @@ class LabbookSets extends Component {
                 <CreateLabbook
                   handler={this.handler}
                   history={this.props.history}
+                  {...this.props}
                 />
               </div>
             )

@@ -1,8 +1,8 @@
-.labbooks__container{
+.LabbooksSets{
   padding: 0 20px;
 }
 
-.labbook__panel{
+.LabbooksSets__panel{
   height: 200px;
   width: 200px;
   background: $clean;
@@ -14,7 +14,7 @@
   border-radius: 5px;
 }
 
-.labbook__panel:hover{
+.LabbooksSets__panel:hover{
   background: $sunchine;
   color: $clean;
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class Environment extends Component {
+export default class Data extends Component {
   constructor(props){
   	super(props);
   }
@@ -8,8 +8,8 @@ export default class Environment extends Component {
   render(){
     console.log(this.props)
     return(
-        <div className="Environment">
-
+        <div className="Data">
+          input data
         </div>
       )
   }

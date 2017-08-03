@@ -13,7 +13,7 @@ import CreateLabbookMutation from '../../../mutations/CreateLabbookMutation'
 
 export default class CreateLabbook extends React.Component {
   constructor(props){
-  	super(props.props);
+  	super(props);
   	this.state = {
       'modal_visible': false,
       'name': '',
@@ -21,8 +21,9 @@ export default class CreateLabbook extends React.Component {
     };
   }
   _createLabbook(evt){
-    let viewerId = 'calum';//Todo: figure out what to do with viewerId in the mutation context
-    let name = this.state.name
+    let viewerId = 'localLabbooks';//Todo: figure out what to do with viewerId in the mutation context
+    let name = this.state.name;
+
     //create new labbook
     CreateLabbookMutation(
       this.state.description,
@@ -54,12 +55,12 @@ export default class CreateLabbook extends React.Component {
   render(){
 
     return(
-        <div className="create-labbook__container">
-            <div className={!this.state.modal_visible ? 'create-labbook__modal hidden' : 'create-labbook__modal'}>
-              <div className='create-labbook__modal-inner-container flex flex-column justify--space-around'>
+        <div className="CreateLabbook">
+            <div className={!this.state.modal_visible ? 'CreateLabbook__modal hidden' : 'CreateLabbook__modal'}>
+              <div className='CreateLabbook__modal-inner-container flex flex-column justify--space-around'>
 
                 <div
-                  className="create-labbook__modal-close"
+                  className="CreateLabbook__modal-close"
                   onClick={() => this._hideModal()}>
                   X
                 </div>

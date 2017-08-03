@@ -1,4 +1,4 @@
-.datasets-labbooks__nav{
+.DatasetsLabbooks__nav{
   width: 300px;
   list-style: none;
   color: $vermillion;
@@ -6,9 +6,9 @@
   font-weight: 200;
 }
 
-.datasets-labbooks__nav-item{
+.DatasetsLabbooks__nav-item{
   cursor: pointer;
 }
-.datasets-labbooks__nav-item.selected{
+.DatasetsLabbooks__nav-item.selected{
   text-decoration: underline;
 }

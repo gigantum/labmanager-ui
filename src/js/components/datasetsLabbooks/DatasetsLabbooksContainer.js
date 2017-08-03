@@ -17,7 +17,7 @@ export default class DatasetsLabbooksContainer extends Component {
 
   _setSelectedComponent(that, component){
     this.setState({selectedComponent: component})
-    this.props.history.push(`../home/${component}`)
+    this.props.history.push(`../${component}`)
   }
 
   _displaySelectedComponent(){
@@ -48,28 +48,28 @@ export default class DatasetsLabbooksContainer extends Component {
   render() {
 
     return (
-      <div className='datasets-labbooks__container flex flex-column'>
-        <div className='datasets-labbooks__nav-container flex justify-center flex-0-0-auto'>
-          <ul className='datasets-labbooks__nav flex flex--row justify--space-between'>
+      <div className='DatasetsLabbooks flex flex-column'>
+        <div className='DatasetsLabbooks__nav-container flex justify-center flex-0-0-auto'>
+          <ul className='DatasetsLabbooks__nav flex flex--row justify--space-between'>
 
             <Link
               onClick={(t,event) => this._setSelectedComponent(this, 'datasets')}
-              className={this.state.selectedComponent === 'datasets' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'}
-              to='../home/datasets'
+              className={this.state.selectedComponent === 'datasets' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
+              to='../datasets'
             >
               Datasets
             </Link>
             <Link
               onClick={(t, event) => this._setSelectedComponent(this, 'labbooks')}
-              className={this.state.selectedComponent === 'labbooks' ? 'datasets-labbooks__nav-item selected': 'datasets-labbooks__nav-item'}
-              to='../home/labbooks'
+              className={this.state.selectedComponent === 'labbooks' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
+              to='../labbooks'
             >
               Labbooks
             </Link>
 
           </ul>
         </div>
-        <div className='datasets-labbooks__view-container flex-1-0-auto'>
+        <div className='DatasetsLabbooks__view flex-1-0-auto'>
           {
             this._displaySelectedComponent()
           }
