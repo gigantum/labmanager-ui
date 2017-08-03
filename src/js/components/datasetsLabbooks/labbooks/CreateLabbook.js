@@ -46,10 +46,12 @@ export default class CreateLabbook extends React.Component {
 
   _showModal(){
     this.setState({'modal_visible': true})
+    document.getElementById('modal__cover').classList.remove('hidden')
   }
 
   _hideModal(){
     this.setState({'modal_visible': false})
+    document.getElementById('modal__cover').classList.add('hidden')
   }
 
   render(){
@@ -83,7 +85,7 @@ export default class CreateLabbook extends React.Component {
 
                 <div>
                   <button
-                    className="pa3 bg-black-10 bn dim ttu pointer"
+                    className="CreateLabbook__button"
                     onClick={(x, evt) => this._createLabbook(evt)}
                   >
                     Create Labbook
@@ -94,7 +96,7 @@ export default class CreateLabbook extends React.Component {
             </div>
 
             <button
-              className="pa3 bg-black-10 bn dim ttu pointer"
+              className="CreateLabbook__button CreateLabbook__button--margin"
               onClick={() => this._showModal()}
             >
               Create Labbook

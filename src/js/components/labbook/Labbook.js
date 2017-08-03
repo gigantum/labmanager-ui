@@ -106,7 +106,7 @@ export default class Labbook extends Component {
 
     return(
       <div className="Labbook">
-        <h4>{labbook_name}</h4>
+        <h4 className="Labbook__title">{labbook_name}</h4>
 
          <div className="Labbook__inner-container flex flex--row ">
 

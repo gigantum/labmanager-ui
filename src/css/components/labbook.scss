@@ -1,5 +1,13 @@
 .Labbook{
-  padding: 20px;
+  height: calc(100% - 80px);
+}
+
+.Labbook__title{
+  text-align: center;
+}
+
+.Labbook__inner-container{
+  height: calc(100% - 80px);
 }
 
 
@@ -16,34 +24,13 @@
     background: $white;
   }
   li:hover{
-    color: $sunchine;
-    border-right: 3px solid $sunchine;
+    color: $orange;
+    border-right: 3px solid $orange;
   }
-  //
-  // .labbook__navigation-item--notes{
-  //   color: $notes;
-  // }
-  // .labbook__navigation-item--code{
-  //   color: $yellow;
-  // }
-  // .labbook__navigation-item--environment{
-  //
-  //   color: $red;
-  // }
-  // .labbook__navigation-item--input-data{
-  //   color: $vermillion;
-  // }
-  // .labbook__navigation-item--output-data{
-  //
-  //   color: $teal;
-  // }
-  // .labbook__navigation-item--workflow{
-  //   color: $lightblue;
-  // }
 
   li.selected{
-    background: $fresh;
-    border-right: 3px solid $fresh;
-    color: $white;
+    background: $charcoal;
+    border-right: 3px solid $charcoal;
+    color: $cream;
   }
 }

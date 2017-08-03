@@ -1,20 +1,37 @@
 .LabbooksSets{
   padding: 0 20px;
+  list-style: none;
+  margin: 10px auto;
 }
 
 .LabbooksSets__panel{
   height: 200px;
   width: 200px;
-  background: $clean;
-  color: $charcoal;
   margin: 10px;
+
   cursor: pointer;
   text-align: center;
-  line-height: 200px;
-  border-radius: 5px;
+
+  color: $charcoal;
+  background: $cream url(./../images/icons/book.svg) no-repeat center;
+  background-size: 50px;
+  border: 2px solid $charcoal;
+
+  line-height: 50px;
+
+  &:empty {
+    height: 0;
+    border: none;
+  };
 }
 
 .LabbooksSets__panel:hover{
-  background: $sunchine;
-  color: $clean;
+  align-self: flex-start;
+  color: $cream;
+  background: $charcoal url(./../images/icons/book.svg) no-repeat center;
+  background-size: 50px;
+}
+
+.LabbooksSets__panel:last-child{
+  margin-right: auto;
 }

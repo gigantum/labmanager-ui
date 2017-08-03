@@ -1,5 +1,13 @@
+.Notes{
+  overflow: auto;
+  height: 100%;
+}
+
+
 .NotesCard{
   padding: 20px;
+  margin: 2px 15px;
+  border: 2px solid $orange;
 }
 
 .NotesCard__toggle-button{
@@ -10,10 +18,10 @@
 }
 
 .NotesCard__expanded-view{
-  border: 1px solid $sunchine;
+  border: 1px solid $orange;
   border-radius: 3px;
   padding: 10px;
-  margin-top: 5px;
+  margin: 5px 0 0 0;
   transition: height 0.5s;
   height: 220px;
   overflow: hidden;

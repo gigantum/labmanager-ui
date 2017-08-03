@@ -34,21 +34,24 @@ export default class DatasetsLabbooksContainer extends Component {
       <div className='DatasetsLabbooks flex flex-column'>
         <div className='DatasetsLabbooks__nav-container flex justify-center flex-0-0-auto'>
           <ul className='DatasetsLabbooks__nav flex flex--row justify--space-between'>
-
-            <Link
-              onClick={(t,event) => this._setSelectedComponent(this, 'datasets')}
-              className={this.state.selectedComponent === 'datasets' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
-              to='../datasets'
-            >
-              Datasets
-            </Link>
-            <Link
-              onClick={(t, event) => this._setSelectedComponent(this, 'labbooks')}
-              className={this.state.selectedComponent === 'labbooks' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
-              to='../labbooks'
-            >
-              Labbooks
-            </Link>
+            <li>
+              <Link
+                onClick={(t,event) => this._setSelectedComponent(this, 'datasets')}
+                className={this.state.selectedComponent === 'datasets' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
+                to='../datasets'
+              >
+                Datasets
+              </Link>
+            </li>
+            <li>
+              <Link
+                onClick={(t, event) => this._setSelectedComponent(this, 'labbooks')}
+                className={this.state.selectedComponent === 'labbooks' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
+                to='../labbooks'
+              >
+                Labbooks
+              </Link>
+            </li>
 
           </ul>
         </div>

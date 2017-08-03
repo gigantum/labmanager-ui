@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import DatasetsLabbooksContainer from '../datasetsLabbooks/DatasetsLabbooksContainer';
+import Login from '../login/Login';
 
 export default class Home extends Component {
   //login for Auth0 function
@@ -11,8 +12,8 @@ export default class Home extends Component {
     const { isAuthenticated } = this.props.auth;
 
     return (
-      <div>
-        <div>
+      <div className="Home">
+        <div className="Home">
           {
             isAuthenticated() && (
               <DatasetsLabbooksContainer
@@ -23,16 +24,7 @@ export default class Home extends Component {
           }
           {
             !isAuthenticated() && (
-                <h4>
-                  You are not logged in! Please{' '}
-                  <a
-                    style={{ cursor: 'pointer' }}
-                    onClick={this.login.bind(this)}
-                  >
-                    Log In
-                  </a>
-                  {' '}to continue.
-                </h4>
+                <Login auth={this.props.auth}/>
               )
           }
         </div>

@@ -1,15 +1,15 @@
 .CreateLabbook__modal{
   position: absolute;
   left: 50%;
-
+  z-index: 100;
   width: 600px;
   height: 500px;
   margin: 0 0 0 -300px;
 
-  border: 1px solid $vermillion;
-  border-radius: 3px;
+  border: 2px solid $orange;
   background-color: white;
   box-shadow: 10px 10px 5px #888888;
+
 }
 
 
@@ -24,4 +24,8 @@
   top: 5px;
   right: 5px;
   cursor: pointer;
+}
+
+.CreateLabbook__button--margin {
+  margin-left: 20px;
 }

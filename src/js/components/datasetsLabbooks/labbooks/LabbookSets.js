@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import environment from '../../../createRelayEnvironment'
 import CreateLabbook from './CreateLabbook'
+//import molecules from '.../../../../images/icons/molecule.svg'
 
 const LabbookQuery = graphql`query LabbookSetsQuery($first: Int!){
   localLabbooks(first:$first) @connection(key: "LabbookSets_localLabbooks", filters: []) {
@@ -57,7 +58,7 @@ export default class LabbookSets extends Component {
                     history={this.props.history}
                     {...props}
                   />
-                  <div className='LabbooksSets flex flex--row flex--wrap justify--space-around'>
+                  <div className='LabbooksSets flex flex--row flex--wrap justify--start'>
                     {
 
                       props.localLabbooks.edges.map((edge) => {
@@ -65,8 +66,9 @@ export default class LabbookSets extends Component {
                           <div
                             key={edge.node.name}
                             onClick={() => this._goToLabbook(edge.node.name)}
-                            className='LabbooksSets__panel'>
-                              {edge.node.name}
+                            className='LabbooksSets__panel flex flex--column justify--space-between'>
+                              <h4>{edge.node.name}</h4>
+                              <p>{edge.node.description}</p>
                           </div>
                         )
                       })

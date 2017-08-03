@@ -6,14 +6,18 @@ export default class Code extends Component {
   	super(props);
   }
 
+  _openJupyter(){
+    window.open('http://localhost:8888/notebooks/example.ipynb', '_blank')
+  }
+
   render(){
 
     return(
         <div id="code" className="Code flex flex-row justify-center">
-          <a className="btn btn-secondary" href="http://localhost:8888/notebooks/example.ipynb"
+          <button className="" onClick={() => this._openJupyter()}
           target="_blank">
             Open Jupyter
-          </a>
+          </button>
         </div>
       )
   }
