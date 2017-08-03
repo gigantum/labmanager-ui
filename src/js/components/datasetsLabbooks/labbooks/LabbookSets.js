@@ -18,20 +18,11 @@ const LabbookQuery = graphql`query LabbookSetsQuery($first: Int!){
   }
 }`
 
-class LabbookSets extends Component {
+export default class LabbookSets extends Component {
   constructor(props){
 
     super(props)
 
-    this.handler = this.handler.bind(this)
-
-  }
-
-  handler(e) {
-    e.preventDefault()
-     this.setState({
-       'value': "dsds"
-     })
   }
 
   /*
@@ -55,16 +46,15 @@ class LabbookSets extends Component {
           }}
 
           render={({error, props}) => {
-            console.log(props)
-            if (error) {
 
+            if (error) {
+              console.log(error)
               return <div>{error.message}</div>
             } else if (props) {
               return (
                 <div>
                   <CreateLabbook
                     history={this.props.history}
-                    handler={this.handler}
                     {...props}
                   />
                   <div className='LabbooksSets flex flex--row flex--wrap justify--space-around'>
@@ -88,7 +78,7 @@ class LabbookSets extends Component {
             return (
               <div>
                 <CreateLabbook
-                  handler={this.handler}
+
                   history={this.props.history}
                   {...this.props}
                 />
@@ -101,14 +91,14 @@ class LabbookSets extends Component {
   }
 }
 
-export default createFragmentContainer(LabbookSets, graphql`
-fragment LabbookSets_viewer on Query {
-  localLabbooks(first: 20) @connection(key: "LabbookSets_localLabbooks", filters: []) {
-   edges {
-     node {
-       description
-       name
-     }
-   }
- }
-}`)
+// export default createFragmentContainer(LabbookSets, graphql`
+// fragment LabbookSets_viewer on Query {
+//   localLabbooks(first: 20) @connection(key: "LabbookSets_localLabbooks", filters: []) {
+//    edges {
+//      node {
+//        description
+//        name
+//      }
+//    }
+//  }
+// }`)

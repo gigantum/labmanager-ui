@@ -8,7 +8,7 @@ import Home from './home/Home';
 import App from './App';
 import Header from './shared/Header';
 import Labbook from './labbook/Labbook';
-import BreadCrumbsContainer from './breadCrumbs/BreadCrumbs';
+import BreadCrumbs from './breadCrumbs/BreadCrumbs';
 //import Breadcrumbs from 'react-breadcrumbs'
 
 const auth = new Auth();
@@ -27,17 +27,6 @@ export default class Routes extends Component {
     this.state = {
       history: history
     }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    console.log(nextProps, nextState)
-  }
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
-  }
-
-  componentWillMount() {
-    console.log('sadd')
   }
 
   login() {
@@ -61,9 +50,9 @@ export default class Routes extends Component {
 
             <Route
               path=""
-              render={(location) => {console.log(location);return(
+              render={(location) => {return(
               <div>
-                <BreadCrumbsContainer location={location} history={history} />
+                <BreadCrumbs location={location} history={history} />
 
                 <Route
                   exact

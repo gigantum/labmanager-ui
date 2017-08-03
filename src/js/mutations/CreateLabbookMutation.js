@@ -62,7 +62,7 @@ export default function CreateLabbookMutation(
           'client:newEdge:' + tempID++,
           'LabbookEdge',
         );
-        console.log(newEdge)
+
         newEdge.setLinkedRecord(node, 'node');
         sharedUpdater(store, id, newEdge);
         const labbookProxy = store.get('client:root');
@@ -81,7 +81,7 @@ export default function CreateLabbookMutation(
 
         const newEdge = payload.getLinkedRecord('labbookEdge');
 
-        
+
         if(newEdge){
           sharedUpdater(store, "", newEdge);
         }

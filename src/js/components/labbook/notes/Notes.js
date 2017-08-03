@@ -37,7 +37,6 @@ class Notes extends Component {
 
               {
                 this.props.labbook.notes.edges.map((edge) => {
-                  console.log(edge)
                   return(
                     <NotesCard
                       key={edge.node.id}
@@ -95,18 +94,16 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-        // console.log(props);
         return props.labbook && props.labbook.notes;
     },
     getFragmentVariables(prevVars, first) {
-      console.log(first)
       return {
        ...prevVars,
        first: first,
      };
    },
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-    //console.log(props, first, cursor, name, owner, fragmentVariables)
+
     first = 10;
     name = props.labbook_name;
     owner = 'default';

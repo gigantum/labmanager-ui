@@ -2,7 +2,7 @@
 
 exports[`Test note card for rendering 1`] = `
 <div
-  className="notes-card__container card"
+  className="NotesCard card"
 >
   <div
     className="flex flex--row justify--space-between"
@@ -14,7 +14,7 @@ exports[`Test note card for rendering 1`] = `
         User Returned a result
       </p>
       <p>
-        6 days ago
+        1 weeks ago
       </p>
     </div>
     <div
@@ -25,7 +25,7 @@ exports[`Test note card for rendering 1`] = `
         acad13eee2a5959bdd594aa89494564b60604880
       </p>
       <div
-        className="notes-card__toggle-button"
+        className="NotesCard__toggle-button"
         onClick={[Function]}
         style={
           Object {
@@ -36,7 +36,7 @@ exports[`Test note card for rendering 1`] = `
     </div>
   </div>
   <div
-    className="notes-card__expanded-view no-height"
+    className="NotesCard__expanded-view no-height"
   >
     <p>
       Level: 
@@ -52,11 +52,11 @@ exports[`Test note card for rendering 1`] = `
       dbbc8891ada166a1da21d874e02c8f5085ba514c
     </p>
     <p>
-      2017-07-26T11:56:00-04:00
+      Wednesday, July 26th, 2017, 11:56:00 AM
     </p>
     <div>
       <ul
-        className="notes--card__tags-list flex flex--row flex--wrap"
+        className="NotesCard__tags-list flex flex--row flex--wrap"
       >
         <div>
           Tags: 

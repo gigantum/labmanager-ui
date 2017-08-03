@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { QueryRenderer, graphql } from 'react-relay'
-import environment from '../../createRelayEnvironment'
 import { Link } from 'react-router-dom';
-//import { browserHistory } from 'react-router'
 //components
 import DatasetSets from './datasets/DatasetSets';
 import LabbookSets from './labbooks/LabbookSets';
 
 export default class DatasetsLabbooksContainer extends Component {
   constructor(props){
+
     super(props);
     this.state = {
       selectedComponent: props.match.params.id
@@ -25,24 +23,9 @@ export default class DatasetsLabbooksContainer extends Component {
 
       return (<DatasetSets />)
     }else{
-      return (
-        <QueryRenderer
-          environment={environment}
-          variables={{}}
-          render={({error, props}) => {
-            if (error) {
-              return <div>{error.message}</div>
-            } else if (props) {
-              console.log(this.props)
-              return (
 
-                <LabbookSets
-                  history={this.props.history}
-                />)
-            }
-            return (<div>Loading</div>)
-          }}
-        />)
+      return ( <LabbookSets history={this.props.history} />)
+
     }
   }
   render() {

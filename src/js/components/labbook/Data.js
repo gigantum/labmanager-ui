@@ -6,7 +6,7 @@ export default class Data extends Component {
   }
 
   render(){
-    console.log(this.props)
+
     return(
         <div className="Data">
           input data

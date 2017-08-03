@@ -30,7 +30,6 @@ function fetchQuery(
       variables
     }),
   }).then(response => {
-    console.log()
     return response.json()
   }).catch(error => {console.log(error, error.message, error.name, error.stack)})
 }
