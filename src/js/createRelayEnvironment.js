@@ -16,9 +16,9 @@ function fetchQuery(
   // myHeaders.append("Content-Length", content.length.toString());
   // myHeaders.append("X-Custom-Header", "ProcessThisImmediately")
 
-
+//http://localhost.charlesproxy.com/
   var queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
-  return fetch(process.env.GIGANTUM_API, {
+  return fetch("http://localhost:5000/labbook/" , {//process.env.GIGANTUM_API
     method: 'POST',
     //mode: 'no-cors',
     headers: {
@@ -32,7 +32,7 @@ function fetchQuery(
   }).then(response => {
     console.log()
     return response.json()
-  }).catch(error => {console.log(error)})
+  }).catch(error => {console.log(error, error.message, error.name, error.stack)})
 }
 
 const network = Network.create(fetchQuery);

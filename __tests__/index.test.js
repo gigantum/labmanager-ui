@@ -1,7 +1,7 @@
 import React from 'react';
-import App from '../js/components/App';
+import App from './../src/js/components/App';
 import renderer from 'react-test-renderer';
-import Auth from './../js/Auth/Auth';
+import Auth from './../src/js/Auth/Auth';
 
 test('Test if isAuthenticated == true', () => {
 

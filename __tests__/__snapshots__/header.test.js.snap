@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Header rendering 1`] = `
+<div
+  className="header__container flex flex--row justify--space-between"
+>
+  <div
+    className="flex-1-0-auto"
+  >
+    <h3
+      className="header__title text-center"
+    >
+      Gigantum
+    </h3>
+  </div>
+</div>
+`;

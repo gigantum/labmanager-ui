@@ -5,7 +5,6 @@ This kit includes an app server, a GraphQL server implementing a tiny example sc
 ## Installation
 
 ```
-gem install sass
 npm install
 ```
 
