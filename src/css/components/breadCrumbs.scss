@@ -1,0 +1,27 @@
+.BreadCrumbs{
+
+}
+
+.BreadCrumbs__list{
+  padding: 3px;
+}
+
+.BreadCrumbs__list-item{
+  padding: 0 0 0 5px;
+  cursor: pointer;
+}
+
+.BreadCrumbs__list-item:after {
+    content: ">";
+    padding: 2px 5px;
+    margin-top: 2px;
+    position: relative;
+    top: 1px;
+}
+.BreadCrumbs__list-item:last-child:after {
+    content: "";
+}
+
+.BreadCrumbs__list-item:hover{
+  color: $vermillion;
+}

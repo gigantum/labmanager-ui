@@ -2,7 +2,7 @@
 
 exports[`Test Code rendering 1`] = `
 <div
-  className="code__container flex flex-row justify-center"
+  className="Code flex flex-row justify-center"
   id="code"
 >
   <a

@@ -2,19 +2,19 @@
 
 exports[`Test Labbook Rendering 1`] = `
 <div
-  className="labbook__container"
+  className="Labbook"
 >
   <h4>
     labook4
   </h4>
   <div
-    className="labbook__inner-container flex flex--row "
+    className="Labbook__inner-container flex flex--row "
   >
     <div
-      className="labbook__navigation-container mui-container flex-0-0-auto"
+      className="Labbook__navigation-container mui-container flex-0-0-auto"
     >
       <ul
-        className="labbook__navigation"
+        className="Labbook__navigation"
       >
         <li
           className="selected"
@@ -23,39 +23,27 @@ exports[`Test Labbook Rendering 1`] = `
           Notes
         </li>
         <li
-          className="labbook__navigation-item--environment"
+          className="Labbook__navigation-item--environment"
           onClick={[Function]}
         >
           Environment
         </li>
         <li
-          className="labbook__navigation-item--code"
+          className="Labbook__navigation-item--code"
           onClick={[Function]}
         >
           Code
         </li>
         <li
-          className="labbook__navigation-item--worflow"
+          className="Labbook__navigation-item--data"
           onClick={[Function]}
         >
-          Workflow
-        </li>
-        <li
-          className="labbook__navigation-item--input-data"
-          onClick={[Function]}
-        >
-          Input Data
-        </li>
-        <li
-          className="labbook__navigation-item--output-data"
-          onClick={[Function]}
-        >
-          Output Data
+          Data
         </li>
       </ul>
     </div>
     <div
-      className="labbook__view-container mui-container flex-1-0-auto"
+      className="Labbook__view mui-container flex-1-0-auto"
     >
       <div>
         Loading

@@ -8,7 +8,7 @@ import environment from '../../../createRelayEnvironment'
 import CreateLabbook from './CreateLabbook'
 
 const LabbookQuery = graphql`query LabbookSetsQuery($first: Int!){
-  localLabbooks(first:$first){
+  localLabbooks(first:$first) @connection(key: "LabbookSets_localLabbooks", filters: []) {
     edges{
       node{
         name
@@ -18,20 +18,11 @@ const LabbookQuery = graphql`query LabbookSetsQuery($first: Int!){
   }
 }`
 
-class LabbookSets extends Component {
+export default class LabbookSets extends Component {
   constructor(props){
 
     super(props)
 
-    this.handler = this.handler.bind(this)
-
-  }
-
-  handler(e) {
-    e.preventDefault()
-     this.setState({
-       'value': "dsds"
-     })
   }
 
   /*
@@ -45,7 +36,7 @@ class LabbookSets extends Component {
   render(){
 
     return(
-      <div className='labbooks__container'>
+      <div className='Labbooks'>
 
         <QueryRenderer
           environment={environment}
@@ -53,26 +44,28 @@ class LabbookSets extends Component {
           variables={{
             first: 20
           }}
+
           render={({error, props}) => {
 
             if (error) {
-
+              console.log(error)
               return <div>{error.message}</div>
             } else if (props) {
               return (
                 <div>
                   <CreateLabbook
-                    handler={this.handler}
                     history={this.props.history}
+                    {...props}
                   />
-                  <div className='labbooks__container flex flex--row flex--wrap justify--space-around'>
+                  <div className='LabbooksSets flex flex--row flex--wrap justify--space-around'>
                     {
+
                       props.localLabbooks.edges.map((edge) => {
                         return (
                           <div
                             key={edge.node.name}
                             onClick={() => this._goToLabbook(edge.node.name)}
-                            className='labbook__panel'>
+                            className='LabbooksSets__panel'>
                               {edge.node.name}
                           </div>
                         )
@@ -85,8 +78,9 @@ class LabbookSets extends Component {
             return (
               <div>
                 <CreateLabbook
-                  handler={this.handler}
+
                   history={this.props.history}
+                  {...this.props}
                 />
               </div>
             )
@@ -97,14 +91,14 @@ class LabbookSets extends Component {
   }
 }
 
-export default createFragmentContainer(LabbookSets, graphql`
-fragment LabbookSets_viewer on Query {
-  localLabbooks(first: 20) @connection(key: "LabbookSets_localLabbooks", filters: []) {
-   edges {
-     node {
-       description
-       name
-     }
-   }
- }
-}`)
+// export default createFragmentContainer(LabbookSets, graphql`
+// fragment LabbookSets_viewer on Query {
+//   localLabbooks(first: 20) @connection(key: "LabbookSets_localLabbooks", filters: []) {
+//    edges {
+//      node {
+//        description
+//        name
+//      }
+//    }
+//  }
+// }`)

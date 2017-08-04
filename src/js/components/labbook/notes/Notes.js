@@ -26,9 +26,9 @@ class Notes extends Component {
   render(){
     if(this.props.labbook){
       return(
-        <div key={this.props.labbook} className='notes__container'>
+        <div key={this.props.labbook} className='Notes'>
 
-          <div key={this.props.labbook + '_labbooks__container'} className="labbooks__container flex flex--row flex--wrap justify--space-around">
+          <div key={this.props.labbook + '_labbooks__container'} className="Notes__inner-container flex flex--row flex--wrap justify--space-around">
 
             <div key={this.props.labbook + '_labbooks__labook-id-container'} className="flex-1-0-auto">
               <p key={this.props.labbook + '_labbooks__labook-id'}>Labbook ID: {this.props.labbook.id}</p>
@@ -37,7 +37,6 @@ class Notes extends Component {
 
               {
                 this.props.labbook.notes.edges.map((edge) => {
-                  console.log(edge)
                   return(
                     <NotesCard
                       key={edge.node.id}
@@ -95,18 +94,16 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-        // console.log(props);
         return props.labbook && props.labbook.notes;
     },
     getFragmentVariables(prevVars, first) {
-      console.log(first)
       return {
        ...prevVars,
        first: first,
      };
    },
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-    //console.log(props, first, cursor, name, owner, fragmentVariables)
+
     first = 10;
     name = props.labbook_name;
     owner = 'default';

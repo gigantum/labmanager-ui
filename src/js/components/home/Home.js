@@ -1,9 +1,4 @@
 import React, { Component } from 'react'
-import {
-  QueryRenderer,
-  graphql
-} from 'react-relay'
-import environment from '../../createRelayEnvironment'
 
 import DatasetsLabbooksContainer from '../datasetsLabbooks/DatasetsLabbooksContainer';
 
@@ -23,7 +18,6 @@ export default class Home extends Component {
               <DatasetsLabbooksContainer
                 match={this.props.match}
                 history={this.props.history}
-                environment={environment}
               />
             )
           }

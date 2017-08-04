@@ -4,7 +4,6 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import relayTestingUtils from 'relay-testing-utils'
 
-
 test('Test Labbook Rendering', () => {
       const component = renderer.create(
 
@@ -33,8 +32,7 @@ describe('Test nav _getSelectedComponent default state', () =>{
 })
 //TODO fix network error on test
 describe('Test nav item default state', () =>{
-  console.log(relayTestingUtils)
-  const labbook = renderer.create(
+  const labbook = mount(
     relayTestingUtils.relayWrap(<Labbook match={{params: {labbook_name: 'labook4'}}}/>)
   );
   //expect(tree).toMatchSnapshot();

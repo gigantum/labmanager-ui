@@ -15,13 +15,28 @@ const mutation = graphql`
   }
 `;
 
+function sharedUpdater(store, id, newEdge) {
+  const labbookProxy = store.get('client:root');
+  const conn = ConnectionHandler.getConnection(
+    labbookProxy,
+    'LabbookSets_localLabbooks'
+  );
+  ConnectionHandler.insertEdgeAfter(conn, newEdge);
+}
 
-export default function CreateLabbookMutation(description, name, viewerId, callback) {
+let tempID = 0;
+
+export default function CreateLabbookMutation(
+  description,
+  name,
+  viewerId,
+  callback
+) {
   const variables = {
     input: {
       description,
       name,
-      clientMutationId: ''
+      clientMutationId: tempID++
     }
   }
   commitMutation(
@@ -30,38 +45,48 @@ export default function CreateLabbookMutation(description, name, viewerId, callb
       mutation,
       variables,
       onCompleted: (response) => {
-        console.log(response, environment)
+
         callback()
       },
       onError: err => console.error(err),
-      optimisticUpdater: (proxyStore) => {
-        // 1 - create the `newPost` as a mock that can be added to the store
-        const id = viewerId;
-        const newPost = proxyStore.create(id, 'Post')
-        newPost.setValue(name, 'name')
-        newPost.setValue(description, 'description')
-        // 2 - add `newPost` to the store
-        const viewerProxy = proxyStore.get(viewerId)
-        const connection = ConnectionHandler.getConnection(viewerProxy, 'LabbookSets_localLabbooks')
-        if (connection) {
-          ConnectionHandler.insertEdgeAfter(connection, newPost)
-        }
+      optimisticUpdater: (store) => {
+
+        // 1 - create the `labbook` as a mock that can be added to the store
+        const id = 'client:newLabbook:'+ tempID++;
+        const node = store.create(id, 'Labbook')
+
+        node.setValue(name, 'name')
+        node.setValue(description, 'description')
+
+        const newEdge = store.create(
+          'client:newEdge:' + tempID++,
+          'LabbookEdge',
+        );
+
+        newEdge.setLinkedRecord(node, 'node');
+        sharedUpdater(store, id, newEdge);
+        const labbookProxy = store.get('client:root');
+
+        labbookProxy.setValue(
+          labbookProxy.getValue('totalCount') + 1,
+          'totalCount',
+        );
+
       },
-      updater: (proxyStore) => {
-        console.log(proxyStore)
+      updater: (store) => {
+
         // 1 - retrieve the `newPost` from the server response
 
-        const createPostField = proxyStore.getRootField('createLabbook')
-        //const newPost = createPostField.getLinkedRecord('post')
+        const payload = store.getRootField('createLabbook')
 
-        // 2 - add `newPost` to the store
-        const viewerProxy = proxyStore.get("client:root")
+        const newEdge = payload.getLinkedRecord('labbookEdge');
 
-        const connection = ConnectionHandler.getConnection(viewerProxy, 'LabbookSets_localLabbooks');
-        
-        if (connection) {
-          //ConnectionHandler.insertEdgeAfter(connection, newPost)
+
+        if(newEdge){
+          sharedUpdater(store, "", newEdge);
         }
+
+
       },
     },
   )

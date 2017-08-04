@@ -2,24 +2,24 @@
 
 exports[`Test DatasetsLabbooksContainer rendering and state changes 1`] = `
 <div
-  className="datasets-labbooks__container flex flex-column"
+  className="DatasetsLabbooks flex flex-column"
 >
   <div
-    className="datasets-labbooks__nav-container flex justify-center flex-0-0-auto"
+    className="DatasetsLabbooks__nav-container flex justify-center flex-0-0-auto"
   >
     <ul
-      className="datasets-labbooks__nav flex flex--row justify--space-between"
+      className="DatasetsLabbooks__nav flex flex--row justify--space-between"
     >
       <a
-        className="datasets-labbooks__nav-item selected"
-        href="/../home/datasets"
+        className="DatasetsLabbooks__nav-item selected"
+        href="/../datasets"
         onClick={[Function]}
       >
         Datasets
       </a>
       <a
-        className="datasets-labbooks__nav-item"
-        href="/../home/labbooks"
+        className="DatasetsLabbooks__nav-item"
+        href="/../labbooks"
         onClick={[Function]}
       >
         Labbooks
@@ -27,10 +27,10 @@ exports[`Test DatasetsLabbooksContainer rendering and state changes 1`] = `
     </ul>
   </div>
   <div
-    className="datasets-labbooks__view-container flex-1-0-auto"
+    className="DatasetsLabbooks__view flex-1-0-auto"
   >
     <div
-      className="datasets__container"
+      className="Datasets"
     >
       <h1>
         Datasets
@@ -42,24 +42,24 @@ exports[`Test DatasetsLabbooksContainer rendering and state changes 1`] = `
 
 exports[`Test DatasetsLabbooksContainer rendering and state changes 2`] = `
 <div
-  className="datasets-labbooks__container flex flex-column"
+  className="DatasetsLabbooks flex flex-column"
 >
   <div
-    className="datasets-labbooks__nav-container flex justify-center flex-0-0-auto"
+    className="DatasetsLabbooks__nav-container flex justify-center flex-0-0-auto"
   >
     <ul
-      className="datasets-labbooks__nav flex flex--row justify--space-between"
+      className="DatasetsLabbooks__nav flex flex--row justify--space-between"
     >
       <a
-        className="datasets-labbooks__nav-item selected"
-        href="/../home/datasets"
+        className="DatasetsLabbooks__nav-item selected"
+        href="/../datasets"
         onClick={[Function]}
       >
         Datasets
       </a>
       <a
-        className="datasets-labbooks__nav-item"
-        href="/../home/labbooks"
+        className="DatasetsLabbooks__nav-item"
+        href="/../labbooks"
         onClick={[Function]}
       >
         Labbooks
@@ -67,10 +67,10 @@ exports[`Test DatasetsLabbooksContainer rendering and state changes 2`] = `
     </ul>
   </div>
   <div
-    className="datasets-labbooks__view-container flex-1-0-auto"
+    className="DatasetsLabbooks__view flex-1-0-auto"
   >
     <div
-      className="datasets__container"
+      className="Datasets"
     >
       <h1>
         Datasets
@@ -82,24 +82,24 @@ exports[`Test DatasetsLabbooksContainer rendering and state changes 2`] = `
 
 exports[`Test DatasetsLabbooksContainer rendering and state changes 3`] = `
 <div
-  className="datasets-labbooks__container flex flex-column"
+  className="DatasetsLabbooks flex flex-column"
 >
   <div
-    className="datasets-labbooks__nav-container flex justify-center flex-0-0-auto"
+    className="DatasetsLabbooks__nav-container flex justify-center flex-0-0-auto"
   >
     <ul
-      className="datasets-labbooks__nav flex flex--row justify--space-between"
+      className="DatasetsLabbooks__nav flex flex--row justify--space-between"
     >
       <a
-        className="datasets-labbooks__nav-item selected"
-        href="/../home/datasets"
+        className="DatasetsLabbooks__nav-item selected"
+        href="/../datasets"
         onClick={[Function]}
       >
         Datasets
       </a>
       <a
-        className="datasets-labbooks__nav-item"
-        href="/../home/labbooks"
+        className="DatasetsLabbooks__nav-item"
+        href="/../labbooks"
         onClick={[Function]}
       >
         Labbooks
@@ -107,10 +107,10 @@ exports[`Test DatasetsLabbooksContainer rendering and state changes 3`] = `
     </ul>
   </div>
   <div
-    className="datasets-labbooks__view-container flex-1-0-auto"
+    className="DatasetsLabbooks__view flex-1-0-auto"
   >
     <div
-      className="datasets__container"
+      className="Datasets"
     >
       <h1>
         Datasets

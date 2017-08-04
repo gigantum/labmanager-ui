@@ -7,30 +7,27 @@ import {
 //components
 import Notes from './notes/Notes'
 import Code from './Code'
-import InputData from './InputData'
-import OutputData from './OutputData'
-import Workflow from './Workflow'
+import Data from './Data'
 import Environment from './Environment'
 
 import environment from '../../createRelayEnvironment'
 
 //labbook query with notes fragment
 const LabbookQuery =  graphql`
-query LabbookQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
-  labbook(name: $name, owner: $owner){
-    id
-    description
-    ...Notes_labbook
-  }
-}`
+  query LabbookQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+    labbook(name: $name, owner: $owner){
+      id
+      description
+      ...Notes_labbook
+    }
+  }`
+
 //navigation items to generate navigation menu
 const navigation_items = [
   {id:'notes', name: 'Notes'},
   {id:'environment', name: 'Environment'},
   {id:'code', name: 'Code'},
-  {id:'worflow', name: 'Workflow'},
-  {id:'input-data', name: 'Input Data'},
-  {id:'output-data', name: 'Output Data'}
+  {id:'data', name: 'Data'},
 ]
 
 export default class Labbook extends Component {
@@ -51,7 +48,6 @@ export default class Labbook extends Component {
     return QueryRenderer with parsed props
   */
   _getNotesRenderer(){
-    console.log(LabbookQuery)
     return (<QueryRenderer
       key={this.props.match.params.labbook_name + '_query_renderer_labbook'}
       environment={environment}
@@ -83,12 +79,8 @@ export default class Labbook extends Component {
         return(<Environment />)
       case 'code':
         return(<Code />)
-      case 'worflow':
-        return(<Workflow />)
-      case 'input-data':
-        return(<InputData />)
-      case 'output-data':
-        return(<OutputData />)
+      case 'data':
+        return(<Data />)
       default:
         notes = this._getNotesRenderer()
         return(notes);
@@ -102,7 +94,7 @@ export default class Labbook extends Component {
   _getNavItem(item){
     return (
       <li key={item.id} onClick={()=> this._setSelectedComponent(item.id)}
-        className={(this.state.selectedComponent === item.id) ? 'selected' : 'labbook__navigation-item--' + item.id}>
+        className={(this.state.selectedComponent === item.id) ? 'selected' : 'Labbook__navigation-item--' + item.id}>
         {item.name}
       </li>
     )
@@ -113,13 +105,13 @@ export default class Labbook extends Component {
     let labbook_name = this.props.match.params.labbook_name;
 
     return(
-      <div className="labbook__container">
+      <div className="Labbook">
         <h4>{labbook_name}</h4>
 
-         <div className="labbook__inner-container flex flex--row ">
+         <div className="Labbook__inner-container flex flex--row ">
 
-           <div className="labbook__navigation-container mui-container flex-0-0-auto">
-             <ul className="labbook__navigation">
+           <div className="Labbook__navigation-container mui-container flex-0-0-auto">
+             <ul className="Labbook__navigation">
                {
                  navigation_items.map((item) => {
                    return (this._getNavItem(item))
@@ -128,7 +120,7 @@ export default class Labbook extends Component {
              </ul>
            </div>
 
-           <div className="labbook__view-container mui-container flex-1-0-auto">
+           <div className="Labbook__view mui-container flex-1-0-auto">
               {this._getSelectedComponent()}
            </div>
 
