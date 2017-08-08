@@ -7,6 +7,14 @@ This kit includes an app server, a GraphQL server implementing a tiny example sc
 ```
 npm install
 ```
+## Compile Relay
+
+To compile queries and mutations
+
+```
+npm run relay | yarn relay
+
+```
 
 ## Running
 
@@ -16,13 +24,6 @@ Start a local server:
 npm run start | yarn start
 ```
 
-## Compile Relay
-
-To compile queries and mutations
-
-```
-npm run relay | yarn relay
-```
 
 ## Run Tests
 Jest runs snapshot tests

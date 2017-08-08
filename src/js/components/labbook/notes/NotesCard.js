@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import dateformat from 'dateformat'
 
-import downSVG from '../../../../images/icons/down-arrow.svg'
-import upSVG from '../../../../images/icons/up-arrow.svg'
-
 
 export default class NotesCard extends React.Component {
   constructor(props){
@@ -44,32 +41,26 @@ export default class NotesCard extends React.Component {
   }
 
   render(){
-
+    console.log(this.props)
     return(
         <div className="NotesCard card">
 
           <div className="flex flex--row justify--space-between">
-
-            <div className="flex flex--column justify--space-between">
+              <p>
+                {this._timeAgo(this.props.edge.node.timestamp)}
+              </p>
               <p>
                 {this.props.edge.node.message}
               </p>
               <p>
-                {this._timeAgo(this.props.edge.node.timestamp)}
-              </p>
-            </div>
-
-            <div className="flex flex--column justify--space-between">
-              <p>
                 Commit Id: {this.props.edge.node.commit}
               </p>
 
-              <div className="NotesCard__toggle-button"
-                  style={!this.state.showExtraInfo ? {'background': 'url(' + downSVG + ') no-repeat'} : {'background': 'url(' + upSVG + ') no-repeat'}}
+              <div className={!this.state.showExtraInfo ? "NotesCard__toggle-button closed": "NotesCard__toggle-button open"}
                   onClick={() => this._toggleExtraInfo()}
               >
+              Activity Log
               </div>
-            </div>
           </div>
 
           <div className={this.state.showExtraInfo ? 'NotesCard__expanded-view' : 'NotesCard__expanded-view no-height'}>

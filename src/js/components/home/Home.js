@@ -13,21 +13,20 @@ export default class Home extends Component {
 
     return (
       <div className="Home">
-        <div className="Home">
-          {
-            isAuthenticated() && (
-              <DatasetsLabbooksContainer
-                match={this.props.match}
-                history={this.props.history}
-              />
+        {
+          isAuthenticated() && (
+            <DatasetsLabbooksContainer
+              match={this.props.match}
+              history={this.props.history}
+            />
+          )
+        }
+        {
+          !isAuthenticated() && (
+              <Login auth={this.props.auth}/>
             )
-          }
-          {
-            !isAuthenticated() && (
-                <Login auth={this.props.auth}/>
-              )
-          }
-        </div>
+        }
+
     </div>
     )
   }

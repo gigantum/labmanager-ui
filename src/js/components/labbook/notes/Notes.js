@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import environment from '../../../createRelayEnvironment'
 import NotesCard from './NotesCard'
+import Config from './../../../config'
 
 
 class Notes extends Component {
@@ -23,7 +24,28 @@ class Notes extends Component {
    );
   }
 
+  _transformNotes(notes){
+    let notesTime = {}
+    notes.edges.map(function(note){
+      let date = new Date(note.node.timestamp)
+      console.log(note, date.getDate(), date.getYear(), date.getMonth())
+      let timeHash = date.getYear() + '_' + date.getMonth() + ' _' + date.getDate();
+      if(notesTime[timeHash]){
+        let newNoteObject = {edge: note, date: date}
+        notesTime[timeHash].push(newNoteObject);
+      }else{
+        let newNoteObject = {edge: note, date: date}
+        notesTime[timeHash] = [newNoteObject];
+
+      }
+    })
+
+    return notesTime
+  }
+
   render(){
+    let notesTime = this._transformNotes(this.props.labbook.notes);
+    console.log(notesTime)
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='Notes'>
@@ -36,24 +58,37 @@ class Notes extends Component {
               <p key={this.props.labbook + '_labbooks__description'}>{this.props.labbook.description}</p>
 
               {
-                this.props.labbook.notes.edges.map((edge) => {
-                  return(
-                    <NotesCard
-                      key={edge.node.id}
-                      edge={edge}
-                    />)
+                Object.keys(notesTime).map(k => {
+
+                  console.log(notesTime[k])
+
+                    return (
+                      <div key={k}>
+                        <div className="Notes__date-tab flex flex--column justify--space-around">
+                          <div className="Notes__date-day">{k.split('_')[2]}</div>
+                          <div className="Notes__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
+                        </div>{
+                          notesTime[k].map((obj) => {
+                            return(<NotesCard
+                                key={obj.edge.node.id}
+                                edge={obj.edge}
+                              />)
+
+                            })
+                          }
+                      </div>)
                   })
               }
             </div>
-
           </div>
-
-          <button key="load_more"
-            onClick={() => this._loadMore()}
-            title="Load More"
-          >
-            Next 20
-          </button>
+          <div className="Notes__next-button-container">
+            <button key="load_more"
+              onClick={() => this._loadMore()}
+              title="Load More"
+            >
+              Next 20
+            </button>
+          </div>
 
         </div>
       )

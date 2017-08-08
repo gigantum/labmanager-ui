@@ -1,31 +1,26 @@
 import React, { Component } from 'react'
 import {
-  createFragmentContainer,
+  createPaginationContainer,
   QueryRenderer,
   graphql
 } from 'react-relay'
-import environment from '../../../createRelayEnvironment'
+
 import CreateLabbook from './CreateLabbook'
-//import molecules from '.../../../../images/icons/molecule.svg'
 
-const LabbookQuery = graphql`query LabbookSetsQuery($first: Int!){
-  localLabbooks(first:$first) @connection(key: "LabbookSets_localLabbooks", filters: []) {
-    edges{
-      node{
-        name
-        description
-      }
-    }
-  }
-}`
-
-export default class LabbookSets extends Component {
+class LabbookSets extends Component {
   constructor(props){
 
     super(props)
+    this.handler = this.handler.bind(this)
 
-  }
+    }
 
+    handler(e) {
+      e.preventDefault()
+       this.setState({
+         'value': "dsds"
+       })
+     }
   /*
     function(string) inputs a labbook name
     routes to that labbook
@@ -34,73 +29,134 @@ export default class LabbookSets extends Component {
     this.props.history.replace(`/labbooks/${labbookName}`)
   }
 
+  componentDidMount() {
+    console.log('mounted')
+  }
+
+  _loadMore(){
+    console.log(this)
+    console.log(this.props.relay.hasMore())
+    // this.props.relay.loadMore(
+    //   5, // Fetch the next 10 feed items
+    //   e => {
+    //     console.log(e);
+    //   },{
+    //     'first': 10
+    //   }
+    // );
+
+    this.props.relay.refetchConnection(
+      10,
+      e =>{console.log(e)}
+    )
+  }
+
   render(){
 
-    return(
-      <div className='Labbooks'>
+      return(
+        <div className="LabbooksSets">
+          <CreateLabbook
+            handler={this.handler}
+            history={this.props.history}
+            {...this.props}
+          />
+          <div className='LabbooksSets__labbooks flex flex--row flex--wrap justify--center'>
+            {
 
-        <QueryRenderer
-          environment={environment}
-          query={LabbookQuery}
-          variables={{
-            first: 20
-          }}
-
-          render={({error, props}) => {
-
-            if (error) {
-              console.log(error)
-              return <div>{error.message}</div>
-            } else if (props) {
-              return (
-                <div>
-                  <CreateLabbook
-                    history={this.props.history}
-                    {...props}
-                  />
-                  <div className='LabbooksSets flex flex--row flex--wrap justify--start'>
-                    {
-
-                      props.localLabbooks.edges.map((edge) => {
-                        return (
-                          <div
-                            key={edge.node.name}
-                            onClick={() => this._goToLabbook(edge.node.name)}
-                            className='LabbooksSets__panel flex flex--column justify--space-between'>
-                              <h4>{edge.node.name}</h4>
-                              <p>{edge.node.description}</p>
-                          </div>
-                        )
-                      })
-                    }
+              this.props.localLabbooks.edges.map((edge) => {
+                console.log(edge)
+                return (
+                  <div
+                    key={edge.node.name}
+                    onClick={() => this._goToLabbook(edge.node.name)}
+                    className='LabbooksSets__panel flex flex--column justify--space-between'>
+                      <h4>{edge.node.name}</h4>
+                      <p>{edge.node.description}</p>
                   </div>
-                </div>
-              )
+                )
+              })
             }
-            return (
-              <div>
-                <CreateLabbook
+          </div>
+          <div className="LabooksSets__next-button-container">
+            <button key="load_more"
+              onClick={() => this._loadMore()}
+              title="Load More"
+            >
+              Next 20
+            </button>
+          </div>
+        </div>
+      )
 
-                  history={this.props.history}
-                  {...this.props}
-                />
-              </div>
-            )
-          }}
-        />
-      </div>
-    )
   }
 }
 
-// export default createFragmentContainer(LabbookSets, graphql`
-// fragment LabbookSets_viewer on Query {
-//   localLabbooks(first: 20) @connection(key: "LabbookSets_localLabbooks", filters: []) {
-//    edges {
-//      node {
-//        description
-//        name
-//      }
-//    }
-//  }
-// }`)
+export default createPaginationContainer(
+  LabbookSets,
+  {
+    localLabbooks: graphql`
+      fragment LabbookSets_localLabbooks on LabbookConnection @connection(key: "LabbookSets_localLabbooks"){
+          edges {
+            node {
+              name
+              description
+            }
+            cursor
+          }
+          pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+          }
+      }
+    `,
+  },
+  {
+    direction: 'forward',
+    getConnectionFromProps(props) {
+      return props.localLabbooks && props.localLabbooks.edges;
+    },
+    getFragmentVariables(prevVars, first) {
+
+      first = 10;
+      return {
+        ...prevVars,
+        first: first
+      };
+    },
+    getVariables(props, {first, cursor}, fragmentVariables) {
+      console.log(first, cursor)
+      first = 10;
+      cursor = props.localLabbooks.pageInfo.startCursor;
+      return {
+        first,
+        cursor
+        // in most cases, for variables other than connection filters like
+        // `first`, `after`, etc. you may want to use the previous values.
+      };
+    },
+    query: graphql`
+      query LabbookSetsPaginationQuery(
+        $first: Int!
+        $cursor: String!
+      ) {
+        localLabbooks(first: $first, after: $cursor) {
+          edges {
+            node {
+              name
+              description
+            }
+            cursor
+          }
+          pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+          }
+        }
+      }
+    `
+  }
+);

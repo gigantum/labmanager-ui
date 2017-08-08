@@ -72,6 +72,7 @@
     "react-notebook": "^0.1.0",
     "react-relay": "^1.1.0",
     "react-router-dom": "^4.1.1",
+    "react-scroll": "^1.5.4",
     "ws": "^3.1.0",
     "xmlhttprequest": "^1.8.0"
   },

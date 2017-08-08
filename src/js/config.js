@@ -13,6 +13,20 @@ const CONFIG = {
     {'id':'worflow', 'name': 'Workflow'},
     {'id':'input-data', 'name': 'Input Data'},
     {'id':'output-data', 'name': 'Output Data'}
+  ],
+  'months': [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
   ]
 }
 

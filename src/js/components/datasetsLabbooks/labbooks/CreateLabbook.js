@@ -29,7 +29,7 @@ export default class CreateLabbook extends React.Component {
       this.state.description,
       name,
       viewerId,
-      () => this.props.history.replace(`/labbooks/${name}`) //route to new labbok on callback
+      () => console.log(this.props)//this.props.history.replace(`/labbooks/${name}`) //route to new labbok on callback
     )
 
     this._hideModal();
@@ -97,8 +97,7 @@ export default class CreateLabbook extends React.Component {
 
             <button
               className="CreateLabbook__button CreateLabbook__button--margin"
-              onClick={() => this._showModal()}
-            >
+              onClick={() => this._showModal()}>
               Create Labbook
             </button>
         </div>

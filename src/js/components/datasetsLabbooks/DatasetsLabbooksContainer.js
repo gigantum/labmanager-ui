@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import {graphql, QueryRenderer} from 'react-relay'
 //components
 import DatasetSets from './datasets/DatasetSets';
 import LabbookSets from './labbooks/LabbookSets';
+import environment from '../../createRelayEnvironment'
+import CreateLabbook from './labbooks/CreateLabbook'
+
+
+const LabbookQuery = graphql`query DatasetsLabbooksContainerQuery($first: Int!, $cursor: String){
+  localLabbooks(first:$first, after: $cursor) {
+    ...LabbookSets_localLabbooks
+  }
+}`
 
 export default class DatasetsLabbooksContainer extends Component {
   constructor(props){
@@ -24,7 +34,41 @@ export default class DatasetsLabbooksContainer extends Component {
       return (<DatasetSets />)
     }else{
 
-      return ( <LabbookSets history={this.props.history} />)
+      return (<QueryRenderer
+        environment={environment}
+        query={LabbookQuery}
+        variables={{
+          first: 10,
+          cursor: null
+        }}
+
+        render={({error, props}) => {
+          console.log(error);
+          console.log(props);
+          if (error) {
+            console.log(error)
+            return <div>{error.message}</div>
+          } else if (props) {
+            console.log(props)
+            return (
+
+              <LabbookSets history={this.props.history} {...props}/>
+            )
+          }else{
+            console.log(this.props, this.error)
+            return (
+              <div>
+                <CreateLabbook
+                  handler={this.handler}
+                  history={this.props.history}
+                  {...this.props}
+                />
+              </div>
+            )
+          }
+        }}
+      />
+    )
 
     }
   }

@@ -24,6 +24,7 @@ const LabbookQuery =  graphql`
 
 //navigation items to generate navigation menu
 const navigation_items = [
+  {id:'overview', name: 'Overview'},
   {id:'notes', name: 'Notes'},
   {id:'environment', name: 'Environment'},
   {id:'code', name: 'Code'},
@@ -106,12 +107,12 @@ export default class Labbook extends Component {
 
     return(
       <div className="Labbook">
-        <h4 className="Labbook__title">{labbook_name}</h4>
 
-         <div className="Labbook__inner-container flex flex--row ">
-
+        <h4 className="Labbook__title">Lab Books</h4>
+         <div className="Labbook__inner-container flex flex--column ">
+           <h4 className="Labbook__name-title">{labbook_name}</h4>
            <div className="Labbook__navigation-container mui-container flex-0-0-auto">
-             <ul className="Labbook__navigation">
+             <ul className="Labbook__navigation flex flex--row">
                {
                  navigation_items.map((item) => {
                    return (this._getNavItem(item))
