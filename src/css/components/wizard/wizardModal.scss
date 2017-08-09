@@ -6,8 +6,8 @@
   height: 500px;
   margin: 0 0 0 -300px;
 
-  border: 2px solid $orange;
-  background-color: white;
+  border: 2px solid $labbooks;
+  background-color: $grey-light;
   box-shadow: 10px 10px 5px #888888;
 
 }
@@ -28,4 +28,25 @@
 
 .WizardModal__button--margin {
   margin-left: 20px;
+}
+
+.WizardModal__progress{
+    width: 100%;
+}
+
+.WizardModal__progress-bar{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    li{
+      flex: 1 0 auto;
+      background-color: $grey;
+      height: 4px;
+      margin: 0 2px;
+    }
+
+    li.selected{
+      background-color: $labbooks;
+    }
 }

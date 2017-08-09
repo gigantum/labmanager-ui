@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from '../createRelayEnvironment'
-import {ConnectionHandler} from 'relay-runtime'
+import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
   mutation CreateLabbookMutation($input: CreateLabbookInput!){
@@ -14,15 +14,6 @@ const mutation = graphql`
     }
   }
 `;
-
-function sharedUpdater(store, id, newEdge) {
-  const labbookProxy = store.get('client:root');
-  const conn = ConnectionHandler.getConnection(
-    labbookProxy,
-    'LabbookSets_localLabbooks'
-  );
-  ConnectionHandler.insertEdgeAfter(conn, newEdge);
-}
 
 let tempID = 0;
 
@@ -58,20 +49,25 @@ export default function CreateLabbookMutation(
           node.setValue(name, 'name')
           node.setValue(description, 'description')
 
-         const payload = store.getRootField('createLabbook');
+         //const labbookProxy = store.getRootField('createLabbook');
          //const node = payload.getLinkedRecord('labbook').getLinkedRecord('node');
+         //
          const labbookProxy = store.get('client:root');
-         const conn = ConnectionHandler.getConnection(
+
+         const conn = RelayRuntime.ConnectionHandler.getConnection(
            labbookProxy,
-           'LabbookSets_localLabbooks',
+           'LocalLabbooks_localLabbooks',
          );
-         const newEdge = ConnectionHandler.createEdge(
-           store,
-           conn,
-           node,
-           "LabbookEdge"
-         )
-         ConnectionHandler.insertEdgeAfter(conn, newEdge)
+
+         if(conn){
+           const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+             store,
+             conn,
+             node,
+             "LabbookEdge"
+           )
+           RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge)
+        }
 
       },
     },

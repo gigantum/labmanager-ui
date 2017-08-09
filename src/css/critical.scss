@@ -11,16 +11,20 @@
 
 //components
 @import 'components/header';
-@import  'components/datasetsLabbooksContainer';
 @import  'components/labbooksets.scss';
-@import  'components/createLabbook.scss';
-@import  'components/labbook.scss';
-@import  'components/notes.scss';
-@import  'components/BreadCrumbs.scss';
+@import  'components/breadCrumbs.scss';
 @import  'components/routes.scss';
 @import  'components/login.scss';
 @import  'components/home.scss';
-@import  'components/wizardModal';
+//dashboard components
+@import  'components/dashboard/dashboard';
+//labbook components
+@import  'components/labbook/labbook.scss';
+@import  'components/labbook/notes.scss';
+//wizard components
+@import  'components/wizard/wizardModal';
+@import  'components/wizard/SelectBaseImage';
+@import  'components/wizard/createLabbook';
 
 html, body {
   width: 100%;

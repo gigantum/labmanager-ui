@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import DatasetsLabbooksContainer from '../datasetsLabbooks/DatasetsLabbooksContainer';
+import Dashboard from '../dashboard/Dashboard';
 import Login from '../login/Login';
 
 export default class Home extends Component {
@@ -15,7 +15,7 @@ export default class Home extends Component {
       <div className="Home">
         {
           isAuthenticated() && (
-            <DatasetsLabbooksContainer
+            <Dashboard
               match={this.props.match}
               history={this.props.history}
             />

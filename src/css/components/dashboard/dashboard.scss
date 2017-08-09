@@ -1,11 +1,11 @@
-.DatasetsLabbooks{
+.Dashboard{
   height: 100%;
 }
 
-.DatasetsLabbooks__view{
+.Dashboard__view{
   height: calc(100% - 200px);
 }
-.DatasetsLabbooks__nav{
+.Dashboard__nav{
   width: 300px;
   list-style: none;
   color: $vermillion;
@@ -13,14 +13,14 @@
   font-weight: 200;
 }
 
-.DatasetsLabbooks__nav-item{
+.Dashboard__nav-item{
   cursor: pointer;
   color: $charcoal;
 }
-.DatasetsLabbooks__nav-item.selected{
+.Dashboard__nav-item.selected{
   text-decoration: underline;
 }
 
-.DatasetsLabbooks__nav-item:hover{
+.Dashboard__nav-item:hover{
   color: $orange;
 }

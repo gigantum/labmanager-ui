@@ -16,3 +16,10 @@ button:focus{
   color: $white;
   background: $charcoal;
 }
+
+
+button:disabled{
+  color: $grey;
+  background: $grey-light;
+  border: 2px solid $grey;
+}

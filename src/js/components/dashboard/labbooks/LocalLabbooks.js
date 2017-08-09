@@ -7,7 +7,7 @@ import {
 
 import WizardModal from './../../wizard/WizardModal'
 
-class LabbookSets extends Component {
+class LocalLabbooks extends Component {
   constructor(props){
 
     super(props)
@@ -30,25 +30,28 @@ class LabbookSets extends Component {
   }
 
 
-  _loadMore(){
-
+  _loadMore(e){
+    e.preventDefault();
+    console.log(this)
+    console.log(this.props.relay.hasMore())
+    debugger
     this.props.relay.loadMore(
-      5, // Fetch the next 10 feed items
-      e => {
+      10, // Fetch the next 10 feed items
+      (e, r) => {
         console.log(e);
-      },{
-        'first': 10
+        this.props.relay.refetchConnection(12,(e) => {console.log(e)})
       }
     );
 
-    this.props.relay.refetchConnection(
-      10,
-      e =>{console.log(e)}
-    )
+    // this.props.relay.refetchConnection(
+    //   10,
+    //   e =>{console.log(e)}
+    // )
   }
 
   render(){
-
+      this.props
+      if(this.props.localLabbooks){
       return(
         <div className="LabbooksSets">
           <WizardModal
@@ -74,7 +77,7 @@ class LabbookSets extends Component {
           </div>
           <div className="LabooksSets__next-button-container">
             <button key="load_more"
-              onClick={() => this._loadMore()}
+              onClick={(e) => this._loadMore(e)}
               title="Load More"
             >
               Next 5
@@ -82,15 +85,19 @@ class LabbookSets extends Component {
           </div>
         </div>
       )
+    }else{
+      return(<div>Loading</div>)
+    }
 
   }
 }
 
 export default createPaginationContainer(
-  LabbookSets,
+  LocalLabbooks,
   {
-    localLabbooks: graphql`
-      fragment LabbookSets_localLabbooks on LabbookConnection @connection(key: "LabbookSets_localLabbooks"){
+    query: graphql`
+      fragment LocalLabbooks_query on Query @connection(key: "LocalLabbooks_localLabbooks"){
+        localLabbooks(first: $first, after:$cursor){
           edges {
             node {
               name
@@ -104,13 +111,14 @@ export default createPaginationContainer(
             hasPreviousPage
             startCursor
           }
+        }
       }
     `,
   },
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.localLabbooks && props.localLabbooks.edges;
+      return props.localLabbooks;
     },
     getFragmentVariables(prevVars, first) {
 
@@ -132,25 +140,11 @@ export default createPaginationContainer(
       };
     },
     query: graphql`
-      query LabbookSetsPaginationQuery(
+      query LocalLabbooksPaginationQuery(
         $first: Int!
-        $cursor: String!
+        $cursor: String
       ) {
-        localLabbooks(first: $first, after: $cursor) {
-          edges {
-            node {
-              name
-              description
-            }
-            cursor
-          }
-          pageInfo {
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
-          }
-        }
+          ...LocalLabbooks_query
       }
     `
   }

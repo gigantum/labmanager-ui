@@ -7,6 +7,18 @@ This kit includes an app server, a GraphQL server implementing a tiny example sc
 ```
 npm install
 ```
+
+## Update Scehma
+
+```
+npm install -g graphql-cli
+graphql init
+```
+Follow setup in the terminal.
+
+```
+npm run update-schema
+```
 ## Compile Relay
 
 To compile queries and mutations
