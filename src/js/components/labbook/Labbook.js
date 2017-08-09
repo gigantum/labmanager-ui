@@ -6,26 +6,39 @@ import {
 } from 'react-relay'
 //components
 import Notes from './notes/Notes'
-import Code from './Code'
-import Data from './Data'
-import Environment from './Environment'
+import Code from './code/Code'
+import Data from './data/Data'
+import Environment from './environment/Environment'
 
 import environment from '../../createRelayEnvironment'
 
 //labbook query with notes fragment
-const LabbookQuery =  graphql`
+const NotesQuery =  graphql`
   query LabbookQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
     labbook(name: $name, owner: $owner){
       id
       description
+      environment{
+        id
+        imageStatus
+        containerStatus
+      }
       ...Notes_labbook
+    }
+  }`
+
+const EnvironmentQuery =  graphql`
+  query LabbookEnvironmentQuery($first: Int!, $cursor: String){
+    availableBaseImages(first: $first, after: $cursor){
+      ...Environment_availableBaseImages
     }
   }`
 
 //navigation items to generate navigation menu
 const navigation_items = [
-  {id:'notes', name: 'Notes'},
-  {id:'environment', name: 'Environment'},
+  {id:'overview', name: 'Overview'},
+  {id:'notes', name: 'Notes', 'fragment': '...Notes_labbook'},
+  {id:'environment', name: 'Environment', 'fragment': '...Environment_labbook'},
   {id:'code', name: 'Code'},
   {id:'data', name: 'Data'},
 ]
@@ -51,7 +64,7 @@ export default class Labbook extends Component {
     return (<QueryRenderer
       key={this.props.match.params.labbook_name + '_query_renderer_labbook'}
       environment={environment}
-      query={LabbookQuery}
+      query={NotesQuery}
       variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
       render={({error, props}) => {
 
@@ -61,6 +74,30 @@ export default class Labbook extends Component {
         } else if (props) {
 
           return <Notes key={props.labbook} labbook={props.labbook} {...props} labbook_name={this.props.match.params.labbook_name} />
+        }
+        return <div>Loading</div>
+      }}
+    />)
+  }
+  /*
+    function():
+    return QueryRenderer with parsed props
+  */
+  _getEnvironmentRenderer(){
+
+    return (<QueryRenderer
+      key={this.props.match.params.labbook_name + '_query_renderer_labbook'}
+      environment={environment}
+      query={EnvironmentQuery}
+      variables={{first: 20}}
+      render={({error, props}) => {
+
+        if (error) {
+          console.log(error)
+          return <div>{error.message}</div>
+        } else if (props) {
+
+          return <Environment labbook={{}} key={props.labbook} availableBaseImages={props.availableBaseImages} {...props} labbook_name={this.props.match.params.labbook_name} />
         }
         return <div>Loading</div>
       }}
@@ -76,7 +113,7 @@ export default class Labbook extends Component {
         notes = this._getNotesRenderer() //returns <Notes /> component in a QueryRenderer
         return notes;
       case 'environment':
-        return(<Environment />)
+        return(this._getEnvironmentRenderer())
       case 'code':
         return(<Code />)
       case 'data':
@@ -106,12 +143,12 @@ export default class Labbook extends Component {
 
     return(
       <div className="Labbook">
-        <h4>{labbook_name}</h4>
 
-         <div className="Labbook__inner-container flex flex--row ">
-
+        <h4 className="Labbook__title">Lab Books</h4>
+         <div className="Labbook__inner-container flex flex--column ">
+           <h4 className="Labbook__name-title">{labbook_name}</h4>
            <div className="Labbook__navigation-container mui-container flex-0-0-auto">
-             <ul className="Labbook__navigation">
+             <ul className="Labbook__navigation flex flex--row">
                {
                  navigation_items.map((item) => {
                    return (this._getNavItem(item))

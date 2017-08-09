@@ -1,3 +1,10 @@
+.DatasetsLabbooks{
+  height: 100%;
+}
+
+.DatasetsLabbooks__view{
+  height: calc(100% - 200px);
+}
 .DatasetsLabbooks__nav{
   width: 300px;
   list-style: none;
@@ -8,7 +15,12 @@
 
 .DatasetsLabbooks__nav-item{
   cursor: pointer;
+  color: $charcoal;
 }
 .DatasetsLabbooks__nav-item.selected{
   text-decoration: underline;
+}
+
+.DatasetsLabbooks__nav-item:hover{
+  color: $orange;
 }

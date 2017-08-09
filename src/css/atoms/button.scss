@@ -1,0 +1,18 @@
+button{
+  padding: 5px 25px;
+  border: 2px solid $charcoal;
+  color: $charcoal;
+  background: $white;
+  cursor: pointer;
+}
+
+button:hover{
+
+  color: $white;
+  background: $charcoal;
+}
+
+button:focus{
+  color: $white;
+  background: $charcoal;
+}

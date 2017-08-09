@@ -1,49 +1,46 @@
 .Labbook{
-  padding: 20px;
+  height: calc(100% - 80px);
+}
+
+.Labbook__title{
+  text-align: left;
+  padding: 40px 0 0 40px;
+}
+
+.Labbook__inner-container{
+  height: calc(100% - 160px);
+  margin: 20px 40px;
+  border: 1px solid $labbooks;
+  border-top: 10px solid $labbooks;
+  padding: 0 40px;
+  background: $grey-light;
 }
 
 
 .Labbook__navigation{
-  width: 200px;
+  width: 70%;
+  border-bottom: 1px solid $font-grey;
+  position: relative;
   li{
-    color: $charcoal;
-    padding: 15px;
-
+    color: $font-grey;
+    padding: 5px 30px;
     cursor: pointer;
-
-    border-right: 3px solid $clean;
-    border-bottom: 1px solid $clean;
-    background: $white;
   }
   li:hover{
-    color: $sunchine;
-    border-right: 3px solid $sunchine;
+    color: $labbooks;
   }
-  //
-  // .labbook__navigation-item--notes{
-  //   color: $notes;
-  // }
-  // .labbook__navigation-item--code{
-  //   color: $yellow;
-  // }
-  // .labbook__navigation-item--environment{
-  //
-  //   color: $red;
-  // }
-  // .labbook__navigation-item--input-data{
-  //   color: $vermillion;
-  // }
-  // .labbook__navigation-item--output-data{
-  //
-  //   color: $teal;
-  // }
-  // .labbook__navigation-item--workflow{
-  //   color: $lightblue;
-  // }
 
   li.selected{
-    background: $fresh;
-    border-right: 3px solid $fresh;
-    color: $white;
+    background: url('./../images/icons/navigate-up-arrow.svg') no-repeat center 24px;
+    background-size: 11px;
+    z-index: 100;
+    position: relative;
+    bottom: -1px;
+
   }
+}
+
+.Labbook__view{
+  height: calc(100% - 90px);
+  overflow: hidden;
 }

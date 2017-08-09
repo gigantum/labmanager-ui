@@ -9,6 +9,7 @@ import App from './App';
 import Header from './shared/Header';
 import Labbook from './labbook/Labbook';
 import BreadCrumbs from './breadCrumbs/BreadCrumbs';
+
 //import Breadcrumbs from 'react-breadcrumbs'
 
 const auth = new Auth();
@@ -41,7 +42,7 @@ export default class Routes extends Component {
 
     return(
       <div>
-        <Header />
+        <Header auth={auth} />
 
 
         <Router history={history}>
@@ -51,19 +52,8 @@ export default class Routes extends Component {
             <Route
               path=""
               render={(location) => {return(
-              <div>
+              <div className="Routes">
                 <BreadCrumbs location={location} history={history} />
-
-                <Route
-                  exact
-                  path="/"
-                  render={(props) =>
-                    <App
-                      auth={auth}
-                      {...props}
-                    />
-                  }
-                />
 
                 <Route
                   exact

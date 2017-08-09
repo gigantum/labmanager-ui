@@ -1,19 +1,41 @@
+.Notes{
+  overflow-y: auto;
+  height: 100%;
+  overflow-x: hidden;
+  height: calc(100% - 48px);
+}
+
 .NotesCard{
-  padding: 20px;
+  padding: 10px;
+  margin: 2px 15px;
 }
 
 .NotesCard__toggle-button{
   height: 30px;
-  width: 40px;
+  width: 120px;
   cursor: pointer;
   align-self: flex-end;
+  color: $font-grey;
+}
+
+.NotesCard__toggle-button.open{
+  background: url('./../images/icons/down-arrow.svg') no-repeat 90% center;
+  background-size: 10px;
+  g{
+    transform: rotate(90deg) translate(-42px);
+  }
+}
+
+.NotesCard__toggle-button.closed{
+  background: url('./../images/icons/up-arrow.svg') no-repeat 90% center;
+  background-size: 10px;
 }
 
 .NotesCard__expanded-view{
-  border: 1px solid $sunchine;
+  border: 1px solid $orange;
   border-radius: 3px;
   padding: 10px;
-  margin-top: 5px;
+  margin: 5px 0 0 0;
   transition: height 0.5s;
   height: 220px;
   overflow: hidden;
@@ -39,6 +61,33 @@
    margin: 0 5px;
    background-image: url('../images/icons/price-tag.svg');
  }
+}
+
+.Notes__next-button-container{
+  text-align: center;
+}
+
+.Notes__date-tab{
+    border: 4px solid $activity;
+    border-radius: 40px;
+    background: $grey-light;
+    height: 80px;
+    width: 80px;
+    font-weight: lighter;
+}
+
+.Notes__date-month{
+  font-size: 20px;
+  color: $font-grey;
+  align-self: center;
+  height: 30px
+}
+
+.Notes__date-day{
+  color: $font-grey;
+  font-size: 26px;
+  align-self: center;
+  height: 26px;
 }
 //
 // USER_MAJOR

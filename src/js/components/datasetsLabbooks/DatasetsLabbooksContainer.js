@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import {graphql, QueryRenderer} from 'react-relay'
 //components
 import DatasetSets from './datasets/DatasetSets';
 import LabbookSets from './labbooks/LabbookSets';
+import environment from './../../createRelayEnvironment'
+import WizardModal from './../wizard/WizardModal'
+
+
+const LabbookQuery = graphql`query DatasetsLabbooksContainerQuery($first: Int!, $cursor: String){
+  localLabbooks(first:$first, after: $cursor) {
+    ...LabbookSets_localLabbooks
+  }
+}`
 
 export default class DatasetsLabbooksContainer extends Component {
   constructor(props){
@@ -24,7 +34,40 @@ export default class DatasetsLabbooksContainer extends Component {
       return (<DatasetSets />)
     }else{
 
-      return ( <LabbookSets history={this.props.history} />)
+      return (<QueryRenderer
+        environment={environment}
+        query={LabbookQuery}
+        variables={{
+          first: 10,
+          cursor: null
+        }}
+
+        render={({error, props}) => {
+
+          if (error) {
+
+            return <div>{error.message}</div>
+          } else if (props) {
+
+            return (
+
+              <LabbookSets history={this.props.history} {...props}/>
+            )
+          }else{
+
+            return (
+              <div>
+                <WizardModal
+                  handler={this.handler}
+                  history={this.props.history}
+                  {...this.props}
+                />
+              </div>
+            )
+          }
+        }}
+      />
+    )
 
     }
   }
@@ -34,21 +77,24 @@ export default class DatasetsLabbooksContainer extends Component {
       <div className='DatasetsLabbooks flex flex-column'>
         <div className='DatasetsLabbooks__nav-container flex justify-center flex-0-0-auto'>
           <ul className='DatasetsLabbooks__nav flex flex--row justify--space-between'>
-
-            <Link
-              onClick={(t,event) => this._setSelectedComponent(this, 'datasets')}
-              className={this.state.selectedComponent === 'datasets' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
-              to='../datasets'
-            >
-              Datasets
-            </Link>
-            <Link
-              onClick={(t, event) => this._setSelectedComponent(this, 'labbooks')}
-              className={this.state.selectedComponent === 'labbooks' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
-              to='../labbooks'
-            >
-              Labbooks
-            </Link>
+            <li>
+              <Link
+                onClick={(t,event) => this._setSelectedComponent(this, 'datasets')}
+                className={this.state.selectedComponent === 'datasets' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
+                to='../datasets'
+              >
+                Datasets
+              </Link>
+            </li>
+            <li>
+              <Link
+                onClick={(t, event) => this._setSelectedComponent(this, 'labbooks')}
+                className={this.state.selectedComponent === 'labbooks' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
+                to='../labbooks'
+              >
+                Labbooks
+              </Link>
+            </li>
 
           </ul>
         </div>

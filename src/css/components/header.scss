@@ -1,7 +1,32 @@
 .Header{
-  background-color: $fresh;
+  background-color: $charcoal;
+  position: fixed;
+  top: 0px;
+  z-index: 100;
+  height: 80px;
 }
 
 .Header__title{
-  color: $white;
+  color: $cream;
+}
+
+
+.Header__button{
+  background-color: $orange;
+  border: 1px solid $cream;
+  color: $cream;
+  padding: 5px 25px;
+}
+
+.Header__button:hover{
+  background-color: $cream;
+  border: 1px solid $cream;
+  border-width: 0px;
+  color: $orange;
+}
+
+.Header__button--logout{
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
