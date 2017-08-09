@@ -5,7 +5,7 @@ import {
   graphql
 } from 'react-relay'
 
-import CreateLabbook from './CreateLabbook'
+import WizardModal from './../../wizard/WizardModal'
 
 class LabbookSets extends Component {
   constructor(props){
@@ -29,21 +29,17 @@ class LabbookSets extends Component {
     this.props.history.replace(`/labbooks/${labbookName}`)
   }
 
-  componentDidMount() {
-    console.log('mounted')
-  }
 
   _loadMore(){
-    console.log(this)
-    console.log(this.props.relay.hasMore())
-    // this.props.relay.loadMore(
-    //   5, // Fetch the next 10 feed items
-    //   e => {
-    //     console.log(e);
-    //   },{
-    //     'first': 10
-    //   }
-    // );
+
+    this.props.relay.loadMore(
+      5, // Fetch the next 10 feed items
+      e => {
+        console.log(e);
+      },{
+        'first': 10
+      }
+    );
 
     this.props.relay.refetchConnection(
       10,
@@ -55,7 +51,7 @@ class LabbookSets extends Component {
 
       return(
         <div className="LabbooksSets">
-          <CreateLabbook
+          <WizardModal
             handler={this.handler}
             history={this.props.history}
             {...this.props}
@@ -64,7 +60,6 @@ class LabbookSets extends Component {
             {
 
               this.props.localLabbooks.edges.map((edge) => {
-                console.log(edge)
                 return (
                   <div
                     key={edge.node.name}
@@ -82,7 +77,7 @@ class LabbookSets extends Component {
               onClick={() => this._loadMore()}
               title="Load More"
             >
-              Next 20
+              Next 5
             </button>
           </div>
         </div>
@@ -126,7 +121,7 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {first, cursor}, fragmentVariables) {
-      console.log(first, cursor)
+
       first = 10;
       cursor = props.localLabbooks.pageInfo.startCursor;
       return {

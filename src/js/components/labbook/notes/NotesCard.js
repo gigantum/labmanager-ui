@@ -41,7 +41,6 @@ export default class NotesCard extends React.Component {
   }
 
   render(){
-    console.log(this.props)
     return(
         <div className="NotesCard card">
 

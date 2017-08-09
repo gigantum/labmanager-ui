@@ -28,7 +28,6 @@ class Notes extends Component {
     let notesTime = {}
     notes.edges.map(function(note){
       let date = new Date(note.node.timestamp)
-      console.log(note, date.getDate(), date.getYear(), date.getMonth())
       let timeHash = date.getYear() + '_' + date.getMonth() + ' _' + date.getDate();
       if(notesTime[timeHash]){
         let newNoteObject = {edge: note, date: date}
@@ -45,7 +44,6 @@ class Notes extends Component {
 
   render(){
     let notesTime = this._transformNotes(this.props.labbook.notes);
-    console.log(notesTime)
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='Notes'>
@@ -60,7 +58,6 @@ class Notes extends Component {
               {
                 Object.keys(notesTime).map(k => {
 
-                  console.log(notesTime[k])
 
                     return (
                       <div key={k}>

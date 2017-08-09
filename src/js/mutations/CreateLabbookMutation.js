@@ -21,7 +21,6 @@ function sharedUpdater(store, id, newEdge) {
     labbookProxy,
     'LabbookSets_localLabbooks'
   );
-  console.log(conn)
   ConnectionHandler.insertEdgeAfter(conn, newEdge);
 }
 

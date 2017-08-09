@@ -18,8 +18,6 @@ function fetchQuery(
 
 //http://localhost.charlesproxy.com/
   var queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
-  console.log(variables)
-  console.log(queryString)
   return fetch(process.env.GIGANTUM_API, {//process.env.GIGANTUM_API
     method: 'POST',
     //mode: 'no-cors',
@@ -32,9 +30,8 @@ function fetchQuery(
       variables
     }),
   }).then(response => {
-    console.log(response.status)
     return response.json()
-  }).catch(error => {console.log(error, error.message, error.name, error.stack)})
+  }).catch(error => {console.log(error, error.message)})
 }
 
 const network = Network.create(fetchQuery);

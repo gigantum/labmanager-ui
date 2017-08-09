@@ -4,8 +4,8 @@ import {graphql, QueryRenderer} from 'react-relay'
 //components
 import DatasetSets from './datasets/DatasetSets';
 import LabbookSets from './labbooks/LabbookSets';
-import environment from '../../createRelayEnvironment'
-import CreateLabbook from './labbooks/CreateLabbook'
+import environment from './../../createRelayEnvironment'
+import WizardModal from './../wizard/WizardModal'
 
 
 const LabbookQuery = graphql`query DatasetsLabbooksContainerQuery($first: Int!, $cursor: String){
@@ -43,22 +43,21 @@ export default class DatasetsLabbooksContainer extends Component {
         }}
 
         render={({error, props}) => {
-          console.log(error);
-          console.log(props);
+
           if (error) {
-            console.log(error)
+
             return <div>{error.message}</div>
           } else if (props) {
-            console.log(props)
+
             return (
 
               <LabbookSets history={this.props.history} {...props}/>
             )
           }else{
-            console.log(this.props, this.error)
+
             return (
               <div>
-                <CreateLabbook
+                <WizardModal
                   handler={this.handler}
                   history={this.props.history}
                   {...this.props}
