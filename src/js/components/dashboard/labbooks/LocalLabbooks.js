@@ -29,11 +29,8 @@ class LocalLabbooks extends Component {
     this.props.history.replace(`/labbooks/${labbookName}`)
   }
 
-
   _loadMore(e){
     e.preventDefault();
-    console.log(this)
-    console.log(this.props.relay.hasMore())
     debugger
     this.props.relay.loadMore(
       10, // Fetch the next 10 feed items
@@ -50,7 +47,7 @@ class LocalLabbooks extends Component {
   }
 
   render(){
-      this.props
+      console.log(this.props)
       if(this.props.localLabbooks){
       return(
         <div className="LabbooksSets">
@@ -95,9 +92,9 @@ class LocalLabbooks extends Component {
 export default createPaginationContainer(
   LocalLabbooks,
   {
-    query: graphql`
-      fragment LocalLabbooks_query on Query @connection(key: "LocalLabbooks_localLabbooks"){
-        localLabbooks(first: $first, after:$cursor){
+    localLabbooks: graphql`
+      fragment LocalLabbooks_localLabbooks on LabbookConnection @connection(key: "LocalLabbooks_localLabbooks"){
+        #localLabbooks(first: $first, after:$cursor){
           edges {
             node {
               name
@@ -111,7 +108,7 @@ export default createPaginationContainer(
             hasPreviousPage
             startCursor
           }
-        }
+          #}
       }
     `,
   },
@@ -144,7 +141,9 @@ export default createPaginationContainer(
         $first: Int!
         $cursor: String
       ) {
-          ...LocalLabbooks_query
+        localLabbooks(first: $first, after:$cursor){
+          ...LocalLabbooks_localLabbooks
+        }
       }
     `
   }

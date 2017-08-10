@@ -1,20 +1,21 @@
 button{
-  padding: 5px 25px;
-  border: 2px solid $charcoal;
-  color: $charcoal;
-  background: $white;
+  padding: 10px 25px;
+  border: 2px solid $datasets;
+  border-radius: 5px;
+  color: $white;
+  background: $datasets;
   cursor: pointer;
 }
 
 button:hover{
 
-  color: $white;
-  background: $charcoal;
+  color: $datasets;
+  background: $white;
 }
 
 button:focus{
   color: $white;
-  background: $charcoal;
+  background: $datasets;
 }
 
 

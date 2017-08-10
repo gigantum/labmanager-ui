@@ -1,17 +1,48 @@
 # source: http://localhost:5000/labbook/
-# timestamp: Wed Aug 09 2017 14:10:57 GMT-0400 (EDT)
+# timestamp: Thu Aug 10 2017 14:33:06 GMT-0400 (EDT)
+
+input AddEnvironmentComponentInput {
+  labbookName: String!
+  owner: String
+  componentClass: EnvironmentComponentClass!
+  repository: String!
+  namespace: String!
+  component: String!
+  version: String!
+  clientMutationId: String
+}
+
+# Mutation to add a new environment component to a LabBook
+type AddEnvironmentComponentPayload {
+  clientMutationId: String
+}
+
+input AddEnvironmentPackageInput {
+  labbookName: String!
+  owner: String
+  packageManager: String!
+  packageName: String!
+  packageVersion: String
+  clientMutationId: String
+}
+
+# Mutation to add a new package to labbook. 
+type AddEnvironmentPackagePayload {
+  clientMutationId: String
+}
 
 # A type that represents a Base Image Environment Component
 type BaseImage implements Node {
   # The ID of the object.
   id: ID!
+  component: EnvironmentComponent!
   author: EnvironmentAuthor!
   info: EnvironmentInfo!
   osClass: String!
   osRelease: String!
   server: String!
   namespace: String!
-  repo: String!
+  repository: String!
   tag: String!
   availablePackageManagers: [String]!
 }
@@ -104,10 +135,61 @@ type CreateNotePayload {
   clientMutationId: String
 }
 
+# A type that represents a Custom Dependency Environment Component
+type CustomDependency implements Node {
+  # The ID of the object.
+  id: ID!
+  component: EnvironmentComponent!
+  author: EnvironmentAuthor!
+  info: EnvironmentInfo!
+  osBaseClass: String!
+  docker: String!
+}
+
+type CustomDependencyConnection {
+  pageInfo: PageInfo!
+  edges: [CustomDependencyEdge]!
+}
+
+type CustomDependencyEdge {
+  # The item at the end of the edge
+  node: CustomDependency
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 # The `DateTime` scalar type represents a DateTime
 # value as specified by
 # [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 scalar DateTime
+
+# A type that represents a Development Environment Environment Component
+type DevEnv implements Node {
+  # The ID of the object.
+  id: ID!
+  component: EnvironmentComponent!
+  author: EnvironmentAuthor!
+  info: EnvironmentInfo!
+  osBaseClass: String!
+  developmentEnvironmentClass: String!
+  installCommands: [String]!
+  execCommands: [String]!
+  exposedTcpPorts: [String]!
+}
+
+type DevEnvConnection {
+  pageInfo: PageInfo!
+  edges: [DevEnvEdge]!
+}
+
+type DevEnvEdge {
+  # The item at the end of the edge
+  node: DevEnv
+
+  # A cursor for use in pagination
+  cursor: String!
+}
 
 # A type that represents the Environment for a LabBook
 type Environment implements Node {
@@ -125,6 +207,30 @@ type EnvironmentAuthor implements Node {
   email: String!
   username: String!
   organization: String
+}
+
+# A type that represents the identifiable information for an environment component
+type EnvironmentComponent implements Node {
+  # The ID of the object.
+  id: ID!
+  repository: String
+  namespace: String
+  name: String
+  version: String
+  componentClass: EnvironmentComponentClass
+}
+
+# Enumeration indicating the different classes of Environment Components
+#
+# base_image - base docker images
+# dev_env - development environments
+# package_manager - dependencies installed via package managers
+# custom - complex dependencies that are installed via custom docker snippets
+enum EnvironmentComponentClass {
+  base_image
+  dev_env
+  package_manager
+  custom
 }
 
 # A type that represents the Info section of an environment component
@@ -246,6 +352,8 @@ type Mutation {
   buildImage(input: BuildImageInput!): BuildImagePayload
   startContainer(input: StartContainerInput!): StartContainerPayload
   createNote(input: CreateNoteInput!): CreateNotePayload
+  addEnvironmentComponent(input: AddEnvironmentComponentInput!): AddEnvironmentComponentPayload
+  addEnvironmentPackage(input: AddEnvironmentPackageInput!): AddEnvironmentPackagePayload
 }
 
 # An object with an ID
@@ -346,6 +454,10 @@ type Query {
   localLabbooks(before: String, after: String, first: Int, last: Int): LabbookConnection
   availableBaseImages(before: String, after: String, first: Int, last: Int): BaseImageConnection
   availableBaseImageVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): BaseImageConnection
+  availableDevEnvs(before: String, after: String, first: Int, last: Int): DevEnvConnection
+  availableDevEnvVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): DevEnvConnection
+  availableCustomDependencies(before: String, after: String, first: Int, last: Int): CustomDependencyConnection
+  availableCustomDependenciesVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): CustomDependencyConnection
 }
 
 input StartContainerInput {

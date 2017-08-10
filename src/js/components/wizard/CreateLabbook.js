@@ -36,14 +36,16 @@ export default class CreateLabbook extends React.Component {
   _createLabbook(evt){
     let viewerId = 'localLabbooks';//Todo: figure out what to do with viewerId in the mutation context
     let name = this.state.name;
-    console.log(this);
     //create new labbook
     if(this.props.nextWindow){
       CreateLabbookMutation(
         this.state.description,
         name,
         viewerId,
-        () => this.props.setComponent(this.props.nextWindow)//route to new labbook on callback
+        () => {
+          this.props.setLabbookName(this.state.name)
+          this.props.setComponent(this.props.nextWindow)
+        }//route to new labbook on callback
       )
       //this.props.handler(evt);
     }else{
@@ -69,16 +71,16 @@ export default class CreateLabbook extends React.Component {
 
 
   render(){
-    console.log(this)
     return(
       <div className="CreateLabbook">
           <div className='CreateLabbook__modal-inner-container flex flex-column justify--space-around'>
 
             <div>
-              <label>Name</label>
+              <label>Title</label>
               <input
                 type='text'
                 onChange={(evt) => this._updateTextState(evt, 'name')}
+                placeholder="Enter a unique, descriptive title"
               />
             </div>
 
@@ -87,6 +89,7 @@ export default class CreateLabbook extends React.Component {
               <input
                 type="text"
                 onChange={(evt) => this._updateTextState(evt, 'description')}
+                placeholder="Briefly describe this lab book, its purpose and any other key details. "
               />
             </div>
 
@@ -95,7 +98,7 @@ export default class CreateLabbook extends React.Component {
                 className="CreateLabbook__button"
                 onClick={(x, evt) => this._createLabbook(evt)}
               >
-                Create Labbook
+                Save and Continue Setup
               </button>
             </div>
           </div>

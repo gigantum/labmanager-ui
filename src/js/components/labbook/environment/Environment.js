@@ -48,7 +48,6 @@ export default createPaginationContainer(
               osRelease
               server
               namespace
-              repo
               tag
               availablePackageManagers
             }

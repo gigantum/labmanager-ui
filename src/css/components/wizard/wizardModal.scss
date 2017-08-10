@@ -2,11 +2,11 @@
   position: absolute;
   left: 50%;
   z-index: 100;
-  width: 600px;
-  height: 500px;
-  margin: 0 0 0 -300px;
+  width: 800px;
+  height: 600px;
+  margin: 0 0 0 -400px;
 
-  border: 2px solid $labbooks;
+  border: 1px solid $grey;
   background-color: $grey-light;
   box-shadow: 10px 10px 5px #888888;
 
@@ -16,6 +16,11 @@
 .WizardModal__modal-inner-container{
     height: calc(100% - 40px);
     padding: 20px;
+}
+
+.WizardModal__title{
+  color: $labbooks;
+  text-align: center;
 }
 
 
@@ -31,6 +36,7 @@
 }
 
 .WizardModal__progress{
+    margin-top: 25px;
     width: 100%;
 }
 
@@ -41,12 +47,15 @@
     justify-content: space-between;
     li{
       flex: 1 0 auto;
-      background-color: $grey;
+      border-top: 2px solid $labbooks;
+      text-align: center;
+      padding: 2px;
       height: 4px;
       margin: 0 2px;
+      font-size: 10px;
     }
 
     li.selected{
-      background-color: $labbooks;
+      border-top: 6px solid $labbooks;
     }
 }

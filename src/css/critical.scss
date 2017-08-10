@@ -25,6 +25,9 @@
 @import  'components/wizard/wizardModal';
 @import  'components/wizard/SelectBaseImage';
 @import  'components/wizard/createLabbook';
+@import  'components/wizard/addEnvironmentPackages';
+@import  'components/wizard/addCustomDependencies';
+@import  'components/wizard/successMessage';
 
 html, body {
   width: 100%;

@@ -3,8 +3,8 @@ import { QueryRenderer, graphql } from 'react-relay'
 import environment from './../../createRelayEnvironment'
 import AddEnvironmentComponentMutation from './../../mutations/AddEnvironmentComponentMutation'
 
-const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor: String){
-  availableBaseImages(first: $first, after: $cursor){
+const BaseImageQuery = graphql`query SelectDevelopmentEnvironmentQuery($first: Int!, $cursor: String){
+  availableDevEnvs(first: $first, after: $cursor){
     edges{
       node{
         id
@@ -33,12 +33,11 @@ const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor:
           tags
           icon
         }
-        osClass
-        osRelease
-        server
-        namespace
-        tag
-        availablePackageManagers
+        osBaseClass
+        developmentEnvironmentClass
+        installCommands
+        execCommands
+        exposedTcpPorts
       }
       cursor
     }
@@ -51,35 +50,37 @@ const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor:
   }
 }`
 
-export default class SelectBaseImage extends React.Component {
+export default class SelectDevelopmentEnvironment extends React.Component {
   constructor(props){
   	super(props);
   	this.state = {
       'modal_visible': false,
       'name': '',
       'description': '',
-      'selectedBaseImage': null,
-      'selectedBaseImageId': false
+      'selectedDevelopmentEnvironment': null,
+      'selectedDevelopmentEnvironmentId': false
     };
   }
 
   /*
     click handle
-    function(object): takes a base image edge
-    sets componest state for selectedBaseImageId and selectedBaseImage
+    function(object): takes a development environment edge
+    sets component state for selectedDevelopmentEnvironmentId and selectedDevelopmentEnvironment
   */
-  _selectBaseImage(edge){
-    this.setState({'selectedBaseImage': edge})
-    this.setState({'selectedBaseImageId': edge.node.id})
+  _selectDevelopmentEnvironment(edge){
+    this.setState({'selectedDevelopmentEnvironment': edge})
+    this.setState({'selectedDevelopmentEnvironmentId': edge.node.id})
   }
 
   /*
     function()
-    gets current selectedBaseImage and passes variables to AddEnvironmentComponentMutation
+    gets current selectedDevelopmentEnvironment and passes variables to AddEnvironmentComponentMutation
     callback triggers and modal state is changed to  next window
   */
-  _createBaseImage(){
-    let component = this.state.selectedBaseImage.node.component;
+  _createDevelopmentEnvironment(){
+
+    let component = this.state.selectedDevelopmentEnvironment.node.component;
+
     AddEnvironmentComponentMutation(
       this.props.labbookName,
       'default',
@@ -89,9 +90,8 @@ export default class SelectBaseImage extends React.Component {
       component.version,
       "clientMutationId",
       component.componentClass,
-      () => {
-        this.props.setBaseImage(this.state.selectedBaseImage)
-        this.props.setComponent(this.props.nextWindow)
+      (log) => {
+        this.props.setComponent(this.props.nextWindow, this.state.name)
       }
     )
   }
@@ -101,8 +101,7 @@ export default class SelectBaseImage extends React.Component {
     return(
       <div className="SelectBaseImage">
 
-        <p> Base Image </p>
-
+        <p> Dev Environment</p>
         <QueryRenderer
           variables={{
             first: 20
@@ -110,42 +109,41 @@ export default class SelectBaseImage extends React.Component {
           query={BaseImageQuery}
           environment={environment}
           render={({error, props}) =>{
-
+              console.log(error, props);
               if(error){
-
+                console.log('asads')
                 return(<div>{error.message}</div>)
               }else{
-
                 if(props){
                   return(
                     <div className="SelectBaseImage__inner-container">
                       <div className="SelectBaseImage__selected-image-container">
 
                           {
-                            (this.state.selectedBaseImage !== null) && (
+                            (this.state.selectedDevelopmentEnvironment !== null) && (
                               <div className="SelectBaseImage__selected-image">
-                                <img alt="" src={this.state.selectedBaseImage.node.info.icon} height="50" width="50" />
-                                <p>{this.state.selectedBaseImage.node.info.humanName}</p>
+                                <img alt="" src={this.state.selectedDevelopmentEnvironment.node.info.icon} height="50" width="50" />
+                                <p>{this.state.selectedDevelopmentEnvironment.node.info.humanName}</p>
                               </div>
                             )
                           }
                       </div>
-
                       <div className="SelectBaseImage__images flex flex--row flex--wrap justify--space-around">
                       {
-                        props.availableBaseImages.edges.map((edge) => {
-
+                        props.availableDevEnvs.edges.map((edge) => {
+                            console.log(edge)
                             return(
-                              <div className={(this.state.selectedBaseImageId === edge.node.id) ? 'SelectBaseImage__image--selected': 'SelectBaseImage__image'} onClick={()=> this._selectBaseImage(edge)} key={edge.node.id}>
-                                <img alt="" src={edge.node.info.icon} height="50" width="50" />
+                              <div className={(this.state.selectedDevelopmentEnvironmentId === edge.node.id) ? 'SelectBaseImage__image--selected': 'SelectBaseImage__image'} onClick={()=> this._selectDevelopmentEnvironment(edge)} key={edge.node.id}>
+                                <img alt="" src={'data:image/png;base64,' + edge.node.info.icon} height="50" width="50" />
                                 <p>{edge.node.info.humanName}</p>
                               </div>
                             )
                         })
                       }
 
+
                       </div>
-                    <button onClick={()=> this._createBaseImage()} disabled={(!this.state.selectedBaseImageId)}>Next</button>
+                    <button onClick={()=> this._createDevelopmentEnvironment()} disabled={(!this.state.selectedDevelopmentEnvironmentId)}>Next</button>
                   </div>                  )
                 }else{
                   return(<div className="Loading"></div>)

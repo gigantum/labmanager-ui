@@ -3,8 +3,8 @@ import { QueryRenderer, graphql } from 'react-relay'
 import environment from './../../createRelayEnvironment'
 import AddEnvironmentComponentMutation from './../../mutations/AddEnvironmentComponentMutation'
 
-const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor: String){
-  availableBaseImages(first: $first, after: $cursor){
+const AddCustomDependenciesQuery = graphql`query AddCustomDependenciesQuery($first: Int!, $cursor: String){
+  availableCustomDependencies(first: $first, after: $cursor){
     edges{
       node{
         id
@@ -33,12 +33,8 @@ const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor:
           tags
           icon
         }
-        osClass
-        osRelease
-        server
-        namespace
-        tag
-        availablePackageManagers
+        osBaseClass
+        docker
       }
       cursor
     }
@@ -51,35 +47,33 @@ const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor:
   }
 }`
 
-export default class SelectBaseImage extends React.Component {
+export default class AddCustomDependencies extends React.Component {
   constructor(props){
   	super(props);
   	this.state = {
       'modal_visible': false,
-      'name': '',
-      'description': '',
-      'selectedBaseImage': null,
-      'selectedBaseImageId': false
+      'selectedCustomDependency': null,
+      'selectedCustomDependencyId': false
+
     };
   }
-
   /*
     click handle
     function(object): takes a base image edge
-    sets componest state for selectedBaseImageId and selectedBaseImage
+    sets componest state for selectedCustomDependencyId and selectedCustomDependency
   */
-  _selectBaseImage(edge){
-    this.setState({'selectedBaseImage': edge})
-    this.setState({'selectedBaseImageId': edge.node.id})
+  _selectCustomDependency(edge){
+    this.setState({'selectedCustomDependency': edge})
+    this.setState({'selectedCustomDependencyId': edge.node.id})
   }
 
   /*
     function()
-    gets current selectedBaseImage and passes variables to AddEnvironmentComponentMutation
+    gets current selectedCustomDependency and passes variables to AddEnvironmentComponentMutation
     callback triggers and modal state is changed to  next window
   */
-  _createBaseImage(){
-    let component = this.state.selectedBaseImage.node.component;
+  _createCustomDependency(){
+    let component = this.state.selectedCustomDependency.node.component;
     AddEnvironmentComponentMutation(
       this.props.labbookName,
       'default',
@@ -90,7 +84,6 @@ export default class SelectBaseImage extends React.Component {
       "clientMutationId",
       component.componentClass,
       () => {
-        this.props.setBaseImage(this.state.selectedBaseImage)
         this.props.setComponent(this.props.nextWindow)
       }
     )
@@ -99,7 +92,7 @@ export default class SelectBaseImage extends React.Component {
   render(){
 
     return(
-      <div className="SelectBaseImage">
+      <div className="AddCustomDependencies">
 
         <p> Base Image </p>
 
@@ -107,7 +100,7 @@ export default class SelectBaseImage extends React.Component {
           variables={{
             first: 20
           }}
-          query={BaseImageQuery}
+          query={AddCustomDependenciesQuery}
           environment={environment}
           render={({error, props}) =>{
 
@@ -115,28 +108,28 @@ export default class SelectBaseImage extends React.Component {
 
                 return(<div>{error.message}</div>)
               }else{
-
+                console.log(props)
                 if(props){
                   return(
-                    <div className="SelectBaseImage__inner-container">
-                      <div className="SelectBaseImage__selected-image-container">
+                    <div className="AddCustomDependencies__inner-container">
+                      <div className="AddCustomDependencies__selected-image-container">
 
                           {
-                            (this.state.selectedBaseImage !== null) && (
-                              <div className="SelectBaseImage__selected-image">
-                                <img alt="" src={this.state.selectedBaseImage.node.info.icon} height="50" width="50" />
-                                <p>{this.state.selectedBaseImage.node.info.humanName}</p>
+                            (this.state.selectedCustomDependency !== null) && (
+                              <div className="AddCustomDependencies__selected-image">
+                                <img alt="" src={this.state.selectedCustomDependency.node.info.icon} height="50" width="50" />
+                                <p>{this.state.selectedCustomDependency.node.info.humanName}</p>
                               </div>
                             )
                           }
                       </div>
 
-                      <div className="SelectBaseImage__images flex flex--row flex--wrap justify--space-around">
+                      <div className="AddCustomDependencies__images flex flex--row flex--wrap justify--space-around">
                       {
-                        props.availableBaseImages.edges.map((edge) => {
-
+                        props.availableCustomDependencies.edges.map((edge) => {
+                            console.log(edge)
                             return(
-                              <div className={(this.state.selectedBaseImageId === edge.node.id) ? 'SelectBaseImage__image--selected': 'SelectBaseImage__image'} onClick={()=> this._selectBaseImage(edge)} key={edge.node.id}>
+                              <div className={(this.state.selectedCustomDependencyId === edge.node.id) ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'} onClick={()=> this._selectCustomDependency(edge)} key={edge.node.id}>
                                 <img alt="" src={edge.node.info.icon} height="50" width="50" />
                                 <p>{edge.node.info.humanName}</p>
                               </div>
@@ -145,8 +138,9 @@ export default class SelectBaseImage extends React.Component {
                       }
 
                       </div>
-                    <button onClick={()=> this._createBaseImage()} disabled={(!this.state.selectedBaseImageId)}>Next</button>
-                  </div>                  )
+                    <button onClick={()=> this._createCustomDependency()} disabled={(!this.state.selectedCustomDependencyId)}>Next</button>
+                  </div>
+                )
                 }else{
                   return(<div className="Loading"></div>)
                 }

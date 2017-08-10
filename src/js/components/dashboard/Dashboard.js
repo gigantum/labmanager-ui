@@ -9,9 +9,9 @@ import WizardModal from './../wizard/WizardModal'
 
 
 const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String){
-  #localLabbooks(first:$first, after: $cursor){
-    ...LocalLabbooks_query
-  #}
+  localLabbooks(first:$first, after: $cursor){
+    ...LocalLabbooks_localLabbooks
+  }
 }`
 
 export default class DashboardContainer extends Component {
@@ -41,7 +41,6 @@ export default class DashboardContainer extends Component {
           first: 10,
           cursor: null
         }}
-
         render={({error, props, adsdas}) => {
           console.log(error, props, adsdas, environment)
           if (error) {
@@ -50,7 +49,7 @@ export default class DashboardContainer extends Component {
           } else if (props) {
 
               return (
-                <LocalLabbooks query={props.query} localLabbooks={props.localLabbooks} history={this.props.history} {...props}/>
+                <LocalLabbooks data={props.data} localLabbooks={props.localLabbooks} history={this.props.history} {...props}/>
               )
 
           }else{
