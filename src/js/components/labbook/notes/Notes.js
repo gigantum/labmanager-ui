@@ -43,6 +43,7 @@ class Notes extends Component {
   }
 
   render(){
+
     let notesTime = this._transformNotes(this.props.labbook.notes);
     if(this.props.labbook){
       return(

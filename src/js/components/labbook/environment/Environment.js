@@ -10,7 +10,6 @@ class Environment extends Component {
   }
 
   render(){
-    console.log(this.props)
     return(
         <div className="Environment">
 
@@ -48,7 +47,6 @@ export default createPaginationContainer(
               osRelease
               server
               namespace
-              repo
               tag
               availablePackageManagers
             }

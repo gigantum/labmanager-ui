@@ -72,7 +72,6 @@ export default class Labbook extends Component {
           console.log(error)
           return <div>{error.message}</div>
         } else if (props) {
-
           return <Notes key={props.labbook} labbook={props.labbook} {...props} labbook_name={this.props.match.params.labbook_name} />
         }
         return <div>Loading</div>

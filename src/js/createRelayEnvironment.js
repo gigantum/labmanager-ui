@@ -11,16 +11,9 @@ function fetchQuery(
   variables,
 ) {
 
-  //var myHeaders = new Headers();
-  //myHeaders.append("Content-Type", "text/plain");
-  // myHeaders.append("Content-Length", content.length.toString());
-  // myHeaders.append("X-Custom-Header", "ProcessThisImmediately")
-
-//http://localhost.charlesproxy.com/
   var queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
-  return fetch(process.env.GIGANTUM_API, {//process.env.GIGANTUM_API
+  return fetch(process.env.GIGANTUM_API, {
     method: 'POST',
-    //mode: 'no-cors',
     headers: {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*'
@@ -30,6 +23,7 @@ function fetchQuery(
       variables
     }),
   }).then(response => {
+
     return response.json()
   }).catch(error => {console.log(error, error.message)})
 }

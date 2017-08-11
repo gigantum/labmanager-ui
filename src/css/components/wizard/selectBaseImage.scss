@@ -1,0 +1,49 @@
+.SelectBaseImage{
+  padding: 20px;
+  height: 475px;
+}
+.SelectBaseImage__images{
+  padding: 10px;
+
+  border: 1px solid $grey;
+  border-radius: 5px;
+  background: $white;
+}
+.SelectBaseImage__image--selected{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  width: 200px;
+  height: 120px;
+
+  border: 4px solid $activity;
+  border-radius: 5px;
+}
+.SelectBaseImage__image{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  width: 200px;
+  height: 120px;
+
+  cursor: pointer;
+
+  border: 1px solid $grey-light;
+  border-radius: 5px;
+}
+.SelectBaseImage__image:hover{
+  background-color: $grey;
+}
+
+.SelectBaseImage__selected-image-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  width: 200px;
+  height: 120px;
+
+  border: 1px dashed $grey;
+}

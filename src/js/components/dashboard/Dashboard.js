@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 import {graphql, QueryRenderer} from 'react-relay'
 //components
 import DatasetSets from './datasets/DatasetSets';
-import LabbookSets from './labbooks/LabbookSets';
+import LocalLabbooks from './labbooks/LocalLabbooks';
 import environment from './../../createRelayEnvironment'
 import WizardModal from './../wizard/WizardModal'
 
 
-const LabbookQuery = graphql`query DatasetsLabbooksContainerQuery($first: Int!, $cursor: String){
-  localLabbooks(first:$first, after: $cursor) {
-    ...LabbookSets_localLabbooks
+const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String){
+  localLabbooks(first:$first, after: $cursor){
+    ...LocalLabbooks_localLabbooks
   }
 }`
 
-export default class DatasetsLabbooksContainer extends Component {
+export default class DashboardContainer extends Component {
   constructor(props){
 
     super(props);
@@ -41,18 +41,17 @@ export default class DatasetsLabbooksContainer extends Component {
           first: 10,
           cursor: null
         }}
-
-        render={({error, props}) => {
+        render={({error, props, adsdas}) => {
 
           if (error) {
-
+            console.log(error)
             return <div>{error.message}</div>
           } else if (props) {
 
-            return (
+              return (
+                <LocalLabbooks data={props.data} localLabbooks={props.localLabbooks} history={this.props.history} {...props}/>
+              )
 
-              <LabbookSets history={this.props.history} {...props}/>
-            )
           }else{
 
             return (
@@ -74,13 +73,13 @@ export default class DatasetsLabbooksContainer extends Component {
   render() {
 
     return (
-      <div className='DatasetsLabbooks flex flex-column'>
-        <div className='DatasetsLabbooks__nav-container flex justify-center flex-0-0-auto'>
-          <ul className='DatasetsLabbooks__nav flex flex--row justify--space-between'>
+      <div className='Dashboard flex flex-column'>
+        <div className='Dashboard__nav-container flex justify-center flex-0-0-auto'>
+          <ul className='Dashboard__nav flex flex--row justify--space-between'>
             <li>
               <Link
                 onClick={(t,event) => this._setSelectedComponent(this, 'datasets')}
-                className={this.state.selectedComponent === 'datasets' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
+                className={this.state.selectedComponent === 'datasets' ? 'Dashboard__nav-item selected': 'Dashboard__nav-item'}
                 to='../datasets'
               >
                 Datasets
@@ -89,7 +88,7 @@ export default class DatasetsLabbooksContainer extends Component {
             <li>
               <Link
                 onClick={(t, event) => this._setSelectedComponent(this, 'labbooks')}
-                className={this.state.selectedComponent === 'labbooks' ? 'DatasetsLabbooks__nav-item selected': 'DatasetsLabbooks__nav-item'}
+                className={this.state.selectedComponent === 'labbooks' ? 'Dashboard__nav-item selected': 'Dashboard__nav-item'}
                 to='../labbooks'
               >
                 Labbooks
@@ -98,7 +97,7 @@ export default class DatasetsLabbooksContainer extends Component {
 
           </ul>
         </div>
-        <div className='DatasetsLabbooks__view flex-1-0-auto'>
+        <div className='Dashboard__view flex-1-0-auto'>
           {
             this._displaySelectedComponent()
           }
