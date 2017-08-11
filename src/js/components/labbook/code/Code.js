@@ -1,5 +1,6 @@
 // import 'es6-promise';
 import React, { Component } from 'react'
+import StartContainerMutation from './../../../mutations/StartContainerMutation'
 
 export default class Code extends Component {
   constructor(props){
@@ -7,7 +8,17 @@ export default class Code extends Component {
   }
 
   _openJupyter(){
-    window.open('http://localhost:8888/notebooks/example.ipynb', '_blank')
+    StartContainerMutation(
+      this.props.labbookName,
+      'default',
+      'clientMutationId',
+      (response) =>{
+          console.log(response);
+          window.open('http://localhost:8888/tree', '_blank')
+      }
+    )
+
+
   }
 
   render(){

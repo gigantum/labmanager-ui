@@ -56,7 +56,7 @@ export default class Labbook extends Component {
       query={LabbookQuery}
       variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
       render={({error, props}) => {
-        console.log(props)
+
         if (error) {
           console.log(error)
           return <div>{error.message}</div>
@@ -84,7 +84,6 @@ export default class Labbook extends Component {
           console.error(error)
           return <div>{error.message}</div>
         } else if (props) {
-          console.log(props)
           return <Environment
             labbook={props.labbook}
             key={props.labbook} {...props}
@@ -106,7 +105,7 @@ export default class Labbook extends Component {
       case 'environment':
         return(this._getEnvironmentRenderer())
       case 'code':
-        return(<Code />)
+        return(<Code labbookName={this.props.match.params.labbook_name} />)
       case 'data':
         return(<Data />)
       default:

@@ -131,10 +131,10 @@ export default class SelectDevelopmentEnvironment extends React.Component {
                       <div className="SelectBaseImage__images flex flex--row flex--wrap justify--space-around">
                       {
                         props.availableDevEnvs.edges.map((edge) => {
-                            console.log(edge)
+                    
                             return(
                               <div className={(this.state.selectedDevelopmentEnvironmentId === edge.node.id) ? 'SelectBaseImage__image--selected': 'SelectBaseImage__image'} onClick={()=> this._selectDevelopmentEnvironment(edge)} key={edge.node.id}>
-                                <img alt="" src={'data:image/png;base64,' + edge.node.info.icon} height="50" width="50" />
+                                <img alt="" src={edge.node.info.icon} height="50" width="50" />
                                 <p>{edge.node.info.humanName}</p>
                               </div>
                             )

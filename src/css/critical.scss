@@ -21,9 +21,10 @@
 //labbook components
 @import  'components/labbook/labbook.scss';
 @import  'components/labbook/notes.scss';
+@import  'components/labbook/environment.scss';
 //wizard components
 @import  'components/wizard/wizardModal';
-@import  'components/wizard/SelectBaseImage';
+@import  'components/wizard/selectBaseImage';
 @import  'components/wizard/createLabbook';
 @import  'components/wizard/addEnvironmentPackages';
 @import  'components/wizard/addCustomDependencies';
