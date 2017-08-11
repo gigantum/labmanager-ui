@@ -26,12 +26,13 @@ export default class CreateLabbook extends React.Component {
   }
 
   handler(e) {
-    console.log('sasd')
       e.preventDefault()
-    //   this.setState({
-    //    'value': "dsds"
-    //  });
    }
+   /*
+    function(event) takes and event input
+    creates a labbook mutation sets labbook name on parent component
+    triggers setComponent to proceed to next view
+   */
 
   _createLabbook(evt){
     let viewerId = 'localLabbooks';//Todo: figure out what to do with viewerId in the mutation context
@@ -73,7 +74,7 @@ export default class CreateLabbook extends React.Component {
   render(){
     return(
       <div className="CreateLabbook">
-          <div className='CreateLabbook__modal-inner-container flex flex-column justify--space-around'>
+          <div className='CreateLabbook__modal-inner-container flex flex-column justify--space-between'>
 
             <div>
               <label>Title</label>
@@ -86,14 +87,25 @@ export default class CreateLabbook extends React.Component {
 
             <div>
               <label>Description</label>
-              <input
+              <textarea className="CreateLabbook__description-input"
                 type="text"
                 onChange={(evt) => this._updateTextState(evt, 'description')}
+
                 placeholder="Briefly describe this lab book, its purpose and any other key details. "
               />
             </div>
-
+            <div className="CreateLabbook__text-divider-container">
+              <span className="CreateLabbook__text-divider">or</span>
+            </div>
             <div>
+              <label>Add public Lab Books</label>
+              <input
+                type='text'
+                placeholder="Enter URL Location"
+              />
+            </div>
+
+            <div className="CreateLabbook__buttons-container">
               <button
                 className="CreateLabbook__button"
                 onClick={(x, evt) => this._createLabbook(evt)}
@@ -101,6 +113,7 @@ export default class CreateLabbook extends React.Component {
                 Save and Continue Setup
               </button>
             </div>
+
           </div>
         </div>
       )

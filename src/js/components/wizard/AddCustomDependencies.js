@@ -108,7 +108,7 @@ export default class AddCustomDependencies extends React.Component {
 
                 return(<div>{error.message}</div>)
               }else{
-                console.log(props)
+
                 if(props){
                   return(
                     <div className="AddCustomDependencies__inner-container">
@@ -127,7 +127,7 @@ export default class AddCustomDependencies extends React.Component {
                       <div className="AddCustomDependencies__images flex flex--row flex--wrap justify--space-around">
                       {
                         props.availableCustomDependencies.edges.map((edge) => {
-                            console.log(edge)
+              
                             return(
                               <div className={(this.state.selectedCustomDependencyId === edge.node.id) ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'} onClick={()=> this._selectCustomDependency(edge)} key={edge.node.id}>
                                 <img alt="" src={edge.node.info.icon} height="50" width="50" />

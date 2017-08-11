@@ -118,13 +118,19 @@ export default class SelectBaseImage extends React.Component {
 
                 if(props){
                   return(
-                    <div className="SelectBaseImage__inner-container">
+                    <div className="SelectBaseImage__inner-container flex flex-column justify--space-between">
                       <div className="SelectBaseImage__selected-image-container">
 
                           {
                             (this.state.selectedBaseImage !== null) && (
-                              <div className="SelectBaseImage__selected-image">
-                                <img alt="" src={this.state.selectedBaseImage.node.info.icon} height="50" width="50" />
+                              <div
+                                className="SelectBaseImage__selected-image">
+                                <img
+                                  alt=""
+                                  src={this.state.selectedBaseImage.node.info.icon}
+                                  height="50"
+                                  width="50"
+                                />
                                 <p>{this.state.selectedBaseImage.node.info.humanName}</p>
                               </div>
                             )
@@ -136,16 +142,38 @@ export default class SelectBaseImage extends React.Component {
                         props.availableBaseImages.edges.map((edge) => {
 
                             return(
-                              <div className={(this.state.selectedBaseImageId === edge.node.id) ? 'SelectBaseImage__image--selected': 'SelectBaseImage__image'} onClick={()=> this._selectBaseImage(edge)} key={edge.node.id}>
-                                <img alt="" src={edge.node.info.icon} height="50" width="50" />
-                                <p>{edge.node.info.humanName}</p>
+                              <div
+                                className={(this.state.selectedBaseImageId === edge.node.id) ? 'SelectBaseImage__image--selected': 'SelectBaseImage__image'}
+                                onClick={()=> this._selectBaseImage(edge)}
+                                key={edge.node.id}>
+                                  <img
+                                    alt=""
+                                    src={edge.node.info.icon}
+                                    height="50"
+                                    width="50"
+                                  />
+                                  <p>{edge.node.info.humanName}</p>
                               </div>
                             )
                         })
                       }
 
                       </div>
-                    <button onClick={()=> this._createBaseImage()} disabled={(!this.state.selectedBaseImageId)}>Next</button>
+                    <div classNames="SelectBaseImage__progress-buttons">
+                      <button className="flat--button">
+                        Previous
+                      </button>
+                      <button className="flat--button">
+                        Cancel
+                      </button>
+                      <button className="flat--button">
+                        skip
+                      </button>
+                      <button
+                        onClick={()=> this._createBaseImage()} disabled={(!this.state.selectedBaseImageId)}>
+                        Save and Coninute Setup
+                      </button>
+                    </div>
                   </div>                  )
                 }else{
                   return(<div className="Loading"></div>)

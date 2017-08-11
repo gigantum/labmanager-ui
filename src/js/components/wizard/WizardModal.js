@@ -42,16 +42,28 @@ export default class WizardModal extends React.Component {
     state[field] = evt.target.value;
     this.setState(state)
   }
+  /*
+    function()
+    shows modal window
+  */
 
   _showModal(){
     this.setState({'modal_visible': true})
     document.getElementById('modal__cover').classList.remove('hidden')
   }
-
+  /*
+    function()
+    hides modal window
+  */
   _hideModal(){
     this.setState({'modal_visible': false})
     document.getElementById('modal__cover').classList.add('hidden')
   }
+
+  /*
+    function()
+    sets view for components
+  */
 
   _setComponent(navItemId){
     let navItem = that.state.modalNav.filter((nav) => {
@@ -61,15 +73,25 @@ export default class WizardModal extends React.Component {
     that.setState({"selectedComponentId": navItem.id})
 
   }
-
+  /*
+    function()
+    sets labbookName for mini session
+  */
   _setLabbookName(labbookName){
     that.setState({'labbookName': labbookName})
   }
-
+  /*
+    function()
+    sets baseimage object for mini session
+  */
   _setBaseImage(baseImage){
     that.setState({'baseImage': baseImage})
   }
 
+  /*
+    function()
+    gets id of current selected component for view navigation
+  */
   _getSelectedComponentId(){
     return this.state.selectedComponentId
   }
@@ -145,7 +167,11 @@ export default class WizardModal extends React.Component {
 
                 ( this._getSelectedComponentId()  === 'importCode') && (
 
-                  <ImportCode setComponent={this._setComponent} nextWindow={'successMessage'} labbookName={that.state.labbookName}/>
+                  <ImportCode
+                    setComponent={this._setComponent}
+                    nextWindow={'successMessage'}
+                    labbookName={that.state.labbookName}
+                  />
                 )
               }
 
@@ -153,7 +179,10 @@ export default class WizardModal extends React.Component {
 
                 ( this._getSelectedComponentId()  === 'successMessage') && (
 
-                  <SuccessMessage labbookName={that.state.labbookName}/>
+                  <SuccessMessage
+                    labbookName={that.state.labbookName}
+                    history={this.props.history}
+                  />
                 )
               }
 

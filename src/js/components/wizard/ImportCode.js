@@ -17,8 +17,7 @@ export default class SelectBaseImage extends React.Component {
 
   /*
     function()
-    gets current selectedBaseImage and passes variables to AddEnvironmentComponentMutation
-    callback triggers and modal state is changed to  next window
+    runs buildImageMutation and triggers setComponent to proceed to next window
   */
   _completeSetup(){
     BuildImageMutation(

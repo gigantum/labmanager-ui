@@ -47,7 +47,6 @@ class LocalLabbooks extends Component {
   }
 
   render(){
-      console.log(this.props)
       if(this.props.localLabbooks){
       return(
         <div className="LabbooksSets">

@@ -109,9 +109,9 @@ export default class SelectDevelopmentEnvironment extends React.Component {
           query={BaseImageQuery}
           environment={environment}
           render={({error, props}) =>{
-              console.log(error, props);
+
               if(error){
-                console.log('asads')
+                console.log(error)
                 return(<div>{error.message}</div>)
               }else{
                 if(props){

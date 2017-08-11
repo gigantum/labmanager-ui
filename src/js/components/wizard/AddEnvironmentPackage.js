@@ -15,14 +15,15 @@ export default class AddEnvironmentPackage extends React.Component {
         {state: 'Add', 'packageManager': this.props.baseImage.node.availablePackageManagers[0], dependencyName: null}
       ]
     };
-    console.log(this.state)
   }
 
 
   /*
     function()
-    gets current selectedBaseImage and passes variables to AddEnvironmentComponentMutation
-    callback triggers and modal state is changed to  next window
+    installs environents pacakges
+    gets environment package state and loops through packages
+    pushes mutations into a promise and resolves if succesful
+    if all promises resolve, setComponent is triggered and next component is loaded
   */
   _installEnvironementPackage(){
     let all = [];
@@ -50,32 +51,30 @@ export default class AddEnvironmentPackage extends React.Component {
       }
     })
 
-    console.log(all)
+
     Promise.all(all).then(values => {
-      console.log(values)
       this.props.setComponent(this.props.nextWindow)
     }, reason => {
-      console.log(reason)
+      console.error(reason)
     })
 
   }
 
   _setCurrentPackageManager(e, index){
-    console.log(e, index)
+
     let newEnvironmentPackages = this.state.environmentPackages;
     newEnvironmentPackages[index]['packageManager'] = e.target.value;
     this.setState({'environmentPackages': newEnvironmentPackages})
   }
 
   _updateDependencyName(e, index){
-    console.log(e, e.target.value, index)
+
     let newEnvironmentPackages = this.state.environmentPackages;
     newEnvironmentPackages[index]['dependencyName'] = e.target.value;
     this.setState({'environmentPackages': newEnvironmentPackages})
   }
 
   _addRemovePackage(e, packSate, index){
-      console.log(e, packSate, index)
       let newEnvironmentPackages = this.state.environmentPackages;
       if(packSate === 'Add'){
         newEnvironmentPackages[index]['state'] = 'Remove';
@@ -83,9 +82,8 @@ export default class AddEnvironmentPackage extends React.Component {
       }else{
         newEnvironmentPackages.splice(index, 1)
       }
-      console.log(newEnvironmentPackages)
-      this.setState({'environmentPackages': newEnvironmentPackages})
 
+      this.setState({'environmentPackages': newEnvironmentPackages})
 
   }
 
