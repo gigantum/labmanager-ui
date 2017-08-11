@@ -6,8 +6,8 @@ import environment from '../createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
-  mutation AddEnvironmentComponentMutation($input: AddEnvironmentComponentInput!){
-    addEnvironmentComponent(input: $input){
+  mutation StartContainerMutation($input: StartContainerInput!){
+    startContainer(input: $input){
       clientMutationId
     }
   }
@@ -15,28 +15,17 @@ const mutation = graphql`
 
 let tempID = 0;
 
-export default function AddEnvironmentComponentMutation(
+export default function StartContainerMutation(
   labbookName,
   owner,
-  repository,
-  namespace,
-  component,
-  version,
   clientMutationId,
-  componentClass,
   callback
 ) {
   const variables = {
     input: {
       labbookName,
       owner,
-      repository,
-      namespace,
-      component,
-      version,
-      clientMutationId,
-      componentClass,
-      clientMutationId: tempID++
+      clientMutationId: '' + tempID++
     }
   }
   commitMutation(
@@ -51,6 +40,7 @@ export default function AddEnvironmentComponentMutation(
       onError: err => console.error(err),
 
       updater: (store) => {
+
 
       },
     },

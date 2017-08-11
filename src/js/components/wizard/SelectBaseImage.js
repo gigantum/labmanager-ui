@@ -91,7 +91,9 @@ export default class SelectBaseImage extends React.Component {
       component.componentClass,
       () => {
         this.props.setBaseImage(this.state.selectedBaseImage)
-        this.props.setComponent(this.props.nextWindow)
+        if(this.props.setComponent){
+          this.props.setComponent(this.props.nextWindow)
+        }
       }
     )
   }
@@ -159,14 +161,14 @@ export default class SelectBaseImage extends React.Component {
                       }
 
                       </div>
-                    <div classNames="SelectBaseImage__progress-buttons">
-                      <button className="flat--button">
+                    <div className="SelectBaseImage__progress-buttons">
+                      <button className="SelectBaseImage__progress-button flat--button">
                         Previous
                       </button>
-                      <button className="flat--button">
+                      <button className="SelectBaseImage__progress-button flat--button">
                         Cancel
                       </button>
-                      <button className="flat--button">
+                      <button className="SelectBaseImage__progress-button flat--button">
                         skip
                       </button>
                       <button

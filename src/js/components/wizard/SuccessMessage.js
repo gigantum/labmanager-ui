@@ -1,6 +1,11 @@
 import React from 'react'
 
 export default class SuccessMessage extends React.Component {
+
+  /*
+    function()
+    gets labbook name from props and sends user to labbook view
+  */
   _openLabbook(){
     let labbookName = this.props.labbookName;
     this.props.history.push(`../labbooks/${labbookName}`)

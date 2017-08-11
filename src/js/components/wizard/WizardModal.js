@@ -143,7 +143,7 @@ export default class WizardModal extends React.Component {
 
                 ( this._getSelectedComponentId()  === 'addEnvironmentPackage') && (
 
-                  <AddEnvironmentPackage baseImage={this.state.baseImage}  labbookName={that.state.labbookName} setComponent={this._setComponent} nextWindow={'addCustomDependencies'}/>
+                  <AddEnvironmentPackage baseImage={this.state.baseImage} availablePackageManagers={this.state.baseImage.node.availablePackageManagers}  labbookName={that.state.labbookName} setComponent={this._setComponent} nextWindow={'addCustomDependencies'}/>
                 )
               }
 

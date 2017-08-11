@@ -13,24 +13,13 @@ import Environment from './environment/Environment'
 import environment from '../../createRelayEnvironment'
 
 //labbook query with notes fragment
-const NotesQuery =  graphql`
+const LabbookQuery =  graphql`
   query LabbookQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
     labbook(name: $name, owner: $owner){
       id
       description
-      environment{
-        id
-        imageStatus
-        containerStatus
-      }
+      ...Environment_labbook
       ...Notes_labbook
-    }
-  }`
-
-const EnvironmentQuery =  graphql`
-  query LabbookEnvironmentQuery($first: Int!, $cursor: String){
-    availableBaseImages(first: $first, after: $cursor){
-      ...Environment_availableBaseImages
     }
   }`
 
@@ -64,7 +53,7 @@ export default class Labbook extends Component {
     return (<QueryRenderer
       key={this.props.match.params.labbook_name + '_query_renderer_labbook'}
       environment={environment}
-      query={NotesQuery}
+      query={LabbookQuery}
       variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
       render={({error, props}) => {
 
@@ -87,16 +76,18 @@ export default class Labbook extends Component {
     return (<QueryRenderer
       key={this.props.match.params.labbook_name + '_query_renderer_labbook'}
       environment={environment}
-      query={EnvironmentQuery}
-      variables={{first: 20}}
+      query={LabbookQuery}
+      variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
       render={({error, props}) => {
 
         if (error) {
-          console.log(error)
+          console.error(error)
           return <div>{error.message}</div>
         } else if (props) {
-
-          return <Environment labbook={{}} key={props.labbook} availableBaseImages={props.availableBaseImages} {...props} labbook_name={this.props.match.params.labbook_name} />
+          return <Environment
+            labbook={props.labbook}
+            key={props.labbook} {...props}
+            labbook_name={this.props.match.params.labbook_name} />
         }
         return <div>Loading</div>
       }}
@@ -114,7 +105,7 @@ export default class Labbook extends Component {
       case 'environment':
         return(this._getEnvironmentRenderer())
       case 'code':
-        return(<Code />)
+        return(<Code labbookName={this.props.match.params.labbook_name} />)
       case 'data':
         return(<Data />)
       default:

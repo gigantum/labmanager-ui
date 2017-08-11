@@ -1,5 +1,5 @@
 # source: http://localhost:5000/labbook/
-# timestamp: Thu Aug 10 2017 14:33:06 GMT-0400 (EDT)
+# timestamp: Fri Aug 11 2017 15:48:23 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -197,6 +197,10 @@ type Environment implements Node {
   id: ID!
   imageStatus: ImageStatus
   containerStatus: ContainerStatus
+  baseImage: BaseImage
+  devEnvs(before: String, after: String, first: Int, last: Int): DevEnvConnection
+  packageManagerDependencies(before: String, after: String, first: Int, last: Int): PackageManagerConnection
+  customDependencies(before: String, after: String, first: Int, last: Int): CustomDependencyConnection
 }
 
 # A type that represents the Author of an environment component
@@ -431,6 +435,28 @@ type Owner implements Node, User {
   # The ID of the object.
   id: ID!
   username: String
+}
+
+# A type that represents a Package Manager based Environment Component
+type PackageManager implements Node {
+  # The ID of the object.
+  id: ID!
+  packageManager: String!
+  packageName: String!
+  packageVersion: String
+}
+
+type PackageManagerConnection {
+  pageInfo: PageInfo!
+  edges: [PackageManagerEdge]!
+}
+
+type PackageManagerEdge {
+  # The item at the end of the edge
+  node: PackageManager
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type PageInfo {

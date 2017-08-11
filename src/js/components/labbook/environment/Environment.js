@@ -1,97 +1,334 @@
 import React, { Component } from 'react'
-import {createPaginationContainer, graphql} from 'react-relay'
+import {createFragmentContainer, graphql} from 'react-relay'
 
-import environment from '../../../createRelayEnvironment'
+import AddEnvironmentPackage from './../../wizard/AddEnvironmentPackage'
 
+import environment from './../../../createRelayEnvironment'
+import BuildImageMutation from './../../../mutations/BuildImageMutation'
 
+let that;
 class Environment extends Component {
   constructor(props){
   	super(props);
+
+    this.state ={
+      'modal_visible': false,
+      'readyToBuild': false
+    }
+
+    that = this;
+  }
+
+  _openModal(){
+      this.setState({'modal_visible': true})
+  }
+
+  _hideModal(){
+      this.setState({'modal_visible': false})
+  }
+
+  _resetBaseImage(){
+
+  }
+
+  _setComponent(comp){
+    that.setState({"readyToBuild": true})
+  }
+
+  _buildImage(){
+    BuildImageMutation(
+      this.props.labbook_name,
+      'default',
+      (log) => {
+  
+        that._hideModal()
+        that.setState({"readyToBuild": false})
+      }
+    )
+  }
+
+  _setBaseImage(baseImage){
+    that.setState({"readyToBuild": true})
   }
 
   render(){
+    if(this.props.labbook){
+    let env = this.props.labbook.environment;
+    let baseImage = env.baseImage;
+    let devEnvs = env.devEnvs;
+    let packageDep = env.packageManagerDependencies;
+    let customDependencies = env.customDependencies;
     return(
         <div className="Environment">
 
+            <div id='modal__cover' className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
+              <div
+                className="Environment__modal-close"
+                onClick={() => this._hideModal()}>
+                X
+              </div>
+              <AddEnvironmentPackage
+                availablePackageManagers={env.baseImage.availablePackageManagers}
+                labbookName={this.props.labbook_name}
+                setBaseImage={this._setBaseImage}
+                setComponent={this._setComponent}
+                nextComponent={"continue"}
+              />
+              <button className={this.state.readyToBuild ? '' : 'hidden'} onClick={() => this._buildImage()}>Rebuild Image</button>
+            </div>
+            <div className="Environment__base-image">
+              <h4 className="Environment__header">Base Image</h4>
+              <p>{baseImage.info.description}</p>
+              <div className="Environment__info flex justify--left">
+                <div className="Environment__card flex justify--space-around">
+                  <div className="flex-1-0-auto flex flex--column justify-center">
+                    <img height="50" width="50" src={baseImage.info.icon} alt={baseImage.info.humanName} />
+                  </div>
+                  <div className="Environment__card-text flex-1-0-auto">
+                    <p>{baseImage.info.name}</p>
+                    <p>{baseImage.info.humanName}</p>
+                  </div>
+                </div>
+                <div className="Environment__edit-container">
+                    <button onClick={() => this._openModal()} className="Environment__edit-button">Edit</button>
+                </div>
+            </div>
+
+            </div>
+            <div className="Environment__development-environment">
+                <h4 className="Environment__header">Development Environments</h4>
+                <div className="Environment__info flex justify--left">
+                {
+                  devEnvs.edges.map(edge => {
+                  return(
+                    <div key={edge.id} className="Environment__development-environment-item">
+                      <p>{edge.node.info.description}</p>
+                      <div className="Environment__card flex justify--space-around">
+                        <div className="flex-1-0-auto flex flex--column justify-center">
+                          <img height="50" width="50" src={edge.node.info.icon} alt={edge.node.info.humanName} />
+                        </div>
+                        <div className="Environment__card-text flex-1-0-auto">
+                          <p>{edge.node.info.name}</p>
+                          <p>{edge.node.info.humanName}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                  })
+
+                }
+                <div className="Environment__edit-container">
+                    <button className="Environment__edit-button">Edit</button>
+                </div>
+              </div>
+
+            </div>
+            <div className="Environment__dependencies">
+                <h4 className="Environment__header">Custom Dependencies</h4>
+                <div className="Environment__info flex justify--left">
+                {
+                  customDependencies.edges.map(edge => {
+                    return(
+                      <div key={edge.id} className="Environment__dependencies">
+                        <p>{edge.node.info.description}</p>
+                        <div className="Environment__card flex justify--space-around">
+                            <div className="flex-1-0-auto flex flex--column justify-center">
+                              <img height="50" width="50" src={edge.node.info.icon} alt={edge.node.info.humanName} />
+                            </div>
+                            <div className="Environment__card-text flex-1-0-auto">
+                              <p>{edge.node.info.name}</p>
+                              <p>{edge.node.info.humanName}</p>
+                            </div>
+                        </div>
+                      </div>
+                    )
+                  })
+
+                }
+                <div className="Environment__edit-container">
+                    <button className="Environment__edit-button">Edit</button>
+                </div>
+              </div>
+
+              <h4 className="Environment__header">Package Dependencies</h4>
+              <div className="Environment__info flex flex--row justify--left">
+                <ul>
+                {
+                  packageDep.edges.map(edge => {
+                    return(
+                      <li>
+                        <div key={edge.id} className="Environment__dependencies">
+                          <p>{edge.node.packageManager + " " + edge.node.packageName}</p>
+                        </div>
+                      </li>
+                    )
+                  })
+
+                }
+              </ul>
+
+                <div className="Environment__edit-container">
+                    <button className="Environment__edit-button" onClick={() => this._openModal()}>Edit</button>
+                </div>
+              </div>
+            </div>
         </div>
       )
+    }else{
+      return(
+          <div className="Environment">
+              loading
+          </div>
+        )
+    }
   }
 }
 
-export default createPaginationContainer(
+export default createFragmentContainer(
   Environment,
-  {
-    availableBaseImages: graphql`
-      fragment Environment_availableBaseImages on BaseImageConnection @connection(key: "Environment_environment"){
-          edges{
-            node{
+  graphql`fragment Environment_labbook on Labbook {
+    environment{
+      id
+      imageStatus
+      containerStatus
+      baseImage{
+        id
+        component{
+          id
+          repository
+          namespace
+          name
+          version
+          componentClass
+        }
+        author{
+          id
+          name
+          email
+          username
+          organization
+        }
+        info{
+          id
+          name
+          humanName
+          description
+          versionMajor
+          versionMinor
+          tags
+          icon
+        }
+        osClass
+        osRelease
+        server
+        namespace
+        repository
+        tag
+        availablePackageManagers
+      }
+      devEnvs(first: $first){
+        edges{
+          cursor
+          node{
+            id
+            component{
               id
-              author{
-                id
-                name
-                email
-                username
-                organization
-              }
-              info{
-                id
-                name
-                humanName
-                description
-                versionMajor
-                versionMinor
-                tags
-                icon
-              }
-              osClass
-              osRelease
-              server
+              repository
               namespace
-              tag
-              availablePackageManagers
+              name
+              version
+              componentClass
             }
-            cursor
+            author{
+              id
+              name
+              email
+              username
+              organization
+            }
+            info{
+              id
+              name
+              humanName
+              description
+              versionMajor
+              versionMinor
+              tags
+              icon
+            }
+            osBaseClass
+            developmentEnvironmentClass
+            installCommands
+            execCommands
+            exposedTcpPorts
           }
-          pageInfo{
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
+        }
+
+        pageInfo{
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+      packageManagerDependencies(first: $first){
+        edges{
+          node{
+            id
+            packageManager
+            packageName
+            packageVersion
           }
-      }`
-  },
-  {
-    direction: 'forward',
-    getConnectionFromProps(props) {
-        return props.labbook && props.labbook.notes;
-    },
-    getFragmentVariables(prevVars, first) {
-      return {
-       ...prevVars,
-       first: first,
-     };
-   },
-   getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-
-    first = 10;
-    name = props.labbook_name;
-    owner = 'default';
-     return {
-       first,
-       cursor,
-       name,
-       owner
-       // in most cases, for variables other than connection filters like
-       // `first`, `after`, etc. you may want to use the previous values.
-       //orderBy: fragmentVariables.orderBy,
-     };
-   },
-   query: graphql`
-   query EnvironmentPaginationQuery($first: Int!, $cursor: String!){
-     availableBaseImages(first: $first, after: $cursor){
-       ...Environment_availableBaseImages
-     }
-   }`
-
-  }
+          cursor
+        }
+        pageInfo{
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+      customDependencies(first: $first){
+        edges{
+          node{
+            id
+            component{
+              id
+              repository
+              namespace
+              name
+              version
+              componentClass
+            }
+            author{
+              id
+              name
+              email
+              username
+              organization
+            }
+            info{
+              id
+              name
+              humanName
+              description
+              versionMajor
+              versionMinor
+              tags
+              icon
+            }
+            osBaseClass
+            docker
+          }
+          cursor
+        }
+        pageInfo{
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+    }
+  }`
 )
