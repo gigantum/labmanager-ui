@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test note card for rendering 1`] = `
+<div
+  className="NotesCard card"
+>
+  <div
+    className="flex flex--row justify--space-between"
+  >
+    <div
+      className="flex flex--column justify--space-between"
+    >
+      <p>
+        User Returned a result
+      </p>
+      <p>
+        1 weeks ago
+      </p>
+    </div>
+    <div
+      className="flex flex--column justify--space-between"
+    >
+      <p>
+        Commit Id: 
+        acad13eee2a5959bdd594aa89494564b60604880
+      </p>
+      <div
+        className="NotesCard__toggle-button"
+        onClick={[Function]}
+        style={
+          Object {
+            "background": "url(down-arrow.svg) no-repeat",
+          }
+        }
+      />
+    </div>
+  </div>
+  <div
+    className="NotesCard__expanded-view no-height"
+  >
+    <p>
+      Level: 
+      USER_MINOR
+    </p>
+    <p
+      className="USER_MINOR"
+    >
+      Commit Id: 
+      Tm90ZTpkZWZhdWx0JmxhYm9vazQmYWNhZDEzZWVlMmE1OTU5YmRkNTk0YWE4OTQ5NDU2NGI2MDYwNDg4MA==
+    </p>
+    <p>
+      dbbc8891ada166a1da21d874e02c8f5085ba514c
+    </p>
+    <p>
+      Wednesday, July 26th, 2017, 11:56:00 AM
+    </p>
+    <div>
+      <ul
+        className="NotesCard__tags-list flex flex--row flex--wrap"
+      >
+        <div>
+          Tags: 
+           
+        </div>
+        <li>
+          my tag
+        </li>
+        <li>
+          other tag
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;

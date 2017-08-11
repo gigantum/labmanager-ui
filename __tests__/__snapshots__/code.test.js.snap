@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Code rendering 1`] = `
+<div
+  className="Code flex flex-row justify-center"
+  id="code"
+>
+  <a
+    className="btn btn-secondary"
+    href="http://localhost:8888/notebooks/example.ipynb"
+    target="_blank"
+  >
+    Open Jupyter
+  </a>
+</div>
+`;

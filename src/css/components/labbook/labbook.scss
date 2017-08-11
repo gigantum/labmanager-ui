@@ -1,0 +1,46 @@
+.Labbook{
+  height: calc(100% - 80px);
+}
+
+.Labbook__title{
+  text-align: left;
+  padding: 40px 0 0 40px;
+}
+
+.Labbook__inner-container{
+  height: calc(100% - 160px);
+  margin: 20px 40px;
+  border: 1px solid $labbooks;
+  border-top: 10px solid $labbooks;
+  padding: 0 40px;
+  background: $grey-light;
+}
+
+
+.Labbook__navigation{
+  width: 70%;
+  border-bottom: 1px solid $font-grey;
+  position: relative;
+  li{
+    color: $font-grey;
+    padding: 5px 30px;
+    cursor: pointer;
+  }
+  li:hover{
+    color: $labbooks;
+  }
+
+  li.selected{
+    background: url('./../images/icons/navigate-up-arrow.svg') no-repeat center 24px;
+    background-size: 11px;
+    z-index: 100;
+    position: relative;
+    bottom: -1px;
+
+  }
+}
+
+.Labbook__view{
+  height: calc(100% - 90px);
+  overflow: hidden;
+}
