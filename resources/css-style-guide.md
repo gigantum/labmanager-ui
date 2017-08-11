@@ -180,11 +180,11 @@ We recommend a variant of BEM with PascalCased “blocks”, which works particu
 // ListingCard.jsx
 function ListingCard() {
   return (
-    <article class="listing-card listing-card--featured">
+    <article class="ListingCard ListingCard--featured">
 
-      <h1 class="listing-card__title">Adorable 2BR in the sunny Mission</h1>
+      <h1 class="ListingCard__title">Adorable 2BR in the sunny Mission</h1>
 
-      <div class="listing-card__content">
+      <div class="ListingCard__content">
         <p>Vestibulum id ligula porta felis euismod semper.</p>
       </div>
 
@@ -195,15 +195,15 @@ function ListingCard() {
 
 ```css
 /* ListingCard.css */
-.listing-card { }
-.listing-card--featured { }
-.listing-card__title { }
-.listing-card__content { }
+.ListingCard { }
+.ListingCard--featured { }
+.ListingCard__title { }
+.ListingCard__content { }
 ```
 
-  * `.listing-card` is the “block” and represents the higher-level component
-  * `.listing-card__title` is an “element” and represents a descendant of `.listing-card` that helps compose the block as a whole.
-  * `.listing-card--featured` is a “modifier” and represents a different state or variation on the `.listing-card` block.
+  * `.ListingCard` is the “block” and represents the higher-level component
+  * `.ListingCard__title` is an “element” and represents a descendant of `.ListingCard` that helps compose the block as a whole.
+  * `.ListingCard--featured` is a “modifier” and represents a different state or variation on the `.ListingCard` block.
 
 ### ID selectors
 

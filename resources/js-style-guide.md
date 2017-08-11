@@ -27,9 +27,9 @@
   - Always use JSX syntax.
   - Do not use `React.createElement` unless you're initializing the app from a file that is not JSX.
 
-## Class vs `Component` vs stateless
+## Class vs `React.createClass` vs stateless
 
-  - If you have internal state and/or refs, prefer `class extends Component` over `React.createClass`. eslint: [`react/prefer-es6-class`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-es6-class.md) [`react/prefer-stateless-function`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
+  - If you have internal state and/or refs, prefer `class extends React.Component` over `React.createClass`. eslint: [`react/prefer-es6-class`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-es6-class.md) [`react/prefer-stateless-function`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
 
     ```jsx
     // bad
@@ -41,7 +41,7 @@
     });
 
     // good
-    class Listing extends Component {
+    class Listing extends React.Component {
       // ...
       render() {
         return <div>{this.state.hello}</div>;
@@ -53,7 +53,7 @@
 
     ```jsx
     // bad
-    class Listing extends Component {
+    class Listing extends React.Component {
       render() {
         return <div>{this.props.hello}</div>;
       }
@@ -159,7 +159,7 @@
     });
 
     // good
-    export default class ReservationCard extends Component {
+    export default class ReservationCard extends React.Component {
     }
     ```
 

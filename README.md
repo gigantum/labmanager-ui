@@ -5,27 +5,8 @@ This kit includes an app server, a GraphQL server implementing a tiny example sc
 ## Installation
 
 ```
+gem install sass
 npm install
-```
-
-## Update Scehma
-
-```
-npm install -g graphql-cli
-graphql init
-```
-Follow setup in the terminal.
-
-```
-npm run update-schema
-```
-## Compile Relay
-
-To compile queries and mutations
-
-```
-npm run relay | yarn relay
-
 ```
 
 ## Running
@@ -33,14 +14,7 @@ npm run relay | yarn relay
 Start a local server:
 
 ```
-npm run start | yarn start
-```
-
-
-## Run Tests
-Jest runs snapshot tests
-```
-jest
+npm start
 ```
 
 ## Developing

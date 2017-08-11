@@ -12,7 +12,6 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 
-
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/';
@@ -144,7 +143,6 @@ module.exports = {
           /\.gif$/,
           /\.jpe?g$/,
           /\.png$/,
-          /\.svg$/,
         ],
         loader: require.resolve('file-loader'),
         options: {
@@ -155,7 +153,7 @@ module.exports = {
       // smaller than specified limit in bytes as data URLs to avoid requests.
       // A missing `test` is equivalent to a match.
       {
-        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/ ],
+        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
         loader: require.resolve('url-loader'),
         options: {
           limit: 10000,
@@ -218,11 +216,6 @@ module.exports = {
 
         ],*/
       },
-      {
-       test: /\.ipynb$/,
-       exclude: /node_modules/,
-       loader: ['file-loader']
-      }
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "file" loader exclusion list.
     ],
@@ -238,7 +231,6 @@ module.exports = {
       inject: true,
       template: paths.appHtml,
     }),
-
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
     new webpack.DefinePlugin(env.stringified),
@@ -273,7 +265,4 @@ module.exports = {
   performance: {
     hints: false,
   },
-  externals:[{
-    xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
-  }]
 };

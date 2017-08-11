@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 export default class App extends Component {
 
   goTo(route) {
-    this.props.history.replace(`/login`)
+    this.props.history.replace(`/${route}`)
   }
 
   login() {

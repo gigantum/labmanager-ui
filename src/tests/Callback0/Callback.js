@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-//import loading from './loading.svg';
+import loading from './loading.svg';
 
 class Callback extends Component {
   render() {
-    this.props.history.replace(`/home`)
     const style = {
       position: 'absolute',
       display: 'flex',
@@ -19,7 +18,7 @@ class Callback extends Component {
 
     return (
       <div style={style}>
-        <img src="" alt="loading"/>
+        <img src={loading} alt="loading"/>
       </div>
     );
   }
