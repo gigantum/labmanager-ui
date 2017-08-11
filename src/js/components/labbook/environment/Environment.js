@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {createPaginationContainer, graphql} from 'react-relay'
+import {createFragmentContainer, graphql} from 'react-relay'
 
 import environment from '../../../createRelayEnvironment'
 
@@ -10,88 +10,133 @@ class Environment extends Component {
   }
 
   render(){
+    console.log(this.props)
+    if(this.props.labbook){
     return(
         <div className="Environment">
 
         </div>
       )
+    }else{
+      return(
+          <div className="Environment">
+              loading
+          </div>
+        )
+    }
   }
 }
 
-export default createPaginationContainer(
+export default createFragmentContainer(
   Environment,
-  {
-    availableBaseImages: graphql`
-      fragment Environment_availableBaseImages on BaseImageConnection @connection(key: "Environment_environment"){
-          edges{
-            node{
+  graphql`fragment Environment_labbook on Labbook {
+    environment{
+      id
+      imageStatus
+      containerStatus
+      devEnvs(first: $first){
+        edges{
+          cursor
+          node{
+            id
+            component{
               id
-              author{
-                id
-                name
-                email
-                username
-                organization
-              }
-              info{
-                id
-                name
-                humanName
-                description
-                versionMajor
-                versionMinor
-                tags
-                icon
-              }
-              osClass
-              osRelease
-              server
+              repository
               namespace
-              tag
-              availablePackageManagers
+              name
+              version
+              componentClass
             }
-            cursor
+            author{
+              id
+              name
+              email
+              username
+              organization
+            }
+            info{
+              id
+              name
+              humanName
+              description
+              versionMajor
+              versionMinor
+              tags
+              icon
+            }
+            osBaseClass
+            developmentEnvironmentClass
+            installCommands
+            execCommands
+            exposedTcpPorts
           }
-          pageInfo{
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
+        }
+
+        pageInfo{
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+      packageManagerDependencies(first: $first){
+        edges{
+          node{
+            id
+            packageManager
+            packageName
+            packageVersion
           }
-      }`
-  },
-  {
-    direction: 'forward',
-    getConnectionFromProps(props) {
-        return props.labbook && props.labbook.notes;
-    },
-    getFragmentVariables(prevVars, first) {
-      return {
-       ...prevVars,
-       first: first,
-     };
-   },
-   getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-
-    first = 10;
-    name = props.labbook_name;
-    owner = 'default';
-     return {
-       first,
-       cursor,
-       name,
-       owner
-       // in most cases, for variables other than connection filters like
-       // `first`, `after`, etc. you may want to use the previous values.
-       //orderBy: fragmentVariables.orderBy,
-     };
-   },
-   query: graphql`
-   query EnvironmentPaginationQuery($first: Int!, $cursor: String!){
-     availableBaseImages(first: $first, after: $cursor){
-       ...Environment_availableBaseImages
-     }
-   }`
-
-  }
+          cursor
+        }
+        pageInfo{
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+      customDependencies(first: $first){
+        edges{
+          node{
+            id
+            component{
+              id
+              repository
+              namespace
+              name
+              version
+              componentClass
+            }
+            author{
+              id
+              name
+              email
+              username
+              organization
+            }
+            info{
+              id
+              name
+              humanName
+              description
+              versionMajor
+              versionMinor
+              tags
+              icon
+            }
+            osBaseClass
+            docker
+          }
+          cursor
+        }
+        pageInfo{
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+    }
+  }`
 )
