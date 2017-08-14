@@ -99,7 +99,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
   render(){
 
     return(
-      <div className="SelectBaseImage">
+      <div className="SelectDevelopmentEnvironment">
 
         <p> Dev Environment</p>
         <QueryRenderer
@@ -116,24 +116,24 @@ export default class SelectDevelopmentEnvironment extends React.Component {
               }else{
                 if(props){
                   return(
-                    <div className="SelectBaseImage__inner-container">
-                      <div className="SelectBaseImage__selected-image-container">
+                    <div className="SelectDevelopmentEnvironment__inner-container flex flex-column justify--space-between">
+                      <div className="SelectDevelopmentEnvironment__selected-image-container">
 
                           {
                             (this.state.selectedDevelopmentEnvironment !== null) && (
-                              <div className="SelectBaseImage__selected-image">
+                              <div className="SelectDevelopmentEnvironment__selected-image">
                                 <img alt="" src={this.state.selectedDevelopmentEnvironment.node.info.icon} height="50" width="50" />
                                 <p>{this.state.selectedDevelopmentEnvironment.node.info.humanName}</p>
                               </div>
                             )
                           }
                       </div>
-                      <div className="SelectBaseImage__images flex flex--row flex--wrap justify--space-around">
+                      <div className="SelectDevelopmentEnvironment__images flex flex--row flex--wrap justify--space-around">
                       {
                         props.availableDevEnvs.edges.map((edge) => {
-                    
+
                             return(
-                              <div className={(this.state.selectedDevelopmentEnvironmentId === edge.node.id) ? 'SelectBaseImage__image--selected': 'SelectBaseImage__image'} onClick={()=> this._selectDevelopmentEnvironment(edge)} key={edge.node.id}>
+                              <div className={(this.state.selectedDevelopmentEnvironmentId === edge.node.id) ? 'SelectDevelopmentEnvironment__image--selected': 'SelectDevelopmentEnvironment__image'} onClick={()=> this._selectDevelopmentEnvironment(edge)} key={edge.node.id}>
                                 <img alt="" src={edge.node.info.icon} height="50" width="50" />
                                 <p>{edge.node.info.humanName}</p>
                               </div>
@@ -143,8 +143,27 @@ export default class SelectDevelopmentEnvironment extends React.Component {
 
 
                       </div>
-                    <button onClick={()=> this._createDevelopmentEnvironment()} disabled={(!this.state.selectedDevelopmentEnvironmentId)}>Next</button>
-                  </div>                  )
+
+                      <div className="SelectDevelopmentEnvironment__progress-buttons flex flex--row justify--space-between">
+                        <button className="SelectDevelopmentEnvironment__progress-button flat--button">
+                          Previous
+                        </button>
+                        <button className="SelectDevelopmentEnvironment__progress-button flat--button">
+                          Cancel
+                        </button>
+                        <button className="SelectDevelopmentEnvironment__progress-button flat--button">
+                          skip
+                        </button>
+                        <button
+                          onClick={()=> this._createDevelopmentEnvironment()}
+                          disabled={(!this.state.selectedDevelopmentEnvironmentId)}>
+                            Save and Coninute Setup
+                        </button>
+                    </div>
+                </div>
+
+                )
+
                 }else{
                   return(<div className="Loading"></div>)
                 }

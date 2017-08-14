@@ -90,32 +90,64 @@ export default class AddEnvironmentPackage extends React.Component {
 
     return(
       <div className="AddEnvironmentPackage">
+          <div className="AddEnvironmentPackage__inner-container">
+            <p>Install dependencies via Package Manager</p>
 
-          <p>Install dependencies via Package Manager</p>
 
+            {
+              this.state.environmentPackages.map((pack, index) => {
+                return(
+                  <div className="AddEnvironmentPackage__row flex flex--row justify--space-between">
+                    <div className="AddEnvironmentPackage__select--container">
+                      <select
+                        disabled={pack.state === 'Remove'} c
+                        className="AddEnvironmentPackage__select"
+                        onChange={(e) => this._setCurrentPackageManager(e, index)}>
+                        {
+                          this.props.availablePackageManagers.map((pm) => {
+                            return(<option
+                              className="AddEnvironmentPackage__select"
+                              key={pm}
+                              value={pm}>
+                                {pm}
+                              </option>
+                            )
+                          })
+                        }
+                      </select>
+                    </div>
+                    <input
+                      className="AddEnvironmentPackage__text-input"
+                      disabled={pack.state === 'Remove'}
+                      onKeyUp={(e) => this._updateDependencyName(e, index)}
+                      type="text"
+                      placeholder="Dependency Name">
 
-          {
-            this.state.environmentPackages.map((pack, index) => {
-              return(
-                <div className="AddEnvironmentPackage__row flex flex--row justify--space-between">
-                  <div className="AddEnvironmentPackage__select--container">
-                    <select disabled={pack.state === 'Remove'} className="AddEnvironmentPackage__select" onChange={(e) => this._setCurrentPackageManager(e, index)}>
-                      {
-                        this.props.availablePackageManagers.map((pm) => {
-                          return(<option key={pm} value={pm}>{pm}</option>)
-                        })
-                      }
-                    </select>
+                    </input>
+                    <button
+                      className="AddEnvironmentPackage__button"
+                      disabled={(pack.dependencyName === null) || (pack.packageManager === null) }
+                      onClick={(e) =>this._addRemovePackage(e, pack.state, index)}>
+                      {pack.state}
+                    </button>
                   </div>
-                  <input disabled={pack.state === 'Remove'} onKeyUp={(e) => this._updateDependencyName(e, index)} type="text" placeholder="Dependency Name"></input>
-                  <button disabled={(pack.dependencyName === null) || (pack.packageManager === null) } onClick={(e) =>this._addRemovePackage(e, pack.state, index)}>{pack.state}</button>
-                </div>
-            )
-            })
-          }
+              )
+              })
+            }
 
-
-          <button onClick={() => this._installEnvironementPackage()}> Save and Continue Setup </button>
+          </div>
+          <div className="AddEnvironmentPackage__progress-buttons flex flex--row justify--space-between">
+            <button className="AddEnvironmentPackage__progress-button flat--button">
+              Previous
+            </button>
+            <button className="AddEnvironmentPackage__progress-button flat--button">
+              Cancel
+            </button>
+            <button className="AddEnvironmentPackage__progress-button flat--button">
+              skip
+            </button>
+            <button onClick={() => this._installEnvironementPackage()}> Save and Continue Setup </button>
+          </div>
 
       </div>
       )

@@ -111,7 +111,7 @@ export default class AddCustomDependencies extends React.Component {
 
                 if(props){
                   return(
-                    <div className="AddCustomDependencies__inner-container">
+                    <div className="AddCustomDependencies__inner-container flex flex--column justify--space-between">
                       <div className="AddCustomDependencies__selected-image-container">
 
                           {
@@ -127,7 +127,7 @@ export default class AddCustomDependencies extends React.Component {
                       <div className="AddCustomDependencies__images flex flex--row flex--wrap justify--space-around">
                       {
                         props.availableCustomDependencies.edges.map((edge) => {
-              
+
                             return(
                               <div className={(this.state.selectedCustomDependencyId === edge.node.id) ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'} onClick={()=> this._selectCustomDependency(edge)} key={edge.node.id}>
                                 <img alt="" src={edge.node.info.icon} height="50" width="50" />
@@ -137,8 +137,19 @@ export default class AddCustomDependencies extends React.Component {
                         })
                       }
 
-                      </div>
-                    <button onClick={()=> this._createCustomDependency()} disabled={(!this.state.selectedCustomDependencyId)}>Next</button>
+                    </div>
+                    <div className="AddCustomDependencies__progress-buttons flex flex--row justify--space-between">
+                      <button className="AddCustomDependencies__progress-button flat--button">
+                        Previous
+                      </button>
+                      <button className="AddCustomDependencies__progress-button flat--button">
+                        Cancel
+                      </button>
+                      <button className="AddCustomDependencies__progress-button flat--button">
+                        skip
+                      </button>
+                      <button onClick={()=> this._createCustomDependency()} disabled={(!this.state.selectedCustomDependencyId)}>Save and Continue Setup</button>
+                    </div>
                   </div>
                 )
                 }else{

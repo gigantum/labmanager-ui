@@ -8,6 +8,7 @@ import {
 import Notes from './notes/Notes'
 import Code from './code/Code'
 import Data from './data/Data'
+import Overview from './overview/Overview'
 import Environment from './environment/Environment'
 
 import environment from '../../createRelayEnvironment'
@@ -108,6 +109,8 @@ export default class Labbook extends Component {
         return(<Code labbookName={this.props.match.params.labbook_name} />)
       case 'data':
         return(<Data />)
+      case 'overview':
+        return(<Overview props={this.props} />)
       default:
         notes = this._getNotesRenderer()
         return(notes);

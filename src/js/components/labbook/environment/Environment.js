@@ -40,7 +40,7 @@ class Environment extends Component {
       this.props.labbook_name,
       'default',
       (log) => {
-  
+
         that._hideModal()
         that.setState({"readyToBuild": false})
       }
@@ -271,7 +271,7 @@ export default createFragmentContainer(
           endCursor
         }
       }
-      packageManagerDependencies(first: $first){
+      packageManagerDependencies(first: $first) @connection(key: "PackageManager_packageManagerDependencies" filters: []){
         edges{
           node{
             id
