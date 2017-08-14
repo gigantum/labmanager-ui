@@ -161,7 +161,7 @@ export default class SelectBaseImage extends React.Component {
                       }
 
                       </div>
-                    <div className="SelectBaseImage__progress-buttons">
+                    <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
                       <button className="SelectBaseImage__progress-button flat--button">
                         Previous
                       </button>

@@ -54,3 +54,16 @@
   right: 5px;
   cursor: pointer;
 }
+.Environment__package-dependencies{
+  margin: 10px;
+
+  .Environment__card-text{
+      width: 150px;
+      p{
+        margin: 0 5px 0 0;
+      }
+      background-color: $grey;
+      border: 1px solid $font-grey;
+      border-radius: 5px;
+  }
+}

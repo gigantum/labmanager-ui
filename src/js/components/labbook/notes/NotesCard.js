@@ -40,29 +40,35 @@ export default class NotesCard extends React.Component {
     }
   }
 
+  _getTimeOfDay(timestamp){
+    let time = new Date(timestamp);
+    return (time.getHours()%12) + ':' + ((time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes()) + (time.getHours() > 12 ? 'pm' : 'am');
+  }
+
   render(){
     return(
         <div className="NotesCard card">
 
           <div className="flex flex--row justify--space-between">
-              <p>
-                {this._timeAgo(this.props.edge.node.timestamp)}
+              <p className="NotesCard__time">
+                {this._getTimeOfDay(this.props.edge.node.timestamp)}
               </p>
-              <p>
+              <p className="NotesCard__commit-message">
                 {this.props.edge.node.message}
               </p>
-              <p>
-                Commit Id: {this.props.edge.node.commit}
-              </p>
 
-              <div className={!this.state.showExtraInfo ? "NotesCard__toggle-button closed": "NotesCard__toggle-button open"}
+              <div className={!this.state.showExtraInfo ? "NotesCard__toggle-button closed flex justify--space-around": "NotesCard__toggle-button open flex justify--space-around"}
                   onClick={() => this._toggleExtraInfo()}
               >
               Activity Log
+              <div className="NotesCard__toggle-icon"></div>
               </div>
           </div>
 
           <div className={this.state.showExtraInfo ? 'NotesCard__expanded-view' : 'NotesCard__expanded-view no-height'}>
+            <p>
+              Commit Id: {this.props.edge.node.commit}
+            </p>
             <p>
               Level: {this.props.edge.node.level}
             </p>

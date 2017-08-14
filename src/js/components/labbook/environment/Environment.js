@@ -13,10 +13,14 @@ class Environment extends Component {
 
     this.state ={
       'modal_visible': false,
-      'readyToBuild': false
+      'readyToBuild': false,
     }
 
     that = this;
+  }
+
+  componentWillMount() {
+    this.props.setContainerState(that.props.labbook.environment.containerStatus)
   }
 
   _openModal(){
@@ -27,22 +31,20 @@ class Environment extends Component {
       this.setState({'modal_visible': false})
   }
 
-  _resetBaseImage(){
-
-  }
-
   _setComponent(comp){
+    that.props.setContainerState("Building")
     that.setState({"readyToBuild": true})
+    that._hideModal();
   }
 
-  _buildImage(){
+  _buildCallback(){
+
     BuildImageMutation(
-      this.props.labbook_name,
+      that.props.labbook_name,
       'default',
       (log) => {
-  
-        that._hideModal()
-        that.setState({"readyToBuild": false})
+        console.log(log)
+        that.props.setContainerState(that.props.labbook.environment.containerStatus)
       }
     )
   }
@@ -53,6 +55,7 @@ class Environment extends Component {
 
   render(){
     if(this.props.labbook){
+
     let env = this.props.labbook.environment;
     let baseImage = env.baseImage;
     let devEnvs = env.devEnvs;
@@ -72,9 +75,11 @@ class Environment extends Component {
                 labbookName={this.props.labbook_name}
                 setBaseImage={this._setBaseImage}
                 setComponent={this._setComponent}
+                buildCallback={this._buildCallback}
                 nextComponent={"continue"}
+                environmentView={true}
+
               />
-              <button className={this.state.readyToBuild ? '' : 'hidden'} onClick={() => this._buildImage()}>Rebuild Image</button>
             </div>
             <div className="Environment__base-image">
               <h4 className="Environment__header">Base Image</h4>
@@ -99,9 +104,9 @@ class Environment extends Component {
                 <h4 className="Environment__header">Development Environments</h4>
                 <div className="Environment__info flex justify--left">
                 {
-                  devEnvs.edges.map(edge => {
+                  devEnvs.edges.map((edge, index) => {
                   return(
-                    <div key={edge.id} className="Environment__development-environment-item">
+                    <div key={this.props.labbook_name + index} className="Environment__development-environment-item">
                       <p>{edge.node.info.description}</p>
                       <div className="Environment__card flex justify--space-around">
                         <div className="flex-1-0-auto flex flex--column justify-center">
@@ -129,7 +134,7 @@ class Environment extends Component {
                 {
                   customDependencies.edges.map(edge => {
                     return(
-                      <div key={edge.id} className="Environment__dependencies">
+                      <div key={this.props.labbook_name + edge.id} className="Environment__dependencies">
                         <p>{edge.node.info.description}</p>
                         <div className="Environment__card flex justify--space-around">
                             <div className="flex-1-0-auto flex flex--column justify-center">
@@ -152,14 +157,19 @@ class Environment extends Component {
 
               <h4 className="Environment__header">Package Dependencies</h4>
               <div className="Environment__info flex flex--row justify--left">
-                <ul>
+                <ul className="flex flex--row justify--left flex-wrap">
                 {
-                  packageDep.edges.map(edge => {
+                  packageDep.edges.map((edge, index) => {
                     return(
-                      <li>
-                        <div key={edge.id} className="Environment__dependencies">
-                          <p>{edge.node.packageManager + " " + edge.node.packageName}</p>
+                      <li key={this.props.labbook_name + index}>
+                        <div className="Environment__package-dependencies">
+
+                            <div className="Environment__card-text flex flex--row justify--space-around flex-1-0-auto">
+                              <p>{edge.node.packageManager}</p>
+                              <p>{edge.node.packageName}</p>
+                            </div>
                         </div>
+
                       </li>
                     )
                   })
@@ -271,7 +281,7 @@ export default createFragmentContainer(
           endCursor
         }
       }
-      packageManagerDependencies(first: $first){
+      packageManagerDependencies(first: $first) @connection(key: "PackageManager_packageManagerDependencies" filters: []){
         edges{
           node{
             id

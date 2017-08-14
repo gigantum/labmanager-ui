@@ -16,7 +16,7 @@ export default class SuccessMessage extends React.Component {
       <div className="SuccessMessage flex flex--column justify--space-around">
           <p className="SuccessMessage__message">Success!</p>
           <p className="SuccessMessage__message">You have create a new Lab Book. You can always edit and update your Lab Book on its detail page.</p>
-          <button onClick={()=> this._openLabbook()}>Open Lab Book</button>
+          <button className="SuccessMessage__button" onClick={()=> this._openLabbook()}>Open Lab Book</button>
       </div>
       )
   }

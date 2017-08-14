@@ -8,6 +8,7 @@
 @import '_layout';
 //atoms
 @import 'atoms/button.scss';
+@import 'atoms/loader.scss';
 
 //components
 @import 'components/header';
@@ -29,6 +30,8 @@
 @import  'components/wizard/addEnvironmentPackages';
 @import  'components/wizard/addCustomDependencies';
 @import  'components/wizard/successMessage';
+@import  'components/wizard/selectDevelopmentEnvironment';
+@import  'components/wizard/importCode';
 
 html, body {
   width: 100%;

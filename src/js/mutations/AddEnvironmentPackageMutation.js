@@ -5,6 +5,7 @@ import {
 import environment from '../createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
 
+
 const mutation = graphql`
   mutation AddEnvironmentPackageMutation($input: AddEnvironmentPackageInput!){
     addEnvironmentPackage(input: $input){
@@ -44,7 +45,34 @@ export default function AddEnvironmentPackageMutation(
       onError: err => console.error(err),
 
       updater: (store) => {
+        const id = 'client:newLabbook:'+ tempID++;
+        const node = store.create(id, 'Packages')
 
+          node.setValue(packageManager, 'packageManager')
+          node.setValue(packageName, 'packageName')
+          node.setValue(labbookName, 'labbookName')
+          node.setValue(owner, 'owner')
+
+         //const labbookProxy = store.getRootField('createLabbook');
+         //const node = payload.getLinkedRecord('labbook').getLinkedRecord('node');
+
+         const packageProxyProxy = store.get(id);
+
+         const conn = RelayRuntime.ConnectionHandler.getConnection(
+           packageProxyProxy,
+           'PackageManager_packageManagerDependencies',
+         );
+
+
+         if(conn){
+           const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+             store,
+             conn,
+             node,
+             "PackageEdge"
+           )
+           RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge)
+        }
       },
     },
   )

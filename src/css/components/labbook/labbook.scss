@@ -2,6 +2,13 @@
   height: calc(100% - 80px);
 }
 
+.Labbook__header{
+  padding: 20px 0px;
+  .Labbook__name-title{
+    padding: 0px;
+  }
+}
+
 .Labbook__title{
   text-align: left;
   padding: 40px 0 0 40px;
@@ -43,4 +50,24 @@
 .Labbook__view{
   height: calc(100% - 90px);
   overflow: hidden;
+}
+
+.Labbook__container-state{
+  width: 120px;
+  text-align: center;
+  height: 30px;
+  border-radius: 15px;
+  color: $white;
+  line-height: 30px;
+
+}
+
+.Labbook__container-state.Open{
+  background: $activity;
+}
+.Labbook__container-state.Building{
+  background: $datasets;
+}
+.Labbook__container-state.Closed{
+  background: $labbooks;
 }

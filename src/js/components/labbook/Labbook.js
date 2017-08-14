@@ -8,16 +8,20 @@ import {
 import Notes from './notes/Notes'
 import Code from './code/Code'
 import Data from './data/Data'
+import Overview from './overview/Overview'
 import Environment from './environment/Environment'
 
 import environment from '../../createRelayEnvironment'
-
+let labbook;
 //labbook query with notes fragment
 const LabbookQuery =  graphql`
   query LabbookQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
     labbook(name: $name, owner: $owner){
       id
       description
+      environment{
+        containerStatus
+      }
       ...Environment_labbook
       ...Notes_labbook
     }
@@ -35,8 +39,24 @@ const navigation_items = [
 export default class Labbook extends Component {
   constructor(props){
   	super(props);
+    this.state = {
+      'selectedComponent': 'notes',
+      'containerState': 'Closed',
+      'containerStatus': ''
+    }
 
-    this.state = {'selectedComponent': 'notes'}
+    labbook = this;
+  }
+  /*
+    function(sring):
+    updates container state
+  */
+  _setContainerState(value){
+    labbook.setState({'containerStatus': value})
+    value = (value === 'RUNNING') ? 'Open' : value;
+    value = (value === 'NOT_RUNNING') ? 'Closed' : value;
+    labbook.setState({'containerState': value})
+
   }
   /*
     function(string): input string componenetName
@@ -58,9 +78,13 @@ export default class Labbook extends Component {
       render={({error, props}) => {
 
         if (error) {
-          console.log(error)
+          console.error(error)
           return <div>{error.message}</div>
         } else if (props) {
+
+          if(labbook.state.containerStatus !== props.labbook.environment.containerStatus){
+            labbook._setContainerState(props.labbook.environment.containerStatus)
+          }
           return <Notes key={props.labbook} labbook={props.labbook} {...props} labbook_name={this.props.match.params.labbook_name} />
         }
         return <div>Loading</div>
@@ -81,11 +105,11 @@ export default class Labbook extends Component {
       render={({error, props}) => {
 
         if (error) {
-          console.error(error)
           return <div>{error.message}</div>
         } else if (props) {
           return <Environment
             labbook={props.labbook}
+            setContainerState={this._setContainerState}
             key={props.labbook} {...props}
             labbook_name={this.props.match.params.labbook_name} />
         }
@@ -105,9 +129,11 @@ export default class Labbook extends Component {
       case 'environment':
         return(this._getEnvironmentRenderer())
       case 'code':
-        return(<Code labbookName={this.props.match.params.labbook_name} />)
+        return(<Code labbookName={this.props.match.params.labbook_name} setContainerState={this._setContainerState} />)
       case 'data':
         return(<Data />)
+      case 'overview':
+        return(<Overview props={this.props} />)
       default:
         notes = this._getNotesRenderer()
         return(notes);
@@ -136,7 +162,12 @@ export default class Labbook extends Component {
 
         <h4 className="Labbook__title">Lab Books</h4>
          <div className="Labbook__inner-container flex flex--column ">
-           <h4 className="Labbook__name-title">{labbook_name}</h4>
+           <div className="Labbook__header flex flex--row justify--space-between">
+             <h4 className="Labbook__name-title">{labbook_name}</h4>
+             <div className={'Labbook__container-state ' + this.state.containerState}>
+               {this.state.containerState}
+             </div>
+          </div>
            <div className="Labbook__navigation-container mui-container flex-0-0-auto">
              <ul className="Labbook__navigation flex flex--row">
                {

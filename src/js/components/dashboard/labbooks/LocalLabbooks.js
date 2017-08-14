@@ -35,7 +35,7 @@ class LocalLabbooks extends Component {
     this.props.relay.loadMore(
       10, // Fetch the next 10 feed items
       (e, r) => {
-        console.log(e);
+        console.error(e);
         this.props.relay.refetchConnection(12,(e) => {console.log(e)})
       }
     );

@@ -44,7 +44,7 @@ export default class DashboardContainer extends Component {
         render={({error, props, adsdas}) => {
 
           if (error) {
-            console.log(error)
+            console.error(error)
             return <div>{error.message}</div>
           } else if (props) {
 
