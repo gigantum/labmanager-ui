@@ -29,3 +29,12 @@
 .AddEnvironmentPackage__text-input{
   width: 500px !important;
 }
+
+.Environment__modal{
+  .AddEnvironmentPackage__inner-container{
+    height: 500px;
+  }
+  .AddEnvironmentPackage__progress-button{
+    visibility: hidden;
+  }
+}

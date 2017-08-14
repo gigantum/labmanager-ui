@@ -6,7 +6,7 @@ export default class Overview extends Component {
   }
 
   render(){
-    console.log(this.props)
+
     return(
         <div className="Overview">
           input data

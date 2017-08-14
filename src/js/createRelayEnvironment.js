@@ -25,7 +25,7 @@ function fetchQuery(
   }).then(response => {
 
     return response.json()
-  }).catch(error => {console.log(error, error.message)})
+  }).catch(error => {console.error(error)})
 }
 
 const network = Network.create(fetchQuery);

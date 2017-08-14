@@ -9,9 +9,9 @@ import Config from './../../../config'
 
 
 class Notes extends Component {
-  // constructor(props){
-  // 	super(props);
-  // }
+  constructor(props){
+  	super(props);
+  }
 
   _loadMore() {
    this.props.relay.loadMore(
@@ -43,7 +43,6 @@ class Notes extends Component {
   }
 
   render(){
-
     let notesTime = this._transformNotes(this.props.labbook.notes);
     if(this.props.labbook){
       return(

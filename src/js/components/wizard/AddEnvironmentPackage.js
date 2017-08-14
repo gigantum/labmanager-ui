@@ -2,6 +2,7 @@ import React from 'react'
 import AddEnvironmentPackageMutation from './../../mutations/AddEnvironmentPackageMutation'
 
 
+let that;
 export default class AddEnvironmentPackage extends React.Component {
   constructor(props){
   	super(props);
@@ -13,7 +14,10 @@ export default class AddEnvironmentPackage extends React.Component {
         {state: 'Add', 'packageManager': this.props.availablePackageManagers[0], dependencyName: null}
       ]
     };
+    that = this;
   }
+
+
 
 
   /*
@@ -25,7 +29,7 @@ export default class AddEnvironmentPackage extends React.Component {
   */
   _installEnvironementPackage(){
     let all = [];
-
+    this.props.setComponent(this.props.nextWindow)
     this.state.environmentPackages.forEach((pack) => {
 
       if(pack.dependencyName !== null){
@@ -49,7 +53,14 @@ export default class AddEnvironmentPackage extends React.Component {
 
 
     Promise.all(all).then(values => {
-      this.props.setComponent(this.props.nextWindow)
+
+      if(this.props.environmentView){
+
+        that.props.buildCallback();
+      }else{
+          this.props.setComponent(this.props.nextWindow)
+      }
+
     }, reason => {
       console.error(reason)
     })
@@ -97,10 +108,11 @@ export default class AddEnvironmentPackage extends React.Component {
             {
               this.state.environmentPackages.map((pack, index) => {
                 return(
-                  <div className="AddEnvironmentPackage__row flex flex--row justify--space-between">
+                  <div key={index} className="AddEnvironmentPackage__row flex flex--row justify--space-between">
                     <div className="AddEnvironmentPackage__select--container">
                       <select
-                        disabled={pack.state === 'Remove'} c
+                        disabled={pack.state === 'Remove'}
+                        key={index + '_select'}
                         className="AddEnvironmentPackage__select"
                         onChange={(e) => this._setCurrentPackageManager(e, index)}>
                         {
@@ -146,7 +158,7 @@ export default class AddEnvironmentPackage extends React.Component {
             <button className="AddEnvironmentPackage__progress-button flat--button">
               skip
             </button>
-            <button onClick={() => this._installEnvironementPackage()}> Save and Continue Setup </button>
+            <button onClick={() => this._installEnvironementPackage()}> {this.props.environmentView ? 'Save': 'Save and Continue Setup'} </button>
           </div>
 
       </div>

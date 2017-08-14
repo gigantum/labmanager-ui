@@ -8,13 +8,16 @@ export default class Code extends Component {
   }
 
   _openJupyter(){
+
     StartContainerMutation(
       this.props.labbookName,
       'default',
       'clientMutationId',
       (response) =>{
-          console.log(response);
-          window.open('http://localhost:8888/tree', '_blank')
+          setTimeout(function(){
+                window.open('http://localhost:8888/tree', '_blank')
+          }, 1000)
+
       }
     )
 

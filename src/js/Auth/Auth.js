@@ -30,7 +30,7 @@ export default class Auth {
         history.replace('/datasets');
       } else if (err) {
         history.replace('/datasets');
-        console.log(err);
+        console.error(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
       }
     });

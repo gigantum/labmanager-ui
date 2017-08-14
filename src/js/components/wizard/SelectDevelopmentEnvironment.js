@@ -111,7 +111,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
           render={({error, props}) =>{
 
               if(error){
-                console.log(error)
+                console.error(error)
                 return(<div>{error.message}</div>)
               }else{
                 if(props){
