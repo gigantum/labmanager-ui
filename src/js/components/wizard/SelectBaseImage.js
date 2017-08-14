@@ -173,7 +173,7 @@ export default class SelectBaseImage extends React.Component {
                       </button>
                       <button
                         onClick={()=> this._createBaseImage()} disabled={(!this.state.selectedBaseImageId)}>
-                        Save and Coninute Setup
+                        Save and Continue Setup
                       </button>
                     </div>
                   </div>                  )

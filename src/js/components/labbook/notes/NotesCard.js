@@ -72,9 +72,6 @@ export default class NotesCard extends React.Component {
             <p>
               Level: {this.props.edge.node.level}
             </p>
-            <p className={this.props.edge.node.level}>
-              Commit Id: {this.props.edge.node.id}
-            </p>
             <p>
               {this.props.edge.node.linkedCommit}
             </p>

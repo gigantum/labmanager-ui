@@ -16,7 +16,7 @@ export default class Code extends Component {
       (response) =>{
           setTimeout(function(){
                 window.open('http://localhost:8888/tree', '_blank')
-          }, 1000)
+          }, 3000)
 
       }
     )

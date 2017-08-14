@@ -157,7 +157,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
                         <button
                           onClick={()=> this._createDevelopmentEnvironment()}
                           disabled={(!this.state.selectedDevelopmentEnvironmentId)}>
-                            Save and Coninute Setup
+                            Save and Continue Setup
                         </button>
                     </div>
                 </div>
