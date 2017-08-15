@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 class Callback extends Component {
   render() {
-    this.props.history.replace(`/home`)
+    this.props.history.replace(`/datasets`)
     const style = {
       position: 'absolute',
       display: 'flex',

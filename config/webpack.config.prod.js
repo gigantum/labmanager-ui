@@ -175,14 +175,14 @@ module.exports = {
       // use the "style" loader inside the async code so CSS from them won't be
       // in the main CSS file.
       {
-        test: /\.scss$/,
+        test: /\.(css|scss)$/,
         loader: ExtractTextPlugin.extract(
           Object.assign(
             {
               fallback: require.resolve('style-loader'),
               use: [
                 {
-                  loader: require.resolve('sass-loader'),
+                  loader: require.resolve('css-loader'),
                   options: {
                     importLoaders: 1,
                     minimize: true,
@@ -207,6 +207,10 @@ module.exports = {
                     ],
                   },
                 },
+                {
+                 loader: 'sass-loader',
+
+               }
               ],
             },
             extractTextPluginOptions
@@ -242,6 +246,7 @@ module.exports = {
         minifyURLs: true,
       },
     }),
+
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
     // It is absolutely essential that NODE_ENV was set to production here.

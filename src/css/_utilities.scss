@@ -56,6 +56,10 @@
   flex: 1 1 auto;
 }
 
+.flex-1{
+  flex: 1;
+}
+
 
 
 /*
@@ -110,4 +114,16 @@
 
 .text-right{
   text-align: right;
+}
+
+/*
+  visibility visible hidden
+*/
+
+.visibility-hidden{
+  visibility: hidden;
+}
+
+.visibility-visible{
+  visibility: visible;
 }

@@ -1,0 +1,40 @@
+.AddEnvironmentPackage{
+  padding: 20px;
+  color: $font-grey;
+}
+
+.AddEnvironmentPackage__select{
+  display: block !important;
+}
+
+.AddEnvironmentPackage__inner-container{
+  height: 380px;
+}
+
+.AddEnvironmentPackage__button{
+  padding: 5px 10px;
+  width: 120px;
+  height: 40px;
+  align-self: center;
+}
+
+.AddEnvironmentPackage__select{
+  width: 80px;
+  background: none;
+  border: 1px solid $font-grey;
+  color: $font-grey;
+  border-radius: 5px;
+}
+
+.AddEnvironmentPackage__text-input{
+  width: 500px !important;
+}
+
+.Environment__modal{
+  .AddEnvironmentPackage__inner-container{
+    height: 500px;
+  }
+  .AddEnvironmentPackage__progress-button{
+    visibility: hidden;
+  }
+}

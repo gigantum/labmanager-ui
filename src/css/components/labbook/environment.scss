@@ -1,0 +1,69 @@
+.Environment{
+  overflow: auto;
+  height: calc(100% - 50px);
+}
+
+.Environment__header{
+  font-weight: light;
+  color: $font-grey;
+  font-size: 22px;
+}
+
+.Environment__card{
+  background-color: $grey;
+  padding: 10px;
+  border: 1px solid $font-grey;
+  border-radius: 5px;
+  color: $font-grey;
+  width: 330px;
+}
+
+.Environment__card-text{
+  padding: 10px;
+  width: 200px;
+}
+
+.Environment__edit-container{
+  align-self: center;
+  margin-left: 20px;
+}
+
+.Environment__modal{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 100;
+  width: 800px;
+  height: 600px;
+
+  margin: -300px 0 0 -400px;
+
+  border: 1px solid $grey;
+  background-color: $grey-light;
+  box-shadow: 10px 10px 5px #888888;
+
+  .SelectBaseImage__progress-button{
+    display: none;
+  }
+
+}
+
+.Environment__modal-close{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+.Environment__package-dependencies{
+  margin: 10px;
+
+  .Environment__card-text{
+      width: 150px;
+      p{
+        margin: 0 5px 0 0;
+      }
+      background-color: $grey;
+      border: 1px solid $font-grey;
+      border-radius: 5px;
+  }
+}

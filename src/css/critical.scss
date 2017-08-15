@@ -1,30 +1,65 @@
 //vendor
 @import '../../node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
 @import '../../node_modules/normalize-sass/normalize';
+@import  'vendor/materialize.scss';
 //generic
 @import '_utilities';
 @import '_variables';
 @import '_layout';
+//atoms
+@import 'atoms/button.scss';
+@import 'atoms/loader.scss';
 
 //components
 @import 'components/header';
-@import  'components/datasetsLabbooksContainer';
+@import  'components/labbooksets.scss';
+@import  'components/breadCrumbs.scss';
+@import  'components/routes.scss';
+@import  'components/login.scss';
+@import  'components/home.scss';
+//dashboard components
+@import  'components/dashboard/dashboard';
+//labbook components
+@import  'components/labbook/labbook.scss';
+@import  'components/labbook/notes.scss';
+@import  'components/labbook/environment.scss';
+//wizard components
+@import  'components/wizard/wizardModal';
+@import  'components/wizard/selectBaseImage';
+@import  'components/wizard/createLabbook';
+@import  'components/wizard/addEnvironmentPackages';
+@import  'components/wizard/addCustomDependencies';
+@import  'components/wizard/successMessage';
+@import  'components/wizard/selectDevelopmentEnvironment';
+@import  'components/wizard/importCode';
 
 html, body {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-
+  color: $charcoal;
   font-family: arial;
+  overflow: hidden;
 }
 
-h1{
-  color: red;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 20px 0;
   margin: 0;
-  padding: 0.5em;
 }
 
-h3{
-  color: yellow;
+.modal__cover{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  background-color: $charcoal;
+  opacity: 0.5;
+  z-index: 50;
 }

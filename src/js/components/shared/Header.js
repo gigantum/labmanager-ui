@@ -1,15 +1,33 @@
 import React, { Component } from 'react'
-import GigantumLogo from '../../../images/logos/gigantum.png';
 
 export default class Header extends Component {
+
+  goTo(route) {
+    this.props.history.replace(`/login`)
+  }
+
+  logout() {
+    this.props.auth.logout();
+  }
   render() {
+    const { isAuthenticated } = this.props.auth;
     return (
-      <div className={'header__container flex flex--row justify--space-between'}>
+      <div className={'Header flex flex--row justify--space-between'}>
         <div className={'flex-1-0-auto'}>
-          <h1 className='header__title text-center'>Gigantum</h1>
-        </div>
-        <div>
-          <img alt='gigantum logo' src={GigantumLogo} height='60'/>
+          <h3 className='Header__title text-center'>
+            Gigantum
+          </h3>
+
+          {
+            isAuthenticated() && (
+                <button
+                  className="Header__button Header__button--logout btn-margin"
+                  onClick={this.logout.bind(this)}
+                >
+                  Log Out
+                </button>
+              )
+          }
         </div>
       </div>
     )

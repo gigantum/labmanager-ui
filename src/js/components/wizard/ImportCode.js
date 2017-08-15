@@ -1,0 +1,68 @@
+import React from 'react'
+import { QueryRenderer, graphql } from 'react-relay'
+import environment from './../../createRelayEnvironment'
+import BuildImageMutation from './../../mutations/BuildImageMutation'
+
+
+export default class SelectBaseImage extends React.Component {
+  constructor(props){
+  	super(props);
+  	this.state = {
+      'modal_visible': false,
+      'isLoading': false,
+      'name': '',
+      'description': '',
+    };
+  }
+
+
+  /*
+    function()
+    runs buildImageMutation and triggers setComponent to proceed to next window
+  */
+  _completeSetup(){
+    this.setState({'isLoading':true})
+    BuildImageMutation(
+      this.props.labbookName,
+      'default',
+      (log, error) => {
+        this.setState({'isLoading': false})
+        console.log(log, error)
+        this.props.setComponent(this.props.nextWindow, this.state.name)
+      }
+    )
+
+
+  }
+
+  render(){
+
+    return(
+      <div className="ImportCode flex flex--row justify-center">
+        <div className="ImportCode flex flex--column justify--space-between">
+          <div className={!this.state.isLoading ? 'ImportCode__loading visibility-hidden' : 'ImportCode__loading'}>
+
+            <div className="loader">
+            	<div className="loader--ball loader--1">
+            		<div className="loader--inner-ball"></div>
+            	</div>
+            	<div className="loader--ball loader--2">
+            		<div className="loader--inner-ball"></div>
+            	</div>
+            	<div className="loader--ball loader--3">
+            		<div className="loader--inner-ball"></div>
+            	</div>
+            	<div className="loader--ball loader--4">
+            		<div className="loader--inner-ball"></div>
+            	</div>
+            	<div className="loader--ball loader--5">
+            		<div className="loader--inner-ball"></div>
+            	</div>
+            </div>
+          </div>
+          <button disabled={this.state.isLoading} onClick={() => this._completeSetup()}> Complete Setup </button>
+        </div>
+      </div>
+      )
+  }
+}
