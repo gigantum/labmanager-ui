@@ -24,7 +24,7 @@ function sharedUpdater(store, id, newEdge) {
     'Environment_packageManagerDependencies',
     {'first': 20}
   );
-  console.log(conn, newEdge, userProxy);
+
   RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
 }
 
@@ -59,9 +59,9 @@ export default function AddEnvironmentPackageMutation(
 
       updater: (store) => {
         const payload = store.getRootField('addEnvironmentPackage');
-        console.log(payload)
+
         const newEdge = payload.getLinkedRecord('PackageManagerEdge');
-        console.log(newEdge)
+
         sharedUpdater(store, clientMutationId, newEdge);
       },
       optimisticUpdater: (store) => {
@@ -76,7 +76,7 @@ export default function AddEnvironmentPackageMutation(
           'PackageManagerEdge',
         );
         newEdge.setLinkedRecord(node, 'node');
-        console.log(newEdge, node)
+
         sharedUpdater(store, clientMutationId, newEdge);
         const userProxy = store.get(clientMutationId);
         userProxy.setValue(
