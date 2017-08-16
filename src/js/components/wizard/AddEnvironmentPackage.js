@@ -39,7 +39,7 @@ export default class AddEnvironmentPackage extends React.Component {
             'default',
             pack.packageManager,
             pack.dependencyName,
-            "clientMutationId",
+            this.props.environmentId,
             (log, error) => {
               console.log(log, error)
               resolve()

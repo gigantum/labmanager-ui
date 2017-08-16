@@ -73,6 +73,8 @@ class Environment extends Component {
               <AddEnvironmentPackage
                 availablePackageManagers={env.baseImage.availablePackageManagers}
                 labbookName={this.props.labbook_name}
+                labbookId={this.props.labbookId}
+                environmentId={env.id}
                 setBaseImage={this._setBaseImage}
                 setComponent={this._setComponent}
                 buildCallback={this._buildCallback}
@@ -157,7 +159,7 @@ class Environment extends Component {
 
               <h4 className="Environment__header">Package Dependencies</h4>
               <div className="Environment__info flex flex--row justify--left">
-                <ul className="flex flex--row justify--left flex-wrap">
+                <ul className="flex flex--row justify--left flex--wrap">
                 {
                   packageDep.edges.map((edge, index) => {
                     return(
@@ -281,7 +283,7 @@ export default createFragmentContainer(
           endCursor
         }
       }
-      packageManagerDependencies(first: $first) @connection(key: "PackageManager_packageManagerDependencies" filters: []){
+      packageManagerDependencies(first: $first) @connection(key: "Environment_packageManagerDependencies" filters: ["first"]){
         edges{
           node{
             id

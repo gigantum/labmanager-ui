@@ -76,7 +76,7 @@ export default class Labbook extends Component {
       query={LabbookQuery}
       variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
       render={({error, props}) => {
-
+        console.log(props)
         if (error) {
           console.error(error)
           return <div>{error.message}</div>
@@ -85,7 +85,13 @@ export default class Labbook extends Component {
           if(labbook.state.containerStatus !== props.labbook.environment.containerStatus){
             labbook._setContainerState(props.labbook.environment.containerStatus)
           }
-          return <Notes key={props.labbook} labbook={props.labbook} {...props} labbook_name={this.props.match.params.labbook_name} />
+          return <Notes
+            key={props.labbook}
+            labbook={props.labbook}
+            {...props}
+            labbook_name={this.props.match.params.labbook_name}
+            labbookId={props.labbook.id}
+          />
         }
         return <div>Loading</div>
       }}
@@ -103,12 +109,13 @@ export default class Labbook extends Component {
       query={LabbookQuery}
       variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
       render={({error, props}) => {
-
+        console.log(props)
         if (error) {
           return <div>{error.message}</div>
         } else if (props) {
           return <Environment
             labbook={props.labbook}
+            labbookId={props.labbook.id}
             setContainerState={this._setContainerState}
             key={props.labbook} {...props}
             labbook_name={this.props.match.params.labbook_name} />

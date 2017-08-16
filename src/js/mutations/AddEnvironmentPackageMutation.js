@@ -4,7 +4,7 @@ import {
 } from 'react-relay'
 import environment from '../createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
-
+import storeDebugger from 'relay-runtime/lib/RelayStoreProxyDebugger'
 
 const mutation = graphql`
   mutation AddEnvironmentPackageMutation($input: AddEnvironmentPackageInput!){
@@ -15,6 +15,19 @@ const mutation = graphql`
 `;
 
 let tempID = 0;
+
+function sharedUpdater(store, id, newEdge) {
+  const userProxy = store.get(id);
+
+  const conn = RelayRuntime.ConnectionHandler.getConnection(
+    userProxy,
+    'Environment_packageManagerDependencies',
+    {'first': 20}
+  );
+  console.log(conn, newEdge, userProxy);
+  RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
+}
+
 
 export default function AddEnvironmentPackageMutation(
   labbookName,
@@ -30,7 +43,7 @@ export default function AddEnvironmentPackageMutation(
       owner,
       packageManager,
       packageName,
-      clientMutationId: tempID++
+      clientMutationId:  tempID++
     }
   }
   commitMutation(
@@ -45,34 +58,31 @@ export default function AddEnvironmentPackageMutation(
       onError: err => console.error(err),
 
       updater: (store) => {
-        const id = 'client:newLabbook:'+ tempID++;
-        const node = store.create(id, 'Packages')
-
-          node.setValue(packageManager, 'packageManager')
-          node.setValue(packageName, 'packageName')
-          node.setValue(labbookName, 'labbookName')
-          node.setValue(owner, 'owner')
-
-         //const labbookProxy = store.getRootField('createLabbook');
-         //const node = payload.getLinkedRecord('labbook').getLinkedRecord('node');
-
-         const packageProxyProxy = store.get(id);
-
-         const conn = RelayRuntime.ConnectionHandler.getConnection(
-           packageProxyProxy,
-           'PackageManager_packageManagerDependencies',
-         );
-
-
-         if(conn){
-           const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-             store,
-             conn,
-             node,
-             "PackageEdge"
-           )
-           RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge)
-        }
+        const payload = store.getRootField('addEnvironmentPackage');
+        console.log(payload)
+        const newEdge = payload.getLinkedRecord('PackageManagerEdge');
+        console.log(newEdge)
+        sharedUpdater(store, clientMutationId, newEdge);
+      },
+      optimisticUpdater: (store) => {
+        const id = 'client:newPackage:' + tempID++;
+        const node = store.create(id, 'package');
+        node.setValue(packageManager, 'packageManager')
+        node.setValue(packageName, 'packageName')
+        node.setValue(labbookName, 'labbookName')
+        node.setValue(owner, 'owner')
+        const newEdge = store.create(
+          'client:newEdge:' + tempID++,
+          'PackageManagerEdge',
+        );
+        newEdge.setLinkedRecord(node, 'node');
+        console.log(newEdge, node)
+        sharedUpdater(store, clientMutationId, newEdge);
+        const userProxy = store.get(clientMutationId);
+        userProxy.setValue(
+          userProxy.getValue('totalCount') + 1,
+          'totalCount',
+        );
       },
     },
   )
