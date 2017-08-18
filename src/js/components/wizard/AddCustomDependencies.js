@@ -54,8 +54,8 @@ export default class AddCustomDependencies extends React.Component {
       'modal_visible': false,
       'selectedCustomDependency': null,
       'selectedCustomDependencyId': false
-
     };
+    this.continueSave = this.continueSave.bind(this)
   }
   /*
     click handle
@@ -65,6 +65,7 @@ export default class AddCustomDependencies extends React.Component {
   _selectCustomDependency(edge){
     this.setState({'selectedCustomDependency': edge})
     this.setState({'selectedCustomDependencyId': edge.node.id})
+    this.props.toggleDisabledContinue(false);
   }
 
   /*
@@ -72,8 +73,9 @@ export default class AddCustomDependencies extends React.Component {
     gets current selectedCustomDependency and passes variables to AddEnvironmentComponentMutation
     callback triggers and modal state is changed to  next window
   */
-  _createCustomDependency(){
+  continueSave(){
     let component = this.state.selectedCustomDependency.node.component;
+    this.props.toggleDisabledContinue(true);
     AddEnvironmentComponentMutation(
       this.props.labbookName,
       'default',
@@ -138,7 +140,7 @@ export default class AddCustomDependencies extends React.Component {
                       }
 
                     </div>
-                    <div className="AddCustomDependencies__progress-buttons flex flex--row justify--space-between">
+                    {/* <div className="AddCustomDependencies__progress-buttons flex flex--row justify--space-between">
                       <button className="AddCustomDependencies__progress-button flat--button">
                         Previous
                       </button>
@@ -149,7 +151,7 @@ export default class AddCustomDependencies extends React.Component {
                         skip
                       </button>
                       <button onClick={()=> this._createCustomDependency()} disabled={(!this.state.selectedCustomDependencyId)}>Save and Continue Setup</button>
-                    </div>
+                    </div> */}
                   </div>
                 )
                 }else{

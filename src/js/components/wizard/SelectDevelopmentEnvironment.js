@@ -60,6 +60,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
       'selectedDevelopmentEnvironment': null,
       'selectedDevelopmentEnvironmentId': false
     };
+    this.continueSave = this.continueSave.bind(this);
   }
 
   /*
@@ -70,6 +71,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
   _selectDevelopmentEnvironment(edge){
     this.setState({'selectedDevelopmentEnvironment': edge})
     this.setState({'selectedDevelopmentEnvironmentId': edge.node.id})
+    this.props.toggleDisabledContinue(false);
   }
 
   /*
@@ -77,10 +79,10 @@ export default class SelectDevelopmentEnvironment extends React.Component {
     gets current selectedDevelopmentEnvironment and passes variables to AddEnvironmentComponentMutation
     callback triggers and modal state is changed to  next window
   */
-  _createDevelopmentEnvironment(){
+  continueSave(){
 
     let component = this.state.selectedDevelopmentEnvironment.node.component;
-
+    this.props.toggleDisabledContinue(true);
     AddEnvironmentComponentMutation(
       this.props.labbookName,
       'default',
@@ -144,7 +146,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
 
                       </div>
 
-                      <div className="SelectDevelopmentEnvironment__progress-buttons flex flex--row justify--space-between">
+                      {/* <div className="SelectDevelopmentEnvironment__progress-buttons flex flex--row justify--space-between">
                         <button className="SelectDevelopmentEnvironment__progress-button flat--button">
                           Previous
                         </button>
@@ -159,7 +161,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
                           disabled={(!this.state.selectedDevelopmentEnvironmentId)}>
                             Save and Continue Setup
                         </button>
-                    </div>
+                    </div> */}
                 </div>
 
                 )

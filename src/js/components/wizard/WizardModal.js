@@ -10,17 +10,20 @@ import AddDatasets from './AddDatasets'
 import AddCustomDependencies from './AddCustomDependencies'
 
 
-let that = {state: {}};
+let wizard = {state: {}};
 export default class WizardModal extends React.Component {
   constructor(props){
   	super(props);
 
   	this.state = {
       'selectedComponentId': 'createLabook',
+      'nextComponentId': 'selectBaseImage',
+      'previousComponentId': null,
       'name': '',
       'labbookName': '',
       'baseImage': null,
       'description': '',
+      'continueDisabled': true,
       'modalNav': [
         {'id': 'createLabook', 'description': 'Title & Description'},
         {'id': 'selectBaseImage', 'description': 'Base Image'},
@@ -32,7 +35,7 @@ export default class WizardModal extends React.Component {
         {'id': 'successMessage', 'description': 'Success'}
       ]
     };
-    that = this;
+    wizard = this;
   }
   /*
     evt:object, field:string - updates text in a state object and passes object to setState method
@@ -48,7 +51,13 @@ export default class WizardModal extends React.Component {
   */
 
   _showModal(){
-    this.setState({'modal_visible': true})
+    this.setState({
+      'modal_visible': true,
+      'selectedComponentId': 'createLabook',
+      'nextComponentId': 'selectBaseImage',
+      'previousComponent': null
+    })
+
     document.getElementById('modal__cover').classList.remove('hidden')
   }
   /*
@@ -66,11 +75,21 @@ export default class WizardModal extends React.Component {
   */
 
   _setComponent(navItemId){
-    let navItem = that.state.modalNav.filter((nav) => {
+    let index = 0;
+    let navItem = wizard.state.modalNav.filter((nav, i) => {
+      index = (nav.id === navItemId) ? i : index;
       return (nav.id === navItemId)
     })[0]
 
-    that.setState({"selectedComponentId": navItem.id})
+    wizard.setState({"selectedComponentId": navItem.id})
+
+    if((index + 1) < wizard.state.modalNav.length){
+      wizard.setState({"nextComponentId": wizard.state.modalNav[index + 1].id})
+    }
+
+    if(index > 0){
+      wizard.setState({"previousComponentId": wizard.state.modalNav[index - 1].id})
+    }
 
   }
   /*
@@ -78,14 +97,14 @@ export default class WizardModal extends React.Component {
     sets labbookName for mini session
   */
   _setLabbookName(labbookName){
-    that.setState({'labbookName': labbookName})
+    wizard.setState({'labbookName': labbookName})
   }
   /*
     function()
     sets baseimage object for mini session
   */
   _setBaseImage(baseImage){
-    that.setState({'baseImage': baseImage})
+    wizard.setState({'baseImage': baseImage})
   }
 
   /*
@@ -96,11 +115,22 @@ export default class WizardModal extends React.Component {
     return this.state.selectedComponentId
   }
 
+  _toggleDisabledContinue(value){
+    wizard.setState({
+      'continueDisabled': value
+    })
+  }
+
+
+  _continueSave(){
+    this.refs[this._getSelectedComponentId()].continueSave()
+  }
+
   render(){
 
     return(
         <div className="WizardModal">
-            <div id='modal__cover' className={!this.state.modal_visible ? 'WizardModal__modal hidden' : 'WizardModal__modal'}>
+            <div className={!this.state.modal_visible ? 'WizardModal__modal hidden' : 'WizardModal__modal'}>
 
               <div className="WizardModal__progress">
                 <ul className="WizardModal__progress-bar">
@@ -121,14 +151,25 @@ export default class WizardModal extends React.Component {
               </div>
               {
                 (this._getSelectedComponentId() === 'createLabook') && (
-                  <CreateLabbook setComponent={this._setComponent} setLabbookName={this._setLabbookName} nextWindow={'selectBaseImage'}/>
+                  <CreateLabbook
+                    ref="createLabook"
+                    toggleDisabledContinue={this._toggleDisabledContinue}
+                    setComponent={this._setComponent}
+                    setLabbookName={this._setLabbookName}
+                    nextWindow={'selectBaseImage'}/>
                 )
               }
 
               {
 
                 (this._getSelectedComponentId()  === 'selectBaseImage') && (
-                  <SelectBaseImage labbookName={that.state.labbookName} setBaseImage={this._setBaseImage} setComponent={this._setComponent}  nextWindow={'selectDevelopmentEnvironment'}/>
+                  <SelectBaseImage
+                    ref="selectBaseImage"
+                    toggleDisabledContinue={this._toggleDisabledContinue}
+                    labbookName={wizard.state.labbookName}
+                    setBaseImage={this._setBaseImage}
+                    setComponent={this._setComponent}
+                    nextWindow={'selectDevelopmentEnvironment'}/>
                 )
               }
 
@@ -136,14 +177,24 @@ export default class WizardModal extends React.Component {
 
                 ( this._getSelectedComponentId()  === 'selectDevelopmentEnvironment') && (
 
-                  <SelectDevelopmentEnvironment  labbookName={that.state.labbookName} setComponent={this._setComponent} nextWindow={'addEnvironmentPackage'}/>
+                  <SelectDevelopmentEnvironment
+                    ref="selectDevelopmentEnvironment"
+                    toggleDisabledContinue={this._toggleDisabledContinue}
+                    labbookName={wizard.state.labbookName}
+                    setComponent={this._setComponent}
+                    nextWindow={'addEnvironmentPackage'}/>
                 )
               }
               {
 
                 ( this._getSelectedComponentId()  === 'addEnvironmentPackage') && (
 
-                  <AddEnvironmentPackage baseImage={this.state.baseImage} availablePackageManagers={this.state.baseImage.node.availablePackageManagers}  labbookName={that.state.labbookName} setComponent={this._setComponent} nextWindow={'addCustomDependencies'}/>
+                  <AddEnvironmentPackage
+                    ref="addEnvironmentPackage"
+                    baseImage={this.state.baseImage}
+                    toggleDisabledContinue={this._toggleDisabledContinue} availablePackageManagers={this.state.baseImage.node.availablePackageManagers}  labbookName={wizard.state.labbookName}
+                    setComponent={this._setComponent}
+                    nextWindow={'addCustomDependencies'}/>
                 )
               }
 
@@ -151,7 +202,12 @@ export default class WizardModal extends React.Component {
 
                 ( this._getSelectedComponentId()  === 'addCustomDependencies') && (
 
-                  <AddCustomDependencies setComponent={this._setComponent} nextWindow={'addDatasets'} labbookName={that.state.labbookName}/>
+                  <AddCustomDependencies
+                    ref="addCustomDependencies"
+                    toggleDisabledContinue={this._toggleDisabledContinue}
+                    setComponent={this._setComponent}
+                    nextWindow={'addDatasets'}
+                    labbookName={wizard.state.labbookName}/>
                 )
               }
 
@@ -159,7 +215,12 @@ export default class WizardModal extends React.Component {
 
                 ( this._getSelectedComponentId()  === 'addDatasets') && (
 
-                  <AddDatasets setComponent={this._setComponent} nextWindow={'importCode'} labbookName={that.state.labbookName}/>
+                  <AddDatasets
+                    ref="addDatasets"
+                    toggleDisabledContinue={this._toggleDisabledContinue}
+                    setComponent={this._setComponent}
+                    nextWindow={'importCode'}
+                    labbookName={wizard.state.labbookName}/>
                 )
               }
 
@@ -168,9 +229,11 @@ export default class WizardModal extends React.Component {
                 ( this._getSelectedComponentId()  === 'importCode') && (
 
                   <ImportCode
+                    ref="importCode"
+                    toggleDisabledContinue={this._toggleDisabledContinue}
                     setComponent={this._setComponent}
                     nextWindow={'successMessage'}
-                    labbookName={that.state.labbookName}
+                    labbookName={wizard.state.labbookName}
                   />
                 )
               }
@@ -180,19 +243,43 @@ export default class WizardModal extends React.Component {
                 ( this._getSelectedComponentId()  === 'successMessage') && (
 
                   <SuccessMessage
-                    labbookName={that.state.labbookName}
+                    ref="successMessage"
+                    toggleDisabledContinue={this._toggleDisabledContinue}
+                    labbookName={wizard.state.labbookName}
                     history={this.props.history}
                   />
                 )
               }
 
+            <div className="flex flex--row justify--space-between">
+
+              <button disabled={this.state.previousComponentId === null} previousComponent onClick={() => this._setComponent(this.state.previousComponentId)} className="SelectDevelopmentEnvironment__progress-button flat--button">
+                Previous
+              </button>
+              <button
+                onClick={() => this._hideModal()}
+                className="SelectDevelopmentEnvironment__progress-button flat--button">
+                Cancel
+              </button>
+              <button
+                disabled={this._getSelectedComponentId() === 'createLabook'}
+                onClick={() => this._setComponent(this.state.nextComponentId)}
+                className="SelectDevelopmentEnvironment__progress-button flat--button">
+                skip
+              </button>
+              <button
+                onClick={()=> this._continueSave()}
+                disabled={(this.state.continueDisabled)}
+                continueDisabled={this._toggleDisabledContinue}
+                >
+
+                Save and Continue Setup
+              </button>
+
             </div>
 
-            <button
-              className="CreateLabbook__button CreateLabbook__button--margin"
-              onClick={() => this._showModal()}>
-              Create Labbook
-            </button>
+          </div>
+
         </div>
       )
   }

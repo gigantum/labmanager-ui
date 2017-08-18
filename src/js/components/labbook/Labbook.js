@@ -70,6 +70,7 @@ export default class Labbook extends Component {
     return QueryRenderer with parsed props
   */
   _getNotesRenderer(){
+
     return (<QueryRenderer
       key={this.props.match.params.labbook_name + '_query_renderer_labbook'}
       environment={environment}
@@ -81,7 +82,7 @@ export default class Labbook extends Component {
           console.error(error)
           return <div>{error.message}</div>
         } else if (props) {
-
+          console.log(props)
           if(labbook.state.containerStatus !== props.labbook.environment.containerStatus){
             labbook._setContainerState(props.labbook.environment.containerStatus)
           }
@@ -109,7 +110,7 @@ export default class Labbook extends Component {
       query={LabbookQuery}
       variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
       render={({error, props}) => {
-  
+
         if (error) {
           return <div>{error.message}</div>
         } else if (props) {

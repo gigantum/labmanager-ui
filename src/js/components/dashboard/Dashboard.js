@@ -9,9 +9,9 @@ import WizardModal from './../wizard/WizardModal'
 
 
 const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String){
-  localLabbooks(first:$first, after: $cursor){
-    ...LocalLabbooks_localLabbooks
-  }
+  #localLabbooks(first:$first, after: $cursor){
+    ...LocalLabbooks_feed
+  #}
 }`
 
 export default class DashboardContainer extends Component {
@@ -23,12 +23,20 @@ export default class DashboardContainer extends Component {
     }
   }
 
+
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      selectedComponent: nextProps.match.params.id
+    })
+  }
+
   _setSelectedComponent(that, component){
     this.setState({selectedComponent: component})
     this.props.history.push(`../${component}`)
   }
 
   _displaySelectedComponent(){
+    console.log(this.state.selectedComponent)
     if(this.state.selectedComponent === 'datasets'){
 
       return (<DatasetSets />)
@@ -38,18 +46,18 @@ export default class DashboardContainer extends Component {
         environment={environment}
         query={LabbookQuery}
         variables={{
-          first: 10,
+          first: 20,
           cursor: null
         }}
-        render={({error, props, adsdas}) => {
+        render={({error, props}) => {
 
           if (error) {
-            console.error(error)
+
             return <div>{error.message}</div>
           } else if (props) {
 
               return (
-                <LocalLabbooks data={props.data} localLabbooks={props.localLabbooks} history={this.props.history} {...props}/>
+                <LocalLabbooks feed={props} history={this.props.history} />
               )
 
           }else{
@@ -74,29 +82,7 @@ export default class DashboardContainer extends Component {
 
     return (
       <div className='Dashboard flex flex-column'>
-        <div className='Dashboard__nav-container flex justify-center flex-0-0-auto'>
-          <ul className='Dashboard__nav flex flex--row justify--space-between'>
-            <li>
-              <Link
-                onClick={(t,event) => this._setSelectedComponent(this, 'datasets')}
-                className={this.state.selectedComponent === 'datasets' ? 'Dashboard__nav-item selected': 'Dashboard__nav-item'}
-                to='../datasets'
-              >
-                Datasets
-              </Link>
-            </li>
-            <li>
-              <Link
-                onClick={(t, event) => this._setSelectedComponent(this, 'labbooks')}
-                className={this.state.selectedComponent === 'labbooks' ? 'Dashboard__nav-item selected': 'Dashboard__nav-item'}
-                to='../labbooks'
-              >
-                Labbooks
-              </Link>
-            </li>
 
-          </ul>
-        </div>
         <div className='Dashboard__view flex-1-0-auto'>
           {
             this._displaySelectedComponent()

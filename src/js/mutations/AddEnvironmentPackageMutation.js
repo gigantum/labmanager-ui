@@ -4,7 +4,6 @@ import {
 } from 'react-relay'
 import environment from '../createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
-import storeDebugger from 'relay-runtime/lib/RelayStoreProxyDebugger'
 
 const mutation = graphql`
   mutation AddEnvironmentPackageMutation($input: AddEnvironmentPackageInput!){
@@ -18,14 +17,16 @@ let tempID = 0;
 
 function sharedUpdater(store, id, newEdge) {
   const userProxy = store.get(id);
-
+  //console.log(userProxy, newEdge)
   const conn = RelayRuntime.ConnectionHandler.getConnection(
     userProxy,
-    'Environment_packageManagerDependencies',
+    'PackageManagerDependencies_packageManagerDependencies',
     {'first': 20}
   );
+  if(conn){
+    RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
+  }
 
-  RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
 }
 
 
@@ -52,37 +53,61 @@ export default function AddEnvironmentPackageMutation(
       mutation,
       variables,
       onCompleted: (response) => {
-
+        console.log(response)
         callback()
       },
       onError: err => console.error(err),
 
       updater: (store) => {
-        const payload = store.getRootField('addEnvironmentPackage');
+        if(clientMutationId){
+          //TODO use edge from linked record
+          const payload = store.getRootField('addEnvironmentPackage');
+          const id = 'client:PackageManagerDependencies:' + tempID++;
+          const node = store.create(id, 'package');
+          node.setValue(packageManager, 'packageManager')
+          node.setValue(packageName, 'packageName')
+          node.setValue(labbookName, 'labbookName')
+          node.setValue(owner, 'owner')
+          console.log(payload)
+          debugger;
+          const newEdge = store.create(
+            'client:newEdge:' + tempID,
+            'PackageManagerEdge',
+          );
+          //console.log(newEdge)
+          newEdge.setLinkedRecord(node, 'node');
+          //const newEdge =
+          console.log(payload.getLinkedRecord('packageManagerEdge'))
+          //payload.getLinkedRecord('packageManagerDependenciesEdge');
 
-        const newEdge = payload.getLinkedRecord('PackageManagerEdge');
-
-        sharedUpdater(store, clientMutationId, newEdge);
+          sharedUpdater(store, clientMutationId, newEdge);
+        }
       },
       optimisticUpdater: (store) => {
-        const id = 'client:newPackage:' + tempID++;
-        const node = store.create(id, 'package');
-        node.setValue(packageManager, 'packageManager')
-        node.setValue(packageName, 'packageName')
-        node.setValue(labbookName, 'labbookName')
-        node.setValue(owner, 'owner')
-        const newEdge = store.create(
-          'client:newEdge:' + tempID++,
-          'PackageManagerEdge',
-        );
-        newEdge.setLinkedRecord(node, 'node');
 
-        sharedUpdater(store, clientMutationId, newEdge);
-        const userProxy = store.get(clientMutationId);
-        userProxy.setValue(
-          userProxy.getValue('totalCount') + 1,
-          'totalCount',
-        );
+        if(clientMutationId){
+
+          const id = 'client:newPackageManager:' + tempID++;
+          const node = store.create(id, 'PackageManager');
+
+          node.setValue(packageManager, 'packageManager')
+          node.setValue(packageName, 'packageName')
+          node.setValue(labbookName, 'labbookName')
+          node.setValue(owner, 'owner')
+          const newEdge = store.create(
+            'client:newEdge:' + tempID,
+            'PackageManagerEdge',
+          );
+          console.log(newEdge)
+          newEdge.setLinkedRecord(node, 'node');
+
+          sharedUpdater(store, clientMutationId, newEdge);
+          const userProxy = store.get(clientMutationId);
+          userProxy.setValue(
+            userProxy.getValue('first') + 1,
+            'first',
+          );
+        }
       },
     },
   )

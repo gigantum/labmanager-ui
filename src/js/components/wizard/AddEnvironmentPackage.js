@@ -15,10 +15,14 @@ export default class AddEnvironmentPackage extends React.Component {
       ]
     };
     that = this;
+
+    this.props.toggleDisabledContinue(false);
+    this.continueSave = this.continueSave.bind(this);
   }
 
-
-
+  _environmentView(){
+    return this.props.environmentView
+  }
 
   /*
     function()
@@ -27,13 +31,18 @@ export default class AddEnvironmentPackage extends React.Component {
     pushes mutations into a promise and resolves if succesful
     if all promises resolve, setComponent is triggered and next component is loaded
   */
-  _installEnvironementPackage(){
+  continueSave(){
     let all = [];
     this.props.setComponent(this.props.nextWindow)
+    console.log(this.state)
     this.state.environmentPackages.forEach((pack) => {
-
-      if(pack.dependencyName !== null){
+      if(pack.dependencyName){
         let promise = new Promise((resolve, reject) => {
+          console.log(this.props.labbookName,
+          'default',
+          pack.packageManager,
+          pack.dependencyName,
+          this.props.environmentId)
           AddEnvironmentPackageMutation(
             this.props.labbookName,
             'default',
@@ -78,6 +87,7 @@ export default class AddEnvironmentPackage extends React.Component {
     if(e.key !== 'Enter'){
       let newEnvironmentPackages = this.state.environmentPackages;
       newEnvironmentPackages[index]['dependencyName'] = e.target.value;
+      console.log(newEnvironmentPackages)
       this.setState({'environmentPackages': newEnvironmentPackages})
     }else{
       this._addRemovePackage(e, 'Add', index);
@@ -148,18 +158,12 @@ export default class AddEnvironmentPackage extends React.Component {
             }
 
           </div>
-          <div className="AddEnvironmentPackage__progress-buttons flex flex--row justify--space-between">
-            <button className="AddEnvironmentPackage__progress-button flat--button">
-              Previous
-            </button>
-            <button className="AddEnvironmentPackage__progress-button flat--button">
-              Cancel
-            </button>
-            <button className="AddEnvironmentPackage__progress-button flat--button">
-              skip
-            </button>
-            <button onClick={() => this._installEnvironementPackage()}> {this.props.environmentView ? 'Save': 'Save and Continue Setup'} </button>
-          </div>
+          {
+            this._environmentView() && (<div className="AddEnvironmentPackage__progress-buttons flex flex--row justify--space-between">
+
+            <button onClick={() => this.continueSave()}>Save</button>
+          </div>)
+        }
 
       </div>
       )
