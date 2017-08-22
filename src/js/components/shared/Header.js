@@ -24,17 +24,20 @@ export default class Header extends Component {
           <ul className='Header__nav flex flex--row justify--space-between'>
             <li>
               <Link
-                className="Header__nav-item Header__nav-item--datasets"
+                className="Header__nav-item Header__nav-item--datasets flex flex--row justify--space-between"
                 to="../datasets"
               >
+                <div className="Header__datasets-icon"></div>
                 Datasets
               </Link>
             </li>
             <li>
               <Link
-                className="Header__nav-item Header__nav-item--labbooks"
+
+                className="Header__nav-item Header__nav-item--labbooks flex flex--row justify--space-between"
                 to="../labbooks"
               >
+                <div className="Header__labbook-icon"></div>
                 Lab Books
               </Link>
             </li>
