@@ -23,22 +23,26 @@ class DevEnvironments extends Component {
   render(){
 
     let devEnvs = this.props.environment.devEnvs;
+    let blockClass = this.props.blockClass;
     if (devEnvs) {
       return(
-        <div className="Environment__development-environment">
+        <div className={ blockClass + '__development-environment'}>
 
-            <h4 className="Environment__header">Development Environments</h4>
-            <div className="Environment__info flex justify--left">
+            <h4 className={blockClass + '__header'}>Development Environments</h4>
+            <div className={blockClass + '__info flex justify--left'}>
             {
               devEnvs.edges.map((edge, index) => {
               return(
-                <div key={this.props.labbook_name + index} className="Environment__development-environment-item">
-                  <p>{edge.node.info.description}</p>
-                  <div className="Environment__card flex justify--space-around">
+                <div key={this.props.labbookName + index} className={blockClass + '__development-environment-item'}>
+                  {
+                      (this.props.editVisible) &&
+                      <p>{edge.node.info.description}</p>
+                  }
+                  <div className={blockClass + '__card flex justify--space-around'}>
                     <div className="flex-1-0-auto flex flex--column justify-center">
                       <img height="50" width="50" src={edge.node.info.icon} alt={edge.node.info.humanName} />
                     </div>
-                    <div className="Environment__card-text flex-1-0-auto">
+                    <div className={blockClass + '__card-text flex-1-0-auto'}>
                       <p>{edge.node.info.name}</p>
                       <p>{edge.node.info.humanName}</p>
                     </div>
@@ -48,9 +52,12 @@ class DevEnvironments extends Component {
               })
 
             }
-            <div className="Environment__edit-container">
-                <button className="Environment__edit-button">Edit</button>
-            </div>
+            {
+                (this.props.editVisible) &&
+                <div className="Environment__edit-container">
+                    <button className="Environment__edit-button">Edit</button>
+                </div>
+            }
           </div>
 
         </div>
@@ -130,7 +137,7 @@ export default createPaginationContainer(
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
 
     first = 10;
-    name = props.labbook_name;
+    name = props.labbookName;
     owner = 'default';
      return {
        first,

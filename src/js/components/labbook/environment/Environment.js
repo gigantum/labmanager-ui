@@ -51,10 +51,9 @@ class Environment extends Component {
   _buildCallback(){
 
     BuildImageMutation(
-      environ.props.labbook_name,
+      environ.props.labbookName,
       'default',
       (log) => {
-        console.log(log)
         environ.props.setContainerState(environ.props.labbook.environment.containerStatus)
       }
     )
@@ -68,24 +67,28 @@ class Environment extends Component {
     if(this.props.labbook){
       let env = this.props.labbook.environment;
       let baseImage = env.baseImage;
-      console.log(baseImage)
+
       return(
         <div className="Environment">
 
             <BaseImage
               ref="baseImage"
               environment={this.props.labbook.environment}
+              editVisible={true}
+              blockClass="Environment"
              />
 
             <DevEnvironments
               ref="devEnvironments"
-              labbookName={this.props.labbook_name}
+              labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
+              editVisible={true}
+              blockClass="Environment"
             />
 
             <PackageManagerDependencies
               ref="packageManagerDependencies"
-              labbookName={this.props.labbook_name}
+              labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               setBaseImage={this._setBaseImage}
@@ -96,7 +99,9 @@ class Environment extends Component {
 
             <CustomDependencies
               ref="CustomDependencies"
-                environment={this.props.labbook.environment}
+              environment={this.props.labbook.environment}
+              blockClass="Environment"
+              editVisible={true}
             />
 
           </div>

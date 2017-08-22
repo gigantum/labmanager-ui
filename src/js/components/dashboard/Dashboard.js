@@ -36,7 +36,7 @@ export default class DashboardContainer extends Component {
   }
 
   _displaySelectedComponent(){
-    console.log(this.state.selectedComponent)
+
     if(this.state.selectedComponent === 'datasets'){
 
       return (<DatasetSets />)

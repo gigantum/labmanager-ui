@@ -77,8 +77,20 @@ export default class Routes extends Component {
                   }
                 />
 
+
+
                 <Route
-                  path="/labbooks/:labbook_name"
+                  path="/labbooks/:labbookName/:labbookMenu"
+                  render={(props) =>
+                    <Labbook
+                      auth={auth}
+                      {...props}
+                    />
+                  }
+                />
+
+                <Route
+                  path="/labbooks/:labbookName"
                   render={(props) =>
                     <Labbook
                       auth={auth}

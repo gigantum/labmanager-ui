@@ -19,7 +19,7 @@ export default class BreadCrumbs extends Component {
   }
   /*
       functions(object): takes props
-      returns(array)  route array ['labboks', ${labbook_name}]
+      returns(array)  route array ['labboks', ${labbookName}]
   */
   _getPaths(props){
     let paths = props.location.location.pathname.split('/')

@@ -36,9 +36,9 @@ class PackageManagerDependencies extends Component {
 
 
   render(){
-    console.log(this.props)
+
     let packageManagerDependencies = this.props.environment.packageManagerDependencies;
-    console.log(packageManagerDependencies)
+
     if (packageManagerDependencies) {
       return(
       <div className="Environment_package-manager-dependencies">
@@ -137,7 +137,7 @@ export default createPaginationContainer(
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
 
     first = 10;
-    name = props.labbook_name;
+    name = props.labbookName;
     owner = 'default';
      return {
        first,

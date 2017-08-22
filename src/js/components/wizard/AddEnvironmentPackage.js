@@ -34,15 +34,11 @@ export default class AddEnvironmentPackage extends React.Component {
   continueSave(){
     let all = [];
     this.props.setComponent(this.props.nextWindow)
-    console.log(this.state)
+
     this.state.environmentPackages.forEach((pack) => {
       if(pack.dependencyName){
         let promise = new Promise((resolve, reject) => {
-          console.log(this.props.labbookName,
-          'default',
-          pack.packageManager,
-          pack.dependencyName,
-          this.props.environmentId)
+
           AddEnvironmentPackageMutation(
             this.props.labbookName,
             'default',
@@ -87,7 +83,7 @@ export default class AddEnvironmentPackage extends React.Component {
     if(e.key !== 'Enter'){
       let newEnvironmentPackages = this.state.environmentPackages;
       newEnvironmentPackages[index]['dependencyName'] = e.target.value;
-      console.log(newEnvironmentPackages)
+  
       this.setState({'environmentPackages': newEnvironmentPackages})
     }else{
       this._addRemovePackage(e, 'Add', index);

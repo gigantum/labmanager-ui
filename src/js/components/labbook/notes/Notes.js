@@ -137,7 +137,7 @@ export default createPaginationContainer(
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
 
     first = 10;
-    name = props.labbook_name;
+    name = props.labbookName;
     owner = 'default';
      return {
        first,

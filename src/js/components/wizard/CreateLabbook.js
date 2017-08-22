@@ -71,7 +71,6 @@ export default class CreateLabbook extends React.Component {
 
     state[field] = evt.target.value;
     if(field === 'name'){
-      console.log(this)
       this.props.toggleDisabledContinue(evt.target.value === "");
     }
     this.setState(state)

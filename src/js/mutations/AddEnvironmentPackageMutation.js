@@ -17,7 +17,6 @@ let tempID = 0;
 
 function sharedUpdater(store, id, newEdge) {
   const userProxy = store.get(id);
-  //console.log(userProxy, newEdge)
   const conn = RelayRuntime.ConnectionHandler.getConnection(
     userProxy,
     'PackageManagerDependencies_packageManagerDependencies',
@@ -68,17 +67,13 @@ export default function AddEnvironmentPackageMutation(
           node.setValue(packageName, 'packageName')
           node.setValue(labbookName, 'labbookName')
           node.setValue(owner, 'owner')
-          console.log(payload)
-          debugger;
+
           const newEdge = store.create(
             'client:newEdge:' + tempID,
             'PackageManagerEdge',
           );
-          //console.log(newEdge)
+
           newEdge.setLinkedRecord(node, 'node');
-          //const newEdge =
-          console.log(payload.getLinkedRecord('packageManagerEdge'))
-          //payload.getLinkedRecord('packageManagerDependenciesEdge');
 
           sharedUpdater(store, clientMutationId, newEdge);
         }
@@ -98,7 +93,7 @@ export default function AddEnvironmentPackageMutation(
             'client:newEdge:' + tempID,
             'PackageManagerEdge',
           );
-          console.log(newEdge)
+
           newEdge.setLinkedRecord(node, 'node');
 
           sharedUpdater(store, clientMutationId, newEdge);

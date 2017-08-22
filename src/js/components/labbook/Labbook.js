@@ -19,10 +19,22 @@ const LabbookQuery =  graphql`
     labbook(name: $name, owner: $owner){
       id
       description
+      activeBranch{
+        id
+        name
+        prefix
+        commit{
+          hash
+          shortHash
+          committedOn
+          id
+        }
+      }
       environment{
         containerStatus
       }
       ...Environment_labbook
+      ...Overview_labbook
       ...Notes_labbook
     }
   }`
@@ -39,13 +51,19 @@ const navigation_items = [
 export default class Labbook extends Component {
   constructor(props){
   	super(props);
+
     this.state = {
-      'selectedComponent': 'notes',
+      'selectedComponent': (this.props.match.params.labbookMenu) ? this.props.match.params.labbookMenu : 'overview' ,
       'containerState': 'Closed',
       'containerStatus': ''
     }
 
     labbook = this;
+  }
+
+  componentWillMount() {
+
+      this.setState({'selectedComponent': this.props.match.params.labbookMenu})
   }
   /*
     function(sring):
@@ -64,6 +82,7 @@ export default class Labbook extends Component {
   */
   _setSelectedComponent(componentName){
     this.setState({'selectedComponent': componentName})
+    this.props.history.replace(`../../labbooks/${this.props.match.params.labbookName}/${componentName}`)
   }
   /*
     function():
@@ -72,17 +91,16 @@ export default class Labbook extends Component {
   _getNotesRenderer(){
 
     return (<QueryRenderer
-      key={this.props.match.params.labbook_name + '_query_renderer_labbook'}
+      key={this.props.match.params.labbookName + '_query_renderer_labbook'}
       environment={environment}
       query={LabbookQuery}
-      variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
+      variables={{name:this.props.match.params.labbookName, owner: 'default', first: 20}}
       render={({error, props}) => {
 
         if (error) {
           console.error(error)
           return <div>{error.message}</div>
         } else if (props) {
-          console.log(props)
           if(labbook.state.containerStatus !== props.labbook.environment.containerStatus){
             labbook._setContainerState(props.labbook.environment.containerStatus)
           }
@@ -90,7 +108,7 @@ export default class Labbook extends Component {
             key={props.labbook}
             labbook={props.labbook}
             {...props}
-            labbook_name={this.props.match.params.labbook_name}
+            labbookName={this.props.match.params.labbookName}
             labbookId={props.labbook.id}
           />
         }
@@ -105,10 +123,10 @@ export default class Labbook extends Component {
   _getEnvironmentRenderer(){
 
     return (<QueryRenderer
-      key={this.props.match.params.labbook_name + '_query_renderer_labbook'}
+      key={this.props.match.params.labbookName + '_query_renderer_labbook'}
       environment={environment}
       query={LabbookQuery}
-      variables={{name:this.props.match.params.labbook_name, owner: 'default', first: 20}}
+      variables={{name:this.props.match.params.labbookName, owner: 'default', first: 20}}
       render={({error, props}) => {
 
         if (error) {
@@ -119,32 +137,55 @@ export default class Labbook extends Component {
             labbookId={props.labbook.id}
             setContainerState={this._setContainerState}
             key={props.labbook} {...props}
-            labbook_name={this.props.match.params.labbook_name} />
+            labbookName={this.props.match.params.labbookName} />
         }
         return <div>Loading</div>
       }}
     />)
   }
 
+
+
+  _getOverviewRenderer(){
+
+    return (<QueryRenderer
+      key={this.props.match.params.labbookName + '_query_renderer_labbook'}
+      environment={environment}
+      query={LabbookQuery}
+      variables={{name:this.props.match.params.labbookName, owner: 'default', first: 20}}
+      render={({error, props}) => {
+
+        if (error) {
+          console.error(error)
+          return <div>{error.message}</div>
+        } else if (props) {
+          return <Overview
+            labbook={props.labbook}
+            description={props.labbook.description}
+            labbookName={this.props.match.params.labbookName}
+          />
+        }
+        return <div>Loading</div>
+      }}
+    />)
+
+  }
+
   //gets component for view section
   _getSelectedComponent(){
-    let selectedComponent = this.state.selectedComponent;
-    let notes;
-    switch(selectedComponent){
+    switch(this.state.selectedComponent){
       case 'notes':
-        notes = this._getNotesRenderer() //returns <Notes /> component in a QueryRenderer
-        return notes;
+        return this._getNotesRenderer()
       case 'environment':
         return(this._getEnvironmentRenderer())
       case 'code':
-        return(<Code labbookName={this.props.match.params.labbook_name} setContainerState={this._setContainerState} />)
+        return(<Code labbookName={this.props.match.params.labbookName} setContainerState={this._setContainerState} />)
       case 'data':
         return(<Data />)
       case 'overview':
-        return(<Overview props={this.props} />)
+        return this._getOverviewRenderer()
       default:
-        notes = this._getNotesRenderer()
-        return(notes);
+        return this._getOverviewRenderer()
     }
   }
 
@@ -163,33 +204,39 @@ export default class Labbook extends Component {
 
   render(){
 
-    let labbook_name = this.props.match.params.labbook_name;
-
+    let labbookName = this.props.match.params.labbookName;
     return(
       <div className="Labbook">
 
         <h4 className="Labbook__title">Lab Books</h4>
-         <div className="Labbook__inner-container flex flex--column ">
-           <div className="Labbook__header flex flex--row justify--space-between">
-             <h4 className="Labbook__name-title">{labbook_name}</h4>
-             <div className={'Labbook__container-state ' + this.state.containerState}>
-               {this.state.containerState}
+         <div className="Labbook__inner-container flex flex--row">
+           <div className="Labbook__component-container flex flex--column">
+             <div className="Labbook__header flex flex--row justify--space-between">
+               <h4 className="Labbook__name-title">{labbookName}</h4>
+               <div className={'Labbook__container-state ' + this.state.containerState}>
+                 {this.state.containerState}
+               </div>
+            </div>
+             <div className="Labbook__navigation-container mui-container flex-0-0-auto">
+               <ul className="Labbook__navigation flex flex--row">
+                 {
+                   navigation_items.map((item) => {
+                     return (this._getNavItem(item))
+                   })
+                 }
+               </ul>
              </div>
+
+             <div className="Labbook__view mui-container flex flex-1-0-auto">
+                {this._getSelectedComponent()}
+             </div>
+
           </div>
-           <div className="Labbook__navigation-container mui-container flex-0-0-auto">
-             <ul className="Labbook__navigation flex flex--row">
-               {
-                 navigation_items.map((item) => {
-                   return (this._getNavItem(item))
-                 })
-               }
-             </ul>
-           </div>
+          <div className="Labbook__info">
+            <div className="Labbook__info-card">
 
-           <div className="Labbook__view mui-container flex-1-0-auto">
-              {this._getSelectedComponent()}
-           </div>
-
+            </div>
+          </div>
         </div>
       </div>
     )

@@ -1,0 +1,108 @@
+.Overview{
+  overflow: auto;
+  height: calc(100% - 50px);
+}
+
+.Overview__title{
+  margin: 10px 0 0 0;
+  padding: 0px;
+  font-size: 22px;
+}
+
+.Overview__header{
+  font-weight: light;
+  font-size: 16px;
+}
+
+.Overview__card{
+  background-color: $grey;
+  padding: 2px;
+  border: 1px solid $font-grey;
+  border-radius: 5px;
+  color: $font-grey;
+  width: 180px;
+  font-size: 12px;
+  height: 80px;
+  p{
+    padding: 0px;
+    margin: 2px;
+  }
+}
+
+.Overview__environment-list{
+  li{
+    padding: 10px;
+    width: 220px;
+    .Overview__info{
+      padding-right: 15px;
+      border-right: 1px solid $font-grey;
+    }
+  }
+  li:nth-last-child(1){
+    padding: 10px;
+    width: 220px;
+    .Overview__info{
+      padding-right: 15px;
+      border-right: 0px solid $font-grey;
+    }
+  }
+}
+
+.Overview__card-text{
+  padding: 0px;
+  width: 120px;
+}
+
+.Overview__edit-container{
+  align-self: center;
+  margin-left: 20px;
+}
+
+.Overview__modal{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 100;
+  width: 800px;
+  height: 600px;
+
+  margin: -300px 0 0 -400px;
+
+  border: 1px solid $grey;
+  background-color: $grey-light;
+  box-shadow: 10px 10px 5px #888888;
+
+  .SelectBaseImage__progress-button{
+    display: none;
+  }
+
+}
+
+.Overview__modal-close{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+.Overview__package-dependencies{
+  margin: 10px;
+
+  .Overview__card-text{
+      width: 150px;
+      p{
+        margin: 0 5px 0 0;
+      }
+      background-color: $grey;
+      border: 1px solid $font-grey;
+      border-radius: 5px;
+  }
+}
+
+.Overview__name{
+  font-size: 8px;
+}
+
+.Overview__human-name{
+  color: $charcoal;
+  font-size: 12px;
+}

@@ -6,21 +6,25 @@ class CustomDependencies extends Component {
   render(){
 
     let customDependencies = this.props.environment.customDependencies;
+    let blockClass = this.props.blockClass;
     if (customDependencies) {
       return(
-        <div className="Environment__dependencies">
-            <h4 className="Environment__header">Custom Dependencies</h4>
-            <div className="Environment__info flex justify--left">
+        <div className={blockClass + '__dependencies'}>
+            <h4 className={blockClass + '__header'}>Custom Dependencies</h4>
+            <div className={blockClass + '__info flex justify--left'}>
             {
               customDependencies.edges.map(edge => {
                 return(
-                  <div key={this.props.labbook_name + edge.id} className="Environment__dependencies">
-                    <p>{edge.node.info.description}</p>
-                    <div className="Environment__card flex justify--space-around">
+                  <div key={this.props.labbookName + edge.id} className={blockClass + '__dependencies'}>
+                    {
+                        (this.props.editVisible) &&
+                        <p>{edge.node.info.description}</p>
+                    }
+                    <div className={blockClass + '__card flex justify--space-around'}>
                         <div className="flex-1-0-auto flex flex--column justify-center">
                           <img height="50" width="50" src={edge.node.info.icon} alt={edge.node.info.humanName} />
                         </div>
-                        <div className="Environment__card-text flex-1-0-auto">
+                        <div className={blockClass + '__card-text flex-1-0-auto'}>
                           <p>{edge.node.info.name}</p>
                           <p>{edge.node.info.humanName}</p>
                         </div>
@@ -30,16 +34,22 @@ class CustomDependencies extends Component {
               })
 
             }
-            <div className="Environment__edit-container">
-                <button className="Environment__edit-button">Edit</button>
-            </div>
+            {
+                (this.props.editVisible) &&
+
+                <div className={'Environment__edit-container'}>
+                    <button className="Environment__edit-button">Edit</button>
+                </div>
+
+
+            }
           </div>
         </div>
 
       )
     }else{
       return(
-          <div className="Environment">
+          <div className={blockClass + '__loading'}>
               loading
           </div>
         )
@@ -108,7 +118,7 @@ export default createPaginationContainer(
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
 
     first = 10;
-    name = props.labbook_name;
+    name = props.labbookName;
     owner = 'default';
      return {
        first,

@@ -48,7 +48,7 @@ class LocalLabbooks extends Component {
             history={this.props.history}
             {...this.props}
           />
-          <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >Lab Books</h4>
+          <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >Lab Books <div className="LocalLabbooks__title-add"></div></h4>
           <div className='LocalLabbooks__labbooks flex flex--row flex--wrap justify--left'>
 
             {
@@ -59,12 +59,38 @@ class LocalLabbooks extends Component {
                     key={edge.node.name}
                     onClick={() => this._goToLabbook(edge.node.name)}
                     className='LocalLabbooks__panel flex flex--column justify--space-between'>
-                      <h4>{edge.node.name}</h4>
-                      <p>{edge.node.description}</p>
+                      <div className="LocalLabbooks__icon-row">
+                        <div className="LocalLabbooks__labbook-icon"></div>
+                      </div>
+                      <div className="LocalLabbooks__text-row">
+                        <h4>{edge.node.name}</h4>
+                        <p className="LocalLabbooks__description">{edge.node.description}</p>
+                      </div>
+                      <div className="LocalLabbooks__info-row flex flex--row">
+                        <div className="LocalLabbooks__owner flex flex--row">
+                            <div>Owner</div>
+                            <div className="LocalLabbooks__owner-icon"></div>
+                            <div> {edge.node.owner.username}</div>
+                        </div>
+                        <div className="LocalLabbooks__status">
+
+                        </div>
+
+                      </div>
                   </div>
                 )
               })
             }
+
+            <div
+              key={'addLabbook'}
+              onClick={()=> this.refs.wizardModal._showModal()}
+              className='LocalLabbooks__panel LocalLabbooks__panel--add flex flex--row justify--center'>
+              <div className="LocalLabbooks__labbook-icon">
+                  <div className="LocalLabbooks__title-add"></div>
+              </div>
+
+            </div>
           </div>
           <div className="LocalLabbooks__next-button-container">
             <button key="load_more"
@@ -92,6 +118,10 @@ export default createPaginationContainer(
             node {
               name
               description
+              owner{
+                id
+                username
+              }
             }
             cursor
           }
