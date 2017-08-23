@@ -13,14 +13,11 @@ class LocalLabbooks extends Component {
     super(props)
     this.handler = this.handler.bind(this)
 
-    }
+  }
 
-    handler(e) {
-      e.preventDefault()
-       this.setState({
-         'value': "dsds"
-       })
-     }
+  handler(e) {
+    e.preventDefault()
+  }
   /*
     function(string) inputs a labbook name
     routes to that labbook
@@ -31,47 +28,71 @@ class LocalLabbooks extends Component {
 
   _loadMore(e){
     e.preventDefault();
-    debugger
+
     this.props.relay.loadMore(
       10, // Fetch the next 10 feed items
-      (e, r) => {
-        console.error(e);
-        this.props.relay.refetchConnection(12,(e) => {console.log(e)})
+      (ev) => {
+        console.error(ev);
       }
     );
-
-    // this.props.relay.refetchConnection(
-    //   10,
-    //   e =>{console.log(e)}
-    // )
   }
 
   render(){
-      if(this.props.localLabbooks){
+
+      if(this.props.feed.localLabbooks){
       return(
-        <div className="LabbooksSets">
+        <div className="LocalLabbooks">
           <WizardModal
+            ref="wizardModal"
             handler={this.handler}
             history={this.props.history}
             {...this.props}
           />
-          <div className='LabbooksSets__labbooks flex flex--row flex--wrap justify--center'>
+          <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >Lab Books <div className="LocalLabbooks__title-add"></div></h4>
+          <div className='LocalLabbooks__labbooks flex flex--row flex--wrap justify--left'>
+
             {
 
-              this.props.localLabbooks.edges.map((edge) => {
+              this.props.feed.localLabbooks.edges.map((edge) => {
                 return (
                   <div
                     key={edge.node.name}
                     onClick={() => this._goToLabbook(edge.node.name)}
-                    className='LabbooksSets__panel flex flex--column justify--space-between'>
-                      <h4>{edge.node.name}</h4>
-                      <p>{edge.node.description}</p>
+                    className='LocalLabbooks__panel flex flex--column justify--space-between'>
+                      <div className="LocalLabbooks__icon-row">
+                        <div className="LocalLabbooks__labbook-icon"></div>
+                      </div>
+                      <div className="LocalLabbooks__text-row">
+                        <h4>{edge.node.name}</h4>
+                        <p className="LocalLabbooks__description">{edge.node.description}</p>
+                      </div>
+                      <div className="LocalLabbooks__info-row flex flex--row">
+                        <div className="LocalLabbooks__owner flex flex--row">
+                            <div>Owner</div>
+                            <div className="LocalLabbooks__owner-icon"></div>
+                            <div> {edge.node.owner.username}</div>
+                        </div>
+                        <div className="LocalLabbooks__status">
+
+                        </div>
+
+                      </div>
                   </div>
                 )
               })
             }
+
+            <div
+              key={'addLabbook'}
+              onClick={()=> this.refs.wizardModal._showModal()}
+              className='LocalLabbooks__panel LocalLabbooks__panel--add flex flex--row justify--center'>
+              <div className="LocalLabbooks__labbook-icon">
+                  <div className="LocalLabbooks__title-add"></div>
+              </div>
+
+            </div>
           </div>
-          <div className="LabooksSets__next-button-container">
+          <div className="LocalLabbooks__next-button-container">
             <button key="load_more"
               onClick={(e) => this._loadMore(e)}
               title="Load More"
@@ -90,14 +111,17 @@ class LocalLabbooks extends Component {
 
 export default createPaginationContainer(
   LocalLabbooks,
-  {
-    localLabbooks: graphql`
-      fragment LocalLabbooks_localLabbooks on LabbookConnection @connection(key: "LocalLabbooks_localLabbooks"){
-        #localLabbooks(first: $first, after:$cursor){
+  {feed: graphql`
+      fragment LocalLabbooks_feed on Query{
+        localLabbooks(first: $first, after:$cursor)@connection(key: "LocalLabbooks_localLabbooks"){
           edges {
             node {
               name
               description
+              owner{
+                id
+                username
+              }
             }
             cursor
           }
@@ -107,27 +131,24 @@ export default createPaginationContainer(
             hasPreviousPage
             startCursor
           }
-          #}
+        }
       }
     `,
   },
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.localLabbooks;
+      return props.feed.localLabbooks
     },
-    getFragmentVariables(prevVars, first) {
-
-      first = 10;
+    getFragmentVariables(prevVars, first, cursor) {
       return {
         ...prevVars,
         first: first
       };
     },
     getVariables(props, {first, cursor}, fragmentVariables) {
-
       first = 10;
-      cursor = props.localLabbooks.pageInfo.startCursor;
+      cursor = props.feed.localLabbooks.pageInfo.endCursor;
       return {
         first,
         cursor
@@ -140,9 +161,7 @@ export default createPaginationContainer(
         $first: Int!
         $cursor: String
       ) {
-        localLabbooks(first: $first, after:$cursor){
-          ...LocalLabbooks_localLabbooks
-        }
+          ...LocalLabbooks_feed
       }
     `
   }

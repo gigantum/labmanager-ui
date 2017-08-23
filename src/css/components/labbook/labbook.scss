@@ -11,7 +11,7 @@
 
 .Labbook__title{
   text-align: left;
-  padding: 40px 0 0 40px;
+  padding: 0px 0 0 40px;
 }
 
 .Labbook__inner-container{
@@ -50,6 +50,7 @@
 .Labbook__view{
   height: calc(100% - 90px);
   overflow: hidden;
+
 }
 
 .Labbook__container-state{
@@ -70,4 +71,21 @@
 }
 .Labbook__container-state.Closed{
   background: $labbooks;
+}
+
+.Labbook__component-container{
+  width: calc(100% - 250px);
+}
+
+.Labbook__info{
+  width: 250px;
+
+}
+
+.Labbook__info-card{
+  width: 200px;
+  height: 300px;
+  border: 1px solid $font-grey;
+  color: $font-grey;
+  margin: 20px auto;
 }

@@ -42,7 +42,7 @@ export default class NotesCard extends React.Component {
 
   _getTimeOfDay(timestamp){
     let time = new Date(timestamp);
-    return (time.getHours()%12) + ':' + ((time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes()) + (time.getHours() > 12 ? 'pm' : 'am');
+    return ((time.getHours()%12 === 0) ? 12 : time.getHours()%12) + ':' + ((time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes()) + (time.getHours() > 12 ? 'pm' : 'am');
   }
 
   render(){

@@ -42,7 +42,7 @@ export default class Routes extends Component {
 
     return(
       <div>
-        <Header auth={auth} />
+
 
 
         <Router history={history}>
@@ -53,6 +53,7 @@ export default class Routes extends Component {
               path=""
               render={(location) => {return(
               <div className="Routes">
+                <Header auth={auth} history={history}/>
                 <BreadCrumbs location={location} history={history} />
 
                 <Route
@@ -76,8 +77,20 @@ export default class Routes extends Component {
                   }
                 />
 
+
+
                 <Route
-                  path="/labbooks/:labbook_name"
+                  path="/labbooks/:labbookName/:labbookMenu"
+                  render={(props) =>
+                    <Labbook
+                      auth={auth}
+                      {...props}
+                    />
+                  }
+                />
+
+                <Route
+                  path="/labbooks/:labbookName"
                   render={(props) =>
                     <Labbook
                       auth={auth}

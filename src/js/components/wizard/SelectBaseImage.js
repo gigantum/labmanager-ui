@@ -71,6 +71,8 @@ export default class SelectBaseImage extends React.Component {
   _selectBaseImage(edge){
     this.setState({'selectedBaseImage': edge})
     this.setState({'selectedBaseImageId': edge.node.id})
+    this.props.toggleDisabledContinue(false);
+    this.continueSave = this.continueSave.bind(this);
   }
 
   /*
@@ -78,8 +80,9 @@ export default class SelectBaseImage extends React.Component {
     gets current selectedBaseImage and passes variables to AddEnvironmentComponentMutation
     callback triggers and modal state is changed to  next window
   */
-  _createBaseImage(){
+  continueSave(){
     let component = this.state.selectedBaseImage.node.component;
+    this.props.toggleDisabledContinue(true);
     AddEnvironmentComponentMutation(
       this.props.labbookName,
       'default',
@@ -161,7 +164,7 @@ export default class SelectBaseImage extends React.Component {
                       }
 
                       </div>
-                    <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
+                    {/* <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
                       <button className="SelectBaseImage__progress-button flat--button">
                         Previous
                       </button>
@@ -175,7 +178,7 @@ export default class SelectBaseImage extends React.Component {
                         onClick={()=> this._createBaseImage()} disabled={(!this.state.selectedBaseImageId)}>
                         Save and Continue Setup
                       </button>
-                    </div>
+                    </div> */}
                   </div>                  )
                 }else{
                   return(<div className="Loading"></div>)

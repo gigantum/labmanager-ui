@@ -13,6 +13,9 @@ export default class SelectBaseImage extends React.Component {
       'name': '',
       'description': '',
     };
+
+    this.continueSave = this.continueSave.bind(this)
+    this.props.toggleDisabledContinue(false);
   }
 
 
@@ -20,14 +23,13 @@ export default class SelectBaseImage extends React.Component {
     function()
     runs buildImageMutation and triggers setComponent to proceed to next window
   */
-  _completeSetup(){
+  continueSave(){
     this.setState({'isLoading':true})
     BuildImageMutation(
       this.props.labbookName,
       'default',
       (log, error) => {
         this.setState({'isLoading': false})
-        console.log(log, error)
         this.props.setComponent(this.props.nextWindow, this.state.name)
       }
     )
@@ -60,7 +62,7 @@ export default class SelectBaseImage extends React.Component {
             	</div>
             </div>
           </div>
-          <button disabled={this.state.isLoading} onClick={() => this._completeSetup()}> Complete Setup </button>
+          {/* <button disabled={this.state.isLoading} onClick={() => this._completeSetup()}> Complete Setup </button> */}
         </div>
       </div>
       )

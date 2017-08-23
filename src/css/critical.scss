@@ -12,17 +12,19 @@
 
 //components
 @import 'components/header';
-@import  'components/labbooksets.scss';
+
 @import  'components/breadCrumbs.scss';
 @import  'components/routes.scss';
 @import  'components/login.scss';
 @import  'components/home.scss';
 //dashboard components
 @import  'components/dashboard/dashboard';
+@import  'components//dashboard/localLabBooks.scss';
 //labbook components
 @import  'components/labbook/labbook.scss';
 @import  'components/labbook/notes.scss';
 @import  'components/labbook/environment.scss';
+@import  'components/labbook/overview.scss';
 //wizard components
 @import  'components/wizard/wizardModal';
 @import  'components/wizard/selectBaseImage';
@@ -32,6 +34,7 @@
 @import  'components/wizard/successMessage';
 @import  'components/wizard/selectDevelopmentEnvironment';
 @import  'components/wizard/importCode';
+@import  'components/wizard/addDatasets';
 
 html, body {
   width: 100%;

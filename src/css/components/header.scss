@@ -10,6 +10,28 @@
   color: $cream;
 }
 
+.Header__nav{
+  width: 300px;
+}
+
+.Header__nav-item{
+  width: 130px;
+  height: 40px;
+  line-height: 40px;
+  background: white;
+  padding: 10px 10px 10px 30px;
+  border-radius: 20px;
+  font-size: 20px;
+
+}
+
+.Header__nav-item--datasets{
+  color: $datasets;
+}
+
+.Header__nav-item--labbooks{
+  color: $labbooks;
+}
 
 .Header__button{
   background-color: $orange;

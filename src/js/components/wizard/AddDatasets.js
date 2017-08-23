@@ -26,7 +26,6 @@ export default class SelectBaseImage extends React.Component {
     return(
       <div className="AddDatasets flex justify-center">
 
-          <button onClick={() => this._skip()}> Skip </button>
 
       </div>
       )
