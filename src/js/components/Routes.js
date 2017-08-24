@@ -80,15 +80,7 @@ export default class Routes extends Component {
 
 
 
-                <Route
-                  path="/labbooks/:labbookName/:labbookMenu"
-                  render={(props) =>
-                    <Labbook
-                      auth={auth}
-                      {...props}
-                    />
-                  }
-                />
+
 
                 <Route
                   path="/labbooks/:labbookName"
@@ -98,7 +90,17 @@ export default class Routes extends Component {
                       {...props}
                     />
                   }
-                />
+                >
+                  <Route
+                    path="/labbooks/:labbookName/:labbookMenu"
+                    render={(props) =>
+                      <Labbook
+                        auth={auth}
+                        {...props}
+                      />
+                    }
+                  />
+                </Route>
                 <Route
                   path="/callback"
                   render={(props) => {

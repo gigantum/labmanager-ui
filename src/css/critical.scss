@@ -20,12 +20,13 @@
 @import  'components/home.scss';
 //dashboard components
 @import  'components/dashboard/dashboard';
-@import  'components//dashboard/localLabBooks.scss';
+@import  'components/dashboard/localLabBooks.scss';
 //labbook components
 @import  'components/labbook/labbook.scss';
 @import  'components/labbook/notes.scss';
 @import  'components/labbook/environment.scss';
 @import  'components/labbook/overview.scss';
+@import  'components/labbook/userNote.scss';
 //wizard components
 @import  'components/wizard/wizardModal';
 @import  'components/wizard/selectBaseImage';
@@ -44,7 +45,12 @@ html, body {
   padding: 0;
   color: $charcoal;
   font-family: arial;
-  overflow: hidden;
+  //overflow-x: hidden;
+}
+
+body{
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 h1,
