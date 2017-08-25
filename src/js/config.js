@@ -7,12 +7,11 @@ const CONFIG = {
     'api': 'http://api.localhost/labbook/'
   },
   'navigation_items': [
-    {'id':'notes', 'name': 'Notes'},
-    {'id':'environment', 'name': 'Environment'},
-    {'id':'code', 'name': 'Code'},
-    {'id':'worflow', 'name': 'Workflow'},
-    {'id':'input-data', 'name': 'Input Data'},
-    {'id':'output-data', 'name': 'Output Data'}
+    {id:'overview', name: 'Overview'},
+    {id:'notes', name: 'Notes', 'fragment': '...Notes_labbook'},
+    {id:'environment', name: 'Environment', 'fragment': '...Environment_labbook'},
+    {id:'code', name: 'Code'},
+    {id:'data', name: 'Data'}
   ],
   'months': [
     'Jan',
