@@ -2,3 +2,15 @@
   height: 410px;
   padding: 20px;
 }
+
+.AddDatasets__selection{
+  height: 100px;
+  border: 2px solid $font-grey;
+  width: 100%;
+}
+
+.AddDatasets__selected-items{
+  height: 100px;
+  border: 2px dashed $font-grey;
+  width: 100%;
+}

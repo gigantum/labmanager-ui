@@ -2,7 +2,7 @@ import React from 'react'
 import { QueryRenderer, graphql } from 'react-relay'
 import environment from './../../createRelayEnvironment'
 import AddEnvironmentComponentMutation from './../../mutations/AddEnvironmentComponentMutation'
-
+let addCustomDependencies;
 const AddCustomDependenciesQuery = graphql`query AddCustomDependenciesQuery($first: Int!, $cursor: String){
   availableCustomDependencies(first: $first, after: $cursor){
     edges{
@@ -52,10 +52,11 @@ export default class AddCustomDependencies extends React.Component {
   	super(props);
   	this.state = {
       'modal_visible': false,
-      'selectedCustomDependency': null,
-      'selectedCustomDependencyId': false
+      'selectedCustomDependencies': [],
+      'selectedCustomDependenciesIds': []
     };
     this.continueSave = this.continueSave.bind(this)
+    addCustomDependencies = this;
   }
   /*
     click handle
@@ -63,8 +64,18 @@ export default class AddCustomDependencies extends React.Component {
     sets componest state for selectedCustomDependencyId and selectedCustomDependency
   */
   _selectCustomDependency(edge){
-    this.setState({'selectedCustomDependency': edge})
-    this.setState({'selectedCustomDependencyId': edge.node.id})
+    let selectedCustomDependencies = this.state.selectedCustomDependencies;
+    let selectedCustomDependenciesIds = this.state.selectedCustomDependenciesIds;
+
+    if(selectedCustomDependenciesIds.indexOf(edge.node.id) > -1){
+        selectedCustomDependenciesIds.splice(selectedCustomDependenciesIds.indexOf(edge.node.id), 1)
+        selectedCustomDependencies.splice(selectedCustomDependenciesIds.indexOf(edge.node.id), 1)
+    }else{
+      selectedCustomDependenciesIds.push(edge.node.id)
+      selectedCustomDependencies.push(edge)
+    }
+    this.setState({'selectedCustomDependencies': selectedCustomDependencies})
+    this.setState({'selectedCustomDependenciesIds': selectedCustomDependenciesIds})
     this.props.toggleDisabledContinue(false);
   }
 
@@ -74,22 +85,37 @@ export default class AddCustomDependencies extends React.Component {
     callback triggers and modal state is changed to  next window
   */
   continueSave(){
-    let component = this.state.selectedCustomDependency.node.component;
+    let all = [];
     this.props.toggleDisabledContinue(true);
-    AddEnvironmentComponentMutation(
-      this.props.labbookName,
-      'default',
-      component.repository,
-      component.namespace,
-      component.name,
-      component.version,
-      "clientMutationId",
-      component.componentClass,
-      () => {
-        this.props.setComponent(this.props.nextWindow)
-        this.props.buildCallback();
+    this.state.selectedCustomDependencies.forEach((edge) => {
+
+      let component = edge.node.component;
+      let promise = new Promise((resolve, reject) => {
+        AddEnvironmentComponentMutation(
+          this.props.labbookName,
+          'default',
+          component.repository,
+          component.namespace,
+          component.name,
+          component.version,
+          "clientMutationId",
+          component.componentClass,
+          () => {
+            resolve()
+          }
+        )
+      })
+
+      all.push(promise)
+    });
+
+    Promise.all(all).then(values => {
+
+      addCustomDependencies.props.setComponent(this.props.nextWindow);
+      if(this.props.buildCallback){
+        addCustomDependencies.props.buildCallback();
       }
-    )
+    })
   }
 
   _environmentView(){
@@ -101,7 +127,7 @@ export default class AddCustomDependencies extends React.Component {
     return(
       <div className="AddCustomDependencies">
 
-        <p> Base Image </p>
+        <p> Select Custom Dependencies </p>
 
         <QueryRenderer
           variables={{
@@ -122,11 +148,15 @@ export default class AddCustomDependencies extends React.Component {
                       <div className="AddCustomDependencies__selected-image-container">
 
                           {
-                            (this.state.selectedCustomDependency !== null) && (
-                              <div className="AddCustomDependencies__selected-image">
-                                <img alt="" src={this.state.selectedCustomDependency.node.info.icon} height="50" width="50" />
-                                <p>{this.state.selectedCustomDependency.node.info.humanName}</p>
-                              </div>
+                            (this.state.selectedCustomDependencies.length > -1) && (
+                              this.state.selectedCustomDependencies.map((customDependency, index) => {
+                                return (
+                                  <div key={customDependency.node.id + index} className="AddCustomDependencies__selected-image flex">
+                                    <img alt="" src={customDependency.node.info.icon} height="50" width="50" />
+                                    <p>{customDependency.node.info.humanName}</p>
+                                  </div>
+                                )
+                              })
                             )
                           }
                       </div>
@@ -136,7 +166,7 @@ export default class AddCustomDependencies extends React.Component {
                         props.availableCustomDependencies.edges.map((edge) => {
 
                             return(
-                              <div className={(this.state.selectedCustomDependencyId === edge.node.id) ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'} onClick={()=> this._selectCustomDependency(edge)} key={edge.node.id}>
+                              <div disabled={(this.state.selectedCustomDependenciesIds.indexOf(edge.node.id) > -1)} className={(this.state.selectedCustomDependenciesIds.indexOf(edge.node.id) > -1) ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'} onClick={()=> this._selectCustomDependency(edge)} key={edge.node.id}>
                                 <img alt="" src={edge.node.info.icon} height="50" width="50" />
                                 <p>{edge.node.info.humanName}</p>
                               </div>

@@ -54,7 +54,7 @@ class Environment extends Component {
       environ.props.labbookName,
       'default',
       (log) => {
-        console.log(log)
+
         environ.props.setContainerState(environ.props.labbook.environment.containerStatus)
       }
     )

@@ -33,3 +33,12 @@ button:disabled{
   background: none;
   cursor: pointer;
 }
+
+.flat--button:hover{
+  color: $datasets;
+  background: none;
+}
+.flat--button:focus{
+  color: $datasets;
+  background: none;
+}

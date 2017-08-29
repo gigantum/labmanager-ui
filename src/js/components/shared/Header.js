@@ -9,7 +9,7 @@ export default class Header extends Component {
   }
 
   _setSelectedComponent(component){
-  
+
     this.props.history.replace(`../${component}`)
   }
 
@@ -26,7 +26,7 @@ export default class Header extends Component {
             <li>
               <Link
                 className="Header__nav-item Header__nav-item--datasets flex flex--row justify--space-between"
-                to="../datasets"
+                to={{pathname: '/datasets'}}
               >
                 <div className="Header__datasets-icon"></div>
                 Datasets
@@ -36,7 +36,7 @@ export default class Header extends Component {
               <Link
 
                 className="Header__nav-item Header__nav-item--labbooks flex flex--row justify--space-between"
-                to="../labbooks"
+                to={{pathname: '/labbooks'}}
               >
                 <div className="Header__labbook-icon"></div>
                 Lab Books

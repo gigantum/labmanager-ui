@@ -18,10 +18,10 @@
   padding: 2px;
   border: 1px solid $font-grey;
   border-radius: 5px;
-  color: $font-grey;
+  color: $charcoal;
   width: 180px;
   font-size: 12px;
-  height: 80px;
+  height: 120px;
   p{
     padding: 0px;
     margin: 2px;
@@ -50,6 +50,9 @@
 .Overview__card-text{
   padding: 0px;
   width: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .Overview__edit-container{

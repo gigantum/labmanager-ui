@@ -57,18 +57,15 @@ class BaseImage extends Component {
 
             </div>
             <h4 className={blockClass + '__header'}>Base Image</h4>
-            {
-              this._editVisiible() &&
-              <p>{baseImage.info.description}</p>
-            }
+
             <div className={blockClass + '__info flex justify--left'}>
               <div className={ blockClass + '__card flex justify--space-around'}>
                 <div className="flex-1-0-auto flex flex--column justify-center">
                   <img height="50" width="50" src={baseImage.info.icon} alt={baseImage.info.humanName} />
                 </div>
                 <div className={blockClass + '__card-text flex-1-0-auto'}>
-                  <p className={blockClass + '__name'}>{baseImage.info.name}</p>
                   <p className={blockClass + '__human-name'}>{baseImage.info.humanName}</p>
+                  <p>{baseImage.info.description}</p>
                 </div>
               </div>
               {

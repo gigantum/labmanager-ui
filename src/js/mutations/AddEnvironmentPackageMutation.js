@@ -52,7 +52,7 @@ export default function AddEnvironmentPackageMutation(
       mutation,
       variables,
       onCompleted: (response) => {
-        console.log(response)
+
         callback()
       },
       onError: err => console.error(err),
