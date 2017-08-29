@@ -83,7 +83,7 @@ export default class AddEnvironmentPackage extends React.Component {
     if(e.key !== 'Enter'){
       let newEnvironmentPackages = this.state.environmentPackages;
       newEnvironmentPackages[index]['dependencyName'] = e.target.value;
-  
+
       this.setState({'environmentPackages': newEnvironmentPackages})
     }else{
       this._addRemovePackage(e, 'Add', index);

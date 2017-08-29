@@ -1,6 +1,5 @@
 .Overview{
-  overflow: auto;
-  height: calc(100% - 50px);
+  height: auto;
 }
 
 .Overview__title{
@@ -11,7 +10,7 @@
 
 .Overview__header{
   font-weight: light;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .Overview__card{
@@ -105,4 +104,16 @@
 .Overview__human-name{
   color: $charcoal;
   font-size: 12px;
+}
+
+.Overview__development-environment-item{
+  margin: 0 0 10px;
+}
+
+.PackageCount__item{
+  border: 1px solid $font-grey;
+  border-radius: 3px;
+  color: $charcoal;
+  padding: 5px 20px;
+  background-color: $grey;
 }

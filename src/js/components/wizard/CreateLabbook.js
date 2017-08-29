@@ -39,19 +39,23 @@ export default class CreateLabbook extends React.Component {
     let viewerId = 'localLabbooks';//Todo: figure out what to do with viewerId in the mutation context
     let name = this.state.name;
     //create new labbook
+
     if(this.props.nextWindow){
+
       this.props.toggleDisabledContinue(true);
       CreateLabbookMutation(
         this.state.description,
         name,
         viewerId,
         () => {
+
           this.props.setLabbookName(this.state.name)
           this.props.setComponent(this.props.nextWindow)
         }//route to new labbook on callback
       )
       //this.props.handler(evt);
     }else{
+
       CreateLabbookMutation(
         this.state.description,
         name,
@@ -74,15 +78,13 @@ export default class CreateLabbook extends React.Component {
       this.props.toggleDisabledContinue(evt.target.value === "");
     }
     this.setState(state)
-
-
   }
 
 
   render(){
     return(
       <div className="CreateLabbook">
-          <div className='CreateLabbook__modal-inner-container flex flex-column justify--space-between'>
+          <div className='CreateLabbook__modal-inner-container flex flex--column justify--space-between'>
 
             <div>
               <label>Title</label>
@@ -113,15 +115,6 @@ export default class CreateLabbook extends React.Component {
               />
             </div>
 
-            {/* <div className="CreateLabbook__buttons-container">
-
-              <button
-                className="CreateLabbook__button"
-                onClick={(x, evt) => this._createLabbook(evt)}
-              >
-                Save and Continue Setup
-              </button>
-            </div> */}
 
           </div>
         </div>

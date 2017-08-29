@@ -75,6 +75,7 @@ export default class WizardModal extends React.Component {
   */
 
   _setComponent(navItemId){
+
     let index = 0;
     let navItem = wizard.state.modalNav.filter((nav, i) => {
       index = (nav.id === navItemId) ? i : index;
@@ -251,28 +252,26 @@ export default class WizardModal extends React.Component {
                 )
               }
 
-            <div className="flex flex--row justify--space-between">
+            <div className="flex flex--row justify--center">
 
-              <button disabled={this.state.previousComponentId === null} previousComponent onClick={() => this._setComponent(this.state.previousComponentId)} className="SelectDevelopmentEnvironment__progress-button flat--button">
+              <button disabled={this.state.previousComponentId === null} onClick={() => this._setComponent(this.state.previousComponentId)} className="WizardModal__progress-button flat--button">
                 Previous
               </button>
               <button
                 onClick={() => this._hideModal()}
-                className="SelectDevelopmentEnvironment__progress-button flat--button">
+                className="WizardModal__progress-button flat--button">
                 Cancel
               </button>
               <button
                 disabled={this._getSelectedComponentId() === 'createLabook'}
                 onClick={() => this._setComponent(this.state.nextComponentId)}
-                className="SelectDevelopmentEnvironment__progress-button flat--button">
+                className="WizardModal__progress-button flat--button">
                 skip
               </button>
               <button
                 onClick={()=> this._continueSave()}
                 disabled={(this.state.continueDisabled)}
-                continueDisabled={this._toggleDisabledContinue}
                 >
-
                 Save and Continue Setup
               </button>
 

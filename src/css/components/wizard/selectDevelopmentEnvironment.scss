@@ -70,3 +70,12 @@
     height: 50px;
   }
 }
+
+.Environment__modal{
+  .SelectDevelopmentEnvironment__inner-container{
+    height: 500px;
+  }
+  .SelectDevelopmentEnvironment__progress-button{
+    visibility: hidden;
+  }
+}

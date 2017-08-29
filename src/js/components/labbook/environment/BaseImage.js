@@ -1,10 +1,33 @@
 import React, { Component } from 'react'
 import {createFragmentContainer, graphql} from 'react-relay'
-
+import SelectBaseImage from './../../wizard/SelectBaseImage'
+let baseImage = null;
 class BaseImage extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {'modal_visible': false};
+    baseImage = this;
+  }
 
   _editVisiible(){
     return this.props.editVisible
+  }
+
+  _openModal(){
+      this.setState({'modal_visible': true})
+  }
+  /*
+    function()
+    hide modal view
+  */
+  _hideModal(){
+    this.setState({'modal_visible': false})
+  }
+
+  _setComponent(comp){
+
+    baseImage._hideModal();
   }
 
   render(){
@@ -13,6 +36,26 @@ class BaseImage extends Component {
     if (baseImage) {
       return(
         <div className={blockClass + '__base-image'}>
+            <div id='modal__cover' className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
+                <div
+                  className="Environment__modal-close"
+                  onClick={() => this._hideModal()}>
+                  X
+                </div>
+
+                <SelectBaseImage
+                  ref="selectBaseImage4"
+                  toggleDisabledContinue={() => {}}
+                  labbookName={this.props.labbookName}
+                  setBaseImage={this.props.setBaseImage}
+                  setComponent={this._setComponent}
+                  environmentView={true}
+                  nextWindow={'selectDevelopmentEnvironment'}
+                  buildCallback={this.props.buildCallback}
+                  nextComponent={"continue"}
+                  toggleDisabledContinue={() => function(){}}/>
+
+            </div>
             <h4 className={blockClass + '__header'}>Base Image</h4>
             {
               this._editVisiible() &&

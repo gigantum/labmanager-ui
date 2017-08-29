@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import dateformat from 'dateformat'
 import ReactMarkdown from 'react-markdown'
 
-export default class NotesCard extends React.Component {
+export default class NotesCard extends Component {
   constructor(props){
   	super(props);
     this.state = {showExtraInfo: false}

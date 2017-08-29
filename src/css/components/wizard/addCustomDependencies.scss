@@ -47,3 +47,12 @@
 
   border: 1px dashed $grey;
 }
+
+.Environment__modal{
+  .AddCustomDependencies__inner-container{
+    height: 500px;
+  }
+  .AddCustomDependencies__progress-button{
+    visibility: hidden;
+  }
+}

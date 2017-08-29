@@ -87,8 +87,13 @@ export default class AddCustomDependencies extends React.Component {
       component.componentClass,
       () => {
         this.props.setComponent(this.props.nextWindow)
+        this.props.buildCallback();
       }
     )
+  }
+
+  _environmentView(){
+    return this.props.environmentView
   }
 
   render(){
@@ -140,18 +145,13 @@ export default class AddCustomDependencies extends React.Component {
                       }
 
                     </div>
-                    {/* <div className="AddCustomDependencies__progress-buttons flex flex--row justify--space-between">
-                      <button className="AddCustomDependencies__progress-button flat--button">
-                        Previous
-                      </button>
-                      <button className="AddCustomDependencies__progress-button flat--button">
-                        Cancel
-                      </button>
-                      <button className="AddCustomDependencies__progress-button flat--button">
-                        skip
-                      </button>
-                      <button onClick={()=> this._createCustomDependency()} disabled={(!this.state.selectedCustomDependencyId)}>Save and Continue Setup</button>
-                    </div> */}
+                    {
+                      this._environmentView() && (
+                        <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
+                          <button onClick={() => this.continueSave()}>Save</button>
+                        </div>
+                      )
+                    }
                   </div>
                 )
                 }else{
