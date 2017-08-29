@@ -28,16 +28,22 @@
   width: 70%;
   border-bottom: 1px solid $font-grey;
   position: relative;
-  li{
-    color: $font-grey;
+  box-shadow: none;
+  height: 34px;
+  background-color: inherit;
+  line-height: normal;
+  div{
+    a{
+      color: $font-grey;
+    }
     padding: 5px 30px;
     cursor: pointer;
   }
-  li:hover{
+  div:hover a{
     color: $labbooks;
   }
 
-  li.selected{
+  div.selected{
     background: url('./../images/icons/navigate-up-arrow.svg') no-repeat center 24px;
     background-size: 11px;
     z-index: 100;

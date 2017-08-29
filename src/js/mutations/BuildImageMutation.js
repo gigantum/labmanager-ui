@@ -32,8 +32,11 @@ export default function BuildImageMutation(
     {
       mutation,
       variables,
-      onCompleted: (response) => {
+      onCompleted: (response, error) => {
 
+        if(error){
+          console.error(error)
+        }
         callback()
       },
       onError: err => console.error(err),

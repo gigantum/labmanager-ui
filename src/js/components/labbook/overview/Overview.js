@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import BaseImage from '../environment/BaseImage'
 import CustomDependencies from '../environment/CustomDependencies'
 import DevEnvironments from '../environment/DevEnvironments'
+import PackageCount from './PackageCount'
+
 import {
   createFragmentContainer,
   graphql
@@ -13,7 +15,7 @@ class Overview extends Component {
   }
 
   render(){
-  
+
     if(this.props.labbook){
       return(
         <div className="Overview">
@@ -49,6 +51,12 @@ class Overview extends Component {
 
               </ul>
             </div>
+            <div>
+              <PackageCount
+                ref="packageCount"
+                labbookName={this.props.labbookName}
+              />
+            </div>
             <h4 className="Overview__title">Code</h4>
         </div>
       )
@@ -69,7 +77,6 @@ export default createFragmentContainer(
       ...BaseImage_environment
       ...DevEnvironments_environment
       ...CustomDependencies_environment
-
     }
   }`
 )

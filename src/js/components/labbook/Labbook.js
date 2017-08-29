@@ -22,7 +22,7 @@ let labbook;
 class Labbook extends Component {
   constructor(props){
   	super(props);
-  
+
     this.state = {
       'selectedComponent': (this.props.location.pathname.split('/').length > 3) ? this.props.location.pathname.split('/')[3] : 'overview' ,
       'containerState': 'Closed',
@@ -59,12 +59,12 @@ class Labbook extends Component {
   */
   _getNavItem(item){
     return (
-      <li key={item.id}
+      <div key={item.id}
         className={(this.state.selectedComponent === item.id) ? 'selected' : 'Labbook__navigation-item--' + item.id}
         onClick={()=> this._setSelectedComponent(item.id)}
         >
         <Link to={`../../labbooks/${this.props.match.params.labbookName}/${item.id}`} replace={true}>{item.name}</Link>
-      </li>
+      </div>
     )
   }
 
@@ -101,13 +101,13 @@ class Labbook extends Component {
                </div>
             </div>
              <div className="Labbook__navigation-container mui-container flex-0-0-auto">
-               <ul className="Labbook__navigation flex flex--row">
+               <nav className="Labbook__navigation flex flex--row">
                  {
                    Config.navigation_items.map((item) => {
                      return (this._getNavItem(item))
                    })
                  }
-               </ul>
+               </nav>
              </div>
             <div className="Labbook__view mui-container flex flex-1-0-auto">
 

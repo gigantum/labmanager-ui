@@ -10,7 +10,6 @@ import App from './App';
 import Header from './shared/Header';
 import Footer from './shared/Footer';
 import Labbook from './labbook/Labbook';
-import BreadCrumbs from './breadCrumbs/BreadCrumbs';
 import environment from './../createRelayEnvironment'
 //labbook query with notes fragment
 const LabbookQuery =  graphql`
@@ -65,7 +64,6 @@ export default class Routes extends Component {
               render={(location) => {return(
               <div className="Routes">
                 <Header auth={auth} history={history}/>
-                <BreadCrumbs location={location} history={history} />
 
                 <Route
                   exact
@@ -102,7 +100,7 @@ export default class Routes extends Component {
                             return (<div>{error.message}</div>)
                           }
                           else if(props){
-                      
+
                             return (<Labbook
                               key={parentProps.match.params.labbookName}
                               auth={auth}

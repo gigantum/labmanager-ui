@@ -9,6 +9,7 @@ export default class Header extends Component {
   }
 
   _setSelectedComponent(component){
+  
     this.props.history.replace(`../${component}`)
   }
 

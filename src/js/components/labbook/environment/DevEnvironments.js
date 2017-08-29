@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 
+import SelectDevelopmentEnvironment from './../../wizard/SelectDevelopmentEnvironment'
+let devEnvironments;
 class DevEnvironments extends Component {
   constructor(props){
   	super(props);
   	this.state = {'modal_visible': false};
+
+    devEnvironments = this;
   }
   /*
     function()
@@ -20,6 +24,12 @@ class DevEnvironments extends Component {
   _hideModal(){
       this.setState({'modal_visible': false})
   }
+
+  _setComponent(comp){
+
+    devEnvironments._hideModal();
+  }
+
   render(){
 
     let devEnvs = this.props.environment.devEnvs;
@@ -27,9 +37,27 @@ class DevEnvironments extends Component {
     if (devEnvs) {
       return(
         <div className={ blockClass + '__development-environment'}>
+          <div id='modal__cover' className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
+            <div
+              className="Environment__modal-close"
+              onClick={() => this._hideModal()}>
+              X
+            </div>
+            <SelectDevelopmentEnvironment
+              availablePackageManagers={(this.props.baseImage) ? this.props.baseImage.availablePackageManagers : null}
+              labbookName={this.props.labbookName}
+              environmentId={this.props.environmentId}
+              setBaseImage={this.props.setBaseImage}
+              setComponent={this._setComponent}
+              buildCallback={this.props.buildCallback}
+              nextComponent={"continue"}
+              environmentView={true}
+              toggleDisabledContinue={() => function(){}}
+            />
+          </div>
 
             <h4 className={blockClass + '__header'}>Development Environments</h4>
-            <div className={blockClass + '__info flex justify--left'}>
+            <div className={blockClass + '__info flex justify--left flex--wrap'}>
             {
               devEnvs.edges.map((edge, index) => {
               return(
@@ -39,7 +67,7 @@ class DevEnvironments extends Component {
                       <p>{edge.node.info.description}</p>
                   }
                   <div className={blockClass + '__card flex justify--space-around'}>
-                    <div className="flex-1-0-auto flex flex--column justify-center">
+                    <div className="flex-1-0-auto flex flex--wrap flex--column justify-center">
                       <img height="50" width="50" src={edge.node.info.icon} alt={edge.node.info.humanName} />
                     </div>
                     <div className={blockClass + '__card-text flex-1-0-auto'}>
@@ -55,7 +83,7 @@ class DevEnvironments extends Component {
             {
                 (this.props.editVisible) &&
                 <div className="Environment__edit-container">
-                    <button className="Environment__edit-button">Edit</button>
+                    <button onClick={()=> this._openModal()} className="Environment__edit-button">Edit</button>
                 </div>
             }
           </div>

@@ -1,8 +1,34 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 
+import AddCustomDependencies from './../../wizard/AddCustomDependencies'
+let addCustomDependencies;
 class CustomDependencies extends Component {
+  constructor(props){
+    super(props);
+    this.state = {'modal_visible': false};
 
+    addCustomDependencies = this;
+  }
+  /*
+    function()
+    open modal view
+  */
+  _openModal(){
+      this.setState({'modal_visible': true})
+  }
+  /*
+    function()
+    hide modal view
+  */
+  _hideModal(){
+      this.setState({'modal_visible': false})
+  }
+
+  _setComponent(comp){
+
+    addCustomDependencies._hideModal();
+  }
   render(){
 
     let customDependencies = this.props.environment.customDependencies;
@@ -10,12 +36,28 @@ class CustomDependencies extends Component {
     if (customDependencies) {
       return(
         <div className={blockClass + '__dependencies'}>
+            <div id='modal__cover' className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
+              <div
+                className="Environment__modal-close"
+                onClick={() => this._hideModal()}>
+                X
+              </div>
+              <AddCustomDependencies
+                labbookName={this.props.labbookName}
+                environmentId={this.props.environmentId}
+                setComponent={this._setComponent}
+                buildCallback={this.props.buildCallback}
+                nextComponent={"continue"}
+                environmentView={true}
+                toggleDisabledContinue={() => function(){}}
+              />
+            </div>
             <h4 className={blockClass + '__header'}>Custom Dependencies</h4>
             <div className={blockClass + '__info flex justify--left'}>
             {
-              customDependencies.edges.map(edge => {
+              customDependencies.edges.map((edge, i) => {
                 return(
-                  <div key={this.props.labbookName + edge.id} className={blockClass + '__dependencies'}>
+                  <div key={this.props.labbookName + edge.id + i} className={blockClass + '__dependencies'}>
                     {
                         (this.props.editVisible) &&
                         <p>{edge.node.info.description}</p>
@@ -38,9 +80,8 @@ class CustomDependencies extends Component {
                 (this.props.editVisible) &&
 
                 <div className={'Environment__edit-container'}>
-                    <button className="Environment__edit-button">Edit</button>
+                    <button onClick={() => this._openModal()} className="Environment__edit-button">Edit</button>
                 </div>
-
 
             }
           </div>

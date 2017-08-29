@@ -94,8 +94,13 @@ export default class SelectDevelopmentEnvironment extends React.Component {
       component.componentClass,
       (log) => {
         this.props.setComponent(this.props.nextWindow, this.state.name)
+        this.props.buildCallback()
       }
     )
+  }
+
+  _environmentView() {
+    return this.props.environmentView;
   }
 
   render(){
@@ -118,7 +123,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
               }else{
                 if(props){
                   return(
-                    <div className="SelectDevelopmentEnvironment__inner-container flex flex-column justify--space-between">
+                    <div className="SelectDevelopmentEnvironment__inner-container flex flex--column justify--space-between">
                       <div className="SelectDevelopmentEnvironment__selected-image-container">
 
                           {
@@ -144,24 +149,15 @@ export default class SelectDevelopmentEnvironment extends React.Component {
                       }
 
 
-                      </div>
+                    </div>
+                    {
+                      this._environmentView() && (
+                        <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
+                          <button onClick={() => this.continueSave()}>Save</button>
+                        </div>
+                      )
+                    }
 
-                      {/* <div className="SelectDevelopmentEnvironment__progress-buttons flex flex--row justify--space-between">
-                        <button className="SelectDevelopmentEnvironment__progress-button flat--button">
-                          Previous
-                        </button>
-                        <button className="SelectDevelopmentEnvironment__progress-button flat--button">
-                          Cancel
-                        </button>
-                        <button className="SelectDevelopmentEnvironment__progress-button flat--button">
-                          skip
-                        </button>
-                        <button
-                          onClick={()=> this._createDevelopmentEnvironment()}
-                          disabled={(!this.state.selectedDevelopmentEnvironmentId)}>
-                            Save and Continue Setup
-                        </button>
-                    </div> */}
                 </div>
 
                 )

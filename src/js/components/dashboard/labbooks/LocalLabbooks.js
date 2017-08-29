@@ -54,6 +54,7 @@ class LocalLabbooks extends Component {
             {
 
               this.props.feed.localLabbooks.edges.map((edge) => {
+      
                 return (
                   <div
                     key={edge.node.name}
@@ -70,7 +71,7 @@ class LocalLabbooks extends Component {
                         <div className="LocalLabbooks__owner flex flex--row">
                             <div>Owner</div>
                             <div className="LocalLabbooks__owner-icon"></div>
-                            <div> {edge.node.owner.username}</div>
+                            {/* <div> {owner.username}</div> */}
                         </div>
                         <div className="LocalLabbooks__status">
 

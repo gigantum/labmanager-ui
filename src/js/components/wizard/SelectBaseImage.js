@@ -81,6 +81,7 @@ export default class SelectBaseImage extends React.Component {
     callback triggers and modal state is changed to  next window
   */
   continueSave(){
+
     let component = this.state.selectedBaseImage.node.component;
     this.props.toggleDisabledContinue(true);
     AddEnvironmentComponentMutation(
@@ -94,11 +95,18 @@ export default class SelectBaseImage extends React.Component {
       component.componentClass,
       () => {
         this.props.setBaseImage(this.state.selectedBaseImage)
+        if(this._environmentView()){
+          this.props.buildCallback()
+        }
         if(this.props.setComponent){
           this.props.setComponent(this.props.nextWindow)
         }
       }
     )
+  }
+
+  _environmentView(){
+    return this.props.environmentView
   }
 
   render(){
@@ -123,7 +131,7 @@ export default class SelectBaseImage extends React.Component {
 
                 if(props){
                   return(
-                    <div className="SelectBaseImage__inner-container flex flex-column justify--space-between">
+                    <div className="SelectBaseImage__inner-container flex flex--column justify--space-between">
                       <div className="SelectBaseImage__selected-image-container">
 
                           {
@@ -163,22 +171,15 @@ export default class SelectBaseImage extends React.Component {
                         })
                       }
 
-                      </div>
-                    {/* <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
-                      <button className="SelectBaseImage__progress-button flat--button">
-                        Previous
-                      </button>
-                      <button className="SelectBaseImage__progress-button flat--button">
-                        Cancel
-                      </button>
-                      <button className="SelectBaseImage__progress-button flat--button">
-                        skip
-                      </button>
-                      <button
-                        onClick={()=> this._createBaseImage()} disabled={(!this.state.selectedBaseImageId)}>
-                        Save and Continue Setup
-                      </button>
-                    </div> */}
+                    </div>
+                    {
+                      this._environmentView() && (
+                        <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
+                          <button onClick={() => this.continueSave()}>Save</button>
+                        </div>
+                      )
+                    }
+
                   </div>                  )
                 }else{
                   return(<div className="Loading"></div>)

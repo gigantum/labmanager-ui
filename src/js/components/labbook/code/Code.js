@@ -28,7 +28,7 @@ export default class Code extends Component {
 
     return(
         <div id="code" className="Code flex flex-row justify-center">
-          <button className="" onClick={() => this._openJupyter()}
+          <button className="Code__open-jupyter" onClick={() => this._openJupyter()}
           target="_blank">
             Open Jupyter
           </button>

@@ -54,6 +54,7 @@ class Environment extends Component {
       environ.props.labbookName,
       'default',
       (log) => {
+        console.log(log)
         environ.props.setContainerState(environ.props.labbook.environment.containerStatus)
       }
     )
@@ -73,9 +74,15 @@ class Environment extends Component {
 
             <BaseImage
               ref="baseImage"
+              labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
+              environmentId={this.props.labbook.environment.id}
               editVisible={true}
+              setComponent={this._setComponent}
+              setBaseImage={this._setBaseImage}
+              buildCallback={this._buildCallback}
               blockClass="Environment"
+              baseImage={baseImage}
              />
 
             <DevEnvironments
@@ -83,6 +90,7 @@ class Environment extends Component {
               labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               editVisible={true}
+              buildCallback={this._buildCallback}
               blockClass="Environment"
             />
 
@@ -101,7 +109,9 @@ class Environment extends Component {
               ref="CustomDependencies"
               environment={this.props.labbook.environment}
               blockClass="Environment"
+              buildCallback={this._buildCallback}
               editVisible={true}
+              labbookName={this.props.labbookName}
             />
 
           </div>
@@ -128,11 +138,11 @@ export default createFragmentContainer(
       baseImage{
         availablePackageManagers
       }
+
       ...BaseImage_environment
       ...DevEnvironments_environment
       ...PackageManagerDependencies_environment
       ...CustomDependencies_environment
-
     }
   }`
 )
