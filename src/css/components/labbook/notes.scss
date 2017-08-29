@@ -1,31 +1,47 @@
 .Notes{
-  overflow-y: auto;
   overflow-x: hidden;
-  height: calc(100% - 13px);
+  overflow-y: auto;
+
   width: 100%;
+  height: calc(100% - 13px);
 }
 
 .NotesCard{
-  padding: 0 10px;
   margin: 15px 15px;
+  padding: 0 10px;
+
   color: $font-grey;
 }
 
+.NotesCard__markdown-container{
+  overflow: auto;
+
+  height: auto;
+  max-height: 300px;
+  padding: 20px;
+
+  border: 1px solid $charcoal;
+}
+
 .NotesCard__toggle-button{
-  height: 30px;
-  width: 120px;
-  cursor: pointer;
   align-self: flex-end;
+
+  width: 120px;
+  height: 30px;
+
+  cursor: pointer;
+
   color: $font-grey;
 }
  .NotesCard__toggle-icon{
-   height: 20px;
    width: 20px;
+   height: 20px;
  }
 .NotesCard__toggle-button.open .NotesCard__toggle-icon{
+  transform: rotate(90deg);
+
   background: url('./../images/icons/down-arrow.svg') no-repeat 90% center;
   background-size: 10px;
-  transform: rotate(90deg);
 }
 
 .NotesCard__toggle-button.closed .NotesCard__toggle-icon{
@@ -34,17 +50,22 @@
 }
 
 .NotesCard__expanded-view{
-  border-radius: 3px;
-  padding: 10px;
-  margin: 5px 0 0 0;
-  transition: height 0.5s;
-  height: 260px;
   overflow: hidden;
+
+  min-height: 0px;
+  max-height: 540px;
+  margin: 5px 0 0 0;
+  padding: 10px;
+
+  transition: height 0.5s;
+
+  border-radius: 3px;
 }
 .NotesCard__expanded-view.no-height{
   height: 0px;
-  border: 0px;
   padding: 0px;
+
+  border: 0px;
   // overflow: hidden;
   // visibility: hidden;
 }
@@ -53,9 +74,10 @@
 }
 
 .NotesCard__commit-message{
-  margin: 0 15px;
-  flex: 1 0 auto;
   align-self: center;
+  flex: 1 0 auto;
+
+  margin: 0 15px;
 }
 
 .NotesCard__tags-list{
@@ -64,11 +86,14 @@
     padding: 0 10px 0 0
   }
   li:before{
-   content: '';
    display: inline-block;
-   height: 12px;
+
    width: 12px;
+   height: 12px;
    margin: 0 5px;
+
+   content: '';
+
    background-image: url('../images/icons/price-tag.svg');
  }
 }
@@ -78,30 +103,32 @@
 }
 
 .Notes__date-tab{
+    width: 80px;
+    height: 80px;
+
     border: 4px solid $activity;
     border-radius: 40px;
     background: $grey-light;
-    height: 80px;
-    width: 80px;
+
     font-weight: lighter;
 }
 
 .Notes__date-month{
-  font-size: 20px;
-  color: $font-grey;
   align-self: center;
-  height: 30px
+
+  height: 30px;
+
+  color: $font-grey;
+
+  font-size: 20px;
 }
 
 .Notes__date-day{
-  color: $font-grey;
-  font-size: 26px;
   align-self: center;
+
   height: 26px;
+
+  color: $font-grey;
+
+  font-size: 26px;
 }
-//
-// USER_MAJOR
-// USER_MINOR
-// AUTO_MAJOR
-// AUTO_MINOR
-// AUTO_DETAIL

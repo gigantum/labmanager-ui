@@ -1,5 +1,5 @@
 # source: http://localhost:5000/labbook/
-# timestamp: Fri Aug 11 2017 15:48:23 GMT-0400 (EDT)
+# timestamp: Thu Aug 24 2017 14:08:47 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -131,6 +131,24 @@ input CreateNoteInput {
 
 # Mutation to create a new note entry
 type CreateNotePayload {
+  note: Note
+  clientMutationId: String
+}
+
+input CreateUserNoteInput {
+  labbookName: String!
+  owner: String
+  message: String!
+  freeText: String
+  tags: [String]
+  objects: [NoteObjectInput]
+  clientMutationId: String
+}
+
+# Mutation to create a new user note entry in the activity feed of lab book
+#
+# The log level is set to USER_NOTE automatically and the `linked_commit` is an empty string
+type CreateUserNotePayload {
   note: Note
   clientMutationId: String
 }
@@ -356,6 +374,7 @@ type Mutation {
   buildImage(input: BuildImageInput!): BuildImagePayload
   startContainer(input: StartContainerInput!): StartContainerPayload
   createNote(input: CreateNoteInput!): CreateNotePayload
+  createUserNote(input: CreateUserNoteInput!): CreateUserNotePayload
   addEnvironmentComponent(input: AddEnvironmentComponentInput!): AddEnvironmentComponentPayload
   addEnvironmentPackage(input: AddEnvironmentPackageInput!): AddEnvironmentPackagePayload
 }
@@ -395,6 +414,7 @@ type NoteEdge {
 }
 
 enum NoteLogLevel {
+  USER_NOTE
   USER_MAJOR
   USER_MINOR
   AUTO_MAJOR

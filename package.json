@@ -74,6 +74,8 @@
     "react-relay": "^1.1.0",
     "react-router-dom": "^4.1.1",
     "react-scroll": "^1.5.4",
+    "react-tag-input": "^4.7.2",
+    "showdown": "^1.7.3",
     "simplemde": "^1.11.2",
     "ws": "^3.1.0",
     "xmlhttprequest": "^1.8.0"

@@ -27,7 +27,7 @@ class Notes extends Component {
   _transformNotes(notes){
     let notesTime = {}
     notes.edges.map(function(note){
-      let date = new Date(note.node.timestamp)
+      let date = (note.node.timestamp) ? new Date(note.node.timestamp) : new Date()
       let timeHash = date.getYear() + '_' + date.getMonth() + ' _' + date.getDate();
       if(notesTime[timeHash]){
         let newNoteObject = {edge: note, date: date}
@@ -108,6 +108,7 @@ export default createPaginationContainer(
               level
               tags
               timestamp
+              freeText
               message
               id
               author

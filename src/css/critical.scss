@@ -64,12 +64,12 @@ h6 {
 }
 
 .modal__cover{
-  position: absolute;
+  position: fixed;
   top: 0px;
   bottom: 0px;
   right: 0px;
   left: 0px;
   background-color: $charcoal;
   opacity: 0.5;
-  z-index: 50;
+  z-index: 70;
 }

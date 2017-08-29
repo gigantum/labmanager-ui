@@ -11,3 +11,35 @@
   cursor: pointer;
   z-index: 50;
 }
+
+.UserNote__add-note{
+  align-self: center;
+}
+
+.CodeMirror, .CodeMirror-scroll{
+  min-height: 250px !important;
+}
+
+.CodeMirror-sizer{
+  height: 200px;
+}
+
+.ReactTags__selected{
+  height: 90px;
+}
+.ReactTags__remove{
+  margin: 0 3px;
+  cursor: pointer;
+}
+.ReactTags__remove:hover{
+  color: red;
+}
+
+.ReactTags__tag{
+  padding: 5px;
+  border: 1px solid $datasets;
+  border-radius: 1px;
+  background-color: $grey-light;
+  color: $font-grey;
+  margin: 0 10px 0 0;
+}
