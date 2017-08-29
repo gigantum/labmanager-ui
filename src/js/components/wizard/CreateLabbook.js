@@ -3,14 +3,6 @@ import { QueryRenderer, graphql } from 'react-relay'
 
 import CreateLabbookMutation from './../../mutations/CreateLabbookMutation'
 
-// const CreatePageViewerQuery = graphql`
-//   query CreateLabbookQuery {
-//     viewer {
-//       id
-//     }
-//   }
-// `;
-
 export default class CreateLabbook extends React.Component {
   constructor(props){
   	super(props);

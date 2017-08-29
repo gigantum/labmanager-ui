@@ -19,9 +19,6 @@ class Environment extends Component {
     environ = this; //set variable for encapsulation
   }
 
-  componentWillMount() {
-    this.props.setContainerState(environ.props.labbook.environment.containerStatus)
-  }
   /*
     function()
     open modal view
@@ -50,12 +47,14 @@ class Environment extends Component {
 
   _buildCallback(){
 
+    environ.props.setBuildingState(true)
+
     BuildImageMutation(
       environ.props.labbookName,
       'default',
       (log) => {
 
-        environ.props.setContainerState(environ.props.labbook.environment.containerStatus)
+        environ.props.setBuildingState(false)
       }
     )
   }

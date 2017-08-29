@@ -45,7 +45,6 @@ class BaseImage extends Component {
 
                 <SelectBaseImage
                   ref="selectBaseImage4"
-                  toggleDisabledContinue={() => {}}
                   labbookName={this.props.labbookName}
                   setBaseImage={this.props.setBaseImage}
                   setComponent={this._setComponent}

@@ -4,7 +4,7 @@
 }
 
 
-.Code__open-jupyter, .Code__open-jupyter:hover{
+.Code__open-jupyter, .Code__open-jupyter:hover, .Code__open-jupyter:focus{
   color: $datasets;
   max-height: 40px;
   border-radius: 3px;
@@ -14,6 +14,6 @@
   background-size: 30px
 }
 
-.Code__open-jupyter:hover{
+.Code__open-jupyter:hover, .Code__open-jupyter:focus{
   background-color: $white;
 }
