@@ -26,6 +26,8 @@ const containerStatusQuery = graphql`
 }
 `
 
+let tempStatus;
+
 export default class ContainerStatus extends Component {
   constructor(props){
   	super(props);
@@ -46,11 +48,13 @@ export default class ContainerStatus extends Component {
     this.interval = setInterval(this.tick, 2000);
   }
 
+
   _getContainerStatusText(value){
     let status = (value === 'RUNNING') ? 'Open' : value;
     status = (value === 'NOT_RUNNING') ? 'Closed' : status;
     status = (this.props.isBuilding) ? 'Building' : status;
-    this.setState({'status': status})
+    tempStatus = status
+
     return status;
   }
 
@@ -83,8 +87,8 @@ export default class ContainerStatus extends Component {
 
             return (
               <div className="ContainerStatus flex flex--column">
-                <div className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : this.state.status)}>
-                  {this.state.status}
+                <div className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : tempStatus)}>
+                  {((this.props.isBuilding) ? 'Building' : tempStatus)}
                 </div>
             </div>)
           }
