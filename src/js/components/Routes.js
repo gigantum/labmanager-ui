@@ -7,6 +7,7 @@ import history from './../history';
 import Home from './home/Home';
 import App from './App';
 import Header from './shared/Header';
+import Footer from './shared/Footer';
 import Labbook from './labbook/Labbook';
 import BreadCrumbs from './breadCrumbs/BreadCrumbs';
 
@@ -79,15 +80,7 @@ export default class Routes extends Component {
 
 
 
-                <Route
-                  path="/labbooks/:labbookName/:labbookMenu"
-                  render={(props) =>
-                    <Labbook
-                      auth={auth}
-                      {...props}
-                    />
-                  }
-                />
+
 
                 <Route
                   path="/labbooks/:labbookName"
@@ -97,7 +90,17 @@ export default class Routes extends Component {
                       {...props}
                     />
                   }
-                />
+                >
+                  <Route
+                    path="/labbooks/:labbookName/:labbookMenu"
+                    render={(props) =>
+                      <Labbook
+                        auth={auth}
+                        {...props}
+                      />
+                    }
+                  />
+                </Route>
                 <Route
                   path="/callback"
                   render={(props) => {
@@ -109,6 +112,7 @@ export default class Routes extends Component {
                     )
                   }}
                 />
+                <Footer/>
               </div>
             )}}
            />

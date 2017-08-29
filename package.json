@@ -64,6 +64,7 @@
     "bourbon": "^4.3.4",
     "dateformat": "^2.0.0",
     "graphql": "^0.10.5",
+    "inline-attachment": "^2.0.3",
     "json-to-graphql": "^0.1.1",
     "normalize": "^0.3.1",
     "react": "^15.6.1",
@@ -73,6 +74,7 @@
     "react-relay": "^1.1.0",
     "react-router-dom": "^4.1.1",
     "react-scroll": "^1.5.4",
+    "simplemde": "^1.11.2",
     "ws": "^3.1.0",
     "xmlhttprequest": "^1.8.0"
   },

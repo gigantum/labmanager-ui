@@ -10,6 +10,7 @@ import Code from './code/Code'
 import Data from './data/Data'
 import Overview from './overview/Overview'
 import Environment from './environment/Environment'
+import UserNote from './UserNote'
 
 import environment from '../../createRelayEnvironment'
 let labbook;
@@ -55,7 +56,8 @@ export default class Labbook extends Component {
     this.state = {
       'selectedComponent': (this.props.match.params.labbookMenu) ? this.props.match.params.labbookMenu : 'overview' ,
       'containerState': 'Closed',
-      'containerStatus': ''
+      'containerStatus': '',
+      'modalVisible': ''
     }
 
     labbook = this;
@@ -202,6 +204,18 @@ export default class Labbook extends Component {
     )
   }
 
+  _showLabbookModal(){
+    document.getElementById('labbookModal').classList.remove('hidden')
+    document.getElementById('modal__cover').classList.remove('hidden')
+    this.setState({'modalVisible': true})
+  }
+  _hideLabbookModal(){
+
+    document.getElementById('labbookModal').classList.add('hidden')
+    document.getElementById('modal__cover').classList.add('hidden')
+    this.setState({'modalVisible': false})
+  }
+
   render(){
 
     let labbookName = this.props.match.params.labbookName;
@@ -213,6 +227,10 @@ export default class Labbook extends Component {
            <div className="Labbook__component-container flex flex--column">
              <div className="Labbook__header flex flex--row justify--space-between">
                <h4 className="Labbook__name-title">{labbookName}</h4>
+               <div className="Labbook__user-note" onClick={() => this._showLabbookModal()}>
+                  <h5>Add Note</h5>
+                  <div className="Labbook__user-note--add"></div>
+               </div>
                <div className={'Labbook__container-state ' + this.state.containerState}>
                  {this.state.containerState}
                </div>
@@ -231,6 +249,10 @@ export default class Labbook extends Component {
                 {this._getSelectedComponent()}
              </div>
 
+          </div>
+          <div id="labbookModal" className="Labbook__modal hidden">
+            <div onClick={() => this._hideLabbookModal()} className="UserNote__close">X</div>
+            {(this.state.modalVisible) && <UserNote />}
           </div>
           <div className="Labbook__info">
             <div className="Labbook__info-card">
