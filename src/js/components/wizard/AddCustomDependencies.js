@@ -2,7 +2,7 @@ import React from 'react'
 import { QueryRenderer, graphql } from 'react-relay'
 import environment from './../../createRelayEnvironment'
 import AddEnvironmentComponentMutation from './../../mutations/AddEnvironmentComponentMutation'
-
+let addCustomDependencies;
 const AddCustomDependenciesQuery = graphql`query AddCustomDependenciesQuery($first: Int!, $cursor: String){
   availableCustomDependencies(first: $first, after: $cursor){
     edges{
@@ -56,6 +56,7 @@ export default class AddCustomDependencies extends React.Component {
       'selectedCustomDependenciesIds': []
     };
     this.continueSave = this.continueSave.bind(this)
+    addCustomDependencies = this;
   }
   /*
     click handle
@@ -84,22 +85,37 @@ export default class AddCustomDependencies extends React.Component {
     callback triggers and modal state is changed to  next window
   */
   continueSave(){
-    let component = this.state.selectedCustomDependency.node.component;
+    let all = [];
     this.props.toggleDisabledContinue(true);
-    AddEnvironmentComponentMutation(
-      this.props.labbookName,
-      'default',
-      component.repository,
-      component.namespace,
-      component.name,
-      component.version,
-      "clientMutationId",
-      component.componentClass,
-      () => {
-        this.props.setComponent(this.props.nextWindow)
-        this.props.buildCallback();
+    this.state.selectedCustomDependencies.forEach((edge) => {
+
+      let component = edge.node.component;
+      let promise = new Promise((resolve, reject) => {
+        AddEnvironmentComponentMutation(
+          this.props.labbookName,
+          'default',
+          component.repository,
+          component.namespace,
+          component.name,
+          component.version,
+          "clientMutationId",
+          component.componentClass,
+          () => {
+            resolve()
+          }
+        )
+      })
+
+      all.push(promise)
+    });
+
+    Promise.all(all).then(values => {
+
+      addCustomDependencies.props.setComponent(this.props.nextWindow);
+      if(this.props.buildCallback){
+        addCustomDependencies.props.buildCallback();
       }
-    )
+    })
   }
 
   _environmentView(){
@@ -111,7 +127,7 @@ export default class AddCustomDependencies extends React.Component {
     return(
       <div className="AddCustomDependencies">
 
-        <p> Base Image </p>
+        <p> Select Custom Dependencies </p>
 
         <QueryRenderer
           variables={{
@@ -125,7 +141,7 @@ export default class AddCustomDependencies extends React.Component {
 
                 return(<div>{error.message}</div>)
               }else{
-                console.log(this.state.selectedCustomDependenciesIds)
+
                 if(props){
                   return(
                     <div className="AddCustomDependencies__inner-container flex flex--column justify--space-between">
@@ -148,7 +164,7 @@ export default class AddCustomDependencies extends React.Component {
                       <div className="AddCustomDependencies__images flex flex--row flex--wrap justify--space-around">
                       {
                         props.availableCustomDependencies.edges.map((edge) => {
-                            console.log(this.state.selectedCustomDependenciesIds.indexOf(edge.node.id), edge.node.id)
+
                             return(
                               <div disabled={(this.state.selectedCustomDependenciesIds.indexOf(edge.node.id) > -1)} className={(this.state.selectedCustomDependenciesIds.indexOf(edge.node.id) > -1) ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'} onClick={()=> this._selectCustomDependency(edge)} key={edge.node.id}>
                                 <img alt="" src={edge.node.info.icon} height="50" width="50" />

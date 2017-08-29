@@ -127,6 +127,13 @@ export default class WizardModal extends React.Component {
     this.refs[this._getSelectedComponentId()].continueSave()
   }
 
+  _getButtonText(){
+    let text = (this.state.selectedComponentId === 'successMessage') ? 'Done' : 'Save and Continue Setup'
+    text = (this.state.selectedComponentId === 'importCode') ? 'Complete' : text;
+
+    return text;
+  }
+
   render(){
 
     return(
@@ -254,25 +261,27 @@ export default class WizardModal extends React.Component {
 
             <div className="flex flex--row justify--center">
 
-              <button disabled={this.state.previousComponentId === null} onClick={() => this._setComponent(this.state.previousComponentId)} className="WizardModal__progress-button flat--button">
+              <button disabled={this.state.previousComponentId === null} onClick={() => this._setComponent(this.state.previousComponentId)} className={(this.state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
                 Previous
               </button>
               <button
                 onClick={() => this._hideModal()}
-                className="WizardModal__progress-button flat--button">
+                className={(this.state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
                 Cancel
               </button>
               <button
                 disabled={this._getSelectedComponentId() === 'createLabook'}
                 onClick={() => this._setComponent(this.state.nextComponentId)}
-                className="WizardModal__progress-button flat--button">
+                className={(this.state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
                 skip
               </button>
               <button
                 onClick={()=> this._continueSave()}
                 disabled={(this.state.continueDisabled)}
                 >
-                Save and Continue Setup
+                  {
+                    this._getButtonText()
+                  }
               </button>
 
             </div>

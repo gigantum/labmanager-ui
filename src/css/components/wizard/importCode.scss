@@ -1,4 +1,18 @@
+.ImportCode{
+  padding: 20px;
+}
+
 .ImportCode__loading{
-  height: 410px;
+  height: 200px;
   width: 200px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -100px 0 0 -100px;
+}
+
+.ImportCode__drop{
+  width: 100%;
+  height: 370px;
+  resize: none;
 }

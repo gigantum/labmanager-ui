@@ -40,30 +40,30 @@ export default class SelectBaseImage extends React.Component {
   render(){
 
     return(
-      <div className="ImportCode flex flex--row justify-center">
-        <div className="ImportCode flex flex--column justify--space-between">
-          <div className={!this.state.isLoading ? 'ImportCode__loading visibility-hidden' : 'ImportCode__loading'}>
+      <div className="ImportCode flex flex--column justify-center">
+        <textarea className="ImportCode__drop" placeholder="Drag and Drop code here"></textarea>
 
-            <div className="loader">
-            	<div className="loader--ball loader--1">
-            		<div className="loader--inner-ball"></div>
-            	</div>
-            	<div className="loader--ball loader--2">
-            		<div className="loader--inner-ball"></div>
-            	</div>
-            	<div className="loader--ball loader--3">
-            		<div className="loader--inner-ball"></div>
-            	</div>
-            	<div className="loader--ball loader--4">
-            		<div className="loader--inner-ball"></div>
-            	</div>
-            	<div className="loader--ball loader--5">
-            		<div className="loader--inner-ball"></div>
-            	</div>
-            </div>
+        <div className={!this.state.isLoading ? 'ImportCode__loading visibility-hidden' : 'ImportCode__loading'}>
+
+          <div className="loader">
+          	<div className="loader--ball loader--1">
+          		<div className="loader--inner-ball"></div>
+          	</div>
+          	<div className="loader--ball loader--2">
+          		<div className="loader--inner-ball"></div>
+          	</div>
+          	<div className="loader--ball loader--3">
+          		<div className="loader--inner-ball"></div>
+          	</div>
+          	<div className="loader--ball loader--4">
+          		<div className="loader--inner-ball"></div>
+          	</div>
+          	<div className="loader--ball loader--5">
+          		<div className="loader--inner-ball"></div>
+          	</div>
           </div>
-          {/* <button disabled={this.state.isLoading} onClick={() => this._completeSetup()}> Complete Setup </button> */}
         </div>
+        {/* <button disabled={this.state.isLoading} onClick={() => this._completeSetup()}> Complete Setup </button> */}
       </div>
       )
   }

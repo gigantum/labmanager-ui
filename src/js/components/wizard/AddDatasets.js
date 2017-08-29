@@ -24,7 +24,11 @@ export default class SelectBaseImage extends React.Component {
   render(){
 
     return(
-      <div className="AddDatasets flex justify-center">
+      <div className="AddDatasets flex flex--column justify--space-around">
+          <p>Select a Dataset</p>
+
+          <div className="AddDatasets__selected-items flex justify-center"></div>
+          <div className="AddDatasets__selection flex justify-center"></div>
 
 
       </div>

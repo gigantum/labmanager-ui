@@ -58,17 +58,15 @@ class CustomDependencies extends Component {
               customDependencies.edges.map((edge, i) => {
                 return(
                   <div key={this.props.labbookName + edge.id + i} className={blockClass + '__dependencies'}>
-                    {
-                        (this.props.editVisible) &&
-                        <p>{edge.node.info.description}</p>
-                    }
+            
                     <div className={blockClass + '__card flex justify--space-around'}>
                         <div className="flex-1-0-auto flex flex--column justify-center">
                           <img height="50" width="50" src={edge.node.info.icon} alt={edge.node.info.humanName} />
                         </div>
                         <div className={blockClass + '__card-text flex-1-0-auto'}>
-                          <p>{edge.node.info.name}</p>
                           <p>{edge.node.info.humanName}</p>
+                          <p>{edge.node.info.description}</p>
+
                         </div>
                     </div>
                   </div>

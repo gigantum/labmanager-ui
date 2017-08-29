@@ -136,10 +136,13 @@ export default class AddEnvironmentPackage extends React.Component {
                     </div>
                     <input
                       className="AddEnvironmentPackage__text-input"
+                      ref={'packgeInput' + index }
                       disabled={pack.state === 'Remove'}
                       onKeyUp={(e) => this._updateDependencyName(e, index)}
                       type="text"
-                      placeholder="Dependency Name">
+                      placeholder="Dependency Name"
+                      autoFocus={((this.state.environmentPackages.length-1) === index)}
+                      >
 
                     </input>
                     <button
