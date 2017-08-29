@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route , Switch, Link} from 'react-router-dom';
 import {
-  QueryRenderer,
   createFragmentContainer,
   graphql
 } from 'react-relay'
@@ -14,6 +13,7 @@ import Data from './data/Data'
 import Overview from './overview/Overview'
 import Environment from './environment/Environment'
 import UserNote from './UserNote'
+import ContainerStatus from './ContainerStatus'
 
 import Config from './../../config'
 
@@ -26,23 +26,13 @@ class Labbook extends Component {
     this.state = {
       'selectedComponent': (this.props.location.pathname.split('/').length > 3) ? this.props.location.pathname.split('/')[3] : 'overview' ,
       'containerState': 'Closed',
+      'isBuilding': false,
       'containerStatus': '',
       'modalVisible': ''
     }
 
     labbook = this;
 
-  }
-
-  /*
-    function(sring):
-    updates container state
-  */
-  _setContainerState(value){
-    labbook.setState({'containerStatus': value})
-    value = (value === 'RUNNING') ? 'Open' : value;
-    value = (value === 'NOT_RUNNING') ? 'Closed' : value;
-    labbook.setState({'containerState': value})
   }
   /*
     function(string): input string componenetName
@@ -51,6 +41,13 @@ class Labbook extends Component {
   _setSelectedComponent(componentName){
     this.setState({'selectedComponent': componentName})
     this.props.history.replace(`../../labbooks/${this.props.match.params.labbookName}/${componentName}`)
+  }
+
+  _setBuildingState(isBuilding){
+
+    labbook.refs['ContainerStatus'].setState({'isBuilding': isBuilding})
+
+    labbook.setState({'isBuilding': isBuilding})
   }
 
   /*
@@ -92,13 +89,14 @@ class Labbook extends Component {
            <div className="Labbook__component-container flex flex--column">
              <div className="Labbook__header flex flex--row justify--space-between">
                <h4 className="Labbook__name-title">{labbookName}</h4>
-               <div className="Labbook__user-note" onClick={() => this._showLabbookModal()}>
-                  <h5>Add Note</h5>
-                  <div className="Labbook__user-note--add"></div>
-               </div>
-               <div className={'Labbook__container-state ' + this.state.containerState}>
-                 {this.state.containerState}
-               </div>
+
+               <ContainerStatus
+                 ref="ContainerStatus"
+                 containerStatus={this.state.containerState}
+                 labbookName={this.props.labbookName}
+                 setBuildingState={this._setBuildingState}
+                 isBuilding={this.state.isBuilding}
+               />
             </div>
              <div className="Labbook__navigation-container mui-container flex-0-0-auto">
                <nav className="Labbook__navigation flex flex--row">
@@ -120,6 +118,7 @@ class Labbook extends Component {
                         labbook={this.props.labbook}
                         description={this.props.labbook.description}
                         labbookName={labbookName}
+                        setBuildingState={this._setBuildingState}
                       />)
                     }}
                   />
@@ -132,6 +131,7 @@ class Labbook extends Component {
                             labbook={this.props.labbook}
                             description={this.props.labbook.description}
                             labbookName={labbookName}
+
                           />)
                         }}
                       />
@@ -143,6 +143,7 @@ class Labbook extends Component {
                             notes={this.props.notes}
                             labbookName={labbookName}
                             labbookId={this.props.labbook.id}
+
                             {...this.props}
                           />)
                       }} />
@@ -152,7 +153,7 @@ class Labbook extends Component {
                           key={labbookName + '_environment'}
                           labbook={this.props.labbook}
                           labbookId={this.props.labbook.id}
-                          setContainerState={this._setContainerState}
+                          setBuildingState={this._setBuildingState}
                           labbookName={labbookName}
                           {...this.props}
                         />)
@@ -184,7 +185,10 @@ class Labbook extends Component {
           </div>
           <div className="Labbook__info">
             <div className="Labbook__info-card">
-
+              <div className="Labbook__user-note" onClick={() => this._showLabbookModal()}>
+                 <h5>Add Note</h5>
+                 <div className="Labbook__user-note--add"></div>
+              </div>
             </div>
           </div>
         </div>

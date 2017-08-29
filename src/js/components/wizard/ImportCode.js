@@ -1,6 +1,5 @@
 import React from 'react'
-import { QueryRenderer, graphql } from 'react-relay'
-import environment from './../../createRelayEnvironment'
+
 import BuildImageMutation from './../../mutations/BuildImageMutation'
 
 

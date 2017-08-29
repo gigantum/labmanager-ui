@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import BaseImage from './../environment/BaseImage'
-import CustomDependencies from './../environment/CustomDependencies'
-import DevEnvironments from './../environment/DevEnvironments'
+
 import environment from './../../../createRelayEnvironment'
 import {
   QueryRenderer,
@@ -26,9 +24,6 @@ let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: Strin
 `
 
 export default class PackageCount extends Component {
-  constructor(props){
-  	super(props);
-  }
 
   render(){
 
@@ -45,7 +40,7 @@ export default class PackageCount extends Component {
 
         if(props){
           let packages = {}
-          props.labbook.environment.packageManagerDependencies.edges.map(edge => {
+          props.labbook.environment.packageManagerDependencies.edges.forEach((edge) => {
             if(packages[edge.node.packageManager]){
 
               packages[edge.node.packageManager]++

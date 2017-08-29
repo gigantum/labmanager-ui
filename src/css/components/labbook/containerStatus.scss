@@ -1,0 +1,19 @@
+.ContainerStatus__container-state{
+  width: 120px;
+  text-align: center;
+  height: 30px;
+  border-radius: 15px;
+  color: $white;
+  line-height: 30px;
+
+}
+
+.ContainerStatus__container-state.Open{
+  background: $activity;
+}
+.ContainerStatus__container-state.Building{
+  background: $datasets;
+}
+.ContainerStatus__container-state.Closed{
+  background: $labbooks;
+}
