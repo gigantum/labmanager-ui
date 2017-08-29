@@ -52,8 +52,8 @@ export default class AddCustomDependencies extends React.Component {
   	super(props);
   	this.state = {
       'modal_visible': false,
-      'selectedCustomDependency': null,
-      'selectedCustomDependencyId': false
+      'selectedCustomDependencies': [],
+      'selectedCustomDependenciesIds': []
     };
     this.continueSave = this.continueSave.bind(this)
   }
@@ -63,8 +63,18 @@ export default class AddCustomDependencies extends React.Component {
     sets componest state for selectedCustomDependencyId and selectedCustomDependency
   */
   _selectCustomDependency(edge){
-    this.setState({'selectedCustomDependency': edge})
-    this.setState({'selectedCustomDependencyId': edge.node.id})
+    let selectedCustomDependencies = this.state.selectedCustomDependencies;
+    let selectedCustomDependenciesIds = this.state.selectedCustomDependenciesIds;
+
+    if(selectedCustomDependenciesIds.indexOf(edge.node.id) > -1){
+        selectedCustomDependenciesIds.splice(selectedCustomDependenciesIds.indexOf(edge.node.id), 1)
+        selectedCustomDependencies.splice(selectedCustomDependenciesIds.indexOf(edge.node.id), 1)
+    }else{
+      selectedCustomDependenciesIds.push(edge.node.id)
+      selectedCustomDependencies.push(edge)
+    }
+    this.setState({'selectedCustomDependencies': selectedCustomDependencies})
+    this.setState({'selectedCustomDependenciesIds': selectedCustomDependenciesIds})
     this.props.toggleDisabledContinue(false);
   }
 
@@ -115,18 +125,22 @@ export default class AddCustomDependencies extends React.Component {
 
                 return(<div>{error.message}</div>)
               }else{
-
+                console.log(this.state.selectedCustomDependenciesIds)
                 if(props){
                   return(
                     <div className="AddCustomDependencies__inner-container flex flex--column justify--space-between">
                       <div className="AddCustomDependencies__selected-image-container">
 
                           {
-                            (this.state.selectedCustomDependency !== null) && (
-                              <div className="AddCustomDependencies__selected-image">
-                                <img alt="" src={this.state.selectedCustomDependency.node.info.icon} height="50" width="50" />
-                                <p>{this.state.selectedCustomDependency.node.info.humanName}</p>
-                              </div>
+                            (this.state.selectedCustomDependencies.length > -1) && (
+                              this.state.selectedCustomDependencies.map((customDependency, index) => {
+                                return (
+                                  <div key={customDependency.node.id + index} className="AddCustomDependencies__selected-image flex">
+                                    <img alt="" src={customDependency.node.info.icon} height="50" width="50" />
+                                    <p>{customDependency.node.info.humanName}</p>
+                                  </div>
+                                )
+                              })
                             )
                           }
                       </div>
@@ -134,9 +148,9 @@ export default class AddCustomDependencies extends React.Component {
                       <div className="AddCustomDependencies__images flex flex--row flex--wrap justify--space-around">
                       {
                         props.availableCustomDependencies.edges.map((edge) => {
-
+                            console.log(this.state.selectedCustomDependenciesIds.indexOf(edge.node.id), edge.node.id)
                             return(
-                              <div className={(this.state.selectedCustomDependencyId === edge.node.id) ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'} onClick={()=> this._selectCustomDependency(edge)} key={edge.node.id}>
+                              <div disabled={(this.state.selectedCustomDependenciesIds.indexOf(edge.node.id) > -1)} className={(this.state.selectedCustomDependenciesIds.indexOf(edge.node.id) > -1) ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'} onClick={()=> this._selectCustomDependency(edge)} key={edge.node.id}>
                                 <img alt="" src={edge.node.info.icon} height="50" width="50" />
                                 <p>{edge.node.info.humanName}</p>
                               </div>

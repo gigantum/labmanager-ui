@@ -64,9 +64,9 @@ export default function CreateLabbookMutation(
         callback()
       },
       onError: err => {console.error(err)},
-      optimisticResponse: () => getOptimisticResponse(name, description),
+      //optimisticResponse: () => getOptimisticResponse(name, description),
       updater: (store) => {
-  
+
         const id = 'client:newLabbook:'+ tempID++;
         const node = store.create(id, 'Labbook')
 
