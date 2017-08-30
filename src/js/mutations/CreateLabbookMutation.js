@@ -25,21 +25,6 @@ const configs = [{
 }];
 let tempID = 0;
 
-function getOptimisticResponse(name, description){
-
-  return(
-    {
-      createLabbook: {
-        name: name,
-        description: description,
-        owner: {
-          username: 'default'
-        }
-      }
-    }
-  )
-}
-
 export default function CreateLabbookMutation(
   description,
   name,
@@ -64,7 +49,6 @@ export default function CreateLabbookMutation(
         callback()
       },
       onError: err => {console.error(err)},
-      //optimisticResponse: () => getOptimisticResponse(name, description),
       updater: (store) => {
 
         const id = 'client:newLabbook:'+ tempID++;
@@ -74,8 +58,6 @@ export default function CreateLabbookMutation(
           node.setValue(description, 'description')
 
          const labbookProxy = store.get('client:root');
-         const nodes = labbookProxy.getLinkedRecord('newLabbookEdge')
-
 
          const conn = RelayRuntime.ConnectionHandler.getConnection(
            labbookProxy,

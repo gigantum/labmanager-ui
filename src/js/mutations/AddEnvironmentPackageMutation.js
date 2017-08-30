@@ -60,7 +60,6 @@ export default function AddEnvironmentPackageMutation(
       updater: (store) => {
         if(clientMutationId){
           //TODO use edge from linked record
-          const payload = store.getRootField('addEnvironmentPackage');
           const id = 'client:PackageManagerDependencies:' + tempID++;
           const node = store.create(id, 'package');
           node.setValue(packageManager, 'packageManager')

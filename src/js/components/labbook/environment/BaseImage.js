@@ -44,7 +44,7 @@ class BaseImage extends Component {
                 </div>
 
                 <SelectBaseImage
-                  ref="selectBaseImage4"
+                  ref="selectBaseImage"
                   labbookName={this.props.labbookName}
                   setBaseImage={this.props.setBaseImage}
                   setComponent={this._setComponent}
@@ -52,6 +52,7 @@ class BaseImage extends Component {
                   nextWindow={'selectDevelopmentEnvironment'}
                   buildCallback={this.props.buildCallback}
                   nextComponent={"continue"}
+                  connection={'BaseImage_environment'}
                   toggleDisabledContinue={() => function(){}}/>
 
             </div>
@@ -89,7 +90,7 @@ class BaseImage extends Component {
 export default createFragmentContainer(
   BaseImage,
   {environment: graphql`fragment BaseImage_environment on Environment @connection(key:"BaseImage_environment"){
-    baseImage{
+    baseImage {
       id
       component{
         id

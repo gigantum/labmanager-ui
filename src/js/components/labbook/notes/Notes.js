@@ -1,10 +1,12 @@
+//vendor
 import React, { Component } from 'react'
 import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
-import environment from '../../../createRelayEnvironment'
+//Components
 import NotesCard from './NotesCard'
+//utilities
 import Config from './../../../config'
 
 
@@ -12,7 +14,10 @@ class Notes extends Component {
   constructor(props){
   	super(props);
   }
-
+  /*
+    function()
+    pagination container loads more items
+  */
   _loadMore() {
    this.props.relay.loadMore(
      10, // Fetch the next 10 feed items
@@ -24,9 +29,14 @@ class Notes extends Component {
    );
   }
 
+  /*
+    function(array)
+    loops through notes array and sorts into days
+    return Object
+  */
   _transformNotes(notes){
     let notesTime = {}
-    notes.edges.map(function(note){
+    notes.edges.forEach((note) => {
       let date = (note.node.timestamp) ? new Date(note.node.timestamp) : new Date()
       let timeHash = date.getYear() + '_' + date.getMonth() + ' _' + date.getDate();
       if(notesTime[timeHash]){
@@ -78,12 +88,12 @@ class Notes extends Component {
               }
             </div>
           </div>
-          <div className="Notes__next-button-container">
+          <div className={this.props.labbook.notes.pageInfo.hasNextPage ? 'Notes__next-button-container' : 'hidden'}>
             <button key="load_more"
               onClick={() => this._loadMore()}
               title="Load More"
             >
-              Next 20
+              Next 10
             </button>
           </div>
 
@@ -94,7 +104,10 @@ class Notes extends Component {
     }
   }
 }
-
+/*
+  notes pagination container
+  contains notes fragment and for query consumption
+*/
 export default createPaginationContainer(
   Notes,
   {

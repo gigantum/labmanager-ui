@@ -1,5 +1,4 @@
 import React from 'react'
-import { QueryRenderer, graphql } from 'react-relay'
 
 import CreateLabbookMutation from './../../mutations/CreateLabbookMutation'
 
@@ -7,7 +6,6 @@ export default class CreateLabbook extends React.Component {
   constructor(props){
   	super(props);
 
-    let that = this;
   	this.state = {
       'modal_visible': false,
       'name': '',

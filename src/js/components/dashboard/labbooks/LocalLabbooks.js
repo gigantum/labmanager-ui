@@ -54,7 +54,7 @@ class LocalLabbooks extends Component {
             {
 
               this.props.feed.localLabbooks.edges.map((edge) => {
-      
+
                 return (
                   <div
                     key={edge.node.name}
@@ -93,12 +93,12 @@ class LocalLabbooks extends Component {
 
             </div>
           </div>
-          <div className="LocalLabbooks__next-button-container">
+          <div className={this.props.feed.localLabbooks.pageInfo.hasNextPage ? 'LocalLabbooks__next-button-container' : 'hidden'}>
             <button key="load_more"
               onClick={(e) => this._loadMore(e)}
               title="Load More"
             >
-              Next 5
+              Next 10
             </button>
           </div>
         </div>

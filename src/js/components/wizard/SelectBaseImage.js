@@ -92,6 +92,8 @@ export default class SelectBaseImage extends React.Component {
       component.name,
       component.version,
       "clientMutationId",
+      this.props.environmentId,
+      this.props.connection,
       component.componentClass,
       () => {
         this.props.setBaseImage(this.state.selectedBaseImage)

@@ -99,6 +99,8 @@ export default class AddCustomDependencies extends React.Component {
           component.name,
           component.version,
           "clientMutationId",
+          this.props.environmentId,
+          this.props.connection,
           component.componentClass,
           () => {
             resolve()

@@ -6,7 +6,6 @@ import history from './../history';
 import {QueryRenderer, graphql} from 'react-relay'
 // components
 import Home from './home/Home';
-import App from './App';
 import Header from './shared/Header';
 import Footer from './shared/Footer';
 import Labbook from './labbook/Labbook';

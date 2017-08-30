@@ -80,7 +80,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
     callback triggers and modal state is changed to  next window
   */
   continueSave(){
-
+    
     let component = this.state.selectedDevelopmentEnvironment.node.component;
     this.props.toggleDisabledContinue(true);
     AddEnvironmentComponentMutation(
@@ -91,6 +91,8 @@ export default class SelectDevelopmentEnvironment extends React.Component {
       component.name,
       component.version,
       "clientMutationId",
+      this.props.environmentId,
+      this.props.connection,
       component.componentClass,
       (log) => {
         this.props.setComponent(this.props.nextWindow, this.state.name)

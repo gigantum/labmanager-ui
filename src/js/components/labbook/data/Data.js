@@ -9,7 +9,7 @@ export default class Data extends Component {
 
     return(
         <div className="Data">
-          input data
+
         </div>
       )
   }

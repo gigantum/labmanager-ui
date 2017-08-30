@@ -1,4 +1,4 @@
-import CONFIG from './config'
+
 const {
   Environment,
   Network,

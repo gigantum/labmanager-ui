@@ -19,7 +19,9 @@ class Overview extends Component {
     if(this.props.labbook){
       return(
         <div className="Overview">
-            <p>{this.props.description}</p>
+            <div className="Overview__description">
+              <p>{this.props.description}</p>
+            </div>
             <h4 className="Overview__title">Environment</h4>
             <div className="Overview__environment">
               <ul className="Overview__environment-list flex flex--row">
@@ -40,14 +42,6 @@ class Overview extends Component {
                     blockClass="Overview"
                   />
                 </li>
-                <li>
-                  <CustomDependencies
-                    ref="CustomDependencies"
-                    environment={this.props.labbook.environment}
-                    editVisible={false}
-                    blockClass="Overview"
-                  />
-                </li>
 
               </ul>
             </div>
@@ -57,7 +51,7 @@ class Overview extends Component {
                 labbookName={this.props.labbookName}
               />
             </div>
-            <h4 className="Overview__title">Code</h4>
+
         </div>
       )
     } else{

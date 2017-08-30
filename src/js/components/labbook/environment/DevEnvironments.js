@@ -51,6 +51,7 @@ class DevEnvironments extends Component {
               setComponent={this._setComponent}
               buildCallback={this.props.buildCallback}
               nextComponent={"continue"}
+              connection={'DevEnvironments_devEnvs'}
               environmentView={true}
               toggleDisabledContinue={() => function(){}}
             />
@@ -61,8 +62,8 @@ class DevEnvironments extends Component {
             {
               devEnvs.edges.map((edge, index) => {
               return(
-                <div key={this.props.labbookName + index} className={blockClass + '__development-environment-item'}>
-                
+                <div key={this.props.labbookName + edge.node.id} className={blockClass + '__development-environment-item'}>
+
                   <div className={blockClass + '__card flex justify--space-around'}>
                     <div className="flex-1-0-auto flex flex--wrap flex--column justify-center">
                       <img height="50" width="50" src={edge.node.info.icon} alt={edge.node.info.humanName} />
@@ -101,8 +102,8 @@ class DevEnvironments extends Component {
 export default createPaginationContainer(
   DevEnvironments,
   {
-    environment: graphql`fragment DevEnvironments_environment on Environment @connection(key:"DevEnvironments_environment"){
-    devEnvs(first: $first, after: $cursor){
+    environment: graphql`fragment DevEnvironments_environment on Environment{
+    devEnvs(first: $first, after: $cursor)  @connection(key:"DevEnvironments_devEnvs"){
       edges{
         cursor
         node{
