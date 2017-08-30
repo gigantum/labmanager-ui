@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from '../createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
+
 
 const mutation = graphql`
   mutation BuildImageMutation($input: BuildImageInput!){

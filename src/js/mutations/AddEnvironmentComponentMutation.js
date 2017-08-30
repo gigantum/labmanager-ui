@@ -15,6 +15,21 @@ const mutation = graphql`
 
 let tempID = 0;
 
+function sharedUpdater(store, id, newEdge, connection) {
+  const environmentProxy = store.get(id);
+
+  const conn = RelayRuntime.ConnectionHandler.getConnection(
+    environmentProxy,
+    connection
+  );
+
+  if(conn){
+    RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
+  }
+
+}
+
+
 export default function AddEnvironmentComponentMutation(
   labbookName,
   owner,
@@ -23,6 +38,8 @@ export default function AddEnvironmentComponentMutation(
   component,
   version,
   clientMutationId,
+  environmentId,
+  connection,
   componentClass,
   callback
 ) {
@@ -36,7 +53,7 @@ export default function AddEnvironmentComponentMutation(
       version,
       clientMutationId,
       componentClass,
-      clientMutationId: tempID++
+      clientMutationId: environmentId
     }
   }
   commitMutation(
@@ -44,15 +61,20 @@ export default function AddEnvironmentComponentMutation(
     {
       mutation,
       variables,
-      onCompleted: (response) => {
+      // config: [{
+      //   type: 'RANGE_ADD',
+      //   parentID: environmentId,
+      //   connectionInfo: [{
+      //     key: connection,
+      //     rangeBehavior: 'append',
+      //   }],
+      //   edgeName: 'newEnvironmentEdge',
+      // }],
+      onCompleted: (response, error) => {
 
         callback()
       },
-      onError: err => console.error(err),
-
-      updater: (store) => {
-
-      },
+      onError: err => console.error(err)
     },
   )
 }

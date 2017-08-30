@@ -49,16 +49,18 @@ class CustomDependencies extends Component {
                 buildCallback={this.props.buildCallback}
                 nextComponent={"continue"}
                 environmentView={true}
+                connection={'CustomDependencies_customDependencies'}
                 toggleDisabledContinue={() => function(){}}
               />
             </div>
             <h4 className={blockClass + '__header'}>Custom Dependencies</h4>
             <div className={blockClass + '__info flex justify--left'}>
             {
-              customDependencies.edges.map((edge, i) => {
+              customDependencies.edges.map((edge, index) => {
+    
                 return(
-                  <div key={this.props.labbookName + edge.id + i} className={blockClass + '__dependencies'}>
-            
+                  <div key={this.props.labbookName + edge.node.id + index} className={blockClass + '__dependencies'}>
+
                     <div className={blockClass + '__card flex justify--space-around'}>
                         <div className="flex-1-0-auto flex flex--column justify-center">
                           <img height="50" width="50" src={edge.node.info.icon} alt={edge.node.info.humanName} />
@@ -99,8 +101,8 @@ class CustomDependencies extends Component {
 export default createPaginationContainer(
   CustomDependencies,
   {
-    environment: graphql`fragment CustomDependencies_environment on Environment @connection(key:"CustomDependencies_environment"){
-      customDependencies(first: $first, after: $cursor){
+    environment: graphql`fragment CustomDependencies_environment on Environment {
+      customDependencies(first: $first, after: $cursor) @connection(key:"CustomDependencies_customDependencies"){
         edges{
           node{
             id

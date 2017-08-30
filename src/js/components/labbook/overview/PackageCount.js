@@ -18,6 +18,21 @@ let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: Strin
           }
         }
       }
+      customDependencies(first: $first) @connection(key:"CustomDependencies_customDependencies"){
+        edges{
+          node{
+            id
+            component{
+              id
+              repository
+              namespace
+              name
+              version
+              componentClass
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -50,16 +65,24 @@ export default class PackageCount extends Component {
           })
 
           return(
-            <div className="PackageCount">
-                <h4 className={'Overview__header'}>Dependencies</h4>
-                <ul className="flex flex--wrap">
-                  {
-                     Object.keys(packages).map(key => {
+            <div className="PackageCount flex flex--wrap justify--left">
+                <div className="PackageCount__dependencies">
+                  <h4 className={'Overview__header'}>Dependencies</h4>
+                  <ul className="flex flex--wrap">
+                    {
+                       Object.keys(packages).map(key => {
 
-                       return (<li className="PackageCount__item">{packages[key] + ' ' + key + ' package(s)' }</li>)
-                     })
-                  }
-                </ul>
+                         return (<li className="PackageCount__item">{packages[key] + ' ' + key + ' package(s)' }</li>)
+                       })
+                    }
+                  </ul>
+                </div>
+                <div className="PackageCount__dependencies">
+                  <h4 className={'Overview__header'}>Custom Dependencies</h4>
+                  <ul className="flex flex--wrap">
+                    <li className="PackageCount__item">{props.labbook.environment.customDependencies.edges.length +  ' custom package(s)' }</li>
+                  </ul>
+                </div>
             </div>
           )
         }else if(error){

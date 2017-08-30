@@ -13,7 +13,12 @@ export default class NotesCard extends Component {
   _toggleExtraInfo(){
     this.setState({showExtraInfo: !this.state.showExtraInfo})
   }
-
+  /*
+    function(timestamp)
+    if input is undefined. current time of day is used
+    inputs a time stamp and return the time of day HH:MM am/pm
+    return string
+  */
   _getTimeOfDay(timestamp){
 
     let time = (timestamp !== undefined) ? new Date(timestamp) : new Date();

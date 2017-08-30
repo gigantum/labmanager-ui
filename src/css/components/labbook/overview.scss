@@ -8,6 +8,10 @@
   font-size: 22px;
 }
 
+.Overview__description{
+  padding: 20px;
+}
+
 .Overview__header{
   font-weight: light;
   font-size: 14px;
@@ -119,4 +123,9 @@
   color: $charcoal;
   padding: 5px 20px;
   background-color: $grey;
+  margin: 0 10px 0 0;
+}
+
+.PackageCount__dependencies{
+  margin: 0 20px;
 }

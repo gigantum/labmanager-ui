@@ -88,6 +88,7 @@ class Environment extends Component {
               ref="devEnvironments"
               labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
+              environmentId={this.props.labbook.environment.id}
               editVisible={true}
               buildCallback={this._buildCallback}
               blockClass="Environment"
@@ -111,6 +112,7 @@ class Environment extends Component {
               buildCallback={this._buildCallback}
               editVisible={true}
               labbookName={this.props.labbookName}
+              environmentId={this.props.labbook.environment.id}
             />
 
           </div>
