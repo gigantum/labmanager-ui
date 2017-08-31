@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
-import Dashboard from '../dashboard/Dashboard';
-import Login from '../login/Login';
+import Dashboard from 'Components/dashboard/Dashboard';
+import Login from 'Components/login/Login';
 
 export default class Home extends Component {
   //login for Auth0 function

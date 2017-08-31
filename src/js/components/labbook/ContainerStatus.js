@@ -3,7 +3,7 @@ import {
   QueryRenderer,
   graphql
 } from 'react-relay'
-import environment from './../../createRelayEnvironment'
+import environment from 'JS/createRelayEnvironment'
 
 let containerStatus;
 

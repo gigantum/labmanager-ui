@@ -1,6 +1,9 @@
+//vendor
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
-import AddEnvironmentPackage from './../../wizard/AddEnvironmentPackage'
+//components
+import AddEnvironmentPackage from 'Components/wizard/AddEnvironmentPackage'
+import Loader from 'Components/shared/Loader'
 
 let packageManager;
 class PackageManagerDependencies extends Component {
@@ -15,6 +18,7 @@ class PackageManagerDependencies extends Component {
   */
   _openModal(){
       this.setState({'modal_visible': true})
+      document.getElementById('modal__cover').classList.remove('hidden')
   }
   /*
     function()
@@ -22,10 +26,13 @@ class PackageManagerDependencies extends Component {
   */
   _hideModal(){
       this.setState({'modal_visible': false})
+      document.getElementById('modal__cover').classList.add('hidden')
+
   }
 
   _setBaseImage(baseImage){
       this.setState({"readyToBuild": true})
+
   }
 
   _setComponent(comp){
@@ -42,7 +49,7 @@ class PackageManagerDependencies extends Component {
     if (packageManagerDependencies) {
       return(
       <div className="Environment_package-manager-dependencies">
-        <div id='modal__cover' className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
+        <div className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
           <div
             className="Environment__modal-close"
             onClick={() => this._hideModal()}>
@@ -92,9 +99,7 @@ class PackageManagerDependencies extends Component {
       )
     }else{
       return(
-          <div className="Environment">
-              loading
-          </div>
+          <Loader />
         )
     }
   }

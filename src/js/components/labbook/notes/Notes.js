@@ -6,14 +6,12 @@ import {
 } from 'react-relay'
 //Components
 import NotesCard from './NotesCard'
+import Loader from 'Components/shared/Loader'
 //utilities
-import Config from './../../../config'
+import Config from 'JS/config'
 
 
 class Notes extends Component {
-  constructor(props){
-  	super(props);
-  }
   /*
     function()
     pagination container loads more items
@@ -22,7 +20,6 @@ class Notes extends Component {
    this.props.relay.loadMore(
      10, // Fetch the next 10 feed items
      e => {
-       console.log(e);
      },{
        name: 'labbook'
      }
@@ -100,7 +97,9 @@ class Notes extends Component {
         </div>
       )
     }else{
-      return(<div key="loading">loading</div>)
+      return(
+        <Loader />
+      )
     }
   }
 }

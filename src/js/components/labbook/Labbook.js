@@ -15,7 +15,7 @@ import Environment from './environment/Environment'
 import UserNote from './UserNote'
 import ContainerStatus from './ContainerStatus'
 
-import Config from './../../config'
+import Config from 'JS/config'
 
 let labbook;
 

@@ -1,8 +1,12 @@
+//vendor
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
+//components
+import SelectDevelopmentEnvironment from 'Components/wizard/SelectDevelopmentEnvironment'
+import Loader from 'Components/shared/Loader'
 
-import SelectDevelopmentEnvironment from './../../wizard/SelectDevelopmentEnvironment'
 let devEnvironments;
+
 class DevEnvironments extends Component {
   constructor(props){
   	super(props);
@@ -16,6 +20,7 @@ class DevEnvironments extends Component {
   */
   _openModal(){
       this.setState({'modal_visible': true})
+      document.getElementById('modal__cover').classList.remove('hidden')
   }
   /*
     function()
@@ -23,6 +28,7 @@ class DevEnvironments extends Component {
   */
   _hideModal(){
       this.setState({'modal_visible': false})
+      document.getElementById('modal__cover').classList.add('hidden')
   }
 
   _setComponent(comp){
@@ -37,7 +43,7 @@ class DevEnvironments extends Component {
     if (devEnvs) {
       return(
         <div className={ blockClass + '__development-environment'}>
-          <div id='modal__cover' className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
+          <div className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
             <div
               className="Environment__modal-close"
               onClick={() => this._hideModal()}>
@@ -91,9 +97,7 @@ class DevEnvironments extends Component {
       )
     }else{
       return(
-          <div className="Environment">
-              loading
-          </div>
+          <Loader />
         )
     }
   }

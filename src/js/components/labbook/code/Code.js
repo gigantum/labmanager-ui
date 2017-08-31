@@ -1,6 +1,6 @@
 // import 'es6-promise';
 import React, { Component } from 'react'
-import StartContainerMutation from './../../../mutations/StartContainerMutation'
+import StartContainerMutation from 'Mutations/StartContainerMutation'
 
 export default class Code extends Component {
   constructor(props){

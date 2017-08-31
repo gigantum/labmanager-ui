@@ -1,7 +1,12 @@
+//vendor
 import React from 'react'
 import { QueryRenderer, graphql } from 'react-relay'
-import environment from './../../createRelayEnvironment'
-import AddEnvironmentComponentMutation from './../../mutations/AddEnvironmentComponentMutation'
+//components
+import Loader from 'Components/shared/Loader'
+//utilites
+import environment from 'JS/createRelayEnvironment'
+//mutations
+import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
 
 const BaseImageQuery = graphql`query SelectDevelopmentEnvironmentQuery($first: Int!, $cursor: String){
   availableDevEnvs(first: $first, after: $cursor){
@@ -80,7 +85,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
     callback triggers and modal state is changed to  next window
   */
   continueSave(){
-    
+
     let component = this.state.selectedDevelopmentEnvironment.node.component;
     this.props.toggleDisabledContinue(true);
     AddEnvironmentComponentMutation(
@@ -165,7 +170,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
                 )
 
                 }else{
-                  return(<div className="Loading"></div>)
+                  return(<Loader />)
                 }
               }
           }}

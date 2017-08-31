@@ -4,6 +4,7 @@
 
 .Labbook__header{
   padding: 20px 0px;
+  min-height: 80px;
   .Labbook__name-title{
     padding: 0px;
   }
@@ -55,6 +56,7 @@
 .Labbook__view{
   height: calc(100% - 90px);
   overflow: hidden;
+  padding: 20px 0;
 
 }
 

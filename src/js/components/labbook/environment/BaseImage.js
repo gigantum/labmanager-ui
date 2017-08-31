@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import {createFragmentContainer, graphql} from 'react-relay'
-import SelectBaseImage from './../../wizard/SelectBaseImage'
+//components
+import SelectBaseImage from 'Components/wizard/SelectBaseImage'
+import Loader from 'Components/shared/Loader'
 let baseImage = null;
 class BaseImage extends Component {
 
@@ -16,6 +18,7 @@ class BaseImage extends Component {
 
   _openModal(){
       this.setState({'modal_visible': true})
+      document.getElementById('modal__cover').classList.remove('hidden')
   }
   /*
     function()
@@ -23,6 +26,7 @@ class BaseImage extends Component {
   */
   _hideModal(){
     this.setState({'modal_visible': false})
+    document.getElementById('modal__cover').classList.add('hidden')
   }
 
   _setComponent(comp){
@@ -36,7 +40,7 @@ class BaseImage extends Component {
     if (baseImage) {
       return(
         <div className={blockClass + '__base-image'}>
-            <div id='modal__cover' className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
+            <div id='modal' className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
                 <div
                   className="Environment__modal-close"
                   onClick={() => this._hideModal()}>
@@ -79,9 +83,7 @@ class BaseImage extends Component {
       )
     }else{
       return(
-          <div className={blockClass + '__loading'}>
-              loading
-          </div>
+          <Loader />
         )
     }
   }

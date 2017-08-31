@@ -1,5 +1,5 @@
 import React from 'react'
-import AddEnvironmentPackageMutation from './../../mutations/AddEnvironmentPackageMutation'
+import AddEnvironmentPackageMutation from 'Mutations/AddEnvironmentPackageMutation'
 
 
 let that;

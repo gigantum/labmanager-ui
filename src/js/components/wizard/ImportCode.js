@@ -1,6 +1,6 @@
 import React from 'react'
 
-import BuildImageMutation from './../../mutations/BuildImageMutation'
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 
 
 export default class SelectBaseImage extends React.Component {

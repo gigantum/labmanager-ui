@@ -1,6 +1,6 @@
 import React from 'react'
 
-import CreateLabbookMutation from './../../mutations/CreateLabbookMutation'
+import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 
 export default class CreateLabbook extends React.Component {
   constructor(props){

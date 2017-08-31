@@ -33,20 +33,3 @@ exports[`Test BreadCrumbs Rendering with pathname 1`] = `
   </ul>
 </div>
 `;
-
-exports[`Test Home Rendering 1`] = `
-<div
-  className="BreadCrumbs"
->
-  <ul
-    className="BreadCrumbs__list flex flex--row"
-  >
-    <li
-      className="BreadCrumbs__list-item"
-      onClick={[Function]}
-    >
-      
-    </li>
-  </ul>
-</div>
-`;

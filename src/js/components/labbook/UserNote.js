@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import SimpleMDE from 'simplemde'
 import { WithContext as ReactTags } from 'react-tag-input';
-import CreateUserNoteMutation from '../../mutations/CreateUserNoteMutation'
+import CreateUserNoteMutation from 'Mutations/CreateUserNoteMutation'
 let simple;
 let addNote;
 export default class UserNote extends React.Component {

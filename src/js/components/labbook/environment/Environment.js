@@ -1,13 +1,17 @@
+//vendor
 import React, { Component } from 'react'
 import {createFragmentContainer, graphql} from 'react-relay'
+//components
+import Loader from 'Components/shared/Loader'
 import BaseImage from './BaseImage'
 import DevEnvironments from './DevEnvironments'
 import PackageManagerDependencies from './PackageManagerDependencies'
 import CustomDependencies from './CustomDependencies'
-
-import BuildImageMutation from './../../../mutations/BuildImageMutation'
+//mutations
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 
 let environ;
+
 class Environment extends Component {
   constructor(props){
   	super(props);
@@ -25,6 +29,7 @@ class Environment extends Component {
   */
   _openModal(){
       environ.setState({'modal_visible': true})
+      document.getElementById('modal__cover').classList.remove('hidden')
   }
   /*
     function()
@@ -32,13 +37,8 @@ class Environment extends Component {
   */
   _hideModal(){
       environ.setState({'modal_visible': false})
+      document.getElementById('modal__cover').classList.add('hidden')
   }
-
-  /*
-    function()
-    sets variables for build state
-  */
-
 
   /*
     function()
@@ -121,9 +121,7 @@ class Environment extends Component {
       )
     }else{
       return(
-          <div className="Environment">
-              loading
-          </div>
+          <Loader />
         )
     }
   }
