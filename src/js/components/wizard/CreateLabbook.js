@@ -1,5 +1,9 @@
+//vendor
 import React from 'react'
-
+import SweetAlert from 'sweetalert-react';
+//utilities
+import validation from 'JS/validation/Validation'
+//mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 
 export default class CreateLabbook extends React.Component {
@@ -9,11 +13,13 @@ export default class CreateLabbook extends React.Component {
   	this.state = {
       'modal_visible': false,
       'name': '',
-      'description': ''
+      'description': '',
+      'showError': false
     };
 
     this.handler = this.handler.bind(this)
     this.continueSave = this.continueSave.bind(this)
+    this._updateTextState = this._updateTextState.bind(this)
   }
 
   handler(e) {
@@ -65,7 +71,15 @@ export default class CreateLabbook extends React.Component {
 
     state[field] = evt.target.value;
     if(field === 'name'){
-      this.props.toggleDisabledContinue(evt.target.value === "");
+      let isMatch = validation.labbookName(evt.target.value)
+      this.setState({
+      'showError': ((isMatch === null) && (evt.target.value.length > 0))
+      })
+
+      this.props.toggleDisabledContinue((evt.target.value === "") || (isMatch === null));
+
+
+
     }
     this.setState(state)
   }
@@ -80,9 +94,11 @@ export default class CreateLabbook extends React.Component {
               <label>Title</label>
               <input
                 type='text'
+                className={this.state.showError ? 'invalid' : ''}
                 onChange={(evt) => this._updateTextState(evt, 'name')}
                 placeholder="Enter a unique, descriptive title"
               />
+              <span className={this.state.showError ? 'error': 'hidden'}>Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)</span>
             </div>
 
             <div>

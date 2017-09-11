@@ -72,7 +72,7 @@ export default function AddEnvironmentComponentMutation(
       // }],
       onCompleted: (response, error) => {
 
-        callback()
+        callback(error)
       },
       onError: err => console.error(err)
     },

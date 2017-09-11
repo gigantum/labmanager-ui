@@ -1,4 +1,5 @@
 import React from 'react'
+import SweetAlert from 'sweetalert-react';
 
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 
@@ -27,8 +28,16 @@ export default class SelectBaseImage extends React.Component {
     BuildImageMutation(
       this.props.labbookName,
       'default',
-      (log, error) => {
-        this.setState({'isLoading': false})
+      (error) => {
+        console.log(error)
+        let showAlert = (error !== null)
+        let message = showAlert ? error[0].message : '';
+        this.setState({
+          'isLoading': false,
+          'show': showAlert,
+          'message': message
+        })
+
         this.props.setComponent(this.props.nextWindow, this.state.name)
       }
     )
@@ -62,6 +71,11 @@ export default class SelectBaseImage extends React.Component {
           	</div>
           </div>
         </div>
+        <SweetAlert
+          show={this.state.show}
+          title="Demo"
+          text={this.state.message}
+          onConfirm={() => this.setState({ show: false })} />
         {/* <button disabled={this.state.isLoading} onClick={() => this._completeSetup()}> Complete Setup </button> */}
       </div>
       )

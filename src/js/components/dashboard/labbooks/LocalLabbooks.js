@@ -8,16 +8,6 @@ import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
 
 class LocalLabbooks extends Component {
-  constructor(props){
-
-    super(props)
-    this.handler = this.handler.bind(this)
-
-  }
-
-  handler(e) {
-    e.preventDefault()
-  }
   /*
     function(string) inputs a labbook name
     routes to that labbook
@@ -112,6 +102,8 @@ class LocalLabbooks extends Component {
 
   }
 }
+
+export {LocalLabbooks as Local}
 
 export default createPaginationContainer(
   LocalLabbooks,

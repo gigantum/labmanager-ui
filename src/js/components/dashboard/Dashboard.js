@@ -30,16 +30,6 @@ export default class DashboardContainer extends Component {
   }
 
   /*
-    function(object, string)
-    sets state of component and updates history
-  */
-
-  _setSelectedComponent(that, component){
-    this.setState({selectedComponent: component})
-    this.props.history.push(`../${component}`)
-  }
-
-  /*
     function()
     returns jsx of selected component
     return jsx

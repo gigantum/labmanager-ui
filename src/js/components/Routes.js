@@ -12,8 +12,9 @@ import Footer from './shared/Footer';
 import Labbook from './labbook/Labbook';
 import environment from './../createRelayEnvironment'
 import Loader from 'Components/shared/Loader'
+import Error from 'Components/popups/Error'
 //labbook query with notes fragment
-const LabbookQuery =  graphql`
+export const LabbookQuery =  graphql`
   query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
     labbook(name: $name, owner: $owner){
       id
@@ -21,6 +22,8 @@ const LabbookQuery =  graphql`
       ...Labbook_labbook
     }
   }`
+
+
 //import Breadcrumbs from 'react-breadcrumbs'
 
 const auth = new Auth();
@@ -65,6 +68,8 @@ export default class Routes extends Component {
               render={(location) => {return(
               <div className="Routes">
                 <Header auth={auth} history={history}/>
+
+                <Error ref="Error_routes" />
 
                 <Route
                   exact

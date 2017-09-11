@@ -2,9 +2,10 @@
 @import '../../node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
 @import '../../node_modules/normalize-sass/normalize';
 @import  'vendor/materialize.scss';
+@import  'vendor/sweetAlert.scss';
 //generic
-@import '_utilities';
 @import '_variables';
+@import '_utilities';
 @import '_layout';
 //atoms
 @import 'atoms/button.scss';

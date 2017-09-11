@@ -1,5 +1,6 @@
 //vendor
 import React from 'react'
+import SweetAlert from 'sweetalert-react';
 import { QueryRenderer, graphql } from 'react-relay'
 //components
 import Loader from 'Components/shared/Loader'
@@ -64,7 +65,9 @@ export default class SelectBaseImage extends React.Component {
       'name': '',
       'description': '',
       'selectedBaseImage': null,
-      'selectedBaseImageId': false
+      'selectedBaseImageId': false,
+      'show': false,
+      'message': ''
     };
   }
 
@@ -100,7 +103,7 @@ export default class SelectBaseImage extends React.Component {
       this.props.environmentId,
       this.props.connection,
       component.componentClass,
-      () => {
+      (error) => {
         this.props.setBaseImage(this.state.selectedBaseImage)
         if(this._environmentView()){
           this.props.buildCallback()

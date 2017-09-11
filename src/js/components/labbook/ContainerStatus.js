@@ -45,7 +45,7 @@ export default class ContainerStatus extends Component {
   }
 
   componentDidMount(){
-    this.interval = setInterval(this.tick, 2000);
+    //this.interval = setInterval(this.tick, 2000);
   }
 
 

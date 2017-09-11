@@ -103,6 +103,7 @@ class Notes extends Component {
     }
   }
 }
+
 /*
   notes pagination container
   contains notes fragment and for query consumption

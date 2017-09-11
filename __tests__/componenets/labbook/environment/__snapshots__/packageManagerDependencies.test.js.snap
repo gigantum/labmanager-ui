@@ -1,0 +1,150 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test PakageManager rendering 1`] = `
+<div
+  className="Environment_package-manager-dependencies"
+>
+  <div
+    className="Environment__modal hidden"
+  >
+    <div
+      className="Environment__modal-close"
+      onClick={[Function]}
+    >
+      X
+    </div>
+    <div
+      className="AddEnvironmentPackage"
+    >
+      <div
+        className="AddEnvironmentPackage__inner-container"
+      >
+        <p>
+          Install dependencies via Package Manager
+        </p>
+        <div
+          className="AddEnvironmentPackage__row flex flex--row justify--space-between"
+        >
+          <div
+            className="AddEnvironmentPackage__select--container"
+          >
+            <select
+              className="AddEnvironmentPackage__select"
+              disabled={false}
+              onChange={[Function]}
+            >
+              <option
+                className="AddEnvironmentPackage__select"
+                value="pip3"
+              >
+                pip3
+              </option>
+              <option
+                className="AddEnvironmentPackage__select"
+                value="apt-get"
+              >
+                apt-get
+              </option>
+            </select>
+          </div>
+          <input
+            autoFocus={true}
+            className="AddEnvironmentPackage__text-input"
+            disabled={false}
+            onKeyUp={[Function]}
+            placeholder="Dependency Name"
+            type="text"
+          />
+          <button
+            className="AddEnvironmentPackage__button"
+            disabled={true}
+            onClick={[Function]}
+          >
+            Add
+          </button>
+        </div>
+      </div>
+      <div
+        className="AddEnvironmentPackage__progress-buttons flex flex--row justify--space-between"
+      >
+        <button
+          onClick={[Function]}
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+  <h4
+    className="Environment__header"
+  >
+    Package Dependencies
+  </h4>
+  <div
+    className="Environment__info flex flex--row justify--left"
+  >
+    <ul
+      className="flex flex--row justify--left flex--wrap"
+    >
+      <li>
+        <div
+          className="Environment__package-dependencies"
+        >
+          <div
+            className="Environment__card-text flex flex--row justify--space-around flex-1-0-auto"
+          >
+            <p>
+              pip3
+            </p>
+            <p>
+              numpy
+            </p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div
+          className="Environment__package-dependencies"
+        >
+          <div
+            className="Environment__card-text flex flex--row justify--space-around flex-1-0-auto"
+          >
+            <p>
+              pip3
+            </p>
+            <p>
+              nuumpy
+            </p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div
+          className="Environment__package-dependencies"
+        >
+          <div
+            className="Environment__card-text flex flex--row justify--space-around flex-1-0-auto"
+          >
+            <p>
+              pip3
+            </p>
+            <p>
+              plotly
+            </p>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div
+      className="Environment__edit-container"
+    >
+      <button
+        className="Environment__edit-button"
+        onClick={[Function]}
+      >
+        Edit
+      </button>
+    </div>
+  </div>
+</div>
+`;

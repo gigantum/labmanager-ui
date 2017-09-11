@@ -1,5 +1,6 @@
 //vendor
 import React from 'react'
+import SweetAlert from 'sweetalert-react';
 import { QueryRenderer, graphql } from 'react-relay'
 //components
 import Loader from 'Components/shared/Loader'
@@ -60,7 +61,9 @@ export default class AddCustomDependencies extends React.Component {
   	this.state = {
       'modal_visible': false,
       'selectedCustomDependencies': [],
-      'selectedCustomDependenciesIds': []
+      'selectedCustomDependenciesIds': [],
+      'show': false,
+      'message': ''
     };
     this.continueSave = this.continueSave.bind(this)
     addCustomDependencies = this;
@@ -109,8 +112,22 @@ export default class AddCustomDependencies extends React.Component {
           this.props.environmentId,
           this.props.connection,
           component.componentClass,
-          () => {
-            resolve()
+          (error) => {
+            console.log(error)
+            let showAlert = (error !== null)
+            let message = showAlert ? error[0].message : '';
+            addCustomDependencies.setState({
+              'show': showAlert,
+              'message': message,
+
+            })
+            if(!showAlert){
+              resolve()
+            }else{
+              addCustomDependencies.setState({
+                'reject': reject
+              })
+            }
           }
         )
       })
@@ -191,7 +208,16 @@ export default class AddCustomDependencies extends React.Component {
                         </div>
                       )
                     }
+
+                    <SweetAlert
+                      className="sa-error-container"
+                      show={this.state.show}
+                      type="error"
+                      title="Error"
+                      text={this.state.message}
+                      onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
                   </div>
+
                 )
                 }else{
                   return(<Loader />)

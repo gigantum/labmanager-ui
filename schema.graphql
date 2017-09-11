@@ -1,5 +1,5 @@
 # source: http://localhost:5000/labbook/
-# timestamp: Fri Aug 25 2017 16:26:17 GMT-0400 (EDT)
+# timestamp: Thu Sep 07 2017 11:25:38 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
