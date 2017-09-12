@@ -5,7 +5,7 @@ import SweetAlert from 'sweetalert-react';
 import AddEnvironmentPackageMutation from 'Mutations/AddEnvironmentPackageMutation'
 
 
-let that;
+let addEnvionmentPackage;
 export default class AddEnvironmentPackage extends React.Component {
   constructor(props){
   	super(props);
@@ -19,7 +19,7 @@ export default class AddEnvironmentPackage extends React.Component {
       'show': false,
       'message': ''
     };
-    that = this;
+    addEnvionmentPackage = this;
 
     this.props.toggleDisabledContinue(false);
     this.continueSave = this.continueSave.bind(this);
@@ -51,8 +51,22 @@ export default class AddEnvironmentPackage extends React.Component {
             pack.dependencyName,
             this.props.environmentId,
             (error) => {
-              console.log(error)
-              resolve()
+
+              let showAlert = (error !== null)
+              let message = showAlert ? error[0].message : '';
+              addEnvionmentPackage.setState({
+                'show': showAlert,
+                'message': message,
+
+              })
+              if(!showAlert){
+                resolve()
+              }else{
+                addEnvionmentPackage.setState({
+                  'reject': reject
+                })
+              }
+
             }
           )
         })
@@ -66,7 +80,7 @@ export default class AddEnvironmentPackage extends React.Component {
 
       if(this.props.environmentView){
 
-        that.props.buildCallback();
+        addEnvionmentPackage.props.buildCallback();
       }else{
           this.props.setComponent(this.props.nextWindow)
       }

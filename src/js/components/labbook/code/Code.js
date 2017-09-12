@@ -1,10 +1,20 @@
-// import 'es6-promise';
+// vendor
 import React, { Component } from 'react'
+import SweetAlert from 'sweetalert-react';
+//mutations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 
+let code;
 export default class Code extends Component {
   constructor(props){
   	super(props);
+
+    this.state = {
+      'show': false,
+      'message': ''
+    }
+
+    code = this;
   }
 
   _openJupyter(){
@@ -13,10 +23,16 @@ export default class Code extends Component {
       this.props.labbookName,
       'default',
       'clientMutationId',
-      (response) =>{
-          setTimeout(function(){
-                window.open('http://localhost:8888/tree', '_blank')
-          }, 3000)
+      (error) =>{
+        if(error){
+          code.setState({
+            'show': true,
+            'message': error[0].message,
+          })
+        }else{
+            window.open('http://localhost:8888/', '_blank')
+        }
+
 
       }
     )
@@ -32,6 +48,17 @@ export default class Code extends Component {
           target="_blank">
             Open Jupyter
           </button>
+
+          <SweetAlert
+            className="sa-error-container"
+            show={this.state.show}
+            type="error"
+            title="Error"
+            text={this.state.message}
+            onConfirm={() => {
+              this.setState({ show: false, message: ''})
+            }}
+            />
         </div>
       )
   }

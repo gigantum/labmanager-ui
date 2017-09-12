@@ -71,7 +71,9 @@ export default function AddEnvironmentComponentMutation(
       //   edgeName: 'newEnvironmentEdge',
       // }],
       onCompleted: (response, error) => {
-
+        if(error){
+          console.log(error)
+        }
         callback(error)
       },
       onError: err => console.error(err)

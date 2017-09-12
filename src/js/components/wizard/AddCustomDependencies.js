@@ -114,19 +114,20 @@ export default class AddCustomDependencies extends React.Component {
           component.componentClass,
           (error) => {
             console.log(error)
-            let showAlert = (error !== null)
-            let message = showAlert ? error[0].message : '';
-            addCustomDependencies.setState({
-              'show': showAlert,
-              'message': message,
+            let showAlert = (error)
 
-            })
-            if(!showAlert){
-              resolve()
-            }else{
+            if(showAlert){
+              let message = showAlert ? error[0].message : '';
               addCustomDependencies.setState({
+                'show': showAlert,
+                'message': message,
                 'reject': reject
+
               })
+
+            }else{
+
+              resolve()
             }
           }
         )
@@ -215,7 +216,10 @@ export default class AddCustomDependencies extends React.Component {
                       type="error"
                       title="Error"
                       text={this.state.message}
-                      onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
+                      onConfirm={() => {
+                        this.state.reject(); this.setState({ show: false, message: ''})
+                      }}
+                      />
                   </div>
 
                 )

@@ -1,6 +1,7 @@
+//vendor
 import React from 'react'
 import SweetAlert from 'sweetalert-react';
-
+//mutations
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 
 
@@ -12,6 +13,8 @@ export default class SelectBaseImage extends React.Component {
       'isLoading': false,
       'name': '',
       'description': '',
+      'show': false,
+      'message': ''
     };
 
     this.continueSave = this.continueSave.bind(this)
@@ -25,18 +28,21 @@ export default class SelectBaseImage extends React.Component {
   */
   continueSave(){
     this.setState({'isLoading':true})
+
     BuildImageMutation(
       this.props.labbookName,
       'default',
       (error) => {
         console.log(error)
-        let showAlert = (error !== null)
-        let message = showAlert ? error[0].message : '';
-        this.setState({
-          'isLoading': false,
-          'show': showAlert,
-          'message': message
-        })
+        // let showAlert = (error !== null)
+        // if(showAlert){
+        //   let message = showAlert ? error[0].message : '';
+        //   this.setState({
+        //     'isLoading': false,
+        //     'show': showAlert,
+        //     'message': message
+        //   })
+        // }
 
         this.props.setComponent(this.props.nextWindow, this.state.name)
       }

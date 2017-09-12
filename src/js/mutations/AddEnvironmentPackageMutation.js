@@ -51,9 +51,11 @@ export default function AddEnvironmentPackageMutation(
     {
       mutation,
       variables,
-      onCompleted: (response) => {
-
-        callback()
+      onCompleted: (response, error) => {
+        if(error){
+          console.log(error)
+        }
+        callback(error)
       },
       onError: err => console.error(err),
 

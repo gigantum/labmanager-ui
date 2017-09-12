@@ -189,8 +189,16 @@ export default class SelectBaseImage extends React.Component {
                         </div>
                       )
                     }
+                    <SweetAlert
+                      className="sa-error-container"
+                      show={this.state.show}
+                      type="error"
+                      title="Error"
+                      text={this.state.message}
+                      onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
 
-                  </div>                  )
+                  </div>
+                )
                 }else{
                   return(<Loader />)
                 }
