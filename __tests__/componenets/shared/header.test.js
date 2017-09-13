@@ -10,7 +10,7 @@ auth.isAuthenticated = function(){return false};
 
 test('Test Header rendering', () => {
   const component = renderer.create(
-    <MemoryRouter>
+    <MemoryRouter history={history}>
       <Header auth={auth} history={history}/>
     </MemoryRouter>
   );

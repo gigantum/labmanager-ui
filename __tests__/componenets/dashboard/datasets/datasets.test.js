@@ -1,19 +1,19 @@
 import React from 'react'
 import renderer from 'react-test-renderer';
 import {mount} from 'enzyme'
-import {DatasetSets} from 'Components/dashboard/datasets/DatasetSets';
+import DatasetSets from 'Components/dashboard/datasets/DatasetSets';
 import relayTestingUtils from 'relay-testing-utils'
 
 
 test('Test Datasets', () => {
 
-  const Datasets = renderer.create(
+  const datasets = renderer.create(
 
-     relayTestingUtils.relayWrap(<DatasetSets />)
+     <DatasetSets />
 
   );
 
-  const tree = Datasets.toJSON()
+  const tree = datasets.toJSON()
 
   expect(tree).toMatchSnapshot()
 

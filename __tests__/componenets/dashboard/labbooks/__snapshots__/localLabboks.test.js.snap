@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test LocalLabbooks 1`] = `
+exports[`Test LocalLabbooks rendering 1`] = `
 <div
   className="LocalLabbooks"
 >
@@ -80,10 +80,16 @@ exports[`Test LocalLabbooks 1`] = `
               Title
             </label>
             <input
+              className=""
               onChange={[Function]}
               placeholder="Enter a unique, descriptive title"
               type="text"
             />
+            <span
+              className="hidden"
+            >
+              Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)
+            </span>
           </div>
           <div>
             <label>

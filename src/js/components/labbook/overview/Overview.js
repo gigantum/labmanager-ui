@@ -5,8 +5,8 @@ import {
   graphql
 } from 'react-relay'
 //components
-import BaseImage from '../environment/BaseImage'
-import DevEnvironments from '../environment/DevEnvironments'
+import BaseImage from 'Components/labbook/environment/BaseImage'
+import DevEnvironments from 'Components/labbook/environment/DevEnvironments'
 import PackageCount from './PackageCount'
 import Loader from 'Components/shared/Loader'
 

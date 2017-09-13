@@ -5,7 +5,7 @@ import Footer from 'Components/shared/Footer';
 
 test('Test Footer rendering', () => {
   const component = renderer.create(
-      <Footer/>
+      <Footer />
 
   );
   let tree = component.toJSON();

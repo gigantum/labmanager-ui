@@ -6,7 +6,7 @@ import {MemoryRouter } from 'react-router-dom'
 import config from './../config'
 let environ;
 let _setBuildingState = ((state) => {
-  console.log(state)
+  //console.log(state)
 })
 test('Test Environment rendering', () => {
   let props = {labbookName: config.data.labbook.name}

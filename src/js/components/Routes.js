@@ -12,7 +12,6 @@ import Footer from './shared/Footer';
 import Labbook from './labbook/Labbook';
 import environment from './../createRelayEnvironment'
 import Loader from 'Components/shared/Loader'
-import Error from 'Components/popups/Error'
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
   query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
@@ -68,8 +67,6 @@ export default class Routes extends Component {
               render={(location) => {return(
               <div className="Routes">
                 <Header auth={auth} history={history}/>
-
-                <Error ref="Error_routes" />
 
                 <Route
                   exact

@@ -1,5 +1,5 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import Code from 'Components/labbook/code/Code';
 import renderer from 'react-test-renderer';
 
@@ -17,11 +17,10 @@ test('Test Code rendering', () => {
 describe('Open Jupyter', () => {
 
   //const isAuthenticated = function(){return true};
-  const code = shallow(
+  const comp = mount(
     <Code />
   );
-  //code.find('button').simualte('click')
+  comp.find('.Code__open-jupyter').simulate('click')
 
-  console.log(code)
   //expect(tree).toMatchSnapshot();
 });

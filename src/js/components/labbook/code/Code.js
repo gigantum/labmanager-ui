@@ -30,13 +30,15 @@ export default class Code extends Component {
             'message': error[0].message,
           })
         }else{
+          setTimeout(function(){
             window.open('http://localhost:8888/', '_blank')
+          }, 3000)
+
         }
 
 
       }
     )
-
 
   }
 

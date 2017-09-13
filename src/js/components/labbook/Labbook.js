@@ -24,7 +24,7 @@ class Labbook extends Component {
   	super(props);
 
     this.state = {
-      'selectedComponent': (this.props.location.pathname.split('/').length > 3) ? this.props.location.pathname.split('/')[3] : 'overview' ,
+      'selectedComponent': (props.location.pathname.split('/').length > 3) ? this.props.location.pathname.split('/')[3] : 'overview' ,
       'containerState': 'Closed',
       'isBuilding': false,
       'containerStatus': '',

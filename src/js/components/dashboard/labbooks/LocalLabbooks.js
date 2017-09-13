@@ -13,6 +13,7 @@ class LocalLabbooks extends Component {
     routes to that labbook
   */
   _goToLabbook(labbookName){
+    this.setState({'labbookName': labbookName})
     this.props.history.replace(`/labbooks/${labbookName}`)
   }
 
@@ -20,8 +21,9 @@ class LocalLabbooks extends Component {
     loads
   */
   _loadMore(e){
-    e.preventDefault();
-
+    if(e){
+      e.preventDefault();
+    }
     this.props.relay.loadMore(
       10, // Fetch the next 10 feed items
       (ev) => {
@@ -102,8 +104,6 @@ class LocalLabbooks extends Component {
 
   }
 }
-
-export {LocalLabbooks as Local}
 
 export default createPaginationContainer(
   LocalLabbooks,

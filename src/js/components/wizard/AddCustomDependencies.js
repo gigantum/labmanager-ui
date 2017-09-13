@@ -205,7 +205,7 @@ export default class AddCustomDependencies extends React.Component {
                     {
                       this._environmentView() && (
                         <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
-                          <button onClick={() => this.continueSave()}>Save</button>
+                          <button className="SelectBaseImage__save-button" onClick={() => this.continueSave()}>Save</button>
                         </div>
                       )
                     }

@@ -57,8 +57,9 @@ export default class WizardModal extends React.Component {
       'nextComponentId': 'selectBaseImage',
       'previousComponent': null
     })
-
-    document.getElementById('modal__cover').classList.remove('hidden')
+    if(document.getElementById('modal__cover')){
+      document.getElementById('modal__cover').classList.remove('hidden')
+    }
   }
   /*
     function()
@@ -66,7 +67,9 @@ export default class WizardModal extends React.Component {
   */
   _hideModal(){
     this.setState({'modal_visible': false})
-    document.getElementById('modal__cover').classList.add('hidden')
+    if(document.getElementById('modal__cover')){
+      document.getElementById('modal__cover').classList.add('hidden')
+    }
   }
 
   /*

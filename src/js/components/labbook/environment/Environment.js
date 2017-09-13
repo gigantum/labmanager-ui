@@ -56,7 +56,7 @@ class Environment extends Component {
       environ.props.labbookName,
       'default',
       (error) => {
-        console.log(error, this)
+
         let showAlert = (error !== null)
         let message = showAlert ? error[0].message : '';
         environ.setState({

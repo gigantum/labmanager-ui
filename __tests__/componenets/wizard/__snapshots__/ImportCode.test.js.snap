@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test ImportCode rendering 1`] = `
+<div
+  className="ImportCode flex flex--column justify-center"
+>
+  <textarea
+    className="ImportCode__drop"
+    placeholder="Drag and Drop code here"
+  />
+  <div
+    className="ImportCode__loading visibility-hidden"
+  >
+    <div
+      className="loader"
+    >
+      <div
+        className="loader--ball loader--1"
+      >
+        <div
+          className="loader--inner-ball"
+        />
+      </div>
+      <div
+        className="loader--ball loader--2"
+      >
+        <div
+          className="loader--inner-ball"
+        />
+      </div>
+      <div
+        className="loader--ball loader--3"
+      >
+        <div
+          className="loader--inner-ball"
+        />
+      </div>
+      <div
+        className="loader--ball loader--4"
+      >
+        <div
+          className="loader--inner-ball"
+        />
+      </div>
+      <div
+        className="loader--ball loader--5"
+      >
+        <div
+          className="loader--inner-ball"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
