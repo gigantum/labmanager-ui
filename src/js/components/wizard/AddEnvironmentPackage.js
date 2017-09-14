@@ -51,8 +51,8 @@ export default class AddEnvironmentPackage extends React.Component {
             pack.dependencyName,
             this.props.environmentId,
             (error) => {
-
-              let showAlert = (error !== null)
+              console.log(error)
+              let showAlert = ((error !== null) && (error !== undefined))
               let message = showAlert ? error[0].message : '';
               addEnvionmentPackage.setState({
                 'show': showAlert,
