@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Labbook Rendering 1`] = `
+<div
+  className="Labbook"
+>
+  <h4
+    className="Labbook__title"
+  >
+    Lab Books
+  </h4>
+  <div
+    className="Labbook__inner-container flex flex--row"
+  >
+    <div
+      className="Labbook__component-container flex flex--column"
+    >
+      <div
+        className="Labbook__header flex flex--row justify--space-between"
+      >
+        <h4
+          className="Labbook__name-title"
+        >
+          demo-lab-book
+        </h4>
+      </div>
+      <div
+        className="Labbook__navigation-container mui-container flex-0-0-auto"
+      >
+        <nav
+          className="Labbook__navigation flex flex--row"
+        >
+          <div
+            className="selected"
+            onClick={[Function]}
+          >
+            <a
+              href="../../labbooks/undefined/overview"
+              onClick={[Function]}
+            >
+              Overview
+            </a>
+          </div>
+          <div
+            className="Labbook__navigation-item--notes"
+            onClick={[Function]}
+          >
+            <a
+              href="../../labbooks/undefined/notes"
+              onClick={[Function]}
+            >
+              Notes
+            </a>
+          </div>
+          <div
+            className="Labbook__navigation-item--environment"
+            onClick={[Function]}
+          >
+            <a
+              href="../../labbooks/undefined/environment"
+              onClick={[Function]}
+            >
+              Environment
+            </a>
+          </div>
+          <div
+            className="Labbook__navigation-item--code"
+            onClick={[Function]}
+          >
+            <a
+              href="../../labbooks/undefined/code"
+              onClick={[Function]}
+            >
+              Code
+            </a>
+          </div>
+          <div
+            className="Labbook__navigation-item--data"
+            onClick={[Function]}
+          >
+            <a
+              href="../../labbooks/undefined/data"
+              onClick={[Function]}
+            >
+              Data
+            </a>
+          </div>
+        </nav>
+      </div>
+      <div
+        className="Labbook__view mui-container flex flex-1-0-auto"
+      />
+    </div>
+    <div
+      className="Labbook__modal hidden"
+      id="labbookModal"
+    >
+      <div
+        className="UserNote__close"
+        onClick={[Function]}
+      >
+        X
+      </div>
+      
+    </div>
+    <div
+      className="Labbook__info"
+    >
+      <div
+        className="Labbook__info-card"
+      >
+        <div
+          className="Labbook__user-note"
+          onClick={[Function]}
+        >
+          <h5>
+            Add Note
+          </h5>
+          <div
+            className="Labbook__user-note--add"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

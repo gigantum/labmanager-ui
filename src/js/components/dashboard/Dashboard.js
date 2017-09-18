@@ -3,8 +3,8 @@ import {graphql, QueryRenderer} from 'react-relay'
 //components
 import DatasetSets from './datasets/DatasetSets';
 import LocalLabbooks from './labbooks/LocalLabbooks';
-import environment from './../../createRelayEnvironment'
-import WizardModal from './../wizard/WizardModal'
+import environment from 'JS/createRelayEnvironment'
+import WizardModal from 'Components/wizard/WizardModal'
 
 
 const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String){
@@ -29,11 +29,11 @@ export default class DashboardContainer extends Component {
     })
   }
 
-  _setSelectedComponent(that, component){
-    this.setState({selectedComponent: component})
-    this.props.history.push(`../${component}`)
-  }
-
+  /*
+    function()
+    returns jsx of selected component
+    return jsx
+  */
   _displaySelectedComponent(){
 
     if(this.state.selectedComponent === 'datasets'){

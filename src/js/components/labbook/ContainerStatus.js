@@ -3,7 +3,7 @@ import {
   QueryRenderer,
   graphql
 } from 'react-relay'
-import environment from './../../createRelayEnvironment'
+import environment from 'JS/createRelayEnvironment'
 
 let containerStatus;
 
@@ -45,7 +45,7 @@ export default class ContainerStatus extends Component {
   }
 
   componentDidMount(){
-    this.interval = setInterval(this.tick, 2000);
+    //this.interval = setInterval(this.tick, 2000);
   }
 
 

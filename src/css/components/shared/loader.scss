@@ -1,0 +1,45 @@
+$circle-count: 13;
+$loader-proportion: 60px;
+$animation_config: (
+  name: spin,
+  duration: 1s,
+  timing: ease-in-out,
+  iteration: infinite,
+  direction: alternate,
+  fill-mode: both
+);
+
+@function sh-setup($config) {
+  @return zip(map-values($config)...);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.Loader {
+  animation: sh-setup($animation_config);
+  height: $loader-proportion;
+  width: $loader-proportion;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -50px 0 0 -50px;
+
+  svg:not(#circle-middle) {
+    animation: sh-setup($animation_config);
+    position: absolute;
+    top: -50%;
+    left: 0;
+    transform-origin: bottom center;
+  }
+}
+
+@for $i from 1 through $circle-count {
+  .Loader svg:nth-of-type(#{$i}):not(#circle-middle) {
+    transform: rotate(($i * (360/($circle-count - 1))) + deg);
+  }
+}

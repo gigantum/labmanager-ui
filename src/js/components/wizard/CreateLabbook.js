@@ -1,7 +1,12 @@
+//vendor
 import React from 'react'
+import SweetAlert from 'sweetalert-react';
+//utilities
+import validation from 'JS/validation/Validation'
+//mutations
+import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 
-import CreateLabbookMutation from './../../mutations/CreateLabbookMutation'
-
+let createLabbook;
 export default class CreateLabbook extends React.Component {
   constructor(props){
   	super(props);
@@ -9,11 +14,17 @@ export default class CreateLabbook extends React.Component {
   	this.state = {
       'modal_visible': false,
       'name': '',
-      'description': ''
+      'description': '',
+      'showError': false,
+      'show': false,
+      'message': ''
     };
 
     this.handler = this.handler.bind(this)
     this.continueSave = this.continueSave.bind(this)
+    this._updateTextState = this._updateTextState.bind(this)
+
+    createLabbook = this;
   }
 
   handler(e) {
@@ -30,32 +41,34 @@ export default class CreateLabbook extends React.Component {
     let name = this.state.name;
     //create new labbook
 
-    if(this.props.nextWindow){
+    CreateLabbookMutation(
+      this.state.description,
+      name,
+      viewerId,
+      (error) => {
 
-      this.props.toggleDisabledContinue(true);
-      CreateLabbookMutation(
-        this.state.description,
-        name,
-        viewerId,
-        () => {
+        let showAlert = (error !== null)
 
-          this.props.setLabbookName(this.state.name)
+        if(!showAlert){
+          let message = showAlert ? error[0].message : '';
+          createLabbook.setState({
+            'show': showAlert,
+            'message': message,
+          })
+        }
+
+        this.props.setLabbookName(this.state.name)
+
+        if(this.props.nextWindow){
+          this.props.toggleDisabledContinue(true)
           this.props.setComponent(this.props.nextWindow)
-        }//route to new labbook on callback
-      )
-      //this.props.handler(evt);
-    }else{
+        } else{
 
-      CreateLabbookMutation(
-        this.state.description,
-        name,
-        viewerId,
-        () => this.props.history.replace(`/labbooks/${name}`) //route to new labbook on callback
-      )
+          this._hideModal();
+        }
 
-      this._hideModal();
-      this.props.handler(evt);
-    }
+      }//route to new labbook on callback
+    )
   }
   /*
     evt:object, field:string - updates text in a state object and passes object to setState method
@@ -65,7 +78,13 @@ export default class CreateLabbook extends React.Component {
 
     state[field] = evt.target.value;
     if(field === 'name'){
-      this.props.toggleDisabledContinue(evt.target.value === "");
+      let isMatch = validation.labbookName(evt.target.value)
+      this.setState({
+      'showError': ((isMatch === null) && (evt.target.value.length > 0))
+      })
+
+      this.props.toggleDisabledContinue((evt.target.value === "") || (isMatch === null));
+
     }
     this.setState(state)
   }
@@ -80,9 +99,11 @@ export default class CreateLabbook extends React.Component {
               <label>Title</label>
               <input
                 type='text'
+                className={this.state.showError ? 'invalid' : ''}
                 onChange={(evt) => this._updateTextState(evt, 'name')}
                 placeholder="Enter a unique, descriptive title"
               />
+              <span className={this.state.showError ? 'error': 'hidden'}>Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)</span>
             </div>
 
             <div>
@@ -105,7 +126,13 @@ export default class CreateLabbook extends React.Component {
               />
             </div>
 
-
+            <SweetAlert
+              className="sa-error-container"
+              show={this.state.show}
+              type="error"
+              title="Error"
+              text={this.state.message}
+              onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
           </div>
         </div>
       )

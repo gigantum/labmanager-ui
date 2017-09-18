@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Footer rendering 1`] = `
+<div
+  className="Footer flex flex--row justify--space-between"
+  id="footer"
+/>
+`;

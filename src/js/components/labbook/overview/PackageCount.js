@@ -1,11 +1,13 @@
+//vendor
 import React, { Component } from 'react'
-
-import environment from './../../../createRelayEnvironment'
 import {
   QueryRenderer,
   graphql
 } from 'react-relay'
-
+//components
+import Loader from 'Components/shared/Loader'
+//utilites
+import environment from 'JS/createRelayEnvironment'
 
 let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: String!, $first: Int!){
   labbook(name: $name, owner: $owner){
@@ -89,7 +91,7 @@ export default class PackageCount extends Component {
 
           return(<div>{error.message}</div>)
         }else{
-          return(<div>loading</div>)
+          return(<Loader />)
         }
       }}
 

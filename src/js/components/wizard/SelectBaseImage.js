@@ -1,7 +1,13 @@
+//vendor
 import React from 'react'
+import SweetAlert from 'sweetalert-react';
 import { QueryRenderer, graphql } from 'react-relay'
-import environment from './../../createRelayEnvironment'
-import AddEnvironmentComponentMutation from './../../mutations/AddEnvironmentComponentMutation'
+//components
+import Loader from 'Components/shared/Loader'
+//utilites
+import environment from 'JS/createRelayEnvironment'
+//mutations
+import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
 
 const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor: String){
   availableBaseImages(first: $first, after: $cursor){
@@ -59,7 +65,9 @@ export default class SelectBaseImage extends React.Component {
       'name': '',
       'description': '',
       'selectedBaseImage': null,
-      'selectedBaseImageId': false
+      'selectedBaseImageId': false,
+      'show': false,
+      'message': ''
     };
   }
 
@@ -95,7 +103,7 @@ export default class SelectBaseImage extends React.Component {
       this.props.environmentId,
       this.props.connection,
       component.componentClass,
-      () => {
+      (error) => {
         this.props.setBaseImage(this.state.selectedBaseImage)
         if(this._environmentView()){
           this.props.buildCallback()
@@ -181,10 +189,18 @@ export default class SelectBaseImage extends React.Component {
                         </div>
                       )
                     }
+                    <SweetAlert
+                      className="sa-error-container"
+                      show={this.state.show}
+                      type="error"
+                      title="Error"
+                      text={this.state.message}
+                      onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
 
-                  </div>                  )
+                  </div>
+                )
                 }else{
-                  return(<div className="Loading"></div>)
+                  return(<Loader />)
                 }
               }
           }}

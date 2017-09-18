@@ -1,6 +1,8 @@
+//vendor
 import React from 'react'
-
-import BuildImageMutation from './../../mutations/BuildImageMutation'
+import SweetAlert from 'sweetalert-react';
+//mutations
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 
 
 export default class SelectBaseImage extends React.Component {
@@ -11,6 +13,8 @@ export default class SelectBaseImage extends React.Component {
       'isLoading': false,
       'name': '',
       'description': '',
+      'show': false,
+      'message': ''
     };
 
     this.continueSave = this.continueSave.bind(this)
@@ -24,11 +28,22 @@ export default class SelectBaseImage extends React.Component {
   */
   continueSave(){
     this.setState({'isLoading':true})
+
     BuildImageMutation(
       this.props.labbookName,
       'default',
-      (log, error) => {
-        this.setState({'isLoading': false})
+      (error) => {
+        console.log(error)
+        // let showAlert = (error !== null)
+        // if(showAlert){
+        //   let message = showAlert ? error[0].message : '';
+        //   this.setState({
+        //     'isLoading': false,
+        //     'show': showAlert,
+        //     'message': message
+        //   })
+        // }
+
         this.props.setComponent(this.props.nextWindow, this.state.name)
       }
     )
@@ -62,6 +77,11 @@ export default class SelectBaseImage extends React.Component {
           	</div>
           </div>
         </div>
+        <SweetAlert
+          show={this.state.show}
+          title="Demo"
+          text={this.state.message}
+          onConfirm={() => this.setState({ show: false })} />
         {/* <button disabled={this.state.isLoading} onClick={() => this._completeSetup()}> Complete Setup </button> */}
       </div>
       )

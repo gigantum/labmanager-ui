@@ -1,13 +1,15 @@
+//vendor
 import React, { Component } from 'react'
-import BaseImage from '../environment/BaseImage'
-import CustomDependencies from '../environment/CustomDependencies'
-import DevEnvironments from '../environment/DevEnvironments'
-import PackageCount from './PackageCount'
-
 import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
+//components
+import BaseImage from 'Components/labbook/environment/BaseImage'
+import DevEnvironments from 'Components/labbook/environment/DevEnvironments'
+import PackageCount from './PackageCount'
+import Loader from 'Components/shared/Loader'
+
 
 class Overview extends Component {
   constructor(props){
@@ -55,7 +57,7 @@ class Overview extends Component {
         </div>
       )
     } else{
-      return <div>loading</div>
+      return (<Loader />)
     }
   }
 }

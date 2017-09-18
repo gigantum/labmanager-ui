@@ -42,6 +42,10 @@ export default function CreateUserNoteMutation(
       mutation,
       variables,
       onCompleted: (response, error) => {
+
+        if(error){
+          console.log(error)
+        }
         callback(response, error)
       },
       onError: err => console.error(err),

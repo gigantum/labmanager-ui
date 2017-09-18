@@ -1,8 +1,12 @@
+//vendor
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
+//components
+import AddCustomDependencies from 'Components/wizard/AddCustomDependencies'
+import Loader from 'Components/shared/Loader'
 
-import AddCustomDependencies from './../../wizard/AddCustomDependencies'
 let addCustomDependencies;
+
 class CustomDependencies extends Component {
   constructor(props){
     super(props);
@@ -16,6 +20,7 @@ class CustomDependencies extends Component {
   */
   _openModal(){
       this.setState({'modal_visible': true})
+      document.getElementById('modal__cover').classList.remove('hidden')
   }
   /*
     function()
@@ -23,6 +28,7 @@ class CustomDependencies extends Component {
   */
   _hideModal(){
       this.setState({'modal_visible': false})
+      document.getElementById('modal__cover').classList.add('hidden')
   }
 
   _setComponent(comp){
@@ -36,7 +42,7 @@ class CustomDependencies extends Component {
     if (customDependencies) {
       return(
         <div className={blockClass + '__dependencies'}>
-            <div id='modal__cover' className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
+            <div className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
               <div
                 className="Environment__modal-close"
                 onClick={() => this._hideModal()}>
@@ -57,7 +63,7 @@ class CustomDependencies extends Component {
             <div className={blockClass + '__info flex justify--left'}>
             {
               customDependencies.edges.map((edge, index) => {
-    
+
                 return(
                   <div key={this.props.labbookName + edge.node.id + index} className={blockClass + '__dependencies'}>
 
@@ -90,9 +96,7 @@ class CustomDependencies extends Component {
       )
     }else{
       return(
-          <div className={blockClass + '__loading'}>
-              loading
-          </div>
+          <Loader />
         )
     }
   }

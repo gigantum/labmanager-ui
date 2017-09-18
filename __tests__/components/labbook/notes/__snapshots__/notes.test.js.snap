@@ -1,0 +1,1503 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Notes rendering 1`] = `
+<div
+  className="Notes"
+>
+  <div
+    className="Notes__inner-container flex flex--row flex--wrap justify--space-around"
+  >
+    <div
+      className="flex-1-0-auto"
+    >
+      <p>
+        Labbook ID: 
+        TGFiYm9vazpkZWZhdWx0JmRlbW8tbGFiLWJvb2s=
+      </p>
+      <p>
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+      </p>
+      <div>
+        <div
+          className="Notes__date-tab flex flex--column justify--space-around"
+        >
+          <div
+            className="Notes__date-day"
+          >
+            28
+          </div>
+          <div
+            className="Notes__date-month"
+          >
+            Aug
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              7:36pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              Add pip3 managed package: numpy vLatest
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              ba0c0d96a6005f98db0e2d5e2f605d36f23b5bb2
+            </p>
+            <p>
+              Level: 
+              USER_MAJOR
+            </p>
+            <p>
+              ed8357fc2fa088dcba057be50c676377cfe1807d
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div />
+            </div>
+            <p>
+              Monday, August 28th, 2017, 7:36:00 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  environment
+                </li>
+                <li>
+                  package_manager
+                </li>
+                <li>
+                  pip3
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              3:22pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              Add base_image environment component: ubuntu1604-python3-dup v0.2
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              74edc648ebd5dae1f6cd60b648f1602265523b2a
+            </p>
+            <p>
+              Level: 
+              USER_MAJOR
+            </p>
+            <p>
+              2197711420fc76226f8e76d51a8cd8db8960624d
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  Added a 
+                  <code
+                    className={undefined}
+                    data-sourcepos={undefined}
+                  >
+                    base_image
+                  </code>
+                   class environment component ubuntu1604-python3-dup
+                </p>
+                <p>
+                  A base image for python 3 developers using Ubuntu 16.04
+                </p>
+                <ul
+                  className={undefined}
+                  data-sourcepos={undefined}
+                >
+                  <li>
+                    repository: gig-dev_environment-components
+                  </li>
+                  <li>
+                    namespace: gigantum
+                  </li>
+                  <li>
+                    component: ubuntu1604-python3-dup
+                  </li>
+                  <li>
+                    version: 0.2
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p>
+              Monday, August 28th, 2017, 3:22:07 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  base_image
+                </li>
+                <li>
+                  environment
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              3:19pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              note
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              4ff56ed2255258a4a36b7f22ac5dcdb981b0fe8a
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              edb63d7dcdae4c9e93e4611b0d23070a
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <h2
+                  className={undefined}
+                  data-sourcepos={undefined}
+                >
+                  header
+                </h2>
+              </div>
+            </div>
+            <p>
+              Monday, August 28th, 2017, 3:19:46 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  tag
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          className="Notes__date-tab flex flex--column justify--space-around"
+        >
+          <div
+            className="Notes__date-day"
+          >
+            25
+          </div>
+          <div
+            className="Notes__date-month"
+          >
+            Aug
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              2:53pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              this is a new note
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              95bb7a1963f9521801d881640ed0f512b46789f9
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              c141af03805f44a38667c1033223bc2e
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <h4
+                  className={undefined}
+                  data-sourcepos={undefined}
+                >
+                  header
+                </h4>
+                <ul
+                  className={undefined}
+                  data-sourcepos={undefined}
+                >
+                  <li>
+                    list
+                  </li>
+                  <li>
+                    list
+                  </li>
+                  <li>
+                    list
+                  </li>
+                </ul>
+                <p>
+                  <em>
+                    italics
+                  </em>
+                </p>
+                <ol
+                  className={undefined}
+                  data-sourcepos={undefined}
+                >
+                  <li>
+                    <strong>
+                      bold
+                    </strong>
+                  </li>
+                  <li>
+                    item 2
+                  </li>
+                </ol>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 2:53:07 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  sag
+                </li>
+                <li>
+                  tag
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              2:27pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              hello
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              58f17359febbc5647f060e7e4d382976598a2717
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              07e48c63ef6f4aacbdf8f634f9851a11
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  hello i love you
+                </p>
+                <h1
+                  className={undefined}
+                  data-sourcepos={undefined}
+                >
+                  header
+                </h1>
+                <p>
+                  heal
+                  
+                  <em>
+                    italics
+                  </em>
+                  
+                  
+                  <strong>
+                    bold
+                  </strong>
+                  
+                  
+                  <strong>
+                    <em>
+                      bold italic
+                    </em>
+                  </strong>
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 2:27:32 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  tag
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              2:11pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              note
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              98ecbbad51503ec13b36e9fcc337d9a52b8e32b0
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              c1082a6c271b44ffae44af2a5ed37692
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <h3
+                  className={undefined}
+                  data-sourcepos={undefined}
+                >
+                  enterign a user note
+                </h3>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 2:11:58 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  with tags
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              1:47pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              timestamp
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              372f6f876a3b236994c1689aaebe21b4c3270cfc
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              aef66ce5d3fc4cd5ad3c62654129c945
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  pamp
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 1:47:17 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  hamper
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              1:45pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              adadsd
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              b644f9e9fdd6963f07ba6f3a83af9a3ffd8d08ad
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              c759836169f2481db8d22478585c16f7
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  asdads
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 1:45:43 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              1:45pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              addas
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              cc7712b48d1a4f54f3f467758e89e41e88f7dc98
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              66417aaaa9fd4706ad7bbf5829b35838
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  ads
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 1:45:01 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              1:43pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              asdsad
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              04c1f12bb99209b34984c18d6029c4317c307744
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              46121030fb0e43fd9bf43219cbed001e
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  adas
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 1:43:33 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  asd
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              1:42pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              new note
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              b6d0a3503175845d2cca107fa9447183fab2f7c5
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              41bd73ed77e544ba90e5baace7ece42a
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  here is a note
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 1:42:15 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  note
+                </li>
+                <li>
+                  tag
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              1:39pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              add a user note
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              f94f9a4a6d42fbb16f0b06741f01e967ae3de9c7
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              96eadb35fbbe417984a0736555cc4bca
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  asadsads
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 1:39:27 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  are
+                </li>
+                <li>
+                  it
+                </li>
+                <li>
+                  tag
+                </li>
+                <li>
+                  you
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              1:37pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              adasdad
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              0d6a7ef21a65b317fa54e48883dcfb28e88127e5
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              548cbf3fd3db4776bf1aa799d05b52f4
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  asads
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 1:37:48 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              1:36pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              asddas
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              67c7bf50496ae119259a1172308235b4b1379ca4
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              e3946bd5de5441bbadbd4ede7091f86f
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  ads
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 1:36:04 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  aad
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              1:35pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              drive
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              d9e30c5c7c3b5a2a78376bc0946b2df3d4a90a3d
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              d09e0405b33246d094de204ca3225f70
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  dda
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 1:35:24 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  tag
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              1:32pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              my baby doesn't drive me crazy
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              c0be5e611729987ab515150270270c944c9e06c7
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              e1f4173e780241d081811203e03bb4e4
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  asdads
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 1:32:51 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  tag
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              1:32pm
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              aasadsda
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              921e1265b18f0ed2eb0893338bac45e67a555336
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              9566b218c91442a3a8c85fa64874a789
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  asdads
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 1:32:26 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              12:59am
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              asddas
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              665847590135dc0a3f1305bf4d721f4bdd20017d
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              125e7316c17943eca089ec75bd5ef86b
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  adsdas
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 12:59:21 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              12:58am
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              notey mc noteface
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              208c09d206942aea50898b0b0e7e36ce0dbcb7fb
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              5a0667ec4bba4ae8a18a3c7de2f73cf9
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  adads
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 12:58:06 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  adsdas
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="NotesCard card"
+        >
+          <div
+            className="flex flex--row justify--space-between"
+          >
+            <p
+              className="NotesCard__time"
+            >
+              12:56am
+            </p>
+            <p
+              className="NotesCard__commit-message"
+            >
+              this is a note
+            </p>
+            <button
+              className="NotesCard__toggle-button closed flex justify--space-around"
+              onClick={[Function]}
+            >
+              Activity Log
+              <div
+                className="NotesCard__toggle-icon"
+              />
+            </button>
+          </div>
+          <div
+            className="NotesCard__expanded-view no-height"
+          >
+            <p>
+              Commit Id: 
+              89c8c5141ea8b030d489326dbe56e97f75d70b3e
+            </p>
+            <p>
+              Level: 
+              USER_NOTE
+            </p>
+            <p>
+              509c444af4bd4f17bb4645e85ee4fdae
+            </p>
+            <div
+              className="NotesCard__markdown-container"
+            >
+              <div>
+                <p>
+                  note
+                </p>
+              </div>
+            </div>
+            <p>
+              Friday, August 25th, 2017, 12:56:51 PM
+            </p>
+            <div>
+              <ul
+                className="NotesCard__tags-list flex flex--row flex--wrap"
+              >
+                <div>
+                  Tags: 
+                   
+                </div>
+                <li>
+                  tag
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="Notes__next-button-container"
+  >
+    <button
+      onClick={[Function]}
+      title="Load More"
+    >
+      Next 10
+    </button>
+  </div>
+</div>
+`;

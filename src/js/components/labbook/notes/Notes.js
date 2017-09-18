@@ -6,27 +6,45 @@ import {
 } from 'react-relay'
 //Components
 import NotesCard from './NotesCard'
+import Loader from 'Components/shared/Loader'
 //utilities
-import Config from './../../../config'
-
+import Config from 'JS/config'
+let pagination = false;
+let counter = 10;
 
 class Notes extends Component {
-  constructor(props){
-  	super(props);
+
+
+  componentDidMount() {
+    let relay = this.props.relay;
+    let notes = this.props.labbook.notes
+    let cursor =  notes.edges[0].cursor;
+    pagination = false;
+    setInterval(function(){
+      relay.refetchConnection(
+        counter,
+        (response) =>{
+        },
+        {
+          cursor: cursor
+        }
+      )
+    }, 2000);
   }
   /*
     function()
     pagination container loads more items
   */
   _loadMore() {
+    pagination = true;
    this.props.relay.loadMore(
-     10, // Fetch the next 10 feed items
+     counter, // Fetch the next 10 feed items
      e => {
-       console.log(e);
      },{
        name: 'labbook'
      }
    );
+   counter += 10
   }
 
   /*
@@ -100,10 +118,13 @@ class Notes extends Component {
         </div>
       )
     }else{
-      return(<div key="loading">loading</div>)
+      return(
+        <Loader />
+      )
     }
   }
 }
+
 /*
   notes pagination container
   contains notes fragment and for query consumption
@@ -142,7 +163,8 @@ export default createPaginationContainer(
     getConnectionFromProps(props) {
         return props.labbook && props.labbook.notes;
     },
-    getFragmentVariables(prevVars, first) {
+    getFragmentVariables(prevVars, first, cursor) {
+
       return {
        ...prevVars,
        first: first,
@@ -150,7 +172,8 @@ export default createPaginationContainer(
    },
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
 
-    first = 10;
+    cursor = pagination ? props.labbook.notes.edges[props.labbook.notes.edges.length - 1].cursor : null
+    first = counter;
     name = props.labbookName;
     owner = 'default';
      return {
@@ -164,7 +187,7 @@ export default createPaginationContainer(
      };
    },
    query: graphql`
-   query NotesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String!){
+   query NotesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
      labbook(name: $name, owner: $owner){
        id
        description

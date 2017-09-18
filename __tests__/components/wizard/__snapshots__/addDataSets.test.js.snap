@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test AddDataSets rendering 1`] = `
+<div
+  className="AddDatasets flex flex--column justify--space-around"
+>
+  <p>
+    Select a Dataset
+  </p>
+  <div
+    className="AddDatasets__selected-items flex justify-center"
+  />
+  <div
+    className="AddDatasets__selection flex justify-center"
+  />
+</div>
+`;

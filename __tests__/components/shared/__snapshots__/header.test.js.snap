@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Header rendering 1`] = `
+<div
+  className="Header flex flex--row justify--space-between"
+>
+  <div
+    className="flex justify--space-around flex-1-0-auto"
+  >
+    <ul
+      className="Header__nav flex flex--row justify--space-between"
+    >
+      <li>
+        <a
+          className="Header__nav-item Header__nav-item--datasets flex flex--row justify--space-between"
+          href="/datasets"
+          onClick={[Function]}
+        >
+          <div
+            className="Header__datasets-icon"
+          />
+          Datasets
+        </a>
+      </li>
+      <li>
+        <a
+          className="Header__nav-item Header__nav-item--labbooks flex flex--row justify--space-between"
+          href="/labbooks"
+          onClick={[Function]}
+        >
+          <div
+            className="Header__labbook-icon"
+          />
+          Lab Books
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

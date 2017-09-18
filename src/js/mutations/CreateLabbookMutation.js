@@ -44,9 +44,13 @@ export default function CreateLabbookMutation(
       mutation,
       variables,
       configs: configs,
-      onCompleted: (response) => {
+      onCompleted: (response, error) => {
 
-        callback()
+        if(error){
+          console.log(error)
+        }
+
+        callback(error)
       },
       onError: err => {console.error(err)},
       updater: (store) => {

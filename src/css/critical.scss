@@ -2,18 +2,20 @@
 @import '../../node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
 @import '../../node_modules/normalize-sass/normalize';
 @import  'vendor/materialize.scss';
+@import  'vendor/sweetAlert.scss';
 //generic
-@import '_utilities';
 @import '_variables';
+@import '_utilities';
 @import '_layout';
 //atoms
 @import 'atoms/button.scss';
 @import 'atoms/loader.scss';
 
-//components
-@import 'components/header';
-@import 'components/footer';
-
+//shared components
+@import 'components/shared/header';
+@import 'components/shared/footer';
+@import 'components/shared/loader';
+//
 @import  'components/breadCrumbs.scss';
 @import  'components/routes.scss';
 @import  'components/login.scss';
@@ -75,3 +77,6 @@ h6 {
   opacity: 0.5;
   z-index: 70;
 }
+// .Routes{
+//   filter: invert(1);
+// }

@@ -1,3 +1,4 @@
+//vendor
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Callback from './../Callback/Callback';
@@ -10,8 +11,9 @@ import Header from './shared/Header';
 import Footer from './shared/Footer';
 import Labbook from './labbook/Labbook';
 import environment from './../createRelayEnvironment'
+import Loader from 'Components/shared/Loader'
 //labbook query with notes fragment
-const LabbookQuery =  graphql`
+export const LabbookQuery =  graphql`
   query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
     labbook(name: $name, owner: $owner){
       id
@@ -19,6 +21,8 @@ const LabbookQuery =  graphql`
       ...Labbook_labbook
     }
   }`
+
+
 //import Breadcrumbs from 'react-breadcrumbs'
 
 const auth = new Auth();
@@ -110,7 +114,7 @@ export default class Routes extends Component {
                             />)
                           }
                           else{
-                            return (<div>loading</div>)
+                            return (<Loader />)
                           }
                         }
                       }

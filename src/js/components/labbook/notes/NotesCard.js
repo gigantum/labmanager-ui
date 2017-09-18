@@ -1,3 +1,4 @@
+//vendor
 import React, { Component } from 'react'
 import dateformat from 'dateformat'
 import ReactMarkdown from 'react-markdown'
@@ -40,12 +41,12 @@ export default class NotesCard extends Component {
                 {this.props.edge.node.message}
               </p>
 
-              <div className={!this.state.showExtraInfo ? "NotesCard__toggle-button closed flex justify--space-around": "NotesCard__toggle-button open flex justify--space-around"}
+              <button className={!this.state.showExtraInfo ? "NotesCard__toggle-button closed flex justify--space-around": "NotesCard__toggle-button open flex justify--space-around"}
               onClick={() => this._toggleExtraInfo()}
               >
-              Activity Log
-              <div className="NotesCard__toggle-icon"></div>
-              </div>
+                Activity Log
+                <div className="NotesCard__toggle-icon"></div>
+              </button>
           </div>
 
           <div className={this.state.showExtraInfo ? 'NotesCard__expanded-view' : 'NotesCard__expanded-view no-height'}>

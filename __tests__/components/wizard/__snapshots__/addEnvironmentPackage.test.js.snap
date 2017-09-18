@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test AddEnvironmentPackage rendering 1`] = `
+<div
+  className="AddEnvironmentPackage"
+>
+  <div
+    className="AddEnvironmentPackage__inner-container"
+  >
+    <p>
+      Install dependencies via Package Manager
+    </p>
+    <div
+      className="AddEnvironmentPackage__row flex flex--row justify--space-between"
+    >
+      <div
+        className="AddEnvironmentPackage__select--container"
+      >
+        <select
+          className="AddEnvironmentPackage__select"
+          disabled={false}
+          onChange={[Function]}
+        >
+          <option
+            className="AddEnvironmentPackage__select"
+            value="apt-get"
+          >
+            apt-get
+          </option>
+          <option
+            className="AddEnvironmentPackage__select"
+            value="pip"
+          >
+            pip
+          </option>
+        </select>
+      </div>
+      <input
+        autoFocus={true}
+        className="AddEnvironmentPackage__text-input"
+        disabled={false}
+        onKeyUp={[Function]}
+        placeholder="Dependency Name"
+        type="text"
+      />
+      <button
+        className="AddEnvironmentPackage__button"
+        disabled={true}
+        onClick={[Function]}
+      >
+        Add
+      </button>
+    </div>
+  </div>
+</div>
+`;

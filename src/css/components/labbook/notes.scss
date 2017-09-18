@@ -31,6 +31,15 @@
 
   cursor: pointer;
 
+  background: none;
+  width: 200px;
+  border: none;
+  color: $font-grey;
+}
+
+.NotesCard__toggle-button:focus{
+  background: none;
+  border: none;
   color: $font-grey;
 }
  .NotesCard__toggle-icon{

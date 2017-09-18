@@ -34,9 +34,9 @@ export default function StartContainerMutation(
       variables,
       onCompleted: (response, error ) => {
         if(error){
-          console.error(error)
+          console.log(error)
         }
-        callback()
+        callback(error)
       },
       onError: err => console.error(err),
 

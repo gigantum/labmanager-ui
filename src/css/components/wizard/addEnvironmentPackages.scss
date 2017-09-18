@@ -37,6 +37,8 @@
     height: 500px;
   }
   .AddEnvironmentPackage__progress-button{
+    display: flex;
+    justify-content: space-around;
     visibility: hidden;
   }
 }

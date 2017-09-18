@@ -1,8 +1,16 @@
+//vendor
 import React from 'react'
+import SweetAlert from 'sweetalert-react';
 import { QueryRenderer, graphql } from 'react-relay'
-import environment from './../../createRelayEnvironment'
-import AddEnvironmentComponentMutation from './../../mutations/AddEnvironmentComponentMutation'
+//components
+import Loader from 'Components/shared/Loader'
+//utilites
+import environment from 'JS/createRelayEnvironment'
+//mutations
+import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
+
 let addCustomDependencies;
+
 const AddCustomDependenciesQuery = graphql`query AddCustomDependenciesQuery($first: Int!, $cursor: String){
   availableCustomDependencies(first: $first, after: $cursor){
     edges{
@@ -53,7 +61,9 @@ export default class AddCustomDependencies extends React.Component {
   	this.state = {
       'modal_visible': false,
       'selectedCustomDependencies': [],
-      'selectedCustomDependenciesIds': []
+      'selectedCustomDependenciesIds': [],
+      'show': false,
+      'message': ''
     };
     this.continueSave = this.continueSave.bind(this)
     addCustomDependencies = this;
@@ -102,8 +112,23 @@ export default class AddCustomDependencies extends React.Component {
           this.props.environmentId,
           this.props.connection,
           component.componentClass,
-          () => {
-            resolve()
+          (error) => {
+            console.log(error)
+            let showAlert = (error)
+
+            if(showAlert){
+              let message = showAlert ? error[0].message : '';
+              addCustomDependencies.setState({
+                'show': showAlert,
+                'message': message,
+                'reject': reject
+
+              })
+
+            }else{
+
+              resolve()
+            }
           }
         )
       })
@@ -180,14 +205,26 @@ export default class AddCustomDependencies extends React.Component {
                     {
                       this._environmentView() && (
                         <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
-                          <button onClick={() => this.continueSave()}>Save</button>
+                          <button className="SelectBaseImage__save-button" onClick={() => this.continueSave()}>Save</button>
                         </div>
                       )
                     }
+
+                    <SweetAlert
+                      className="sa-error-container"
+                      show={this.state.show}
+                      type="error"
+                      title="Error"
+                      text={this.state.message}
+                      onConfirm={() => {
+                        this.state.reject(); this.setState({ show: false, message: ''})
+                      }}
+                      />
                   </div>
+
                 )
                 }else{
-                  return(<div className="Loading"></div>)
+                  return(<Loader />)
                 }
               }
           }}

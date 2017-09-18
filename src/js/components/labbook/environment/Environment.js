@@ -1,13 +1,18 @@
+//vendor
 import React, { Component } from 'react'
+import SweetAlert from 'sweetalert-react';
 import {createFragmentContainer, graphql} from 'react-relay'
+//components
+import Loader from 'Components/shared/Loader'
 import BaseImage from './BaseImage'
 import DevEnvironments from './DevEnvironments'
 import PackageManagerDependencies from './PackageManagerDependencies'
 import CustomDependencies from './CustomDependencies'
-
-import BuildImageMutation from './../../../mutations/BuildImageMutation'
+//mutations
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 
 let environ;
+
 class Environment extends Component {
   constructor(props){
   	super(props);
@@ -15,6 +20,8 @@ class Environment extends Component {
     this.state ={
       'modal_visible': false,
       'readyToBuild': false,
+      'show': false,
+      'message': ''
     }
     environ = this; //set variable for encapsulation
   }
@@ -25,6 +32,7 @@ class Environment extends Component {
   */
   _openModal(){
       environ.setState({'modal_visible': true})
+      document.getElementById('modal__cover').classList.remove('hidden')
   }
   /*
     function()
@@ -32,13 +40,8 @@ class Environment extends Component {
   */
   _hideModal(){
       environ.setState({'modal_visible': false})
+      document.getElementById('modal__cover').classList.add('hidden')
   }
-
-  /*
-    function()
-    sets variables for build state
-  */
-
 
   /*
     function()
@@ -52,8 +55,14 @@ class Environment extends Component {
     BuildImageMutation(
       environ.props.labbookName,
       'default',
-      (log) => {
+      (error) => {
 
+        let showAlert = (error !== null)
+        let message = showAlert ? error[0].message : '';
+        environ.setState({
+          'show': showAlert,
+          'message': message
+        })
         environ.props.setBuildingState(false)
       }
     )
@@ -115,15 +124,20 @@ class Environment extends Component {
               environmentId={this.props.labbook.environment.id}
             />
 
+            <SweetAlert
+              className="sa-error-container"
+              show={this.state.show}
+              type="error"
+              title="Error"
+              text={this.state.message}
+              onConfirm={() => this.setState({ show: false })} />
           </div>
 
 
       )
     }else{
       return(
-          <div className="Environment">
-              loading
-          </div>
+          <Loader />
         )
     }
   }

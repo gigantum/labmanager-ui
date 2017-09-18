@@ -1,8 +1,11 @@
+//vendor
 import React from 'react'
-import AddEnvironmentPackageMutation from './../../mutations/AddEnvironmentPackageMutation'
+import SweetAlert from 'sweetalert-react';
+//mutations
+import AddEnvironmentPackageMutation from 'Mutations/AddEnvironmentPackageMutation'
 
 
-let that;
+let addEnvionmentPackage;
 export default class AddEnvironmentPackage extends React.Component {
   constructor(props){
   	super(props);
@@ -12,9 +15,11 @@ export default class AddEnvironmentPackage extends React.Component {
       'description': '',
       'environmentPackages': [
         {state: 'Add', 'packageManager': this.props.availablePackageManagers[0], dependencyName: null}
-      ]
+      ],
+      'show': false,
+      'message': ''
     };
-    that = this;
+    addEnvionmentPackage = this;
 
     this.props.toggleDisabledContinue(false);
     this.continueSave = this.continueSave.bind(this);
@@ -45,9 +50,23 @@ export default class AddEnvironmentPackage extends React.Component {
             pack.packageManager,
             pack.dependencyName,
             this.props.environmentId,
-            (log, error) => {
-              console.log(log, error)
-              resolve()
+            (error) => {
+              console.log(error)
+              let showAlert = ((error !== null) && (error !== undefined))
+              let message = showAlert ? error[0].message : '';
+              addEnvionmentPackage.setState({
+                'show': showAlert,
+                'message': message,
+
+              })
+              if(!showAlert){
+                resolve()
+              }else{
+                addEnvionmentPackage.setState({
+                  'reject': reject
+                })
+              }
+
             }
           )
         })
@@ -61,7 +80,7 @@ export default class AddEnvironmentPackage extends React.Component {
 
       if(this.props.environmentView){
 
-        that.props.buildCallback();
+        addEnvionmentPackage.props.buildCallback();
       }else{
           this.props.setComponent(this.props.nextWindow)
       }
@@ -155,6 +174,13 @@ export default class AddEnvironmentPackage extends React.Component {
               )
               })
             }
+            <SweetAlert
+              className="sa-error-container"
+              show={this.state.show}
+              type="error"
+              title="Error"
+              text={this.state.message}
+              onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
 
           </div>
           {

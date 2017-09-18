@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Loader from 'Components/shared/Loader'
 //import loading from './loading.svg';
 
 class Callback extends Component {
@@ -17,11 +18,7 @@ class Callback extends Component {
       backgroundColor: 'white',
     }
 
-    return (
-      <div style={style}>
-        <img src="" alt="loading"/>
-      </div>
-    );
+    return(<Loader />)
   }
 }
 

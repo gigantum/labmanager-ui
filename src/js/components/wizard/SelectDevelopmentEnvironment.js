@@ -1,7 +1,13 @@
+//vendor
 import React from 'react'
+import SweetAlert from 'sweetalert-react'
 import { QueryRenderer, graphql } from 'react-relay'
-import environment from './../../createRelayEnvironment'
-import AddEnvironmentComponentMutation from './../../mutations/AddEnvironmentComponentMutation'
+//components
+import Loader from 'Components/shared/Loader'
+//utilites
+import environment from 'JS/createRelayEnvironment'
+//mutations
+import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
 
 const BaseImageQuery = graphql`query SelectDevelopmentEnvironmentQuery($first: Int!, $cursor: String){
   availableDevEnvs(first: $first, after: $cursor){
@@ -58,7 +64,9 @@ export default class SelectDevelopmentEnvironment extends React.Component {
       'name': '',
       'description': '',
       'selectedDevelopmentEnvironment': null,
-      'selectedDevelopmentEnvironmentId': false
+      'selectedDevelopmentEnvironmentId': false,
+      'show': false,
+      'message': ''
     };
     this.continueSave = this.continueSave.bind(this);
   }
@@ -80,7 +88,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
     callback triggers and modal state is changed to  next window
   */
   continueSave(){
-    
+
     let component = this.state.selectedDevelopmentEnvironment.node.component;
     this.props.toggleDisabledContinue(true);
     AddEnvironmentComponentMutation(
@@ -159,13 +167,19 @@ export default class SelectDevelopmentEnvironment extends React.Component {
                         </div>
                       )
                     }
-
+                  <SweetAlert
+                      className="sa-error-container"
+                      show={this.state.show}
+                      type="error"
+                      title="Error"
+                      text={this.state.message}
+                      onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
                 </div>
 
                 )
 
                 }else{
-                  return(<div className="Loading"></div>)
+                  return(<Loader />)
                 }
               }
           }}
