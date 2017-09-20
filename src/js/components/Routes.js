@@ -98,20 +98,24 @@ export default class Routes extends Component {
                         query={LabbookQuery}
                         variables={{name:parentProps.match.params.labbookName, owner: 'default', first: 20}}
                         render={({error, props}) => {
-
+                      
                           if(error){
+
                             return (<div>{error.message}</div>)
                           }
                           else if(props){
-
-                            return (<Labbook
-                              key={parentProps.match.params.labbookName}
-                              auth={auth}
-                              labbookName={parentProps.match.params.labbookName}
-                              query={props.query}
-                              labbook={props.labbook}
-                              {...parentProps}
-                            />)
+                            if(props.errors){
+                              return(<div>{props.errors[0].message}</div>)
+                            }else{
+                              return (<Labbook
+                                key={parentProps.match.params.labbookName}
+                                auth={auth}
+                                labbookName={parentProps.match.params.labbookName}
+                                query={props.query}
+                                labbook={props.labbook}
+                                {...parentProps}
+                              />)
+                            }
                           }
                           else{
                             return (<Loader />)

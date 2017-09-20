@@ -72,7 +72,7 @@ export default class ContainerStatus extends Component {
   }
 
   _openCloseContainer(evt, status){
-      console.log(status)
+      
       if(status === 'Open'){
         this.setState({status: 'Stopping'});
         StopContainerMutation(

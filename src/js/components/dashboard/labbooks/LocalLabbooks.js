@@ -37,6 +37,7 @@ class LocalLabbooks extends Component {
   */
   _goToLabbook(labbookName){
     localLabbooks.setState({'labbookName': labbookName})
+
     localLabbooks.props.history.replace(`/labbooks/${labbookName}`)
   }
 
