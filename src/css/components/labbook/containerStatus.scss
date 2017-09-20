@@ -20,3 +20,15 @@
   background: $labbooks url('./../images/icons/on.svg') no-repeat 5px 50%;
   background-size: 20px;
 }
+
+.ContainerStatus__container-state.Starting{
+  background: $activity url('./../images/icons/on.svg') no-repeat 5px 50%;
+  background-size: 20px;
+  opacity: 0.75;
+}
+
+.ContainerStatus__container-state.Stopping{
+  background: $labbooks url('./../images/icons/on.svg') no-repeat 5px 50%;
+  background-size: 20px;
+  opacity: 0.75;
+}

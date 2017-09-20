@@ -37,10 +37,10 @@ export default class ContainerStatus extends Component {
   	super(props);
     this.state = {
       'status': this.props.containerStatus,
-      'building': this.props.isBuilding,
+      'building': this.props.isBuilding ? true : false,
       'secondsElapsed': 0
     }
-
+    tempStatus = "Closed"
     containerStatus = this;
   }
 
@@ -62,13 +62,17 @@ export default class ContainerStatus extends Component {
     let status = (value === 'RUNNING') ? 'Open' : value;
     status = (value === 'NOT_RUNNING') ? 'Closed' : status;
     status = (this.props.isBuilding) ? 'Building' : status;
+
+    status = ((status === 'Closed') && (this.state.status === "Starting")) ? "Starting" : status;
+    status = ((status === 'Open') && (this.state.status === "Stopping")) ? "Stopping" : status;
+
     tempStatus = status
 
     return status;
   }
 
   _openCloseContainer(evt, status){
-
+      console.log(status)
       if(status === 'Open'){
         this.setState({status: 'Stopping'});
         StopContainerMutation(
@@ -91,7 +95,7 @@ export default class ContainerStatus extends Component {
           this.props.labbookName,
           'default',
           'clientMutationId',
-          (error) =>{
+          (error, response) =>{
             if(error){
               console.log(error)
             }else{
@@ -103,7 +107,7 @@ export default class ContainerStatus extends Component {
             }
         )
       }else{
-        console.log('container is building')
+        console.log('container is mutating')
       }
   }
 
@@ -120,22 +124,21 @@ export default class ContainerStatus extends Component {
         environment={environment}
         query={containerStatusQuery}
         render={({error, props}) => {
-          console.log(error, props)
+
           if(error){
-            return <div>error.message</div>
+            return <div>{error.message}</div>
           }else if(props){
-            let status = this._getContainerStatusText(props.labbook.environment.containerStatus)
 
             return(
               <div className="ContainerStatus flex flex--column">
-                <div onClick={(evt) => this._openCloseContainer(evt, status)} className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
-                  {status}
+                <div onClick={(evt) => this._openCloseContainer(evt, this._getContainerStatusText(props.labbook.environment.containerStatus))} className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : this._getContainerStatusText(props.labbook.environment.containerStatus))}>
+                  {this._getContainerStatusText(props.labbook.environment.containerStatus)}
                 </div>
               </div>)
           } else{
 
             return (
-              <div className="ContainerStatus flex flex--column">
+              <div key="tempStatus" className="ContainerStatus flex flex--column">
                 <div className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : tempStatus)}>
                   {((this.props.isBuilding) ? 'Building' : tempStatus)}
                 </div>

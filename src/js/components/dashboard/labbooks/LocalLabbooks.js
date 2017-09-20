@@ -6,16 +6,19 @@ import {
 
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
+import LocalLabbookPanel from 'Components/dashboard/labbooks/LocalLabbookPanel'
 
 let localLabbooks;
 
 let isLoadingMore = false;
 
 class LocalLabbooks extends Component {
+
   constructor(props){
   	super(props);
   	localLabbooks = this;
   }
+
   componentDidMount() {
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
@@ -33,8 +36,8 @@ class LocalLabbooks extends Component {
     routes to that labbook
   */
   _goToLabbook(labbookName){
-    this.setState({'labbookName': labbookName})
-    this.props.history.replace(`/labbooks/${labbookName}`)
+    localLabbooks.setState({'labbookName': labbookName})
+    localLabbooks.props.history.replace(`/labbooks/${labbookName}`)
   }
 
   /*
@@ -53,6 +56,7 @@ class LocalLabbooks extends Component {
       }
     );
   }
+
 
 
   render(){
@@ -74,29 +78,7 @@ class LocalLabbooks extends Component {
                 this.props.feed.localLabbooks.edges.map((edge) => {
 
                   return (
-                    <div
-                      key={edge.node.name}
-                      onClick={() => this._goToLabbook(edge.node.name)}
-                      className='LocalLabbooks__panel flex flex--column justify--space-between'>
-                        <div className="LocalLabbooks__icon-row">
-                          <div className="LocalLabbooks__labbook-icon"></div>
-                        </div>
-                        <div className="LocalLabbooks__text-row">
-                          <h4>{edge.node.name}</h4>
-                          <p className="LocalLabbooks__description">{edge.node.description}</p>
-                        </div>
-                        <div className="LocalLabbooks__info-row flex flex--row">
-                          <div className="LocalLabbooks__owner flex flex--row">
-                              <div>Owner</div>
-                              <div className="LocalLabbooks__owner-icon"></div>
-                              {/* <div> {owner.username}</div> */}
-                          </div>
-                          <div className="LocalLabbooks__status">
-
-                          </div>
-
-                        </div>
-                    </div>
+                    <LocalLabbookPanel edge={edge} goToLabbook={this._goToLabbook}/>
                   )
                 })
               }
@@ -111,7 +93,7 @@ class LocalLabbooks extends Component {
 
             </div>
           </div>
-    
+
         </div>
       )
     }else{

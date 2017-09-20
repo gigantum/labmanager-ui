@@ -9,10 +9,13 @@ import NotesCard from './NotesCard'
 import Loader from 'Components/shared/Loader'
 //utilities
 import Config from 'JS/config'
+
+//lacoal variables
 let pagination = false;
 let isLoadingMore = false;
 let counter = 10;
 let notesContainer;
+
 class Notes extends Component {
   constructor(props){
   	super(props);
@@ -43,7 +46,6 @@ class Notes extends Component {
       let distanceY = window.innerHeight + document.body.scrollTop + 40,
           expandOn = root.offsetHeight,
           footer = document.getElementById("footer");
-          console.log(distanceY, expandOn)
       if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
           notesContainer._loadMore(e);
       }
@@ -126,15 +128,6 @@ class Notes extends Component {
               }
             </div>
           </div>
-          {/* <div className={this.props.labbook.notes.pageInfo.hasNextPage ? 'Notes__next-button-container' : 'hidden'}>
-            <button key="load_more"
-              className="Notes__load-more"
-              onClick={() => this._loadMore()}
-              title="Load More"
-            >
-              Next 10
-            </button>
-          </div> */}
 
         </div>
       )
