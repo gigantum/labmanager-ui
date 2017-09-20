@@ -57,7 +57,7 @@ class Environment extends Component {
       'default',
       (error) => {
 
-        let showAlert = (error !== null)
+        let showAlert = ((error !== null) && (error !== undefined))
         let message = showAlert ? error[0].message : '';
         environ.setState({
           'show': showAlert,

@@ -5,15 +5,18 @@
   border-radius: 15px;
   color: $white;
   line-height: 30px;
+  cursor: pointer;
 
 }
 
 .ContainerStatus__container-state.Open{
-  background: $activity;
+  background: $activity url('./../images/icons/on.svg') no-repeat 5px 50%;
+  background-size: 20px;
 }
 .ContainerStatus__container-state.Building{
   background: $datasets;
 }
 .ContainerStatus__container-state.Closed{
-  background: $labbooks;
+  background: $labbooks url('./../images/icons/on.svg') no-repeat 5px 50%;
+  background-size: 20px;
 }

@@ -1,5 +1,5 @@
 # source: http://localhost:5000/labbook/
-# timestamp: Thu Sep 07 2017 11:25:38 GMT-0400 (EDT)
+# timestamp: Fri Sep 15 2017 11:45:19 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -69,6 +69,7 @@ input BuildImageInput {
 # Mutator to build a LabBook's Docker Image
 type BuildImagePayload {
   environment: Environment
+  backgroundJobKey: String
   clientMutationId: String
 }
 
@@ -296,6 +297,30 @@ enum ImageStatus {
   STALE
 }
 
+# A query to get the status of a background task launched with the Dispatcher
+type JobStatus implements Node {
+  # The ID of the object.
+  id: ID!
+  jobKey: String
+  status: String
+  startedAt: String
+  finishedAt: String
+  result: String
+}
+
+type JobStatusConnection {
+  pageInfo: PageInfo!
+  edges: [JobStatusEdge]!
+}
+
+type JobStatusEdge {
+  # The item at the end of the edge
+  node: JobStatus
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 # A type representing a LabBook and all of its contents
 #
 # LabBooks are uniquely identified by both the "owner" and the "name" of the LabBook
@@ -373,6 +398,7 @@ type Mutation {
   checkoutBranch(input: CheckoutBranchInput!): CheckoutBranchPayload
   buildImage(input: BuildImageInput!): BuildImagePayload
   startContainer(input: StartContainerInput!): StartContainerPayload
+  stopContainer(input: StopContainerInput!): StopContainerPayload
   createNote(input: CreateNoteInput!): CreateNotePayload
   createUserNote(input: CreateUserNoteInput!): CreateUserNotePayload
   addEnvironmentComponent(input: AddEnvironmentComponentInput!): AddEnvironmentComponentPayload
@@ -497,6 +523,8 @@ type Query {
   # The ID of the object
   node(id: ID!): Node
   labbook(owner: String, name: String): Labbook
+  jobStatus(jobId: String): JobStatus
+  backgroundJobs(before: String, after: String, first: Int, last: Int): JobStatusConnection
   localLabbooks(before: String, after: String, first: Int, last: Int): LabbookConnection
   availableBaseImages(before: String, after: String, first: Int, last: Int): BaseImageConnection
   availableBaseImageVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): BaseImageConnection
@@ -515,6 +543,20 @@ input StartContainerInput {
 # Mutator to start a LabBook's Docker Image in a container
 type StartContainerPayload {
   environment: Environment
+  backgroundJobKey: String
+  clientMutationId: String
+}
+
+input StopContainerInput {
+  owner: String
+  labbookName: String!
+  clientMutationId: String
+}
+
+# Mutation to stop a Docker container. 
+type StopContainerPayload {
+  environment: Environment
+  backgroundJobKey: String
   clientMutationId: String
 }
 

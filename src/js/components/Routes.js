@@ -1,16 +1,16 @@
 //vendor
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Callback from './../Callback/Callback';
-import Auth from './../Auth/Auth';
-import history from './../history';
+import Callback from 'JS/Callback/Callback';
+import Auth from 'JS/Auth/Auth';
+import history from 'JS/history';
 import {QueryRenderer, graphql} from 'react-relay'
 // components
-import Home from './home/Home';
-import Header from './shared/Header';
-import Footer from './shared/Footer';
-import Labbook from './labbook/Labbook';
-import environment from './../createRelayEnvironment'
+import Home from 'Components/home/Home';
+import Header from 'Components/shared/Header';
+import Footer from 'Components/shared/Footer';
+import Labbook from 'Components/labbook/Labbook';
+import environment from 'JS/createRelayEnvironment'
 import Loader from 'Components/shared/Loader'
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`

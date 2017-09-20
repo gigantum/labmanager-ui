@@ -7,7 +7,27 @@ import {
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
 
+let localLabbooks;
+
+let isLoadingMore = false;
+
 class LocalLabbooks extends Component {
+  constructor(props){
+  	super(props);
+  	localLabbooks = this;
+  }
+  componentDidMount() {
+    window.addEventListener('scroll', function(e){
+      let root = document.getElementById('root')
+      let distanceY = window.innerHeight + document.body.scrollTop + 100,
+          expandOn = root.offsetHeight,
+          footer = document.getElementById("footer");
+
+      if ((distanceY > expandOn) && !isLoadingMore && localLabbooks.props.feed.localLabbooks.pageInfo.hasNextPage) {
+          localLabbooks._loadMore(e);
+      }
+    });
+  }
   /*
     function(string) inputs a labbook name
     routes to that labbook
@@ -21,16 +41,19 @@ class LocalLabbooks extends Component {
     loads
   */
   _loadMore(e){
+    isLoadingMore = true
     if(e){
       e.preventDefault();
     }
     this.props.relay.loadMore(
       10, // Fetch the next 10 feed items
       (ev) => {
-        console.error(ev);
+
+        isLoadingMore = false;
       }
     );
   }
+
 
   render(){
 
@@ -88,14 +111,7 @@ class LocalLabbooks extends Component {
 
             </div>
           </div>
-          <div className={this.props.feed.localLabbooks.pageInfo.hasNextPage ? 'LocalLabbooks__next-button-container' : 'hidden'}>
-            <button key="load_more"
-              onClick={(e) => this._loadMore(e)}
-              title="Load More"
-            >
-              Next 10
-            </button>
-          </div>
+    
         </div>
       )
     }else{

@@ -89,7 +89,8 @@
     "relay-test": "relay-compiler --src ./__tests__ --schema ./schema.graphql",
     "update-schema": "graphql get-schema",
     "update-json-schema": "babel-node ./scripts/updateSchema.js",
-    "mock": "node __mocks__/react-relay.js"
+    "mock": "node __mocks__/react-relay.js",
+    "polyfills": "babel-node ./config/polyfills.js"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -98,7 +99,8 @@
       "!src/js/mutations/**/*.js"
     ],
     "setupFiles": [
-      "<rootDir>/config/polyfills.js"
+      "<rootDir>/config/polyfills.js",
+      "<rootDir>/__tests__/setupFile.js"
     ],
     "testMatch": [
       "<rootDir>/**/__tests__/**/*.test.js?(x)"
@@ -108,7 +110,7 @@
     "globals": {
       "__DEV__": true
     },
-    "testEnvironment": "jsdom",
+
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest",

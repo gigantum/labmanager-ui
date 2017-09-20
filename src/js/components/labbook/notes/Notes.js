@@ -10,10 +10,16 @@ import Loader from 'Components/shared/Loader'
 //utilities
 import Config from 'JS/config'
 let pagination = false;
+let isLoadingMore = false;
 let counter = 10;
-
+let notesContainer;
 class Notes extends Component {
+  constructor(props){
+  	super(props);
+  	this.state = {};
 
+    notesContainer = this;
+  }
 
   componentDidMount() {
     let relay = this.props.relay;
@@ -30,16 +36,30 @@ class Notes extends Component {
         }
       )
     }, 2000);
+
+
+    window.addEventListener('scroll', function(e){
+      let root = document.getElementById('root')
+      let distanceY = window.innerHeight + document.body.scrollTop + 40,
+          expandOn = root.offsetHeight,
+          footer = document.getElementById("footer");
+          console.log(distanceY, expandOn)
+      if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
+          notesContainer._loadMore(e);
+      }
+    });
   }
   /*
     function()
     pagination container loads more items
   */
   _loadMore() {
+    isLoadingMore = true
     pagination = true;
    this.props.relay.loadMore(
      counter, // Fetch the next 10 feed items
      e => {
+       isLoadingMore = false;
      },{
        name: 'labbook'
      }
@@ -106,14 +126,15 @@ class Notes extends Component {
               }
             </div>
           </div>
-          <div className={this.props.labbook.notes.pageInfo.hasNextPage ? 'Notes__next-button-container' : 'hidden'}>
+          {/* <div className={this.props.labbook.notes.pageInfo.hasNextPage ? 'Notes__next-button-container' : 'hidden'}>
             <button key="load_more"
+              className="Notes__load-more"
               onClick={() => this._loadMore()}
               title="Load More"
             >
               Next 10
             </button>
-          </div>
+          </div> */}
 
         </div>
       )
@@ -187,13 +208,13 @@ export default createPaginationContainer(
      };
    },
    query: graphql`
-   query NotesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
-     labbook(name: $name, owner: $owner){
-       id
-       description
-       ...Notes_labbook
-     }
-   }`
+     query NotesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+       labbook(name: $name, owner: $owner){
+         id
+         description
+         ...Notes_labbook
+       }
+     }`
 
   }
 )

@@ -1,8 +1,12 @@
+//vendor
 import React, { Component } from 'react'
 import {
   QueryRenderer,
   graphql
 } from 'react-relay'
+//mutations
+import StopContainerMutation from 'Mutations/StopContainerMutation'
+import StartContainerMutation from 'Mutations/StartContainerMutation'
 import environment from 'JS/createRelayEnvironment'
 
 let containerStatus;
@@ -45,7 +49,12 @@ export default class ContainerStatus extends Component {
   }
 
   componentDidMount(){
-    //this.interval = setInterval(this.tick, 2000);
+    this.interval = setInterval(this.tick, 2000);
+  }
+
+  componentWillUnmount() {
+    //memory clean up
+    clearInterval(this.interval);
   }
 
 
@@ -56,6 +65,46 @@ export default class ContainerStatus extends Component {
     tempStatus = status
 
     return status;
+  }
+
+  _openCloseContainer(evt, status){
+
+      if(status === 'Open'){
+        this.setState({status: 'Stopping'});
+        StopContainerMutation(
+          this.props.labbookName,
+          'default',
+          'clientMutationId',
+          (error) =>{
+            if(error){
+              console.log(error)
+            }else{
+              console.log('stopped container')
+            }
+
+          }
+        )
+
+      }else if(status === 'Closed'){
+        this.setState({status: 'Starting'})
+        StartContainerMutation(
+          this.props.labbookName,
+          'default',
+          'clientMutationId',
+          (error) =>{
+            if(error){
+              console.log(error)
+            }else{
+              setTimeout(function(){
+                window.open('http://localhost:8888/', '_blank')
+              }, 3000)
+            }
+
+            }
+        )
+      }else{
+        console.log('container is building')
+      }
   }
 
   render(){
@@ -71,7 +120,7 @@ export default class ContainerStatus extends Component {
         environment={environment}
         query={containerStatusQuery}
         render={({error, props}) => {
-
+          console.log(error, props)
           if(error){
             return <div>error.message</div>
           }else if(props){
@@ -79,7 +128,7 @@ export default class ContainerStatus extends Component {
 
             return(
               <div className="ContainerStatus flex flex--column">
-                <div className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
+                <div onClick={(evt) => this._openCloseContainer(evt, status)} className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
                   {status}
                 </div>
               </div>)
