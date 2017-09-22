@@ -19,6 +19,7 @@ class Overview extends Component {
   render(){
 
     if(this.props.labbook){
+
       return(
         <div className="Overview">
             <div className="Overview__description">

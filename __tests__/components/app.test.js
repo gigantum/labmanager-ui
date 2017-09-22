@@ -7,7 +7,7 @@ import Auth from 'JS/Auth/Auth';
 test('Test if isAuthenticated == true', () => {
 
   //const isAuthenticated = function(){return true};
-  const auth = new Auth();
+  let auth = new Auth();
   auth.isAuthenticated = function(){return true};
   const component = renderer.create(
     <App auth={auth} />
@@ -20,7 +20,7 @@ test('Test if isAuthenticated == true', () => {
 describe('Test if isAuthenticated true button click', () => {
 
   //const isAuthenticated = function(){return true};
-  const auth = new Auth();
+  let auth = new Auth();
   auth.isAuthenticated = function(){return true};
   const component = mount(
     <App auth={auth} />
@@ -32,12 +32,14 @@ describe('Test if isAuthenticated true button click', () => {
 describe('Test if isAuthenticated false button click', () => {
 
   //const isAuthenticated = function(){return true};
-  const auth = new Auth();
+  let auth = new Auth();
   auth.isAuthenticated = function(){return false};
+  auth.login = function(){return true};
   const component = mount(
     <App auth={auth} />
   );
-  component.find('.btn-margin').at(0).simulate('click')
+
+  component.find('.btn-margin').simulate('click')
 
 
 });
@@ -50,5 +52,13 @@ test('Test if isAuthenticated == false', () => {
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
+
+});
+
+test('Test login', () => {
+  const auth = new Auth();
+  let login = auth.login();
+
+  console.log(login)
 
 });

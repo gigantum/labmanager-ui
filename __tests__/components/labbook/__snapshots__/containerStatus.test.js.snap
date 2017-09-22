@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Container Rendering Building 1`] = `null`;
+
+exports[`Test Container Rendering Closed 1`] = `null`;
+
+exports[`Test Container Rendering Open 1`] = `null`;

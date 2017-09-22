@@ -14,6 +14,7 @@ import Overview from './overview/Overview'
 import Environment from './environment/Environment'
 import UserNote from './UserNote'
 import ContainerStatus from './ContainerStatus'
+import Loader from 'Components/shared/Loader'
 
 import Config from 'JS/config'
 
@@ -40,6 +41,7 @@ class Labbook extends Component {
   */
   _setSelectedComponent(componentName){
     this.setState({'selectedComponent': componentName})
+
     this.props.history.replace(`../../labbooks/${this.props.match.params.labbookName}/${componentName}`)
   }
 
@@ -80,7 +82,7 @@ class Labbook extends Component {
   render(){
 
     let labbookName = this.props.labbookName;
-
+    if(this.props.labbook){
     return(
       <div className="Labbook">
 
@@ -93,7 +95,7 @@ class Labbook extends Component {
                <ContainerStatus
                  ref="ContainerStatus"
                  containerStatus={this.state.containerState}
-                 labbookName={this.props.labbookName}
+                 labbookName={labbookName}
                  setBuildingState={this._setBuildingState}
                  isBuilding={this.state.isBuilding}
                />
@@ -194,6 +196,9 @@ class Labbook extends Component {
         </div>
       </div>
     )
+  }else{
+    return (<Loader />)
+  }
   }
 }
 

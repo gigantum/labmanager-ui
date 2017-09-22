@@ -48,7 +48,7 @@ describe('Test LocalLabbooks load more', () => {
 
   );
 
-  localLabbooks.find('button').simulate('click')
+  localLabbooks.find('button').at(0).simulate('click')
 
   expect(localLabbooks.find('.LocalLabbooks__panel')).toHaveLength(21)
 })
@@ -105,7 +105,7 @@ describe('Test LocalLabbooks edges output', () => {
       <LocalLabbooks history={history} feed={config.data}/>
 
   );
-  
+
   expect(localLabbooks.find('.LocalLabbooks__labbooks .LocalLabbooks__text-row h4').at(0).text()).toEqual(config.data.localLabbooks.edges[0].node.name)
 
 })

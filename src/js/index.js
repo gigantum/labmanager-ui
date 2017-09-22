@@ -8,6 +8,7 @@ import Routes from './components/Routes';
 
 render(
   <Routes />
-  , document.getElementById('root')
+  , document.getElementById('root') || document.createElement('div')
+
 );
 registerServiceWorker();

@@ -1,8 +1,12 @@
+//vendor
 import React, { Component } from 'react'
 import {
   QueryRenderer,
   graphql
 } from 'react-relay'
+//mutations
+import StopContainerMutation from 'Mutations/StopContainerMutation'
+import StartContainerMutation from 'Mutations/StartContainerMutation'
 import environment from 'JS/createRelayEnvironment'
 
 let containerStatus;
@@ -33,10 +37,10 @@ export default class ContainerStatus extends Component {
   	super(props);
     this.state = {
       'status': this.props.containerStatus,
-      'building': this.props.isBuilding,
+      'building': this.props.isBuilding ? true : false,
       'secondsElapsed': 0
     }
-
+    tempStatus = "Closed"
     containerStatus = this;
   }
 
@@ -45,7 +49,12 @@ export default class ContainerStatus extends Component {
   }
 
   componentDidMount(){
-    //this.interval = setInterval(this.tick, 2000);
+    this.interval = setInterval(this.tick, 2000);
+  }
+
+  componentWillUnmount() {
+    //memory clean up
+    clearInterval(this.interval);
   }
 
 
@@ -53,9 +62,53 @@ export default class ContainerStatus extends Component {
     let status = (value === 'RUNNING') ? 'Open' : value;
     status = (value === 'NOT_RUNNING') ? 'Closed' : status;
     status = (this.props.isBuilding) ? 'Building' : status;
+
+    status = ((status === 'Closed') && (this.state.status === "Starting")) ? "Starting" : status;
+    status = ((status === 'Open') && (this.state.status === "Stopping")) ? "Stopping" : status;
+
     tempStatus = status
 
     return status;
+  }
+
+  _openCloseContainer(evt, status){
+      
+      if(status === 'Open'){
+        this.setState({status: 'Stopping'});
+        StopContainerMutation(
+          this.props.labbookName,
+          'default',
+          'clientMutationId',
+          (error) =>{
+            if(error){
+              console.log(error)
+            }else{
+              console.log('stopped container')
+            }
+
+          }
+        )
+
+      }else if(status === 'Closed'){
+        this.setState({status: 'Starting'})
+        StartContainerMutation(
+          this.props.labbookName,
+          'default',
+          'clientMutationId',
+          (error, response) =>{
+            if(error){
+              console.log(error)
+            }else{
+              setTimeout(function(){
+                window.open('http://localhost:8888/', '_blank')
+              }, 3000)
+            }
+
+            }
+        )
+      }else{
+        console.log('container is mutating')
+      }
   }
 
   render(){
@@ -73,20 +126,19 @@ export default class ContainerStatus extends Component {
         render={({error, props}) => {
 
           if(error){
-            return <div>error.message</div>
+            return <div>{error.message}</div>
           }else if(props){
-            let status = this._getContainerStatusText(props.labbook.environment.containerStatus)
 
             return(
               <div className="ContainerStatus flex flex--column">
-                <div className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
-                  {status}
+                <div onClick={(evt) => this._openCloseContainer(evt, this._getContainerStatusText(props.labbook.environment.containerStatus))} className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : this._getContainerStatusText(props.labbook.environment.containerStatus))}>
+                  {this._getContainerStatusText(props.labbook.environment.containerStatus)}
                 </div>
               </div>)
           } else{
 
             return (
-              <div className="ContainerStatus flex flex--column">
+              <div key="tempStatus" className="ContainerStatus flex flex--column">
                 <div className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : tempStatus)}>
                   {((this.props.isBuilding) ? 'Building' : tempStatus)}
                 </div>

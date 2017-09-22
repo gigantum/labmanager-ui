@@ -13,14 +13,15 @@ const context = {}
 test('Test Routes Rendering', () => {
       const auth = new Auth();
       auth.isAuthenticated = function(){return true};
+      auth.login = function(){return true};
+      auth.logout = function(){return true};
+
       const component = renderer.create(
 
-          <Routes history={history} auth={auth}/>
+          <Routes />
 
       );
       let tree = component.toJSON();
-
-
 
       expect(tree).toMatchSnapshot();
 

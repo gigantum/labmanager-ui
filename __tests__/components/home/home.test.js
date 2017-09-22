@@ -8,6 +8,9 @@ const auth = new Auth();
 auth.isAuthenticated = function(){return false};
 
 
+auth.login = function(){return 'logged in'}
+
+
 test('Test Home Rendering', () => {
       const component = renderer.create(
 
@@ -15,4 +18,11 @@ test('Test Home Rendering', () => {
       );
       let tree = component.toJSON();
       expect(tree).toMatchSnapshot();
+})
+
+test('Test Home Rendering', () => {
+      let home = new Home({auth: auth})
+      home.login();
+      console.log(home.login())
+      //expect(home.login() === 'logged in').toBeTruthy();
 })

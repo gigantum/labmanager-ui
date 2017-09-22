@@ -6,31 +6,59 @@ import {
 
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
+import LocalLabbookPanel from 'Components/dashboard/labbooks/LocalLabbookPanel'
+
+let localLabbooks;
+
+let isLoadingMore = false;
 
 class LocalLabbooks extends Component {
+
+  constructor(props){
+  	super(props);
+  	localLabbooks = this;
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', function(e){
+      let root = document.getElementById('root')
+      let distanceY = window.innerHeight + document.body.scrollTop + 100,
+          expandOn = root.offsetHeight,
+          footer = document.getElementById("footer");
+
+      if ((distanceY > expandOn) && !isLoadingMore && localLabbooks.props.feed.localLabbooks.pageInfo.hasNextPage) {
+          localLabbooks._loadMore(e);
+      }
+    });
+  }
   /*
     function(string) inputs a labbook name
     routes to that labbook
   */
   _goToLabbook(labbookName){
-    this.setState({'labbookName': labbookName})
-    this.props.history.replace(`/labbooks/${labbookName}`)
+    localLabbooks.setState({'labbookName': labbookName})
+
+    localLabbooks.props.history.replace(`/labbooks/${labbookName}`)
   }
 
   /*
     loads
   */
   _loadMore(e){
+    isLoadingMore = true
     if(e){
       e.preventDefault();
     }
     this.props.relay.loadMore(
       10, // Fetch the next 10 feed items
       (ev) => {
-        console.error(ev);
+
+        isLoadingMore = false;
       }
     );
   }
+
+
 
   render(){
 
@@ -51,29 +79,7 @@ class LocalLabbooks extends Component {
                 this.props.feed.localLabbooks.edges.map((edge) => {
 
                   return (
-                    <div
-                      key={edge.node.name}
-                      onClick={() => this._goToLabbook(edge.node.name)}
-                      className='LocalLabbooks__panel flex flex--column justify--space-between'>
-                        <div className="LocalLabbooks__icon-row">
-                          <div className="LocalLabbooks__labbook-icon"></div>
-                        </div>
-                        <div className="LocalLabbooks__text-row">
-                          <h4>{edge.node.name}</h4>
-                          <p className="LocalLabbooks__description">{edge.node.description}</p>
-                        </div>
-                        <div className="LocalLabbooks__info-row flex flex--row">
-                          <div className="LocalLabbooks__owner flex flex--row">
-                              <div>Owner</div>
-                              <div className="LocalLabbooks__owner-icon"></div>
-                              {/* <div> {owner.username}</div> */}
-                          </div>
-                          <div className="LocalLabbooks__status">
-
-                          </div>
-
-                        </div>
-                    </div>
+                    <LocalLabbookPanel edge={edge} goToLabbook={this._goToLabbook}/>
                   )
                 })
               }
@@ -88,14 +94,7 @@ class LocalLabbooks extends Component {
 
             </div>
           </div>
-          <div className={this.props.feed.localLabbooks.pageInfo.hasNextPage ? 'LocalLabbooks__next-button-container' : 'hidden'}>
-            <button key="load_more"
-              onClick={(e) => this._loadMore(e)}
-              title="Load More"
-            >
-              Next 10
-            </button>
-          </div>
+
         </div>
       )
     }else{

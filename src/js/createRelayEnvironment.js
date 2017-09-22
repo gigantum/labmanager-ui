@@ -24,6 +24,7 @@ function fetchQuery(
       variables
     }),
   }).then(response => {
+  
     return response.json()
   }).catch(error => {
 

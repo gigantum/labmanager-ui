@@ -999,15 +999,5 @@ exports[`Test LocalLabbooks rendering 1`] = `
       </div>
     </div>
   </div>
-  <div
-    className="LocalLabbooks__next-button-container"
-  >
-    <button
-      onClick={[Function]}
-      title="Load More"
-    >
-      Next 10
-    </button>
-  </div>
 </div>
 `;
