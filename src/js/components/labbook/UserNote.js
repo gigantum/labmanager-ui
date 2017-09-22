@@ -16,11 +16,12 @@ export default class UserNote extends React.Component {
     addNote = this;
   }
   componentDidMount() {
-    console.log(this.refs)
-    simple = new SimpleMDE({
-      element: this.refs['markDown'],
-      spellChecker: true
-    });
+    if(this.refs['markDown']){
+      simple = new SimpleMDE({
+        element: this.refs['markDown'],
+        spellChecker: true
+      });
+    }
   }
 
   _addNote(){

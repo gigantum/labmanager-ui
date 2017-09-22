@@ -9,6 +9,7 @@ exports[`Test DevEnvironments rendering 1`] = `
   >
     <div
       className="Environment__modal-close"
+      id="devEnvironmentsEditClose"
       onClick={[Function]}
     >
       X
@@ -62,6 +63,7 @@ exports[`Test DevEnvironments rendering 1`] = `
     >
       <button
         className="Environment__edit-button"
+        id="devEnvironmentsEdit"
         onClick={[Function]}
       >
         Edit

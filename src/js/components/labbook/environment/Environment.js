@@ -47,6 +47,7 @@ class Environment extends Component {
           'message': message
         })
         environ.props.setBuildingState(false)
+        return "finished"
       }
     )
   }

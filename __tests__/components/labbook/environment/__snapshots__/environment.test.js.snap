@@ -13,6 +13,7 @@ exports[`Test Environment rendering 1`] = `
     >
       <div
         className="Environment__modal-close"
+        id="baseImageEditClose"
         onClick={[Function]}
       >
         X
@@ -64,6 +65,7 @@ exports[`Test Environment rendering 1`] = `
       >
         <button
           className="Environment__edit-button"
+          id="baseImageEdit"
           onClick={[Function]}
         >
           Edit
@@ -79,6 +81,7 @@ exports[`Test Environment rendering 1`] = `
     >
       <div
         className="Environment__modal-close"
+        id="devEnvironmentsEditClose"
         onClick={[Function]}
       >
         X
@@ -132,6 +135,7 @@ exports[`Test Environment rendering 1`] = `
       >
         <button
           className="Environment__edit-button"
+          id="devEnvironmentsEdit"
           onClick={[Function]}
         >
           Edit
@@ -147,6 +151,7 @@ exports[`Test Environment rendering 1`] = `
     >
       <div
         className="Environment__modal-close"
+        id="packageManagerEditClose"
         onClick={[Function]}
       >
         X
@@ -278,6 +283,7 @@ exports[`Test Environment rendering 1`] = `
       >
         <button
           className="Environment__edit-button"
+          id="packageManagerEdit"
           onClick={[Function]}
         >
           Edit
@@ -293,6 +299,7 @@ exports[`Test Environment rendering 1`] = `
     >
       <div
         className="Environment__modal-close"
+        id="customDependenciesEditClose"
         onClick={[Function]}
       >
         X
@@ -346,6 +353,7 @@ exports[`Test Environment rendering 1`] = `
       >
         <button
           className="Environment__edit-button"
+          id="customDependenciesEdit"
           onClick={[Function]}
         >
           Edit

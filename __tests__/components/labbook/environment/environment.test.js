@@ -29,9 +29,6 @@ test('Test Environment rendering', () => {
 
 
 describe("Test Modal Visible", () =>{
-  let newDiv = document.createElement("div");
-  newDiv.id = 'modal__cover'
-
 
   const wrapper = mount(
 
@@ -45,21 +42,65 @@ describe("Test Modal Visible", () =>{
 
   );
 
+    it('test base Image oepn modal' , () =>{
+      wrapper.find('#baseImageEdit').simulate('click')
 
-    it('test modal closed' , () =>{
-      wrapper.setState({message: 'error', show: true})
-      expect(wrapper.node).toMatchSnapshot()
+      expect(wrapper.node.refs.baseImage.state.modal_visible).toBeTruthy()
     })
 
-    it('test modal closed' , () =>{
-      wrapper.find('Environment__edit-button').at(0).simulate('click')
-      expect(wrapper.node).toMatchSnapshot()
+    it('test base Image modal closed' , () =>{
+      wrapper.find('#baseImageEditClose').simulate('click')
+
+      expect(!wrapper.node.refs.baseImage.state.modal_visible).toBeTruthy()
+    })
+
+    it('test devEnvironments modal open' , () =>{
+
+      wrapper.find('#devEnvironmentsEdit').simulate('click')
+      expect(wrapper.node.refs.devEnvironments.state.modal_visible).toBeTruthy()
+    })
+
+    it('test devEnvironments modal closed' , () =>{
+
+      wrapper.find('#devEnvironmentsEditClose').simulate('click')
+      expect(!wrapper.node.refs.devEnvironments.state.modal_visible).toBeTruthy()
+    })
+
+    it('test packageManagerDependencies modal open' , () =>{
+
+      wrapper.find('#packageManagerEdit').simulate('click')
+      expect(wrapper.node.refs.packageManagerDependencies.state.modal_visible).toBeTruthy()
+    })
+
+    it('test packageManagerDependencies modal closed' , () =>{
+
+      wrapper.find('#packageManagerEditClose').simulate('click')
+      expect(!wrapper.node.refs.packageManagerDependencies.state.modal_visible).toBeTruthy()
     })
 
 
-    it('test modal closed' , () =>{
-      wrapper.find('Environment__edit-button').at(1).simulate('click')
-      expect(wrapper.node).toMatchSnapshot()
+    it('test CustomDependencies modal open' , () =>{
+
+      wrapper.find('#customDependenciesEdit').simulate('click')
+      expect(wrapper.node.refs.CustomDependencies.state.modal_visible).toBeTruthy()
     })
 
+
+    it('test CustomDependencies modal closed' , () =>{
+
+      wrapper.find('#customDependenciesEditClose').simulate('click')
+      expect(!wrapper.node.refs.CustomDependencies.state.modal_visible).toBeTruthy()
+    })
+})
+
+
+describe("Test Modal Visible", () =>{
+
+  let environment = new Environment()
+
+  it('test setting base image' , async () =>{
+    let callback = await environment._buildCallback()
+    // console.log(environment._buildCallback())
+    // //expect().toBeTruthy()
+  })
 })

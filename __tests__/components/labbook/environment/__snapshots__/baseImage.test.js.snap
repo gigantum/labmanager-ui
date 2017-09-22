@@ -10,6 +10,7 @@ exports[`Test BaseImage rendering 1`] = `
   >
     <div
       className="Environment__modal-close"
+      id="baseImageEditClose"
       onClick={[Function]}
     >
       X
@@ -61,6 +62,7 @@ exports[`Test BaseImage rendering 1`] = `
     >
       <button
         className="Environment__edit-button"
+        id="baseImageEdit"
         onClick={[Function]}
       >
         Edit

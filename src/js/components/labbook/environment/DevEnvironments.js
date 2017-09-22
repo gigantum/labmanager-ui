@@ -49,6 +49,7 @@ class DevEnvironments extends Component {
         <div className={ blockClass + '__development-environment'}>
           <div className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
             <div
+              id="devEnvironmentsEditClose"
               className="Environment__modal-close"
               onClick={() => this._hideModal()}>
               X
@@ -92,7 +93,11 @@ class DevEnvironments extends Component {
             {
                 (this.props.editVisible) &&
                 <div className="Environment__edit-container">
-                    <button onClick={()=> this._openModal()} className="Environment__edit-button">Edit</button>
+                    <button
+                      id="devEnvironmentsEdit"
+                      onClick={()=> this._openModal()} className="Environment__edit-button">
+                      Edit
+                    </button>
                 </div>
             }
           </div>

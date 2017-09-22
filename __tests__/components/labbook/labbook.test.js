@@ -50,6 +50,62 @@ describe('Test nav item default state', () =>{
     expect(labbook.find('.selected').text() === 'Data').toBeTruthy()
 })
 
+
+describe('Test nav item default state', () =>{
+
+  let labbook = mount(
+    <MemoryRouter history={MemoryRouter}>
+      <Labbook
+        key={'demo-lab-book'}
+        auth={auth}
+        history={history}
+        labbookName={'demo-lab-book'}
+        location={{pathname: '/demo-lab-book'}}
+        labbook={config.data.labbook}
+        match={{params: {labbook_name: 'demo-labbook-2'}}}/>
+      </MemoryRouter>
+  )
+
+    it('Test nav item data click',  () =>{
+      labbook.find('#data').simulate('click')
+      expect(labbook.find('.selected').text() === 'Data').toBeTruthy()
+    })
+
+    it('Test nav item notes click', () =>{
+      labbook.find('#notes').simulate('click')
+      expect(labbook.find('.selected').text() === 'Notes').toBeTruthy()
+    })
+
+    it('Test nav item code click',  () =>{
+      labbook.find('#code').simulate('click')
+      expect(labbook.find('.selected').text() === 'Code').toBeTruthy()
+    })
+
+    it('Test nav item overview click', () =>{
+      labbook.find('#overview').simulate('click')
+      expect(labbook.find('.selected').text() === 'Overview').toBeTruthy()
+    })
+
+    it('Test nav item environment click', () =>{
+      labbook.find('#environment').simulate('click')
+      expect(labbook.find('.selected').text() === 'Environment').toBeTruthy()
+    })
+
+    it('Test nav item usernote open', () =>{
+      labbook.find('.UserNote__close').simulate('click')
+      console.log(labbook.node.props.children)
+    //  expect(labbook.state.modalVisible).toBeTruthy()
+    })
+    it('Test nav item usernote close', () =>{
+      labbook.find('.Labbook__user-note--add').simulate('click')
+      //expect(!labbook.state.modalVisible).toBeTruthy()
+    })
+})
+
+
+
+
+
 // describe('Test nav _getSelectedComponent default state', () =>{
 //   let labbook = new Labbook({history:history, location: {pathname: '/demo-lab-book'}});
 //

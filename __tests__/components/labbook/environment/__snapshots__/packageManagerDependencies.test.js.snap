@@ -9,6 +9,7 @@ exports[`Test PakageManager rendering 1`] = `
   >
     <div
       className="Environment__modal-close"
+      id="packageManagerEditClose"
       onClick={[Function]}
     >
       X
@@ -140,6 +141,7 @@ exports[`Test PakageManager rendering 1`] = `
     >
       <button
         className="Environment__edit-button"
+        id="packageManagerEdit"
         onClick={[Function]}
       >
         Edit

@@ -104,6 +104,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
       component.componentClass,
       (log) => {
         this.props.setComponent(this.props.nextWindow, this.state.name)
+      
         this.props.buildCallback()
       }
     )

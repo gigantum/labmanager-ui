@@ -47,6 +47,7 @@ class BaseImage extends Component {
         <div className={blockClass + '__base-image'}>
             <div id='modal' className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
                 <div
+                  id="baseImageEditClose"
                   className="Environment__modal-close"
                   onClick={() => this._hideModal()}>
                   X
@@ -68,19 +69,27 @@ class BaseImage extends Component {
             <h4 className={blockClass + '__header'}>Base Image</h4>
 
             <div className={blockClass + '__info flex justify--left'}>
+
               <div className={ blockClass + '__card flex justify--space-around'}>
                 <div className="flex-1-0-auto flex flex--column justify-center">
                   <img height="50" width="50" src={baseImage.info.icon} alt={baseImage.info.humanName} />
                 </div>
+
                 <div className={blockClass + '__card-text flex-1-0-auto'}>
                   <p className={blockClass + '__human-name'}>{baseImage.info.humanName}</p>
                   <p>{baseImage.info.description}</p>
                 </div>
               </div>
+
               {
                 this._editVisible() &&
                 <div className={blockClass + '__edit-container'}>
-                    <button onClick={() => this._openModal()} className={blockClass + '__edit-button'}>Edit</button>
+                    <button
+                      id="baseImageEdit"
+                      onClick={() => this._openModal()}
+                      className={blockClass + '__edit-button'}>
+                      Edit
+                    </button>
                 </div>
               }
           </div>

@@ -30,7 +30,7 @@ describe('test header links', () => {
 
   it('test dataset click', () =>{
     component.find('.Header__nav-item--datasets').simulate('click')
-    console.log(component)
+    //console.log(component)
   })
 
   it('test labbokk click', () =>{

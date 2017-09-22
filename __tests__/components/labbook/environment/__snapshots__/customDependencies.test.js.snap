@@ -9,6 +9,7 @@ exports[`Test CustomDependencies rendering 1`] = `
   >
     <div
       className="Environment__modal-close"
+      id="customDependenciesEditClose"
       onClick={[Function]}
     >
       X
@@ -70,6 +71,7 @@ exports[`Test CustomDependencies rendering 2`] = `
   >
     <div
       className="Environment__modal-close"
+      id="customDependenciesEditClose"
       onClick={[Function]}
     >
       X
@@ -123,6 +125,7 @@ exports[`Test CustomDependencies rendering 2`] = `
     >
       <button
         className="Environment__edit-button"
+        id="customDependenciesEdit"
         onClick={[Function]}
       >
         Edit

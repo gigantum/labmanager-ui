@@ -12,6 +12,7 @@ let _buildCallback = () => ({});
 let customDeps = {};
 let _setComponent = (comp) => {
    customDeps.comp = comp;
+   return comp
 };
 
 test('Test CustomDependencies rendering', () => {
@@ -59,8 +60,22 @@ test('Test CustomDependencies rendering', () => {
 describe("Test Edit Visible", () =>{
 
   const customDependenciesObj = new CustomDependencies();
+  const component = renderer.create(
+    <CustomDependencies
+      environment={config.data.labbook.environment}
+      blockClass={"Environment"}
+      labbookName={config.data.labbook.name}
+      environmentId={config.data.labbook.environment.id}
+      setBaseImage={_setBaseImage}
+      editVisible={true}
+      setComponent={_setComponent}
+      buildCallback={_buildCallback}
+      baseImage={config.data.labbook.environment.baseImage}
+    />
+  );
   const cd = customDependenciesObj._setComponent('customDependencies')
-  console.log(cd)
+
+
   expect('customDependencies' === 'customDependencies').toBeTruthy()
 })
 
