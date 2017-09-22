@@ -44,10 +44,10 @@ describe('Test nav item default state', () =>{
       </MemoryRouter>
   )
 
-  labbook.find('.Labbook__navigation-item--data').simulate('click')
+    labbook.find('.Labbook__navigation-item--data').simulate('click')
 
 
-  expect(labbook.find('.selected').text() === 'Data').toBeTruthy()
+    expect(labbook.find('.selected').text() === 'Data').toBeTruthy()
 })
 
 // describe('Test nav _getSelectedComponent default state', () =>{
@@ -60,9 +60,3 @@ describe('Test nav item default state', () =>{
 //
 // })
 //TODO fix network error on test
-// describe('Test nav item default state', () =>{
-//   const labbook = mount(
-//     relayTestingUtils.relayWrap(<Labbook match={{params: {labbook_name: 'labook4'}}}/>)
-//   );
-//   //expect(tree).toMatchSnapshot();
-// })

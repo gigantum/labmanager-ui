@@ -54,7 +54,6 @@ export default class Routes extends Component {
   render(){
 
     return(
-      <div>
 
 
 
@@ -98,9 +97,9 @@ export default class Routes extends Component {
                         query={LabbookQuery}
                         variables={{name:parentProps.match.params.labbookName, owner: 'default', first: 20}}
                         render={({error, props}) => {
-                      
-                          if(error){
 
+                          if(error){
+                            console.log(error)
                             return (<div>{error.message}</div>)
                           }
                           else if(props){
@@ -145,8 +144,6 @@ export default class Routes extends Component {
            />
           </Switch>
         </Router>
-
-      </div>
     )
   }
 }

@@ -26,3 +26,40 @@ test('Test Environment rendering', () => {
   expect(tree).toMatchSnapshot();
 
 });
+
+
+describe("Test Modal Visible", () =>{
+  let newDiv = document.createElement("div");
+  newDiv.id = 'modal__cover'
+
+
+  const wrapper = mount(
+
+      <Environment
+        labbook={config.data.labbook}
+        key={config.data.labbook.name + '_environment'}
+        labbookId={config.data.labbook.id}
+        setBuildingState={_setBuildingState}
+        labbookName={config.data.labbook.name}
+      />
+
+  );
+
+
+    it('test modal closed' , () =>{
+      wrapper.setState({message: 'error', show: true})
+      expect(wrapper.node).toMatchSnapshot()
+    })
+
+    it('test modal closed' , () =>{
+      wrapper.find('Environment__edit-button').at(0).simulate('click')
+      expect(wrapper.node).toMatchSnapshot()
+    })
+
+
+    it('test modal closed' , () =>{
+      wrapper.find('Environment__edit-button').at(1).simulate('click')
+      expect(wrapper.node).toMatchSnapshot()
+    })
+
+})

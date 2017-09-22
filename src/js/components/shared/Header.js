@@ -3,16 +3,6 @@ import {Link} from 'react-router-dom'
 
 export default class Header extends Component {
 
-
-  goTo(route) {
-    this.props.history.replace(`/login`)
-  }
-
-  _setSelectedComponent(component){
-
-    this.props.history.replace(`../${component}`)
-  }
-
   logout() {
     this.props.auth.logout();
   }
@@ -34,7 +24,6 @@ export default class Header extends Component {
             </li>
             <li>
               <Link
-
                 className="Header__nav-item Header__nav-item--labbooks flex flex--row justify--space-between"
                 to={{pathname: '/labbooks'}}
               >

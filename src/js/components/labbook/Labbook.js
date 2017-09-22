@@ -182,7 +182,11 @@ class Labbook extends Component {
             <div onClick={() => this._hideLabbookModal()} className="UserNote__close">X</div>
             {
               (this.state.modalVisible) &&
-              <UserNote labbookId={this.props.labbook.id} {...this.props} labbookName={labbookName} hideLabbookModal={this._hideLabbookModal}/>
+              <UserNote
+                labbookId={this.props.labbook.id}
+                {...this.props}
+                labbookName={labbookName} 
+                hideLabbookModal={this._hideLabbookModal}/>
             }
           </div>
           <div className="Labbook__info">

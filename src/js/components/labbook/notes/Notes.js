@@ -44,8 +44,7 @@ class Notes extends Component {
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
       let distanceY = window.innerHeight + document.body.scrollTop + 40,
-          expandOn = root.offsetHeight,
-          footer = document.getElementById("footer");
+          expandOn = root.offsetHeight;
       if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
           notesContainer._loadMore(e);
       }
@@ -81,11 +80,17 @@ class Notes extends Component {
       let timeHash = date.getYear() + '_' + date.getMonth() + ' _' + date.getDate();
       if(notesTime[timeHash]){
         let newNoteObject = {edge: note, date: date}
-        notesTime[timeHash].push(newNoteObject);
+        if(notesTime[timeHash][note.node.level]){
+          notesTime[timeHash][note.node.level].push(newNoteObject);
+        }else{
+          notesTime[timeHash][note.node.level] = [newNoteObject]
+
+        }
       }else{
         let newNoteObject = {edge: note, date: date}
-        notesTime[timeHash] = [newNoteObject];
-
+        notesTime[timeHash] = {
+          [note.node.level]: [newNoteObject]
+        }
       }
     })
 
@@ -108,22 +113,32 @@ class Notes extends Component {
               {
                 Object.keys(notesTime).map(k => {
 
-
                     return (
                       <div key={k}>
                         <div className="Notes__date-tab flex flex--column justify--space-around">
                           <div className="Notes__date-day">{k.split('_')[2]}</div>
                           <div className="Notes__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
-                        </div>{
-                          notesTime[k].map((obj) => {
-                            return(<NotesCard
-                                key={obj.edge.node.id}
-                                edge={obj.edge}
-                              />)
+                        </div>
 
-                            })
-                          }
-                      </div>)
+                        {
+                          Object.keys(notesTime[k]).map(l => {
+
+                          return (
+                            <div key={k+l}>
+
+                              {
+                                notesTime[k][l].map((obj) => {
+                                return(<NotesCard
+                                    key={obj.edge.node.id}
+                                    edge={obj.edge}
+                                  />)
+
+                                })
+                              }
+                          </div>
+                          )
+                        })
+                      }</div>)
                   })
               }
             </div>

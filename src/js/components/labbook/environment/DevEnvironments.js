@@ -20,7 +20,9 @@ class DevEnvironments extends Component {
   */
   _openModal(){
       this.setState({'modal_visible': true})
-      document.getElementById('modal__cover').classList.remove('hidden')
+      if(document.getElementById('modal__cover')){
+        document.getElementById('modal__cover').classList.remove('hidden')
+      }
   }
   /*
     function()
@@ -28,7 +30,9 @@ class DevEnvironments extends Component {
   */
   _hideModal(){
       this.setState({'modal_visible': false})
-      document.getElementById('modal__cover').classList.add('hidden')
+      if(document.getElementById('modal__cover')){
+        document.getElementById('modal__cover').classList.add('hidden')
+      }
   }
 
   _setComponent(comp){

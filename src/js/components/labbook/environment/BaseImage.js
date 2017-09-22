@@ -13,7 +13,7 @@ class BaseImage extends Component {
     baseImage = this;
   }
 
-  _editVisiible(){
+  _editVisible(){
     return this.props.editVisible
   }
 
@@ -78,7 +78,7 @@ class BaseImage extends Component {
                 </div>
               </div>
               {
-                this._editVisiible() &&
+                this._editVisible() &&
                 <div className={blockClass + '__edit-container'}>
                     <button onClick={() => this._openModal()} className={blockClass + '__edit-button'}>Edit</button>
                 </div>

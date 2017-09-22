@@ -9,9 +9,9 @@ let _setBuildingState = ((state) => {
 })
 
 
-test('Test PackageCount rendering', () => {
+test('Test PackageCount rendering', async () => {
   //const isAuthenticated = function(){return true};
-  const component = renderer.create(
+  const component = await renderer.create(
 
       <PackageCount labbookName={config.data.labbook.name} />
 

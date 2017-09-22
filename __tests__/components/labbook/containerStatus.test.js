@@ -60,5 +60,5 @@ describe('Test Container Rendering Closed', async () => {
           isBuilding={false}
         />
       )
-      console.log(component)
+      
 })

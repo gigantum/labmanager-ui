@@ -42,14 +42,14 @@ describe('Test LocalLabbooks panel length', () => {
 
 describe('Test LocalLabbooks load more', () => {
   const relay = {loadMore: () => {}}
-  const localLabbooks = shallow(
+  const localLabbooks = mount(
 
      <LocalLabbooks relay={relay} history={history} {...fixtures} feed={config.data}/>
 
   );
 
-  localLabbooks.find('button').at(0).simulate('click')
-
+  //localLabbooks.find('button').at(0).simulate('click')
+  //console.log(localLabbooks.find('.LocalLabbooks__panel'))
   expect(localLabbooks.find('.LocalLabbooks__panel')).toHaveLength(21)
 })
 
@@ -73,7 +73,6 @@ describe('LocalLabbooks show modal by panel', () => {
 
      <LocalLabbooks relay={relay} history={history} {...fixtures} feed={config.data}/>
   );
-
   // localLabbooks.refs = {wizardModal: {_showModal: () => {}}}
   localLabbooks.find('.LocalLabbooks__panel--add').simulate('click')
 
