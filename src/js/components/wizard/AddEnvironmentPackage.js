@@ -14,7 +14,7 @@ export default class AddEnvironmentPackage extends React.Component {
       'name': '',
       'description': '',
       'environmentPackages': [
-        {state: 'Add', 'packageManager': this.props.availablePackageManagers[0], dependencyName: null}
+        {state: 'Add', 'packageManager': (this.props.availablePackageManagers) ? this.props.availablePackageManagers[0] : ['pip3'] , dependencyName: null}
       ],
       'show': false,
       'message': ''

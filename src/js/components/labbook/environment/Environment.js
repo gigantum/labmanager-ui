@@ -28,23 +28,6 @@ class Environment extends Component {
 
   /*
     function()
-    open modal view
-  */
-  _openModal(){
-      environ.setState({'modal_visible': true})
-      document.getElementById('modal__cover').classList.remove('hidden')
-  }
-  /*
-    function()
-    hide modal view
-  */
-  _hideModal(){
-      environ.setState({'modal_visible': false})
-      document.getElementById('modal__cover').classList.add('hidden')
-  }
-
-  /*
-    function()
     callback that triggers buildImage mutation
   */
 
@@ -64,6 +47,7 @@ class Environment extends Component {
           'message': message
         })
         environ.props.setBuildingState(false)
+        return "finished"
       }
     )
   }

@@ -29,23 +29,20 @@ class Notes extends Component {
     let notes = this.props.labbook.notes
     let cursor =  notes.edges[0].cursor;
     pagination = false;
-    setInterval(function(){
-      relay.refetchConnection(
-        counter,
-        (response) =>{
-        },
-        {
-          cursor: cursor
-        }
-      )
-    }, 2000);
-
-
+    // setInterval(function(){
+    //   relay.refetchConnection(
+    //     counter,
+    //     (response) =>{
+    //     },
+    //     {
+    //       cursor: cursor
+    //     }
+    //   )
+    // }, 2000);
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
       let distanceY = window.innerHeight + document.body.scrollTop + 40,
-          expandOn = root.offsetHeight,
-          footer = document.getElementById("footer");
+          expandOn = root.offsetHeight;
       if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
           notesContainer._loadMore(e);
       }
@@ -79,14 +76,8 @@ class Notes extends Component {
     notes.edges.forEach((note) => {
       let date = (note.node.timestamp) ? new Date(note.node.timestamp) : new Date()
       let timeHash = date.getYear() + '_' + date.getMonth() + ' _' + date.getDate();
-      if(notesTime[timeHash]){
-        let newNoteObject = {edge: note, date: date}
-        notesTime[timeHash].push(newNoteObject);
-      }else{
-        let newNoteObject = {edge: note, date: date}
-        notesTime[timeHash] = [newNoteObject];
-
-      }
+      let newNoteObject = {edge: note, date: date}
+      notesTime[timeHash] ? notesTime[timeHash].push(newNoteObject) : notesTime[timeHash] = [newNoteObject];
     })
 
     return notesTime
@@ -100,31 +91,32 @@ class Notes extends Component {
 
           <div key={this.props.labbook + '_labbooks__container'} className="Notes__inner-container flex flex--row flex--wrap justify--space-around">
 
-            <div key={this.props.labbook + '_labbooks__labook-id-container'} className="flex-1-0-auto">
-              <p key={this.props.labbook + '_labbooks__labook-id'}>Labbook ID: {this.props.labbook.id}</p>
-
-              <p key={this.props.labbook + '_labbooks__description'}>{this.props.labbook.description}</p>
+            <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Notes__sizer flex-1-0-auto">
 
               {
                 Object.keys(notesTime).map(k => {
 
+                  return (
+                    <div key={k}>
+                      <div className="Notes__date-tab flex flex--column justify--space-around">
+                        <div className="Notes__date-day">{k.split('_')[2]}</div>
+                        <div className="Notes__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
+                      </div>
 
-                    return (
-                      <div key={k}>
-                        <div className="Notes__date-tab flex flex--column justify--space-around">
-                          <div className="Notes__date-day">{k.split('_')[2]}</div>
-                          <div className="Notes__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
-                        </div>{
+                      <div key={k + 'card'}>
+
+                        {
                           notesTime[k].map((obj) => {
-                            return(<NotesCard
-                                key={obj.edge.node.id}
-                                edge={obj.edge}
-                              />)
+                          return(<NotesCard
+                              key={obj.edge.node.id}
+                              edge={obj.edge}
+                            />)
 
-                            })
-                          }
-                      </div>)
-                  })
+                          })
+                        }
+                    </div>
+                  </div>)
+                })
               }
             </div>
           </div>
