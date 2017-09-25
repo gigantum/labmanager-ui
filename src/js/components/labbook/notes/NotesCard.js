@@ -36,7 +36,7 @@ export default class NotesCard extends Component {
     return(
         <div className="NotesCard card">
 
-          <div className="flex flex--row justify--space-between">
+          <div className="NotesCard__title flex flex--row justify--space-between">
               <p className="NotesCard__time">
                 {this._getTimeOfDay(this.props.edge.node.timestamp)}
               </p>
@@ -55,10 +55,12 @@ export default class NotesCard extends Component {
           <div className={this.state.showExtraInfo ? 'NotesCard__expanded-view' : 'NotesCard__expanded-view no-height'}>
 
 
+          {
+            (this.props.edge.node.freeText !== "") &&
             <div className="NotesCard__markdown-container">
-              <ReactMarkdown source={this.props.edge.node.freeText} />
-            </div>
-            <div className="NotesCard__row flex justify--space-between flex--row">
+               <ReactMarkdown source={this.props.edge.node.freeText} />
+            </div>}
+            <div className="NotesCard__row flex justify--space-around flex--row">
               <p>
                 Id: {this.props.edge.node.commit}
               </p>
