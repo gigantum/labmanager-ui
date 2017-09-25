@@ -104,8 +104,7 @@ class Labbook extends Component {
     if(this.props.labbook){
     return(
       <div className="Labbook">
-
-        <h4 className="Labbook__title">Lab Books</h4>
+        
          <div className="Labbook__inner-container flex flex--row">
            <div className="Labbook__component-container flex flex--column">
              <div className="Labbook__header flex flex--row justify--space-between">

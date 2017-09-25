@@ -16,9 +16,10 @@ export default class UserNote extends React.Component {
     addNote = this;
   }
   componentDidMount() {
-    if(this.refs['markDown']){
+
+    if(document.getElementById('markDown')){
       simple = new SimpleMDE({
-        element: this.refs['markDown'],
+        element: document.getElementById('markDown'),
         spellChecker: true
       });
     }
@@ -48,7 +49,7 @@ export default class UserNote extends React.Component {
   }
 
   _setUserSummaryText(e){
-    console.log(e.target.value)
+
     const summaryText =  e.target.value;
     this.setState({
       'userSummaryText': summaryText,
@@ -63,7 +64,7 @@ export default class UserNote extends React.Component {
    }
 
    handleAddition(tag) {
-     console.log(tag)
+
        let tags = addNote.state.tags;
 
        tags.push({
@@ -86,7 +87,7 @@ export default class UserNote extends React.Component {
 
 
   render(){
-    console.log('renderer')
+
     const {tags} = this.state;
     return(
       <div className="UserNote flex flex--column">
