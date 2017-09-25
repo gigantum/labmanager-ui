@@ -1,7 +1,7 @@
 .Notes{
   overflow-x: hidden;
   overflow-y: auto;
-
+  padding: 10px;
   width: 100%;
   height: calc(100% - 13px);
 }
@@ -11,6 +11,13 @@
   padding: 0 10px;
 
   color: $charcoal;
+}
+
+.NotesCard__title{
+
+  h6{
+    padding: 5px;
+  }
 }
 
 .NotesCard__row{
@@ -25,6 +32,7 @@
 
   p:nth-child(1){
     border-left: 0px solid white;
+    padding: 5px 15px 5px 0;
   }
 }
 
@@ -36,17 +44,18 @@
   overflow: auto;
 
   height: auto;
-  max-height: 300px;
-  padding: 20px;
+  //max-height: 300px;
+  padding: 10px;
   font-weight: bold;
-  border: 1px solid $charcoal;
+  border-bottom: 1px dashed $font-grey;
+  border-left: 1px dashed $font-grey;
+  border-right: 1px dashed $font-grey;
 }
 
 .NotesCard__toggle-button{
   align-self: flex-end;
 
   width: 120px;
-  height: 55px;
 
   cursor: pointer;
 
@@ -79,15 +88,11 @@
 
 .NotesCard__expanded-view{
   overflow: hidden;
-
+  border-top: 2px solid $activity;
   min-height: 0px;
-  max-height: 540px;
-  margin: 5px 0 0 0;
-  padding: 10px;
+  //max-height: 540px;
 
   transition: height 0.5s;
-
-  border-radius: 3px;
 }
 .NotesCard__expanded-view.no-height{
   height: 0px;
