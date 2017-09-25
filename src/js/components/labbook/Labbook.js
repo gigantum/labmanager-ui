@@ -26,7 +26,8 @@ class Labbook extends Component {
 
     this.state = {
       'selectedComponent': (props.location.pathname.split('/').length > 3) ? this.props.location.pathname.split('/')[3] : 'overview' ,
-      'containerState': 'Closed',
+      'containerState': props.containerStatus,
+      'imageStatus': props.imageStatus,
       'isBuilding': false,
       'containerStatus': '',
       'modalVisible': ''
@@ -104,7 +105,7 @@ class Labbook extends Component {
     if(this.props.labbook){
     return(
       <div className="Labbook">
-        
+
          <div className="Labbook__inner-container flex flex--row">
            <div className="Labbook__component-container flex flex--column">
              <div className="Labbook__header flex flex--row justify--space-between">
@@ -112,7 +113,8 @@ class Labbook extends Component {
 
                <ContainerStatus
                  ref="ContainerStatus"
-                 containerStatus={this.state.containerState}
+                 containerStatus={this.props.labbook.environment.containerStatus}
+                 imageStatus={this.props.labbook.environment.imageStatus}
                  labbookName={labbookName}
                  setBuildingState={this._setBuildingState}
                  isBuilding={this.state.isBuilding}
@@ -249,6 +251,7 @@ export default createFragmentContainer(
           }
           environment{
             containerStatus
+            imageStatus
           }
           ...Environment_labbook
           ...Overview_labbook
