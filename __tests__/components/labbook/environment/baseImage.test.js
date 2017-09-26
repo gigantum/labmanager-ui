@@ -35,8 +35,6 @@ test('Test BaseImage rendering', () => {
 
 });
 
-
-
 describe("Test Edit Visible", () =>{
 
   const baseImageObj = new BaseImage();
@@ -44,7 +42,7 @@ describe("Test Edit Visible", () =>{
     editVisible: true
   }
 
-  expect(baseImageObj._editVisiible()).toBeTruthy()
+  expect(baseImageObj._editVisible()).toBeTruthy()
 })
 
 describe("Test Edit Visible", () =>{
@@ -55,7 +53,8 @@ describe("Test Edit Visible", () =>{
 })
 
 
-describe("Test Edit Visible", () =>{
+
+describe("Test Modal Visible", () =>{
   let newDiv = document.createElement("div");
   newDiv.id = 'modal__cover'
 
@@ -75,10 +74,19 @@ describe("Test Edit Visible", () =>{
       />
   );
 
-  let button = wrapper.find('.Environment__edit-button')
-  button.simulate('click')
 
-  expect(wrapper.node.state.modal_visible).toBeTruthy()
+  it('test modal open' , () =>{
+    let button = wrapper.find('.Environment__edit-button')
+    button.simulate('click')
+    expect(wrapper.node.state.modal_visible).toBeTruthy()
+  })
+
+  it('test modal closed' , () =>{
+    let button = wrapper.find('.Environment__modal-close')
+    button.simulate('click')
+    expect(!wrapper.node.state.modal_visible).toBeTruthy()
+  })
+
 
 
 })

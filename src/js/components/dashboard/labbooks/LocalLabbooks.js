@@ -79,7 +79,7 @@ class LocalLabbooks extends Component {
                 this.props.feed.localLabbooks.edges.map((edge) => {
 
                   return (
-                    <LocalLabbookPanel edge={edge} goToLabbook={this._goToLabbook}/>
+                    <LocalLabbookPanel key={edge.node.name} className="LocalLabbooks__panel" edge={edge} goToLabbook={this._goToLabbook}/>
                   )
                 })
               }

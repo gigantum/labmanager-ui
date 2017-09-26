@@ -26,7 +26,8 @@ class Labbook extends Component {
 
     this.state = {
       'selectedComponent': (props.location.pathname.split('/').length > 3) ? this.props.location.pathname.split('/')[3] : 'overview' ,
-      'containerState': 'Closed',
+      'containerState': props.containerStatus,
+      'imageStatus': props.imageStatus,
       'isBuilding': false,
       'containerStatus': '',
       'modalVisible': ''
@@ -58,24 +59,43 @@ class Labbook extends Component {
   */
   _getNavItem(item){
     return (
-      <div key={item.id}
+      <div
+        id={item.id}
+        key={item.id}
         className={(this.state.selectedComponent === item.id) ? 'selected' : 'Labbook__navigation-item--' + item.id}
         onClick={()=> this._setSelectedComponent(item.id)}
         >
-        <Link to={`../../labbooks/${this.props.match.params.labbookName}/${item.id}`} replace={true}>{item.name}</Link>
+        <Link
+          to={`../../labbooks/${this.props.match.params.labbookName}/${item.id}`} replace={true}>
+          {item.name}
+        </Link>
       </div>
     )
   }
 
   _showLabbookModal(){
-    document.getElementById('labbookModal').classList.remove('hidden')
-    document.getElementById('modal__cover').classList.remove('hidden')
+
+    if(document.getElementById('labbookModal')){
+      document.getElementById('labbookModal').classList.remove('hidden')
+    }
+
+    if(document.getElementById('modal__cover')){
+      document.getElementById('modal__cover').classList.remove('hidden')
+    }
+
     labbook.setState({'modalVisible': true})
   }
 
   _hideLabbookModal(){
-    document.getElementById('labbookModal').classList.add('hidden')
-    document.getElementById('modal__cover').classList.add('hidden')
+
+    if(document.getElementById('labbookModal')){
+      document.getElementById('labbookModal').classList.add('hidden')
+    }
+
+    if(document.getElementById('modal__cover')){
+      document.getElementById('modal__cover').classList.add('hidden')
+    }
+
     labbook.setState({'modalVisible': false})
   }
 
@@ -86,7 +106,6 @@ class Labbook extends Component {
     return(
       <div className="Labbook">
 
-        <h4 className="Labbook__title">Lab Books</h4>
          <div className="Labbook__inner-container flex flex--row">
            <div className="Labbook__component-container flex flex--column">
              <div className="Labbook__header flex flex--row justify--space-between">
@@ -94,7 +113,8 @@ class Labbook extends Component {
 
                <ContainerStatus
                  ref="ContainerStatus"
-                 containerStatus={this.state.containerState}
+                 containerStatus={this.props.labbook.environment.containerStatus}
+                 imageStatus={this.props.labbook.environment.imageStatus}
                  labbookName={labbookName}
                  setBuildingState={this._setBuildingState}
                  isBuilding={this.state.isBuilding}
@@ -179,10 +199,18 @@ class Labbook extends Component {
 
           </div>
           <div id="labbookModal" className="Labbook__modal hidden">
-            <div onClick={() => this._hideLabbookModal()} className="UserNote__close">X</div>
+            <div
+              onClick={() => this._hideLabbookModal()}
+              className="UserNote__close">
+              X
+            </div>
             {
               (this.state.modalVisible) &&
-              <UserNote labbookId={this.props.labbook.id} {...this.props} labbookName={labbookName} hideLabbookModal={this._hideLabbookModal}/>
+              <UserNote
+                labbookId={this.props.labbook.id}
+                {...this.props}
+                labbookName={labbookName}
+                hideLabbookModal={this._hideLabbookModal}/>
             }
           </div>
           <div className="Labbook__info">
@@ -223,6 +251,7 @@ export default createFragmentContainer(
           }
           environment{
             containerStatus
+            imageStatus
           }
           ...Environment_labbook
           ...Overview_labbook

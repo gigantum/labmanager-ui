@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test User Note Rendering 1`] = `
+<div
+  data-reactroot=""
+>
+  <div
+    id="markDown"
+  />
+  <div
+    class="UserNote flex flex--column"
+  >
+    <input
+      id="UserNoteTitle"
+      placeholder="Add a summary title"
+      class="UserNote__summary"
+    />
+    <textarea
+      class="UserNote__summary"
+      id="markDown"
+    />
+    <div
+      class="ReactTags__tags"
+    >
+      <div
+        class="ReactTags__selected"
+      >
+        <div
+          class="ReactTags__tagInput"
+        >
+          <input
+            type="text"
+            class="ReactTags__tagInputField"
+            placeholder="Add new tag"
+            aria-label="Add new tag"
+            id="TagsInput"
+          />
+          <!-- react-empty: 10 -->
+        </div>
+      </div>
+    </div>
+    <button
+      class="UserNote__add-note"
+      disabled=""
+    >
+      Add Note
+    </button>
+  </div>
+</div>
+`;

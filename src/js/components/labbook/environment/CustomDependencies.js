@@ -20,7 +20,9 @@ class CustomDependencies extends Component {
   */
   _openModal(){
       this.setState({'modal_visible': true})
-      document.getElementById('modal__cover').classList.remove('hidden')
+      if(document.getElementById('modal__cover')){
+        document.getElementById('modal__cover').classList.remove('hidden')
+      }
   }
   /*
     function()
@@ -28,7 +30,9 @@ class CustomDependencies extends Component {
   */
   _hideModal(){
       this.setState({'modal_visible': false})
-      document.getElementById('modal__cover').classList.add('hidden')
+      if(document.getElementById('modal__cover')){
+        document.getElementById('modal__cover').classList.add('hidden')
+      }
   }
 
   _setComponent(comp){
@@ -44,6 +48,7 @@ class CustomDependencies extends Component {
         <div className={blockClass + '__dependencies'}>
             <div className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
               <div
+                id="customDependenciesEditClose"
                 className="Environment__modal-close"
                 onClick={() => this._hideModal()}>
                 X
@@ -59,23 +64,32 @@ class CustomDependencies extends Component {
                 toggleDisabledContinue={() => function(){}}
               />
             </div>
+
             <h4 className={blockClass + '__header'}>Custom Dependencies</h4>
+
             <div className={blockClass + '__info flex justify--left'}>
             {
               customDependencies.edges.map((edge, index) => {
 
                 return(
-                  <div key={this.props.labbookName + edge.node.id + index} className={blockClass + '__dependencies'}>
+                  <div
+                    key={this.props.labbookName + edge.node.id + index} className={blockClass + '__dependencies'}>
 
                     <div className={blockClass + '__card flex justify--space-around'}>
+
                         <div className="flex-1-0-auto flex flex--column justify-center">
-                          <img height="50" width="50" src={edge.node.info.icon} alt={edge.node.info.humanName} />
+                          <img
+                            height="50"
+                            width="50"
+                            src={edge.node.info.icon}
+                            alt={edge.node.info.humanName} />
                         </div>
+
                         <div className={blockClass + '__card-text flex-1-0-auto'}>
                           <p>{edge.node.info.humanName}</p>
                           <p>{edge.node.info.description}</p>
-
                         </div>
+
                     </div>
                   </div>
                 )
@@ -86,7 +100,11 @@ class CustomDependencies extends Component {
                 (this.props.editVisible) &&
 
                 <div className={'Environment__edit-container'}>
-                    <button onClick={() => this._openModal()} className="Environment__edit-button">Edit</button>
+                    <button
+                      id="customDependenciesEdit"
+                      onClick={() => this._openModal()} className="Environment__edit-button">
+                      Edit
+                    </button>
                 </div>
 
             }

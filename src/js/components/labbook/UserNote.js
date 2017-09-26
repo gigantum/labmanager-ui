@@ -9,16 +9,20 @@ export default class UserNote extends React.Component {
   	super(props);
     this.state = {
       'addNoteEnabled': false,
-      'tags': []
+      'tags': [],
+      'userSummaryText': '',
     }
 
     addNote = this;
   }
   componentDidMount() {
-    simple = new SimpleMDE({
-      element: document.getElementById("markDown"),
-      spellChecker: true
-    });
+
+    if(document.getElementById('markDown')){
+      simple = new SimpleMDE({
+        element: document.getElementById('markDown'),
+        spellChecker: true
+      });
+    }
   }
 
   _addNote(){
@@ -60,6 +64,7 @@ export default class UserNote extends React.Component {
    }
 
    handleAddition(tag) {
+
        let tags = addNote.state.tags;
 
        tags.push({
@@ -82,17 +87,30 @@ export default class UserNote extends React.Component {
 
 
   render(){
+
     const {tags} = this.state;
     return(
       <div className="UserNote flex flex--column">
-        <input placeholder="Add a summary title" onKeyUp={(e) => this._setUserSummaryText(e)} className="UserNote__summary"></input>
-        <textarea className="UserNote__summary" id="markDown"></textarea>
+        <input
+          id="UserNoteTitle"
+          placeholder="Add a summary title"
+          onKeyUp={
+            (e) => this._setUserSummaryText(e)
+          }
+          className="UserNote__summary">
+        </input>
 
-        <ReactTags tags={tags}
-                    // suggestions={suggestions}
-                    handleDelete={this.handleDelete}
-                    handleAddition={this.handleAddition}
-                    handleDrag={this.handleDrag} />
+        <textarea ref="markdown"
+          className="UserNote__summary"
+          id="markDown"></textarea>
+
+        <ReactTags
+              id='TagsInput'
+              tags={tags}
+              // suggestions={suggestions}
+              handleDelete={this.handleDelete}
+              handleAddition={this.handleAddition}
+              handleDrag={this.handleDrag} />
         <button className="UserNote__add-note" disabled={!this.state.addNoteEnabled} onClick={() => this._addNote()}> Add Note</button>
       </div>
     )

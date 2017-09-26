@@ -18,7 +18,9 @@ class PackageManagerDependencies extends Component {
   */
   _openModal(){
       this.setState({'modal_visible': true})
-      document.getElementById('modal__cover').classList.remove('hidden')
+      if(document.getElementById('modal__cover')){
+        document.getElementById('modal__cover').classList.remove('hidden')
+      }
   }
   /*
     function()
@@ -26,7 +28,9 @@ class PackageManagerDependencies extends Component {
   */
   _hideModal(){
       this.setState({'modal_visible': false})
-      document.getElementById('modal__cover').classList.add('hidden')
+      if(document.getElementById('modal__cover')){
+        document.getElementById('modal__cover').classList.add('hidden')
+      }
 
   }
 
@@ -51,6 +55,7 @@ class PackageManagerDependencies extends Component {
       <div className="Environment_package-manager-dependencies">
         <div className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
           <div
+            id="packageManagerEditClose"
             className="Environment__modal-close"
             onClick={() => this._hideModal()}>
             X
@@ -91,7 +96,12 @@ class PackageManagerDependencies extends Component {
         </ul>
 
         <div className="Environment__edit-container">
-          <button className="Environment__edit-button" onClick={() => this._openModal()}>Edit</button>
+          <button
+            id="packageManagerEdit"
+            className="Environment__edit-button"
+            onClick={() => this._openModal()}>
+            Edit
+          </button>
         </div>
       </div>
     </div>

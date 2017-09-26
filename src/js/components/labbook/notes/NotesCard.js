@@ -5,9 +5,12 @@ import ReactMarkdown from 'react-markdown'
 
 export default class NotesCard extends Component {
   constructor(props){
+    const level = props.edge.node.level
   	super(props);
-    this.state = {showExtraInfo: false}
+    this.state = {showExtraInfo: ((level === "AUTO_MAJOR") || (level === "USER_NOTE"))}
   }
+
+
   /*
     function(): reverse state of showExtraInfo
   */
@@ -33,38 +36,42 @@ export default class NotesCard extends Component {
     return(
         <div className="NotesCard card">
 
-          <div className="flex flex--row justify--space-between">
+          <div className="NotesCard__title flex flex--row justify--space-between">
               <p className="NotesCard__time">
                 {this._getTimeOfDay(this.props.edge.node.timestamp)}
               </p>
               <p className="NotesCard__commit-message">
-                {this.props.edge.node.message}
+                <h6>{this.props.edge.node.message}</h6>
               </p>
 
               <button className={!this.state.showExtraInfo ? "NotesCard__toggle-button closed flex justify--space-around": "NotesCard__toggle-button open flex justify--space-around"}
               onClick={() => this._toggleExtraInfo()}
               >
-                Activity Log
+                Activity Detail
                 <div className="NotesCard__toggle-icon"></div>
               </button>
           </div>
 
           <div className={this.state.showExtraInfo ? 'NotesCard__expanded-view' : 'NotesCard__expanded-view no-height'}>
-            <p>
-              Commit Id: {this.props.edge.node.commit}
-            </p>
-            <p>
-              Level: {this.props.edge.node.level}
-            </p>
-            <p>
-              {this.props.edge.node.linkedCommit}
-            </p>
+
+
+          {
+            (this.props.edge.node.freeText !== "") &&
             <div className="NotesCard__markdown-container">
-              <ReactMarkdown source={this.props.edge.node.freeText} />
+               <ReactMarkdown source={this.props.edge.node.freeText} />
+            </div>}
+            <div className="NotesCard__row flex justify--space-around flex--row">
+              <p>
+                Id: {this.props.edge.node.commit}
+              </p>
+              <p>
+                Level: {this.props.edge.node.level.replace('_',' ')}
+              </p>
+
+              <p>
+                {dateformat(this.props.edge.node.timestamp, "dddd, mmmm dS, yyyy, h:MM:ss TT")}
+              </p>
             </div>
-            <p>
-              {dateformat(this.props.edge.node.timestamp, "dddd, mmmm dS, yyyy, h:MM:ss TT")}
-            </p>
 
             <div>
               <ul className="NotesCard__tags-list flex flex--row flex--wrap">

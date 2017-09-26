@@ -12,10 +12,10 @@ export default class Footer extends Component {
           footer = document.getElementById("footer");
 
       if (distanceY > expandOn) {
-          footer.classList.add("Footer__expand");
+          //footer.classList.add("Footer__expand");
       } else {
           if (footer.classList.contains("Footer__expand")) {
-                footer.classList.remove("Footer__expand");
+                //footer.classList.remove("Footer__expand");
             }
         }
     });

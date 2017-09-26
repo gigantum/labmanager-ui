@@ -10,9 +10,9 @@ export default class Loader extends Component {
           <circle fill="#EDEDED" cx="50" cy="50" r="6"/>
         </svg>
         {
-          circleArray.map(() => {
+          circleArray.map((i) => {
             return(
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+              <svg key={'circle_' + i} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <circle fill="#26A6D1" cx="50" cy="50" r="4.5"/>
               </svg>)
           })

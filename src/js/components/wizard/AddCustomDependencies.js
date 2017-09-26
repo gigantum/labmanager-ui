@@ -163,7 +163,7 @@ export default class AddCustomDependencies extends React.Component {
           query={AddCustomDependenciesQuery}
           environment={environment}
           render={({error, props}) =>{
-
+  
               if(error){
 
                 return(<div>{error.message}</div>)

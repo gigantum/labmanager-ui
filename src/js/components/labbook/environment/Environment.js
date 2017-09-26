@@ -10,6 +10,7 @@ import PackageManagerDependencies from './PackageManagerDependencies'
 import CustomDependencies from './CustomDependencies'
 //mutations
 import BuildImageMutation from 'Mutations/BuildImageMutation'
+import StopContainerMutation from 'Mutations/StopContainerMutation'
 
 let environ;
 
@@ -28,44 +29,56 @@ class Environment extends Component {
 
   /*
     function()
-    open modal view
-  */
-  _openModal(){
-      environ.setState({'modal_visible': true})
-      document.getElementById('modal__cover').classList.remove('hidden')
-  }
-  /*
-    function()
-    hide modal view
-  */
-  _hideModal(){
-      environ.setState({'modal_visible': false})
-      document.getElementById('modal__cover').classList.add('hidden')
-  }
-
-  /*
-    function()
     callback that triggers buildImage mutation
   */
 
   _buildCallback(){
 
     environ.props.setBuildingState(true)
+    
+    if(environ.props.labbook.environment.containerStatus === "RUNNING"){
+      StopContainerMutation(
+        environ.props.labbookName,
+        'default',
+        'clientMutationId',
+        (error) =>{
 
-    BuildImageMutation(
-      environ.props.labbookName,
-      'default',
-      (error) => {
+            BuildImageMutation(
+              environ.props.labbookName,
+              'default',
+              (error) => {
 
-        let showAlert = ((error !== null) && (error !== undefined))
-        let message = showAlert ? error[0].message : '';
-        environ.setState({
-          'show': showAlert,
-          'message': message
-        })
-        environ.props.setBuildingState(false)
-      }
-    )
+                let showAlert = ((error !== null) && (error !== undefined))
+                let message = showAlert ? error[0].message : '';
+                environ.setState({
+                  'show': showAlert,
+                  'message': message
+                })
+                environ.props.setBuildingState(false)
+                return "finished"
+              }
+            )
+          }
+      )
+    }else {
+
+      BuildImageMutation(
+        environ.props.labbookName,
+        'default',
+        (error) => {
+
+          let showAlert = ((error !== null) && (error !== undefined))
+          let message = showAlert ? error[0].message : '';
+          environ.setState({
+            'show': showAlert,
+            'message': message
+          })
+          environ.props.setBuildingState(false)
+          return "finished"
+        }
+      )
+
+    }
   }
 
   _setBaseImage(baseImage){

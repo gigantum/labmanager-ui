@@ -5,13 +5,13 @@ import renderer from 'react-test-renderer';
 import config from './../config'
 import {MemoryRouter } from 'react-router-dom'
 let _setBuildingState = ((state) => {
-  console.log(state)
+
 })
 
 
-test('Test PackageCount rendering', () => {
+test('Test PackageCount rendering', async () => {
   //const isAuthenticated = function(){return true};
-  const component = renderer.create(
+  const component = await renderer.create(
 
       <PackageCount labbookName={config.data.labbook.name} />
 
