@@ -35,7 +35,7 @@ class Environment extends Component {
   _buildCallback(){
 
     environ.props.setBuildingState(true)
-    console.log(environ.props.labbook.environment.containerStatus)
+    
     if(environ.props.labbook.environment.containerStatus === "RUNNING"){
       StopContainerMutation(
         environ.props.labbookName,

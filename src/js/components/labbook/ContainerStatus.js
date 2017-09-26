@@ -69,10 +69,17 @@ export default class ContainerStatus extends Component {
   }
 
 
+  _checkJupyterStatus(){
+    //update this when juphyter can accept cors
+
+    setTimeout(function(){
+      window.open('http://localhost:8888', '_blank')
+    },5000)
+  }
+
+
   _getContainerStatusText(containerStatus, imageStatus){
 
-    // console.log(containerStatus)
-    // console.log("==================")
     let status = (containerStatus === 'RUNNING') ? 'Open' : containerStatus;
     status = (containerStatus === 'NOT_RUNNING') ? 'Closed' : status;
     status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
@@ -114,13 +121,10 @@ export default class ContainerStatus extends Component {
           'clientMutationId',
           (error, response) =>{
 
-
             if(error){
               console.log(error)
             }else{
-              setTimeout(function(){
-                window.open('http://localhost:8888/', '_blank');
-              }, 3000)
+              this._checkJupyterStatus()
             }
 
             }
