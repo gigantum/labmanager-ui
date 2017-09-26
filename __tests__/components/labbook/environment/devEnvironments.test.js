@@ -29,25 +29,6 @@ test('Test DevEnvironments rendering', () => {
 });
 
 
-// describe("Test Edit Visible", () =>{
-//
-//   const devEnvironmentsObj = new DevEnvironments();
-//   devEnvironmentsObj.props = {
-//     editVisible: true
-//   }
-//
-//   expect(devEnvironmentsObj._editVisible()).toBeTruthy()
-// })
-
-// describe("Test Edit Visible", () =>{
-//
-//   const devEnvironmentsObj = new DevEnvironments();
-//   let comp = devEnvironmentsObj._setComponent('devEnvironments')
-//   console.log(comp)
-//   expect('baseImage' === 'baseImage').toBeTruthy()
-// })
-
-
 
 describe("Test Modal Visible", () =>{
   let newDiv = document.createElement("div");

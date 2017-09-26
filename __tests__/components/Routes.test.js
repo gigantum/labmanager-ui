@@ -44,7 +44,6 @@ describe('Test Routes View Change', () => {
           <Routes />
 
       );
-      //component.find('.Header__nav-item').at(0).simualte('click')
 
       component.find('.Header__nav-item').at(0).simulate('click')
 
@@ -63,6 +62,6 @@ it('renders correct routes', () => {
 
   const auth = new Auth();
   const home = mount(<Home auth={auth}/>);
-  //console.log(pathMap['/:id']())
-    //expect(pathMap['/:id']()).toBe(home);
+
+  expect(pathMap['/:id']()).toBe(home);
 });

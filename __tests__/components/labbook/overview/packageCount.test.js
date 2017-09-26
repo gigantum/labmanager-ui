@@ -5,7 +5,7 @@ import renderer from 'react-test-renderer';
 import config from './../config'
 import {MemoryRouter } from 'react-router-dom'
 let _setBuildingState = ((state) => {
-  console.log(state)
+
 })
 
 

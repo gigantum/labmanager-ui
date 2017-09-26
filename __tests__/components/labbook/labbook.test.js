@@ -93,8 +93,8 @@ describe('Test nav item default state', () =>{
 
     it('Test nav item usernote open', () =>{
       labbook.find('.UserNote__close').simulate('click')
-      console.log(labbook.node.props.children)
-    //  expect(labbook.state.modalVisible).toBeTruthy()
+
+      //expect(labbook.state.modalVisible).toBeTruthy()
     })
     it('Test nav item usernote close', () =>{
       labbook.find('.Labbook__user-note--add').simulate('click')

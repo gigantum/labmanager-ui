@@ -27,7 +27,7 @@ test('Test AddCustomDependencies rendering', async () => {
 });
 
 describe('Test AddCustomDependencies rendering', () => {
-  console.log(process.env.GIGANTUM_API)
+
   const component = mount(
     relayTestingUtils.relayWrap(<AddCustomDependencies
 
@@ -37,6 +37,5 @@ describe('Test AddCustomDependencies rendering', () => {
       labbookName={'demo-lab-book'}/>)
   );
 
-  console.log(component)
 
 });

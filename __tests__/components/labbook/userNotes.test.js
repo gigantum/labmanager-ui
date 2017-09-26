@@ -10,7 +10,7 @@ import {MemoryRouter } from 'react-router-dom'
 let _hideLabbookModal = () =>{
 
 }
-console.log(UserNote)
+
 test('Test User Note Rendering', () => {
       let props = {}
       const component = mount(

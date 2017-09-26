@@ -48,8 +48,6 @@ describe('Test LocalLabbooks load more', () => {
 
   );
 
-  //localLabbooks.find('button').at(0).simulate('click')
-  //console.log(localLabbooks.find('.LocalLabbooks__panel'))
   expect(localLabbooks.find('.LocalLabbooks__panel')).toHaveLength(21)
 })
 
@@ -60,7 +58,6 @@ describe('LocalLabbooks show modal', () => {
      <LocalLabbooks relay={relay} history={history} {...fixtures} feed={config.data}/>
   );
 
-  // localLabbooks.refs = {wizardModal: {_showModal: () => {}}}
   localLabbooks.find('.LocalLabbooks__title').simulate('click')
 
   expect(localLabbooks.node.refs.wizardModal.state.modal_visible).toBeTruthy()
@@ -73,7 +70,6 @@ describe('LocalLabbooks show modal by panel', () => {
 
      <LocalLabbooks relay={relay} history={history} {...fixtures} feed={config.data}/>
   );
-  // localLabbooks.refs = {wizardModal: {_showModal: () => {}}}
   localLabbooks.find('.LocalLabbooks__panel--add').simulate('click')
 
   expect(localLabbooks.node.refs.wizardModal.state.modal_visible).toBeTruthy()

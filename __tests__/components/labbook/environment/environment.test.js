@@ -6,11 +6,10 @@ import {MemoryRouter } from 'react-router-dom'
 import config from './../config'
 let environ;
 let _setBuildingState = ((state) => {
-  //console.log(state)
 })
 test('Test Environment rendering', () => {
   let props = {labbookName: config.data.labbook.name}
-  //const isAuthenticated = function(){return true};
+
   const component = renderer.create(
     <MemoryRouter>
       <Environment
@@ -94,13 +93,12 @@ describe("Test Modal Visible", () =>{
 })
 
 
-describe("Test Modal Visible", () =>{
-
-  let environment = new Environment()
-
-  it('test setting base image' , async () =>{
-    let callback = await environment._buildCallback()
-    // console.log(environment._buildCallback())
-    // //expect().toBeTruthy()
-  })
-})
+// describe("Test Modal Visible", () =>{
+//
+//   let environment = new Environment()
+//
+//   it('test setting base image' , async () =>{
+//     let callback = await environment._buildCallback()
+//     // //expect().toBeTruthy()
+//   })
+// })
