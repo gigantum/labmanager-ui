@@ -1,7 +1,13 @@
+//vendor
 import React from 'react'
+import SweetAlert from 'sweetalert-react';
 import { QueryRenderer, graphql } from 'react-relay'
-import environment from './../../createRelayEnvironment'
-import AddEnvironmentComponentMutation from './../../mutations/AddEnvironmentComponentMutation'
+//components
+import Loader from 'Components/shared/Loader'
+//utilites
+import environment from 'JS/createRelayEnvironment'
+//mutations
+import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
 
 const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor: String){
   availableBaseImages(first: $first, after: $cursor){
@@ -59,7 +65,9 @@ export default class SelectBaseImage extends React.Component {
       'name': '',
       'description': '',
       'selectedBaseImage': null,
-      'selectedBaseImageId': false
+      'selectedBaseImageId': false,
+      'show': false,
+      'message': ''
     };
   }
 
@@ -71,6 +79,8 @@ export default class SelectBaseImage extends React.Component {
   _selectBaseImage(edge){
     this.setState({'selectedBaseImage': edge})
     this.setState({'selectedBaseImageId': edge.node.id})
+    this.props.toggleDisabledContinue(false);
+    this.continueSave = this.continueSave.bind(this);
   }
 
   /*
@@ -78,8 +88,10 @@ export default class SelectBaseImage extends React.Component {
     gets current selectedBaseImage and passes variables to AddEnvironmentComponentMutation
     callback triggers and modal state is changed to  next window
   */
-  _createBaseImage(){
+  continueSave(){
+
     let component = this.state.selectedBaseImage.node.component;
+    this.props.toggleDisabledContinue(true);
     AddEnvironmentComponentMutation(
       this.props.labbookName,
       'default',
@@ -88,14 +100,23 @@ export default class SelectBaseImage extends React.Component {
       component.name,
       component.version,
       "clientMutationId",
+      this.props.environmentId,
+      this.props.connection,
       component.componentClass,
-      () => {
+      (error) => {
         this.props.setBaseImage(this.state.selectedBaseImage)
+        if(this._environmentView()){
+          this.props.buildCallback()
+        }
         if(this.props.setComponent){
           this.props.setComponent(this.props.nextWindow)
         }
       }
     )
+  }
+
+  _environmentView(){
+    return this.props.environmentView
   }
 
   render(){
@@ -120,7 +141,7 @@ export default class SelectBaseImage extends React.Component {
 
                 if(props){
                   return(
-                    <div className="SelectBaseImage__inner-container flex flex-column justify--space-between">
+                    <div className="SelectBaseImage__inner-container flex flex--column justify--space-between">
                       <div className="SelectBaseImage__selected-image-container">
 
                           {
@@ -160,25 +181,26 @@ export default class SelectBaseImage extends React.Component {
                         })
                       }
 
-                      </div>
-                    <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
-                      <button className="SelectBaseImage__progress-button flat--button">
-                        Previous
-                      </button>
-                      <button className="SelectBaseImage__progress-button flat--button">
-                        Cancel
-                      </button>
-                      <button className="SelectBaseImage__progress-button flat--button">
-                        skip
-                      </button>
-                      <button
-                        onClick={()=> this._createBaseImage()} disabled={(!this.state.selectedBaseImageId)}>
-                        Save and Continue Setup
-                      </button>
                     </div>
-                  </div>                  )
+                    {
+                      this._environmentView() && (
+                        <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
+                          <button onClick={() => this.continueSave()}>Save</button>
+                        </div>
+                      )
+                    }
+                    <SweetAlert
+                      className="sa-error-container"
+                      show={this.state.show}
+                      type="error"
+                      title="Error"
+                      text={this.state.message}
+                      onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
+
+                  </div>
+                )
                 }else{
-                  return(<div className="Loading"></div>)
+                  return(<Loader />)
                 }
               }
           }}

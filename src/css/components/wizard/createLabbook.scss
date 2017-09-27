@@ -1,21 +1,8 @@
-.CreateLabbook__modal{
-  position: absolute;
-  left: 50%;
-  z-index: 100;
-  width: 600px;
-  height: 500px;
-  margin: 0 0 0 -300px;
-
-  border: 2px solid $orange;
-  background-color: white;
-  box-shadow: 10px 10px 5px #888888;
-
-}
+.CreateLabbook{
+  padding: 20px;
+  height: 410px;
 
 
-.CreateLabbook__modal-inner-container{
-    height: 475px;
-    padding: 20px;
 }
 
 

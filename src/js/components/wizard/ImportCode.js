@@ -1,7 +1,8 @@
+//vendor
 import React from 'react'
-import { QueryRenderer, graphql } from 'react-relay'
-import environment from './../../createRelayEnvironment'
-import BuildImageMutation from './../../mutations/BuildImageMutation'
+import SweetAlert from 'sweetalert-react';
+//mutations
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 
 
 export default class SelectBaseImage extends React.Component {
@@ -12,7 +13,12 @@ export default class SelectBaseImage extends React.Component {
       'isLoading': false,
       'name': '',
       'description': '',
+      'show': false,
+      'message': ''
     };
+
+    this.continueSave = this.continueSave.bind(this)
+    this.props.toggleDisabledContinue(false);
   }
 
 
@@ -20,14 +26,24 @@ export default class SelectBaseImage extends React.Component {
     function()
     runs buildImageMutation and triggers setComponent to proceed to next window
   */
-  _completeSetup(){
+  continueSave(){
     this.setState({'isLoading':true})
+
     BuildImageMutation(
       this.props.labbookName,
       'default',
-      (log, error) => {
-        this.setState({'isLoading': false})
-        console.log(log, error)
+      (error) => {
+        console.log(error)
+        // let showAlert = (error !== null)
+        // if(showAlert){
+        //   let message = showAlert ? error[0].message : '';
+        //   this.setState({
+        //     'isLoading': false,
+        //     'show': showAlert,
+        //     'message': message
+        //   })
+        // }
+
         this.props.setComponent(this.props.nextWindow, this.state.name)
       }
     )
@@ -38,30 +54,35 @@ export default class SelectBaseImage extends React.Component {
   render(){
 
     return(
-      <div className="ImportCode flex flex--row justify-center">
-        <div className="ImportCode flex flex--column justify--space-between">
-          <div className={!this.state.isLoading ? 'ImportCode__loading visibility-hidden' : 'ImportCode__loading'}>
+      <div className="ImportCode flex flex--column justify-center">
+        <textarea className="ImportCode__drop" placeholder="Drag and Drop code here"></textarea>
 
-            <div className="loader">
-            	<div className="loader--ball loader--1">
-            		<div className="loader--inner-ball"></div>
-            	</div>
-            	<div className="loader--ball loader--2">
-            		<div className="loader--inner-ball"></div>
-            	</div>
-            	<div className="loader--ball loader--3">
-            		<div className="loader--inner-ball"></div>
-            	</div>
-            	<div className="loader--ball loader--4">
-            		<div className="loader--inner-ball"></div>
-            	</div>
-            	<div className="loader--ball loader--5">
-            		<div className="loader--inner-ball"></div>
-            	</div>
-            </div>
+        <div className={!this.state.isLoading ? 'ImportCode__loading visibility-hidden' : 'ImportCode__loading'}>
+
+          <div className="loader">
+          	<div className="loader--ball loader--1">
+          		<div className="loader--inner-ball"></div>
+          	</div>
+          	<div className="loader--ball loader--2">
+          		<div className="loader--inner-ball"></div>
+          	</div>
+          	<div className="loader--ball loader--3">
+          		<div className="loader--inner-ball"></div>
+          	</div>
+          	<div className="loader--ball loader--4">
+          		<div className="loader--inner-ball"></div>
+          	</div>
+          	<div className="loader--ball loader--5">
+          		<div className="loader--inner-ball"></div>
+          	</div>
           </div>
-          <button disabled={this.state.isLoading} onClick={() => this._completeSetup()}> Complete Setup </button>
         </div>
+        <SweetAlert
+          show={this.state.show}
+          title="Demo"
+          text={this.state.message}
+          onConfirm={() => this.setState({ show: false })} />
+        {/* <button disabled={this.state.isLoading} onClick={() => this._completeSetup()}> Complete Setup </button> */}
       </div>
       )
   }

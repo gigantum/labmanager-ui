@@ -1,31 +1,84 @@
 .Notes{
-  overflow-y: auto;
-  height: 100%;
   overflow-x: hidden;
-  height: calc(100% - 50px);
+  overflow-y: auto;
+  padding: 10px;
+  width: 100%;
+  height: calc(100% - 13px);
 }
 
 .NotesCard{
-  padding: 0 10px;
   margin: 15px 15px;
-  color: $font-grey;
+  padding: 0 10px;
+
+  color: $charcoal;
+}
+
+.NotesCard__title{
+
+  h6{
+    padding: 5px;
+  }
+}
+
+.NotesCard__row{
+
+  p{
+    padding: 5px 15px;
+    border-left: 1px solid $font-grey;
+    flex: 1 1 auto;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  p:nth-child(1){
+    border-left: 0px solid white;
+    padding: 5px 15px 5px 0;
+  }
+}
+
+.Notes__sizer{
+  width: 100%;
+}
+
+.NotesCard__markdown-container{
+  overflow: auto;
+
+  height: auto;
+  //max-height: 300px;
+  padding: 10px;
+  font-weight: bold;
+  border-bottom: 1px dashed $font-grey;
+  border-left: 1px dashed $font-grey;
+  border-right: 1px dashed $font-grey;
 }
 
 .NotesCard__toggle-button{
-  height: 30px;
-  width: 120px;
-  cursor: pointer;
   align-self: flex-end;
+
+  width: 120px;
+
+  cursor: pointer;
+
+  background: none;
+  width: 200px;
+  border: none;
+  color: $font-grey;
+}
+
+.NotesCard__toggle-button:focus{
+  background: none;
+  border: none;
   color: $font-grey;
 }
  .NotesCard__toggle-icon{
-   height: 20px;
    width: 20px;
+   height: 20px;
  }
 .NotesCard__toggle-button.open .NotesCard__toggle-icon{
+  transform: rotate(90deg);
+
   background: url('./../images/icons/down-arrow.svg') no-repeat 90% center;
   background-size: 10px;
-  transform: rotate(90deg);
 }
 
 .NotesCard__toggle-button.closed .NotesCard__toggle-icon{
@@ -34,17 +87,18 @@
 }
 
 .NotesCard__expanded-view{
-  border-radius: 3px;
-  padding: 10px;
-  margin: 5px 0 0 0;
-  transition: height 0.5s;
-  height: 260px;
   overflow: hidden;
+  border-top: 2px solid $activity;
+  min-height: 0px;
+  //max-height: 540px;
+
+  transition: height 0.5s;
 }
 .NotesCard__expanded-view.no-height{
   height: 0px;
-  border: 0px;
   padding: 0px;
+
+  border: 0px;
   // overflow: hidden;
   // visibility: hidden;
 }
@@ -53,9 +107,10 @@
 }
 
 .NotesCard__commit-message{
-  margin: 0 15px;
-  flex: 1 0 auto;
   align-self: center;
+  flex: 1 0 auto;
+  font-size: 16px;
+  margin: 0 15px;
 }
 
 .NotesCard__tags-list{
@@ -64,11 +119,14 @@
     padding: 0 10px 0 0
   }
   li:before{
-   content: '';
    display: inline-block;
-   height: 12px;
+
    width: 12px;
+   height: 12px;
    margin: 0 5px;
+
+   content: '';
+
    background-image: url('../images/icons/price-tag.svg');
  }
 }
@@ -78,30 +136,32 @@
 }
 
 .Notes__date-tab{
+    width: 80px;
+    height: 80px;
+
     border: 4px solid $activity;
     border-radius: 40px;
     background: $grey-light;
-    height: 80px;
-    width: 80px;
+
     font-weight: lighter;
 }
 
 .Notes__date-month{
-  font-size: 20px;
-  color: $font-grey;
   align-self: center;
-  height: 30px
+
+  height: 30px;
+
+  color: $font-grey;
+
+  font-size: 20px;
 }
 
 .Notes__date-day{
-  color: $font-grey;
-  font-size: 26px;
   align-self: center;
+
   height: 26px;
+
+  color: $font-grey;
+
+  font-size: 26px;
 }
-//
-// USER_MAJOR
-// USER_MINOR
-// AUTO_MAJOR
-// AUTO_MINOR
-// AUTO_DETAIL

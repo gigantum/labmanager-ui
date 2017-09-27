@@ -1,42 +1,83 @@
+//vendor
 import React, { Component } from 'react'
 import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
-import environment from '../../../createRelayEnvironment'
+//Components
 import NotesCard from './NotesCard'
-import Config from './../../../config'
+import Loader from 'Components/shared/Loader'
+//utilities
+import Config from 'JS/config'
 
+//lacoal variables
+let pagination = false;
+let isLoadingMore = false;
+let counter = 10;
+let notesContainer;
 
 class Notes extends Component {
   constructor(props){
   	super(props);
+  	this.state = {};
+
+    notesContainer = this;
   }
 
+  componentDidMount() {
+    let relay = this.props.relay;
+    let notes = this.props.labbook.notes
+    let cursor =  notes.edges[0].cursor;
+    pagination = false;
+    // setInterval(function(){
+    //   relay.refetchConnection(
+    //     counter,
+    //     (response) =>{
+    //     },
+    //     {
+    //       cursor: cursor
+    //     }
+    //   )
+    // }, 2000);
+    window.addEventListener('scroll', function(e){
+      let root = document.getElementById('root')
+      let distanceY = window.innerHeight + document.body.scrollTop + 40,
+          expandOn = root.offsetHeight;
+      if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
+          notesContainer._loadMore(e);
+      }
+    });
+  }
+  /*
+    function()
+    pagination container loads more items
+  */
   _loadMore() {
+    isLoadingMore = true
+    pagination = true;
    this.props.relay.loadMore(
-     10, // Fetch the next 10 feed items
+     counter, // Fetch the next 10 feed items
      e => {
-       console.log(e);
+       isLoadingMore = false;
      },{
        name: 'labbook'
      }
    );
+   counter += 10
   }
 
+  /*
+    function(array)
+    loops through notes array and sorts into days
+    return Object
+  */
   _transformNotes(notes){
     let notesTime = {}
-    notes.edges.map(function(note){
-      let date = new Date(note.node.timestamp)
+    notes.edges.forEach((note) => {
+      let date = (note.node.timestamp) ? new Date(note.node.timestamp) : new Date()
       let timeHash = date.getYear() + '_' + date.getMonth() + ' _' + date.getDate();
-      if(notesTime[timeHash]){
-        let newNoteObject = {edge: note, date: date}
-        notesTime[timeHash].push(newNoteObject);
-      }else{
-        let newNoteObject = {edge: note, date: date}
-        notesTime[timeHash] = [newNoteObject];
-
-      }
+      let newNoteObject = {edge: note, date: date}
+      notesTime[timeHash] ? notesTime[timeHash].push(newNoteObject) : notesTime[timeHash] = [newNoteObject];
     })
 
     return notesTime
@@ -50,51 +91,50 @@ class Notes extends Component {
 
           <div key={this.props.labbook + '_labbooks__container'} className="Notes__inner-container flex flex--row flex--wrap justify--space-around">
 
-            <div key={this.props.labbook + '_labbooks__labook-id-container'} className="flex-1-0-auto">
-              <p key={this.props.labbook + '_labbooks__labook-id'}>Labbook ID: {this.props.labbook.id}</p>
-
-              <p key={this.props.labbook + '_labbooks__description'}>{this.props.labbook.description}</p>
+            <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Notes__sizer flex-1-0-auto">
 
               {
                 Object.keys(notesTime).map(k => {
 
+                  return (
+                    <div key={k}>
+                      <div className="Notes__date-tab flex flex--column justify--space-around">
+                        <div className="Notes__date-day">{k.split('_')[2]}</div>
+                        <div className="Notes__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
+                      </div>
 
-                    return (
-                      <div key={k}>
-                        <div className="Notes__date-tab flex flex--column justify--space-around">
-                          <div className="Notes__date-day">{k.split('_')[2]}</div>
-                          <div className="Notes__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
-                        </div>{
+                      <div key={k + 'card'}>
+
+                        {
                           notesTime[k].map((obj) => {
-                            return(<NotesCard
-                                key={obj.edge.node.id}
-                                edge={obj.edge}
-                              />)
+                          return(<NotesCard
+                              key={obj.edge.node.id}
+                              edge={obj.edge}
+                            />)
 
-                            })
-                          }
-                      </div>)
-                  })
+                          })
+                        }
+                    </div>
+                  </div>)
+                })
               }
             </div>
-          </div>
-          <div className="Notes__next-button-container">
-            <button key="load_more"
-              onClick={() => this._loadMore()}
-              title="Load More"
-            >
-              Next 20
-            </button>
           </div>
 
         </div>
       )
     }else{
-      return(<div key="loading">loading</div>)
+      return(
+        <Loader />
+      )
     }
   }
 }
 
+/*
+  notes pagination container
+  contains notes fragment and for query consumption
+*/
 export default createPaginationContainer(
   Notes,
   {
@@ -108,6 +148,7 @@ export default createPaginationContainer(
               level
               tags
               timestamp
+              freeText
               message
               id
               author
@@ -128,7 +169,8 @@ export default createPaginationContainer(
     getConnectionFromProps(props) {
         return props.labbook && props.labbook.notes;
     },
-    getFragmentVariables(prevVars, first) {
+    getFragmentVariables(prevVars, first, cursor) {
+
       return {
        ...prevVars,
        first: first,
@@ -136,8 +178,9 @@ export default createPaginationContainer(
    },
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
 
-    first = 10;
-    name = props.labbook_name;
+    cursor = pagination ? props.labbook.notes.edges[props.labbook.notes.edges.length - 1].cursor : null
+    first = counter;
+    name = props.labbookName;
     owner = 'default';
      return {
        first,
@@ -150,13 +193,13 @@ export default createPaginationContainer(
      };
    },
    query: graphql`
-   query NotesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String!){
-     labbook(name: $name, owner: $owner){
-       id
-       description
-       ...Notes_labbook
-     }
-   }`
+     query NotesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+       labbook(name: $name, owner: $owner){
+         id
+         description
+         ...Notes_labbook
+       }
+     }`
 
   }
 )

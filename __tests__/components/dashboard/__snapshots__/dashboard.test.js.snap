@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Dashboard Labbooks 1`] = `
+<div
+  className="Dashboard flex flex-column"
+>
+  <div
+    className="Dashboard__view flex-1-0-auto"
+  />
+</div>
+`;
+
+exports[`Test Dashboard datasets 1`] = `
+<div
+  className="Dashboard flex flex-column"
+>
+  <div
+    className="Dashboard__view flex-1-0-auto"
+  >
+    <div
+      className="Datasets"
+    >
+      <h1>
+        Datasets
+      </h1>
+    </div>
+  </div>
+</div>
+`;

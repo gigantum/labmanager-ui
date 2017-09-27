@@ -1,5 +1,5 @@
 # source: http://localhost:5000/labbook/
-# timestamp: Fri Aug 11 2017 15:48:23 GMT-0400 (EDT)
+# timestamp: Fri Sep 15 2017 11:45:19 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -69,6 +69,7 @@ input BuildImageInput {
 # Mutator to build a LabBook's Docker Image
 type BuildImagePayload {
   environment: Environment
+  backgroundJobKey: String
   clientMutationId: String
 }
 
@@ -131,6 +132,24 @@ input CreateNoteInput {
 
 # Mutation to create a new note entry
 type CreateNotePayload {
+  note: Note
+  clientMutationId: String
+}
+
+input CreateUserNoteInput {
+  labbookName: String!
+  owner: String
+  message: String!
+  freeText: String
+  tags: [String]
+  objects: [NoteObjectInput]
+  clientMutationId: String
+}
+
+# Mutation to create a new user note entry in the activity feed of lab book
+#
+# The log level is set to USER_NOTE automatically and the `linked_commit` is an empty string
+type CreateUserNotePayload {
   note: Note
   clientMutationId: String
 }
@@ -278,6 +297,30 @@ enum ImageStatus {
   STALE
 }
 
+# A query to get the status of a background task launched with the Dispatcher
+type JobStatus implements Node {
+  # The ID of the object.
+  id: ID!
+  jobKey: String
+  status: String
+  startedAt: String
+  finishedAt: String
+  result: String
+}
+
+type JobStatusConnection {
+  pageInfo: PageInfo!
+  edges: [JobStatusEdge]!
+}
+
+type JobStatusEdge {
+  # The item at the end of the edge
+  node: JobStatus
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 # A type representing a LabBook and all of its contents
 #
 # LabBooks are uniquely identified by both the "owner" and the "name" of the LabBook
@@ -355,7 +398,9 @@ type Mutation {
   checkoutBranch(input: CheckoutBranchInput!): CheckoutBranchPayload
   buildImage(input: BuildImageInput!): BuildImagePayload
   startContainer(input: StartContainerInput!): StartContainerPayload
+  stopContainer(input: StopContainerInput!): StopContainerPayload
   createNote(input: CreateNoteInput!): CreateNotePayload
+  createUserNote(input: CreateUserNoteInput!): CreateUserNotePayload
   addEnvironmentComponent(input: AddEnvironmentComponentInput!): AddEnvironmentComponentPayload
   addEnvironmentPackage(input: AddEnvironmentPackageInput!): AddEnvironmentPackagePayload
 }
@@ -395,6 +440,7 @@ type NoteEdge {
 }
 
 enum NoteLogLevel {
+  USER_NOTE
   USER_MAJOR
   USER_MINOR
   AUTO_MAJOR
@@ -477,6 +523,8 @@ type Query {
   # The ID of the object
   node(id: ID!): Node
   labbook(owner: String, name: String): Labbook
+  jobStatus(jobId: String): JobStatus
+  backgroundJobs(before: String, after: String, first: Int, last: Int): JobStatusConnection
   localLabbooks(before: String, after: String, first: Int, last: Int): LabbookConnection
   availableBaseImages(before: String, after: String, first: Int, last: Int): BaseImageConnection
   availableBaseImageVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): BaseImageConnection
@@ -495,6 +543,20 @@ input StartContainerInput {
 # Mutator to start a LabBook's Docker Image in a container
 type StartContainerPayload {
   environment: Environment
+  backgroundJobKey: String
+  clientMutationId: String
+}
+
+input StopContainerInput {
+  owner: String
+  labbookName: String!
+  clientMutationId: String
+}
+
+# Mutation to stop a Docker container. 
+type StopContainerPayload {
+  environment: Environment
+  backgroundJobKey: String
   clientMutationId: String
 }
 

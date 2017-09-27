@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Routes Rendering 1`] = `
+<div
+  className="Routes"
+>
+  <div
+    className="Header flex flex--row justify--space-between"
+  >
+    <div
+      className="flex justify--space-around flex-1-0-auto"
+    >
+      <ul
+        className="Header__nav flex flex--row justify--space-between"
+      >
+        <li>
+          <a
+            className="Header__nav-item Header__nav-item--datasets flex flex--row justify--space-between"
+            href="/datasets"
+            onClick={[Function]}
+          >
+            <div
+              className="Header__datasets-icon"
+            />
+            Datasets
+          </a>
+        </li>
+        <li>
+          <a
+            className="Header__nav-item Header__nav-item--labbooks flex flex--row justify--space-between"
+            href="/labbooks"
+            onClick={[Function]}
+          >
+            <div
+              className="Header__labbook-icon"
+            />
+            Lab Books
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    className="Home"
+  >
+    <div
+      className="Login"
+    >
+      <div
+        className="Login__panel flex flex--column justify--space-around"
+      >
+        <button
+          className="Login__button"
+          onClick={[Function]}
+        >
+          Log In
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="Footer flex flex--row justify--space-between"
+    id="footer"
+  />
+</div>
+`;

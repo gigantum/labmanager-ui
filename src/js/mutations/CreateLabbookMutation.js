@@ -14,7 +14,15 @@ const mutation = graphql`
     }
   }
 `;
-
+const configs = [{
+  type: 'RANGE_ADD',
+  parentID: 'client:root',
+  connectionInfo: [{
+    key: 'LocalLabbooks_localLabbooks',
+    rangeBehavior: 'append',
+  }],
+  edgeName: 'newLabbookEdge',
+}];
 let tempID = 0;
 
 export default function CreateLabbookMutation(
@@ -35,12 +43,16 @@ export default function CreateLabbookMutation(
     {
       mutation,
       variables,
-      onCompleted: (response) => {
+      configs: configs,
+      onCompleted: (response, error) => {
 
-        callback()
+        if(error){
+          console.log(error)
+        }
+
+        callback(error)
       },
-      onError: err => console.error(err),
-
+      onError: err => {console.error(err)},
       updater: (store) => {
 
         const id = 'client:newLabbook:'+ tempID++;
@@ -49,9 +61,6 @@ export default function CreateLabbookMutation(
           node.setValue(name, 'name')
           node.setValue(description, 'description')
 
-         //const labbookProxy = store.getRootField('createLabbook');
-         //const node = payload.getLinkedRecord('labbook').getLinkedRecord('node');
-         //
          const labbookProxy = store.get('client:root');
 
          const conn = RelayRuntime.ConnectionHandler.getConnection(
@@ -66,7 +75,7 @@ export default function CreateLabbookMutation(
              node,
              "LabbookEdge"
            )
-           RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge)
+           //RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge)
         }
 
       },

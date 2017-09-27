@@ -25,7 +25,6 @@ var dotenvFiles = [
   paths.dotenv,
 ].filter(Boolean);
 
-console.log(dotenvFiles)
 
 // Load environment variables from .env* files. Suppress warnings using silent
 // if this file is missing. dotenv will never modify any environment variables
@@ -77,7 +76,7 @@ function getClientEnvironment(publicUrl) {
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
 
-        GIGANTUM_API: (process.env.NODE_ENV === 'development') ? 'http://127.0.0.1:5000/labbook/' : 'http://api.localhost:5000/labbook/'
+        GIGANTUM_API:'http://api.localhost:5000/labbook/' // (process.env.NODE_ENV === 'development') ? 'http://127.0.0.1:5000/labbook/' : 'http://api.localhost:5000/labbook/'
 
       }
     );

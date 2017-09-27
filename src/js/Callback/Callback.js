@@ -1,27 +1,11 @@
 import React, { Component } from 'react';
-//import loading from './loading.svg';
+import Loader from 'Components/shared/Loader'
 
 class Callback extends Component {
   render() {
-    this.props.history.replace(`/datasets`)
-    const style = {
-      position: 'absolute',
-      display: 'flex',
-      justifyContent: 'center',
-      height: '100vh',
-      width: '100vw',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      backgroundColor: 'white',
-    }
+    this.props.history.replace(`/labbooks`)
 
-    return (
-      <div style={style}>
-        <img src="" alt="loading"/>
-      </div>
-    );
+    return(<Loader />)
   }
 }
 

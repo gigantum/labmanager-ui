@@ -2,27 +2,35 @@
 @import '../../node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
 @import '../../node_modules/normalize-sass/normalize';
 @import  'vendor/materialize.scss';
+@import  'vendor/sweetAlert.scss';
 //generic
-@import '_utilities';
 @import '_variables';
+@import '_utilities';
 @import '_layout';
 //atoms
 @import 'atoms/button.scss';
 @import 'atoms/loader.scss';
 
-//components
-@import 'components/header';
-@import  'components/labbooksets.scss';
+//shared components
+@import 'components/shared/header';
+@import 'components/shared/footer';
+@import 'components/shared/loader';
+//
 @import  'components/breadCrumbs.scss';
 @import  'components/routes.scss';
 @import  'components/login.scss';
 @import  'components/home.scss';
 //dashboard components
 @import  'components/dashboard/dashboard';
+@import  'components/dashboard/localLabBooks.scss';
 //labbook components
 @import  'components/labbook/labbook.scss';
 @import  'components/labbook/notes.scss';
 @import  'components/labbook/environment.scss';
+@import  'components/labbook/overview.scss';
+@import  'components/labbook/userNote.scss';
+@import  'components/labbook/code.scss';
+@import  'components/labbook/containerStatus.scss';
 //wizard components
 @import  'components/wizard/wizardModal';
 @import  'components/wizard/selectBaseImage';
@@ -32,6 +40,7 @@
 @import  'components/wizard/successMessage';
 @import  'components/wizard/selectDevelopmentEnvironment';
 @import  'components/wizard/importCode';
+@import  'components/wizard/addDatasets';
 
 html, body {
   width: 100%;
@@ -40,7 +49,12 @@ html, body {
   padding: 0;
   color: $charcoal;
   font-family: arial;
-  overflow: hidden;
+  //overflow-x: hidden;
+}
+
+body{
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 h1,
@@ -53,13 +67,20 @@ h6 {
   margin: 0;
 }
 
+h6{
+  font-size: 1.2rem;
+}
+
 .modal__cover{
-  position: absolute;
+  position: fixed;
   top: 0px;
   bottom: 0px;
   right: 0px;
   left: 0px;
   background-color: $charcoal;
   opacity: 0.5;
-  z-index: 50;
+  z-index: 70;
 }
+// .Routes{
+//   filter: invert(1);
+// }

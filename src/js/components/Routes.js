@@ -1,14 +1,27 @@
+//vendor
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Callback from './../Callback/Callback';
-import Auth from './../Auth/Auth';
-import history from './../history';
+import Callback from 'JS/Callback/Callback';
+import Auth from 'JS/Auth/Auth';
+import history from 'JS/history';
+import {QueryRenderer, graphql} from 'react-relay'
 // components
-import Home from './home/Home';
-import App from './App';
-import Header from './shared/Header';
-import Labbook from './labbook/Labbook';
-import BreadCrumbs from './breadCrumbs/BreadCrumbs';
+import Home from 'Components/home/Home';
+import Header from 'Components/shared/Header';
+import Footer from 'Components/shared/Footer';
+import Labbook from 'Components/labbook/Labbook';
+import environment from 'JS/createRelayEnvironment'
+import Loader from 'Components/shared/Loader'
+//labbook query with notes fragment
+export const LabbookQuery =  graphql`
+  query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+    labbook(name: $name, owner: $owner){
+      id
+      description
+      ...Labbook_labbook
+    }
+  }`
+
 
 //import Breadcrumbs from 'react-breadcrumbs'
 
@@ -41,8 +54,7 @@ export default class Routes extends Component {
   render(){
 
     return(
-      <div>
-        <Header auth={auth} />
+
 
 
         <Router history={history}>
@@ -53,7 +65,7 @@ export default class Routes extends Component {
               path=""
               render={(location) => {return(
               <div className="Routes">
-                <BreadCrumbs location={location} history={history} />
+                <Header auth={auth} history={history}/>
 
                 <Route
                   exact
@@ -77,14 +89,44 @@ export default class Routes extends Component {
                 />
 
                 <Route
-                  path="/labbooks/:labbook_name"
-                  render={(props) =>
-                    <Labbook
-                      auth={auth}
-                      {...props}
-                    />
+                  path="/labbooks/:labbookName"
+                  render={(parentProps) =>{
+
+                      return (<QueryRenderer
+                        environment={environment}
+                        query={LabbookQuery}
+                        variables={{name:parentProps.match.params.labbookName, owner: 'default', first: 20}}
+                        render={({error, props}) => {
+
+                          if(error){
+                            console.log(error)
+                            return (<div>{error.message}</div>)
+                          }
+                          else if(props){
+                            if(props.errors){
+                              return(<div>{props.errors[0].message}</div>)
+                            }else{
+                              return (<Labbook
+                                key={parentProps.match.params.labbookName}
+                                auth={auth}
+                                labbookName={parentProps.match.params.labbookName}
+                                query={props.query}
+                                labbook={props.labbook}
+                                {...parentProps}
+                              />)
+                            }
+                          }
+                          else{
+                            return (<Loader />)
+                          }
+                        }
+                      }
+                    />)
+                  }
+
                   }
                 />
+
                 <Route
                   path="/callback"
                   render={(props) => {
@@ -96,13 +138,12 @@ export default class Routes extends Component {
                     )
                   }}
                 />
+                <Footer/>
               </div>
             )}}
            />
           </Switch>
         </Router>
-
-      </div>
     )
   }
 }

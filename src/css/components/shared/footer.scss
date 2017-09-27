@@ -1,0 +1,15 @@
+.Footer{
+  background-color: $charcoal;
+  left: 0;
+  right: 0;
+  position: fixed;
+  bottom: 0;
+  height: 20px;
+  z-index: 50;
+  max-height: 200px;
+  transition: height 0.5s;
+}
+
+.Footer__expand {
+    height: 200px;
+}

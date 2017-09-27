@@ -54,10 +54,14 @@
       padding: 2px;
       height: 4px;
       margin: 0 2px;
-      font-size: 10px;
+      font-size: 12px;
     }
 
     li.selected{
       border-top: 6px solid $labbooks;
     }
+}
+
+.WizardModal__progress-button{
+  margin: 0 10px;
 }

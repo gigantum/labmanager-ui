@@ -1,9 +1,11 @@
 .Labbook{
-  height: calc(100% - 80px);
+  margin-bottom: 100px;
+  margin-top: 50px;
 }
 
 .Labbook__header{
   padding: 20px 0px;
+  min-height: 80px;
   .Labbook__name-title{
     padding: 0px;
   }
@@ -11,7 +13,7 @@
 
 .Labbook__title{
   text-align: left;
-  padding: 40px 0 0 40px;
+  padding: 20px 0 0 40px;
 }
 
 .Labbook__inner-container{
@@ -25,19 +27,24 @@
 
 
 .Labbook__navigation{
-  width: 70%;
   border-bottom: 1px solid $font-grey;
   position: relative;
-  li{
-    color: $font-grey;
+  box-shadow: none;
+  height: 34px;
+  background-color: inherit;
+  line-height: normal;
+  div{
+    a{
+      color: $font-grey;
+    }
     padding: 5px 30px;
     cursor: pointer;
   }
-  li:hover{
+  div:hover a{
     color: $labbooks;
   }
 
-  li.selected{
+  div.selected{
     background: url('./../images/icons/navigate-up-arrow.svg') no-repeat center 24px;
     background-size: 11px;
     z-index: 100;
@@ -50,6 +57,8 @@
 .Labbook__view{
   height: calc(100% - 90px);
   overflow: hidden;
+  padding: 20px 0;
+
 }
 
 .Labbook__container-state{
@@ -62,6 +71,41 @@
 
 }
 
+.Labbook__user-note{
+  color: $activity;
+  position: relative;
+  font-size: 14px;
+  cursor: pointer;
+
+  h5{
+    padding: 0px;
+  }
+}
+
+.Labbook__user-note--add{
+
+  background: $activity url('../images/icons/add.svg') no-repeat center center;
+  background-size: 10px;
+  height: 16px;
+  width: 16px;
+  border-radius: 15px;
+  position: absolute;
+  top: -6px;
+  left: 100px;
+  transition: all 0.3s;
+
+}
+.Labbook__user-note:hover{
+  .Labbook__user-note--add{
+    height: 20px;
+    width: 20px;
+    top: -8px;
+    left: 98px;
+    background-size: 14px;
+  }
+}
+
+
 .Labbook__container-state.Open{
   background: $activity;
 }
@@ -70,4 +114,38 @@
 }
 .Labbook__container-state.Closed{
   background: $labbooks;
+}
+
+.Labbook__component-container{
+  width: calc(100% - 250px);
+}
+
+.Labbook__info{
+  width: 250px;
+
+}
+
+.Labbook__info-card{
+  width: 200px;
+  height: 300px;
+  border: 1px solid $font-grey;
+  color: $font-grey;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.Labbook__modal{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 100;
+  width: 1000px;
+  height: 600px;
+
+  margin: -300px 0 0 -400px;
+
+  border: 1px solid $grey;
+  background-color: $grey-light;
+  box-shadow: 10px 10px 5px #888888;
+
 }

@@ -1,9 +1,6 @@
 .SelectDevelopmentEnvironment{
   padding: 20px;
-  height: 475px;
-}
-.SelectDevelopmentEnvironment__inner-container{
-  height: 380px;
+  height: 410px;
 }
 .SelectDevelopmentEnvironment__images{
   padding: 10px;
@@ -71,5 +68,16 @@
   p{
     align-self: center;
     height: 50px;
+  }
+}
+
+.Environment__modal{
+  .SelectDevelopmentEnvironment__inner-container{
+    height: 500px;
+  }
+  .SelectDevelopmentEnvironment__progress-button{
+    display: flex;
+    justify-content: space-around;
+    visibility: hidden;
   }
 }

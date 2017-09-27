@@ -1,9 +1,6 @@
 .SelectBaseImage{
   padding: 20px;
-  height: 475px;
-}
-.SelectBaseImage__inner-container{
-  height: 380px;
+  height: 410px;
 }
 .SelectBaseImage__images{
   padding: 10px;
@@ -71,5 +68,14 @@
   p{
     align-self: center;
     height: 50px;
+  }
+}
+
+.Environment__modal{
+  .SelectBaseImage__inner-container{
+    height: 500px;
+  }
+  .SelectBaseImage__progress-button{
+    visibility: hidden;
   }
 }

@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from '../createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
+
 
 const mutation = graphql`
   mutation BuildImageMutation($input: BuildImageInput!){
@@ -32,9 +32,11 @@ export default function BuildImageMutation(
     {
       mutation,
       variables,
-      onCompleted: (response) => {
-
-        callback()
+      onCompleted: (response, error) => {
+        if(error){
+          console.log(error)
+        }
+        callback(error)
       },
       onError: err => console.error(err),
 

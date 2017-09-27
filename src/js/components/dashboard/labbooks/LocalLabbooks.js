@@ -1,88 +1,104 @@
 import React, { Component } from 'react'
 import {
   createPaginationContainer,
-  QueryRenderer,
   graphql
 } from 'react-relay'
 
-import WizardModal from './../../wizard/WizardModal'
+import WizardModal from 'Components/wizard/WizardModal'
+import Loader from 'Components/shared/Loader'
+import LocalLabbookPanel from 'Components/dashboard/labbooks/LocalLabbookPanel'
+
+let localLabbooks;
+
+let isLoadingMore = false;
 
 class LocalLabbooks extends Component {
+
   constructor(props){
+  	super(props);
+  	localLabbooks = this;
+  }
 
-    super(props)
-    this.handler = this.handler.bind(this)
+  componentDidMount() {
+    window.addEventListener('scroll', function(e){
+      let root = document.getElementById('root')
+      let distanceY = window.innerHeight + document.body.scrollTop + 100,
+          expandOn = root.offsetHeight,
+          footer = document.getElementById("footer");
 
-    }
-
-    handler(e) {
-      e.preventDefault()
-       this.setState({
-         'value': "dsds"
-       })
-     }
+      if ((distanceY > expandOn) && !isLoadingMore && localLabbooks.props.feed.localLabbooks.pageInfo.hasNextPage) {
+          localLabbooks._loadMore(e);
+      }
+    });
+  }
   /*
     function(string) inputs a labbook name
     routes to that labbook
   */
   _goToLabbook(labbookName){
-    this.props.history.replace(`/labbooks/${labbookName}`)
+    localLabbooks.setState({'labbookName': labbookName})
+
+    localLabbooks.props.history.replace(`/labbooks/${labbookName}`)
   }
 
+  /*
+    loads
+  */
   _loadMore(e){
-    e.preventDefault();
-    debugger
+    isLoadingMore = true
+    if(e){
+      e.preventDefault();
+    }
     this.props.relay.loadMore(
       10, // Fetch the next 10 feed items
-      (e, r) => {
-        console.error(e);
-        this.props.relay.refetchConnection(12,(e) => {console.log(e)})
+      (ev) => {
+
+        isLoadingMore = false;
       }
     );
-
-    // this.props.relay.refetchConnection(
-    //   10,
-    //   e =>{console.log(e)}
-    // )
   }
 
-  render(){
-      if(this.props.localLabbooks){
-      return(
-        <div className="LabbooksSets">
-          <WizardModal
-            handler={this.handler}
-            history={this.props.history}
-            {...this.props}
-          />
-          <div className='LabbooksSets__labbooks flex flex--row flex--wrap justify--center'>
-            {
 
-              this.props.localLabbooks.edges.map((edge) => {
-                return (
-                  <div
-                    key={edge.node.name}
-                    onClick={() => this._goToLabbook(edge.node.name)}
-                    className='LabbooksSets__panel flex flex--column justify--space-between'>
-                      <h4>{edge.node.name}</h4>
-                      <p>{edge.node.description}</p>
-                  </div>
-                )
-              })
-            }
+
+  render(){
+
+      if(this.props.feed.localLabbooks){
+        return(
+          <div className="LocalLabbooks">
+            <WizardModal
+              ref="wizardModal"
+              handler={this.handler}
+              history={this.props.history}
+              {...this.props}
+            />
+            <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >Lab Books <div className="LocalLabbooks__title-add"></div></h4>
+            <div className='LocalLabbooks__labbooks flex flex--row flex--wrap justify--left'>
+
+              {
+
+                this.props.feed.localLabbooks.edges.map((edge) => {
+
+                  return (
+                    <LocalLabbookPanel key={edge.node.name} className="LocalLabbooks__panel" edge={edge} goToLabbook={this._goToLabbook}/>
+                  )
+                })
+              }
+
+            <div
+              key={'addLabbook'}
+              onClick={()=> this.refs.wizardModal._showModal()}
+              className='LocalLabbooks__panel LocalLabbooks__panel--add flex flex--row justify--center'>
+              <div className="LocalLabbooks__labbook-icon">
+                  <div className="LocalLabbooks__title-add"></div>
+              </div>
+
+            </div>
           </div>
-          <div className="LabooksSets__next-button-container">
-            <button key="load_more"
-              onClick={(e) => this._loadMore(e)}
-              title="Load More"
-            >
-              Next 5
-            </button>
-          </div>
+
         </div>
       )
     }else{
-      return(<div>Loading</div>)
+      return(<Loader />)
     }
 
   }
@@ -90,14 +106,17 @@ class LocalLabbooks extends Component {
 
 export default createPaginationContainer(
   LocalLabbooks,
-  {
-    localLabbooks: graphql`
-      fragment LocalLabbooks_localLabbooks on LabbookConnection @connection(key: "LocalLabbooks_localLabbooks"){
-        #localLabbooks(first: $first, after:$cursor){
+  {feed: graphql`
+      fragment LocalLabbooks_feed on Query{
+        localLabbooks(first: $first, after:$cursor)@connection(key: "LocalLabbooks_localLabbooks"){
           edges {
             node {
               name
               description
+              owner{
+                id
+                username
+              }
             }
             cursor
           }
@@ -107,27 +126,24 @@ export default createPaginationContainer(
             hasPreviousPage
             startCursor
           }
-          #}
+        }
       }
     `,
   },
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.localLabbooks;
+      return props.feed.localLabbooks
     },
-    getFragmentVariables(prevVars, first) {
-
-      first = 10;
+    getFragmentVariables(prevVars, first, cursor) {
       return {
         ...prevVars,
         first: first
       };
     },
     getVariables(props, {first, cursor}, fragmentVariables) {
-
       first = 10;
-      cursor = props.localLabbooks.pageInfo.startCursor;
+      cursor = props.feed.localLabbooks.pageInfo.endCursor;
       return {
         first,
         cursor
@@ -140,9 +156,7 @@ export default createPaginationContainer(
         $first: Int!
         $cursor: String
       ) {
-        localLabbooks(first: $first, after:$cursor){
-          ...LocalLabbooks_localLabbooks
-        }
+          ...LocalLabbooks_feed
       }
     `
   }

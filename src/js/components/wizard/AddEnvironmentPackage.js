@@ -1,8 +1,11 @@
+//vendor
 import React from 'react'
-import AddEnvironmentPackageMutation from './../../mutations/AddEnvironmentPackageMutation'
+import SweetAlert from 'sweetalert-react';
+//mutations
+import AddEnvironmentPackageMutation from 'Mutations/AddEnvironmentPackageMutation'
 
 
-let that;
+let addEnvionmentPackage;
 export default class AddEnvironmentPackage extends React.Component {
   constructor(props){
   	super(props);
@@ -11,14 +14,20 @@ export default class AddEnvironmentPackage extends React.Component {
       'name': '',
       'description': '',
       'environmentPackages': [
-        {state: 'Add', 'packageManager': this.props.availablePackageManagers[0], dependencyName: null}
-      ]
+        {state: 'Add', 'packageManager': (this.props.availablePackageManagers) ? this.props.availablePackageManagers[0] : ['pip3'] , dependencyName: null}
+      ],
+      'show': false,
+      'message': ''
     };
-    that = this;
+    addEnvionmentPackage = this;
+
+    this.props.toggleDisabledContinue(false);
+    this.continueSave = this.continueSave.bind(this);
   }
 
-
-
+  _environmentView(){
+    return this.props.environmentView
+  }
 
   /*
     function()
@@ -27,22 +36,37 @@ export default class AddEnvironmentPackage extends React.Component {
     pushes mutations into a promise and resolves if succesful
     if all promises resolve, setComponent is triggered and next component is loaded
   */
-  _installEnvironementPackage(){
+  continueSave(){
     let all = [];
     this.props.setComponent(this.props.nextWindow)
-    this.state.environmentPackages.forEach((pack) => {
 
-      if(pack.dependencyName !== null){
+    this.state.environmentPackages.forEach((pack) => {
+      if(pack.dependencyName){
         let promise = new Promise((resolve, reject) => {
+
           AddEnvironmentPackageMutation(
             this.props.labbookName,
             'default',
             pack.packageManager,
             pack.dependencyName,
-            "clientMutationId",
-            (log, error) => {
-              console.log(log, error)
-              resolve()
+            this.props.environmentId,
+            (error) => {
+              console.log(error)
+              let showAlert = ((error !== null) && (error !== undefined))
+              let message = showAlert ? error[0].message : '';
+              addEnvionmentPackage.setState({
+                'show': showAlert,
+                'message': message,
+
+              })
+              if(!showAlert){
+                resolve()
+              }else{
+                addEnvionmentPackage.setState({
+                  'reject': reject
+                })
+              }
+
             }
           )
         })
@@ -56,7 +80,7 @@ export default class AddEnvironmentPackage extends React.Component {
 
       if(this.props.environmentView){
 
-        that.props.buildCallback();
+        addEnvionmentPackage.props.buildCallback();
       }else{
           this.props.setComponent(this.props.nextWindow)
       }
@@ -78,6 +102,7 @@ export default class AddEnvironmentPackage extends React.Component {
     if(e.key !== 'Enter'){
       let newEnvironmentPackages = this.state.environmentPackages;
       newEnvironmentPackages[index]['dependencyName'] = e.target.value;
+
       this.setState({'environmentPackages': newEnvironmentPackages})
     }else{
       this._addRemovePackage(e, 'Add', index);
@@ -130,10 +155,13 @@ export default class AddEnvironmentPackage extends React.Component {
                     </div>
                     <input
                       className="AddEnvironmentPackage__text-input"
+                      ref={'packgeInput' + index }
                       disabled={pack.state === 'Remove'}
                       onKeyUp={(e) => this._updateDependencyName(e, index)}
                       type="text"
-                      placeholder="Dependency Name">
+                      placeholder="Dependency Name"
+                      autoFocus={((this.state.environmentPackages.length-1) === index)}
+                      >
 
                     </input>
                     <button
@@ -146,20 +174,21 @@ export default class AddEnvironmentPackage extends React.Component {
               )
               })
             }
+            <SweetAlert
+              className="sa-error-container"
+              show={this.state.show}
+              type="error"
+              title="Error"
+              text={this.state.message}
+              onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
 
           </div>
-          <div className="AddEnvironmentPackage__progress-buttons flex flex--row justify--space-between">
-            <button className="AddEnvironmentPackage__progress-button flat--button">
-              Previous
-            </button>
-            <button className="AddEnvironmentPackage__progress-button flat--button">
-              Cancel
-            </button>
-            <button className="AddEnvironmentPackage__progress-button flat--button">
-              skip
-            </button>
-            <button onClick={() => this._installEnvironementPackage()}> {this.props.environmentView ? 'Save': 'Save and Continue Setup'} </button>
-          </div>
+          {
+            this._environmentView() && (<div className="AddEnvironmentPackage__progress-buttons flex flex--row justify--space-between">
+
+            <button onClick={() => this.continueSave()}>Save</button>
+          </div>)
+        }
 
       </div>
       )

@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test CreateLabbook rendering 1`] = `
+<div
+  className="CreateLabbook"
+>
+  <div
+    className="CreateLabbook__modal-inner-container flex flex--column justify--space-between"
+  >
+    <div>
+      <label>
+        Title
+      </label>
+      <input
+        className=""
+        onChange={[Function]}
+        placeholder="Enter a unique, descriptive title"
+        type="text"
+      />
+      <span
+        className="hidden"
+      >
+        Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)
+      </span>
+    </div>
+    <div>
+      <label>
+        Description
+      </label>
+      <textarea
+        className="CreateLabbook__description-input"
+        onChange={[Function]}
+        placeholder="Briefly describe this lab book, its purpose and any other key details. "
+        type="text"
+      />
+    </div>
+    <div
+      className="CreateLabbook__text-divider-container"
+    >
+      <span
+        className="CreateLabbook__text-divider"
+      >
+        or
+      </span>
+    </div>
+    <div>
+      <label>
+        Add public Lab Books
+      </label>
+      <input
+        placeholder="Enter URL Location"
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;

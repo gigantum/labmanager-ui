@@ -1,0 +1,42 @@
+.ContainerStatus__container-state{
+  width: 120px;
+  text-align: center;
+  height: 30px;
+  border-radius: 15px;
+  color: $white;
+  line-height: 30px;
+  cursor: pointer;
+
+}
+
+.ContainerStatus__container-state{
+  border: 2px solid rgba(0,0,0,0);
+}
+
+.ContainerStatus__container-state.Open{
+  background: $activity url('./../images/icons/on.svg') no-repeat 5px 50%;
+  background-size: 20px;
+}
+.ContainerStatus__container-state.Building{
+  background: $datasets;
+}
+.ContainerStatus__container-state.Closed{
+  background: $labbooks url('./../images/icons/on.svg') no-repeat 5px 50%;
+  background-size: 20px;
+}
+
+.ContainerStatus__container-state.Starting{
+  background: $activity url('./../images/icons/on.svg') no-repeat 5px 50%;
+  background-size: 20px;
+  opacity: 0.75;
+}
+
+.ContainerStatus__container-state.Stopping{
+  background: $labbooks url('./../images/icons/on.svg') no-repeat 5px 50%;
+  background-size: 20px;
+  opacity: 0.75;
+}
+
+.ContainerStatus__container-state:hover{
+  border: 2px solid white;
+}

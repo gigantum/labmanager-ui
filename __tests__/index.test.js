@@ -1,28 +1,20 @@
 import React from 'react';
-import App from './../src/js/components/App';
+import Index from 'JS/index';
 import renderer from 'react-test-renderer';
-import Auth from './../src/js/Auth/Auth';
+import Auth from 'JS/Auth/Auth';
 
-test('Test if isAuthenticated == true', () => {
 
-  //const isAuthenticated = function(){return true};
-  const auth = new Auth();
-  auth.isAuthenticated = function(){return true};
-  const component = renderer.create(
-    <App auth={auth} />
-  );
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+test('Test  index rendering', () => {
+  let root = document.createElement('div');
+  root.id = 'root'
+  document.body.appendChild(root)
 
-});
+  it('renders without crashing', () => {
+  expect(JSON.stringify(
+      Object.assign({}, Index, { _reactInternalInstance: 'censored' })
+    )).toMatchSnapshot();
+  });
+  console.log(document.getElementById('root'))
 
-test('Test if isAuthenticated == false', () => {
-  const auth = new Auth();
-  auth.isAuthenticated = function(){return false};
-  const component = renderer.create(
-    <App auth={auth}/>
-  );
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
 
 });
