@@ -166,9 +166,11 @@ export default createPaginationContainer(
         }
       }
   }`
+
 },
 {
     direction: 'forward',
+    metadata: {field: 'customDependencies'},
     getConnectionFromProps(props) {
         return props.labbook && props.labbook.environment;
     },

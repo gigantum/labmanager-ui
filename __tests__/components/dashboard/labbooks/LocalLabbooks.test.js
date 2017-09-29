@@ -7,8 +7,9 @@ import config from './config'
 import LocalLabbooks from 'Components/dashboard/labbooks/LocalLabbooks';
 import relayTestingUtils from 'relay-testing-utils'
 import {MemoryRouter } from 'react-router-dom'
-
 import environment from 'JS/createRelayEnvironment'
+
+const variables = {first:20}
 
 const fixtures = {
   localLabbooks: config.data.localLabbooks
@@ -104,3 +105,7 @@ describe('Test LocalLabbooks edges output', () => {
   expect(localLabbooks.find('.LocalLabbooks__labbooks .LocalLabbooks__text-row h4').at(0).text()).toEqual(config.data.localLabbooks.edges[0].node.name)
 
 })
+
+
+
+export default variables

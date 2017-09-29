@@ -4,6 +4,9 @@ import renderer from 'react-test-renderer';
 import config from './../config'
 import {mount} from 'enzyme'
 
+const variables = {first:20, name: 'demo-lab-book',  cursor: 'MA==', owner: 'default'}
+export default variables
+
 let _setComponent = () => ({});
 let _setBaseImage = () => ({});
 let _buildCallback = () => ({});

@@ -10,7 +10,6 @@ function fetchQuery(
   operation,
   variables,
 ) {
-
   var queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
 
   return fetch(process.env.GIGANTUM_API, {
@@ -24,7 +23,7 @@ function fetchQuery(
       variables
     }),
   }).then(response => {
-  
+    console.log(response)
     return response.json()
   }).catch(error => {
 

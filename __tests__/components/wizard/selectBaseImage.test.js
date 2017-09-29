@@ -4,6 +4,9 @@ import {mount} from 'enzyme'
 import renderer from 'react-test-renderer';
 import Auth from 'JS/Auth/Auth';
 
+const variables = {first:20, labbook: 'demo-lab-book'}
+export default variables
+
 let toggleDisabledContinue = () => {}
 let setComponent = () => {}
 let setLabbookName = () => {}

@@ -152,6 +152,7 @@ export default class ContainerStatus extends Component {
             console.error(error)
             return <div>{error.message}</div>
           }else if(props){
+
             let status = this._getContainerStatusText(props.labbook.environment.containerStatus, props.labbook.environment.imageStatus)
             return(
               <div className="ContainerStatus flex flex--column">
@@ -161,6 +162,7 @@ export default class ContainerStatus extends Component {
               </div>)
           } else{
             let status = this._getContainerStatusText(this.state.containerStatus, this.state.imageStatus)
+
             return (
               <div className="ContainerStatus flex flex--column" onClick={(evt) => this._openCloseContainer(evt, status)} key="tempStatus" >
                 <div className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>

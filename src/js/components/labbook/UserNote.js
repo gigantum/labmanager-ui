@@ -59,12 +59,13 @@ export default class UserNote extends React.Component {
 
    handleDelete(i) {
        let tags = addNote.state.tags;
+       console.log(tags)
        tags.splice(i, 1);
        addNote.setState({tags: tags});
    }
 
    handleAddition(tag) {
-
+      console.log(tag)
        let tags = addNote.state.tags;
 
        tags.push({
@@ -87,7 +88,6 @@ export default class UserNote extends React.Component {
 
 
   render(){
-
     const {tags} = this.state;
     return(
       <div className="UserNote flex flex--column">

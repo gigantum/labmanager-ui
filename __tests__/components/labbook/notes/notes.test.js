@@ -6,6 +6,9 @@ import {mount} from 'enzyme'
 import environment from 'JS/createRelayEnvironment'
 
 
+const variables = {first:20, name: 'demo-lab-book', owner: 'default'}
+export default variables
+
 test('Test Notes rendering', () => {
   //const isAuthenticated = function(){return true};
   const component = renderer.create(

@@ -40,9 +40,8 @@ export default class NotesCard extends Component {
               <p className="NotesCard__time">
                 {this._getTimeOfDay(this.props.edge.node.timestamp)}
               </p>
-              <p className="NotesCard__commit-message">
-                <h6>{this.props.edge.node.message}</h6>
-              </p>
+              <h6 className="NotesCard__commit-message">{this.props.edge.node.message}</h6>
+
 
               <button className={!this.state.showExtraInfo ? "NotesCard__toggle-button closed flex justify--space-around": "NotesCard__toggle-button open flex justify--space-around"}
               onClick={() => this._toggleExtraInfo()}

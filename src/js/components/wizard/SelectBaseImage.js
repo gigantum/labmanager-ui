@@ -10,7 +10,7 @@ import environment from 'JS/createRelayEnvironment'
 import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
 
 const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor: String){
-  availableBaseImages(first: $first, after: $cursor){
+  availableBaseImages(first: $first, after: $cursor)@connection(key: "baseImage"){
     edges{
       node{
         id
