@@ -8,12 +8,14 @@ import {mount, shallow} from 'Enzyme'
 import Auth from 'JS/Auth/Auth';
 import history from 'JS/history'
 import renderer from 'react-test-renderer';
+import relayTestingUtils from 'relay-testing-utils'
+import config from './labbook/config'
 // components
 const context = {}
 
-//const routes = new Routes()
-//console.log(routes)
-//
+const variables = {first:20, owner: 'default', name: 'demo-lab-book'}
+export default variables
+
 test('Test Routes Rendering', () => {
       const auth = new Auth();
       auth.isAuthenticated = function(){return true};
@@ -22,7 +24,7 @@ test('Test Routes Rendering', () => {
 
       const component = renderer.create(
 
-          <Routes />
+          relayTestingUtils.relayWrap(<Routes />, {}, config.data)
 
       );
       let tree = component.toJSON();
@@ -32,7 +34,7 @@ test('Test Routes Rendering', () => {
 });
 
 
-//
+
 describe('Test Routes View Change', () => {
       const auth = new Auth();
       auth.isAuthenticated = function(){return true};
@@ -49,19 +51,19 @@ describe('Test Routes View Change', () => {
 
 });
 
-it('renders correct routes', () => {
-  const wrapper = mount(<Routes />);
-
-   let pathMap = wrapper.find(Route).reduce((pathMap, route) => {
-    if(route){
-      const routeProps = route.node.props;
-      pathMap[routeProps.path] = route.node.props.render;
-    }
-    return pathMap;
-  }, {});
-
-  const auth = new Auth();
-  const home = mount(<Home auth={auth}/>);
-
-  expect(pathMap['/:id']()).toBe(home);
-});
+// it('renders correct routes', () => {
+//   const wrapper = mount(<Routes />);
+//
+//    let pathMap = wrapper.find(Route).reduce((pathMap, route) => {
+//     if(route){
+//       const routeProps = route.node.props;
+//       pathMap[routeProps.path] = route.node.props.render;
+//     }
+//     return pathMap;
+//   }, {});
+//
+//   const auth = new Auth();
+//   const home = mount(<Home auth={auth}/>);
+//
+//   expect(pathMap['/:id']()).toBe(home);
+// });

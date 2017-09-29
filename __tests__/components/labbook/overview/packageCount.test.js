@@ -4,10 +4,15 @@ import {shallow, mount} from 'enzyme'
 import renderer from 'react-test-renderer';
 import config from './../config'
 import {MemoryRouter } from 'react-router-dom'
+
+
+
+const variables = {first:20, name: 'demo-lab-book', owner: 'default'}
+export default variables
+
 let _setBuildingState = ((state) => {
 
 })
-
 
 test('Test PackageCount rendering', async () => {
   //const isAuthenticated = function(){return true};

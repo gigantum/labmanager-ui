@@ -1,3 +1,163 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test PackageCount rendering 1`] = `null`;
+exports[`Test PackageCount rendering 1`] = `
+<div
+  className="Loader"
+>
+  <svg
+    id="circle-middle"
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#EDEDED"
+      r="6"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="#26A6D1"
+      r="4.5"
+    />
+  </svg>
+</div>
+`;

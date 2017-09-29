@@ -5,23 +5,23 @@ exports[`Test note card for rendering 1`] = `
   className="NotesCard card"
 >
   <div
-    className="flex flex--row justify--space-between"
+    className="NotesCard__title flex flex--row justify--space-between"
   >
     <p
       className="NotesCard__time"
     >
       11:56am
     </p>
-    <p
+    <h6
       className="NotesCard__commit-message"
     >
       User Returned a result
-    </p>
+    </h6>
     <button
       className="NotesCard__toggle-button closed flex justify--space-around"
       onClick={[Function]}
     >
-      Activity Log
+      Activity Detail
       <div
         className="NotesCard__toggle-icon"
       />
@@ -30,17 +30,6 @@ exports[`Test note card for rendering 1`] = `
   <div
     className="NotesCard__expanded-view no-height"
   >
-    <p>
-      Commit Id: 
-      acad13eee2a5959bdd594aa89494564b60604880
-    </p>
-    <p>
-      Level: 
-      USER_MINOR
-    </p>
-    <p>
-      dbbc8891ada166a1da21d874e02c8f5085ba514c
-    </p>
     <div
       className="NotesCard__markdown-container"
     >
@@ -50,9 +39,21 @@ exports[`Test note card for rendering 1`] = `
         </p>
       </div>
     </div>
-    <p>
-      Wednesday, July 26th, 2017, 11:56:00 AM
-    </p>
+    <div
+      className="NotesCard__row flex justify--space-around flex--row"
+    >
+      <p>
+        Id: 
+        acad13eee2a5959bdd594aa89494564b60604880
+      </p>
+      <p>
+        Level: 
+        USER MINOR
+      </p>
+      <p>
+        Wednesday, July 26th, 2017, 11:56:00 AM
+      </p>
+    </div>
     <div>
       <ul
         className="NotesCard__tags-list flex flex--row flex--wrap"
