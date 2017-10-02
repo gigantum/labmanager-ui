@@ -5,6 +5,9 @@ import config from './../config'
 import {mount} from 'enzyme'
 import relayTestingUtils from 'relay-testing-utils'
 
+import data from './__relaydata__/CustomDependencies.json'
+console.log(data)
+
 const variables = {first:20, name: 'demo-lab-book', cursor: 'MA==', owner: 'default'}
 export default variables
 

@@ -3,7 +3,6 @@ import BaseImage from 'Components/labbook/environment/BaseImage';
 import renderer from 'react-test-renderer';
 import sinon from 'sinon';
 import {shallow, mount, render} from 'enzyme'
-import config from './../config'
 
 const variables = {first:20, labbook: 'demo-lab-book'}
 export default variables
