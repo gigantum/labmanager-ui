@@ -73,8 +73,8 @@ export default class PackageCount extends Component {
                   <ul className="flex flex--wrap">
                     {
                        Object.keys(packages).map(key => {
-
-                         return (<li className="PackageCount__item">{packages[key] + ' ' + key + ' package(s)' }</li>)
+                    
+                         return (<li key={this.props.labbookName + key} className="PackageCount__item">{packages[key] + ' ' + key + ' package(s)' }</li>)
                        })
                     }
                   </ul>

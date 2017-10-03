@@ -163,12 +163,12 @@ export default class AddCustomDependencies extends React.Component {
           query={AddCustomDependenciesQuery}
           environment={environment}
           render={({error, props}) =>{
-              console.log(error, props)
+
               if(error){
 
                 return(<div>{error.message}</div>)
               }else{
-                console.log(props)
+
                 if(props){
                   return(
                     <div className="AddCustomDependencies__inner-container flex flex--column justify--space-between">

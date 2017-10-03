@@ -8,7 +8,7 @@ const CONFIG = {
   },
   'navigation_items': [
     {id:'overview', name: 'Overview'},
-    {id:'notes', name: 'Notes', 'fragment': '...Notes_labbook'},
+    {id:'notes', name: 'Activity', 'fragment': '...Notes_labbook'},
     {id:'environment', name: 'Environment', 'fragment': '...Environment_labbook'},
     {id:'code', name: 'Code'},
     {id:'data', name: 'Data'}

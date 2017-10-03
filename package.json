@@ -138,20 +138,7 @@
     ],
     "plugins": [
       "relay",
-      "transform-class-properties",
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./src"
-          ],
-          "alias": {
-            "Mutations": "./src/js/mutations",
-            "JS": "./src/js/components",
-            "Components": "./src/js/components"
-          }
-        }
-      ]
+      "transform-class-properties"
     ]
   },
   "eslintConfig": {

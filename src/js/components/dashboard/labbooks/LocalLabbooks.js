@@ -22,10 +22,9 @@ class LocalLabbooks extends Component {
   componentDidMount() {
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
-      let distanceY = window.innerHeight + document.documentElement.scrollTop + 100,
-          expandOn = root.offsetHeight,
-          footer = document.getElementById("footer");
-
+      let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
+          expandOn = root.offsetHeight;
+          console.log(distanceY, expandOn)
       if ((distanceY > expandOn) && !isLoadingMore && localLabbooks.props.feed.localLabbooks.pageInfo.hasNextPage) {
           localLabbooks._loadMore(e);
       }
