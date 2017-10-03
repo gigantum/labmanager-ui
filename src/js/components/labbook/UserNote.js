@@ -4,7 +4,7 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import CreateUserNoteMutation from 'Mutations/CreateUserNoteMutation'
 let simple;
 let addNote;
-export default class UserNote extends React.Component {
+export default class UserNote extends Component {
   constructor(props){
   	super(props);
     this.state = {

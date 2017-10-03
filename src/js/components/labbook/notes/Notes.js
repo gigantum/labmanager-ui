@@ -25,9 +25,10 @@ class Notes extends Component {
   }
 
   componentDidMount() {
-    let relay = this.props.relay;
+
     let notes = this.props.labbook.notes
-    let cursor =  notes.edges[0].cursor;
+    // let relay = this.props.relay;
+    // let cursor =  notes.edges[0].cursor;
     pagination = false;
     // setInterval(function(){
     //   relay.refetchConnection(
@@ -41,7 +42,7 @@ class Notes extends Component {
     // }, 2000);
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
-      let distanceY = window.innerHeight + document.body.scrollTop + 40,
+      let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
           expandOn = root.offsetHeight;
       if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
           notesContainer._loadMore(e);

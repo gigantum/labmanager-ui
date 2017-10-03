@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import dateformat from 'dateformat'
 import ReactMarkdown from 'react-markdown'
+import SimpleMDE from 'simplemde'
 
 export default class NotesCard extends Component {
   constructor(props){
@@ -27,6 +28,12 @@ export default class NotesCard extends Component {
 
     let time = (timestamp !== undefined) ? new Date(timestamp) : new Date();
     return ((time.getHours()%12 === 0) ? 12 : time.getHours()%12) + ':' + ((time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes()) + (time.getHours() > 12 ? 'pm' : 'am');
+  }
+
+  _getMarkdown(freeText){
+    var SimepleMarkdown = new SimpleMDE();
+    console.log(SimepleMarkdown)
+
   }
 
   render(){
@@ -56,8 +63,8 @@ export default class NotesCard extends Component {
 
           {
             (this.props.edge.node.freeText !== "") &&
-            <div className="NotesCard__markdown-container">
-               <ReactMarkdown source={this.props.edge.node.freeText} />
+            <div id={this.props.edge.node.commit} className="NotesCard__markdown-container">
+               {this.props.edge.node.freeText}
             </div>}
             <div className="NotesCard__row flex justify--space-around flex--row">
               <p>

@@ -23,12 +23,11 @@ function fetchQuery(
       variables
     }),
   }).then(response => {
-    console.log(response)
     return response.json()
   }).catch(error => {
-
     console.error(error)
-  })
+  });
+
 }
 
 const network = Network.create(fetchQuery);
