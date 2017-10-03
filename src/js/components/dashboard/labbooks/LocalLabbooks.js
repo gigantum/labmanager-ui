@@ -22,7 +22,7 @@ class LocalLabbooks extends Component {
   componentDidMount() {
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
-      let distanceY = window.innerHeight + document.body.scrollTop + 100,
+      let distanceY = window.innerHeight + document.documentElement.scrollTop + 100,
           expandOn = root.offsetHeight,
           footer = document.getElementById("footer");
 

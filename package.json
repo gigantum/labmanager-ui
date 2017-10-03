@@ -133,10 +133,8 @@
     ],
     "plugins": [
       "relay"
-    ],
-    "loaders":[
-    
     ]
+
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -41,7 +41,7 @@ class Notes extends Component {
     // }, 2000);
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
-      let distanceY = window.innerHeight + document.body.scrollTop + 40,
+      let distanceY = window.innerHeight + document.documentElement.scrollTop+ 40,
           expandOn = root.offsetHeight;
       if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
           notesContainer._loadMore(e);

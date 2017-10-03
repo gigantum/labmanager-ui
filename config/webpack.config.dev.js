@@ -251,7 +251,7 @@ module.exports = {
     // Watcher doesn't work well if you mistype casing in a path so we use
     // a plugin that prints an error when you attempt to do this.
     // See https://github.com/facebookincubator/create-react-app/issues/240
-    new CaseSensitivePathsPlugin(),
+    //new CaseSensitivePathsPlugin(),
     // If you require a missing module and then `npm install` it, you still have
     // to restart the development server for Webpack to discover it. This plugin
     // makes the discovery automatic so you don't have to restart.
