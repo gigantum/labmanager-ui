@@ -42,20 +42,16 @@ class Notes extends Component {
     // }, 2000);
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
-<<<<<<< 36d94116625c26e77b10955f58a9b60bc477ee0e
       let distanceY = window.innerHeight + document.documentElement.scrollTop+ 40,
-=======
-      let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
->>>>>>> fixed scroll issues with notes and locallabbooks
           expandOn = root.offsetHeight;
       if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
           notesContainer._loadMore(e);
       }
     });
   }
-  /*
-    function()
-    pagination container loads more items
+  /**
+  *  @param {}
+  *  pagination container loads more items
   */
   _loadMore() {
     isLoadingMore = true
@@ -71,10 +67,10 @@ class Notes extends Component {
    counter += 10
   }
 
-  /*
-    function(array)
-    loops through notes array and sorts into days
-    return Object
+  /**
+  *   @param {array}
+  *   loops through notes array and sorts into days
+  *   @return {Object}
   */
   _transformNotes(notes){
     let notesTime = {}

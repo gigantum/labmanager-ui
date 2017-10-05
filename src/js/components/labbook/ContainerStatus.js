@@ -46,7 +46,11 @@ export default class ContainerStatus extends Component {
     tempStatus = "Closed"
     containerStatus = this;
   }
-
+  /**
+    @param {}
+    set containerStatus secondsElapsed state by iterating
+    @return {string}
+  */
   tick(){
     containerStatus.setState({secondsElapsed: containerStatus.state.secondsElapsed + 1});
   }
@@ -68,7 +72,11 @@ export default class ContainerStatus extends Component {
     clearInterval(this.interval);
   }
 
-
+  /**
+    @param {}
+    set containerStatus secondsElapsed state by iterating
+    @return {string}
+  */
   _checkJupyterStatus(){
     //update this when juphyter can accept cors
 
@@ -76,8 +84,11 @@ export default class ContainerStatus extends Component {
       window.open('http://localhost:8888', '_blank')
     },5000)
   }
-
-
+  /**
+    @param {string, string} containerStatus,imageStatus -
+    get status by mixing containrSatus imagesStatus and state.status
+    @return {string}
+  */
   _getContainerStatusText(containerStatus, imageStatus){
 
     let status = (containerStatus === 'RUNNING') ? 'Open' : containerStatus;
@@ -91,7 +102,10 @@ export default class ContainerStatus extends Component {
 
     return status;
   }
-
+  /**
+    @param {object, string} event,status -
+    trigger mutatuion to stop or start container depdending on the state
+  */
   _openCloseContainer(evt, status){
 
       if(status === 'Open'){

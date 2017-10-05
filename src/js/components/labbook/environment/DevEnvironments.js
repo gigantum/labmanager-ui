@@ -14,9 +14,9 @@ class DevEnvironments extends Component {
 
     devEnvironments = this;
   }
-  /*
-    function()
-    open modal view
+  /**
+  *  @param {None}
+  *  open modal view
   */
   _openModal(){
       this.setState({'modal_visible': true})
@@ -24,9 +24,9 @@ class DevEnvironments extends Component {
         document.getElementById('modal__cover').classList.remove('hidden')
       }
   }
-  /*
-    function()
-    hide modal view
+  /**
+  *  @param {None}
+  *  hide modal view
   */
   _hideModal(){
       this.setState({'modal_visible': false})
@@ -34,7 +34,10 @@ class DevEnvironments extends Component {
         document.getElementById('modal__cover').classList.add('hidden')
       }
   }
-
+  /**
+  *  @param {object}
+  *  hide modal view
+  */
   _setComponent(comp){
 
     devEnvironments._hideModal();
@@ -111,6 +114,11 @@ class DevEnvironments extends Component {
     }
   }
 }
+
+/**
+*  @param {ReactElement, Object}
+*   open modal window
+*/
 
 export default createPaginationContainer(
   DevEnvironments,

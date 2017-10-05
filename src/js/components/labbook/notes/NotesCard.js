@@ -12,17 +12,18 @@ export default class NotesCard extends Component {
   }
 
 
-  /*
-    function(): reverse state of showExtraInfo
+  /**
+  *   @param {}
+  *  reverse state of showExtraInfo
   */
   _toggleExtraInfo(){
     this.setState({showExtraInfo: !this.state.showExtraInfo})
   }
-  /*
-    function(timestamp)
+  /**
+    @param {string} timestamp
     if input is undefined. current time of day is used
     inputs a time stamp and return the time of day HH:MM am/pm
-    return string
+    @return {string}
   */
   _getTimeOfDay(timestamp){
 
@@ -33,7 +34,6 @@ export default class NotesCard extends Component {
   _getMarkdown(freeText){
     var SimepleMarkdown = new SimpleMDE();
     console.log(SimepleMarkdown)
-
   }
 
   render(){
