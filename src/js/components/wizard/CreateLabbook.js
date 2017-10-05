@@ -2,7 +2,7 @@
 import React from 'react'
 import SweetAlert from 'sweetalert-react';
 //utilities
-import validation from 'JS/validation/Validation'
+import validation from 'JS/utils/Validation'
 //mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 

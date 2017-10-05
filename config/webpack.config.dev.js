@@ -30,6 +30,13 @@ module.exports = {
   // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
   // See the discussion in https://github.com/facebookincubator/create-react-app/issues/343.
   devtool: 'source-map',
+  watchOptions: {
+    poll: true
+  },
+
+  devServer: {
+    hot: true
+  },
   // These are the "entry points" to our application.
   // This means they will be the "root" imports that are included in JS bundle.
   // The first two entry points enable "hot" CSS and auto-refreshes for JS.
@@ -91,9 +98,9 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
-      Components: path.resolve(__dirname, '../src/js/components/'),
-      Mutations: path.resolve(__dirname, '../src/js/mutations/'),
-      JS: path.resolve(__dirname, '../src/js/')
+      'Components': path.resolve(__dirname, '../src/js/components/'),
+      'Mutations': path.resolve(__dirname, '../src/js/mutations/'),
+      'JS': path.resolve(__dirname, '../src/js/')
 
     },
     plugins: [
@@ -188,45 +195,6 @@ module.exports = {
       {
         test: /\.(scss|css)$/,
         loaders: ['style-loader', 'css-loader', 'sass-loader']
-        /*use: [
-          require.resolve('style-loader'),
-          {
-            loader: require.resolve('sass-loader'),
-            options: {
-              importLoaders: 1,
-            },
-          },
-          {
-            loader: require.resolve('css-loader'),
-            options: {
-              importLoaders: 1,
-            },
-          },
-          {
-            loader: require.resolve('postcss-loader'),
-            options: {
-              ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
-              plugins: () => [
-                require('postcss-flexbugs-fixes'),
-                autoprefixer({
-                  browsers: [
-                    '>1%',
-                    'last 4 versions',
-                    'Firefox ESR',
-                    'not ie < 9', // React doesn't support IE8 anyway
-                  ],
-                  flexbox: 'no-2009',
-                }),
-              ],
-            },
-          },
-
-        ],*/
-      },
-      {
-       test: /\.ipynb$/,
-       exclude: /node_modules/,
-       loader: ['file-loader']
       }
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "file" loader exclusion list.
@@ -276,7 +244,7 @@ module.exports = {
   // splitting or minification in interest of speed. These warnings become
   // cumbersome.
   performance: {
-    hints: false,
+    hints: "warning",
   },
   externals:[{
     xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'

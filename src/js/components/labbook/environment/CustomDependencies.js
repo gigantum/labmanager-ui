@@ -14,9 +14,9 @@ class CustomDependencies extends Component {
 
     addCustomDependencies = this;
   }
-  /*
-    function()
-    open modal view
+  /**
+  *  @param {none}
+  *  open modal window
   */
   _openModal(){
       this.setState({'modal_visible': true})
@@ -24,9 +24,9 @@ class CustomDependencies extends Component {
         document.getElementById('modal__cover').classList.remove('hidden')
       }
   }
-  /*
-    function()
-    hide modal view
+  /**
+  *  @param {none}
+  *   hide modal window
   */
   _hideModal(){
       this.setState({'modal_visible': false})
@@ -34,7 +34,10 @@ class CustomDependencies extends Component {
         document.getElementById('modal__cover').classList.add('hidden')
       }
   }
-
+  /**
+  *  @param {comp}
+  *   hide modal window
+  */
   _setComponent(comp){
 
     addCustomDependencies._hideModal();

@@ -5,6 +5,7 @@
 @import  'vendor/sweetAlert.scss';
 //generic
 @import '_variables';
+@import '_mixins';
 @import '_utilities';
 @import '_layout';
 //atoms
@@ -23,6 +24,8 @@
 //dashboard components
 @import  'components/dashboard/dashboard';
 @import  'components/dashboard/localLabBooks.scss';
+//import
+@import  'components/import/importModules.scss';
 //labbook components
 @import  'components/labbook/labbook.scss';
 @import  'components/labbook/notes.scss';
@@ -50,6 +53,7 @@ html, body {
   color: $charcoal;
   font-family: arial;
   position: relative;
+
   //overflow-x: hidden;
 }
 

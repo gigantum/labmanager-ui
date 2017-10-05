@@ -13,19 +13,26 @@ class BaseImage extends Component {
     baseImage = this;
   }
 
+  /**
+  *  @param {none}
+  *  check if edit is enabled
+  */
   _editVisible(){
     return this.props.editVisible
   }
-
+  /**
+  *  @param {none}
+  *   open modal window
+  */
   _openModal(){
       this.setState({'modal_visible': true})
       if(document.getElementById('modal__cover')){
         document.getElementById('modal__cover').classList.remove('hidden')
       }
   }
-  /*
-    function()
-    hide modal view
+  /**
+  *  @param {none}
+  *   hide modal window
   */
   _hideModal(){
     this.setState({'modal_visible': false})
@@ -33,7 +40,10 @@ class BaseImage extends Component {
       document.getElementById('modal__cover').classList.add('hidden')
     }
   }
-
+  /**
+  *  @param {Object}
+  *  hidemodal 
+  */
   _setComponent(comp){
 
     baseImage._hideModal();

@@ -1,0 +1,19 @@
+.ImportCode{
+  padding: 30px;
+  background: red;
+  @include modal(400px, 600px);
+}
+
+.ImportCode__drop-area{
+    height: calc(200px);
+    width: 100%;
+    border: 1px dashed $datasets;
+    word-break: break-all;
+}
+
+
+.ImportCode__drop-area:hover{
+  background: $datasets;
+  opacity: 0.5;
+  color: $white;
+}

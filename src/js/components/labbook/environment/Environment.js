@@ -27,15 +27,14 @@ class Environment extends Component {
     environ = this; //set variable for encapsulation
   }
 
-  /*
-    function()
-    callback that triggers buildImage mutation
+  /**
+  *  @param {None}
+  *  callback that triggers buildImage mutation
   */
-
   _buildCallback(){
 
     environ.props.setBuildingState(true)
-    
+
     if(environ.props.labbook.environment.containerStatus === "RUNNING"){
       StopContainerMutation(
         environ.props.labbookName,
@@ -81,6 +80,10 @@ class Environment extends Component {
     }
   }
 
+  /**
+  *  @param {Obect}
+  *  sets readyToBuild state to true
+  */
   _setBaseImage(baseImage){
       environ.setState({"readyToBuild": true})
   }

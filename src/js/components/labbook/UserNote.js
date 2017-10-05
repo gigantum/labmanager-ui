@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import SimpleMDE from 'simplemde'
 import { WithContext as ReactTags } from 'react-tag-input';
 import CreateUserNoteMutation from 'Mutations/CreateUserNoteMutation'
+
 let simple;
 let addNote;
+
 export default class UserNote extends Component {
   constructor(props){
   	super(props);
@@ -15,8 +17,8 @@ export default class UserNote extends Component {
 
     addNote = this;
   }
-  componentDidMount() {
 
+  componentDidMount() {
     if(document.getElementById('markDown')){
       simple = new SimpleMDE({
         element: document.getElementById('markDown'),
@@ -25,6 +27,10 @@ export default class UserNote extends Component {
     }
   }
 
+  /**
+    @param {}
+    calls CreateUserNoteMutation adds note to activity feed
+  */
   _addNote(){
     const tags = this.state.tags.map(tag => {return (tag.text)});
     CreateUserNoteMutation(
@@ -48,24 +54,33 @@ export default class UserNote extends Component {
 
   }
 
-  _setUserSummaryText(e){
+  /**
+    @param {object} event
+    calls updates state for summary text
+    and enables addNote button if > 0
+  */
+  _setUserSummaryText(evt){
 
-    const summaryText =  e.target.value;
+    const summaryText =  evt.target.value;
     this.setState({
       'userSummaryText': summaryText,
       'addNoteEnabled': (summaryText.length > 0)
     })
   }
-
+  /**
+    @param {number} i
+    removes tag from list
+  */
    handleDelete(i) {
        let tags = addNote.state.tags;
-       console.log(tags)
        tags.splice(i, 1);
        addNote.setState({tags: tags});
    }
-
+   /**
+     @param {number} i
+     add tag to list
+   */
    handleAddition(tag) {
-      console.log(tag)
        let tags = addNote.state.tags;
 
        tags.push({
@@ -74,7 +89,10 @@ export default class UserNote extends Component {
        });
        addNote.setState({tags: tags});
    }
-
+   /**
+     @param {number} i
+     drags tag to new position.
+   */
    handleDrag(tag, currPos, newPos) {
        let tags = addNote.state.tags;
 

@@ -49,9 +49,9 @@ class Notes extends Component {
       }
     });
   }
-  /*
-    function()
-    pagination container loads more items
+  /**
+  *  @param {}
+  *  pagination container loads more items
   */
   _loadMore() {
     isLoadingMore = true
@@ -67,10 +67,10 @@ class Notes extends Component {
    counter += 10
   }
 
-  /*
-    function(array)
-    loops through notes array and sorts into days
-    return Object
+  /**
+  *   @param {array}
+  *   loops through notes array and sorts into days
+  *   @return {Object}
   */
   _transformNotes(notes){
     let notesTime = {}

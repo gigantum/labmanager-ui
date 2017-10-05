@@ -18,7 +18,7 @@ export default class Code extends Component {
     const dropzoneId = 'dropZone';
 
     window.addEventListener("dragenter", function(e) {
-      if (e.target.id != dropzoneId) {
+      if (e.target.id !== dropzoneId) {
         e.preventDefault();
         e.dataTransfer.effectAllowed = "none";
         e.dataTransfer.dropEffect = "none";
@@ -26,7 +26,7 @@ export default class Code extends Component {
     }, false);
 
     window.addEventListener("dragover", function(e) {
-      if (e.target.id != dropzoneId) {
+      if (e.target.id !== dropzoneId) {
         e.preventDefault();
         e.dataTransfer.effectAllowed = "none";
         e.dataTransfer.dropEffect = "none";
@@ -34,7 +34,7 @@ export default class Code extends Component {
     });
 
     window.addEventListener("drop", function(e) {
-      if (e.target.id != dropzoneId) {
+      if (e.target.id !== dropzoneId) {
         e.preventDefault();
         e.dataTransfer.effectAllowed = "none";
         e.dataTransfer.dropEffect = "none";
@@ -89,7 +89,7 @@ export default class Code extends Component {
     if (dt.items) {
       // Use DataTransferItemList interface to access the file(s)
       for (let i=0; i < dt.items.length; i++) {
-        if (dt.items[i].kind == "file") {
+        if (dt.items[i].kind === "file") {
           let f = dt.items[i].getAsFile();
           console.log("... file[" + i + "].name = " + f.name);
         }
