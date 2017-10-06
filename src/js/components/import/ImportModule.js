@@ -64,7 +64,7 @@ export default class ImportModule extends Component {
       let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
 
       let fileReader = new FileReader();
-      
+
       fileReader.onloadend = function (e) {
         var arrayBuffer = e.target.result;
         let blob = new Blob([new Uint8Array(arrayBuffer)]);
@@ -154,7 +154,6 @@ export default class ImportModule extends Component {
   *   trigger file upload
   */
   _fileUpload(evt){
-     console.log(this.props)
      this.props.closeImport();
   }
   render(){

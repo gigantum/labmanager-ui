@@ -37,7 +37,7 @@ export default class NotesCard extends Component {
   */
   _getMarkdown(freeText){
     var SimepleMarkdown = new SimpleMDE();
-    console.log(SimepleMarkdown)
+
   }
 
   render(){
