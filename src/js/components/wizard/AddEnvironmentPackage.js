@@ -28,9 +28,8 @@ export default class AddEnvironmentPackage extends React.Component {
   _environmentView(){
     return this.props.environmentView
   }
-
-  /*
-    function()
+  /**
+    @param {}
     installs environents pacakges
     gets environment package state and loops through packages
     pushes mutations into a promise and resolves if succesful
@@ -90,26 +89,36 @@ export default class AddEnvironmentPackage extends React.Component {
     })
 
   }
-
-  _setCurrentPackageManager(e, index){
+  /**
+    @param {Object, number} evt,index
+    sets package manager for adding pacakges
+  */
+  _setCurrentPackageManager(evt, index){
 
     let newEnvironmentPackages = this.state.environmentPackages;
-    newEnvironmentPackages[index]['packageManager'] = e.target.value;
+    newEnvironmentPackages[index]['packageManager'] = evt.target.value;
     this.setState({'environmentPackages': newEnvironmentPackages})
   }
-
-  _updateDependencyName(e, index){
-    if(e.key !== 'Enter'){
+  /**
+    @param {Object, number} evt,index
+    sets state for enviroment package on key stroke ENTER
+    adds/remvoes a package via addRemovePackage function
+  */
+  _updateDependencyName(evt, index){
+    if(evt.key !== 'Enter'){
       let newEnvironmentPackages = this.state.environmentPackages;
-      newEnvironmentPackages[index]['dependencyName'] = e.target.value;
+      newEnvironmentPackages[index]['dependencyName'] = evt.target.value;
 
       this.setState({'environmentPackages': newEnvironmentPackages})
     }else{
-      this._addRemovePackage(e, 'Add', index);
+      this._addRemovePackage(evt, 'Add', index);
     }
   }
-
-  _addRemovePackage(e, packSate, index){
+  /**
+    @param {Object, string, number} evt,packState,index
+    adds or remvoes a package
+  */
+  _addRemovePackage(evt, packSate, index){
       let newEnvironmentPackages = this.state.environmentPackages;
       if(packSate === 'Add'){
         newEnvironmentPackages[index]['state'] = 'Remove';
@@ -119,7 +128,6 @@ export default class AddEnvironmentPackage extends React.Component {
       }
 
       this.setState({'environmentPackages': newEnvironmentPackages})
-
   }
 
   render(){

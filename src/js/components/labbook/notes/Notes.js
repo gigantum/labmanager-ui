@@ -23,7 +23,11 @@ class Notes extends Component {
 
     notesContainer = this;
   }
-
+  /**
+  *  @param {}
+  *   add scroll listener
+  *   add interval to poll for new notes
+  */
   componentDidMount() {
 
     let notes = this.props.labbook.notes

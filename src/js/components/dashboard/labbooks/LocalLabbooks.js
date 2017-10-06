@@ -24,6 +24,10 @@ class LocalLabbooks extends Component {
   	localLabbooks = this;
   }
 
+  /**
+  * fires when a componet mounts
+  * adds a scoll listener to trigger pagination
+  */
   componentDidMount() {
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')

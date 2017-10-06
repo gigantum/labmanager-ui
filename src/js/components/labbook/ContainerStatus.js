@@ -47,18 +47,25 @@ export default class ContainerStatus extends Component {
     containerStatus = this;
   }
   /**
-    @param {}
-    set containerStatus secondsElapsed state by iterating
-    @return {string}
+  *  @param {}
+  *  set containerStatus secondsElapsed state by iterating
+  *  @return {string}
   */
   tick(){
     containerStatus.setState({secondsElapsed: containerStatus.state.secondsElapsed + 1});
   }
-
+  /**
+  *  @param {}
+  *  set tick interval
+  *  @return {string}
+  */
   componentDidMount(){
     this.interval = setInterval(this.tick, 2000);
   }
-
+  /**
+  *  @param {string} nextProps
+  *  update container state before rendering new props
+  */
   componentWillReceiveProps(nextProps) {
 
     this.setState({
@@ -66,7 +73,10 @@ export default class ContainerStatus extends Component {
       'imageStatus': nextProps.imageStatus
     })
   }
-
+  /**
+  *  @param {}
+  *  clear interval to stop polling and clean up garbage
+  */
   componentWillUnmount() {
     //memory clean up
     clearInterval(this.interval);

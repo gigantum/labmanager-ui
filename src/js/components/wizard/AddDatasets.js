@@ -11,9 +11,8 @@ export default class SelectBaseImage extends React.Component {
     };
   }
 
-
-  /*
-    function()
+  /**
+    @param {}
     skips to next component triggering parent fucntion
     callback triggers and modal state is changed to  next window
   */

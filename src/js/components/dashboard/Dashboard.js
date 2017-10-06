@@ -8,9 +8,7 @@ import WizardModal from 'Components/wizard/WizardModal'
 
 
 const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String){
-  #localLabbooks(first:$first, after: $cursor){
     ...LocalLabbooks_feed
-  #}
 }`
 
 export default class DashboardContainer extends Component {
@@ -21,18 +19,20 @@ export default class DashboardContainer extends Component {
       selectedComponent: props.match.params.id
     }
   }
-
-
+  /**
+  *  @param {Object} nextProps
+  *  update select component before component renders
+  */
   componentWillReceiveProps(nextProps){
     this.setState({
       selectedComponent: nextProps.match.params.id
     })
   }
 
-  /*
-    function()
-    returns jsx of selected component
-    return jsx
+  /**
+  *  @param {}
+  *  returns jsx of selected component
+  *  @return {jsx}
   */
   _displaySelectedComponent(){
 

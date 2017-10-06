@@ -17,7 +17,10 @@ export default class UserNote extends Component {
 
     addNote = this;
   }
-
+  /**
+    @param {}
+    after component mounts apply simplemde to the dom element id:markdown
+  */
   componentDidMount() {
     if(document.getElementById('markDown')){
       simple = new SimpleMDE({
