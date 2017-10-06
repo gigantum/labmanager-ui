@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 
+/**
+*  labbook panel is to only render the edge passed to it
+*/
+
 export default class LocalLabbookPanel extends Component {
 
   render(){

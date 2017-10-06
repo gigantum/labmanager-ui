@@ -15,6 +15,11 @@ const mutation = graphql`
 
 let tempID = 0;
 
+
+/**
+  @param {object, string, object} store,id,newEdge
+  gets a connection to the store and insets an edge if connection is Successful
+*/
 function sharedUpdater(store, id, newEdge) {
   const userProxy = store.get(id);
   const conn = RelayRuntime.ConnectionHandler.getConnection(

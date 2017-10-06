@@ -30,10 +30,12 @@ export default class CreateLabbook extends React.Component {
   handler(e) {
       e.preventDefault()
    }
-   /*
-    function(event) takes and event input
-    creates a labbook mutation sets labbook name on parent component
-    triggers setComponent to proceed to next view
+
+   /**
+     @param {Object} evt
+     takes and event input
+     creates a labbook mutation sets labbook name on parent component
+     triggers setComponent to proceed to next view
    */
 
   continueSave(evt){
@@ -70,8 +72,10 @@ export default class CreateLabbook extends React.Component {
       }//route to new labbook on callback
     )
   }
-  /*
-    evt:object, field:string - updates text in a state object and passes object to setState method
+
+  /**
+    @param {Object, string} evt,field
+    updates text in a state object and passes object to setState method
   */
   _updateTextState(evt, field){
     let state = {}

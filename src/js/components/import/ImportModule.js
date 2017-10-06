@@ -15,6 +15,7 @@ export default class ImportModule extends Component {
 
     importModule = this;
     const dropzoneIds = ['dropZone', 'dropZone__helper', 'dropZone__filename'];
+
     //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
     window.addEventListener('dragenter', function(evt) { //use evt, event is a reserved word in chrome
       document.getElementById('dropZone').classList.add('ImportCode__drop-area-highlight')
@@ -63,6 +64,7 @@ export default class ImportModule extends Component {
       let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
 
       let fileReader = new FileReader();
+      
       fileReader.onloadend = function (e) {
         var arrayBuffer = e.target.result;
         let blob = new Blob([new Uint8Array(arrayBuffer)]);

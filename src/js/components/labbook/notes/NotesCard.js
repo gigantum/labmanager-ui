@@ -30,7 +30,11 @@ export default class NotesCard extends Component {
     let time = (timestamp !== undefined) ? new Date(timestamp) : new Date();
     return ((time.getHours()%12 === 0) ? 12 : time.getHours()%12) + ':' + ((time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes()) + (time.getHours() > 12 ? 'pm' : 'am');
   }
-
+  /**
+    @param {string} freeText
+    use SimpleMDE to get html of markdown
+    @return {html}
+  */
   _getMarkdown(freeText){
     var SimepleMarkdown = new SimpleMDE();
     console.log(SimepleMarkdown)

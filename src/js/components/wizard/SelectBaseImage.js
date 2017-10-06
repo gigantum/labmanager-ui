@@ -70,10 +70,9 @@ export default class SelectBaseImage extends React.Component {
       'message': ''
     };
   }
-
-  /*
-    click handle
-    function(object): takes a base image edge
+  /**
+    @param {object} edge
+    takes a base image edge
     sets componest state for selectedBaseImageId and selectedBaseImage
   */
   _selectBaseImage(edge){
@@ -82,9 +81,8 @@ export default class SelectBaseImage extends React.Component {
     this.props.toggleDisabledContinue(false);
     this.continueSave = this.continueSave.bind(this);
   }
-
-  /*
-    function()
+  /**
+    @param {}
     gets current selectedBaseImage and passes variables to AddEnvironmentComponentMutation
     callback triggers and modal state is changed to  next window
   */
@@ -114,7 +112,10 @@ export default class SelectBaseImage extends React.Component {
       }
     )
   }
-
+  /**
+    @param {}
+    @return {Object} environmentView
+  */
   _environmentView(){
     return this.props.environmentView
   }

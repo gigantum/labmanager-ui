@@ -21,9 +21,8 @@ export default class SelectBaseImage extends React.Component {
     this.props.toggleDisabledContinue(false);
   }
 
-
-  /*
-    function()
+  /**
+    @param {}
     runs buildImageMutation and triggers setComponent to proceed to next window
   */
   continueSave(){

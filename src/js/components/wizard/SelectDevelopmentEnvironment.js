@@ -70,10 +70,9 @@ export default class SelectDevelopmentEnvironment extends React.Component {
     };
     this.continueSave = this.continueSave.bind(this);
   }
-
-  /*
-    click handle
-    function(object): takes a development environment edge
+  /**
+    @param {object} edge
+    takes a development environment edge
     sets component state for selectedDevelopmentEnvironmentId and selectedDevelopmentEnvironment
   */
   _selectDevelopmentEnvironment(edge){
@@ -82,8 +81,8 @@ export default class SelectDevelopmentEnvironment extends React.Component {
     this.props.toggleDisabledContinue(false);
   }
 
-  /*
-    function()
+  /**
+    @param {}
     gets current selectedDevelopmentEnvironment and passes variables to AddEnvironmentComponentMutation
     callback triggers and modal state is changed to  next window
   */
@@ -110,7 +109,10 @@ export default class SelectDevelopmentEnvironment extends React.Component {
       }
     )
   }
-
+  /**
+    @param {}
+    @return {Object} environmentView
+  */
   _environmentView() {
     return this.props.environmentView;
   }
