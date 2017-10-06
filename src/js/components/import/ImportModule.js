@@ -14,18 +14,29 @@ export default class ImportModule extends Component {
     }
 
     importModule = this;
-    const dropzoneId = 'dropZone';
+    const dropzoneIds = ['dropZone', 'dropZone__helper', 'dropZone__filename'];
     //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
     window.addEventListener('dragenter', function(evt) { //use evt, event is a reserved word in chrome
-      if (evt.target.id !== dropzoneId) {
+      document.getElementById('dropZone').classList.add('ImportCode__drop-area-highlight')
+      if(dropzoneIds.indexOf(evt.target.id) < 0) {
         evt.preventDefault();
         evt.dataTransfer.effectAllowed = 'none';
         evt.dataTransfer.dropEffect = 'none';
+
+      }
+    }, false);
+
+    window.addEventListener('dragleave', function(evt) { //use evt, event is a reserved word in chrome
+
+      if(dropzoneIds.indexOf(evt.target.id) < 0) {
+        document.getElementById('dropZone').classList.remove('ImportCode__drop-area-highlight')
       }
     }, false);
 
     window.addEventListener('dragover', function(evt) {  //use evt, event is a reserved word in chrome
-      if (evt.target.id !== dropzoneId) {
+
+      document.getElementById('dropZone').classList.add('ImportCode__drop-area-highlight')
+      if(dropzoneIds.indexOf(evt.target.id) < 0) {
         evt.preventDefault();
         evt.dataTransfer.effectAllowed = 'none';
         evt.dataTransfer.dropEffect = 'none';
@@ -33,7 +44,9 @@ export default class ImportModule extends Component {
     });
 
     window.addEventListener('drop', function(evt) { //use evt, event is a reserved word in chrome
-      if (evt.target.id !== dropzoneId) {
+      document.getElementById('dropZone').classList.remove('ImportCode__drop-area-highlight')
+      if(dropzoneIds.indexOf(evt.target.id) < 0) {
+
         evt.preventDefault();
         evt.dataTransfer.effectAllowed = 'none';
         evt.dataTransfer.dropEffect = 'none';
@@ -44,20 +57,26 @@ export default class ImportModule extends Component {
   *  @param {object} dataTransfer
   *  preventDefault on dragOver event
   */
-
   _getBlob(dataTransfer){
-    console.log(dataTransfer.files)
     for (let i=0; i < dataTransfer.files.length; i++) {
-      console.log( dataTransfer.items)
+
       let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
-      console.log(file)
+
       let fileReader = new FileReader();
       fileReader.onloadend = function (e) {
         var arrayBuffer = e.target.result;
         let blob = new Blob([new Uint8Array(arrayBuffer)]);
-        console.log(file)
-        importModule.setState({files: [{blob: blob, file: file, filename: file.name}]})
-        console.log(importModule.state.files)
+
+        importModule.setState(
+          {files: [
+            {
+              blob: blob,
+              file: file,
+              filename: file.name}
+            ]
+          }
+        )
+
       };
       fileReader.readAsArrayBuffer(file);
     }
@@ -69,7 +88,7 @@ export default class ImportModule extends Component {
   *  preventDefault on dragOver event
   */
   _dragoverHandler(evt) {  //use evt, event is a reserved word in chrome
-    console.log(evt)
+
     evt.preventDefault();//this kicks the event up the event loop
   }
 
@@ -78,12 +97,11 @@ export default class ImportModule extends Component {
   *  handle file drop and get file data
   */
   _dropHandler(evt){
-    console.log(evt)
       //use evt, event is a reserved word in chrome
     let dataTransfer = evt.dataTransfer
     evt.preventDefault();
-    evt.dataTransfer.effectAllowed = "none";
-    evt.dataTransfer.dropEffect = "none";
+    evt.dataTransfer.effectAllowed = 'none';
+    evt.dataTransfer.dropEffect = 'none';
 
     // If dropped items aren't files, reject them;
     if (dataTransfer.items) {
@@ -104,12 +122,12 @@ export default class ImportModule extends Component {
   *  handle end of dragover with file
   */
   _dragendHandler(evt){  //use evt, event is a reserved word in chrome
-    console.log(evt)
+
     let dataTransfer = evt.dataTransfer;
 
     evt.preventDefault()
-    evt.dataTransfer.effectAllowed = "none";
-    evt.dataTransfer.dropEffect = "none";
+    evt.dataTransfer.effectAllowed = 'none';
+    evt.dataTransfer.dropEffect = 'none';
 
     if (dataTransfer.items) {
       // Use DataTransferItemList interface to remove the drag data
@@ -127,36 +145,61 @@ export default class ImportModule extends Component {
   *  opens file system for user to select file
   */
   _fileSelected(evt){
-    console.log(evt, this)
-
-     this._getBlob(document.getElementById("file-input"))
-
+     this._getBlob(document.getElementById('file__input'))
   }
-
+  /**
+  *  @param {Object}
+  *   trigger file upload
+  */
+  _fileUpload(evt){
+     console.log(this.props)
+     this.props.closeImport();
+  }
   render(){
 
     return(
       <div className={this.props.isOpen ? 'ImportCode WizardModal' : 'ImportCode hidden'}>
-        <label htmlFor="file-input">
+
+        <div
+          className="ImportCode__close"
+          onClick={()=> this.props.closeImport()}
+        ></div>
+        <label htmlFor="file__input">
             <div
               id="dropZone"
               type="file"
-              className="ImportCode__drop-area"
+              className="ImportCode__drop-area flex justify-center"
               ref={(div)=> this.dropZone = div}
               onDragEnd={(evt)=> this._dragendHandler(evt)}
               onDrop={(evt) => this._dropHandler(evt)}
               onDragOver={(evt)=> this._dragoverHandler(evt)}>
-                Drop files here
+                {
+                (this.state.files.length < 1) &&
+                  <h6 id="dropZone__helper">Drag & Drop files here, or click to select.</h6>
+                }
                 {
                   (this.state.files.length > 0) &&
-                  <div>
-                    {this.state.files[0].filename}
-                  </div>
+
+                    <h6 id="dropZone__filename">{this.state.files[0].filename}</h6>
                 }
             </div>
           </label>
 
-          <input className='hidden' type="file" id="file-input" onChange={(evt)=>{this._fileSelected(evt.files)}}/>
+          <input
+            id="file__input"
+            className='hidden'
+            type="file"
+            onChange={(evt)=>{this._fileSelected(evt.files)}}
+          />
+
+          <button
+            id="file__upload"
+            className="ImportCode__upload-button"
+            onClick={(evt)=>{this._fileUpload(evt)}}
+            disabled={this.state.files.length < 1}
+          >
+            Import
+          </button>
 
       </div>
       )

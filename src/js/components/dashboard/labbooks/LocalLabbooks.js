@@ -66,6 +66,9 @@ class LocalLabbooks extends Component {
   *  opens import modal
   */
   _openImport(){
+    if(document.getElementById('modal__cover')){
+      document.getElementById('modal__cover').classList.remove('hidden')
+    }
     this.setState({importModuleOpen: true})
   }
   /**
@@ -73,7 +76,10 @@ class LocalLabbooks extends Component {
   *  closes import modal
   */
   _closeImport(){
-    this.setState({importModuleOpen: false})
+    if(document.getElementById('modal__cover')){
+      document.getElementById('modal__cover').classList.add('hidden')
+    }
+    localLabbooks.setState({importModuleOpen: false})
   }
 
   render(){
@@ -88,7 +94,12 @@ class LocalLabbooks extends Component {
               {...this.props}
             />
 
-            <ImportModule isOpen={this.state.importModuleOpen} className={this.state.importModuleOpen ? '' : 'hidden'} />
+            <ImportModule
+              ref="ImportModule_localLabooks"
+              closeImport={this._closeImport}
+              isOpen={this.state.importModuleOpen}
+              className={this.state.importModuleOpen ? '' : 'hidden'}
+            />
 
             <div className="LocalLabbooks__title-bar flex flex--row justify--space-between">
               <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
@@ -108,7 +119,11 @@ class LocalLabbooks extends Component {
                 this.props.feed.localLabbooks.edges.map((edge) => {
 
                   return (
-                    <LocalLabbookPanel key={edge.node.name} className="LocalLabbooks__panel" edge={edge} goToLabbook={this._goToLabbook}/>
+                    <LocalLabbookPanel
+                      key={edge.node.name}
+                      className="LocalLabbooks__panel"
+                      edge={edge}
+                      goToLabbook={this._goToLabbook}/>
                   )
                 })
               }
@@ -117,7 +132,9 @@ class LocalLabbooks extends Component {
               key={'addLabbook'}
               onClick={()=> this.refs.wizardModal._showModal()}
               className='LocalLabbooks__panel LocalLabbooks__panel--add flex flex--row justify--center'>
-              <div onClick={()=> this._openImport()} className="LocalLabbooks__labbook-icon">
+              <div
+                onClick={()=> this._openImport()}
+                className="LocalLabbooks__labbook-icon">
                   <div className="LocalLabbooks__title-add"></div>
               </div>
 

@@ -1,19 +1,33 @@
 .ImportCode{
   padding: 30px;
-  background: red;
-  @include modal(400px, 600px);
+  @include modal(350px, 600px);
+  @include flex(space-between, column);
 }
 
+
+.ImportCode__close{
+  @include close();
+}
 .ImportCode__drop-area{
     height: calc(200px);
     width: 100%;
     border: 1px dashed $datasets;
     word-break: break-all;
+    padding: 30px;
+    text-align: center;
 }
 
 
-.ImportCode__drop-area:hover{
-  background: $datasets;
-  opacity: 0.5;
-  color: $white;
+.ImportCode__drop-area-highlight{
+
+  background: white;
+  opacity: 1;
+  color: $datasets;
+  border: 2px dashed $datasets;
+}
+
+.ImportCode__upload-button{
+  text-align: center;
+  width: 100px;
+  align-self: center;
 }
