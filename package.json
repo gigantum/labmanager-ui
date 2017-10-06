@@ -73,9 +73,12 @@
     "react": "^15.6.1",
     "react-breadcrumbs": "^1.6.6",
     "react-dom": "^15.6.1",
+<<<<<<< HEAD
 <<<<<<< f74aa61a340cefeb88e159d4093bbaea9bb9a5e7
     "react-markdown": "^2.5.0",
 =======
+=======
+>>>>>>> bcdce9acedab1ab1dbbc7804f9d8a7e865b04c0f
     "react-fine-uploader": "^1.0.7",
     "react-notebook": "^0.1.0",
 >>>>>>> added file select for dropping a file
