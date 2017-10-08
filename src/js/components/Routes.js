@@ -1,6 +1,6 @@
 //vendor
 import React, {Component} from 'react';
-import { Router, Route, Switch } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
 import Auth from 'JS/Auth/Auth';
 import history from 'JS/history';

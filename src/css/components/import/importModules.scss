@@ -1,33 +1,91 @@
-.ImportCode{
-  padding: 30px;
-  @include modal(350px, 600px);
-  @include flex(space-between, column);
+.ImportModule{
+  padding: 5px ;
+  //@include modal(350px, 600px);
+  @include flex(space-between, row);
+  h6{
+    padding: 0px 5px;
+    font-size: 14px;
+    align-self: center;
+    transition: 1s padding-left;
+  }
+
 }
 
 
-.ImportCode__close{
+.ImportModule__close{
   @include close();
 }
-.ImportCode__drop-area{
-    height: calc(200px);
-    width: 100%;
+.ImportModule__drop-area{
+    height: 50px;
+    width: 200px;
     border: 1px dashed $datasets;
     word-break: break-all;
-    padding: 30px;
     text-align: center;
+    transition: 0.25s width;
+    margin: 15px;
+    overflow: hidden;
+    @include flex(center, row);
+
 }
 
 
-.ImportCode__drop-area-highlight{
-
+.ImportModule__drop-area-highlight{
+  width: 300px;
   background: white;
   opacity: 1;
   color: $datasets;
   border: 2px dashed $datasets;
 }
 
-.ImportCode__upload-button{
+.ImportModule__animation{
+  white-space: nowrap;
+  word-break: keep-all;
+  word-wrap: nowrap;
+  padding-left: 1000px !important;
+
+}
+
+.ImportModule__upload-button{
+  font-size: 20px;
   text-align: center;
   width: 100px;
   align-self: center;
+  background-color: white;
+  border: 0px solid white;
+  color: $labbooks;
+  padding-left: 25px;
+  background: white url('../images/icons/import.svg') no-repeat 0px center;
+  background-size: 18px;
+  animation-iteration-count:infinite;
+}
+
+@keyframes oscilateImportIcon {
+  from {
+    background-position: 0px center;
+  }
+
+  to {
+    background-position: 5px center;
+  }
+}
+
+.ImportModule__upload-button:hover{
+  border: 0px;
+  background: white;
+  color: $labbooks;
+  font-size: 20px;
+  background: white url('../images/icons/import.svg') no-repeat 5px center;
+  background-size: 18px;
+  animation-duration: 0.4s;
+  animation-name: oscilateImportIcon;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.ImportModule__upload-button:disabled,
+.ImportModule__upload-button:disabled:hover{
+  border: 0px;
+  background: white;
+  color: $font-grey;
+  background: white url('../images/icons/import-disabled.svg') no-repeat 0px center;
+  background-size: 18px;
 }

@@ -5,9 +5,20 @@ import React, { Component } from 'react'
 */
 
 export default class LocalLabbookPanel extends Component {
+  _getContainerStatusText(containerStatus, imageStatus){
 
+    let status = (containerStatus === 'RUNNING') ? 'Open' : containerStatus;
+    status = (containerStatus === 'NOT_RUNNING') ? 'Closed' : status;
+    status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
+
+    return status;
+  }
   render(){
-    let edge = this.props.edge
+    let edge = this.props.edge;
+    console.log(edge)
+    let status = 'Closed';//this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
+
+    console.log(status)
     return (
       <div
         key={edge.node.name}
@@ -16,6 +27,11 @@ export default class LocalLabbookPanel extends Component {
 
         <div className="LocalLabbooks__icon-row">
           <div className="LocalLabbooks__labbook-icon"></div>
+          <div className="ContainerStatus flex flex--column">
+            <div className={'ContainerStatus__container-state ' + status}>
+              {status}
+            </div>
+          </div>
         </div>
 
         <div className="LocalLabbooks__text-row">
@@ -36,6 +52,8 @@ export default class LocalLabbookPanel extends Component {
           </div>
 
         </div>
+
+
     </div>)
   }
 }

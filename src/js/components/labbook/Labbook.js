@@ -188,6 +188,7 @@ class Labbook extends Component {
                           labbookId={this.props.labbook.id}
                           setBuildingState={this._setBuildingState}
                           labbookName={labbookName}
+                          containerStatus={this.refs.ContainerStatus}
                           {...this.props}
                         />)
                       }} />
@@ -227,7 +228,7 @@ class Labbook extends Component {
           <div className="Labbook__info">
             <div className="Labbook__info-card">
               <div
-                className="Labbook__user-note" 
+                className="Labbook__user-note"
                 onClick={() => this._showLabbookModal()}>
                  <h5>Add Note</h5>
                  <div className="Labbook__user-note--add"></div>

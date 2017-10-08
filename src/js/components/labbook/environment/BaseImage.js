@@ -42,7 +42,7 @@ class BaseImage extends Component {
   }
   /**
   *  @param {Object}
-  *  hidemodal 
+  *  hidemodal
   */
   _setComponent(comp){
 
@@ -52,6 +52,7 @@ class BaseImage extends Component {
   render(){
     let baseImage = this.props.environment.baseImage;
     let blockClass = this.props.blockClass;
+    console.log(this.props.containerStatus)
     if (baseImage) {
       return(
         <div className={blockClass + '__base-image'}>
@@ -97,7 +98,9 @@ class BaseImage extends Component {
                     <button
                       id="baseImageEdit"
                       onClick={() => this._openModal()}
-                      className={blockClass + '__edit-button'}>
+                      className={blockClass + '__edit-button'}
+                  
+                    >
                       Edit
                     </button>
                 </div>

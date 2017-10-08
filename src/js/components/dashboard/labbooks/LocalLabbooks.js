@@ -98,23 +98,17 @@ class LocalLabbooks extends Component {
               {...this.props}
             />
 
-            <ImportModule
-              ref="ImportModule_localLabooks"
-              closeImport={this._closeImport}
-              isOpen={this.state.importModuleOpen}
-              className={this.state.importModuleOpen ? '' : 'hidden'}
-            />
-
             <div className="LocalLabbooks__title-bar flex flex--row justify--space-between">
               <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
                 Lab Books
                 <div className="LocalLabbooks__title-add"></div>
               </h4>
-              <h6 className="LocalLabbooks__import" onClick={()=> this._openImport()}>
-                Import
-                <div className="LocalLabbooks__import-icon">
-                  </div>
-              </h6>
+              <ImportModule
+                  ref="ImportModule_localLabooks"
+                  closeImport={this._closeImport}
+                  isOpen={this.state.importModuleOpen}
+                  className={this.state.importModuleOpen ? '' : 'hidden'}
+              />
             </div>
             <div className='LocalLabbooks__labbooks flex flex--row flex--wrap justify--left'>
 
@@ -166,6 +160,10 @@ export default createPaginationContainer(
               owner{
                 id
                 username
+              }
+              environment{
+                imageStatus
+                containerSatus
               }
             }
             cursor

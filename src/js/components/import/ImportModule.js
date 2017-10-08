@@ -18,7 +18,7 @@ export default class ImportModule extends Component {
 
     //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
     window.addEventListener('dragenter', function(evt) { //use evt, event is a reserved word in chrome
-      document.getElementById('dropZone').classList.add('ImportCode__drop-area-highlight')
+      document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
         evt.preventDefault();
         evt.dataTransfer.effectAllowed = 'none';
@@ -30,13 +30,13 @@ export default class ImportModule extends Component {
     window.addEventListener('dragleave', function(evt) { //use evt, event is a reserved word in chrome
 
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
-        document.getElementById('dropZone').classList.remove('ImportCode__drop-area-highlight')
+        document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
       }
     }, false);
 
     window.addEventListener('dragover', function(evt) {  //use evt, event is a reserved word in chrome
 
-      document.getElementById('dropZone').classList.add('ImportCode__drop-area-highlight')
+      document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
         evt.preventDefault();
         evt.dataTransfer.effectAllowed = 'none';
@@ -45,7 +45,7 @@ export default class ImportModule extends Component {
     });
 
     window.addEventListener('drop', function(evt) { //use evt, event is a reserved word in chrome
-      document.getElementById('dropZone').classList.remove('ImportCode__drop-area-highlight')
+      document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
 
         evt.preventDefault();
@@ -154,22 +154,25 @@ export default class ImportModule extends Component {
   *   trigger file upload
   */
   _fileUpload(evt){
-     this.props.closeImport();
+
+    document.getElementById('dropZone__filename').classList.add('ImportModule__animation')
+
+    setTimeout(function(){
+      document.getElementById('dropZone__filename').classList.remove('ImportModule__animation')
+      importModule.setState({
+        files:[]
+      })
+    },1000)
   }
   render(){
 
     return(
-      <div className={this.props.isOpen ? 'ImportCode WizardModal' : 'ImportCode hidden'}>
-
-        <div
-          className="ImportCode__close"
-          onClick={()=> this.props.closeImport()}
-        ></div>
+      <div className="ImportModule">
         <label htmlFor="file__input">
             <div
               id="dropZone"
               type="file"
-              className="ImportCode__drop-area flex justify-center"
+              className="ImportModule__drop-area flex justify-center"
               ref={(div)=> this.dropZone = div}
               onDragEnd={(evt)=> this._dragendHandler(evt)}
               onDrop={(evt) => this._dropHandler(evt)}
@@ -195,9 +198,9 @@ export default class ImportModule extends Component {
 
           <button
             id="file__upload"
-            className="ImportCode__upload-button"
+            className="ImportModule__upload-button"
             onClick={(evt)=>{this._fileUpload(evt)}}
-            disabled={this.state.files.length < 1}
+            disabled={(this.state.files.length < 1)}
           >
             Import
           </button>

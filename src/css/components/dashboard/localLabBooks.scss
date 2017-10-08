@@ -135,6 +135,7 @@
 
 .LocalLabbooks__icon-row{
   padding: 20px;
+  @include flex(space-between, row);
 }
 
 .LocalLabbooks__labbook-icon{

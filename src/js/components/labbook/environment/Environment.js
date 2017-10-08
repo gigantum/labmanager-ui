@@ -102,11 +102,13 @@ class Environment extends Component {
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               editVisible={true}
+              containerStatus={this.props.containerStatus}
               setComponent={this._setComponent}
               setBaseImage={this._setBaseImage}
               buildCallback={this._buildCallback}
               blockClass="Environment"
               baseImage={baseImage}
+
              />
 
             <DevEnvironments
