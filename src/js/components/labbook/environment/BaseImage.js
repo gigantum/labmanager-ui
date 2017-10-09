@@ -53,6 +53,7 @@ class BaseImage extends Component {
     let baseImage = this.props.environment.baseImage;
     let blockClass = this.props.blockClass;
     console.log(this.props.containerStatus)
+    let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
     if (baseImage) {
       return(
         <div className={blockClass + '__base-image'}>
@@ -99,7 +100,7 @@ class BaseImage extends Component {
                       id="baseImageEdit"
                       onClick={() => this._openModal()}
                       className={blockClass + '__edit-button'}
-                  
+                      disabled={editDisabled}
                     >
                       Edit
                     </button>

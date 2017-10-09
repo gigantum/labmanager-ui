@@ -162,8 +162,9 @@ export default createPaginationContainer(
                 username
               }
               environment{
+                id
                 imageStatus
-                containerSatus
+                containerStatus
               }
             }
             cursor

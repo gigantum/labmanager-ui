@@ -92,7 +92,7 @@ class Environment extends Component {
     if(this.props.labbook){
       let env = this.props.labbook.environment;
       let baseImage = env.baseImage;
-
+      
       return(
         <div className="Environment">
 
@@ -116,6 +116,7 @@ class Environment extends Component {
               labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
+              containerStatus={this.props.containerStatus}
               editVisible={true}
               buildCallback={this._buildCallback}
               blockClass="Environment"
@@ -126,6 +127,7 @@ class Environment extends Component {
               labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
+              containerStatus={this.props.containerStatus}
               setBaseImage={this._setBaseImage}
               setComponent={this._setComponent}
               buildCallback={this._buildCallback}
@@ -140,6 +142,7 @@ class Environment extends Component {
               editVisible={true}
               labbookName={this.props.labbookName}
               environmentId={this.props.labbook.environment.id}
+              containerStatus={this.props.containerStatus}
             />
 
             <SweetAlert

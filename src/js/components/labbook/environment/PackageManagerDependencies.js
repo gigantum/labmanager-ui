@@ -54,7 +54,7 @@ class PackageManagerDependencies extends Component {
   render(){
 
     let packageManagerDependencies = this.props.environment.packageManagerDependencies;
-
+    let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
     if (packageManagerDependencies) {
       return(
       <div className="Environment_package-manager-dependencies">
@@ -104,7 +104,9 @@ class PackageManagerDependencies extends Component {
           <button
             id="packageManagerEdit"
             className="Environment__edit-button"
-            onClick={() => this._openModal()}>
+            onClick={() => this._openModal()}
+            disabled={editDisabled}
+          >
             Edit
           </button>
         </div>

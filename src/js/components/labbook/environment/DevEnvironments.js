@@ -47,6 +47,7 @@ class DevEnvironments extends Component {
 
     let devEnvs = this.props.environment.devEnvs;
     let blockClass = this.props.blockClass;
+    let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
     if (devEnvs) {
       return(
         <div className={ blockClass + '__development-environment'}>
@@ -98,7 +99,10 @@ class DevEnvironments extends Component {
                 <div className="Environment__edit-container">
                     <button
                       id="devEnvironmentsEdit"
-                      onClick={()=> this._openModal()} className="Environment__edit-button">
+                      onClick={()=> this._openModal()}
+                      className="Environment__edit-button"
+                      disabled={editDisabled}
+                      >
                       Edit
                     </button>
                 </div>

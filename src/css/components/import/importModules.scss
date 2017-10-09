@@ -1,12 +1,15 @@
 .ImportModule{
   padding: 5px ;
-  //@include modal(350px, 600px);
+
   @include flex(space-between, row);
   h6{
-    padding: 0px 5px;
-    font-size: 14px;
     align-self: center;
+
+    padding: 0px 5px;
+
     transition: 1s padding-left;
+
+    font-size: 14px;
   }
 
 }
@@ -15,48 +18,67 @@
 .ImportModule__close{
   @include close();
 }
+
 .ImportModule__drop-area{
-    height: 50px;
-    width: 200px;
-    border: 1px dashed $datasets;
-    word-break: break-all;
-    text-align: center;
-    transition: 0.25s width;
-    margin: 15px;
     overflow: hidden;
+
+    width: 200px;
+    height: 50px;
+    margin: 15px;
+
+    transition: 0.25s width;
+    text-align: center;
+    word-break: break-all;
+
+    border: 1px dashed $datasets;
+
     @include flex(center, row);
 
+}
+.ImportModule__instructions,
+.ImportModule__instructions--error{
+    word-break: keep-all;
+}
+
+.ImportModule__instructions--error{
+    color: red;
 }
 
 
 .ImportModule__drop-area-highlight{
   width: 300px;
-  background: white;
+
   opacity: 1;
   color: $datasets;
   border: 2px dashed $datasets;
+  background: white;
 }
 
 .ImportModule__animation{
-  white-space: nowrap;
-  word-break: keep-all;
-  word-wrap: nowrap;
   padding-left: 1000px !important;
+
+  white-space: nowrap;
+  word-wrap: nowrap;
+  word-break: keep-all;
 
 }
 
 .ImportModule__upload-button{
-  font-size: 20px;
-  text-align: center;
-  width: 100px;
   align-self: center;
-  background-color: white;
-  border: 0px solid white;
-  color: $labbooks;
+
+  width: 100px;
   padding-left: 25px;
-  background: white url('../images/icons/import.svg') no-repeat 0px center;
-  background-size: 18px;
+
   animation-iteration-count:infinite;
+  text-align: center;
+
+  color: $labbooks;
+  border: 0px solid white;
+  background: white url('../images/icons/import.svg') no-repeat 0px center;
+  background-color: white;
+  background-size: 18px;
+
+  font-size: 20px;
 }
 
 @keyframes oscilateImportIcon {
@@ -69,23 +91,27 @@
   }
 }
 
-.ImportModule__upload-button:hover{
+.ImportModule__upload-button:hover,
+.ImportModule__upload-button:focus{
+  animation-name: oscilateImportIcon;
+  animation-duration: 0.4s;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+
+  color: $labbooks;
   border: 0px;
   background: white;
-  color: $labbooks;
-  font-size: 20px;
   background: white url('../images/icons/import.svg') no-repeat 5px center;
   background-size: 18px;
-  animation-duration: 0.4s;
-  animation-name: oscilateImportIcon;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+
+  font-size: 20px;
 }
+
 .ImportModule__upload-button:disabled,
 .ImportModule__upload-button:disabled:hover{
+  color: $font-grey;
   border: 0px;
   background: white;
-  color: $font-grey;
   background: white url('../images/icons/import-disabled.svg') no-repeat 0px center;
   background-size: 18px;
 }

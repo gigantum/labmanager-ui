@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 
 export default class LocalLabbookPanel extends Component {
   _getContainerStatusText(containerStatus, imageStatus){
-
+    console.log(containerStatus, imageStatus)
     let status = (containerStatus === 'RUNNING') ? 'Open' : containerStatus;
     status = (containerStatus === 'NOT_RUNNING') ? 'Closed' : status;
     status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
@@ -15,10 +15,8 @@ export default class LocalLabbookPanel extends Component {
   }
   render(){
     let edge = this.props.edge;
-    console.log(edge)
-    let status = 'Closed';//this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
+    let status = this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
 
-    console.log(status)
     return (
       <div
         key={edge.node.name}

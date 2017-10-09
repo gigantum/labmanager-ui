@@ -13,7 +13,7 @@ function fetchQuery(
   uploadables
 ) {
   var queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
-  console.log(uploadables)
+
   return fetch(process.env.GIGANTUM_API, {
     method: 'POST',
     headers: {

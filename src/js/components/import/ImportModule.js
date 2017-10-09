@@ -10,7 +10,8 @@ export default class ImportModule extends Component {
     this.state = {
       'show': false,
       'message': '',
-      'files': []
+      'files': [],
+      'error': false
     }
 
     importModule = this;
@@ -63,24 +64,35 @@ export default class ImportModule extends Component {
 
       let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
 
-      let fileReader = new FileReader();
+      if(file.type !== 'application/zip'){
 
-      fileReader.onloadend = function (e) {
-        var arrayBuffer = e.target.result;
-        let blob = new Blob([new Uint8Array(arrayBuffer)]);
+        this.setState({error: true})
 
-        importModule.setState(
-          {files: [
-            {
-              blob: blob,
-              file: file,
-              filename: file.name}
-            ]
-          }
-        )
+        setTimeout(function(){
+          importModule.setState({error: false})
+        },5000)
 
-      };
-      fileReader.readAsArrayBuffer(file);
+      }else{
+        this.setState({error: false})
+        let fileReader = new FileReader();
+
+        fileReader.onloadend = function (e) {
+          var arrayBuffer = e.target.result;
+          let blob = new Blob([new Uint8Array(arrayBuffer)]);
+
+          importModule.setState(
+            {files: [
+              {
+                blob: blob,
+                file: file,
+                filename: file.name}
+              ]
+            }
+          )
+
+        };
+        fileReader.readAsArrayBuffer(file);
+      }
     }
   }
 
@@ -162,7 +174,15 @@ export default class ImportModule extends Component {
       importModule.setState({
         files:[]
       })
-    },1000)
+    }, 1000)
+  }
+
+  /**
+  *  @param {}
+  *  @return {string} returns text to be rendered
+  */
+  _getImportDescriptionText(){
+    return this.state.error ? 'File must be .zip' : 'Drag & Drop files here, or click to select.'
   }
   render(){
 
@@ -179,7 +199,10 @@ export default class ImportModule extends Component {
               onDragOver={(evt)=> this._dragoverHandler(evt)}>
                 {
                 (this.state.files.length < 1) &&
-                  <h6 id="dropZone__helper">Drag & Drop files here, or click to select.</h6>
+                  <h6 className={this.state.error ? 'ImportModule__instructions--error' : 'ImportModule__instructions'}
+                      id="dropZone__helper">
+                      {this._getImportDescriptionText()}
+                  </h6>
                 }
                 {
                   (this.state.files.length > 0) &&
