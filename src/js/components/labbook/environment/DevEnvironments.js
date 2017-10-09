@@ -71,16 +71,34 @@ class DevEnvironments extends Component {
               toggleDisabledContinue={() => function(){}}
             />
           </div>
+          <div className={blockClass + '__header-container'}>
+              <h4 className={blockClass + '__header'}>Development Environments</h4>
+              {
+                  (this.props.editVisible) &&
+                  <div className="Environment__edit-container">
+                      <button
+                        id="devEnvironmentsEdit"
+                        onClick={()=> this._openModal()}
+                        className="Environment__edit-button"
+                        disabled={editDisabled}
+                        >
 
-            <h4 className={blockClass + '__header'}>Development Environments</h4>
+                      </button>
+                  </div>
+              }
+            </div>
+
+
             <div className={blockClass + '__info flex justify--left flex--wrap'}>
             {
               devEnvs.edges.map((edge, index) => {
               return(
-                <div key={this.props.labbookName + edge.node.id} className={blockClass + '__development-environment-item'}>
+                <div
+                  key={this.props.labbookName + edge.node.id}
+                  className={blockClass + '__development-environment-item'}>
 
                   <div className={blockClass + '__card flex justify--space-around'}>
-                    <div className="flex-1-0-auto flex flex--wrap flex--column justify-center">
+                    <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
                       <img height="50" width="50" src={edge.node.info.icon} alt={edge.node.info.humanName} />
                     </div>
                     <div className={blockClass + '__card-text flex-1-0-auto'}>
@@ -94,19 +112,7 @@ class DevEnvironments extends Component {
               })
 
             }
-            {
-                (this.props.editVisible) &&
-                <div className="Environment__edit-container">
-                    <button
-                      id="devEnvironmentsEdit"
-                      onClick={()=> this._openModal()}
-                      className="Environment__edit-button"
-                      disabled={editDisabled}
-                      >
-                      Edit
-                    </button>
-                </div>
-            }
+
           </div>
 
         </div>

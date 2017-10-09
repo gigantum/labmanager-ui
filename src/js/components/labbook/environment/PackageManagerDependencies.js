@@ -55,6 +55,8 @@ class PackageManagerDependencies extends Component {
 
     let packageManagerDependencies = this.props.environment.packageManagerDependencies;
     let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
+    let blockClass = this.props.blockClass;
+
     if (packageManagerDependencies) {
       return(
       <div className="Environment_package-manager-dependencies">
@@ -77,7 +79,20 @@ class PackageManagerDependencies extends Component {
             toggleDisabledContinue={() => function(){}}
           />
         </div>
-        <h4 className="Environment__header">Package Dependencies</h4>
+
+        <div className={blockClass + '__header-container'}>
+          <h4 className="Environment__header">Package Dependencies</h4>
+          <div className="Environment__edit-container">
+            <button
+              id="packageManagerEdit"
+              className="Environment__edit-button"
+              onClick={() => this._openModal()}
+              disabled={editDisabled}
+            >
+            </button>
+          </div>
+        </div>
+
         <div className="Environment__info flex flex--row justify--left">
           <ul className="flex flex--row justify--left flex--wrap">
           {
@@ -100,16 +115,7 @@ class PackageManagerDependencies extends Component {
           }
         </ul>
 
-        <div className="Environment__edit-container">
-          <button
-            id="packageManagerEdit"
-            className="Environment__edit-button"
-            onClick={() => this._openModal()}
-            disabled={editDisabled}
-          >
-            Edit
-          </button>
-        </div>
+
       </div>
     </div>
 

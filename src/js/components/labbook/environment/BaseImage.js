@@ -78,21 +78,8 @@ class BaseImage extends Component {
                   toggleDisabledContinue={() => function(){}}/>
 
             </div>
-            <h4 className={blockClass + '__header'}>Base Image</h4>
-
-            <div className={blockClass + '__info flex justify--left'}>
-
-              <div className={ blockClass + '__card flex justify--space-around'}>
-                <div className="flex-1-0-auto flex flex--column justify-center">
-                  <img height="50" width="50" src={baseImage.info.icon} alt={baseImage.info.humanName} />
-                </div>
-
-                <div className={blockClass + '__card-text flex-1-0-auto'}>
-                  <p className={blockClass + '__human-name'}>{baseImage.info.humanName}</p>
-                  <p>{baseImage.info.description}</p>
-                </div>
-              </div>
-
+            <div className={blockClass + '__header-container' }>
+              <h4 className={blockClass + '__header'}>Base Image</h4>
               {
                 this._editVisible() &&
                 <div className={blockClass + '__edit-container'}>
@@ -102,10 +89,24 @@ class BaseImage extends Component {
                       className={blockClass + '__edit-button'}
                       disabled={editDisabled}
                     >
-                      Edit
                     </button>
                 </div>
               }
+            </div>
+            <div className={blockClass + '__info flex justify--left'}>
+
+              <div className={ blockClass + '__card flex justify--space-around'}>
+                <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
+                  <img height="50" width="50" src={baseImage.info.icon} alt={baseImage.info.humanName} />
+                </div>
+
+                <div className={blockClass + '__card-text flex-1-0-auto'}>
+                  <p className={blockClass + '__human-name'}>{baseImage.info.humanName}</p>
+                  <p>{baseImage.info.description}</p>
+                </div>
+              </div>
+
+
           </div>
         </div>
       )

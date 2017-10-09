@@ -92,7 +92,7 @@ class Environment extends Component {
     if(this.props.labbook){
       let env = this.props.labbook.environment;
       let baseImage = env.baseImage;
-      
+
       return(
         <div className="Environment">
 
@@ -132,6 +132,7 @@ class Environment extends Component {
               setComponent={this._setComponent}
               buildCallback={this._buildCallback}
               baseImage={baseImage}
+              blockClass="Environment"
             />
 
             <CustomDependencies

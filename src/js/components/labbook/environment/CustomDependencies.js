@@ -68,9 +68,23 @@ class CustomDependencies extends Component {
                 toggleDisabledContinue={() => function(){}}
               />
             </div>
+            <div className={blockClass + '__header-container'}>
+              <h4 className={blockClass + '__header'}>Custom Dependencies</h4>
+              {
+                  (this.props.editVisible) &&
 
-            <h4 className={blockClass + '__header'}>Custom Dependencies</h4>
+                  <div className={'Environment__edit-container'}>
+                      <button
+                        id="customDependenciesEdit"
+                        onClick={() => this._openModal()}
+                        className="Environment__edit-button"
+                        disabled={editDisabled}
+                        >
+                      </button>
+                  </div>
 
+              }
+            </div>
             <div className={blockClass + '__info flex justify--left'}>
             {
               customDependencies.edges.map((edge, index) => {
@@ -81,7 +95,7 @@ class CustomDependencies extends Component {
 
                     <div className={blockClass + '__card flex justify--space-around'}>
 
-                        <div className="flex-1-0-auto flex flex--column justify-center">
+                        <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
                           <img
                             height="50"
                             width="50"
@@ -100,21 +114,7 @@ class CustomDependencies extends Component {
               })
 
             }
-            {
-                (this.props.editVisible) &&
 
-                <div className={'Environment__edit-container'}>
-                    <button
-                      id="customDependenciesEdit"
-                      onClick={() => this._openModal()}
-                      className="Environment__edit-button"
-                      disabled={editDisabled}
-                      >
-                      Edit
-                    </button>
-                </div>
-
-            }
           </div>
         </div>
 
