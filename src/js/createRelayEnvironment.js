@@ -27,7 +27,14 @@ function fetchQuery(
   }).then(response => {
     return response.json()
   }).catch(error => {
-    console.error(error)
+
+    if(error.message === 'Failed to fetch'){
+      let apiDown = document.createElement('div')
+      apiDown.innerHTML = 'Api failed to respond';
+      apiDown.classList.add('ApiDown')
+      document.getElementById('root').appendChild(apiDown)
+    }
+    return error
   });
 
 }
