@@ -9,8 +9,9 @@ const {
 function fetchQuery(
   operation,
   variables,
+  cacheConfig,
+  uploadables
 ) {
-
   var queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
 
   return fetch(process.env.GIGANTUM_API, {
@@ -24,12 +25,18 @@ function fetchQuery(
       variables
     }),
   }).then(response => {
-  
     return response.json()
   }).catch(error => {
 
-    console.error(error)
-  })
+    if(error.message === 'Failed to fetch'){
+      let apiDown = document.createElement('div')
+      apiDown.innerHTML = 'Api failed to respond';
+      apiDown.classList.add('ApiDown')
+      document.getElementById('root').appendChild(apiDown)
+    }
+    return error
+  });
+
 }
 
 const network = Network.create(fetchQuery);

@@ -5,8 +5,8 @@ export default class SuccessMessage extends React.Component {
     super(props)
     this.continueSave = this.continueSave.bind(this);
   }
-  /*
-    function()
+  /**
+    @param {}
     gets labbook name from props and sends user to labbook view
   */
   continueSave(){

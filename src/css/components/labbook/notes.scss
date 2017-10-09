@@ -13,6 +13,30 @@
   color: $charcoal;
 }
 
+
+.NotesCard:before, .Notes__date-tab:before{
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 25px;
+  border: 4px solid $font-grey;
+  border-width: 0 0 0 4px;
+  width: 1px;
+  height: 15px;
+}
+
+
+.Notes__date-tab:before{
+  top: 76px;
+  left: 35px;
+}
+
+.NotesCard:nth-last-child(1):before{
+  display: none !important;
+}
+
 .NotesCard__title{
 
   h6{
@@ -136,6 +160,8 @@
 }
 
 .Notes__date-tab{
+    position: relative;
+
     width: 80px;
     height: 80px;
 

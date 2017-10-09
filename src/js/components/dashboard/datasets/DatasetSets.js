@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import {
-  QueryRenderer,
-  graphql
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
+// import {
+//   QueryRenderer,
+//   graphql
+// } from 'react-relay'
+// import environment from 'JS/createRelayEnvironment'
 
 
 

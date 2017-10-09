@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 
 export default class Header extends Component {
-
+  /**
+    @param {}
+    logout through Auth0
+  */
   logout() {
     this.props.auth.logout();
   }

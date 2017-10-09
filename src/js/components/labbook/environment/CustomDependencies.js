@@ -14,9 +14,9 @@ class CustomDependencies extends Component {
 
     addCustomDependencies = this;
   }
-  /*
-    function()
-    open modal view
+  /**
+  *  @param {none}
+  *  open modal window
   */
   _openModal(){
       this.setState({'modal_visible': true})
@@ -24,9 +24,9 @@ class CustomDependencies extends Component {
         document.getElementById('modal__cover').classList.remove('hidden')
       }
   }
-  /*
-    function()
-    hide modal view
+  /**
+  *  @param {none}
+  *   hide modal window
   */
   _hideModal(){
       this.setState({'modal_visible': false})
@@ -34,7 +34,10 @@ class CustomDependencies extends Component {
         document.getElementById('modal__cover').classList.add('hidden')
       }
   }
-
+  /**
+  *  @param {comp}
+  *   hide modal window
+  */
   _setComponent(comp){
 
     addCustomDependencies._hideModal();
@@ -43,6 +46,7 @@ class CustomDependencies extends Component {
 
     let customDependencies = this.props.environment.customDependencies;
     let blockClass = this.props.blockClass;
+    let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
     if (customDependencies) {
       return(
         <div className={blockClass + '__dependencies'}>
@@ -64,9 +68,23 @@ class CustomDependencies extends Component {
                 toggleDisabledContinue={() => function(){}}
               />
             </div>
+            <div className={blockClass + '__header-container'}>
+              <h4 className={blockClass + '__header'}>Custom Dependencies</h4>
+              {
+                  (this.props.editVisible) &&
 
-            <h4 className={blockClass + '__header'}>Custom Dependencies</h4>
+                  <div className={'Environment__edit-container'}>
+                      <button
+                        id="customDependenciesEdit"
+                        onClick={() => this._openModal()}
+                        className="Environment__edit-button"
+                        disabled={editDisabled}
+                        >
+                      </button>
+                  </div>
 
+              }
+            </div>
             <div className={blockClass + '__info flex justify--left'}>
             {
               customDependencies.edges.map((edge, index) => {
@@ -77,7 +95,7 @@ class CustomDependencies extends Component {
 
                     <div className={blockClass + '__card flex justify--space-around'}>
 
-                        <div className="flex-1-0-auto flex flex--column justify-center">
+                        <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
                           <img
                             height="50"
                             width="50"
@@ -96,18 +114,7 @@ class CustomDependencies extends Component {
               })
 
             }
-            {
-                (this.props.editVisible) &&
 
-                <div className={'Environment__edit-container'}>
-                    <button
-                      id="customDependenciesEdit"
-                      onClick={() => this._openModal()} className="Environment__edit-button">
-                      Edit
-                    </button>
-                </div>
-
-            }
           </div>
         </div>
 
@@ -166,9 +173,11 @@ export default createPaginationContainer(
         }
       }
   }`
+
 },
 {
     direction: 'forward',
+    metadata: {field: 'customDependencies'},
     getConnectionFromProps(props) {
         return props.labbook && props.labbook.environment;
     },

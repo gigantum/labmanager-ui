@@ -1,5 +1,5 @@
 # source: http://localhost:5000/labbook/
-# timestamp: Fri Sep 15 2017 11:45:19 GMT-0400 (EDT)
+# timestamp: Sun Oct 08 2017 18:27:29 GMT+0000 (UTC)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -14,6 +14,7 @@ input AddEnvironmentComponentInput {
 
 # Mutation to add a new environment component to a LabBook
 type AddEnvironmentComponentPayload {
+  environmentComponent: EnvironmentComponent
   clientMutationId: String
 }
 
@@ -28,6 +29,7 @@ input AddEnvironmentPackageInput {
 
 # Mutation to add a new package to labbook. 
 type AddEnvironmentPackagePayload {
+  environmentPackage: PackageManager
   clientMutationId: String
 }
 
@@ -295,6 +297,7 @@ enum ImageStatus {
   BUILD_IN_PROGRESS
   EXISTS
   STALE
+  BUILD_FAILED
 }
 
 # A query to get the status of a background task launched with the Dispatcher
@@ -353,7 +356,7 @@ type LabbookConnection {
 
 type LabbookEdge {
   # The item at the end of the edge
-  node: LabbookSummary
+  node: Labbook
 
   # A cursor for use in pagination
   cursor: String!
@@ -379,17 +382,6 @@ type LabbookRefEdge {
 
   # A cursor for use in pagination
   cursor: String!
-}
-
-# A type representing a summary of a LabBook used for listing LabBooks
-#
-# LabBooks are uniquely identified by both the "owner" and the "name" of the LabBook
-type LabbookSummary implements Node, GitRepository {
-  # The ID of the object.
-  id: ID!
-  name: String
-  description: String
-  owner: Owner
 }
 
 type Mutation {
@@ -535,7 +527,7 @@ type Query {
 }
 
 input StartContainerInput {
-  owner: String
+  owner: String!
   labbookName: String!
   clientMutationId: String
 }

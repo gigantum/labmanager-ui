@@ -1,9 +1,22 @@
 import React, { Component } from 'react'
 
-export default class LocalLabbookPanel extends Component {
+/**
+*  labbook panel is to only render the edge passed to it
+*/
 
+export default class LocalLabbookPanel extends Component {
+  _getContainerStatusText(containerStatus, imageStatus){
+    console.log(containerStatus, imageStatus)
+    let status = (containerStatus === 'RUNNING') ? 'Open' : containerStatus;
+    status = (containerStatus === 'NOT_RUNNING') ? 'Closed' : status;
+    status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
+
+    return status;
+  }
   render(){
-    let edge = this.props.edge
+    let edge = this.props.edge;
+    let status = this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
+
     return (
       <div
         key={edge.node.name}
@@ -12,6 +25,11 @@ export default class LocalLabbookPanel extends Component {
 
         <div className="LocalLabbooks__icon-row">
           <div className="LocalLabbooks__labbook-icon"></div>
+          <div className="ContainerStatus flex flex--column">
+            <div className={'ContainerStatus__container-state ' + status}>
+              {status}
+            </div>
+          </div>
         </div>
 
         <div className="LocalLabbooks__text-row">
@@ -32,6 +50,8 @@ export default class LocalLabbookPanel extends Component {
           </div>
 
         </div>
+
+
     </div>)
   }
 }

@@ -24,6 +24,165 @@ exports[`Test Environment rendering 1`] = `
         <p>
            Base Image 
         </p>
+        <div
+          className="Loader"
+        >
+          <svg
+            id="circle-middle"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#EDEDED"
+              r="6"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+        </div>
       </div>
     </div>
     <h4
@@ -92,6 +251,165 @@ exports[`Test Environment rendering 1`] = `
         <p>
            Dev Environment
         </p>
+        <div
+          className="Loader"
+        >
+          <svg
+            id="circle-middle"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#EDEDED"
+              r="6"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+        </div>
       </div>
     </div>
     <h4
@@ -310,6 +628,165 @@ exports[`Test Environment rendering 1`] = `
         <p>
            Select Custom Dependencies 
         </p>
+        <div
+          className="Loader"
+        >
+          <svg
+            id="circle-middle"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#EDEDED"
+              r="6"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+        </div>
       </div>
     </div>
     <h4

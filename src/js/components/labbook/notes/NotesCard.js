@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import dateformat from 'dateformat'
 import ReactMarkdown from 'react-markdown'
+import SimpleMDE from 'simplemde'
 
 export default class NotesCard extends Component {
   constructor(props){
@@ -11,22 +12,32 @@ export default class NotesCard extends Component {
   }
 
 
-  /*
-    function(): reverse state of showExtraInfo
+  /**
+  *   @param {}
+  *  reverse state of showExtraInfo
   */
   _toggleExtraInfo(){
     this.setState({showExtraInfo: !this.state.showExtraInfo})
   }
-  /*
-    function(timestamp)
+  /**
+    @param {string} timestamp
     if input is undefined. current time of day is used
     inputs a time stamp and return the time of day HH:MM am/pm
-    return string
+    @return {string}
   */
   _getTimeOfDay(timestamp){
 
     let time = (timestamp !== undefined) ? new Date(timestamp) : new Date();
     return ((time.getHours()%12 === 0) ? 12 : time.getHours()%12) + ':' + ((time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes()) + (time.getHours() > 12 ? 'pm' : 'am');
+  }
+  /**
+    @param {string} freeText
+    use SimpleMDE to get html of markdown
+    @return {html}
+  */
+  _getMarkdown(freeText){
+    var SimepleMarkdown = new SimpleMDE();
+
   }
 
   render(){
@@ -40,9 +51,8 @@ export default class NotesCard extends Component {
               <p className="NotesCard__time">
                 {this._getTimeOfDay(this.props.edge.node.timestamp)}
               </p>
-              <p className="NotesCard__commit-message">
-                <h6>{this.props.edge.node.message}</h6>
-              </p>
+              <h6 className="NotesCard__commit-message">{this.props.edge.node.message}</h6>
+
 
               <button className={!this.state.showExtraInfo ? "NotesCard__toggle-button closed flex justify--space-around": "NotesCard__toggle-button open flex justify--space-around"}
               onClick={() => this._toggleExtraInfo()}
@@ -57,8 +67,8 @@ export default class NotesCard extends Component {
 
           {
             (this.props.edge.node.freeText !== "") &&
-            <div className="NotesCard__markdown-container">
-               <ReactMarkdown source={this.props.edge.node.freeText} />
+            <div id={this.props.edge.node.commit} className="NotesCard__markdown-container">
+               {this.props.edge.node.freeText}
             </div>}
             <div className="NotesCard__row flex justify--space-around flex--row">
               <p>

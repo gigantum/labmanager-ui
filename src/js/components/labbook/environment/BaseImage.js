@@ -13,19 +13,26 @@ class BaseImage extends Component {
     baseImage = this;
   }
 
+  /**
+  *  @param {none}
+  *  check if edit is enabled
+  */
   _editVisible(){
     return this.props.editVisible
   }
-
+  /**
+  *  @param {none}
+  *   open modal window
+  */
   _openModal(){
       this.setState({'modal_visible': true})
       if(document.getElementById('modal__cover')){
         document.getElementById('modal__cover').classList.remove('hidden')
       }
   }
-  /*
-    function()
-    hide modal view
+  /**
+  *  @param {none}
+  *   hide modal window
   */
   _hideModal(){
     this.setState({'modal_visible': false})
@@ -33,7 +40,10 @@ class BaseImage extends Component {
       document.getElementById('modal__cover').classList.add('hidden')
     }
   }
-
+  /**
+  *  @param {Object}
+  *  hidemodal
+  */
   _setComponent(comp){
 
     baseImage._hideModal();
@@ -42,6 +52,8 @@ class BaseImage extends Component {
   render(){
     let baseImage = this.props.environment.baseImage;
     let blockClass = this.props.blockClass;
+    console.log(this.props.containerStatus)
+    let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
     if (baseImage) {
       return(
         <div className={blockClass + '__base-image'}>
@@ -66,12 +78,25 @@ class BaseImage extends Component {
                   toggleDisabledContinue={() => function(){}}/>
 
             </div>
-            <h4 className={blockClass + '__header'}>Base Image</h4>
-
+            <div className={blockClass + '__header-container' }>
+              <h4 className={blockClass + '__header'}>Base Image</h4>
+              {
+                this._editVisible() &&
+                <div className={blockClass + '__edit-container'}>
+                    <button
+                      id="baseImageEdit"
+                      onClick={() => this._openModal()}
+                      className={blockClass + '__edit-button'}
+                      disabled={editDisabled}
+                    >
+                    </button>
+                </div>
+              }
+            </div>
             <div className={blockClass + '__info flex justify--left'}>
 
               <div className={ blockClass + '__card flex justify--space-around'}>
-                <div className="flex-1-0-auto flex flex--column justify-center">
+                <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
                   <img height="50" width="50" src={baseImage.info.icon} alt={baseImage.info.humanName} />
                 </div>
 
@@ -81,17 +106,7 @@ class BaseImage extends Component {
                 </div>
               </div>
 
-              {
-                this._editVisible() &&
-                <div className={blockClass + '__edit-container'}>
-                    <button
-                      id="baseImageEdit"
-                      onClick={() => this._openModal()}
-                      className={blockClass + '__edit-button'}>
-                      Edit
-                    </button>
-                </div>
-              }
+
           </div>
         </div>
       )

@@ -68,9 +68,10 @@ export default class AddCustomDependencies extends React.Component {
     this.continueSave = this.continueSave.bind(this)
     addCustomDependencies = this;
   }
-  /*
-    click handle
-    function(object): takes a base image edge
+
+  /**
+    @param {Object} edge
+    takes a base image edge
     sets componest state for selectedCustomDependencyId and selectedCustomDependency
   */
   _selectCustomDependency(edge){
@@ -89,8 +90,8 @@ export default class AddCustomDependencies extends React.Component {
     this.props.toggleDisabledContinue(false);
   }
 
-  /*
-    function()
+  /**
+    @param {}
     gets current selectedCustomDependency and passes variables to AddEnvironmentComponentMutation
     callback triggers and modal state is changed to  next window
   */
@@ -145,6 +146,10 @@ export default class AddCustomDependencies extends React.Component {
     })
   }
 
+  /**
+    @param {}
+    @return {Object} environmentView object
+  */
   _environmentView(){
     return this.props.environmentView
   }
@@ -163,7 +168,7 @@ export default class AddCustomDependencies extends React.Component {
           query={AddCustomDependenciesQuery}
           environment={environment}
           render={({error, props}) =>{
-  
+
               if(error){
 
                 return(<div>{error.message}</div>)

@@ -46,15 +46,26 @@ export default class ContainerStatus extends Component {
     tempStatus = "Closed"
     containerStatus = this;
   }
-
+  /**
+  *  @param {}
+  *  set containerStatus secondsElapsed state by iterating
+  *  @return {string}
+  */
   tick(){
     containerStatus.setState({secondsElapsed: containerStatus.state.secondsElapsed + 1});
   }
-
+  /**
+  *  @param {}
+  *  set tick interval
+  *  @return {string}
+  */
   componentDidMount(){
     this.interval = setInterval(this.tick, 2000);
   }
-
+  /**
+  *  @param {string} nextProps
+  *  update container state before rendering new props
+  */
   componentWillReceiveProps(nextProps) {
 
     this.setState({
@@ -62,13 +73,20 @@ export default class ContainerStatus extends Component {
       'imageStatus': nextProps.imageStatus
     })
   }
-
+  /**
+  *  @param {}
+  *  clear interval to stop polling and clean up garbage
+  */
   componentWillUnmount() {
     //memory clean up
     clearInterval(this.interval);
   }
 
-
+  /**
+    @param {}
+    set containerStatus secondsElapsed state by iterating
+    @return {string}
+  */
   _checkJupyterStatus(){
     //update this when juphyter can accept cors
 
@@ -76,8 +94,11 @@ export default class ContainerStatus extends Component {
       window.open('http://localhost:8888', '_blank')
     },5000)
   }
-
-
+  /**
+    @param {string, string} containerStatus,imageStatus -
+    get status by mixing containrSatus imagesStatus and state.status
+    @return {string}
+  */
   _getContainerStatusText(containerStatus, imageStatus){
 
     let status = (containerStatus === 'RUNNING') ? 'Open' : containerStatus;
@@ -91,7 +112,10 @@ export default class ContainerStatus extends Component {
 
     return status;
   }
-
+  /**
+    @param {object, string} event,status -
+    trigger mutatuion to stop or start container depdending on the state
+  */
   _openCloseContainer(evt, status){
 
       if(status === 'Open'){
@@ -152,15 +176,18 @@ export default class ContainerStatus extends Component {
             console.error(error)
             return <div>{error.message}</div>
           }else if(props){
+
             let status = this._getContainerStatusText(props.labbook.environment.containerStatus, props.labbook.environment.imageStatus)
             return(
               <div className="ContainerStatus flex flex--column">
-                <div onClick={(evt) => this._openCloseContainer(evt, status)} className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
+                <div onClick={(evt) => this._openCloseContainer(evt, status)}
+                  className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
                   {this.props.isBuilding ? 'Building' : status}
                 </div>
               </div>)
           } else{
             let status = this._getContainerStatusText(this.state.containerStatus, this.state.imageStatus)
+
             return (
               <div className="ContainerStatus flex flex--column" onClick={(evt) => this._openCloseContainer(evt, status)} key="tempStatus" >
                 <div className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>

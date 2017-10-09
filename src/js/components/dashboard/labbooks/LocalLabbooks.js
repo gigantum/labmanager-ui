@@ -7,6 +7,7 @@ import {
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
 import LocalLabbookPanel from 'Components/dashboard/labbooks/LocalLabbookPanel'
+import ImportModule from 'Components/import/ImportModule'
 
 let localLabbooks;
 
@@ -16,24 +17,30 @@ class LocalLabbooks extends Component {
 
   constructor(props){
   	super(props);
+
+    this.state={
+      importModuleOpen: false
+    }
   	localLabbooks = this;
   }
 
+  /**
+  * fires when a componet mounts
+  * adds a scoll listener to trigger pagination
+  */
   componentDidMount() {
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
-      let distanceY = window.innerHeight + document.documentElement.scrollTop + 100,
-          expandOn = root.offsetHeight,
-          footer = document.getElementById("footer");
-
+      let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
+          expandOn = root.offsetHeight;
       if ((distanceY > expandOn) && !isLoadingMore && localLabbooks.props.feed.localLabbooks.pageInfo.hasNextPage) {
           localLabbooks._loadMore(e);
       }
     });
   }
-  /*
-    function(string) inputs a labbook name
-    routes to that labbook
+  /**
+  *  @param {string} labbookName - inputs a labbook name
+  *  routes to that labbook
   */
   _goToLabbook(labbookName){
     localLabbooks.setState({'labbookName': labbookName})
@@ -41,8 +48,9 @@ class LocalLabbooks extends Component {
     localLabbooks.props.history.replace(`/labbooks/${labbookName}`)
   }
 
-  /*
-    loads
+  /**
+  *  @param {event} e
+  *  loads more labbooks using the relay pagination container
   */
   _loadMore(e){
     isLoadingMore = true
@@ -52,13 +60,31 @@ class LocalLabbooks extends Component {
     this.props.relay.loadMore(
       10, // Fetch the next 10 feed items
       (ev) => {
-
         isLoadingMore = false;
       }
     );
   }
 
-
+  /**
+  *  @param {}
+  *  opens import modal
+  */
+  _openImport(){
+    if(document.getElementById('modal__cover')){
+      document.getElementById('modal__cover').classList.remove('hidden')
+    }
+    this.setState({importModuleOpen: true})
+  }
+  /**
+  *  @param {}
+  *  closes import modal
+  */
+  _closeImport(){
+    if(document.getElementById('modal__cover')){
+      document.getElementById('modal__cover').classList.add('hidden')
+    }
+    localLabbooks.setState({importModuleOpen: false})
+  }
 
   render(){
 
@@ -71,7 +97,19 @@ class LocalLabbooks extends Component {
               history={this.props.history}
               {...this.props}
             />
-            <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >Lab Books <div className="LocalLabbooks__title-add"></div></h4>
+
+            <div className="LocalLabbooks__title-bar flex flex--row justify--space-between">
+              <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
+                Lab Books
+                <div className="LocalLabbooks__title-add"></div>
+              </h4>
+              <ImportModule
+                  ref="ImportModule_localLabooks"
+                  closeImport={this._closeImport}
+                  isOpen={this.state.importModuleOpen}
+                  className={this.state.importModuleOpen ? '' : 'hidden'}
+              />
+            </div>
             <div className='LocalLabbooks__labbooks flex flex--row flex--wrap justify--left'>
 
               {
@@ -79,7 +117,11 @@ class LocalLabbooks extends Component {
                 this.props.feed.localLabbooks.edges.map((edge) => {
 
                   return (
-                    <LocalLabbookPanel key={edge.node.name} className="LocalLabbooks__panel" edge={edge} goToLabbook={this._goToLabbook}/>
+                    <LocalLabbookPanel
+                      key={edge.node.name}
+                      className="LocalLabbooks__panel"
+                      edge={edge}
+                      goToLabbook={this._goToLabbook}/>
                   )
                 })
               }
@@ -88,7 +130,9 @@ class LocalLabbooks extends Component {
               key={'addLabbook'}
               onClick={()=> this.refs.wizardModal._showModal()}
               className='LocalLabbooks__panel LocalLabbooks__panel--add flex flex--row justify--center'>
-              <div className="LocalLabbooks__labbook-icon">
+              <div
+                onClick={()=> this._openImport()}
+                className="LocalLabbooks__labbook-icon">
                   <div className="LocalLabbooks__title-add"></div>
               </div>
 
@@ -116,6 +160,11 @@ export default createPaginationContainer(
               owner{
                 id
                 username
+              }
+              environment{
+                id
+                imageStatus
+                containerStatus
               }
             }
             cursor

@@ -50,7 +50,7 @@ test('Expand/collapase notes card', () =>{
 
 describe('Test timestamp function', () =>{
 
-  let notesCard = new NotesCard()
+  let notesCard = new NotesCard({edge:edge})
 
   let timeOfDay = notesCard._getTimeOfDay(edge.node.timestamp)
 

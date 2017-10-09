@@ -2,8 +2,8 @@ import {
   commitMutation,
   graphql,
 } from 'react-relay'
-import environment from '../createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
+import environment from 'JS/createRelayEnvironment'
+//import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
   mutation AddEnvironmentComponentMutation($input: AddEnvironmentComponentInput!){
@@ -13,21 +13,21 @@ const mutation = graphql`
   }
 `;
 
-let tempID = 0;
-
-function sharedUpdater(store, id, newEdge, connection) {
-  const environmentProxy = store.get(id);
-
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    environmentProxy,
-    connection
-  );
-
-  if(conn){
-    RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
-  }
-
-}
+// let tempID = 0;
+//
+// function sharedUpdater(store, id, newEdge, connection) {
+//   const environmentProxy = store.get(id);
+//
+//   const conn = RelayRuntime.ConnectionHandler.getConnection(
+//     environmentProxy,
+//     connection
+//   );
+//
+//   if(conn){
+//     RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
+//   }
+//
+// }
 
 
 export default function AddEnvironmentComponentMutation(

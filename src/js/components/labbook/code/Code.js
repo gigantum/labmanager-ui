@@ -15,8 +15,14 @@ export default class Code extends Component {
     }
 
     code = this;
+
   }
 
+  /**
+  *  @param {}
+  *  start contianer muations
+  *  redirect user to jupyter in callback
+  */
   _openJupyter(){
 
     StartContainerMutation(
@@ -50,6 +56,7 @@ export default class Code extends Component {
           target="_blank">
             Open Jupyter
           </button>
+
 
           <SweetAlert
             className="sa-error-container"

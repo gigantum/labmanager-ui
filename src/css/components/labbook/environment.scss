@@ -4,10 +4,28 @@
   width: 100%;
 }
 
+.Environment__header-container{
+  @include flex(left, row)
+}
+
 .Environment__header{
   font-weight: light;
   color: $font-grey;
   font-size: 22px;
+}
+
+.Environment__edit-button,
+.Environment__edit-button:hover,
+.Environment__edit-button:focus{
+  font-weight: light;
+  color: $font-grey;
+  font-size: 14px;
+  height: 30px;
+  width: 30px;
+  padding: 5px;
+  border: 0px;
+  background: url('./../images/icons/edit.svg') no-repeat center center;
+  background-size: 22px;
 }
 
 .Environment__card{
@@ -17,6 +35,13 @@
   border-radius: 5px;
   color: $charcoal;
   width: 330px;
+}
+
+
+.Environment__image-container{
+  align-items: center;
+  align-content: center;
+  align-self: center;
 }
 
 .Environment__card-text{

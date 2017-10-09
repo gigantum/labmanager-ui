@@ -37,19 +37,20 @@ export default class WizardModal extends React.Component {
     };
     wizard = this;
   }
-  /*
-    evt:object, field:string - updates text in a state object and passes object to setState method
+  /**
+    @param {Object, string} evt,field
+    updates text in a state object and passes object to setState method
   */
   _updateTextState(evt, field){
     let state = {}
     state[field] = evt.target.value;
     this.setState(state)
   }
-  /*
-    function()
-    shows modal window
-  */
 
+  /**
+    @param {}
+    shows modal window by update component state
+  */
   _showModal(){
     this.setState({
       'modal_visible': true,
@@ -61,9 +62,9 @@ export default class WizardModal extends React.Component {
       document.getElementById('modal__cover').classList.remove('hidden')
     }
   }
-  /*
-    function()
-    hides modal window
+  /**
+    @param {}
+    hides modal window by update component state
   */
   _hideModal(){
     this.setState({'modal_visible': false})
@@ -71,12 +72,10 @@ export default class WizardModal extends React.Component {
       document.getElementById('modal__cover').classList.add('hidden')
     }
   }
-
-  /*
-    function()
-    sets view for components
+  /**
+    @param {string} id
+    sets view for child components using and id
   */
-
   _setComponent(navItemId){
 
     let index = 0;
@@ -96,40 +95,53 @@ export default class WizardModal extends React.Component {
     }
 
   }
-  /*
-    function()
+  /**
+    @param {string} labbookName
     sets labbookName for mini session
   */
   _setLabbookName(labbookName){
     wizard.setState({'labbookName': labbookName})
   }
-  /*
-    function()
+
+  /**
+    @param {Object} baseImage
     sets baseimage object for mini session
   */
   _setBaseImage(baseImage){
     wizard.setState({'baseImage': baseImage})
   }
 
-  /*
-    function()
+  /**
+    @param {}
     gets id of current selected component for view navigation
+    @return {string} selectedComponentId
   */
   _getSelectedComponentId(){
     return this.state.selectedComponentId
   }
 
-  _toggleDisabledContinue(value){
+  /**
+    @param {boolean} isDisabled
+    setsContinueDisabled value to true or false
+  */
+  _toggleDisabledContinue(isDisabled){
     wizard.setState({
-      'continueDisabled': value
+      'continueDisabled': isDisabled
     })
   }
 
-
+  /**
+    @param {}
+    gets selected id and triggers continueSave function using refs
+  */
   _continueSave(){
     this.refs[this._getSelectedComponentId()].continueSave()
   }
-
+  /**
+    @param {}
+    gets button text for current componenet
+    @return {string} text
+  */
   _getButtonText(){
     let text = (this.state.selectedComponentId === 'successMessage') ? 'Done' : 'Save and Continue Setup'
     text = (this.state.selectedComponentId === 'importCode') ? 'Complete' : text;

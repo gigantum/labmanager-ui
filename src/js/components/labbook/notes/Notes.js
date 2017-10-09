@@ -23,11 +23,16 @@ class Notes extends Component {
 
     notesContainer = this;
   }
-
+  /**
+  *  @param {}
+  *   add scroll listener
+  *   add interval to poll for new notes
+  */
   componentDidMount() {
-    let relay = this.props.relay;
+
     let notes = this.props.labbook.notes
-    let cursor =  notes.edges[0].cursor;
+    // let relay = this.props.relay;
+    // let cursor =  notes.edges[0].cursor;
     pagination = false;
     // setInterval(function(){
     //   relay.refetchConnection(
@@ -41,16 +46,16 @@ class Notes extends Component {
     // }, 2000);
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
-      let distanceY = window.innerHeight + document.documentElement.scrollTop+ 40,
+      let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
           expandOn = root.offsetHeight;
       if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
           notesContainer._loadMore(e);
       }
     });
   }
-  /*
-    function()
-    pagination container loads more items
+  /**
+  *  @param {}
+  *  pagination container loads more items
   */
   _loadMore() {
     isLoadingMore = true
@@ -66,10 +71,10 @@ class Notes extends Component {
    counter += 10
   }
 
-  /*
-    function(array)
-    loops through notes array and sorts into days
-    return Object
+  /**
+  *   @param {array}
+  *   loops through notes array and sorts into days
+  *   @return {Object}
   */
   _transformNotes(notes){
     let notesTime = {}

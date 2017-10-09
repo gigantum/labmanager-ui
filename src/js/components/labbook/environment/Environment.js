@@ -27,15 +27,14 @@ class Environment extends Component {
     environ = this; //set variable for encapsulation
   }
 
-  /*
-    function()
-    callback that triggers buildImage mutation
+  /**
+  *  @param {None}
+  *  callback that triggers buildImage mutation
   */
-
   _buildCallback(){
 
     environ.props.setBuildingState(true)
-    
+
     if(environ.props.labbook.environment.containerStatus === "RUNNING"){
       StopContainerMutation(
         environ.props.labbookName,
@@ -81,6 +80,10 @@ class Environment extends Component {
     }
   }
 
+  /**
+  *  @param {Obect}
+  *  sets readyToBuild state to true
+  */
   _setBaseImage(baseImage){
       environ.setState({"readyToBuild": true})
   }
@@ -99,11 +102,13 @@ class Environment extends Component {
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               editVisible={true}
+              containerStatus={this.props.containerStatus}
               setComponent={this._setComponent}
               setBaseImage={this._setBaseImage}
               buildCallback={this._buildCallback}
               blockClass="Environment"
               baseImage={baseImage}
+
              />
 
             <DevEnvironments
@@ -111,6 +116,7 @@ class Environment extends Component {
               labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
+              containerStatus={this.props.containerStatus}
               editVisible={true}
               buildCallback={this._buildCallback}
               blockClass="Environment"
@@ -121,10 +127,12 @@ class Environment extends Component {
               labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
+              containerStatus={this.props.containerStatus}
               setBaseImage={this._setBaseImage}
               setComponent={this._setComponent}
               buildCallback={this._buildCallback}
               baseImage={baseImage}
+              blockClass="Environment"
             />
 
             <CustomDependencies
@@ -135,6 +143,7 @@ class Environment extends Component {
               editVisible={true}
               labbookName={this.props.labbookName}
               environmentId={this.props.labbook.environment.id}
+              containerStatus={this.props.containerStatus}
             />
 
             <SweetAlert

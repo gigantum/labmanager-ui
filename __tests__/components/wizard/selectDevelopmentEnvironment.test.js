@@ -3,6 +3,11 @@ import SelectDevelopmentEnvironment from 'Components/wizard/SelectDevelopmentEnv
 import {mount} from 'enzyme'
 import renderer from 'react-test-renderer';
 import Auth from 'JS/Auth/Auth';
+import config from './config'
+import relayTestingUtils from 'relay-testing-utils'
+
+const variables = {first:20, labbook: 'demo-lab-book'}
+export default variables
 
 let toggleDisabledContinue = () => {}
 let setComponent = () => {}
@@ -14,12 +19,12 @@ test('Test SelectDevelopmentEnvironment rendering', () => {
   const component = renderer.create(
 
 
-      <SelectDevelopmentEnvironment
+      relayTestingUtils.relayWrap(<SelectDevelopmentEnvironment
         toggleDisabledContinue={toggleDisabledContinue}
         labbookName={'demo-lab-book'}
         setComponent={setComponent}
         setLabbookName={setLabbookName}
-        nextWindow={'addEnvironmentPackage'}/>
+        nextWindow={'addEnvironmentPackage'}/>, {}, config)
 
   );
   let tree = component.toJSON();

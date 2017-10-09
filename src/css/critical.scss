@@ -5,6 +5,7 @@
 @import  'vendor/sweetAlert.scss';
 //generic
 @import '_variables';
+@import '_mixins';
 @import '_utilities';
 @import '_layout';
 //atoms
@@ -23,6 +24,8 @@
 //dashboard components
 @import  'components/dashboard/dashboard';
 @import  'components/dashboard/localLabBooks.scss';
+//import
+@import  'components/import/importModules.scss';
 //labbook components
 @import  'components/labbook/labbook.scss';
 @import  'components/labbook/notes.scss';
@@ -49,6 +52,8 @@ html, body {
   padding: 0;
   color: $charcoal;
   font-family: arial;
+  position: relative;
+
   //overflow-x: hidden;
 }
 
@@ -80,6 +85,20 @@ h6{
   background-color: $charcoal;
   opacity: 0.5;
   z-index: 70;
+}
+
+.ApiDown{
+  position: fixed;
+  z-index: 200;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  line-height: 300px;
 }
 // .Routes{
 //   filter: invert(1);

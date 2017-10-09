@@ -12,9 +12,6 @@ import Loader from 'Components/shared/Loader'
 
 
 class Overview extends Component {
-  constructor(props){
-  	super(props);
-  }
 
   render(){
 

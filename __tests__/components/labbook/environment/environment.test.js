@@ -4,14 +4,20 @@ import Environment from 'Components/labbook/environment/Environment';
 import renderer from 'react-test-renderer';
 import {MemoryRouter } from 'react-router-dom'
 import config from './../config'
+import relayTestingUtils from 'relay-testing-utils'
+
+const variables = {first:20, labbook: 'demo-lab-book'}
+export default variables
+
+
 let environ;
-let _setBuildingState = ((state) => {
-})
+let _setBuildingState = ((state) => {})
+
 test('Test Environment rendering', () => {
   let props = {labbookName: config.data.labbook.name}
 
   const component = renderer.create(
-    <MemoryRouter>
+    relayTestingUtils.relayWrap(<MemoryRouter>
       <Environment
         labbook={config.data.labbook}
         key={config.data.labbook.name + '_environment'}
@@ -19,7 +25,7 @@ test('Test Environment rendering', () => {
         setBuildingState={_setBuildingState}
         labbookName={config.data.labbook.name}
       />
-    </MemoryRouter>
+    </MemoryRouter>, {}, config.data.labbook.environment)
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
@@ -31,13 +37,13 @@ describe("Test Modal Visible", () =>{
 
   const wrapper = mount(
 
-      <Environment
+      relayTestingUtils.relayWrap(<Environment
         labbook={config.data.labbook}
         key={config.data.labbook.name + '_environment'}
         labbookId={config.data.labbook.id}
         setBuildingState={_setBuildingState}
         labbookName={config.data.labbook.name}
-      />
+      />, {}, config.data.labbook.environment)
 
   );
 

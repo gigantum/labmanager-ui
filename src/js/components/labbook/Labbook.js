@@ -36,16 +36,21 @@ class Labbook extends Component {
     labbook = this;
 
   }
-  /*
-    function(string): input string componenetName
-    updatesState
+  /**
+    @param {string} componentName - input string componenetName
+    updates state of selectedComponent
+    updates history prop
   */
   _setSelectedComponent(componentName){
     this.setState({'selectedComponent': componentName})
 
     this.props.history.replace(`../../labbooks/${this.props.match.params.labbookName}/${componentName}`)
   }
-
+  /**
+    @param {boolean} isBuilding
+    updates container status state
+    updates labbook state
+  */
   _setBuildingState(isBuilding){
 
     labbook.refs['ContainerStatus'].setState({'isBuilding': isBuilding})
@@ -53,9 +58,9 @@ class Labbook extends Component {
     labbook.setState({'isBuilding': isBuilding})
   }
 
-  /*
-      function(object): inputs an obect with id and name attributes
-      return: jsx nav item
+  /**
+    @param {object} item
+    returns nav jsx
   */
   _getNavItem(item){
     return (
@@ -72,7 +77,10 @@ class Labbook extends Component {
       </div>
     )
   }
-
+  /**
+    @param {}
+    updates html element classlist and labbook state
+  */
   _showLabbookModal(){
 
     if(document.getElementById('labbookModal')){
@@ -85,7 +93,10 @@ class Labbook extends Component {
 
     labbook.setState({'modalVisible': true})
   }
-
+  /**
+    @param {}
+    updates html element classlist and labbook state
+  */
   _hideLabbookModal(){
 
     if(document.getElementById('labbookModal')){
@@ -177,6 +188,7 @@ class Labbook extends Component {
                           labbookId={this.props.labbook.id}
                           setBuildingState={this._setBuildingState}
                           labbookName={labbookName}
+                          containerStatus={this.refs.ContainerStatus}
                           {...this.props}
                         />)
                       }} />
@@ -215,7 +227,9 @@ class Labbook extends Component {
           </div>
           <div className="Labbook__info">
             <div className="Labbook__info-card">
-              <div className="Labbook__user-note" onClick={() => this._showLabbookModal()}>
+              <div
+                className="Labbook__user-note"
+                onClick={() => this._showLabbookModal()}>
                  <h5>Add Note</h5>
                  <div className="Labbook__user-note--add"></div>
               </div>

@@ -1,6 +1,6 @@
 //vendor
 import React, {Component} from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
 import Auth from 'JS/Auth/Auth';
 import history from 'JS/history';
@@ -10,8 +10,8 @@ import Home from 'Components/home/Home';
 import Header from 'Components/shared/Header';
 import Footer from 'Components/shared/Footer';
 import Labbook from 'Components/labbook/Labbook';
-import environment from 'JS/createRelayEnvironment'
 import Loader from 'Components/shared/Loader'
+import environment from 'JS/createRelayEnvironment'
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
   query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
