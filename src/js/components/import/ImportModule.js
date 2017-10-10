@@ -1,6 +1,7 @@
 // vendor
 import React, { Component } from 'react'
-
+//mutations
+import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 let importModule;
 
 export default class ImportModule extends Component {
@@ -63,8 +64,8 @@ export default class ImportModule extends Component {
     for (let i=0; i < dataTransfer.files.length; i++) {
 
       let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
-
-      if(file.type !== 'application/zip'){
+      console.log(file.name.slice(file.name.length - 4, file.name.length))
+      if(file.name.slice(file.name.length - 4, file.name.length) !== '.lbk'){
 
         this.setState({error: true})
 
@@ -77,14 +78,17 @@ export default class ImportModule extends Component {
         let fileReader = new FileReader();
 
         fileReader.onloadend = function (e) {
-          var arrayBuffer = e.target.result;
+          let arrayBuffer = e.target.result;
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
+
+          console.log(blob, arrayBuffer, file)
 
           importModule.setState(
             {files: [
               {
                 blob: blob,
                 file: file,
+                arrayBuffer: arrayBuffer,
                 filename: file.name}
               ]
             }
@@ -168,7 +172,9 @@ export default class ImportModule extends Component {
   _fileUpload(evt){
 
     document.getElementById('dropZone__filename').classList.add('ImportModule__animation')
-
+    ImportLabbookMutation('default', 'default', this.state.files[0].file, (result, error)=>{
+      console.log(result, error)
+    })
     setTimeout(function(){
       document.getElementById('dropZone__filename').classList.remove('ImportModule__animation')
       importModule.setState({
@@ -182,7 +188,7 @@ export default class ImportModule extends Component {
   *  @return {string} returns text to be rendered
   */
   _getImportDescriptionText(){
-    return this.state.error ? 'File must be .zip' : 'Drag & Drop files here, or click to select.'
+    return this.state.error ? 'File must be .lbk' : 'Drag & Drop lbk file, or click to select.'
   }
   render(){
 
@@ -221,7 +227,7 @@ export default class ImportModule extends Component {
 
           <button
             id="file__upload"
-            className="ImportModule__upload-button"
+            className={(this.state.files.length < 1) ? 'hidden' : 'ImportModule__upload-button'}
             onClick={(evt)=>{this._fileUpload(evt)}}
             disabled={(this.state.files.length < 1)}
           >
