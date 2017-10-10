@@ -2,7 +2,7 @@
   "schemaPath": "schema.graphql",
   "extensions": {
     "endpoints": {
-      "default": "http://localhost:5000/labbook/"
+      "default": "http://localhost:10001/labbook/"
     }
   }
 }

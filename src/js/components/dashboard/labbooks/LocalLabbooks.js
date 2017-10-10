@@ -1,13 +1,15 @@
+//vendor
 import React, { Component } from 'react'
 import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
-
+//components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
 import LocalLabbookPanel from 'Components/dashboard/labbooks/LocalLabbookPanel'
 import ImportModule from 'Components/import/ImportModule'
+
 
 let localLabbooks;
 
@@ -119,6 +121,7 @@ class LocalLabbooks extends Component {
                   return (
                     <LocalLabbookPanel
                       key={edge.node.name}
+                      ref={'LocalLabbookPanel' + edge.node.name}
                       className="LocalLabbooks__panel"
                       edge={edge}
                       goToLabbook={this._goToLabbook}/>
@@ -135,6 +138,8 @@ class LocalLabbooks extends Component {
                 className="LocalLabbooks__labbook-icon">
                   <div className="LocalLabbooks__title-add"></div>
               </div>
+
+
 
             </div>
           </div>

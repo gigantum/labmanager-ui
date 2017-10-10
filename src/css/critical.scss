@@ -11,6 +11,7 @@
 //atoms
 @import 'atoms/button.scss';
 @import 'atoms/loader.scss';
+@import 'atoms/download.scss';
 
 //shared components
 @import 'components/shared/header';
@@ -60,6 +61,7 @@ html, body {
 body{
   overflow-y: auto;
   overflow-x: hidden;
+
 }
 
 h1,
