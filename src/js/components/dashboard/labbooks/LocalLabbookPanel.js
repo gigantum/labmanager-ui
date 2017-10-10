@@ -29,10 +29,9 @@ export default class LocalLabbookPanel extends Component {
   }
 
   _exportLabbook(evt, edge){
-    //evt.preventDefault()
+
     if(this.state.exportPath.length === 0){
-      evt.stopPropagation()
-      evt.cancelBubble = true;
+
       let exportClassList = document.getElementById(evt.target.id).classList;
       exportClassList.add('LocalLabbooks__export--downloading')
       ExportLabbookMutation('default', 'default', edge.node.name, (response, error)=>{
