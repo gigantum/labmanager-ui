@@ -27,7 +27,7 @@ const JobStatus = {
 
       let fetchData = function(){
         environment._network.fetch(jobStatusQuery(), variables).then((response) => {
-      
+
           if(response.data.jobStatus.status === 'started'){
             fetchData()
           }else{
