@@ -61,6 +61,7 @@ export default class LocalLabbookPanel extends Component {
   render(){
     let edge = this.props.edge;
     let status = this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
+    let exportFile = this.state.exportPath.split('/')[this.state.exportPath.split('/').length - 1]
 
     return (
       <div
@@ -101,8 +102,8 @@ export default class LocalLabbookPanel extends Component {
               className="sa-error-container"
               show={this.state.show}
               type="success"
-              title="Lab Book Exported Succesfully!"
-              text={'Your labbook is available at: ' + this.state.exportPath}
+              title="Export Successful"
+              text={`Export file ${exportFile} is available in the export directory of your Gigantum working directory.`}
               onConfirm={() => {
                 this.setState({ show: false})
               }}
