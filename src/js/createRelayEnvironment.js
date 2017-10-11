@@ -14,7 +14,6 @@ function fetchQuery(
 ) {
 
   let queryString = operation.text;//.replace(/(\r\n|\n|\r)/gm,"");
-  console.log(uploadables)
 
   let json = JSON.stringify({
     query: queryString,
@@ -33,7 +32,7 @@ function fetchQuery(
   formData.append('query', queryString)
   formData.append('variables', JSON.stringify(variables))
   formData.append('archiveFile', uploadables)
-  console.log(formData)
+
   return fetch(process.env.GIGANTUM_API, {
     'method': 'POST',
     'headers': headers,

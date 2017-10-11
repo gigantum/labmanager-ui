@@ -35,7 +35,6 @@ export default function ExportLabbookMutation(
       mutation,
       variables,
       onCompleted: (response, error ) => {
-        console.log(response)
         if(error){
           console.log(error)
         }

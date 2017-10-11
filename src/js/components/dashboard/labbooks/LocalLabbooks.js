@@ -89,7 +89,7 @@ class LocalLabbooks extends Component {
   }
 
   render(){
-
+      let props = this.props;
       if(this.props.feed.localLabbooks){
         return(
           <div className="LocalLabbooks">
@@ -105,14 +105,27 @@ class LocalLabbooks extends Component {
                 Lab Books
                 <div className="LocalLabbooks__title-add"></div>
               </h4>
+
+            </div>
+            <div className='LocalLabbooks__labbooks flex flex--row flex--wrap justify--left'>
+
+              <div
+                key={'addLabbook'}
+                onClick={()=> this.refs.wizardModal._showModal()}
+                className="LocalLabbooks__panel LocalLabbooks__panel--add flex flex--row justify--center">
+                <div
+                  onClick={()=> this._openImport()}
+                  className="LocalLabbooks__labbook-icon">
+                    <div className="LocalLabbooks__title-add"></div>
+                </div>
+              </div>
+
               <ImportModule
                   ref="ImportModule_localLabooks"
                   closeImport={this._closeImport}
+                  {...props}
                   isOpen={this.state.importModuleOpen}
-                  className={this.state.importModuleOpen ? '' : 'hidden'}
-              />
-            </div>
-            <div className='LocalLabbooks__labbooks flex flex--row flex--wrap justify--left'>
+                  className="LocalLabbooks__panel LocalLabbooks__panel--import" />
 
               {
 
@@ -129,19 +142,7 @@ class LocalLabbooks extends Component {
                 })
               }
 
-            <div
-              key={'addLabbook'}
-              onClick={()=> this.refs.wizardModal._showModal()}
-              className='LocalLabbooks__panel LocalLabbooks__panel--add flex flex--row justify--center'>
-              <div
-                onClick={()=> this._openImport()}
-                className="LocalLabbooks__labbook-icon">
-                  <div className="LocalLabbooks__title-add"></div>
-              </div>
 
-
-
-            </div>
           </div>
 
         </div>
