@@ -1,6 +1,10 @@
 // vendor
 import React, { Component } from 'react'
-
+import SweetAlert from 'sweetalert-react'
+//mutations
+import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
+//utilities
+import JobStatus from 'JS/utils/JobStatus'
 let importModule;
 
 export default class ImportModule extends Component {
@@ -11,7 +15,9 @@ export default class ImportModule extends Component {
       'show': false,
       'message': '',
       'files': [],
-      'error': false
+      'type': 'info',
+      'error': false,
+      'isImporting': false
     }
 
     importModule = this;
@@ -63,28 +69,29 @@ export default class ImportModule extends Component {
     for (let i=0; i < dataTransfer.files.length; i++) {
 
       let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
-
-      if(file.type !== 'application/zip'){
+      if(file.name.slice(file.name.length - 4, file.name.length) !== '.lbk'){
 
         this.setState({error: true})
 
         setTimeout(function(){
           importModule.setState({error: false})
-        },5000)
+        }, 5000)
 
       }else{
         this.setState({error: false})
         let fileReader = new FileReader();
 
-        fileReader.onloadend = function (e) {
-          var arrayBuffer = e.target.result;
+        fileReader.onloadend = function (evt) {
+          let arrayBuffer = evt.target.result;
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
+
 
           importModule.setState(
             {files: [
               {
                 blob: blob,
                 file: file,
+                arrayBuffer: arrayBuffer,
                 filename: file.name}
               ]
             }
@@ -166,15 +173,63 @@ export default class ImportModule extends Component {
   *   trigger file upload
   */
   _fileUpload(evt){
+    this._importingState();
+    let filepath = this.state.files[0].filename
 
+    ImportLabbookMutation('default', 'default', this.state.files[0].file, (result, error)=>{
+      if(result){
+        JobStatus.getJobStatus(result.importLabbook.jobKey).then((response)=>{
+
+          this.setState({
+            message: 'Lab Book Import ' + response.jobStatus.status.toUpperCase(),
+            show: (response.jobStatus.status === 'failed'),
+            type: (response.jobStatus.status === 'failed') ? 'error': 'success'
+        })
+
+        importModule._clearState()
+
+        if(response.jobStatus.status === 'finished'){
+          let filename = filepath.split('/')[filepath.split('/').length -1]
+          let route = filename.split('_')[0]
+
+          this.props.history.replace(`/labbooks/${route}`)
+        }
+
+        }).catch((error)=>{
+          console.error(error)
+          importModule._clearState()
+        })
+      }else{
+        console.error(error)
+        importModule._clearState()
+      }
+    })
+
+  }
+
+  /**
+  *  @param {}
+  *  sets state of app for importing
+  *  @return {}
+  */
+  _importingState(){
     document.getElementById('dropZone__filename').classList.add('ImportModule__animation')
+    importModule.setState({
+      isImporting: true
+    })
+  }
 
-    setTimeout(function(){
-      document.getElementById('dropZone__filename').classList.remove('ImportModule__animation')
-      importModule.setState({
-        files:[]
-      })
-    }, 1000)
+  /**
+  *  @param {}
+  *  clears state of file and sets css back to import
+  *  @return {}
+  */
+  _clearState(){
+    document.getElementById('dropZone__filename').classList.remove('ImportModule__animation')
+    importModule.setState({
+      files:[],
+      isImporting: false
+    })
   }
 
   /**
@@ -182,13 +237,22 @@ export default class ImportModule extends Component {
   *  @return {string} returns text to be rendered
   */
   _getImportDescriptionText(){
-    return this.state.error ? 'File must be .zip' : 'Drag & Drop files here, or click to select.'
+    return this.state.error ? 'File must be .lbk' : 'Drag & Drop .lbk file, or click to select.'
   }
   render(){
 
     return(
-      <div className="ImportModule">
+      <div className="ImportModule LocalLabbooks__panel LocalLabbooks__panel--import">
         <label htmlFor="file__input">
+
+            <button
+              id="file__upload"
+              className={'ImportModule__upload-button'}
+              onClick={(evt)=>{this._fileUpload(evt)}}
+              disabled={(this.state.files.length < 1)}
+            >
+              Import Lab Book
+            </button>
             <div
               id="dropZone"
               type="file"
@@ -219,14 +283,17 @@ export default class ImportModule extends Component {
             onChange={(evt)=>{this._fileSelected(evt.files)}}
           />
 
-          <button
-            id="file__upload"
-            className="ImportModule__upload-button"
-            onClick={(evt)=>{this._fileUpload(evt)}}
-            disabled={(this.state.files.length < 1)}
-          >
-            Import
-          </button>
+          <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
+
+          <SweetAlert
+            className="sa-error-container"
+            show={this.state.show}
+            type={this.state.type}
+            title={this.state.message}
+            onConfirm={() => {
+              this.setState({ show: false})
+            }}
+            />
 
       </div>
       )

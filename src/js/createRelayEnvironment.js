@@ -14,17 +14,35 @@ function fetchQuery(
 ) {
 
   let queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
+  let body;
+
+  let headers = {
+      'accept': '*/*',
+      'Access-Control-Allow-Origin': '*'
+  }
+
+  if(uploadables === undefined){
+
+    headers['content-type'] = 'application/json';
+
+    body = JSON.stringify({
+      query: queryString,
+      variables,
+      archiveFile: uploadables
+    })
+  }else{
+
+    body = new FormData()
+    body.append('query', queryString)
+    body.append('variables', JSON.stringify(variables))
+    body.append('archiveFile', uploadables)
+  }
+
 
   return fetch(process.env.GIGANTUM_API, {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    },
-    body: JSON.stringify({
-      query: queryString,
-      variables
-    }),
+    'method': 'POST',
+    'headers': headers,
+    'body': body,
   }).then(response => {
     return response.json()
   }).catch(error => {

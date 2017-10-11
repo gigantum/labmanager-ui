@@ -5,8 +5,8 @@ import {
 import environment from 'JS/createRelayEnvironment'
 
 const mutation = graphql`
-  mutation ExportLabbookMutation($input: ExportLabbookInput!){
-    exportLabbook(input: $input){
+  mutation ImportLabbookMutation($input: ImportLabbookInput!){
+    importLabbook(input: $input){
       clientMutationId
       jobKey
     }
@@ -15,17 +15,16 @@ const mutation = graphql`
 
 let tempID = 0;
 
-export default function ExportLabbookMutation(
+export default function ImportLabbookMutation(
   user,
   owner,
-  labbookName,
+  uploadables,
   callback
 ) {
   const variables = {
     input: {
       owner,
       user,
-      labbookName,
       clientMutationId: '' + tempID++
     }
   }
@@ -34,7 +33,9 @@ export default function ExportLabbookMutation(
     {
       mutation,
       variables,
+      uploadables,
       onCompleted: (response, error ) => {
+        console.log(response)
         if(error){
           console.log(error)
         }
