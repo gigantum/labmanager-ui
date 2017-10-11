@@ -12,7 +12,8 @@ function fetchQuery(
   cacheConfig,
   uploadables
 ) {
-  var queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
+
+  let queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
 
   return fetch(process.env.GIGANTUM_API, {
     method: 'POST',
@@ -29,10 +30,19 @@ function fetchQuery(
   }).catch(error => {
 
     if(error.message === 'Failed to fetch'){
-      let apiDown = document.createElement('div')
-      apiDown.innerHTML = 'Api failed to respond';
-      apiDown.classList.add('ApiDown')
-      document.getElementById('root').appendChild(apiDown)
+      if(document.getElementById('apiDown') === undefined){
+        let apiDown = document.createElement('div')
+        apiDown.id = 'apiDown'
+        apiDown.innerHTML = 'Connection Error: Verify labmanager contianer is running.'
+        apiDown.classList.add('ApiDown')
+        document.getElementById('root').appendChild(apiDown)
+      }else{
+        document.getElementById('apiDown').classList.remove('hidden')
+      }
+    }else{
+      if(document.getElementById('apiDown')){
+        document.getElementById('apiDown').classList.add('hidden')
+      }
     }
     return error
   });
