@@ -13,30 +13,36 @@ function fetchQuery(
   uploadables
 ) {
 
-  let queryString = operation.text;//.replace(/(\r\n|\n|\r)/gm,"");
-
-  let json = JSON.stringify({
-    query: queryString,
-    variables,
-    archiveFile: uploadables
-  })
+  let queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
+  let body;
 
   let headers = {
       'accept': '*/*',
       'Access-Control-Allow-Origin': '*'
   }
+
   if(uploadables === undefined){
+
     headers['content-type'] = 'application/json';
+
+    body = JSON.stringify({
+      query: queryString,
+      variables,
+      archiveFile: uploadables
+    })
+  }else{
+
+    body = new FormData()
+    body.append('query', queryString)
+    body.append('variables', JSON.stringify(variables))
+    body.append('archiveFile', uploadables)
   }
-  let formData = new FormData()
-  formData.append('query', queryString)
-  formData.append('variables', JSON.stringify(variables))
-  formData.append('archiveFile', uploadables)
+
 
   return fetch(process.env.GIGANTUM_API, {
     'method': 'POST',
     'headers': headers,
-    'body': (uploadables === undefined) ? json : formData,
+    'body': body,
   }).then(response => {
     return response.json()
   }).catch(error => {
