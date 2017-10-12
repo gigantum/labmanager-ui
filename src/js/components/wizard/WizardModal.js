@@ -128,11 +128,11 @@ export default class WizardModal extends React.Component {
   }
 
   /**
-    @param {}
+    @param { boolean} isSkip
     gets selected id and triggers continueSave function using refs
   */
-  _continueSave(){
-    this.refs[this._getSelectedComponentId()].continueSave()
+  _continueSave(isSkip){
+    this.refs[this._getSelectedComponentId()].continueSave(isSkip)
   }
   /**
     @param {}
@@ -212,7 +212,8 @@ export default class WizardModal extends React.Component {
                   <AddEnvironmentPackage
                     ref="addEnvironmentPackage"
                     baseImage={this.state.baseImage}
-                    toggleDisabledContinue={this._toggleDisabledContinue} availablePackageManagers={this.state.baseImage.node.availablePackageManagers}  labbookName={wizard.state.labbookName}
+                    toggleDisabledContinue={this._toggleDisabledContinue}
+                    availablePackageManagers={this.state.baseImage.node.availablePackageManagers}  labbookName={wizard.state.labbookName}
                     setComponent={this._setComponent}
                     nextWindow={'addCustomDependencies'}/>
                 )
@@ -246,7 +247,9 @@ export default class WizardModal extends React.Component {
 
             <div className="flex flex--row justify--center">
 
-              <button disabled={this.state.previousComponentId === null} onClick={() => this._setComponent(this.state.previousComponentId)} className={(this.state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
+              <button
+                disabled={(this.state.previousComponentId === null)}
+                onClick={() => this._setComponent(this.state.previousComponentId)} className={(this.state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
                 Previous
               </button>
               <button
@@ -255,13 +258,13 @@ export default class WizardModal extends React.Component {
                 Cancel
               </button>
               <button
-                disabled={this._getSelectedComponentId() === 'createLabook'}
-                onClick={() => this._setComponent(this.state.nextComponentId)}
+                disabled={(this._getSelectedComponentId() === 'createLabook') || (this._getSelectedComponentId() === 'selectBaseImage') || this._getSelectedComponentId() === 'selectDevelopmentEnvironment' }
+                onClick={() => this._continueSave(true)}
                 className={(this.state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
                 skip
               </button>
               <button
-                onClick={()=> this._continueSave()}
+                onClick={()=> this._continueSave(false)}
                 disabled={(this.state.continueDisabled)}
                 >
                   {

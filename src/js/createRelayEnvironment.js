@@ -48,19 +48,9 @@ function fetchQuery(
   }).catch(error => {
 
     if(error.message === 'Failed to fetch'){
-      if(document.getElementById('apiDown') === undefined){
-        let apiDown = document.createElement('div')
-        apiDown.id = 'apiDown'
-        apiDown.innerHTML = 'Connection Error: Verify labmanager contianer is running.'
-        apiDown.classList.add('ApiDown')
-        document.getElementById('root').appendChild(apiDown)
-      }else{
-        document.getElementById('apiDown').classList.remove('hidden')
-      }
+      document.getElementById('apiDown').classList.remove('hidden')
     }else{
-      if(document.getElementById('apiDown')){
-        document.getElementById('apiDown').classList.add('hidden')
-      }
+      document.getElementById('apiDown').classList.add('hidden')
     }
     return error
   });

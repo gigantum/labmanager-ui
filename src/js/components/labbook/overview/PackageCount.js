@@ -71,11 +71,18 @@ export default class PackageCount extends Component {
                 <div className="PackageCount__dependencies">
                   <h4 className={'Overview__header'}>Dependencies</h4>
                   <ul className="flex flex--wrap">
-                    {
+                    {console.log(Object.keys(packages).length === 0)}
+                    { (Object.keys(packages).length > 0) && (
+
                        Object.keys(packages).map(key => {
-                    
+
                          return (<li key={this.props.labbookName + key} className="PackageCount__item">{packages[key] + ' ' + key + ' package(s)' }</li>)
-                       })
+                       }))
+                    }
+
+                    {
+                      (Object.keys(packages).length === 0) && (() =>{ return (<li className="PackageCount__item" key={this.props.labbookName + 'none'}>{'0 pip and apt-get packages'}</li>)})()
+
                     }
                   </ul>
                 </div>
