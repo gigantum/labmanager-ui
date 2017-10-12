@@ -1,12 +1,11 @@
+//vendor
 import React from 'react'
-
+//components
 import CreateLabbook from './CreateLabbook'
 import SelectBaseImage from './SelectBaseImage'
 import SelectDevelopmentEnvironment from './SelectDevelopmentEnvironment'
-import ImportCode from './ImportCode'
 import SuccessMessage from './SuccessMessage'
 import AddEnvironmentPackage from './AddEnvironmentPackage'
-import AddDatasets from './AddDatasets'
 import AddCustomDependencies from './AddCustomDependencies'
 
 
@@ -30,8 +29,6 @@ export default class WizardModal extends React.Component {
         {'id': 'selectDevelopmentEnvironment', 'description': 'Dev Environment'},
         {'id': 'addEnvironmentPackage', 'description': 'Add Dependencies'},
         {'id': 'addCustomDependencies', 'description': 'Custom Dependencies'},
-        {'id': 'addDatasets', 'description': 'Datasets'},
-        {'id': 'importCode', 'description': 'Import Code'},
         {'id': 'successMessage', 'description': 'Success'}
       ]
     };

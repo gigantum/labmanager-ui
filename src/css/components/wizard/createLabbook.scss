@@ -1,10 +1,18 @@
 .CreateLabbook{
   padding: 20px;
   height: 410px;
+  input[type=text].invalid,
+  input[type=text].invalid:focus,
+  input[type=text].invalid:hover{
+    color: $labbooks;
+    border-color: $labbooks;
+  }
 
+  .error{
+    color: $labbooks;
+  }
 
 }
-
 
 .CreateLabbook__modal-close{
   position: absolute;
