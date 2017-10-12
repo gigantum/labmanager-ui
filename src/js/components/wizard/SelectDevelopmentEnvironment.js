@@ -82,14 +82,15 @@ export default class SelectDevelopmentEnvironment extends React.Component {
   }
 
   /**
-    @param {}
+    @param {boolean} isSkip
     gets current selectedDevelopmentEnvironment and passes variables to AddEnvironmentComponentMutation
     callback triggers and modal state is changed to  next window
   */
-  continueSave(){
+  continueSave(isSkip){
 
     let component = this.state.selectedDevelopmentEnvironment.node.component;
     this.props.toggleDisabledContinue(true);
+
     AddEnvironmentComponentMutation(
       this.props.labbookName,
       'default',
@@ -108,6 +109,8 @@ export default class SelectDevelopmentEnvironment extends React.Component {
         }
       }
     )
+    
+
   }
   /**
     @param {}

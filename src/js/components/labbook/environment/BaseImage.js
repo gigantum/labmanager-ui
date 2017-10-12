@@ -18,7 +18,7 @@ class BaseImage extends Component {
   *  check if edit is enabled
   */
   _editVisible(){
-    return this.props.editVisible
+    return false;//this.props.editVisible //alwasys false until api can support rebuilding image
   }
   /**
   *  @param {none}
@@ -52,7 +52,7 @@ class BaseImage extends Component {
   render(){
     let baseImage = this.props.environment.baseImage;
     let blockClass = this.props.blockClass;
-    
+
     let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
     if (baseImage) {
       return(

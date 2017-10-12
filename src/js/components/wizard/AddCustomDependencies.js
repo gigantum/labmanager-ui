@@ -94,15 +94,48 @@ export default class AddCustomDependencies extends React.Component {
 
   /**
     @param {}
-    gets current selectedCustomDependency and passes variables to AddEnvironmentComponentMutation
-    callback triggers and modal state is changed to  next window
+    triggers buildMuation
+    sends user to next window
   */
-  continueSave(){
+  _buildLabbook(){
+
+    BuildImageMutation(
+      this.props.labbookName,
+      'default',
+      (response, error) => {
+        console.log(response, error)
+        let showAlert = ((error !== undefined) && (error !== null))
+        if(showAlert){
+          let message = showAlert ? error[0].message : '';
+          this.setState({
+            'isLoading': false,
+            'show': showAlert,
+            'message': message
+          })
+        }
+        if(this.props.buildCallback){
+          this.props.buildCallback()
+        }
+        addCustomDependencies.props.setComponent(this.props.nextWindow);
+
+      })
+  }
+
+
+  /**
+    @param {}
+    gets current selectedCustomDependency and passes variables to AddEnvironmentComponentMutation
+    callback triggers build mutation
+  */
+  _addCustomDependencies(){
     let all = [];
+
     this.setState({
       'isLoading': true
     })
+
     this.props.toggleDisabledContinue(true);
+
     this.state.selectedCustomDependencies.forEach((edge) => {
 
       let component = edge.node.component;
@@ -143,30 +176,23 @@ export default class AddCustomDependencies extends React.Component {
     });
 
     Promise.all(all).then(values => {
-
-      addCustomDependencies.props.setComponent(this.props.nextWindow);
-      if(this.props.buildCallback){
-        BuildImageMutation(
-          this.props.labbookName,
-          'default',
-          (error) => {
-
-            let showAlert = (error !== null)
-            if(showAlert){
-              let message = showAlert ? error[0].message : '';
-              this.setState({
-                'isLoading': false,
-                'show': showAlert,
-                'message': message
-              })
-            }
-
-            this.props.setComponent(this.props.nextWindow, this.state.name)
-          }
-        )
-        //addCustomDependencies.props.buildCallback();
-      }
+        this._buildLabbook();
     })
+  }
+
+
+  /**
+    @param {boolean} isSkip
+    gets current selectedCustomDependency and passes variables to AddEnvironmentComponentMutation
+    callback triggers and modal state is changed to  next window
+  */
+  continueSave(isSkip){
+    if(!isSkip){
+      this._addCustomDependencies()
+    }
+    else{
+      this._buildLabbook()
+    }
   }
 
   /**

@@ -35,58 +35,62 @@ export default class AddEnvironmentPackage extends React.Component {
     pushes mutations into a promise and resolves if succesful
     if all promises resolve, setComponent is triggered and next component is loaded
   */
-  continueSave(){
-    let all = [];
-    this.props.setComponent(this.props.nextWindow)
+  continueSave(isSkip){
+    if(!isSkip){
+      let all = [];
+      this.props.setComponent(this.props.nextWindow)
 
-    this.state.environmentPackages.forEach((pack) => {
-      if(pack.dependencyName){
-        let promise = new Promise((resolve, reject) => {
+      this.state.environmentPackages.forEach((pack) => {
+        if(pack.dependencyName){
+          let promise = new Promise((resolve, reject) => {
 
-          AddEnvironmentPackageMutation(
-            this.props.labbookName,
-            'default',
-            pack.packageManager,
-            pack.dependencyName,
-            this.props.environmentId,
-            (error) => {
-              console.log(error)
-              let showAlert = ((error !== null) && (error !== undefined))
-              let message = showAlert ? error[0].message : '';
-              addEnvionmentPackage.setState({
-                'show': showAlert,
-                'message': message,
-
-              })
-              if(!showAlert){
-                resolve()
-              }else{
+            AddEnvironmentPackageMutation(
+              this.props.labbookName,
+              'default',
+              pack.packageManager,
+              pack.dependencyName,
+              this.props.environmentId,
+              (error) => {
+                console.log(error)
+                let showAlert = ((error !== null) && (error !== undefined))
+                let message = showAlert ? error[0].message : '';
                 addEnvionmentPackage.setState({
-                  'reject': reject
+                  'show': showAlert,
+                  'message': message,
+
                 })
+                if(!showAlert){
+                  resolve()
+                }else{
+                  addEnvionmentPackage.setState({
+                    'reject': reject
+                  })
+                }
+
               }
+            )
+          })
 
-            }
-          )
-        })
-
-        all.push(promise)
-      }
-    })
+          all.push(promise)
+        }
+      })
 
 
-    Promise.all(all).then(values => {
+      Promise.all(all).then(values => {
 
-      if(this.props.environmentView){
+        if(this.props.environmentView){
 
-        addEnvionmentPackage.props.buildCallback();
-      }else{
-          this.props.setComponent(this.props.nextWindow)
-      }
+          addEnvionmentPackage.props.buildCallback();
+        }else{
+            this.props.setComponent(this.props.nextWindow)
+        }
 
-    }, reason => {
-      console.error(reason)
-    })
+      }, reason => {
+        console.error(reason)
+      })
+    } else{
+      this.props.setComponent(this.props.nextWindow)
+    }
 
   }
   /**
