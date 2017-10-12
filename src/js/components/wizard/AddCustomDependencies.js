@@ -8,6 +8,7 @@ import Loader from 'Components/shared/Loader'
 import environment from 'JS/createRelayEnvironment'
 //mutations
 import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 
 let addCustomDependencies;
 
@@ -63,7 +64,8 @@ export default class AddCustomDependencies extends React.Component {
       'selectedCustomDependencies': [],
       'selectedCustomDependenciesIds': [],
       'show': false,
-      'message': ''
+      'message': '',
+      'isLoading': false
     };
     this.continueSave = this.continueSave.bind(this)
     addCustomDependencies = this;
@@ -97,6 +99,9 @@ export default class AddCustomDependencies extends React.Component {
   */
   continueSave(){
     let all = [];
+    this.setState({
+      'isLoading': true
+    })
     this.props.toggleDisabledContinue(true);
     this.state.selectedCustomDependencies.forEach((edge) => {
 
@@ -141,7 +146,25 @@ export default class AddCustomDependencies extends React.Component {
 
       addCustomDependencies.props.setComponent(this.props.nextWindow);
       if(this.props.buildCallback){
-        addCustomDependencies.props.buildCallback();
+        BuildImageMutation(
+          this.props.labbookName,
+          'default',
+          (error) => {
+
+            let showAlert = (error !== null)
+            if(showAlert){
+              let message = showAlert ? error[0].message : '';
+              this.setState({
+                'isLoading': false,
+                'show': showAlert,
+                'message': message
+              })
+            }
+
+            this.props.setComponent(this.props.nextWindow, this.state.name)
+          }
+        )
+        //addCustomDependencies.props.buildCallback();
       }
     })
   }
@@ -155,6 +178,7 @@ export default class AddCustomDependencies extends React.Component {
   }
 
   render(){
+    let {componentProps} = this;
 
     return(
       <div className="AddCustomDependencies">
@@ -214,7 +238,9 @@ export default class AddCustomDependencies extends React.Component {
                         </div>
                       )
                     }
-
+                    <div className={this.state.isLoading ? '' : 'hidden'}>
+                      <Loader />
+                    </div>
                     <SweetAlert
                       className="sa-error-container"
                       show={this.state.show}

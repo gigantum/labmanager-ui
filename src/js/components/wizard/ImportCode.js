@@ -26,7 +26,7 @@ export default class SelectBaseImage extends React.Component {
     runs buildImageMutation and triggers setComponent to proceed to next window
   */
   continueSave(){
-    this.setState({'isLoading':true})
+    //this.setState({'isLoading':true})
 
     BuildImageMutation(
       this.props.labbookName,

@@ -77,3 +77,5 @@ export default new Environment({
   network,
   store,
 })
+
+export {network}

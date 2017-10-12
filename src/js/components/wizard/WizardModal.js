@@ -229,35 +229,8 @@ export default class WizardModal extends React.Component {
                     ref="addCustomDependencies"
                     toggleDisabledContinue={this._toggleDisabledContinue}
                     setComponent={this._setComponent}
-                    nextWindow={'addDatasets'}
-                    labbookName={wizard.state.labbookName}/>
-                )
-              }
-
-              {
-
-                ( this._getSelectedComponentId()  === 'addDatasets') && (
-
-                  <AddDatasets
-                    ref="addDatasets"
-                    toggleDisabledContinue={this._toggleDisabledContinue}
-                    setComponent={this._setComponent}
-                    nextWindow={'importCode'}
-                    labbookName={wizard.state.labbookName}/>
-                )
-              }
-
-              {
-
-                ( this._getSelectedComponentId()  === 'importCode') && (
-
-                  <ImportCode
-                    ref="importCode"
-                    toggleDisabledContinue={this._toggleDisabledContinue}
-                    setComponent={this._setComponent}
                     nextWindow={'successMessage'}
-                    labbookName={wizard.state.labbookName}
-                  />
+                    labbookName={wizard.state.labbookName}/>
                 )
               }
 

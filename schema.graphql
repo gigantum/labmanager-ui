@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Mon Oct 09 2017 18:09:16 GMT-0400 (EDT)
+# timestamp: Wed Oct 11 2017 17:58:35 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -319,7 +319,8 @@ input ImportLabbookInput {
 }
 
 type ImportLabbookPayload {
-  jobKey: String
+  importJobKey: String
+  buildImageJobKey: String
   clientMutationId: String
 }
 

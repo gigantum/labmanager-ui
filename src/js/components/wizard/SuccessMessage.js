@@ -4,6 +4,7 @@ export default class SuccessMessage extends React.Component {
   constructor(props){
     super(props)
     this.continueSave = this.continueSave.bind(this);
+    this.props.toggleDisabledContinue()
   }
   /**
     @param {}
