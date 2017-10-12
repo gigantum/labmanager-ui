@@ -35,8 +35,11 @@ class LocalLabbooks extends Component {
       let root = document.getElementById('root')
       let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
           expandOn = root.offsetHeight;
-      if ((distanceY > expandOn) && !isLoadingMore && localLabbooks.props.feed.localLabbooks.pageInfo.hasNextPage) {
-          localLabbooks._loadMore(e);
+
+      if(localLabbooks.props.feed.localLabbooks){
+        if ((distanceY > expandOn) && !isLoadingMore && localLabbooks.props.feed.localLabbooks.pageInfo.hasNextPage) {
+            localLabbooks._loadMore(e);
+        }
       }
     });
   }
@@ -89,15 +92,17 @@ class LocalLabbooks extends Component {
   }
 
   render(){
-      let props = this.props;
-      if(this.props.feed.localLabbooks){
+      let {props} = this;
+
+      if(props.feed.localLabbooks){
+
         return(
           <div className="LocalLabbooks">
             <WizardModal
               ref="wizardModal"
               handler={this.handler}
               history={this.props.history}
-              {...this.props}
+              {...props}
             />
 
             <div className="LocalLabbooks__title-bar flex flex--row justify--space-between">

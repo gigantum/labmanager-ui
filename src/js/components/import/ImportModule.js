@@ -178,7 +178,7 @@ export default class ImportModule extends Component {
 
     ImportLabbookMutation('default', 'default', this.state.files[0].file, (result, error)=>{
       if(result){
-        JobStatus.getJobStatus(result.importLabbook.jobKey).then((response)=>{
+        JobStatus.getJobStatus(result.importLabbook.importJobKey).then((response)=>{
 
           this.setState({
             message: 'Lab Book Import ' + response.jobStatus.status.toUpperCase(),

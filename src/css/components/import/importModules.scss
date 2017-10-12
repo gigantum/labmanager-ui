@@ -22,7 +22,7 @@
 .ImportModule__drop-area{
     overflow: hidden;
 
-    width: 280px;
+    width: calc(100% - 30px);
     height: 260px;
     margin: 0 15px 15px;
 

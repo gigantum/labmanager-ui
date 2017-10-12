@@ -8,7 +8,8 @@ const mutation = graphql`
   mutation ImportLabbookMutation($input: ImportLabbookInput!){
     importLabbook(input: $input){
       clientMutationId
-      jobKey
+      importJobKey
+      buildImageJobKey  
     }
   }
 `;
