@@ -44,7 +44,13 @@ function fetchQuery(
     'headers': headers,
     'body': body,
   }).then(response => {
-    return response.json()
+    if(response.status === 404){
+      document.getElementById('apiDown').classList.remove('hidden')
+    }else{
+      document.getElementById('apiDown').classList.add('hidden')
+      return response.json()
+    }
+
   }).catch(error => {
 
     if(error.message === 'Failed to fetch'){
@@ -68,4 +74,4 @@ export default new Environment({
   store,
 })
 
-export {network}
+export {network, fetchQuery}
