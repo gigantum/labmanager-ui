@@ -45,7 +45,7 @@ class DefaultDetail extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleCloseClick = ::this.handleCloseClick;
+    this.handleCloseClick = this.handleCloseClick.bind(this);
   }
 
   handleCloseClick(event) {
@@ -79,29 +79,29 @@ class FileBrowser extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleGlobalClick = ::this.handleGlobalClick;
+    this.handleGlobalClick = this.handleGlobalClick.bind(this);
     // browser manipulation
-    this.select = ::this.select;
-    this.openFolder = ::this.openFolder;
-    this.toggleFolder = ::this.toggleFolder;
-    this.beginAction = ::this.beginAction;
-    this.endAction = ::this.endAction;
-    this.preview = ::this.preview;
+    this.select = this.select.bind(this);
+    this.openFolder = this.openFolder.bind(this);
+    this.toggleFolder = this.toggleFolder.bind(this);
+    this.beginAction = this.beginAction.bind(this);
+    this.endAction = this.endAction.bind(this);
+    this.preview = this.preview.bind(this);
     // file manipulation
-    this.renameFile = ::this.renameFile;
-    this.renameFolder = ::this.renameFolder;
-    this.moveFile = ::this.moveFile;
-    this.moveFolder = ::this.moveFolder;
-    this.createFiles = ::this.createFiles;
-    this.createFolder = ::this.createFolder;
-    this.deleteFile = ::this.deleteFile;
-    this.deleteFolder = ::this.deleteFolder;
+    this.renameFile = this.renameFile.bind(this);
+    this.renameFolder = this.renameFolder.bind(this);
+    this.moveFile = this.moveFile.bind(this);
+    this.moveFolder = this.moveFolder.bind(this);
+    this.createFiles = this.createFiles.bind(this);
+    this.createFolder = this.createFolder.bind(this);
+    this.deleteFile = this.deleteFile.bind(this);
+    this.deleteFolder = this.deleteFolder.bind(this);
     // action bar
-    this.handleActionBarRenameClick = ::this.handleActionBarRenameClick;
-    this.handleActionBarDeleteClick = ::this.handleActionBarDeleteClick;
-    this.handleActionBarAddFolderClick = ::this.handleActionBarAddFolderClick;
+    this.handleActionBarRenameClick = this.handleActionBarRenameClick.bind(this);
+    this.handleActionBarDeleteClick = this.handleActionBarDeleteClick.bind(this);
+    this.handleActionBarAddFolderClick = this.handleActionBarAddFolderClick.bind(this);
     // detail
-    this.closeDetail = ::this.closeDetail;
+    this.closeDetail = this.closeDetail.bind(this);
 
     this.state = {
       ...this.state,

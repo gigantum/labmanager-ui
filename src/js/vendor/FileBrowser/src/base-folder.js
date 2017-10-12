@@ -4,20 +4,20 @@ class BaseFolder extends React.Component {
   constructor(props) {
     super(props);
 
-    this.selectAllNewName = ::this.selectAllNewName;
+    this.selectAllNewName = this.selectAllNewName.bind(this);
 
-    this.handleFolderClick = ::this.handleFolderClick;
-    this.handleFolderDoubleClick = ::this.handleFolderDoubleClick;
-    this.handleRenameClick = ::this.handleRenameClick;
-    this.handleNewNameChange = ::this.handleNewNameChange;
-    this.handleRenameSubmit = ::this.handleRenameSubmit;
-    this.handleDeleteClick = ::this.handleDeleteClick;
-    this.handleDeleteSubmit = ::this.handleDeleteSubmit;
-    this.handleCancelEdit = ::this.handleCancelEdit;
+    this.handleFolderClick = this.handleFolderClick.bind(this);
+    this.handleFolderDoubleClick = this.handleFolderDoubleClick.bind(this);
+    this.handleRenameClick = this.handleRenameClick.bind(this);
+    this.handleNewNameChange = this.handleNewNameChange.bind(this);
+    this.handleRenameSubmit = this.handleRenameSubmit.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
+    this.handleCancelEdit = this.handleCancelEdit.bind(this);
 
-    this.toggleFolder = ::this.toggleFolder;
+    this.toggleFolder = this.toggleFolder.bind(this);
 
-    this.connectDND = ::this.connectDND;
+    this.connectDND = this.connectDND.bind(this);
 
     this.state = {
       ...this.state,

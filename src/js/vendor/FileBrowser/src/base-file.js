@@ -11,17 +11,17 @@ class BaseFile extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleFileClick = ::this.handleFileClick;
-    this.handleItemClick = ::this.handleItemClick;
-    this.handleItemDoubleClick = ::this.handleItemDoubleClick;
-    this.handleRenameClick = ::this.handleRenameClick;
-    this.handleNewNameChange = ::this.handleNewNameChange;
-    this.handleRenameSubmit = ::this.handleRenameSubmit;
-    this.handleDeleteClick = ::this.handleDeleteClick;
-    this.handleDeleteSubmit = ::this.handleDeleteSubmit;
-    this.handleCancelEdit = ::this.handleCancelEdit;
+    this.handleFileClick = this.handleFileClick.bind(this);
+    this.handleItemClick = this.handleItemClick.bind(this);
+    this.handleItemDoubleClick = this.handleItemDoubleClick.bind(this);
+    this.handleRenameClick = this.handleRenameClick.bind(this);
+    this.handleNewNameChange = this.handleNewNameChange.bind(this);
+    this.handleRenameSubmit = this.handleRenameSubmit.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
+    this.handleCancelEdit = this.handleCancelEdit.bind(this);
 
-    this.connectDND = ::this.connectDND;
+    this.connectDND = this.connectDND.bind(this);
 
     this.state = {
       ...this.state,
