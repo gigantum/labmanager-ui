@@ -74,4 +74,4 @@ export default new Environment({
   store,
 })
 
-export {network}
+export {network, fetchQuery}
