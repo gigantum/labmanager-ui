@@ -25,7 +25,9 @@ export default class ImportModule extends Component {
 
     //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
     window.addEventListener('dragenter', function(evt) { //use evt, event is a reserved word in chrome
-      document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
+      if(document.getElementById('dropZone')){
+        document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
+      }
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
         evt.preventDefault();
         evt.dataTransfer.effectAllowed = 'none';
@@ -37,13 +39,16 @@ export default class ImportModule extends Component {
     window.addEventListener('dragleave', function(evt) { //use evt, event is a reserved word in chrome
 
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
-        document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+        if(document.getElementById('dropZone')){
+          document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+        }
       }
     }, false);
 
     window.addEventListener('dragover', function(evt) {  //use evt, event is a reserved word in chrome
-
-      document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
+      if(document.getElementById('dropZone')){
+        document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
+      }
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
         evt.preventDefault();
         evt.dataTransfer.effectAllowed = 'none';
@@ -52,7 +57,9 @@ export default class ImportModule extends Component {
     });
 
     window.addEventListener('drop', function(evt) { //use evt, event is a reserved word in chrome
-      document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+      if(document.getElementById('dropZone')){
+        document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+      }
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
 
         evt.preventDefault();
