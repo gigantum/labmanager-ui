@@ -4,12 +4,12 @@ import SweetAlert from 'sweetalert-react'
 import FileBrowser from 'JS/vendor/FileBrowser/src/browser'
 import Moment from 'moment'
 //Config
-import Config from './CodeConfig'
+import Config from './OutputConfig'
 //mutations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 
 let code;
-export default class Code extends Component {
+export default class Output extends Component {
   constructor(props){
   	super(props);
 

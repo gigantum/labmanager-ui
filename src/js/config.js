@@ -11,7 +11,8 @@ const CONFIG = {
     {id:'notes', name: 'Activity', 'fragment': '...Notes_labbook'},
     {id:'environment', name: 'Environment', 'fragment': '...Environment_labbook'},
     {id:'code', name: 'Code'},
-    {id:'data', name: 'Data'}
+    {id:'inputData', name: 'Input Data'},
+    {id:'outputData', name: 'Output Data'}
   ],
   'months': [
     'Jan',

@@ -39,7 +39,7 @@ export default class LocalLabbookPanel extends Component {
           JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
 
               this.setState({
-                'exportPath': data.jobStatus.result,
+                'exportPath': data.jobStatus.result ? data.jobStatus.result : '',
                 'show': true
               })
 

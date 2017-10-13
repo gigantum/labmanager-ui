@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 //environment
-import {network} from 'JS/createRelayEnvironment';
+import {fetchQuery} from 'JS/createRelayEnvironment';
 
 const jobStatusQuery = graphql`
   query JobStatusQuery($jobKey: String!){
@@ -27,7 +27,7 @@ const JobStatus = {
 
       let fetchData = function(){
 
-        network.fetch(jobStatusQuery(), variables).then((response) => {
+        fetchQuery(jobStatusQuery(), variables).then((response) => {
 
         //debugger;
           if(response.data.jobStatus.status === 'started'){

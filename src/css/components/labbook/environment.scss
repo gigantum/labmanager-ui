@@ -29,7 +29,7 @@
 }
 
 .Environment__card{
-  background-color: $grey;
+  background-color: white;
   padding: 10px;
   border: 1px solid $font-grey;
   border-radius: 5px;
@@ -80,6 +80,7 @@
   right: 5px;
   cursor: pointer;
 }
+
 .Environment__package-dependencies{
   margin: 10px;
 
@@ -88,7 +89,7 @@
       p{
         margin: 0 5px 0 0;
       }
-      background-color: $grey;
+      background-color: white;
       border: 1px solid $charcoal;
       border-radius: 5px;
   }

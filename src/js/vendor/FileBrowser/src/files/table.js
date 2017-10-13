@@ -3,6 +3,7 @@ import Moment from 'moment'
 import ClassNames from 'classnames'
 import { DragSource, DropTarget } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
+import fileIconsJs from 'file-icons-js'
 
 import BaseFile from './../base-file.js'
 import { BaseFileConnectors } from './../base-file.js'
@@ -33,16 +34,20 @@ function file_size(size) {
 
 class TableFile extends BaseFile {
   render() {
+
+    console.log(fileIconsJs)
     var icon;
-    if (this.isImage()) {
-      icon = (<i className="fa fa-file-image-o" aria-hidden="true"></i>);
-    }
-    else if (this.isPdf()) {
-      icon = (<i className="fa fa-file-pdf-o" aria-hidden="true"></i>);
-    }
-    else {
-      icon = (<i className="fa fa-file-o" aria-hidden="true"></i>);
-    }
+    console.log(this, fileIconsJs.getClass(this.props.name))
+    icon = (<i className={fileIconsJs.getClass(this.props.name)}></i>)
+    // if (this.isImage()) {
+    //   icon = (<i className="fa fa-file-image-o" aria-hidden="true"></i>);
+    // }
+    // else if (this.isPdf()) {
+    //   icon = (<i className="fa fa-file-pdf-o" aria-hidden="true"></i>);
+    // }
+    // else {
+    //   icon = (<i className="fa fa-file-o" aria-hidden="true"></i>);
+    // }
 
     var inAction = (this.props.isDragging || this.props.action);
 

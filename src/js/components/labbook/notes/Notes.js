@@ -7,6 +7,7 @@ import {
 //Components
 import NotesCard from './NotesCard'
 import Loader from 'Components/shared/Loader'
+import UserNote from './../UserNote'
 //utilities
 import Config from 'JS/config'
 
@@ -19,7 +20,9 @@ let notesContainer;
 class Notes extends Component {
   constructor(props){
   	super(props);
-  	this.state = {};
+  	this.state = {
+      'modalVisible': false
+    };
 
     notesContainer = this;
   }
@@ -88,8 +91,21 @@ class Notes extends Component {
     return notesTime
   }
 
+  _toggleNote(){
+    this.setState({
+      'modalVisible': !this.state.modalVisible
+    })
+  }
+
+  _hideAddNote(){
+    notesContainer.setState({
+      'modalVisible': false
+    })
+  }
+
   render(){
     let notesTime = this._transformNotes(this.props.labbook.notes);
+    console.log(this.props)
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='Notes'>
@@ -99,14 +115,41 @@ class Notes extends Component {
             <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Notes__sizer flex-1-0-auto">
 
               {
-                Object.keys(notesTime).map(k => {
-
+                Object.keys(notesTime).map((k, i) => {
+                  console.log(i)
                   return (
                     <div key={k}>
+
+
                       <div className="Notes__date-tab flex flex--column justify--space-around">
                         <div className="Notes__date-day">{k.split('_')[2]}</div>
                         <div className="Notes__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
                       </div>
+
+                      {
+                        (i===0) && (
+                          <div className="UserNote__container">
+                            <div className="Notes__user-note"
+
+                              onClick={() => this._toggleNote()}>
+                              <div className={this.state.modalVisible ? 'Notes__user-note--remove' : 'Notes__user-note--add'}></div>
+                              <h5>Add Note</h5>
+
+                            </div>
+                            <div className={this.state.modalVisible ? 'Notes__add NotesCard' : 'hidden'}>
+
+                              {
+                                (this.state.modalVisible) &&
+                                <UserNote
+                                  labbookId={this.props.labbook.id}
+                                  {...this.props}
+                                  labbookName={this.props.labbookName}
+                                  hideLabbookModal={this._hideAddNote}/>
+                              }
+                            </div>
+                        </div>
+                        )
+                      }
 
                       <div key={k + 'card'}>
 

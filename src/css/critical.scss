@@ -3,15 +3,23 @@
 @import '../../node_modules/normalize-sass/normalize';
 @import  'vendor/materialize.scss';
 @import  'vendor/sweetAlert.scss';
+
+@import 'vendor/fileBrowser/browser.scss';
+@import 'vendor/fileBrowser/list-style.scss';
+@import 'vendor/fileBrowser/table-style.scss';
+@import 'vendor/fileIcons/fileIcons.scss';
+
 //generic
 @import '_variables';
 @import '_mixins';
 @import '_utilities';
 @import '_layout';
+@import '_fonts';
 //atoms
 @import 'atoms/button.scss';
 @import 'atoms/loader.scss';
 @import 'atoms/download.scss';
+@import 'atoms/_input-text.scss';
 
 //shared components
 @import 'components/shared/header';
@@ -35,6 +43,7 @@
 @import  'components/labbook/userNote.scss';
 @import  'components/labbook/code.scss';
 @import  'components/labbook/containerStatus.scss';
+@import 'components/labbook/notes_markdown.scss';
 //wizard components
 @import  'components/wizard/wizardModal';
 @import  'components/wizard/selectBaseImage';
@@ -102,6 +111,20 @@ h6{
   text-align: center;
   line-height: 300px;
 }
+
+.rendered-react-keyed-file-browser{
+  width: 100%;
+}
+
+.btn{
+  background-color: $datasets;
+  border-radius: 20px;
+  font-weight: 100;
+}
+.btn:hover{
+  background-color: #8ea4b2;
+}
+
 // .Routes{
 //   filter: invert(1);
 // }

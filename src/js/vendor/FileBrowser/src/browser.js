@@ -18,6 +18,8 @@ import TableFile from './files/table.js'
 import GroupByFolder from './groupers/by-folder.js'
 import SortByName from './sorters/by-name.js'
 
+import prettyFileIcons from 'pretty-file-icons'
+console.log(prettyFileIcons)
 const SEARCH_RESULTS_PER_PAGE = 20;
 
 function getItemProps(file, browserProps) {
@@ -411,7 +413,7 @@ class FileBrowser extends React.Component {
         }
         actions = (
           <div className="item-actions">
-            <LoadingSpinner /> {actionText}
+            {/*<LoadingSpinner /> {actionText}*/}
           </div>
         );
       }

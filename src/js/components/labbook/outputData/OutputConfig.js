@@ -3,7 +3,7 @@ import Moment from 'moment'
 const Config = {
   files: [
           {
-            key: 'code/',
+            key: 'output/',
             modified: + Moment().subtract(1, 'hours'),
             size: 1.5 * 1024 * 1024,
           }

@@ -9,7 +9,8 @@ import {
 //components
 import Notes from './notes/Notes'
 import Code from './code/Code'
-import Data from './data/Data'
+import InputData from './inputData/InputData'
+import OutputData from './outputData/OutputData'
 import Overview from './overview/Overview'
 import Environment from './environment/Environment'
 import UserNote from './UserNote'
@@ -200,8 +201,12 @@ class Labbook extends Component {
                         />)
                       }} />
 
-                      <Route path={`${this.props.match.url}/data`} render={() => {
-                        return (<Data/>)
+                      <Route path={`${this.props.match.url}/inputData`} render={() => {
+                        return (<InputData/>)
+                      }} />
+
+                      <Route path={`${this.props.match.url}/outputData`} render={() => {
+                        return (<OutputData/>)
                       }} />
                     </Switch>
                   </Route>
@@ -210,22 +215,8 @@ class Labbook extends Component {
             </div>
 
           </div>
-          <div id="labbookModal" className="Labbook__modal hidden">
-            <div
-              onClick={() => this._hideLabbookModal()}
-              className="UserNote__close">
-              X
-            </div>
-            {
-              (this.state.modalVisible) &&
-              <UserNote
-                labbookId={this.props.labbook.id}
-                {...this.props}
-                labbookName={labbookName}
-                hideLabbookModal={this._hideLabbookModal}/>
-            }
-          </div>
-          <div className="Labbook__info">
+
+          {/* <div className="Labbook__info">
             <div className="Labbook__info-card">
               <div
                 className="Labbook__user-note"
@@ -234,7 +225,7 @@ class Labbook extends Component {
                  <div className="Labbook__user-note--add"></div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     )
