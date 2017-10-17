@@ -9,7 +9,7 @@ import Auth from 'JS/Auth/Auth';
 import history from 'JS/history'
 import renderer from 'react-test-renderer';
 import relayTestingUtils from 'relay-testing-utils'
-import config from './labbook/config'
+import config from './__relay__data/Routes.json'
 // components
 const context = {}
 
@@ -24,7 +24,7 @@ test('Test Routes Rendering', () => {
 
       const component = renderer.create(
 
-          relayTestingUtils.relayWrap(<Routes />, {}, config.data)
+          relayTestingUtils.relayWrap(<Routes />, {}, config)
 
       );
       let tree = component.toJSON();

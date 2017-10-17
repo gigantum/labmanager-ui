@@ -31,8 +31,12 @@ const JobStatus = {
 
         //debugger;
           if(response.data.jobStatus.status === 'started'){
-            fetchData()
+            setTimeout(()=>{
+              fetchData()
+            }, 250)
+
           }else{
+
             resolve(response.data)
           }
         }).catch((error) =>{
