@@ -1,3 +1,0 @@
-[submodule "src/js/vendor/FileBrowser"]
-	path = src/js/vendor/FileBrowser
-	url = https://github.com/gigantum/react-keyed-file-browser.git
