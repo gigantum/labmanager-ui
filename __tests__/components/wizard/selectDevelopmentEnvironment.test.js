@@ -24,7 +24,7 @@ test('Test SelectDevelopmentEnvironment rendering', () => {
         labbookName={'demo-lab-book'}
         setComponent={setComponent}
         setLabbookName={setLabbookName}
-        nextWindow={'addEnvironmentPackage'}/>, {}. json.data)
+        nextWindow={'addEnvironmentPackage'}/>, {}, json.data)
 
   );
   let tree = component.toJSON();
