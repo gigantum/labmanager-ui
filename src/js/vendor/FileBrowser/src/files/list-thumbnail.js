@@ -73,9 +73,9 @@ class ListFile extends BaseFile {
     var size;
     if (this.props.showSize) {
       if (!this.props.isRenaming && !this.props.isDeleting) {
-        size = (
-          <span className="size"><small>{ApiUtils.file_size(this.props.size)}</small></span>
-        );
+        //size = (
+          //<span className="size"><small>{ApiUtils.file_size(this.props.size)}</small></span>
+        //);
       }
     }
     var modified;
