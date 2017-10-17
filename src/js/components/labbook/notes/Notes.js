@@ -15,7 +15,6 @@ import Config from 'JS/config'
 let pagination = false;
 let isLoadingMore = false;
 let counter = 10;
-let notesContainer;
 
 class Notes extends Component {
   constructor(props){
@@ -23,8 +22,9 @@ class Notes extends Component {
   	this.state = {
       'modalVisible': false
     };
-
-    notesContainer = this;
+    this._loadMore = this._loadMore.bind(this)
+    this._toggleNote = this._toggleNote.bind(this)
+    this._hideAddNote = this._hideAddNote.bind(this)
   }
   /**
   *  @param {}
@@ -36,8 +36,9 @@ class Notes extends Component {
     let notes = this.props.labbook.notes
     // let relay = this.props.relay;
     // let cursor =  notes.edges[0].cursor;
+    let that =  this;
     pagination = false;
-    // setInterval(function(){
+    // setInterval(function(){ //removed because of race condition on backend
     //   relay.refetchConnection(
     //     counter,
     //     (response) =>{
@@ -52,7 +53,7 @@ class Notes extends Component {
       let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
           expandOn = root.offsetHeight;
       if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
-          notesContainer._loadMore(e);
+          that._loadMore(e);
       }
     });
   }
@@ -63,7 +64,7 @@ class Notes extends Component {
   _loadMore() {
     isLoadingMore = true
     pagination = true;
-   this.props.relay.loadMore(
+    this.props.relay.loadMore(
      counter, // Fetch the next 10 feed items
      e => {
        isLoadingMore = false;
@@ -80,6 +81,7 @@ class Notes extends Component {
   *   @return {Object}
   */
   _transformNotes(notes){
+
     let notesTime = {}
     notes.edges.forEach((note) => {
       let date = (note.node.timestamp) ? new Date(note.node.timestamp) : new Date()
@@ -98,14 +100,14 @@ class Notes extends Component {
   }
 
   _hideAddNote(){
-    notesContainer.setState({
+    this.setState({
       'modalVisible': false
     })
   }
 
   render(){
     let notesTime = this._transformNotes(this.props.labbook.notes);
-    console.log(this.props)
+
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='Notes'>
@@ -116,7 +118,7 @@ class Notes extends Component {
 
               {
                 Object.keys(notesTime).map((k, i) => {
-                  console.log(i)
+
                   return (
                     <div key={k}>
 

@@ -17,6 +17,8 @@ export default class LocalLabbookPanel extends Component {
       'exportPath': '',
       'show': false
     }
+
+    this._exportLabbook = this._exportLabbook.bind(this)
   }
 
   _getContainerStatusText(containerStatus, imageStatus){
@@ -27,13 +29,19 @@ export default class LocalLabbookPanel extends Component {
 
     return status;
   }
-
-  _exportLabbook(evt, edge){
+  /**
+  * @param {event, object} evt,edge
+  *  runs export mutation if export has not been downloaded
+  *
+  */
+  _exportLabbook = (evt, edge) => {
 
     if(this.state.exportPath.length === 0){
 
       let exportClassList = document.getElementById(evt.target.id).classList;
+
       exportClassList.add('LocalLabbooks__export--downloading')
+
       ExportLabbookMutation('default', 'default', edge.node.name, (response, error)=>{
         if(response){
           JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
@@ -48,8 +56,6 @@ export default class LocalLabbookPanel extends Component {
               console.log(error)
               exportClassList.remove('LocalLabbooks__export--downloading')
           })
-
-
         }
       })
     }else{
@@ -97,7 +103,12 @@ export default class LocalLabbookPanel extends Component {
 
           </div>
           <div className="LocalLabbooks__status">
-            <div id={'Export__localLabbooks' + edge.node.name} onMouseDown={(evt) => this._exportLabbook(evt, edge)} className="LocalLabbooks__export">Export</div>
+            <div
+              id={'Export__localLabbooks' + edge.node.name}
+              ref={'Export__localLabbooks' + edge.node.name}
+              onMouseDown={(evt) => this._exportLabbook(evt, edge)} className="LocalLabbooks__export">
+              Export
+            </div>
             <SweetAlert
               className="sa-error-container"
               show={this.state.show}

@@ -9,28 +9,8 @@ import { BaseFileConnectors } from './../base-file.js'
 import prettyFileIcons from 'pretty-file-icons'
 class ListFile extends BaseFile {
   render() {
-    var icon;
-    console.log(this)
-    // if (this.isImage()) {
-    //   if (this.props.thumbnail_url) {
-    //     icon = (
-    //       <div className="image" style={{
-    //         backgroundImage: 'url('+this.props.thumbnail_url+')',
-    //       }}></div>
-    //     );
-    //   }
-    //   else {
-    //     icon = (<i className="fa fa-file-image-o" aria-hidden="true"></i>);
-    //   }
-    // }
-    // else if (this.isPdf()) {
-    //   icon = (<i className="fa fa-file-pdf-o" aria-hidden="true"></i>);
-    // }
-    // else {
-    //   icon = (<i className="fa fa-file-o" aria-hidden="true"></i>);
-    // }
-    console.log(prettyFileIcons.getIcon(this.props.thumbnail_url))
-    icon = (<i>{prettyFileIcons.getIcon(this.props.thumbnail_url)}</i>)
+
+    var icon = (<i>{prettyFileIcons.getIcon(this.props.thumbnail_url)}</i>)
     var inAction = (this.props.isDragging || this.props.action);
 
     var name;

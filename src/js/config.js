@@ -1,11 +1,5 @@
 const CONFIG = {
   'api': process.env.NODE_ENV,
-  'dev':{
-    'api': 'http://127.0.0.1:5000/labbook/'
-  },
-  'prod':{
-    'api': 'http://api.localhost/labbook/'
-  },
   'navigation_items': [
     {id:'overview', name: 'Overview'},
     {id:'notes', name: 'Activity', 'fragment': '...Notes_labbook'},
@@ -13,6 +7,14 @@ const CONFIG = {
     {id:'code', name: 'Code'},
     {id:'inputData', name: 'Input Data'},
     {id:'outputData', name: 'Output Data'}
+  ],
+  'modalNav': [
+    {'id': 'createLabook', 'description': 'Title & Description'},
+    {'id': 'selectBaseImage', 'description': 'Base Image'},
+    {'id': 'selectDevelopmentEnvironment', 'description': 'Dev Environment'},
+    {'id': 'addEnvironmentPackage', 'description': 'Add Dependencies'},
+    {'id': 'addCustomDependencies', 'description': 'Custom Dependencies'},
+    {'id': 'successMessage', 'description': 'Success'}
   ],
   'months': [
     'Jan',

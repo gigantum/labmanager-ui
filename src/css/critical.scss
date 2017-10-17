@@ -55,7 +55,7 @@
 @import  'components/wizard/importCode';
 @import  'components/wizard/addDatasets';
 
-html, body {
+html, body, .root{
   width: 100%;
   height: 100%;
   margin: 0;
@@ -111,6 +111,8 @@ h6{
   text-align: center;
   line-height: 300px;
 }
+
+
 
 .rendered-react-keyed-file-browser{
   width: 100%;

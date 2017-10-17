@@ -8,7 +8,6 @@ import Config from './OutputConfig'
 //mutations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 
-let code;
 export default class Output extends Component {
   constructor(props){
   	super(props);
@@ -25,8 +24,6 @@ export default class Output extends Component {
     this.handleRenameFile = this.handleRenameFile.bind(this);
     this.handleDeleteFolder = this.handleDeleteFolder.bind(this);
     this.handleDeleteFile = this.handleDeleteFile.bind(this);
-
-    code = this;
 
   }
 
@@ -130,36 +127,6 @@ export default class Output extends Component {
       state.files = newFiles;
       return state;
     });
-  }
-
-  /**
-  *  @param {}
-  *  start contianer muations
-  *  redirect user to jupyter in callback
-  */
-  _openJupyter(){
-
-    StartContainerMutation(
-      this.props.labbookName,
-      'default',
-      'clientMutationId',
-      (error) =>{
-        if(error){
-          code.setState({
-            'show': true,
-            'message': error[0].message,
-          })
-        }else{
-          setTimeout(function(){
-            window.open('http://localhost:8888/', '_blank')
-          }, 3000)
-
-        }
-
-
-      }
-    )
-
   }
 
   render(){

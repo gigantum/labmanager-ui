@@ -86,7 +86,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
     gets current selectedDevelopmentEnvironment and passes variables to AddEnvironmentComponentMutation
     callback triggers and modal state is changed to  next window
   */
-  continueSave(isSkip){
+  continueSave = (isSkip) => {
 
     let component = this.state.selectedDevelopmentEnvironment.node.component;
     this.props.toggleDisabledContinue(true);
@@ -109,7 +109,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
         }
       }
     )
-    
+
 
   }
   /**

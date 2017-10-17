@@ -8,7 +8,6 @@ import Config from './CodeConfig'
 //mutations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 
-let code;
 export default class Code extends Component {
   constructor(props){
   	super(props);
@@ -19,14 +18,13 @@ export default class Code extends Component {
       'files': Config.files
     }
 
-    this.handleCreateFolder = this.handleCreateFolder.bind(this);
-    this.handleCreateFiles = this.handleCreateFiles.bind(this);
-    this.handleRenameFolder = this.handleRenameFolder.bind(this);
-    this.handleRenameFile = this.handleRenameFile.bind(this);
-    this.handleDeleteFolder = this.handleDeleteFolder.bind(this);
-    this.handleDeleteFile = this.handleDeleteFile.bind(this);
-
-    code = this;
+    this.handleCreateFolder = this.handleCreateFolder.bind(this)
+    this.handleCreateFiles = this.handleCreateFiles.bind(this)
+    this.handleRenameFolder = this.handleRenameFolder.bind(this)
+    this.handleRenameFile = this.handleRenameFile.bind(this)
+    this.handleDeleteFolder = this.handleDeleteFolder.bind(this)
+    this.handleDeleteFile = this.handleDeleteFile.bind(this)
+    this._openJupyter = this._openJupyter.bind(this)
 
   }
 
@@ -34,7 +32,7 @@ export default class Code extends Component {
     this.setState(state => {
       state.files = state.files.concat([{
         key: key,
-      }]);
+      }])
       return state;
     });
   }
@@ -145,7 +143,7 @@ export default class Code extends Component {
       'clientMutationId',
       (error) =>{
         if(error){
-          code.setState({
+          this.setState({
             'show': true,
             'message': error[0].message,
           })

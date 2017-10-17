@@ -11,7 +11,7 @@ import LocalLabbookPanel from 'Components/dashboard/labbooks/LocalLabbookPanel'
 import ImportModule from 'Components/import/ImportModule'
 
 
-let localLabbooks;
+
 
 let isLoadingMore = false;
 
@@ -23,7 +23,10 @@ class LocalLabbooks extends Component {
     this.state={
       importModuleOpen: false
     }
-  	localLabbooks = this;
+    this._goToLabbook = this._goToLabbook.bind(this)
+    this._loadMore = this._loadMore.bind(this)
+    this._openImport = this._openImport.bind(this)
+    this._closeImport = this._closeImport.bind(this)
   }
 
   /**
@@ -31,14 +34,15 @@ class LocalLabbooks extends Component {
   * adds a scoll listener to trigger pagination
   */
   componentDidMount() {
+    let that = this;
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
       let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
           expandOn = root.offsetHeight;
 
-      if(localLabbooks.props.feed.localLabbooks){
-        if ((distanceY > expandOn) && !isLoadingMore && localLabbooks.props.feed.localLabbooks.pageInfo.hasNextPage) {
-            localLabbooks._loadMore(e);
+      if(that.props.feed.localLabbooks){
+        if ((distanceY > expandOn) && !isLoadingMore && that.props.feed.localLabbooks.pageInfo.hasNextPage) {
+            that._loadMore(e);
         }
       }
     });
@@ -47,17 +51,17 @@ class LocalLabbooks extends Component {
   *  @param {string} labbookName - inputs a labbook name
   *  routes to that labbook
   */
-  _goToLabbook(labbookName){
-    localLabbooks.setState({'labbookName': labbookName})
+  _goToLabbook = (labbookName) => {
+    this.setState({'labbookName': labbookName})
 
-    localLabbooks.props.history.replace(`/labbooks/${labbookName}`)
+    this.props.history.replace(`/labbooks/${labbookName}`)
   }
 
   /**
   *  @param {event} e
   *  loads more labbooks using the relay pagination container
   */
-  _loadMore(e){
+  _loadMore = (e) => {
     isLoadingMore = true
     if(e){
       e.preventDefault();
@@ -74,7 +78,7 @@ class LocalLabbooks extends Component {
   *  @param {}
   *  opens import modal
   */
-  _openImport(){
+  _openImport = () => {
     if(document.getElementById('modal__cover')){
       document.getElementById('modal__cover').classList.remove('hidden')
     }
@@ -84,11 +88,11 @@ class LocalLabbooks extends Component {
   *  @param {}
   *  closes import modal
   */
-  _closeImport(){
+  _closeImport = () => {
     if(document.getElementById('modal__cover')){
       document.getElementById('modal__cover').classList.add('hidden')
     }
-    localLabbooks.setState({importModuleOpen: false})
+    this.setState({importModuleOpen: false})
   }
 
   render(){

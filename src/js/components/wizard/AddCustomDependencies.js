@@ -10,8 +10,6 @@ import environment from 'JS/createRelayEnvironment'
 import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 
-let addCustomDependencies;
-
 const AddCustomDependenciesQuery = graphql`query AddCustomDependenciesQuery($first: Int!, $cursor: String){
   availableCustomDependencies(first: $first, after: $cursor){
     edges{
@@ -68,7 +66,9 @@ export default class AddCustomDependencies extends React.Component {
       'isLoading': false
     };
     this.continueSave = this.continueSave.bind(this)
-    addCustomDependencies = this;
+    this._buildLabbook = this._buildLabbook.bind(this)
+    this._selectCustomDependency = this._selectCustomDependency.bind(this)
+    this._addCustomDependencies = this._addCustomDependencies.bind(this)
   }
 
   /**
@@ -76,7 +76,7 @@ export default class AddCustomDependencies extends React.Component {
     takes a base image edge
     sets componest state for selectedCustomDependencyId and selectedCustomDependency
   */
-  _selectCustomDependency(edge){
+  _selectCustomDependency = (edge) => {
     let selectedCustomDependencies = this.state.selectedCustomDependencies;
     let selectedCustomDependenciesIds = this.state.selectedCustomDependenciesIds;
 
@@ -97,7 +97,7 @@ export default class AddCustomDependencies extends React.Component {
     triggers buildMuation
     sends user to next window
   */
-  _buildLabbook(){
+  _buildLabbook = () => {
 
     BuildImageMutation(
       this.props.labbookName,
@@ -116,7 +116,7 @@ export default class AddCustomDependencies extends React.Component {
         if(this.props.buildCallback){
           this.props.buildCallback()
         }
-        addCustomDependencies.props.setComponent(this.props.nextWindow);
+        this.props.setComponent(this.props.nextWindow);
 
       })
   }
@@ -127,7 +127,7 @@ export default class AddCustomDependencies extends React.Component {
     gets current selectedCustomDependency and passes variables to AddEnvironmentComponentMutation
     callback triggers build mutation
   */
-  _addCustomDependencies(){
+  _addCustomDependencies = () => {
     let all = [];
 
     this.setState({
@@ -138,7 +138,8 @@ export default class AddCustomDependencies extends React.Component {
 
     this.state.selectedCustomDependencies.forEach((edge) => {
 
-      let component = edge.node.component;
+      const {component} = edge.node;
+
       let promise = new Promise((resolve, reject) => {
         AddEnvironmentComponentMutation(
           this.props.labbookName,
@@ -157,7 +158,7 @@ export default class AddCustomDependencies extends React.Component {
 
             if(showAlert){
               let message = showAlert ? error[0].message : '';
-              addCustomDependencies.setState({
+              this.setState({
                 'show': showAlert,
                 'message': message,
                 'reject': reject
@@ -204,7 +205,6 @@ export default class AddCustomDependencies extends React.Component {
   }
 
   render(){
-    let {componentProps} = this;
 
     return(
       <div className="AddCustomDependencies">
@@ -226,60 +226,9 @@ export default class AddCustomDependencies extends React.Component {
 
                 if(props){
                   return(
-                    <div className="AddCustomDependencies__inner-container flex flex--column justify--space-between">
-                      <div className="AddCustomDependencies__selected-image-container">
+                    this._renderQueryResults(props)
 
-                          {
-                            (this.state.selectedCustomDependencies.length > -1) && (
-                              this.state.selectedCustomDependencies.map((customDependency, index) => {
-                                return (
-                                  <div key={customDependency.node.id + index} className="AddCustomDependencies__selected-image flex">
-                                    <img alt="" src={customDependency.node.info.icon} height="50" width="50" />
-                                    <p>{customDependency.node.info.humanName}</p>
-                                  </div>
-                                )
-                              })
-                            )
-                          }
-                      </div>
-
-                      <div className="AddCustomDependencies__images flex flex--row flex--wrap justify--space-around">
-                      {
-                        props.availableCustomDependencies.edges.map((edge) => {
-
-                            return(
-                              <div disabled={(this.state.selectedCustomDependenciesIds.indexOf(edge.node.id) > -1)} className={(this.state.selectedCustomDependenciesIds.indexOf(edge.node.id) > -1) ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'} onClick={()=> this._selectCustomDependency(edge)} key={edge.node.id}>
-                                <img alt="" src={edge.node.info.icon} height="50" width="50" />
-                                <p>{edge.node.info.humanName}</p>
-                              </div>
-                            )
-                        })
-                      }
-
-                    </div>
-                    {
-                      this._environmentView() && (
-                        <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
-                          <button className="SelectBaseImage__save-button" onClick={() => this.continueSave()}>Save</button>
-                        </div>
-                      )
-                    }
-                    <div className={this.state.isLoading ? '' : 'hidden'}>
-                      <Loader />
-                    </div>
-                    <SweetAlert
-                      className="sa-error-container"
-                      show={this.state.show}
-                      type="error"
-                      title="Error"
-                      text={this.state.message}
-                      onConfirm={() => {
-                        this.state.reject(); this.setState({ show: false, message: ''})
-                      }}
-                      />
-                  </div>
-
-                )
+                  )
                 }else{
                   return(<Loader />)
                 }
@@ -289,5 +238,73 @@ export default class AddCustomDependencies extends React.Component {
 
       </div>
       )
+  }
+
+
+  _renderQueryResults(props){
+    return(
+      <div className="AddCustomDependencies__inner-container flex flex--column justify--space-between">
+        <div className="AddCustomDependencies__selected-image-container">
+
+            {
+              (this.state.selectedCustomDependencies.length > -1) && (
+                this.state.selectedCustomDependencies.map((customDependency, index) => {
+                  return (
+                    <div key={customDependency.node.id + index} className="AddCustomDependencies__selected-image flex">
+                      <img alt="" src={customDependency.node.info.icon} height="50" width="50" />
+                      <p>{customDependency.node.info.humanName}</p>
+                    </div>
+                  )
+                })
+              )
+            }
+        </div>
+
+        <div className="AddCustomDependencies__images flex flex--row flex--wrap justify--space-around">
+        {
+          props.availableCustomDependencies.edges.map((edge) => {
+
+              let disabled = (this.state.selectedCustomDependenciesIds.indexOf(edge.node.id) > -1)
+
+              return(
+                <div
+                  disabled={disabled}
+                  className={disabled ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'}
+                  onClick={()=> this._selectCustomDependency(edge)}
+                  key={edge.node.id}>
+
+                  <img alt="" src={edge.node.info.icon} height="50" width="50" />
+                  <p>{edge.node.info.humanName}</p>
+
+                </div>
+              )
+          })
+        }
+
+      </div>
+      {
+        this._environmentView() && (
+          <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
+            <button className="SelectBaseImage__save-button" onClick={() => this.continueSave()}>Save</button>
+          </div>
+        )
+      }
+
+      <div className={this.state.isLoading ? '' : 'hidden'}>
+        <Loader />
+      </div>
+
+      <SweetAlert
+        className="sa-error-container"
+        show={this.state.show}
+        type="error"
+        title="Error"
+        text={this.state.message}
+        onConfirm={() => {
+          this.state.reject(); this.setState({ show: false, message: ''})
+        }}
+        />
+    </div>
+    )
   }
 }

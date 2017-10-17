@@ -71,7 +71,7 @@ export default class PackageCount extends Component {
                 <div className="PackageCount__dependencies">
                   <h4 className={'Overview__header'}>Dependencies</h4>
                   <ul className="flex flex--wrap">
-                    {console.log(Object.keys(packages).length === 0)}
+          
                     { (Object.keys(packages).length > 0) && (
 
                        Object.keys(packages).map(key => {
