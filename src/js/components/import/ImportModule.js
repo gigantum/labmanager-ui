@@ -5,7 +5,7 @@ import SweetAlert from 'sweetalert-react'
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
-let importModule;
+
 
 export default class ImportModule extends Component {
   constructor(props){
@@ -20,12 +20,23 @@ export default class ImportModule extends Component {
       'isImporting': false
     }
 
-    importModule = this;
+
+    this._getBlob = this._getBlob.bind(this)
+    this._dragoverHandler = this._dragoverHandler.bind(this)
+    this._dropHandler = this._dropHandler.bind(this)
+    this._dragendHandler = this._dragendHandler.bind(this)
+    this._fileSelected = this._fileSelected.bind(this)
+    this._fileUpload = this._fileUpload.bind(this)
+    this._importingState = this._importingState.bind(this)
+    this._clearState = this._clearState.bind(this)
+
     const dropzoneIds = ['dropZone', 'dropZone__helper', 'dropZone__filename'];
 
     //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
     window.addEventListener('dragenter', function(evt) { //use evt, event is a reserved word in chrome
-      document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
+      if(document.getElementById('dropZone')){
+        document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
+      }
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
         evt.preventDefault();
         evt.dataTransfer.effectAllowed = 'none';
@@ -37,13 +48,16 @@ export default class ImportModule extends Component {
     window.addEventListener('dragleave', function(evt) { //use evt, event is a reserved word in chrome
 
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
-        document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+        if(document.getElementById('dropZone')){
+          document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+        }
       }
     }, false);
 
     window.addEventListener('dragover', function(evt) {  //use evt, event is a reserved word in chrome
-
-      document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
+      if(document.getElementById('dropZone')){
+        document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
+      }
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
         evt.preventDefault();
         evt.dataTransfer.effectAllowed = 'none';
@@ -52,7 +66,9 @@ export default class ImportModule extends Component {
     });
 
     window.addEventListener('drop', function(evt) { //use evt, event is a reserved word in chrome
-      document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+      if(document.getElementById('dropZone')){
+        document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+      }
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
 
         evt.preventDefault();
@@ -65,7 +81,8 @@ export default class ImportModule extends Component {
   *  @param {object} dataTransfer
   *  preventDefault on dragOver event
   */
-  _getBlob(dataTransfer){
+  _getBlob = (dataTransfer) => {
+    let that = this;
     for (let i=0; i < dataTransfer.files.length; i++) {
 
       let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
@@ -74,7 +91,7 @@ export default class ImportModule extends Component {
         this.setState({error: true})
 
         setTimeout(function(){
-          importModule.setState({error: false})
+          that.setState({error: false})
         }, 5000)
 
       }else{
@@ -86,7 +103,7 @@ export default class ImportModule extends Component {
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
 
 
-          importModule.setState(
+          that.setState(
             {files: [
               {
                 blob: blob,
@@ -108,7 +125,7 @@ export default class ImportModule extends Component {
   *  @param {Object} event
   *  preventDefault on dragOver event
   */
-  _dragoverHandler(evt) {  //use evt, event is a reserved word in chrome
+  _dragoverHandler = (evt) => {  //use evt, event is a reserved word in chrome
 
     evt.preventDefault();//this kicks the event up the event loop
   }
@@ -117,7 +134,7 @@ export default class ImportModule extends Component {
   *  @param {Object} event
   *  handle file drop and get file data
   */
-  _dropHandler(evt){
+  _dropHandler = (evt) => {
       //use evt, event is a reserved word in chrome
     let dataTransfer = evt.dataTransfer
     evt.preventDefault();
@@ -142,7 +159,7 @@ export default class ImportModule extends Component {
   *  @param {Object}
   *  handle end of dragover with file
   */
-  _dragendHandler(evt){  //use evt, event is a reserved word in chrome
+  _dragendHandler = (evt) => {  //use evt, event is a reserved word in chrome
 
     let dataTransfer = evt.dataTransfer;
 
@@ -165,14 +182,14 @@ export default class ImportModule extends Component {
   *  @param {Object}
   *  opens file system for user to select file
   */
-  _fileSelected(evt){
+  _fileSelected = (evt) => {
      this._getBlob(document.getElementById('file__input'))
   }
   /**
   *  @param {Object}
   *   trigger file upload
   */
-  _fileUpload(evt){
+  _fileUpload = (evt) => {
     this._importingState();
     let filepath = this.state.files[0].filename
 
@@ -186,7 +203,7 @@ export default class ImportModule extends Component {
             type: (response.jobStatus.status === 'failed') ? 'error': 'success'
         })
 
-        importModule._clearState()
+        this._clearState()
 
         if(response.jobStatus.status === 'finished'){
           let filename = filepath.split('/')[filepath.split('/').length -1]
@@ -197,11 +214,11 @@ export default class ImportModule extends Component {
 
         }).catch((error)=>{
           console.error(error)
-          importModule._clearState()
+          this._clearState()
         })
       }else{
         console.error(error)
-        importModule._clearState()
+        this._clearState()
       }
     })
 
@@ -212,9 +229,9 @@ export default class ImportModule extends Component {
   *  sets state of app for importing
   *  @return {}
   */
-  _importingState(){
+  _importingState = () => {
     document.getElementById('dropZone__filename').classList.add('ImportModule__animation')
-    importModule.setState({
+    this.setState({
       isImporting: true
     })
   }
@@ -224,9 +241,9 @@ export default class ImportModule extends Component {
   *  clears state of file and sets css back to import
   *  @return {}
   */
-  _clearState(){
+  _clearState = () => {
     document.getElementById('dropZone__filename').classList.remove('ImportModule__animation')
-    importModule.setState({
+    this.setState({
       files:[],
       isImporting: false
     })

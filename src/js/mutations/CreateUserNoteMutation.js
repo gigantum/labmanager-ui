@@ -9,6 +9,17 @@ const mutation = graphql`
   mutation CreateUserNoteMutation($input: CreateUserNoteInput!){
     createUserNote(input: $input){
       clientMutationId
+      note{
+        linkedCommit
+        commit
+        level
+        tags
+        timestamp
+        freeText
+        message
+        id
+        author
+      }
     }
   }
 `;
@@ -25,6 +36,7 @@ export default function CreateUserNoteMutation(
   labbookId,
   callback
 ) {
+
   const variables = {
     input: {
       labbookName,
@@ -41,16 +53,27 @@ export default function CreateUserNoteMutation(
     {
       mutation,
       variables,
+      // configs: [{ //commented out until nodes are returned
+      //   type: 'RANGE_ADD',
+      //   parentID: labbookId,
+      //   connectionInfo: [{
+      //     key: 'Notes_notes',
+      //     rangeBehavior: 'prepend'
+      //   }],
+      //   edgeName: 'note'
+      // }],
       onCompleted: (response, error) => {
 
         if(error){
           console.log(error)
         }
+
         callback(response, error)
       },
       onError: err => console.error(err),
 
       updater: (store) => {
+
         const id = 'client:newNote:'+ tempID++;
         const node = store.create(id, 'Note')
 

@@ -43,16 +43,6 @@ exports[`Test WizardModal rendering 1`] = `
         >
           
         </li>
-        <li
-          className="WizardModal__progress-item"
-        >
-          
-        </li>
-        <li
-          className="WizardModal__progress-item"
-        >
-          
-        </li>
       </ul>
     </div>
     <h4

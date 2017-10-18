@@ -5,7 +5,6 @@ import SweetAlert from 'sweetalert-react';
 import AddEnvironmentPackageMutation from 'Mutations/AddEnvironmentPackageMutation'
 
 
-let addEnvionmentPackage;
 export default class AddEnvironmentPackage extends React.Component {
   constructor(props){
   	super(props);
@@ -19,13 +18,16 @@ export default class AddEnvironmentPackage extends React.Component {
       'show': false,
       'message': ''
     };
-    addEnvionmentPackage = this;
 
     this.props.toggleDisabledContinue(false);
     this.continueSave = this.continueSave.bind(this);
+    this._setCurrentPackageManager = this._setCurrentPackageManager.bind(this)
+    this._updateDependencyName = this._updateDependencyName.bind(this)
+    this._addRemovePackage = this._addRemovePackage.bind(this)
+    this._environmentView = this._environmentView.bind(this)
   }
 
-  _environmentView(){
+  _environmentView = () => {
     return this.props.environmentView
   }
   /**
@@ -35,34 +37,37 @@ export default class AddEnvironmentPackage extends React.Component {
     pushes mutations into a promise and resolves if succesful
     if all promises resolve, setComponent is triggered and next component is loaded
   */
-  continueSave(isSkip){
+  continueSave = (isSkip) => {
     if(!isSkip){
-      let all = [];
+      let all = [],
+      {environmentPackages} = this.state;
+
       this.props.setComponent(this.props.nextWindow)
 
-      this.state.environmentPackages.forEach((pack) => {
-        if(pack.dependencyName){
+      environmentPackages.forEach(({dependencyName, packageManager}) => {
+        if(dependencyName){
           let promise = new Promise((resolve, reject) => {
 
             AddEnvironmentPackageMutation(
               this.props.labbookName,
               'default',
-              pack.packageManager,
-              pack.dependencyName,
+              packageManager,
+              dependencyName,
               this.props.environmentId,
               (error) => {
                 console.log(error)
                 let showAlert = ((error !== null) && (error !== undefined))
                 let message = showAlert ? error[0].message : '';
-                addEnvionmentPackage.setState({
+
+                this.setState({
                   'show': showAlert,
                   'message': message,
-
                 })
+
                 if(!showAlert){
                   resolve()
                 }else{
-                  addEnvionmentPackage.setState({
+                  this.setState({
                     'reject': reject
                   })
                 }
@@ -80,7 +85,7 @@ export default class AddEnvironmentPackage extends React.Component {
 
         if(this.props.environmentView){
 
-          addEnvionmentPackage.props.buildCallback();
+          this.props.buildCallback();
         }else{
             this.props.setComponent(this.props.nextWindow)
         }
@@ -97,7 +102,7 @@ export default class AddEnvironmentPackage extends React.Component {
     @param {Object, number} evt,index
     sets package manager for adding pacakges
   */
-  _setCurrentPackageManager(evt, index){
+  _setCurrentPackageManager = (evt, index) => {
 
     let newEnvironmentPackages = this.state.environmentPackages;
     newEnvironmentPackages[index]['packageManager'] = evt.target.value;
@@ -108,7 +113,7 @@ export default class AddEnvironmentPackage extends React.Component {
     sets state for enviroment package on key stroke ENTER
     adds/remvoes a package via addRemovePackage function
   */
-  _updateDependencyName(evt, index){
+  _updateDependencyName = (evt, index) =>{
     if(evt.key !== 'Enter'){
       let newEnvironmentPackages = this.state.environmentPackages;
       newEnvironmentPackages[index]['dependencyName'] = evt.target.value;
@@ -122,7 +127,7 @@ export default class AddEnvironmentPackage extends React.Component {
     @param {Object, string, number} evt,packState,index
     adds or remvoes a package
   */
-  _addRemovePackage(evt, packSate, index){
+  _addRemovePackage = (evt, packSate, index) => {
       let newEnvironmentPackages = this.state.environmentPackages;
       if(packSate === 'Add'){
         newEnvironmentPackages[index]['state'] = 'Remove';

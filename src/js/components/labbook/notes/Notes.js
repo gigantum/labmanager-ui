@@ -7,6 +7,7 @@ import {
 //Components
 import NotesCard from './NotesCard'
 import Loader from 'Components/shared/Loader'
+import UserNote from './../UserNote'
 //utilities
 import Config from 'JS/config'
 
@@ -14,14 +15,16 @@ import Config from 'JS/config'
 let pagination = false;
 let isLoadingMore = false;
 let counter = 10;
-let notesContainer;
 
 class Notes extends Component {
   constructor(props){
   	super(props);
-  	this.state = {};
-
-    notesContainer = this;
+  	this.state = {
+      'modalVisible': false
+    };
+    this._loadMore = this._loadMore.bind(this)
+    this._toggleNote = this._toggleNote.bind(this)
+    this._hideAddNote = this._hideAddNote.bind(this)
   }
   /**
   *  @param {}
@@ -33,8 +36,9 @@ class Notes extends Component {
     let notes = this.props.labbook.notes
     // let relay = this.props.relay;
     // let cursor =  notes.edges[0].cursor;
+    let that =  this;
     pagination = false;
-    // setInterval(function(){
+    // setInterval(function(){ //removed because of race condition on backend
     //   relay.refetchConnection(
     //     counter,
     //     (response) =>{
@@ -49,7 +53,7 @@ class Notes extends Component {
       let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
           expandOn = root.offsetHeight;
       if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
-          notesContainer._loadMore(e);
+          that._loadMore(e);
       }
     });
   }
@@ -60,7 +64,7 @@ class Notes extends Component {
   _loadMore() {
     isLoadingMore = true
     pagination = true;
-   this.props.relay.loadMore(
+    this.props.relay.loadMore(
      counter, // Fetch the next 10 feed items
      e => {
        isLoadingMore = false;
@@ -77,6 +81,7 @@ class Notes extends Component {
   *   @return {Object}
   */
   _transformNotes(notes){
+
     let notesTime = {}
     notes.edges.forEach((note) => {
       let date = (note.node.timestamp) ? new Date(note.node.timestamp) : new Date()
@@ -88,8 +93,21 @@ class Notes extends Component {
     return notesTime
   }
 
+  _toggleNote(){
+    this.setState({
+      'modalVisible': !this.state.modalVisible
+    })
+  }
+
+  _hideAddNote(){
+    this.setState({
+      'modalVisible': false
+    })
+  }
+
   render(){
     let notesTime = this._transformNotes(this.props.labbook.notes);
+
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='Notes'>
@@ -99,14 +117,41 @@ class Notes extends Component {
             <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Notes__sizer flex-1-0-auto">
 
               {
-                Object.keys(notesTime).map(k => {
+                Object.keys(notesTime).map((k, i) => {
 
                   return (
                     <div key={k}>
+
+
                       <div className="Notes__date-tab flex flex--column justify--space-around">
                         <div className="Notes__date-day">{k.split('_')[2]}</div>
                         <div className="Notes__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
                       </div>
+
+                      {
+                        (i===0) && (
+                          <div className="UserNote__container">
+                            <div className="Notes__user-note"
+
+                              onClick={() => this._toggleNote()}>
+                              <div className={this.state.modalVisible ? 'Notes__user-note--remove' : 'Notes__user-note--add'}></div>
+                              <h5>Add Note</h5>
+
+                            </div>
+                            <div className={this.state.modalVisible ? 'Notes__add NotesCard' : 'hidden'}>
+
+                              {
+                                (this.state.modalVisible) &&
+                                <UserNote
+                                  labbookId={this.props.labbook.id}
+                                  {...this.props}
+                                  labbookName={this.props.labbookName}
+                                  hideLabbookModal={this._hideAddNote}/>
+                              }
+                            </div>
+                        </div>
+                        )
+                      }
 
                       <div key={k + 'card'}>
 

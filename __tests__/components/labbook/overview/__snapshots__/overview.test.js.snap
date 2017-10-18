@@ -204,11 +204,15 @@ exports[`Test Overview rendering 1`] = `
               </div>
             </div>
           </div>
-          <h4
-            className="Overview__header"
+          <div
+            className="Overview__header-container"
           >
-            Base Image
-          </h4>
+            <h4
+              className="Overview__header"
+            >
+              Base Image
+            </h4>
+          </div>
           <div
             className="Overview__info flex justify--left"
           >
@@ -216,7 +220,7 @@ exports[`Test Overview rendering 1`] = `
               className="Overview__card flex justify--space-around"
             >
               <div
-                className="flex-1-0-auto flex flex--column justify-center"
+                className="Overview__image-container flex-1-0-auto flex flex--column justify-center"
               >
                 <img
                   alt="Ubuntu 16.04 Python 3 Developer Dup"
@@ -422,11 +426,15 @@ exports[`Test Overview rendering 1`] = `
               </div>
             </div>
           </div>
-          <h4
-            className="Overview__header"
+          <div
+            className="Overview__header-container"
           >
-            Development Environments
-          </h4>
+            <h4
+              className="Overview__header"
+            >
+              Development Environments
+            </h4>
+          </div>
           <div
             className="Overview__info flex justify--left flex--wrap"
           >
@@ -437,7 +445,7 @@ exports[`Test Overview rendering 1`] = `
                 className="Overview__card flex justify--space-around"
               >
                 <div
-                  className="flex-1-0-auto flex flex--wrap flex--column justify-center"
+                  className="Overview__image-container flex-1-0-auto flex flex--column justify-center"
                 >
                   <img
                     alt="Python 3 Jupyter Notebook for Ubuntu"

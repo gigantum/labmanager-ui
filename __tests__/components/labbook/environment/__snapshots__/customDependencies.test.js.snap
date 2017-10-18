@@ -181,11 +181,15 @@ exports[`Test CustomDependencies rendering 1`] = `
       </div>
     </div>
   </div>
-  <h4
-    className="Environment__header"
+  <div
+    className="Environment__header-container"
   >
-    Custom Dependencies
-  </h4>
+    <h4
+      className="Environment__header"
+    >
+      Custom Dependencies
+    </h4>
+  </div>
   <div
     className="Environment__info flex justify--left"
   >
@@ -196,7 +200,7 @@ exports[`Test CustomDependencies rendering 1`] = `
         className="Environment__card flex justify--space-around"
       >
         <div
-          className="flex-1-0-auto flex flex--column justify-center"
+          className="Environment__image-container flex-1-0-auto flex flex--column justify-center"
         >
           <img
             alt="Pillow"
@@ -402,11 +406,15 @@ exports[`Test CustomDependencies rendering 2`] = `
       </div>
     </div>
   </div>
-  <h4
-    className="Environment__header"
+  <div
+    className="Environment__header-container"
   >
-    Custom Dependencies
-  </h4>
+    <h4
+      className="Environment__header"
+    >
+      Custom Dependencies
+    </h4>
+  </div>
   <div
     className="Environment__info flex justify--left"
   >
@@ -417,7 +425,7 @@ exports[`Test CustomDependencies rendering 2`] = `
         className="Environment__card flex justify--space-around"
       >
         <div
-          className="flex-1-0-auto flex flex--column justify-center"
+          className="Environment__image-container flex-1-0-auto flex flex--column justify-center"
         >
           <img
             alt="Pillow"

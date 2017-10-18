@@ -1,21 +1,133 @@
 // vendor
 import React, { Component } from 'react'
-import SweetAlert from 'sweetalert-react';
+import SweetAlert from 'sweetalert-react'
+import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
+import Moment from 'moment'
+//Config
+import Config from './CodeConfig'
 //mutations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 
-let code;
 export default class Code extends Component {
   constructor(props){
   	super(props);
 
     this.state = {
       'show': false,
-      'message': ''
+      'message': '',
+      'files': Config.files
     }
 
-    code = this;
+    this.handleCreateFolder = this.handleCreateFolder.bind(this)
+    this.handleCreateFiles = this.handleCreateFiles.bind(this)
+    this.handleRenameFolder = this.handleRenameFolder.bind(this)
+    this.handleRenameFile = this.handleRenameFile.bind(this)
+    this.handleDeleteFolder = this.handleDeleteFolder.bind(this)
+    this.handleDeleteFile = this.handleDeleteFile.bind(this)
+    this._openJupyter = this._openJupyter.bind(this)
 
+  }
+
+  handleCreateFolder(key) {
+    this.setState(state => {
+      state.files = state.files.concat([{
+        key: key,
+      }])
+      return state;
+    });
+  }
+  handleCreateFiles(files, prefix) {
+    this.setState(state => {
+      let newFiles = files.map((file) => {
+        let newKey = prefix;
+        if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
+          newKey += '/';
+        }
+        newKey += file.name;
+        return {
+          key: newKey,
+          size: file.size,
+          modified: + Moment(),
+        };
+      });
+
+      let uniqueNewFiles = [];
+      newFiles.forEach((newFile) => {
+        let exists = false;
+        state.files.forEach((existingFile) => {
+          if (existingFile.key === newFile.key) {
+            exists = true;
+          }
+        });
+        if (!exists) {
+          uniqueNewFiles.push(newFile);
+        }
+      });
+      state.files = state.files.concat(uniqueNewFiles);
+      return state;
+    });
+  }
+  handleRenameFolder(oldKey, newKey) {
+    this.setState(state => {
+      let newFiles = [];
+      state.files.map((file) => {
+        if (file.key.substr(0, oldKey.length) === oldKey) {
+          newFiles.push({
+            ...file,
+            key: file.key.replace(oldKey, newKey),
+            modified: +Moment(),
+          });
+        }
+        else {
+          newFiles.push(file);
+        }
+      });
+      state.files = newFiles;
+      return state;
+    });
+  }
+  handleRenameFile(oldKey, newKey) {
+    this.setState(state => {
+      let newFiles = [];
+      state.files.forEach((file) => {
+        if (file.key === oldKey) {
+          newFiles.push({
+            ...file,
+            key: newKey,
+            modified: +Moment(),
+          });
+        }
+        else {
+          newFiles.push(file);
+        }
+      });
+      state.files = newFiles;
+      return state;
+    });
+  }
+  handleDeleteFolder(folderKey) {
+    this.setState(state => {
+      let newFiles = [];
+      state.files.forEach((file) => {
+        if (file.key.substr(0, folderKey.length) !== folderKey) {
+          newFiles.push(file);
+        }
+      });
+      state.files = newFiles;
+      return state;
+    });
+  }
+  handleDeleteFile(fileKey) {
+    this.setState(state => {
+      let newFiles = [];
+      state.files.forEach((file) => {
+        if (file.key !== fileKey) {
+          newFiles.push(file);
+        }
+      });
+      state.files = newFiles;
+      return state;
+    });
   }
 
   /**
@@ -31,7 +143,7 @@ export default class Code extends Component {
       'clientMutationId',
       (error) =>{
         if(error){
-          code.setState({
+          this.setState({
             'show': true,
             'message': error[0].message,
           })
@@ -52,11 +164,21 @@ export default class Code extends Component {
 
     return(
         <div id="code" className="Code flex flex-row justify-center">
-          <button className="Code__open-jupyter" onClick={() => this._openJupyter()}
+          {/* <button className="Code__open-jupyter" onClick={() => this._openJupyter()}
           target="_blank">
             Open Jupyter
-          </button>
-
+          </button> */}
+          <FileBrowser ref="FileBrowser"
+            files={this.state.files}
+            onCreateFolder={this.handleCreateFolder}
+            onCreateFiles={this.handleCreateFiles}
+            onMoveFolder={this.handleRenameFolder}
+            onMoveFile={this.handleRenameFile}
+            onRenameFolder={this.handleRenameFolder}
+            onRenameFile={this.handleRenameFile}
+            onDeleteFolder={this.handleDeleteFolder}
+            onDeleteFile={this.handleDeleteFile}
+          />
 
           <SweetAlert
             className="sa-error-container"

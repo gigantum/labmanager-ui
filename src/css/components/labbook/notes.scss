@@ -1,3 +1,5 @@
+
+
 .Notes{
   overflow-x: hidden;
   overflow-y: auto;
@@ -11,8 +13,11 @@
   padding: 0 10px;
   border: 1px solid $font-grey;
   color: $charcoal;
-}
+  z-index: 200;
+  position: relative;
+  background: white;
 
+}
 
 .NotesCard:before, .Notes__date-tab:before{
   content: "";
@@ -26,7 +31,9 @@
   width: 1px;
   height: 15px;
 }
-
+.Notes__date-tab:nth-child(1):before{
+  height: 40px;
+}
 
 .Notes__date-tab:before{
   top: 76px;
@@ -64,17 +71,6 @@
   width: 100%;
 }
 
-.NotesCard__markdown-container{
-  overflow: auto;
-
-  height: auto;
-  //max-height: 300px;
-  padding: 10px;
-  font-weight: bold;
-  border-bottom: 1px dashed $font-grey;
-  border-left: 1px dashed $font-grey;
-  border-right: 1px dashed $font-grey;
-}
 
 .NotesCard__toggle-button{
   align-self: flex-end;
@@ -94,10 +90,12 @@
   border: none;
   color: $font-grey;
 }
- .NotesCard__toggle-icon{
+
+.NotesCard__toggle-icon{
    width: 20px;
    height: 20px;
  }
+
 .NotesCard__toggle-button.open .NotesCard__toggle-icon{
   transform: rotate(90deg);
 
@@ -190,4 +188,63 @@
   color: $font-grey;
 
   font-size: 26px;
+}
+
+.Notes__user-note{
+  color: $activity;
+  position: relative;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 200;
+  h5{
+    padding: 0px 0 0 60px;
+  }
+}
+
+.Notes__user-note--remove,
+.Notes__user-note--add{
+  background: $activity;
+  background-size: 10px;
+  height: 20px;
+  width: 20px;
+  border-radius: 15px;
+  position: absolute;
+  top: 3px;
+  left: 31px;
+  transition: all 0.3s;
+}
+
+.Notes__user-note:before, .Notes__user-note:before{
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: calc(100% - 4px);
+  left: 39px;
+  border: 4px solid $font-grey;
+  border-width: 0 0 0 4px;
+  width: 1px;
+  height: 40px;
+
+}
+
+.Notes__user-note--remove{
+  background: $activity url('../images/icons/remove.svg') no-repeat center center;
+  background-size: 14px;
+}
+
+.Notes__user-note--add{
+  background: $activity url('../images/icons/add.svg') no-repeat center center;
+  background-size: 14px;
+}
+
+.Notes__user-note:hover{
+  .Notes__user-note--remove,
+  .Notes__user-note--add{
+    height: 24px;
+    width: 24px;
+    top: 1px;
+    left: 29px;
+    background-size: 18px;
+  }
 }

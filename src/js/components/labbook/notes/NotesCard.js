@@ -8,15 +8,18 @@ export default class NotesCard extends Component {
   constructor(props){
     const level = props.edge.node.level
   	super(props);
-    this.state = {showExtraInfo: ((level === "AUTO_MAJOR") || (level === "USER_NOTE"))}
-  }
+    this.state = {
+      showExtraInfo: ((level === "AUTO_MAJOR") || (level === "USER_NOTE"))
+    }
 
+    this._toggleExtraInfo = this._toggleExtraInfo.bind(this)
+  }
 
   /**
   *   @param {}
   *  reverse state of showExtraInfo
   */
-  _toggleExtraInfo(){
+  _toggleExtraInfo = () => {
     this.setState({showExtraInfo: !this.state.showExtraInfo})
   }
   /**
@@ -35,10 +38,6 @@ export default class NotesCard extends Component {
     use SimpleMDE to get html of markdown
     @return {html}
   */
-  _getMarkdown(freeText){
-    var SimepleMarkdown = new SimpleMDE();
-
-  }
 
   render(){
 
@@ -68,7 +67,7 @@ export default class NotesCard extends Component {
           {
             (this.props.edge.node.freeText !== "") &&
             <div id={this.props.edge.node.commit} className="NotesCard__markdown-container">
-               {this.props.edge.node.freeText}
+               <ReactMarkdown source={this.props.edge.node.freeText} />
             </div>}
             <div className="NotesCard__row flex justify--space-around flex--row">
               <p>

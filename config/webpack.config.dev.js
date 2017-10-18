@@ -100,7 +100,8 @@ module.exports = {
       'react-native': 'react-native-web',
       'Components': path.resolve(__dirname, '../src/js/components/'),
       'Mutations': path.resolve(__dirname, '../src/js/mutations/'),
-      'JS': path.resolve(__dirname, '../src/js/')
+      'JS': path.resolve(__dirname, '../src/js/'),
+      'Submodules': path.resolve(__dirname, '../submodules/')
 
     },
     plugins: [
@@ -110,7 +111,8 @@ module.exports = {
       // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
-      new ModuleScopePlugin(paths.appSrc),
+      // new ModuleScopePlugin(paths.appSrc),
+      // new ModuleScopePlugin(paths.submodules),
     ],
   },
   module: {
@@ -178,6 +180,18 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         include: paths.appSrc,
+        loader: require.resolve('babel-loader'),
+        options: {
+
+          // This is a feature of `babel-loader` for webpack (not Babel itself).
+          // It enables caching results in ./node_modules/.cache/babel-loader/
+          // directory for faster rebuilds.
+          cacheDirectory: true,
+        },
+      },
+      {
+        test: /\.(js|jsx)$/,
+        include: paths.submodules,
         loader: require.resolve('babel-loader'),
         options: {
 

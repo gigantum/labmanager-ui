@@ -18,7 +18,7 @@
 }
 
 .Overview__card{
-  background-color: $grey;
+  background-color: $grey-light;
   padding: 2px;
   border: 1px solid $font-grey;
   border-radius: 5px;
@@ -118,14 +118,15 @@
 }
 
 .PackageCount__item{
+  background-color: $grey-light;
   border: 1px solid $font-grey;
   border-radius: 3px;
   color: $charcoal;
   padding: 5px 20px;
-  background-color: $grey;
   margin: 0 10px 0 0;
 }
 
 .PackageCount__dependencies{
+
   margin: 0 20px;
 }

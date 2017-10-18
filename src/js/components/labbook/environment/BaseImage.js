@@ -4,13 +4,16 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import SelectBaseImage from 'Components/wizard/SelectBaseImage'
 import Loader from 'Components/shared/Loader'
-let baseImage = null;
+
 class BaseImage extends Component {
 
   constructor(props){
     super(props);
     this.state = {'modal_visible': false};
-    baseImage = this;
+
+    this._openModal = this._openModal.bind(this)
+    this._hideModal = this._hideModal.bind(this)
+    this._setComponent = this._setComponent.bind(this)
   }
 
   /**
@@ -18,13 +21,13 @@ class BaseImage extends Component {
   *  check if edit is enabled
   */
   _editVisible(){
-    return false;//this.props.editVisible //alwasys false until api can support rebuilding image
+    return false;//this.props.editVisible //alwasys false until api can support rebuilding base image
   }
   /**
   *  @param {none}
   *   open modal window
   */
-  _openModal(){
+  _openModal = () =>{
       this.setState({'modal_visible': true})
       if(document.getElementById('modal__cover')){
         document.getElementById('modal__cover').classList.remove('hidden')
@@ -34,7 +37,7 @@ class BaseImage extends Component {
   *  @param {none}
   *   hide modal window
   */
-  _hideModal(){
+  _hideModal = () => {
     this.setState({'modal_visible': false})
     if(document.getElementById('modal__cover')){
       document.getElementById('modal__cover').classList.add('hidden')
@@ -44,16 +47,17 @@ class BaseImage extends Component {
   *  @param {Object}
   *  hidemodal
   */
-  _setComponent(comp){
+  _setComponent = (comp) => {
 
-    baseImage._hideModal();
+    this._hideModal();
   }
 
   render(){
-    let baseImage = this.props.environment.baseImage;
-    let blockClass = this.props.blockClass;
+    const {baseImage} = this.props.environment;
+    const {blockClass} = this.props;
 
     let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
+
     if (baseImage) {
       return(
         <div className={blockClass + '__base-image'}>

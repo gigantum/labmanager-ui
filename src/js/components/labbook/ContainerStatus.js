@@ -9,8 +9,6 @@ import StopContainerMutation from 'Mutations/StopContainerMutation'
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import environment from 'JS/createRelayEnvironment'
 
-let containerStatus;
-
 const containerStatusQuery = graphql`
   query ContainerStatusQuery($name: String!, $owner: String!, $first: Int!){
   labbook(name: $name, owner: $owner){
@@ -43,16 +41,20 @@ export default class ContainerStatus extends Component {
       'containerStatus': props.containerStatus,
       'imageStatus': props.imageStatus
     }
-    tempStatus = "Closed"
-    containerStatus = this;
+    tempStatus = "Closed";
+
+    this._tick = this._tick.bind(this)
+    this._checkJupyterStatus = this._checkJupyterStatus.bind(this)
+    this._getContainerStatusText = this._getContainerStatusText.bind(this)
+    this._openCloseContainer =  this._openCloseContainer.bind(this)
   }
   /**
   *  @param {}
   *  set containerStatus secondsElapsed state by iterating
   *  @return {string}
   */
-  tick(){
-    containerStatus.setState({secondsElapsed: containerStatus.state.secondsElapsed + 1});
+  _tick = () => {
+    this.setState({secondsElapsed: this.state.secondsElapsed + 1});
   }
   /**
   *  @param {}
@@ -60,7 +62,7 @@ export default class ContainerStatus extends Component {
   *  @return {string}
   */
   componentDidMount(){
-    this.interval = setInterval(this.tick, 2000);
+    this.interval = setInterval(this._tick, 2000);
   }
   /**
   *  @param {string} nextProps
@@ -87,7 +89,7 @@ export default class ContainerStatus extends Component {
     set containerStatus secondsElapsed state by iterating
     @return {string}
   */
-  _checkJupyterStatus(){
+  _checkJupyterStatus = () => {
     //update this when juphyter can accept cors
 
     setTimeout(function(){
@@ -99,7 +101,7 @@ export default class ContainerStatus extends Component {
     get status by mixing containrSatus imagesStatus and state.status
     @return {string}
   */
-  _getContainerStatusText(containerStatus, imageStatus){
+  _getContainerStatusText = ({containerStatus, imageStatus}) => {
 
     let status = (containerStatus === 'RUNNING') ? 'Open' : containerStatus;
     status = (containerStatus === 'NOT_RUNNING') ? 'Closed' : status;
@@ -113,46 +115,61 @@ export default class ContainerStatus extends Component {
     return status;
   }
   /**
+    @param {string} labbookName -
+    triggers stop container mutation
+  */
+  _stopContainerMutation(labbookName){
+    StopContainerMutation(
+      labbookName,
+      'default',
+      'clientMutationId',
+      (error) =>{
+        if(error){
+
+          console.log(error)
+        }else{
+          console.log('stopped container')
+        }
+
+      }
+    )
+  }
+
+  /**
+    @param {string} labbookName -
+    triggers start container mutation
+  */
+  _startContainerMutation(labbookName){
+    StartContainerMutation(
+      labbookName,
+      'default',
+      'clientMutationId',
+      (error) =>{
+        if(error){
+          console.log(error)
+        }else{
+          console.log('stopped container')
+        }
+      }
+    )
+  }
+
+  /**
     @param {object, string} event,status -
     trigger mutatuion to stop or start container depdending on the state
   */
-  _openCloseContainer(evt, status){
+  _openCloseContainer = (evt, status) =>{
 
       if(status === 'Open'){
 
         this.setState({status: 'Stopping'});
-        StopContainerMutation(
-          this.props.labbookName,
-          'default',
-          'clientMutationId',
-          (error) =>{
-            if(error){
-
-              console.log(error)
-            }else{
-              console.log('stopped container')
-            }
-
-          }
-        )
+        this._stopContainerMutation(this.props.labbookName)
 
       }else if(status === 'Closed'){
 
         this.setState({status: 'Starting'})
-        StartContainerMutation(
-          this.props.labbookName,
-          'default',
-          'clientMutationId',
-          (error, response) =>{
+        this._startContainerMutation(this.props.labbookName)
 
-            if(error){
-              console.log(error)
-            }else{
-              this._checkJupyterStatus()
-            }
-
-            }
-        )
       }else{
         console.log('container is mutating')
       }
@@ -174,31 +191,38 @@ export default class ContainerStatus extends Component {
 
           if(error){
             console.error(error)
-            return <div>{error.message}</div>
+            return(this._erroMessage(error))
           }else if(props){
 
-            let status = this._getContainerStatusText(props.labbook.environment.containerStatus, props.labbook.environment.imageStatus)
-            return(
-              <div className="ContainerStatus flex flex--column">
-                <div onClick={(evt) => this._openCloseContainer(evt, status)}
-                  className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
-                  {this.props.isBuilding ? 'Building' : status}
-                </div>
-              </div>)
+            let status = this._getContainerStatusText(props.labbook.environment)
+            return(this._containerStatus(status, 'setStatus')
+            )
           } else{
-            let status = this._getContainerStatusText(this.state.containerStatus, this.state.imageStatus)
 
-            return (
-              <div className="ContainerStatus flex flex--column" onClick={(evt) => this._openCloseContainer(evt, status)} key="tempStatus" >
-                <div className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
-                  {((this.props.isBuilding) ? 'Building' : status)}
-                </div>
-            </div>)
+            let status = this._getContainerStatusText(this.state)
+
+            return (this._containerStatus(status, 'tempStatus'))
           }
         }
       }
 
       />
     )
+  }
+
+  _containerStatus(status, key){
+    return(
+      <div className="ContainerStatus flex flex--column">
+        <div
+          onClick={(evt) => this._openCloseContainer(evt, status)}
+          key={key}
+          className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
+          {this.props.isBuilding ? 'Building' : status}
+        </div>
+      </div>)
+  }
+
+  _errorMessage(error){
+      return(<div>{error.message}</div>)
   }
 }

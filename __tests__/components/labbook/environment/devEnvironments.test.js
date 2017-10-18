@@ -1,7 +1,7 @@
 import React from 'react';
 import DevEnvironments from 'Components/labbook/environment/DevEnvironments';
 import renderer from 'react-test-renderer';
-import config from './../config'
+import json from './../../__relaydata__/Routes.json'
 import {mount} from 'Enzyme'
 import relayTestingUtils from 'relay-testing-utils'
 let _buildCallback = () => ({})
@@ -18,13 +18,13 @@ test('Test DevEnvironments rendering', () => {
   //const isAuthenticated = function(){return true};
   const component = renderer.create(
     relayTestingUtils.relayWrap(<DevEnvironments
-      environment={config.data.labbook.environment}
+      environment={json.data.labbook.environment}
       blockClass={"Environment"}
-      labbookName={config.data.labbook.name}
-      environmentId={config.data.labbook.environment.id}
+      labbookName={json.data.labbook.name}
+      environmentId={json.data.labbook.environment.id}
       editVisible={true}
       buildCallback={_buildCallback}
-    />, {}, config.data.labbook.environment.devEnvs)
+    />, {}, json.data.labbook.environment.devEnvs)
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
@@ -40,13 +40,13 @@ describe("Test Modal Visible", () =>{
 
   const wrapper = mount(
     relayTestingUtils.relayWrap(<DevEnvironments
-      environment={config.data.labbook.environment}
+      environment={json.data.labbook.environment}
       blockClass={"Environment"}
-      labbookName={config.data.labbook.name}
-      environmentId={config.data.labbook.environment.id}
+      labbookName={json.data.labbook.name}
+      environmentId={json.data.labbook.environment.id}
       editVisible={true}
       buildCallback={_buildCallback}
-    />, {}, config.data.labbook.environment.devEnvs)
+    />, {}, json.data.labbook.environment.devEnvs)
   );
 
 

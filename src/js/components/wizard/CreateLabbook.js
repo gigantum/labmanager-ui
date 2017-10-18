@@ -6,7 +6,7 @@ import validation from 'JS/utils/Validation'
 //mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 
-let createLabbook;
+
 export default class CreateLabbook extends React.Component {
   constructor(props){
   	super(props);
@@ -25,10 +25,7 @@ export default class CreateLabbook extends React.Component {
     this.continueSave = this.continueSave.bind(this)
     this._updateTextState = this._updateTextState.bind(this)
 
-    createLabbook = this;
   }
-
-
    /**
      @param {Object} evt
      takes and event input
@@ -36,11 +33,12 @@ export default class CreateLabbook extends React.Component {
      triggers setComponent to proceed to next view
    */
 
-  continueSave(evt){
+  continueSave = (evt) => {
     let viewerId = 'localLabbooks';//Todo: figure out what to do with viewerId in the mutation context
     let name = this.state.name;
     //create new labbook
     let isMatch = validation.labookNameSend(name);
+
     if(isMatch){
       CreateLabbookMutation(
         this.state.description,
@@ -52,7 +50,7 @@ export default class CreateLabbook extends React.Component {
 
           if(!showAlert){
             let message = showAlert ? error[0].message : '';
-            createLabbook.setState({
+            this.setState({
               'show': showAlert,
               'message': message,
             })
@@ -82,7 +80,7 @@ export default class CreateLabbook extends React.Component {
     @param {Object, string} evt,field
     updates text in a state object and passes object to setState method
   */
-  _updateTextState(evt, field){
+  _updateTextState = (evt, field) =>{
     let state = {}
 
     state[field] = evt.target.value;

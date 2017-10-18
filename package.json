@@ -23,6 +23,7 @@
     "css-loader": "0.28.1",
     "dotenv": "4.0.0",
     "enzyme": "^2.9.1",
+    "enzyme-to-json": "^3.0.0-beta6",
     "eslint": "3.19.0",
     "eslint-config-react-app": "^1.0.4",
     "eslint-loader": "1.7.1",
@@ -38,6 +39,8 @@
     "jest": "^20.0.4",
     "jest-cli": "^20.0.4",
     "jsdom": "^11.1.0",
+    "jsdom-global": "^3.0.2",
+    "jsonwebtoken": "^8.1.0",
     "node-sass": "^4.5.3",
     "normalize-sass": "^1.0.0",
     "object-assign": "4.1.1",
@@ -66,10 +69,13 @@
     "auth0-js": "^8.8.0",
     "bourbon": "^4.3.4",
     "dateformat": "^2.0.0",
+    "file-icons-js": "github:websemantics/file-icons-js",
     "fine-uploader-wrappers": "^1.0.1",
     "graphql": "^0.10.5",
     "inline-attachment": "^2.0.3",
+    "moment": "^2.19.1",
     "normalize": "^0.3.1",
+    "pretty-file-icons": "^2.2.1",
     "react": "^15.6.1",
     "react-breadcrumbs": "^1.6.6",
     "react-dom": "^15.6.1",
@@ -121,6 +127,7 @@
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
+
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
     ],
@@ -140,7 +147,21 @@
     ],
     "plugins": [
       "relay",
-      "transform-class-properties"
+      "transform-class-properties",
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./src"
+          ],
+          "alias": {
+            "Mutations": "./src/js/mutations",
+            "JS": "./src/js/components",
+            "Components": "./src/js/components",
+            "Submodules": "./submodules"
+          }
+        }
+      ]
     ]
   },
   "eslintConfig": {

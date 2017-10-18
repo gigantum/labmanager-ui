@@ -4,7 +4,6 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import CreateUserNoteMutation from 'Mutations/CreateUserNoteMutation'
 
 let simple;
-let addNote;
 
 export default class UserNote extends Component {
   constructor(props){
@@ -15,7 +14,10 @@ export default class UserNote extends Component {
       'userSummaryText': '',
     }
 
-    addNote = this;
+    this._addNote = this._addNote.bind(this)
+    this._handleDelete = this._handleDelete.bind(this)
+    this._handleAddition = this._handleAddition.bind(this)
+    this._handleDrag= this._handleDrag.bind(this)
   }
   /**
     @param {}
@@ -34,19 +36,21 @@ export default class UserNote extends Component {
     @param {}
     calls CreateUserNoteMutation adds note to activity feed
   */
-  _addNote(){
+  _addNote = () => {
     const tags = this.state.tags.map(tag => {return (tag.text)});
+    const {labbookName, labbookId} = this.props;
+
     CreateUserNoteMutation(
-      this.props.labbookName,
+      labbookName,
       this.state.userSummaryText,
       simple.value(),
       'default',
       [],
       tags,
-      this.props.labbookId,
+      labbookId,
       (response, error) => {
-        addNote.props.hideLabbookModal();
-        addNote.setState({
+        this.props.hideLabbookModal();
+        this.setState({
           'tags': [],
           'userSummaryText': '',
           'addNoteEnabled': false
@@ -65,6 +69,7 @@ export default class UserNote extends Component {
   _setUserSummaryText(evt){
 
     const summaryText =  evt.target.value;
+
     this.setState({
       'userSummaryText': summaryText,
       'addNoteEnabled': (summaryText.length > 0)
@@ -74,37 +79,41 @@ export default class UserNote extends Component {
     @param {number} i
     removes tag from list
   */
-   handleDelete(i) {
-       let tags = addNote.state.tags;
+   _handleDelete = (i) => {
+       let {tags} = this.state;
+
        tags.splice(i, 1);
-       addNote.setState({tags: tags});
+
+       this.setState({tags: tags});
    }
    /**
      @param {number} i
      add tag to list
    */
-   handleAddition(tag) {
-       let tags = addNote.state.tags;
+   _handleAddition = (tag) => {
+
+       let {tags} = this.state;
 
        tags.push({
            id: tags.length + 1,
            text: tag
        });
-       addNote.setState({tags: tags});
+
+       this.setState({tags: tags});
    }
    /**
      @param {number} i
      drags tag to new position.
    */
-   handleDrag(tag, currPos, newPos) {
-       let tags = addNote.state.tags;
+   _handleDrag = (tag, currPos, newPos) => {
+       let {tags} = this.state;
 
        // mutate array
        tags.splice(currPos, 1);
        tags.splice(newPos, 0, tag);
 
        // re-render
-       addNote.setState({ tags: tags });
+       this.setState({ tags: tags });
    }
 
 
@@ -129,10 +138,10 @@ export default class UserNote extends Component {
               id='TagsInput'
               tags={tags}
               // suggestions={suggestions}
-              handleDelete={this.handleDelete}
-              handleAddition={this.handleAddition}
-              handleDrag={this.handleDrag} />
-        <button className="UserNote__add-note" disabled={!this.state.addNoteEnabled} onClick={() => this._addNote()}> Add Note</button>
+              handleDelete={(index) => {this._handleDelete(index)}}
+              handleAddition={(tag) => {this._handleAddition(tag)}}
+              handleDrag={(tag, currPos, newPos) => {this._handleDrag(tag, currPos, newPos)}} />
+        <button className="UserNote__add-note" disabled={!this.state.addNoteEnabled} onClick={() => {this._addNote()}}>Add Note</button>
       </div>
     )
   }

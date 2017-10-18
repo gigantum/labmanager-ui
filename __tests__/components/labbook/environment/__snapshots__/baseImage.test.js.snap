@@ -182,11 +182,15 @@ exports[`Test BaseImage rendering 1`] = `
       </div>
     </div>
   </div>
-  <h4
-    className="Environment__header"
+  <div
+    className="Environment__header-container"
   >
-    Base Image
-  </h4>
+    <h4
+      className="Environment__header"
+    >
+      Base Image
+    </h4>
+  </div>
   <div
     className="Environment__info flex justify--left"
   >
@@ -194,7 +198,7 @@ exports[`Test BaseImage rendering 1`] = `
       className="Environment__card flex justify--space-around"
     >
       <div
-        className="flex-1-0-auto flex flex--column justify-center"
+        className="Environment__image-container flex-1-0-auto flex flex--column justify-center"
       >
         <img
           alt="Ubuntu 16.04 Python 3 Developer Dup"
@@ -215,17 +219,6 @@ exports[`Test BaseImage rendering 1`] = `
           A base image for python 3 developers using Ubuntu 16.04
         </p>
       </div>
-    </div>
-    <div
-      className="Environment__edit-container"
-    >
-      <button
-        className="Environment__edit-button"
-        id="baseImageEdit"
-        onClick={[Function]}
-      >
-        Edit
-      </button>
     </div>
   </div>
 </div>

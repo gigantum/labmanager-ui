@@ -1,17 +1,13 @@
 import Routes from 'Components/Routes';
-import DatasetSets from 'Components/dashboard/datasets/DatasetSets';
-import Labbook from 'Components/labbook/Labbook';
-import Home from 'Components/home/Home';
+
 import React from 'react';
-import {StaticRouter, Link, Route, Switch, Router} from 'react-router';
+//import toJson from 'enzyme-to-json';
 import {mount, shallow} from 'Enzyme'
 import Auth from 'JS/Auth/Auth';
-import history from 'JS/history'
 import renderer from 'react-test-renderer';
 import relayTestingUtils from 'relay-testing-utils'
-import config from './labbook/config'
-// components
-const context = {}
+import config from './__relaydata__/Routes.json'
+import { MemoryRouter } from 'react-router'
 
 const variables = {first:20, owner: 'default', name: 'demo-lab-book'}
 export default variables
@@ -36,34 +32,106 @@ test('Test Routes Rendering', () => {
 
 
 describe('Test Routes View Change', () => {
+    console.log('Routes')
+      const auth = new Auth();
+      auth.isAuthenticated = function(){return true};
+      auth.login = function(){return true};
+      auth.logout = function(){return true};
+
+      const component = shallow(
+
+          <Routes />
+
+      );
+
+      it('renders header routes', () => {
+        component.find('.Header__nav-item').at(0).simulate('click')
+        expect(component).toMatchSnapshot();
+      })
+
+      it('renders header routes', () => {
+        component.find('.Header__nav-item').at(1).simulate('click')
+        expect(component).toMatchSnapshot();
+      })
+
+});
+
+
+describe('Test Router', () => {
+    console.log('Routes')
       const auth = new Auth();
       auth.isAuthenticated = function(){return true};
       auth.login = function(){return true};
       auth.logout = function(){return true};
 
       const component = mount(
+          <MemoryRouter initialEntries={['/labbooks/']}>
 
-          <Routes />
+            <Routes />
 
+          </MemoryRouter>
       );
 
-      component.find('.Header__nav-item').at(0).simulate('click')
+      if('check history props is labbook'){
+        expect(component.node.history.location.pathname === '/labbooks/').toBeTruthy()
+      }
 
+
+      if('check history props is datasets'){
+        component.node.history.replace('/datasets/')
+        expect(component.node.history.location.pathname === '/datasets/').toBeTruthy()
+      }
+
+      // if('test datasets snapshot'){
+      //   expect(component.node).toMatchSnapshot();
+      // }
 });
 
-// it('renders correct routes', () => {
-//   const wrapper = mount(<Routes />);
-//
-//    let pathMap = wrapper.find(Route).reduce((pathMap, route) => {
-//     if(route){
-//       const routeProps = route.node.props;
-//       pathMap[routeProps.path] = route.node.props.render;
-//     }
-//     return pathMap;
-//   }, {});
-//
-//   const auth = new Auth();
-//   const home = mount(<Home auth={auth}/>);
-//
-//   expect(pathMap['/:id']()).toBe(home);
-// });
+
+describe('Test Labbooks routes', () => {
+      const auth = new Auth();
+      auth.isAuthenticated = function(){return true};
+      auth.login = function(){return true};
+      auth.logout = function(){return true};
+
+      it('with data', () => {
+
+        const component = shallow(
+            relayTestingUtils.relayWrap(<MemoryRouter initialEntries={[`/labbooks/${variables.name}/`]}>
+
+              <Routes />
+
+            </MemoryRouter>, {}, config.data)
+        );
+        expect(component).toMatchSnapshot();
+      })
+      it('without data', () => {
+        const component = shallow(
+            <MemoryRouter initialEntries={[`/labbooks/${variables.name}/`]}>
+
+              <Routes />
+
+            </MemoryRouter>
+        );
+        console.log(component)
+        console.log(component.node)
+        console.log(component.node.children)
+        expect(component).toMatchSnapshot();
+      })
+
+      it('test callback', () => {
+        const component = shallow(
+            <MemoryRouter initialEntries={[`/callback`]}>
+
+              <Routes />
+
+            </MemoryRouter>
+        );
+
+        expect(component).toMatchSnapshot();
+      })
+
+
+
+
+});

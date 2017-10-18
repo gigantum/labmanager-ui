@@ -25,6 +25,24 @@ exports[`Test Notes rendering 1`] = `
             Aug
           </div>
         </div>
+        <div
+          className="UserNote__container"
+        >
+          <div
+            className="Notes__user-note"
+            onClick={[Function]}
+          >
+            <div
+              className="Notes__user-note--add"
+            />
+            <h5>
+              Add Note
+            </h5>
+          </div>
+          <div
+            className="hidden"
+          />
+        </div>
         <div>
           <div
             className="NotesCard card"
@@ -122,6 +140,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="74edc648ebd5dae1f6cd60b648f1602265523b2a"
               >
                 <div>
                   <p>
@@ -220,6 +239,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="4ff56ed2255258a4a36b7f22ac5dcdb981b0fe8a"
               >
                 <div>
                   <h2
@@ -309,6 +329,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="95bb7a1963f9521801d881640ed0f512b46789f9"
               >
                 <div>
                   <h4
@@ -415,6 +436,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="58f17359febbc5647f060e7e4d382976598a2717"
               >
                 <div>
                   <p>
@@ -508,6 +530,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="98ecbbad51503ec13b36e9fcc337d9a52b8e32b0"
               >
                 <div>
                   <h3
@@ -579,6 +602,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="372f6f876a3b236994c1689aaebe21b4c3270cfc"
               >
                 <div>
                   <p>
@@ -647,6 +671,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="b644f9e9fdd6963f07ba6f3a83af9a3ffd8d08ad"
               >
                 <div>
                   <p>
@@ -712,6 +737,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="cc7712b48d1a4f54f3f467758e89e41e88f7dc98"
               >
                 <div>
                   <p>
@@ -777,6 +803,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="04c1f12bb99209b34984c18d6029c4317c307744"
               >
                 <div>
                   <p>
@@ -845,6 +872,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="b6d0a3503175845d2cca107fa9447183fab2f7c5"
               >
                 <div>
                   <p>
@@ -916,6 +944,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="f94f9a4a6d42fbb16f0b06741f01e967ae3de9c7"
               >
                 <div>
                   <p>
@@ -993,6 +1022,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="0d6a7ef21a65b317fa54e48883dcfb28e88127e5"
               >
                 <div>
                   <p>
@@ -1058,6 +1088,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="67c7bf50496ae119259a1172308235b4b1379ca4"
               >
                 <div>
                   <p>
@@ -1126,6 +1157,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="d9e30c5c7c3b5a2a78376bc0946b2df3d4a90a3d"
               >
                 <div>
                   <p>
@@ -1194,6 +1226,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="c0be5e611729987ab515150270270c944c9e06c7"
               >
                 <div>
                   <p>
@@ -1262,6 +1295,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="921e1265b18f0ed2eb0893338bac45e67a555336"
               >
                 <div>
                   <p>
@@ -1327,6 +1361,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="665847590135dc0a3f1305bf4d721f4bdd20017d"
               >
                 <div>
                   <p>
@@ -1392,6 +1427,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="208c09d206942aea50898b0b0e7e36ce0dbcb7fb"
               >
                 <div>
                   <p>
@@ -1460,6 +1496,7 @@ exports[`Test Notes rendering 1`] = `
             >
               <div
                 className="NotesCard__markdown-container"
+                id="89c8c5141ea8b030d489326dbe56e97f75d70b3e"
               >
                 <div>
                   <p>

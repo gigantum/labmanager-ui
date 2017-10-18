@@ -29,7 +29,7 @@
 }
 
 .Environment__card{
-  background-color: $grey;
+  background-color: $grey-light;
   padding: 10px;
   border: 1px solid $font-grey;
   border-radius: 5px;
@@ -45,6 +45,7 @@
 }
 
 .Environment__card-text{
+  background-color: $grey-light;
   padding: 10px;
   width: 200px;
 }
@@ -80,15 +81,17 @@
   right: 5px;
   cursor: pointer;
 }
+
 .Environment__package-dependencies{
   margin: 10px;
 
   .Environment__card-text{
+      background-color: $grey-light;
       width: 150px;
       p{
         margin: 0 5px 0 0;
       }
-      background-color: $grey;
+
       border: 1px solid $charcoal;
       border-radius: 5px;
   }

@@ -5,20 +5,23 @@ import {createPaginationContainer, graphql} from 'react-relay'
 import SelectDevelopmentEnvironment from 'Components/wizard/SelectDevelopmentEnvironment'
 import Loader from 'Components/shared/Loader'
 
-let devEnvironments;
-
 class DevEnvironments extends Component {
   constructor(props){
   	super(props);
-  	this.state = {'modal_visible': false};
 
-    devEnvironments = this;
+    this.state = {
+      'modal_visible': false
+    };
+
+    this._openModal = this._openModal.bind(this)
+    this._hideModal = this._hideModal.bind(this)
+    this._setComponent = this._setComponent.bind(this)
   }
   /**
   *  @param {None}
   *  open modal view
   */
-  _openModal(){
+  _openModal = () => {
       this.setState({'modal_visible': true})
       if(document.getElementById('modal__cover')){
         document.getElementById('modal__cover').classList.remove('hidden')
@@ -28,7 +31,7 @@ class DevEnvironments extends Component {
   *  @param {None}
   *  hide modal view
   */
-  _hideModal(){
+  _hideModal = () =>{
       this.setState({'modal_visible': false})
       if(document.getElementById('modal__cover')){
         document.getElementById('modal__cover').classList.add('hidden')
@@ -38,16 +41,18 @@ class DevEnvironments extends Component {
   *  @param {object}
   *  hide modal view
   */
-  _setComponent(comp){
+  _setComponent = (comp) => {
 
-    devEnvironments._hideModal();
+    this._hideModal();
   }
 
   render(){
 
-    let devEnvs = this.props.environment.devEnvs;
-    let blockClass = this.props.blockClass;
+    const {devEnvs} = this.props.environment;
+    const {blockClass} = this.props;
+
     let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
+
     if (devEnvs) {
       return(
         <div className={ blockClass + '__development-environment'}>
@@ -59,12 +64,9 @@ class DevEnvironments extends Component {
               X
             </div>
             <SelectDevelopmentEnvironment
+              {...this.props}
               availablePackageManagers={(this.props.baseImage) ? this.props.baseImage.availablePackageManagers : null}
-              labbookName={this.props.labbookName}
-              environmentId={this.props.environmentId}
-              setBaseImage={this.props.setBaseImage}
               setComponent={this._setComponent}
-              buildCallback={this.props.buildCallback}
               nextComponent={"continue"}
               connection={'DevEnvironments_devEnvs'}
               environmentView={true}
