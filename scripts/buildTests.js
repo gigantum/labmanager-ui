@@ -50,7 +50,7 @@ relayQueries.forEach((queryData) => {
 
   let variables = queryData.variables
 
-  fetch('http://localhost:5000/labbook/', {
+  fetch('http://localhost:10001/labbook/', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -64,6 +64,7 @@ relayQueries.forEach((queryData) => {
 
       response.json().then(function(data){
           if(data.errors){
+            console.log(queryData.relay.text, variables)
             console.log(data.errors[0].message, path.basename(queryData.testFile))
           }
           let relayDataField = path.dirname(queryData.testFile) + '/__relaydata__/' + path.basename(queryData.testFile).replace('.test.js', '.json')

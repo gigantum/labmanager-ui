@@ -7,6 +7,7 @@ import json from './__relaydata__/SelectDevelopmentEnvironment.json'
 import relayTestingUtils from 'relay-testing-utils'
 
 const variables = {first:20, labbook: 'demo-lab-book'}
+
 export default variables
 
 let toggleDisabledContinue = () => {}

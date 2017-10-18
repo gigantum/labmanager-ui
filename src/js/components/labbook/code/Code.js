@@ -1,7 +1,7 @@
 // vendor
 import React, { Component } from 'react'
 import SweetAlert from 'sweetalert-react'
-import FileBrowser from 'Submodules/react-keyed-file-browser/src/browser'
+import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
 import Moment from 'moment'
 //Config
 import Config from './CodeConfig'

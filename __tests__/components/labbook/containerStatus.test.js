@@ -1,6 +1,7 @@
 import ContainerStatus from 'Components/labbook/ContainerStatus';
 import React from 'react';
 import config from './config'
+import json from './__relaydata__/ContainerStatus.json'
 import renderer from 'react-test-renderer';
 import { mount, shallow } from 'enzyme';
 import relayTestingUtils from 'relay-testing-utils'
@@ -20,7 +21,7 @@ test('Test Container Rendering Building', async () => {
           labbookName={"demo-lab-book"}
           setBuildingState={_setBuildingState}
           isBuilding={true}
-        />,{}, config.data.labbook)
+        />,{}, json.data)
       )
 
       let tree = component.toJSON();
@@ -35,7 +36,7 @@ test('Test Container Rendering Open', async () => {
           labbookName={"demo-lab-book"}
           setBuildingState={_setBuildingState}
           isBuilding={true}
-        />,{}, config.data.labbook)
+        />,{}, json.data)
       )
       let tree = component.toJSON();
 
@@ -49,7 +50,7 @@ test('Test Container Rendering Closed', async () => {
           labbookName={"demo-lab-book"}
           setBuildingState={_setBuildingState}
           isBuilding={true}
-        />,{}, config.data.labbook)
+        />,{}, json.data)
       )
       let tree = component.toJSON();
       expect(tree).toMatchSnapshot();
@@ -62,7 +63,7 @@ describe('Test Container Rendering Closed', async () => {
           labbookName={"demo-lab-book"}
           setBuildingState={_setBuildingState}
           isBuilding={false}
-        />,{}, config.data.labbook)
+        />,{}, json.data)
       )
 
       await expect(component.instance().updater.enqueueForceUpdate()).toEventuallyBeFulfilled();
@@ -76,7 +77,7 @@ describe('Test Container Status Click on Closed', async () => {
           labbookName={"demo-lab-book"}
           setBuildingState={_setBuildingState}
           isBuilding={false}
-        />,{}, config.data.labbook)
+        />,{}, json.data)
       )
 
 
@@ -92,7 +93,7 @@ describe('Test Container Status Click on Open', async () => {
           labbookName={"demo-lab-book"}
           setBuildingState={_setBuildingState}
           isBuilding={false}
-        />,{}, config.data.labbook)
+        />,{}, json.data)
       )
 
 

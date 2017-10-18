@@ -20,13 +20,10 @@ class LocalLabbooks extends Component {
   constructor(props){
   	super(props);
 
-    this.state={
-      importModuleOpen: false
-    }
     this._goToLabbook = this._goToLabbook.bind(this)
     this._loadMore = this._loadMore.bind(this)
-    this._openImport = this._openImport.bind(this)
-    this._closeImport = this._closeImport.bind(this)
+    // this._openImport = this._openImport.bind(this)
+    // this._closeImport = this._closeImport.bind(this)
   }
 
   /**
@@ -74,27 +71,6 @@ class LocalLabbooks extends Component {
     );
   }
 
-  /**
-  *  @param {}
-  *  opens import modal
-  */
-  _openImport = () => {
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.remove('hidden')
-    }
-    this.setState({importModuleOpen: true})
-  }
-  /**
-  *  @param {}
-  *  closes import modal
-  */
-  _closeImport = () => {
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.add('hidden')
-    }
-    this.setState({importModuleOpen: false})
-  }
-
   render(){
       let {props} = this;
 
@@ -131,9 +107,7 @@ class LocalLabbooks extends Component {
 
               <ImportModule
                   ref="ImportModule_localLabooks"
-                  closeImport={this._closeImport}
                   {...props}
-                  isOpen={this.state.importModuleOpen}
                   className="LocalLabbooks__panel LocalLabbooks__panel--import" />
 
               {

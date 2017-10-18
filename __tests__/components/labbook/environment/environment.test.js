@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import Environment from 'Components/labbook/environment/Environment';
 import renderer from 'react-test-renderer';
 import {MemoryRouter } from 'react-router-dom'
-import config from './../config'
+import json from './../../__relaydata__/Routes.json'
 import relayTestingUtils from 'relay-testing-utils'
 
 const variables = {first:20, labbook: 'demo-lab-book'}
@@ -14,18 +14,19 @@ let environ;
 let _setBuildingState = ((state) => {})
 
 test('Test Environment rendering', () => {
-  let props = {labbookName: config.data.labbook.name}
+  let props = {labbookName: json.data.labbook.name}
 
   const component = renderer.create(
-    relayTestingUtils.relayWrap(<MemoryRouter>
+    relayTestingUtils.relayWrap(
+      <MemoryRouter>
       <Environment
-        labbook={config.data.labbook}
-        key={config.data.labbook.name + '_environment'}
-        labbookId={config.data.labbook.id}
+        labbook={json.data.labbook}
+        key={json.data.labbook.name + '_environment'}
+        labbookId={json.data.labbook.id}
         setBuildingState={_setBuildingState}
-        labbookName={config.data.labbook.name}
+        labbookName={json.data.labbook.name}
       />
-    </MemoryRouter>, {}, config.data.labbook.environment)
+    </MemoryRouter>, {}, json.data)
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
@@ -38,12 +39,12 @@ describe("Test Modal Visible", () =>{
   const wrapper = mount(
 
       relayTestingUtils.relayWrap(<Environment
-        labbook={config.data.labbook}
-        key={config.data.labbook.name + '_environment'}
-        labbookId={config.data.labbook.id}
+        labbook={json.data.labbook}
+        key={json.data.labbook.name + '_environment'}
+        labbookId={json.data.labbook.id}
         setBuildingState={_setBuildingState}
-        labbookName={config.data.labbook.name}
-      />, {}, config.data.labbook.environment)
+        labbookName={json.data.labbook.name}
+      />, {}, json.data)
 
   );
 

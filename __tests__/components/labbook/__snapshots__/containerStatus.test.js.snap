@@ -3,10 +3,10 @@
 exports[`Test Container Rendering Building 1`] = `
 <div
   className="ContainerStatus flex flex--column"
-  onClick={[Function]}
 >
   <div
     className="ContainerStatus__container-state Building"
+    onClick={[Function]}
   >
     Building
   </div>
@@ -16,10 +16,10 @@ exports[`Test Container Rendering Building 1`] = `
 exports[`Test Container Rendering Closed 1`] = `
 <div
   className="ContainerStatus flex flex--column"
-  onClick={[Function]}
 >
   <div
     className="ContainerStatus__container-state Building"
+    onClick={[Function]}
   >
     Building
   </div>
@@ -29,10 +29,10 @@ exports[`Test Container Rendering Closed 1`] = `
 exports[`Test Container Rendering Open 1`] = `
 <div
   className="ContainerStatus flex flex--column"
-  onClick={[Function]}
 >
   <div
     className="ContainerStatus__container-state Building"
+    onClick={[Function]}
   >
     Building
   </div>

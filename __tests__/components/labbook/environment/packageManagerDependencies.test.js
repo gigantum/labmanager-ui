@@ -1,10 +1,10 @@
 import React from 'react';
 import PackageManagerDependencies from 'Components/labbook/environment/PackageManagerDependencies';
 import renderer from 'react-test-renderer';
-import config from './../config'
+import json from './../../__relaydata__/Routes.json'
 import {mount} from 'enzyme'
 
-const variables = {first:20, name: 'demo-lab-book',  cursor: 'MA==', owner: 'default'}
+const variables = {first:20, cursor: 'MA=='}
 export default variables
 
 let _setComponent = () => ({});
@@ -16,14 +16,14 @@ test('Test PakageManager rendering', () => {
   //const isAuthenticated = function(){return true};
   const component = renderer.create(
     <PackageManagerDependencies
-      environment={config.data.labbook.environment}
+      environment={json.data.labbook.environment}
       blockClass={"Environment"}
-      labbookName={config.data.labbook.name}
-      environmentId={config.data.labbook.environment.id}
+      labbookName={json.data.labbook.name}
+      environmentId={json.data.labbook.environment.id}
       setBaseImage={_setBaseImage}
       setComponent={_setComponent}
       buildCallback={_buildCallback}
-      baseImage={config.data.labbook.environment.baseImage}
+      baseImage={json.data.labbook.environment.baseImage}
     />
   );
   let tree = component.toJSON();
@@ -43,14 +43,14 @@ describe("Test Modal Visible", () =>{
 
   const wrapper = mount(
     <PackageManagerDependencies
-      environment={config.data.labbook.environment}
+      environment={json.data.labbook.environment}
       blockClass={"Environment"}
-      labbookName={config.data.labbook.name}
-      environmentId={config.data.labbook.environment.id}
+      labbookName={json.data.labbook.name}
+      environmentId={json.data.labbook.environment.id}
       setBaseImage={_setBaseImage}
       setComponent={_setComponent}
       buildCallback={_buildCallback}
-      baseImage={config.data.labbook.environment.baseImage}
+      baseImage={json.data.labbook.environment.baseImage}
     />
   );
 

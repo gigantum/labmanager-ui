@@ -5,7 +5,7 @@ const Config = {
           {
             key: 'input/',
             modified: + Moment().subtract(1, 'hours'),
-            size: 1.5 * 1024 * 1024,
+            size: 0,
           }
         ]
 }
