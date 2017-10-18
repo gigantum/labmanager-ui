@@ -1,10 +1,10 @@
 const CONFIG = {
   'api': process.env.NODE_ENV,
   'dev':{
-    'api': 'http://127.0.0.1:5000/labbook/'
+    'api': 'http://127.0.0.1:10001/labbook/'
   },
   'prod':{
-    'api': 'http://api.localhost/labbook/'
+    'api': 'http://localhost:10001/labbook/'
   },
   'navigation_items': [
     {id:'overview', name: 'Overview'},
