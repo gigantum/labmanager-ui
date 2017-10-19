@@ -21,11 +21,11 @@ function fetchQuery(
       'Access-Control-Allow-Origin': '*'
   }
 
-  console.log(localStorage.getItem('id_token'))
-  if(localStorage.getItem('id_token')){
-    console.log(localStorage.getItem('id_token'))
-    const idToken = localStorage.getItem('id_token')
-    headers['authorization'] = `Bearer ${idToken}`
+  console.log(localStorage.getItem('access_token'))
+  if(localStorage.getItem('access_token')){
+    console.log(localStorage.getItem('access_token'))
+    const accessToken = localStorage.getItem('access_token')
+    headers['authorization'] = `Bearer ${accessToken}`
   }
   console.log(headers)
 
