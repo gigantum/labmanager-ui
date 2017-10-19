@@ -1,13 +1,13 @@
 import history from 'JS/history';
 import auth0 from 'auth0-js';
 import { AUTH_CONFIG } from './auth0-variables';
-
+const gignatumAPi = 'api.gigantum.io'
 export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: AUTH_CONFIG.domain,
     clientID: AUTH_CONFIG.clientId,
     redirectUri: AUTH_CONFIG.callbackUrl,
-    audience: `https://${AUTH_CONFIG.domain}/userinfo`,
+    audience:  `${gignatumAPi}`,
     responseType: 'token id_token',
     scope: 'openid'
   });
@@ -17,6 +17,7 @@ export default class Auth {
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
+    console.log(this, "auth", auth0)
   }
 
   login() {

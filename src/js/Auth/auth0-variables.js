@@ -1,5 +1,5 @@
 export const AUTH_CONFIG = {
-  domain: 'calum.auth0.com',
-  clientId: '9wFN5CZA4Z9xa1r8KZIZbevpjHG7bAab',
+  domain: 'gigantum.auth0.com',
+  clientId: '0Ajo8Ov6Qriafo0xVpSyejWy1pwNWdhk',
   callbackUrl: window.location.origin + '/callback'
 }
