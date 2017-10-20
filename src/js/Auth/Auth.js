@@ -1,6 +1,8 @@
 import history from 'JS/history';
 import auth0 from 'auth0-js';
 import { AUTH_CONFIG } from './auth0-variables';
+import UserIdentity from './UserIdentity'
+
 const gignatumAPi = 'api.gigantum.io'
 export default class Auth {
   auth0 = new auth0.WebAuth({
@@ -9,7 +11,7 @@ export default class Auth {
     redirectUri: AUTH_CONFIG.callbackUrl,
     audience:  `${gignatumAPi}`,
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid profile email user_metadata'
   });
 
   constructor() {
@@ -25,12 +27,14 @@ export default class Auth {
   }
 
   handleAuthentication() {
+
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
+
         this.setSession(authResult);
-        history.replace('/labbooks');
+        //history.replace('/labbooks');
       } else if (err) {
-        history.replace('/labbooks');
+        //history.replace('/labbooks');
         console.error(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
       }
@@ -43,23 +47,35 @@ export default class Auth {
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
-    // navigate to the home route
-    history.replace('/labbooks');
+    localStorage.setItem('family_name', authResult.idTokenPayload.family_name);
+    localStorage.setItem('given_name', authResult.idTokenPayload.given_name);
+    localStorage.setItem('email', authResult.idTokenPayload.email);
+    localStorage.setItem('username', authResult.idTokenPayload.nickname);
+
+    console.log(localStorage)
+    history.replace(`/labbooks`)
   }
 
   logout() {
+
+    UserIdentity.removeUserIdentity()
     // Clear access token and ID token from local storage
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('family_name')
+    localStorage.removeItem('given_name');
+    localStorage.removeItem('email');
+    localStorage.removeItem('username');
     // navigate to the home route
-    history.replace('/labbooks');
+    history.replace('/');
   }
 
   isAuthenticated() {
     // Check whether the current time is past the
     // access token's expiry time
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    console.log(new Date().getTime(), expiresAt)
     return new Date().getTime() < expiresAt;
   }
 }

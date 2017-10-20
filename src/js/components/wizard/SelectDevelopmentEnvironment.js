@@ -90,10 +90,10 @@ export default class SelectDevelopmentEnvironment extends React.Component {
 
     let component = this.state.selectedDevelopmentEnvironment.node.component;
     this.props.toggleDisabledContinue(true);
-
+    const username = localStorage.getItem('username')
     AddEnvironmentComponentMutation(
       this.props.labbookName,
-      'default',
+      username,
       component.repository,
       component.namespace,
       component.name,

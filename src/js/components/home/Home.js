@@ -10,7 +10,8 @@ export default class Home extends Component {
   }
   render() {
     const { isAuthenticated } = this.props.auth;
-
+    console.log('home')
+    console.log(isAuthenticated())
     return (
       <div className="Home">
         {

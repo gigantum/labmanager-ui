@@ -98,10 +98,10 @@ export default class AddCustomDependencies extends React.Component {
     sends user to next window
   */
   _buildLabbook = () => {
-
+    const username = localStorage.getItem('username')
     BuildImageMutation(
       this.props.labbookName,
-      'default',
+      username,
       (response, error) => {
         console.log(response, error)
         let showAlert = ((error !== undefined) && (error !== null))
@@ -141,9 +141,10 @@ export default class AddCustomDependencies extends React.Component {
       const {component} = edge.node;
 
       let promise = new Promise((resolve, reject) => {
+        const username = localStorage.getItem('username')
         AddEnvironmentComponentMutation(
           this.props.labbookName,
-          'default',
+          username,
           component.repository,
           component.namespace,
           component.name,

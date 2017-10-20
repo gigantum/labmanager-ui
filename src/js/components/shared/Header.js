@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
+//components
+import User from './User'
+
 
 export default class Header extends Component {
   /**
@@ -39,12 +42,7 @@ export default class Header extends Component {
 
           {
             isAuthenticated() && (
-                <button
-                  className="Header__button Header__button--logout btn-margin"
-                  onClick={this.logout.bind(this)}
-                >
-                  Log Out
-                </button>
+                <User {...this.props}/>
               )
           }
         </div>

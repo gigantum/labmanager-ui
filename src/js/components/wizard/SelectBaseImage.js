@@ -87,12 +87,12 @@ export default class SelectBaseImage extends React.Component {
     callback triggers and modal state is changed to  next window
   */
   continueSave(){
-
+    const username = localStorage.getItem('username')
     let component = this.state.selectedBaseImage.node.component;
     this.props.toggleDisabledContinue(true);
     AddEnvironmentComponentMutation(
       this.props.labbookName,
-      'default',
+      username,
       component.repository,
       component.namespace,
       component.name,

@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
 import Auth from 'JS/Auth/Auth';
+import UserIdentity from 'JS/Auth/UserIdentity';
 import history from 'JS/history';
 import {QueryRenderer, graphql} from 'react-relay'
 // components
@@ -33,6 +34,9 @@ const handleAuthentication = (nextState, replace) => {
   }
 }
 
+
+
+
 //import CreatePage from './components/CreatePage';
 export default class Routes extends Component {
 
@@ -54,8 +58,6 @@ export default class Routes extends Component {
   render(){
 
     return(
-
-
 
         <Router history={history}>
 
@@ -91,11 +93,17 @@ export default class Routes extends Component {
                 <Route
                   path="/labbooks/:labbookName"
                   render={(parentProps) =>{
-
+                      const username = localStorage.getItem('username')
                       return (<QueryRenderer
                         environment={environment}
                         query={LabbookQuery}
-                        variables={{name:parentProps.match.params.labbookName, owner: 'default', first: 20}}
+                        variables={
+                          {
+                            name:parentProps.match.params.labbookName,
+                            owner: username,
+                            first: 20
+                          }
+                        }
                         render={({error, props}) => {
 
                           if(error){

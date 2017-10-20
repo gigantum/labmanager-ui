@@ -3,7 +3,7 @@ import Loader from 'Components/shared/Loader'
 
 class Callback extends Component {
   render() {
-    this.props.history.replace(`/labbooks`)
+    //this.props.history.replace(`/labbooks`)
 
     return(<Loader />)
   }

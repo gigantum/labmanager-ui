@@ -192,8 +192,8 @@ export default class ImportModule extends Component {
   _fileUpload = (evt) => {
     this._importingState();
     let filepath = this.state.files[0].filename
-
-    ImportLabbookMutation('default', 'default', this.state.files[0].file, (result, error)=>{
+    let username = localStorage.getItem('username')
+    ImportLabbookMutation(username, username, this.state.files[0].file, (result, error)=>{
       if(result){
         JobStatus.getJobStatus(result.importLabbook.importJobKey).then((response)=>{
 

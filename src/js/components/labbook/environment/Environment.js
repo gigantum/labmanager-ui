@@ -32,19 +32,21 @@ class Environment extends Component {
   *  callback that triggers buildImage mutation
   */
   _buildCallback = () => {
+    const username = localStorage.getItem('username')
     const {labbookName} = this.props
     this.props.setBuildingState(true)
 
     if(this.props.labbook.environment.containerStatus === "RUNNING"){
+
       StopContainerMutation(
         labbookName,
-        'default',
+        username,
         'clientMutationId',
         (error) =>{
 
             BuildImageMutation(
             labbookName,
-              'default',
+              username,
               (error) => {
 
                 let showAlert = ((error !== null) && (error !== undefined))
@@ -63,7 +65,7 @@ class Environment extends Component {
 
       BuildImageMutation(
         labbookName,
-        'default',
+        username,
         (error) => {
 
           let showAlert = ((error !== null) && (error !== undefined))

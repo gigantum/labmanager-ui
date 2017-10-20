@@ -5,6 +5,7 @@ import DatasetSets from './datasets/DatasetSets';
 import LocalLabbooks from './labbooks/LocalLabbooks';
 import environment from 'JS/createRelayEnvironment'
 import WizardModal from 'Components/wizard/WizardModal'
+import Loader from 'Components/shared/Loader'
 
 
 const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String){
@@ -35,7 +36,7 @@ export default class DashboardContainer extends Component {
   *  @return {jsx}
   */
   _displaySelectedComponent(){
-
+    console.log('dashboard', this.state.selectedComponent)
     if(this.state.selectedComponent === 'datasets'){
 
       return (<DatasetSets />)
@@ -49,7 +50,7 @@ export default class DashboardContainer extends Component {
           cursor: null
         }}
         render={({error, props}) => {
-
+          console.log(error, props)
           if (error) {
 
             return <div>{error.message}</div>
@@ -62,13 +63,7 @@ export default class DashboardContainer extends Component {
           }else{
 
             return (
-              <div>
-                <WizardModal
-                  handler={this.handler}
-                  history={this.props.history}
-                  {...this.props}
-                />
-              </div>
+              <Loader />
             )
           }
         }}
