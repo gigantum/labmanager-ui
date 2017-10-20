@@ -9,7 +9,6 @@ import Routes from './components/Routes';
 
 UserIdentity.getUserIdentity().then((response)=>{
   let expiresAt = JSON.stringify((new Date().getTime() * 1000) + new Date().getTime());
-  console.log(response)
   if(response.data.userIdentity){
     localStorage.setItem('family_name', response.data.userIdentity.familyName);
     localStorage.setItem('given_name', response.data.userIdentity.givenName);

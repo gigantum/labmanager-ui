@@ -19,7 +19,7 @@ export default class Auth {
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
-    console.log(this, "auth", auth0)
+
   }
 
   login() {
@@ -52,7 +52,6 @@ export default class Auth {
     localStorage.setItem('email', authResult.idTokenPayload.email);
     localStorage.setItem('username', authResult.idTokenPayload.nickname);
 
-    console.log(localStorage)
     history.replace(`/labbooks`)
   }
 
@@ -75,7 +74,7 @@ export default class Auth {
     // Check whether the current time is past the
     // access token's expiry time
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    console.log(new Date().getTime(), expiresAt)
+
     return new Date().getTime() < expiresAt;
   }
 }

@@ -72,7 +72,7 @@ class LocalLabbooks extends Component {
 
   render(){
       let {props} = this;
-      console.log("localLabbooks")
+
       if(props.feed.localLabbooks){
 
         return(
