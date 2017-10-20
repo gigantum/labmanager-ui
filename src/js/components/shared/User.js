@@ -34,16 +34,18 @@ export default class User extends Component {
     this.props.auth.logout();
     this._toggleDropdown()
   }
-
+  /**
+      @param {}
+      handles click to update state
+    */
   _handleClickOutside(event) {
-    if(this.state.dropdownVisible){
+    const userElementIds = ['user', 'username', 'logout']
+    if(this.state.dropdownVisible && (userElementIds.indexOf(event.target.id) < 0)){
       this.setState({
         dropdownVisible: false
       })
     }
    }
-
-
 
   /**
     @param {}
@@ -59,12 +61,22 @@ export default class User extends Component {
   render() {
     const { isAuthenticated } = this.props.auth;
     return (
-      <div className="User">
+      <div
+        id="user"
+        className="User">
 
-        <h6 onClick={() => { this._toggleDropdown()}} className={this.state.dropdownVisible ? 'User__name--active' :  'User__name'}>{this.state.givenName + ' ' + this.state.familyName}</h6>
+        <h6
+          id="username"
+          onClick={() => { this._toggleDropdown()}}
+          className={this.state.dropdownVisible ? 'User__name--active' :  'User__name'}>
+            {this.state.givenName + ' ' + this.state.familyName}
+        </h6>
+
         <div className={ this.state.dropdownVisible ? 'User__dropdown--arrow' : 'hidden'}></div>
+
         <div className={this.state.dropdownVisible ? 'User__dropdown' : 'hidden'}>
           <button
+            id="logout"
             className="User__button btn-margin"
             onClick={this.logout.bind(this)}
           >

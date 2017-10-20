@@ -42,7 +42,7 @@ export default class Header extends Component {
 
           {
             isAuthenticated() && (
-                <User {...this.props}/>
+                <User {...this.props} />
               )
           }
         </div>
