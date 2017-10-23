@@ -21,6 +21,13 @@ function fetchQuery(
       'Access-Control-Allow-Origin': '*'
   }
 
+  if(localStorage.getItem('access_token')){
+
+    const accessToken = localStorage.getItem('access_token')
+    headers['authorization'] = `Bearer ${accessToken}`
+  }
+
+
   if(uploadables === undefined){
 
     headers['content-type'] = 'application/json';

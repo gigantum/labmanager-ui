@@ -4,28 +4,22 @@ import {
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
 
+
 const mutation = graphql`
-  mutation ImportLabbookMutation($input: ImportLabbookInput!){
-    importLabbook(input: $input){
+  mutation RemoveUserIdentityMutation($input: RemoveUserIdentityInput!){
+    removeUserIdentity(input: $input){
       clientMutationId
-      importJobKey
-      buildImageJobKey
     }
   }
 `;
 
 let tempID = 0;
 
-export default function ImportLabbookMutation(
-  user,
-  owner,
-  uploadables,
+export default function RemoveUserIdentityMutation(
   callback
 ) {
   const variables = {
     input: {
-      owner,
-      user,
       clientMutationId: '' + tempID++
     }
   }
@@ -34,9 +28,8 @@ export default function ImportLabbookMutation(
     {
       mutation,
       variables,
-      uploadables,
       onCompleted: (response, error ) => {
-  
+        console.log(response, error)
         if(error){
           console.log(error)
         }

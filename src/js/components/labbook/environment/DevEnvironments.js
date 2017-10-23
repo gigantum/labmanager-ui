@@ -195,10 +195,10 @@ export default createPaginationContainer(
      };
    },
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-
+    const username = localStorage.getItem('username')
     first = 10;
     name = props.labbookName;
-    owner = 'default';
+    owner = username;
      return {
        first,
        cursor,

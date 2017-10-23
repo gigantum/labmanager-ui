@@ -1,0 +1,68 @@
+.User{
+  height: 100%;
+  width: 200px;
+  position: absolute;
+  right: 20px;
+  @include flex(space-around, row);
+}
+
+.User__name{
+  height: 100%;
+  line-height: 70px;
+  flex: 1;
+  align-self: center;
+  color: $white;
+  border: 1px solid $charcoal;
+  padding: 5px 45px 5px 10px;
+  background: url('./../images/icons/user.svg') no-repeat 150px center;
+  background-size: 30px;
+  cursor: pointer;
+}
+
+.User__name--active{
+  @extend .User__name;
+  background: #555555 url('./../images/icons/user.svg') no-repeat 150px center;
+    background-size: 30px;
+}
+
+.User__dropdown{
+  position: absolute;
+  top: 90px;
+  right: 0px;
+  width: 200px;
+  background: $white;
+  padding: 5px;
+  border: 1px solid $charcoal;
+  box-shadow: 10px 10px 5px #888888;
+
+}
+
+.User__dropdown--arrow{
+  position: absolute;
+  top: 81px;
+  right: 5px;
+  @include triangle('up', 10px, $charcoal)
+}
+
+
+.User__button{
+  width: 100%;
+  align-self: center;
+  background-color: $charcoal;
+  border: 1px solid $white;
+  color: $white;
+  padding: 5px 25px;
+  border-radius: 0px;
+
+  background: $charcoal url('./../images/icons/logout.svg') no-repeat 5px center;
+  background-size: 20px;
+
+}
+
+.User__button:hover{
+
+  border: 1px solid $charcoal;
+  color: $charcoal;
+  background: $white url('./../images/icons/logout-hover.svg') no-repeat 5px center;
+  background-size: 20px;
+}

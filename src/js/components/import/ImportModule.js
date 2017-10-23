@@ -30,6 +30,8 @@ export default class ImportModule extends Component {
     this._importingState = this._importingState.bind(this)
     this._clearState = this._clearState.bind(this)
 
+
+
     const dropzoneIds = ['dropZone', 'dropZone__helper', 'dropZone__filename'];
 
     //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
@@ -101,8 +103,7 @@ export default class ImportModule extends Component {
         fileReader.onloadend = function (evt) {
           let arrayBuffer = evt.target.result;
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
-
-
+      
           that.setState(
             {files: [
               {
@@ -192,8 +193,8 @@ export default class ImportModule extends Component {
   _fileUpload = (evt) => {
     this._importingState();
     let filepath = this.state.files[0].filename
-
-    ImportLabbookMutation('default', 'default', this.state.files[0].file, (result, error)=>{
+    let username = localStorage.getItem('username')
+    ImportLabbookMutation(username, username, this.state.files[0].file, (result, error)=>{
       if(result){
         JobStatus.getJobStatus(result.importLabbook.importJobKey).then((response)=>{
 

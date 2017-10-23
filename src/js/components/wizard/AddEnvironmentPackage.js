@@ -38,9 +38,11 @@ export default class AddEnvironmentPackage extends React.Component {
     if all promises resolve, setComponent is triggered and next component is loaded
   */
   continueSave = (isSkip) => {
+
     if(!isSkip){
       let all = [],
       {environmentPackages} = this.state;
+      const username = localStorage.getItem('username')
 
       this.props.setComponent(this.props.nextWindow)
 
@@ -50,7 +52,7 @@ export default class AddEnvironmentPackage extends React.Component {
 
             AddEnvironmentPackageMutation(
               this.props.labbookName,
-              'default',
+              username,
               packageManager,
               dependencyName,
               this.props.environmentId,

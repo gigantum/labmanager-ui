@@ -119,9 +119,10 @@ export default class ContainerStatus extends Component {
     triggers stop container mutation
   */
   _stopContainerMutation(labbookName){
+    const username = localStorage.getItem('username')
     StopContainerMutation(
       labbookName,
-      'default',
+      username,
       'clientMutationId',
       (error) =>{
         if(error){
@@ -140,9 +141,10 @@ export default class ContainerStatus extends Component {
     triggers start container mutation
   */
   _startContainerMutation(labbookName){
+    const username = localStorage.getItem('username')
     StartContainerMutation(
       labbookName,
-      'default',
+      username,
       'clientMutationId',
       (error) =>{
         if(error){
@@ -176,11 +178,11 @@ export default class ContainerStatus extends Component {
   }
 
   render(){
-
+    const username = localStorage.getItem('username')
     return(
       <QueryRenderer
         variables={{
-          'owner': 'default',
+          'owner': username,
           'name': this.props.labbookName,
           'first': Math.floor(Math.random() * 10000)
           }

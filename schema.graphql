@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Wed Oct 11 2017 17:58:35 GMT-0400 (EDT)
+# timestamp: Thu Oct 19 2017 15:56:22 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -185,6 +185,19 @@ type CustomDependencyEdge {
 # [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 scalar DateTime
 
+input DeleteLabbookFileInput {
+  user: String!
+  owner: String!
+  labbookName: String!
+  filePath: String!
+  clientMutationId: String
+}
+
+type DeleteLabbookFilePayload {
+  success: Boolean
+  clientMutationId: String
+}
+
 # A type that represents a Development Environment Environment Component
 type DevEnv implements Node {
   # The ID of the object.
@@ -360,6 +373,7 @@ type Labbook implements Node, GitRepository {
   activeBranch: LabbookRef
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   environment: Environment
+  files(before: String, after: String, first: Int, last: Int): LabbookFileConnection
   notes(before: String, after: String, first: Int, last: Int): NoteConnection
 }
 
@@ -381,6 +395,29 @@ type LabbookConnection {
 type LabbookEdge {
   # The item at the end of the edge
   node: Labbook
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# A type representing a file or directory inside the labbook file system.
+type LabbookFile implements Node {
+  # The ID of the object.
+  id: ID!
+  isDir: Boolean
+  modifiedAt: DateTime
+  key: String
+  size: Int
+}
+
+type LabbookFileConnection {
+  pageInfo: PageInfo!
+  edges: [LabbookFileEdge]!
+}
+
+type LabbookFileEdge {
+  # The item at the end of the edge
+  node: LabbookFile
 
   # A cursor for use in pagination
   cursor: String!
@@ -408,6 +445,33 @@ type LabbookRefEdge {
   cursor: String!
 }
 
+input MakeLabbookDirectoryInput {
+  user: String!
+  owner: String!
+  labbookName: String!
+  dirName: String!
+  clientMutationId: String
+}
+
+type MakeLabbookDirectoryPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+input MoveLabbookFileInput {
+  user: String!
+  owner: String!
+  labbookName: String!
+  srcPath: String!
+  dstPath: String!
+  clientMutationId: String
+}
+
+type MoveLabbookFilePayload {
+  success: Boolean
+  clientMutationId: String
+}
+
 type Mutation {
   importLabbook(input: ImportLabbookInput!): ImportLabbookPayload
   exportLabbook(input: ExportLabbookInput!): ExportLabbookPayload
@@ -421,6 +485,10 @@ type Mutation {
   createUserNote(input: CreateUserNoteInput!): CreateUserNotePayload
   addEnvironmentComponent(input: AddEnvironmentComponentInput!): AddEnvironmentComponentPayload
   addEnvironmentPackage(input: AddEnvironmentPackageInput!): AddEnvironmentPackagePayload
+  moveLabbookFile(input: MoveLabbookFileInput!): MoveLabbookFilePayload
+  deleteLabbookFile(input: DeleteLabbookFileInput!): DeleteLabbookFilePayload
+  makeLabbookDirectory(input: MakeLabbookDirectoryInput!): MakeLabbookDirectoryPayload
+  removeUserIdentity(input: RemoveUserIdentityInput!): RemoveUserIdentityPayload
 }
 
 # An object with an ID
@@ -499,6 +567,9 @@ type Owner implements Node, User {
   # The ID of the object.
   id: ID!
   username: String
+  email: String
+  givenName: String
+  familyName: String
 }
 
 # A type that represents a Package Manager based Environment Component
@@ -550,6 +621,17 @@ type Query {
   availableDevEnvVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): DevEnvConnection
   availableCustomDependencies(before: String, after: String, first: Int, last: Int): CustomDependencyConnection
   availableCustomDependenciesVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): CustomDependencyConnection
+  userIdentity: UserIdentity
+}
+
+input RemoveUserIdentityInput {
+  clientMutationId: String
+}
+
+# Mutation to remove a locally stored user identity (no-op if not running in local mode)
+type RemoveUserIdentityPayload {
+  userIdentityEdge: UserIdentity
+  clientMutationId: String
 }
 
 input StartContainerInput {
@@ -581,4 +663,17 @@ type StopContainerPayload {
 # Interface representing a user in the system
 interface User {
   username: String
+  email: String
+  givenName: String
+  familyName: String
+}
+
+# A type representing the identity of the logged in user
+type UserIdentity implements Node, User {
+  # The ID of the object.
+  id: ID!
+  username: String
+  email: String
+  givenName: String
+  familyName: String
 }

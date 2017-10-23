@@ -136,10 +136,10 @@ export default class Code extends Component {
   *  redirect user to jupyter in callback
   */
   _openJupyter(){
-
+    let username = localStorage.getItem('username')
     StartContainerMutation(
       this.props.labbookName,
-      'default',
+      username,
       'clientMutationId',
       (error) =>{
         if(error){

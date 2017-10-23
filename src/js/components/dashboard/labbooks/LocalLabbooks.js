@@ -22,8 +22,7 @@ class LocalLabbooks extends Component {
 
     this._goToLabbook = this._goToLabbook.bind(this)
     this._loadMore = this._loadMore.bind(this)
-    // this._openImport = this._openImport.bind(this)
-    // this._closeImport = this._closeImport.bind(this)
+
   }
 
   /**
@@ -99,7 +98,7 @@ class LocalLabbooks extends Component {
                 onClick={()=> this.refs.wizardModal._showModal()}
                 className="LocalLabbooks__panel LocalLabbooks__panel--add flex flex--row justify--center">
                 <div
-                  onClick={()=> this._openImport()}
+                  // onClick={()=> this._openImport()}
                   className="LocalLabbooks__labbook-icon">
                     <div className="LocalLabbooks__title-add"></div>
                 </div>

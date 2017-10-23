@@ -227,11 +227,11 @@ export default createPaginationContainer(
      };
    },
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-
+    const username = localStorage.getItem('username')
     cursor = pagination ? props.labbook.notes.edges[props.labbook.notes.edges.length - 1].cursor : null
     first = counter;
     name = props.labbookName;
-    owner = 'default';
+    owner = username;
      return {
        first,
        cursor,
