@@ -36,7 +36,7 @@ export default class DashboardContainer extends Component {
   *  @return {jsx}
   */
   _displaySelectedComponent(){
-    console.log('dashboard', this.state.selectedComponent)
+
     if(this.state.selectedComponent === 'datasets'){
 
       return (<DatasetSets />)
@@ -50,9 +50,9 @@ export default class DashboardContainer extends Component {
           cursor: null
         }}
         render={({error, props}) => {
-          console.log(error, props)
-          if (error) {
 
+          if (error) {
+            console.log(error)
             return <div>{error.message}</div>
           } else if (props) {
 

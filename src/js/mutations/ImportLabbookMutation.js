@@ -9,7 +9,7 @@ const mutation = graphql`
     importLabbook(input: $input){
       clientMutationId
       importJobKey
-      buildImageJobKey  
+      buildImageJobKey
     }
   }
 `;
@@ -36,7 +36,7 @@ export default function ImportLabbookMutation(
       variables,
       uploadables,
       onCompleted: (response, error ) => {
-        console.log(response)
+  
         if(error){
           console.log(error)
         }

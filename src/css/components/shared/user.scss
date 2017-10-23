@@ -35,8 +35,6 @@
   border: 1px solid $charcoal;
   box-shadow: 10px 10px 5px #888888;
 
-
-
 }
 
 .User__dropdown--arrow{
@@ -55,10 +53,16 @@
   color: $white;
   padding: 5px 25px;
   border-radius: 0px;
+
+  background: $charcoal url('./../images/icons/logout.svg') no-repeat 5px center;
+  background-size: 20px;
+
 }
 
 .User__button:hover{
-  background-color: $white;
+
   border: 1px solid $charcoal;
   color: $charcoal;
+  background: $white url('./../images/icons/logout-hover.svg') no-repeat 5px center;
+  background-size: 20px;
 }

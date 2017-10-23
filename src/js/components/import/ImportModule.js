@@ -30,6 +30,8 @@ export default class ImportModule extends Component {
     this._importingState = this._importingState.bind(this)
     this._clearState = this._clearState.bind(this)
 
+
+
     const dropzoneIds = ['dropZone', 'dropZone__helper', 'dropZone__filename'];
 
     //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
@@ -101,8 +103,7 @@ export default class ImportModule extends Component {
         fileReader.onloadend = function (evt) {
           let arrayBuffer = evt.target.result;
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
-
-
+      
           that.setState(
             {files: [
               {

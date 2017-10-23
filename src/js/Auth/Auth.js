@@ -2,6 +2,7 @@ import history from 'JS/history';
 import auth0 from 'auth0-js';
 import { AUTH_CONFIG } from './auth0-variables';
 import UserIdentity from './UserIdentity'
+import RemoveUserIdentityMutation from 'Mutations/RemoveUserIdentityMutation'
 
 const gignatumAPi = 'api.gigantum.io'
 export default class Auth {
@@ -51,14 +52,12 @@ export default class Auth {
     localStorage.setItem('given_name', authResult.idTokenPayload.given_name);
     localStorage.setItem('email', authResult.idTokenPayload.email);
     localStorage.setItem('username', authResult.idTokenPayload.nickname);
-
+    //redirect to labbooks when user logs in
     history.replace(`/labbooks`)
   }
 
   logout() {
 
-    UserIdentity.removeUserIdentity()
-    // Clear access token and ID token from local storage
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
@@ -66,8 +65,10 @@ export default class Auth {
     localStorage.removeItem('given_name');
     localStorage.removeItem('email');
     localStorage.removeItem('username');
-    // navigate to the home route
-    history.replace('/');
+    RemoveUserIdentityMutation(()=>{
+      //redirect to root when user logs out
+      history.replace('/');
+    })
   }
 
   isAuthenticated() {

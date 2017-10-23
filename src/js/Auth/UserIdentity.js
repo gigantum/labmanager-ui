@@ -44,6 +44,7 @@ const UserIdentity = {
     })
   },
   removeUserIdentity: () => {
+    console.log('removeUserIdentity')
     RemoveUserIdentityMutation(()=>{
       console.log('removed user')
     })
