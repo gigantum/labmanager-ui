@@ -51,10 +51,13 @@ function fetchQuery(
     'headers': headers,
     'body': body,
   }).then(response => {
+    console.log()
     return response.json()
   }).catch(error => {
+    console.log(error.message.toString())
 
-    if(error.message === 'Failed to fetch'){
+    if((error.message.toString()+'') === 'Failed to fetch'){
+      console.log('logs')
       document.getElementById('apiDown').classList.remove('hidden')
     }else{
       document.getElementById('apiDown').classList.add('hidden')

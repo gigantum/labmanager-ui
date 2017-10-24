@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Thu Oct 19 2017 15:56:22 GMT-0400 (EDT)
+# timestamp: Tue Oct 24 2017 13:31:38 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -488,7 +488,6 @@ type Mutation {
   moveLabbookFile(input: MoveLabbookFileInput!): MoveLabbookFilePayload
   deleteLabbookFile(input: DeleteLabbookFileInput!): DeleteLabbookFilePayload
   makeLabbookDirectory(input: MakeLabbookDirectoryInput!): MakeLabbookDirectoryPayload
-  removeUserIdentity(input: RemoveUserIdentityInput!): RemoveUserIdentityPayload
 }
 
 # An object with an ID
@@ -567,9 +566,6 @@ type Owner implements Node, User {
   # The ID of the object.
   id: ID!
   username: String
-  email: String
-  givenName: String
-  familyName: String
 }
 
 # A type that represents a Package Manager based Environment Component
@@ -621,17 +617,6 @@ type Query {
   availableDevEnvVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): DevEnvConnection
   availableCustomDependencies(before: String, after: String, first: Int, last: Int): CustomDependencyConnection
   availableCustomDependenciesVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): CustomDependencyConnection
-  userIdentity: UserIdentity
-}
-
-input RemoveUserIdentityInput {
-  clientMutationId: String
-}
-
-# Mutation to remove a locally stored user identity (no-op if not running in local mode)
-type RemoveUserIdentityPayload {
-  userIdentityEdge: UserIdentity
-  clientMutationId: String
 }
 
 input StartContainerInput {
@@ -663,17 +648,4 @@ type StopContainerPayload {
 # Interface representing a user in the system
 interface User {
   username: String
-  email: String
-  givenName: String
-  familyName: String
-}
-
-# A type representing the identity of the logged in user
-type UserIdentity implements Node, User {
-  # The ID of the object.
-  id: ID!
-  username: String
-  email: String
-  givenName: String
-  familyName: String
 }
