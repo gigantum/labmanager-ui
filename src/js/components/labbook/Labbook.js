@@ -199,18 +199,28 @@ class Labbook extends Component {
                         }} />
 
                         <Route path={`${this.props.match.url}/code`} render={() => {
-                          return (<Code
+                          return (
+                            <Code
+                            labbook={this.props.labbook}
                             labbookName={labbookName}
                             setContainerState={this._setContainerState}
                           />)
                         }} />
 
                         <Route path={`${this.props.match.url}/inputData`} render={() => {
-                          return (<InputData/>)
+                          return (
+                            <InputData
+                              labbook={this.props.labbook}
+                              labbookName={labbookName}
+                            />)
                         }} />
 
                         <Route path={`${this.props.match.url}/outputData`} render={() => {
-                          return (<OutputData/>)
+                          return (
+                            <OutputData
+                              labbook={this.props.labbook}
+                              labbookName={labbookName}
+                            />)
                         }} />
                       </Switch>
                     </Route>
@@ -262,9 +272,13 @@ export default createFragmentContainer(
             containerStatus
             imageStatus
           }
+
           ...Environment_labbook
           ...Overview_labbook
           ...Notes_labbook
+          ...Code_labbook
+          ...InputData_labbook
+          ...OutputData_labbook
 
       }`
   }

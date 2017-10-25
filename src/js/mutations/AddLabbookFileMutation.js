@@ -6,8 +6,8 @@ import environment from 'JS/createRelayEnvironment'
 
 
 const mutation = graphql`
-  mutation MoveLabbookFileMutation($input: MoveLabbookFileInput!){
-    moveLabbookFile(input: $input){
+  mutation AddLabbookFileMutation($input: AddLabbookFileInput!){
+    addLabbookFile(input: $input){
       newLabbookFileEdge{
         node{
           id
@@ -25,12 +25,12 @@ const mutation = graphql`
 
 let tempID = 0;
 
-export default function MoveLabbookFileMutation(
+export default function AddLabbookFileMutation(
   user,
   owner,
   labbookName,
-  srcPath,
-  dstPath,
+  filePath,
+  uploadables,
   callback
 ) {
   const variables = {
@@ -38,18 +38,19 @@ export default function MoveLabbookFileMutation(
       user,
       owner,
       labbookName,
-      srcPath,
-      dstPath,
+      filePath,
       clientMutationId: '' + tempID++
     }
   }
+  console.log(uploadables)
   commitMutation(
     environment,
     {
       mutation,
       variables,
+      uploadables,
       onCompleted: (response, error ) => {
-    
+        console.log(response, error)
         if(error){
           console.log(error)
         }

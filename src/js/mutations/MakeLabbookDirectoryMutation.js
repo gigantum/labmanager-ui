@@ -8,10 +8,16 @@ import environment from 'JS/createRelayEnvironment'
 const mutation = graphql`
   mutation MakeLabbookDirectoryMutation($input: MakeLabbookDirectoryInput!){
     makeLabbookDirectory(input: $input){
-      user
-      owner
-      labbookName
-      dirname
+      newLabbookFileEdge{
+        node{
+          id
+          isDir
+          modifiedAt
+          key
+          size
+        }
+        cursor
+      }
       clientMutationId
     }
   }
@@ -23,7 +29,7 @@ export default function MakeLabbookDirectoryMutation(
   user,
   owner,
   labbookName,
-  dirname,
+  dirName,
   callback
 ) {
   const variables = {
@@ -31,7 +37,7 @@ export default function MakeLabbookDirectoryMutation(
       user,
       owner,
       labbookName,
-      dirname,
+      dirName,
       clientMutationId: '' + tempID++
     }
   }

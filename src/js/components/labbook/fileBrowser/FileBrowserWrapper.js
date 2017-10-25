@@ -1,15 +1,16 @@
 // vendor
 import React, { Component } from 'react'
+import {createFragmentContainer, graphql} from 'react-relay'
 import SweetAlert from 'sweetalert-react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
 import Moment from 'moment'
-//Config
-import Config from './CodeConfig'
+
 //mutations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import DeleteLabbookFileMutation from 'Mutations/DeleteLabbookFileMutation'
 import MakeLabbookDirectoryMutation from 'Mutations/MakeLabbookDirectoryMutation'
 import MoveLabbookFileMutation from 'Mutations/MoveLabbookFileMutation'
+import AddLabbookFileMutation from 'Mutations/AddLabbookFileMutation'
 
 export default class FileBrowserWrapper extends Component {
   constructor(props){
@@ -32,6 +33,16 @@ export default class FileBrowserWrapper extends Component {
   }
 
   handleCreateFolder(key) {
+
+    MakeLabbookDirectoryMutation(
+      localStorage.getItem('username'),
+      localStorage.getItem('username'),
+      this.props.labbookName,
+      key,
+      (response) => {
+        console.log(response)
+      }
+    )
     this.setState(state => {
       state.files = state.files.concat([{
         key: key,
@@ -47,6 +58,27 @@ export default class FileBrowserWrapper extends Component {
           newKey += '/';
         }
         newKey += file.name;
+        // console.log(file, newKey)
+        let fileReader = new FileReader();
+        let that = this;
+
+        fileReader.onloadend = function (evt) {
+          let arrayBuffer = evt.target.result;
+          let blob = new Blob([new Uint8Array(arrayBuffer)]);
+
+          AddLabbookFileMutation(
+            localStorage.getItem('username'),
+            localStorage.getItem('username'),
+            that.props.labbookName,
+            newKey,
+            blob,
+            () =>{
+
+            }
+          )
+
+        };
+        fileReader.readAsArrayBuffer(file);
         return {
           key: newKey,
           size: file.size,
@@ -71,6 +103,17 @@ export default class FileBrowserWrapper extends Component {
     });
   }
   handleRenameFolder(oldKey, newKey) {
+    MoveLabbookFileMutation(
+      localStorage.getItem('username'),
+      localStorage.getItem('username'),
+      this.props.labbookName,
+      oldKey,
+      newKey,
+      (response) => {
+        console.log(response)
+      }
+    )
+
     this.setState(state => {
       let newFiles = [];
       state.files.map((file) => {
@@ -90,6 +133,17 @@ export default class FileBrowserWrapper extends Component {
     });
   }
   handleRenameFile(oldKey, newKey) {
+    MoveLabbookFileMutation(
+      localStorage.getItem('username'),
+      localStorage.getItem('username'),
+      this.props.labbookName,
+      oldKey,
+      newKey,
+      (response) => {
+        console.log(response)
+      }
+    )
+
     this.setState(state => {
       let newFiles = [];
       state.files.forEach((file) => {
@@ -109,6 +163,17 @@ export default class FileBrowserWrapper extends Component {
     });
   }
   handleDeleteFolder(folderKey) {
+
+
+    DeleteLabbookFileMutation(
+      localStorage.getItem('username'),
+      localStorage.getItem('username'),
+      this.props.labbookName,
+      folderKey,
+      (response) => {
+        console.log(response)
+      }
+    )
     this.setState(state => {
       let newFiles = [];
       state.files.forEach((file) => {
@@ -121,6 +186,16 @@ export default class FileBrowserWrapper extends Component {
     });
   }
   handleDeleteFile(fileKey) {
+    DeleteLabbookFileMutation(
+      localStorage.getItem('username'),
+      localStorage.getItem('username'),
+      this.props.labbookName,
+      fileKey,
+      (response) => {
+        console.log(response)
+      }
+    )
+    //DeleteLabbookFileMutation()
     this.setState(state => {
       let newFiles = [];
       state.files.forEach((file) => {
@@ -162,9 +237,29 @@ export default class FileBrowserWrapper extends Component {
     )
 
   }
+  /**
+  *  @param {object} files
+  *  formats files for file browser
+  *  @return {array}
+  */
+  _formatFileJson(files){
+      console.log(files)
+      let formatedArray = []
 
+      files.edges.forEach((edge) => {
+
+        formatedArray.push({
+          key: edge.node.key,
+          modified: edge.node.modifiedAt,
+          size: edge.node.size
+        })
+      })
+      console.log(formatedArray)
+      return formatedArray
+  }
   render(){
-
+    
+    let files = this._formatFileJson(this.props.files)
     return(
         <div id="code" className="Code flex flex-row justify-center">
           {/* <button className="Code__open-jupyter" onClick={() => this._openJupyter()}
@@ -172,7 +267,7 @@ export default class FileBrowserWrapper extends Component {
             Open Jupyter
           </button> */}
           <FileBrowser ref="FileBrowser"
-            files={this.state.files}
+            files={files}
             onCreateFolder={this.handleCreateFolder}
             onCreateFiles={this.handleCreateFiles}
             onMoveFolder={this.handleRenameFolder}

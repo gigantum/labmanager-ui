@@ -8,10 +8,7 @@ import environment from 'JS/createRelayEnvironment'
 const mutation = graphql`
   mutation DeleteLabbookFileMutation($input: DeleteLabbookFileInput!){
     deleteLabbookFile(input: $input){
-      user
-      owner
-      labbookName
-      filePath
+      success
       clientMutationId
     }
   }
@@ -41,7 +38,6 @@ export default function DeleteLabbookFileMutation(
       mutation,
       variables,
       onCompleted: (response, error ) => {
-        console.log(response, error)
         if(error){
           console.log(error)
         }

@@ -42,7 +42,7 @@ function fetchQuery(
     body = new FormData()
     body.append('query', queryString)
     body.append('variables', JSON.stringify(variables))
-    body.append('archiveFile', uploadables)
+    body.append('uploadFile', uploadables)
   }
 
 
