@@ -42,7 +42,7 @@ function fetchQuery(
     body = new FormData()
     body.append('query', queryString)
     body.append('variables', JSON.stringify(variables))
-    body.append('archiveFile', uploadables)
+    body.append('uploadFile', uploadables)
   }
 
 
@@ -51,6 +51,7 @@ function fetchQuery(
     'headers': headers,
     'body': body,
   }).then(response => {
+
     if(response.status === 404){
       document.getElementById('apiDown').classList.remove('hidden')
     }else{
@@ -59,8 +60,10 @@ function fetchQuery(
     }
 
   }).catch(error => {
+    console.log(error.message.toString())
 
-    if(error.message === 'Failed to fetch'){
+    if((error.message.toString()+'') === 'Failed to fetch'){
+      console.log('logs')
       document.getElementById('apiDown').classList.remove('hidden')
     }else{
       document.getElementById('apiDown').classList.add('hidden')

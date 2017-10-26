@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Thu Oct 19 2017 15:56:22 GMT-0400 (EDT)
+# timestamp: Tue Oct 24 2017 21:25:18 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -30,6 +30,37 @@ input AddEnvironmentPackageInput {
 # Mutation to add a new package to labbook. 
 type AddEnvironmentPackagePayload {
   environmentPackage: PackageManager
+  clientMutationId: String
+}
+
+input AddLabbookFavoriteInput {
+  owner: String!
+  labbookName: String!
+  subdir: String!
+  key: String!
+  description: String
+  isDir: String
+  index: Int
+  clientMutationId: String
+}
+
+type AddLabbookFavoritePayload {
+  newFavoriteEdge: LabbookFavoriteEdge
+  clientMutationId: String
+}
+
+input AddLabbookFileInput {
+  user: String!
+  owner: String!
+  labbookName: String!
+  filePath: String!
+  clientMutationId: String
+}
+
+# Mutation to add a file to a labbook. File should be sent in the `uploadFile` key as a multi-part/form upload.
+# file_path is the relative path from the labbook root.
+type AddLabbookFilePayload {
+  newLabbookFileEdge: LabbookFileEdge
   clientMutationId: String
 }
 
@@ -374,6 +405,7 @@ type Labbook implements Node, GitRepository {
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   environment: Environment
   files(before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  favorites(subdir: String, before: String, after: String, first: Int, last: Int): LabbookFavoriteConnection
   notes(before: String, after: String, first: Int, last: Int): NoteConnection
 }
 
@@ -395,6 +427,29 @@ type LabbookConnection {
 type LabbookEdge {
   # The item at the end of the edge
   node: Labbook
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# A type representing a file or directory that has been favorited in the labbook file system.
+type LabbookFavorite implements Node {
+  # The ID of the object.
+  id: ID!
+  index: Int
+  key: String
+  description: String
+  isDir: Boolean
+}
+
+type LabbookFavoriteConnection {
+  pageInfo: PageInfo!
+  edges: [LabbookFavoriteEdge]!
+}
+
+type LabbookFavoriteEdge {
+  # The item at the end of the edge
+  node: LabbookFavorite
 
   # A cursor for use in pagination
   cursor: String!
@@ -454,7 +509,7 @@ input MakeLabbookDirectoryInput {
 }
 
 type MakeLabbookDirectoryPayload {
-  success: Boolean
+  newLabbookFileEdge: LabbookFileEdge
   clientMutationId: String
 }
 
@@ -468,7 +523,7 @@ input MoveLabbookFileInput {
 }
 
 type MoveLabbookFilePayload {
-  success: Boolean
+  newLabbookFileEdge: LabbookFileEdge
   clientMutationId: String
 }
 
@@ -485,10 +540,13 @@ type Mutation {
   createUserNote(input: CreateUserNoteInput!): CreateUserNotePayload
   addEnvironmentComponent(input: AddEnvironmentComponentInput!): AddEnvironmentComponentPayload
   addEnvironmentPackage(input: AddEnvironmentPackageInput!): AddEnvironmentPackagePayload
+  addLabbookFile(input: AddLabbookFileInput!): AddLabbookFilePayload
   moveLabbookFile(input: MoveLabbookFileInput!): MoveLabbookFilePayload
   deleteLabbookFile(input: DeleteLabbookFileInput!): DeleteLabbookFilePayload
   makeLabbookDirectory(input: MakeLabbookDirectoryInput!): MakeLabbookDirectoryPayload
   removeUserIdentity(input: RemoveUserIdentityInput!): RemoveUserIdentityPayload
+  addFavorite(input: AddLabbookFavoriteInput!): AddLabbookFavoritePayload
+  removeFavorite(input: RemoveLabbookFavoriteInput!): RemoveLabbookFavoritePayload
 }
 
 # An object with an ID
@@ -622,6 +680,19 @@ type Query {
   availableCustomDependencies(before: String, after: String, first: Int, last: Int): CustomDependencyConnection
   availableCustomDependenciesVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): CustomDependencyConnection
   userIdentity: UserIdentity
+}
+
+input RemoveLabbookFavoriteInput {
+  owner: String!
+  labbookName: String!
+  subdir: String!
+  index: Int!
+  clientMutationId: String
+}
+
+type RemoveLabbookFavoritePayload {
+  success: Boolean
+  clientMutationId: String
 }
 
 input RemoveUserIdentityInput {

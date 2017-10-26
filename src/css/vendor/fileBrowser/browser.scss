@@ -3,6 +3,23 @@ $main-padding: 0.5rem;
 $main-colour: #5b7b8e;
 
 div.rendered-react-keyed-file-browser{
+  position: relative;
+  .rendered-file-browser{
+    position: relative;
+  }
+  .FileBrowser__mask{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: black;
+    opacity: 0.5;
+    z-index: 200;
+
+  }
+
+
   div.action-bar{
     margin-bottom: $main-padding;
 

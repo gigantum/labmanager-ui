@@ -199,18 +199,31 @@ class Labbook extends Component {
                         }} />
 
                         <Route path={`${this.props.match.url}/code`} render={() => {
-                          return (<Code
-                            labbookName={labbookName}
-                            setContainerState={this._setContainerState}
-                          />)
+                          return (
+                            <Code
+                              labbook={this.props.labbook}
+                              labbookName={labbookName}
+                              labbookId={this.props.labbook.id}
+                              setContainerState={this._setContainerState}
+                            />)
                         }} />
 
                         <Route path={`${this.props.match.url}/inputData`} render={() => {
-                          return (<InputData/>)
+                          return (
+                            <InputData
+                              labbook={this.props.labbook}
+                              labbookName={labbookName}
+                              labbookId={this.props.labbook.id}
+                            />)
                         }} />
 
                         <Route path={`${this.props.match.url}/outputData`} render={() => {
-                          return (<OutputData/>)
+                          return (
+                            <OutputData
+                              labbook={this.props.labbook}
+                              labbookId={this.props.labbook.id}
+                              labbookName={labbookName}
+                            />)
                         }} />
                       </Switch>
                     </Route>
@@ -262,9 +275,13 @@ export default createFragmentContainer(
             containerStatus
             imageStatus
           }
+
           ...Environment_labbook
           ...Overview_labbook
           ...Notes_labbook
+          ...Code_labbook
+          ...InputData_labbook
+          ...OutputData_labbook
 
       }`
   }

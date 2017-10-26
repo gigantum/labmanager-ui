@@ -8,6 +8,7 @@ import {
 import NotesCard from './NotesCard'
 import Loader from 'Components/shared/Loader'
 import UserNote from './../UserNote'
+
 //utilities
 import Config from 'JS/config'
 
