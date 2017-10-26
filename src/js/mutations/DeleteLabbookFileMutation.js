@@ -2,6 +2,7 @@ import {
   commitMutation,
   graphql,
 } from 'react-relay'
+import RelayRuntime from 'relay-runtime'
 import environment from 'JS/createRelayEnvironment'
 
 
@@ -17,9 +18,12 @@ const mutation = graphql`
 let tempID = 0;
 
 export default function DeleteLabbookFileMutation(
+  connectionKey,
   user,
   owner,
   labbookName,
+  labbookId,
+  deleteLabbookFileId,
   filePath,
   callback
 ) {
@@ -32,11 +36,35 @@ export default function DeleteLabbookFileMutation(
       clientMutationId: '' + tempID++
     }
   }
+
+  function sharedUpdater(store, labbookID, deletedID) {
+    const userProxy = store.get(labbookID);
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      userProxy,
+      'Code_files',
+    );
+    RelayRuntime.ConnectionHandler.deleteNode(
+      conn,
+      deletedID,
+    );
+  }
+
+
   commitMutation(
     environment,
     {
       mutation,
       variables,
+      configs: [{ //commented out until nodes are returned
+        type: 'RANGE_DELETE',
+        parentID: labbookId,
+        connectionKeys: [{
+          key: connectionKey,
+          rangeBehavior: 'append'
+        }],
+        pathToConnection: ['labbook', 'files'],
+        deletedIDFieldName: deleteLabbookFileId
+      }],
       onCompleted: (response, error ) => {
         if(error){
           console.log(error)
@@ -46,8 +74,10 @@ export default function DeleteLabbookFileMutation(
       onError: err => console.error(err),
 
       updater: (store) => {
-
-
+        sharedUpdater(store, labbookId, deleteLabbookFileId);
+      },
+      optimisticUpdater: (store) => {
+        sharedUpdater(store, labbookId, deleteLabbookFileId);
       },
     },
   )

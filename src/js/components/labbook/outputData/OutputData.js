@@ -26,6 +26,7 @@ class OutputData extends Component {
           ref="outPutBrowser"
           files={this.props.labbook.files}
           rootFoler="output"
+          connection="OutputData_files"
           {...this.props}
         />
       )

@@ -15,13 +15,14 @@ class Code extends Component {
 
   render(){
     console.log(this.props)
-  
+
     if(this.props.labbook){
       return(
         <FileBrowserWrapper
           ref='codeBrowser'
           rootFolder={"code"}
           files={this.props.labbook.files}
+          connection="Code_files"
           {...this.props}
         />
       )

@@ -24,6 +24,7 @@ class InputData extends Component {
           ref='inputBrowser'
           rootFoler="input"
           files={this.props.labbook.files}
+          connection="InputData_files"
           {...this.props}
         />
       )
@@ -39,7 +40,7 @@ export default createFragmentContainer(
   {
     labbook: graphql`
       fragment InputData_labbook on Labbook{
-        files(first: 20)@connection(key: "Code_files"){
+        files(first: 20)@connection(key: "InputData_files"){
           edges{
             node{
               id

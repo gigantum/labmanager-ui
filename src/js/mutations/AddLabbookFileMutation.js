@@ -26,9 +26,11 @@ const mutation = graphql`
 let tempID = 0;
 
 export default function AddLabbookFileMutation(
+  connectionKey,
   user,
   owner,
   labbookName,
+  labbookId,
   filePath,
   uploadables,
   callback
@@ -49,6 +51,15 @@ export default function AddLabbookFileMutation(
       mutation,
       variables,
       uploadables,
+      configs: [{ //commented out until nodes are returned
+        type: 'RANGE_ADD',
+        parentID: labbookId,
+        connectionInfo: [{
+          key: connectionKey,
+          rangeBehavior: 'prepend'
+        }],
+        edgeName: 'newLabbookFileEdge'
+      }],
       onCompleted: (response, error ) => {
         console.log(response, error)
         if(error){

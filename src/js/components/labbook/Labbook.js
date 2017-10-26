@@ -201,10 +201,11 @@ class Labbook extends Component {
                         <Route path={`${this.props.match.url}/code`} render={() => {
                           return (
                             <Code
-                            labbook={this.props.labbook}
-                            labbookName={labbookName}
-                            setContainerState={this._setContainerState}
-                          />)
+                              labbook={this.props.labbook}
+                              labbookName={labbookName}
+                              labbookId={this.props.labbook.id}
+                              setContainerState={this._setContainerState}
+                            />)
                         }} />
 
                         <Route path={`${this.props.match.url}/inputData`} render={() => {
@@ -212,6 +213,7 @@ class Labbook extends Component {
                             <InputData
                               labbook={this.props.labbook}
                               labbookName={labbookName}
+                              labbookId={this.props.labbook.id}
                             />)
                         }} />
 
@@ -219,6 +221,7 @@ class Labbook extends Component {
                           return (
                             <OutputData
                               labbook={this.props.labbook}
+                              labbookId={this.props.labbook.id}
                               labbookName={labbookName}
                             />)
                         }} />

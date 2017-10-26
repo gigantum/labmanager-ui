@@ -19,7 +19,7 @@ export default class FileBrowserWrapper extends Component {
     this.state = {
       'show': false,
       'message': '',
-      'files': props.files
+      'files': this._formatFileJson(props.labbook.files)
     }
 
     this.handleCreateFolder = this.handleCreateFolder.bind(this)
@@ -35,20 +35,16 @@ export default class FileBrowserWrapper extends Component {
   handleCreateFolder(key) {
 
     MakeLabbookDirectoryMutation(
+      this.props.connection,
       localStorage.getItem('username'),
       localStorage.getItem('username'),
       this.props.labbookName,
+      this.props.labbookId,
       key,
       (response) => {
         console.log(response)
       }
     )
-    this.setState(state => {
-      state.files = state.files.concat([{
-        key: key,
-      }])
-      return state;
-    });
   }
   handleCreateFiles(files, prefix) {
     this.setState(state => {
@@ -58,7 +54,7 @@ export default class FileBrowserWrapper extends Component {
           newKey += '/';
         }
         newKey += file.name;
-        // console.log(file, newKey)
+
         let fileReader = new FileReader();
         let that = this;
 
@@ -67,145 +63,127 @@ export default class FileBrowserWrapper extends Component {
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
 
           AddLabbookFileMutation(
+            that.props.connection,
             localStorage.getItem('username'),
             localStorage.getItem('username'),
             that.props.labbookName,
+            that.props.labbookId,
             newKey,
             blob,
             () =>{
 
             }
           )
-
         };
+
         fileReader.readAsArrayBuffer(file);
-        return {
-          key: newKey,
-          size: file.size,
-          modified: + Moment(),
-        };
-      });
-
-      let uniqueNewFiles = [];
-      newFiles.forEach((newFile) => {
-        let exists = false;
-        state.files.forEach((existingFile) => {
-          if (existingFile.key === newFile.key) {
-            exists = true;
-          }
-        });
-        if (!exists) {
-          uniqueNewFiles.push(newFile);
-        }
-      });
-      state.files = state.files.concat(uniqueNewFiles);
-      return state;
-    });
-  }
-  handleRenameFolder(oldKey, newKey) {
-    MoveLabbookFileMutation(
-      localStorage.getItem('username'),
-      localStorage.getItem('username'),
-      this.props.labbookName,
-      oldKey,
-      newKey,
-      (response) => {
-        console.log(response)
-      }
-    )
-
-    this.setState(state => {
-      let newFiles = [];
-      state.files.map((file) => {
-        if (file.key.substr(0, oldKey.length) === oldKey) {
-          newFiles.push({
-            ...file,
-            key: file.key.replace(oldKey, newKey),
-            modified: +Moment(),
-          });
-        }
-        else {
-          newFiles.push(file);
-        }
-      });
-      state.files = newFiles;
-      return state;
-    });
-  }
-  handleRenameFile(oldKey, newKey) {
-    MoveLabbookFileMutation(
-      localStorage.getItem('username'),
-      localStorage.getItem('username'),
-      this.props.labbookName,
-      oldKey,
-      newKey,
-      (response) => {
-        console.log(response)
-      }
-    )
-
-    this.setState(state => {
-      let newFiles = [];
-      state.files.forEach((file) => {
-        if (file.key === oldKey) {
-          newFiles.push({
-            ...file,
+          return {
             key: newKey,
-            modified: +Moment(),
-          });
+            size: file.size,
+            modified: + Moment(),
+          };
+        });
+      })
+  }
+
+
+  handleRenameFolder(oldKey, newKey) {
+
+    let edgesToMove = this.props.files.edges.filter((edge) => {
+      return edge && (edge.node.key.indexOf(oldKey) > -1)
+    })
+
+    let folderToMove = edgesToMove.filter((edge) => {
+      return edge.node.key.indexOf('.') < 0
+    })[0]
+
+    MoveLabbookFileMutation(
+      this.props.connection,
+      localStorage.getItem('username'),
+      localStorage.getItem('username'),
+      this.props.labbookName,
+      this.props.labbookId,
+      folderToMove,
+      oldKey,
+      newKey,
+      (response) => {
+
+        edgesToMove.forEach((edge) => {
+
+          if(edge.node.key.indexOf('.') > -1 ){
+
+
+            let newKeyComputed = edge.node.key.replace(oldKey, newKey)
+
+            this.handleRenameFile(edge.node.key, newKeyComputed)
+
+          }
+        })
+      }
+    )
+
+
+
+  }
+
+  handleRenameFile(oldKey, newKey) {
+
+    let edgeToMove = this.props.files.edges.filter((edge) => {
+      return edge && (oldKey === edge.node.key)
+    })[0]
+
+    if(edgeToMove){
+      MoveLabbookFileMutation(
+        this.props.connection,
+        localStorage.getItem('username'),
+        localStorage.getItem('username'),
+        this.props.labbookName,
+        this.props.labbookId,
+        edgeToMove,
+        oldKey,
+        newKey,
+        (response) => {
+          console.log(response)
         }
-        else {
-          newFiles.push(file);
-        }
-      });
-      state.files = newFiles;
-      return state;
-    });
+      )
+    }
   }
   handleDeleteFolder(folderKey) {
-
+    let edgeToDelete = this.props.files.edges.filter((edge) => {
+      return edge && (folderKey === edge.node.key)
+    })[0]
 
     DeleteLabbookFileMutation(
+      this.props.connection,
       localStorage.getItem('username'),
       localStorage.getItem('username'),
       this.props.labbookName,
+      this.props.labbookId,
+      edgeToDelete.node.id,
       folderKey,
       (response) => {
         console.log(response)
       }
     )
-    this.setState(state => {
-      let newFiles = [];
-      state.files.forEach((file) => {
-        if (file.key.substr(0, folderKey.length) !== folderKey) {
-          newFiles.push(file);
-        }
-      });
-      state.files = newFiles;
-      return state;
-    });
   }
   handleDeleteFile(fileKey) {
+
+    let edgeToDelete = this.props.files.edges.filter((edge) => {
+      return edge && (fileKey === edge.node.key)
+    })[0]
+
     DeleteLabbookFileMutation(
+      this.props.connection,
       localStorage.getItem('username'),
       localStorage.getItem('username'),
       this.props.labbookName,
+      this.props.labbookId,
+      edgeToDelete.node.id,
       fileKey,
       (response) => {
         console.log(response)
       }
     )
-    //DeleteLabbookFileMutation()
-    this.setState(state => {
-      let newFiles = [];
-      state.files.forEach((file) => {
-        if (file.key !== fileKey) {
-          newFiles.push(file);
-        }
-      });
-      state.files = newFiles;
-      return state;
-    });
   }
 
   /**
@@ -229,13 +207,9 @@ export default class FileBrowserWrapper extends Component {
           setTimeout(function(){
             window.open('http://localhost:8888/', '_blank')
           }, 3000)
-
         }
-
-
       }
     )
-
   }
   /**
   *  @param {object} files
@@ -243,22 +217,23 @@ export default class FileBrowserWrapper extends Component {
   *  @return {array}
   */
   _formatFileJson(files){
-      console.log(files)
+
       let formatedArray = []
 
       files.edges.forEach((edge) => {
-
-        formatedArray.push({
-          key: edge.node.key,
-          modified: edge.node.modifiedAt,
-          size: edge.node.size
-        })
+        if(edge){
+          formatedArray.push({
+            key: edge.node.isDir ? edge.node.key + '/' : edge.node.key,
+            modified: edge.node.modifiedAt,
+            size: edge.node.size
+          })
+        }
       })
-      console.log(formatedArray)
+
       return formatedArray
   }
   render(){
-    
+
     let files = this._formatFileJson(this.props.files)
     return(
         <div id="code" className="Code flex flex-row justify-center">
@@ -266,7 +241,10 @@ export default class FileBrowserWrapper extends Component {
           target="_blank">
             Open Jupyter
           </button> */}
-          <FileBrowser ref="FileBrowser"
+          <FileBrowser
+            ref={this.props.connection}
+            key={this.props.connection}
+            keyPrefix={this.props.connection}
             files={files}
             onCreateFolder={this.handleCreateFolder}
             onCreateFiles={this.handleCreateFiles}
