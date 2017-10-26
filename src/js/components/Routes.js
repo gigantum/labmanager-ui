@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
 import Auth from 'JS/Auth/Auth';
-import UserIdentity from 'JS/Auth/UserIdentity';
 import history from 'JS/history';
 import {QueryRenderer, graphql} from 'react-relay'
 // components
@@ -33,9 +32,6 @@ const handleAuthentication = (nextState, replace) => {
     auth.handleAuthentication();
   }
 }
-
-
-
 
 //import CreatePage from './components/CreatePage';
 export default class Routes extends Component {
