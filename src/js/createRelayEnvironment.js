@@ -51,8 +51,14 @@ function fetchQuery(
     'headers': headers,
     'body': body,
   }).then(response => {
-    console.log()
-    return response.json()
+
+    if(response.status === 404){
+      document.getElementById('apiDown').classList.remove('hidden')
+    }else{
+      document.getElementById('apiDown').classList.add('hidden')
+      return response.json()
+    }
+
   }).catch(error => {
     console.log(error.message.toString())
 
