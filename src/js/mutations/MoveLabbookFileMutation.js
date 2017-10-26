@@ -26,16 +26,16 @@ const mutation = graphql`
 
 let tempID = 0;
 
-function sharedUpdater(store, labbookID, deletedID) {
+function sharedUpdater(store, labbookID, deletedID, connectionKey) {
   const userProxy = store.get(labbookID);
   const conn = RelayRuntime.ConnectionHandler.getConnection(
     userProxy,
-    'Code_files',
+    connectionKey,
   );
 
   RelayRuntime.ConnectionHandler.deleteNode(
     conn,
-    deletedID,
+    deletedID
   );
 }
 
@@ -67,7 +67,7 @@ export default function MoveLabbookFileMutation(
     {
       mutation,
       variables,
-      configs: [{ //commented out until nodes are returned
+      configs: [{
         type: 'RANGE_ADD',
         parentID: labbookId,
         connectionInfo: [{
@@ -86,23 +86,10 @@ export default function MoveLabbookFileMutation(
       onError: err => console.error(err),
 
       updater: (store) => {
-        sharedUpdater(store, labbookId, edge.node.id);
+        sharedUpdater(store, labbookId, edge.node.id, connectionKey);
       },
       optimisticUpdater: (store) => {
-        sharedUpdater(store, labbookId, edge.node.id);
-      },
-      optimisticResponse:  {
-        moveLabbookFile: {
-          newLabbookFileEdge:{
-            node:{
-              id: edge.node.id,
-              isDir: edge.node.isDir,
-              modifiedAt: edge.node.modifiedAt,
-              key: dstPath,
-              size: edge.node.size
-            }
-          }
-        }
+        sharedUpdater(store, labbookId, edge.node.id, connectionKey);
       }
     },
   )

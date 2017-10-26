@@ -31,8 +31,27 @@ export default class FileBrowserWrapper extends Component {
     this._openJupyter = this._openJupyter.bind(this)
 
   }
-
+  /**
+  *  @param {none}
+  *  uses dom to show mask on file directory
+  */
+  showMask(){
+    document.getElementById('filebrowser-mask').classList.remove('hidden')
+  }
+  /**
+  *  @param {none}
+  *  uses dom to hide mask on file directory
+  */
+  hideMask(){
+    document.getElementById('filebrowser-mask').classList.add('hidden')
+  }
+  /**
+  *  @param {string} key - file key
+  *  creates a directory using MakeLabbookDirectoryMutation
+  */
   handleCreateFolder(key) {
+    let that = this;
+    this.showMask()
 
     MakeLabbookDirectoryMutation(
       this.props.connection,
@@ -42,11 +61,18 @@ export default class FileBrowserWrapper extends Component {
       this.props.labbookId,
       key,
       (response) => {
+        that.hideMask()
         console.log(response)
       }
     )
   }
+
+  /**
+  *  @param {string, string} key,prefix  file key, prefix is root folder -
+  *  creates a file using AddLabbookFileMutation by passing a blob
+  */
   handleCreateFiles(files, prefix) {
+    this.showMask()
     this.setState(state => {
       let newFiles = files.map((file) => {
         let newKey = prefix;
@@ -71,6 +97,7 @@ export default class FileBrowserWrapper extends Component {
             newKey,
             blob,
             () =>{
+              that.hideMask()
 
             }
           )
@@ -85,10 +112,14 @@ export default class FileBrowserWrapper extends Component {
         });
       })
   }
-
+  /**
+  *  @param {string, string} oldKey,newKey  file key, prefix is root folder -
+  *  renames folder by creating new folder, moving files to the folder and deleting the old folder
+  */
 
   handleRenameFolder(oldKey, newKey) {
-
+    let that = this;
+    this.showMask()
     let edgesToMove = this.props.files.edges.filter((edge) => {
       return edge && (edge.node.key.indexOf(oldKey) > -1)
     })
@@ -97,37 +128,85 @@ export default class FileBrowserWrapper extends Component {
       return edge.node.key.indexOf('.') < 0
     })[0]
 
-    MoveLabbookFileMutation(
+    MakeLabbookDirectoryMutation(
       this.props.connection,
       localStorage.getItem('username'),
       localStorage.getItem('username'),
       this.props.labbookName,
       this.props.labbookId,
-      folderToMove,
-      oldKey,
       newKey,
       (response) => {
 
+        let all = []
+
         edgesToMove.forEach((edge) => {
-
           if(edge.node.key.indexOf('.') > -1 ){
+            all.push(new Promise((resolve, reject)=>{
+              let newKeyComputed = edge.node.key.replace(oldKey, newKey)
+
+                MoveLabbookFileMutation(
+                  this.props.connection,
+                  localStorage.getItem('username'),
+                  localStorage.getItem('username'),
+                  this.props.labbookName,
+                  this.props.labbookId,
+                  edge,
+                  edge.node.key,
+                  newKeyComputed,
+                  (response) => {
+                    console.log(response)
+                    if(response.moveLabbookFile){
+                      console.log("resolve")
+                      setTimeout(function(){
+
+                        resolve(response.moveLabbookFile)
+                      },1050)
+                    }else{
+                        reject(response[0].message)
+                    }
+                  }
+                )
 
 
-            let newKeyComputed = edge.node.key.replace(oldKey, newKey)
-
-            this.handleRenameFile(edge.node.key, newKeyComputed)
-
+            }))
           }
+
+        })
+
+        Promise.all(all).then(values =>{
+
+          let edgeToDelete = this.props.files.edges.filter((edge) => {
+            return edge && (oldKey === edge.node.key)
+          })[0]
+
+          DeleteLabbookFileMutation(
+            this.props.connection,
+            localStorage.getItem('username'),
+            localStorage.getItem('username'),
+            this.props.labbookName,
+            this.props.labbookId,
+            edgeToDelete.node.id,
+            oldKey,
+            (response) => {
+              console.log(response)
+              that.hideMask()
+            }
+          )
+        }).catch(reason =>{
+          console.log(reason[0].message)
         })
       }
     )
 
-
-
   }
 
+  /**
+  *  @param {string, string} oldKey,newKey
+  *  moves file from old folder to a new folder
+  */
   handleRenameFile(oldKey, newKey) {
-
+    let that = this;
+    this.showMask()
     let edgeToMove = this.props.files.edges.filter((edge) => {
       return edge && (oldKey === edge.node.key)
     })[0]
@@ -144,11 +223,20 @@ export default class FileBrowserWrapper extends Component {
         newKey,
         (response) => {
           console.log(response)
+          that.hideMask()
         }
       )
     }
   }
+
+  /**
+  *  @param {string} folderKey
+  *  deletes foler with a specified key
+  */
   handleDeleteFolder(folderKey) {
+    let that = this
+    this.showMask()
+
     let edgeToDelete = this.props.files.edges.filter((edge) => {
       return edge && (folderKey === edge.node.key)
     })[0]
@@ -163,10 +251,18 @@ export default class FileBrowserWrapper extends Component {
       folderKey,
       (response) => {
         console.log(response)
+        that.hideMask()
       }
     )
   }
+  /**
+  *  @param {string} fileKey
+  *  deletes file with a specified key
+  */
   handleDeleteFile(fileKey) {
+
+    let that = this
+    this.showMask()
 
     let edgeToDelete = this.props.files.edges.filter((edge) => {
       return edge && (fileKey === edge.node.key)
@@ -182,6 +278,7 @@ export default class FileBrowserWrapper extends Component {
       fileKey,
       (response) => {
         console.log(response)
+        that.hideMask()
       }
     )
   }
@@ -223,7 +320,7 @@ export default class FileBrowserWrapper extends Component {
       files.edges.forEach((edge) => {
         if(edge){
           formatedArray.push({
-            key: edge.node.isDir ? edge.node.key + '/' : edge.node.key,
+            key: edge.node.key,
             modified: edge.node.modifiedAt,
             size: edge.node.size
           })
@@ -235,6 +332,7 @@ export default class FileBrowserWrapper extends Component {
   render(){
 
     let files = this._formatFileJson(this.props.files)
+
     return(
         <div id="code" className="Code flex flex-row justify-center">
           {/* <button className="Code__open-jupyter" onClick={() => this._openJupyter()}

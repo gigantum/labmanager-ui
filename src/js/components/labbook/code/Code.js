@@ -37,7 +37,7 @@ export default createFragmentContainer(
   {
     labbook: graphql`
       fragment Code_labbook on Labbook{
-        files(first: 20)@connection(key: "Code_files"){
+        files(first: 100)@connection(key: "Code_files"){
           edges{
             node{
               id
