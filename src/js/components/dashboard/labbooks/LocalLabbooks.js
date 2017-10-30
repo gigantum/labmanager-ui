@@ -91,7 +91,7 @@ class LocalLabbooks extends Component {
               </h4>
 
             </div>
-            <div className='LocalLabbooks__labbooks flex flex--row flex--wrap justify--left'>
+            <div className='LocalLabbooks__labbooks justify--left'>
 
               <div
                 key={'addLabbook'}

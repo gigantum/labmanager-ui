@@ -1,6 +1,12 @@
 .LocalLabbooks{
   list-style: none;
   height: 100%;
+
+  $neat-grid: (
+    columns: 12,
+    gutter: 20px,
+  );
+  @include span-columns(12)
 }
 
 .LocalLabbooks__title-bar{
@@ -70,13 +76,15 @@
 .LocalLabbooks__panel{
   position: relative;
 
+  @include span-columns(3 of 12);
+
   padding: 0 1px 1px 1px;
   height: 350px;
-  width: auto;
-  max-width: 380px;
-  min-width: 300px;
+  // width: auto;
+  // max-width: 380px;
+  min-width: 320px;
   flex: 1 1 280px;
-  margin: 20px 20px;
+  margin: 20px 10px;
   word-break: break-all;
 
   cursor: pointer;
@@ -102,10 +110,14 @@
 }
 
 .LocalLabbooks__panel--add{
+@include flex(center, row)
   height: 350px !important;
   border: 1px solid $charcoal !important;
+
   .LocalLabbooks__labbook-icon{
     align-self: center;
+    align-content: center;
+    align-items: center;
     position: relative;
     .LocalLabbooks__title-add{
       top: -10px;
@@ -127,17 +139,6 @@
 .LocalLabbooks__panel:after{
   padding: 0 10px;
 }
-
-// .LocalLabbooks__panel:hover{
-//   align-self: flex-start;
-//   //color: $cream;
-//   //border-width: 10px 2px 2px 2px;
-//   padding: 0;
-//   border: 2px solid $charcoal;
-//   border-top: 10px solid $charcoal;
-//   //background: $charcoal;
-//   //background-size: 50px;
-// }
 
 .LocalLabbooks__description{
   line-height: 20px;

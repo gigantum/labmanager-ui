@@ -208,7 +208,24 @@ module.exports = {
       // in development "style" loader enables hot editing of CSS.
       {
         test: /\.(scss|css)$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        loaders: [
+          'style-loader',
+          'css-loader',
+          // {
+          //   loader: 'css-loader',
+          //   sourceMap: true
+          // },
+          {
+            loader: 'sass-loader',
+            options:{
+              sourceMap: true,
+              includePaths: [
+                require("bourbon").includePaths[0],
+                require("bourbon-neat").includePaths[0]
+              ]
+            }
+          }
+        ]
       }
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "file" loader exclusion list.
