@@ -219,9 +219,15 @@ module.exports = {
                   },
                 },
                 {
-                 loader: 'sass-loader',
-
-               }
+                  loader: 'sass-loader',
+                  options:{
+                    sourceMap: true,
+                    includePaths: [
+                      require("bourbon").includePaths[0],
+                      require("bourbon-neat").includePaths[0]
+                    ]
+                  }
+                }
               ],
             },
             extractTextPluginOptions

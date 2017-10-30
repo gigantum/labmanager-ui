@@ -68,6 +68,7 @@
   "dependencies": {
     "auth0-js": "^8.8.0",
     "bourbon": "^4.3.4",
+    "bourbon-neat": "^1.9.0",
     "dateformat": "^2.0.0",
     "file-icons-js": "github:websemantics/file-icons-js",
     "fine-uploader-wrappers": "^1.0.1",
@@ -127,7 +128,6 @@
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
-
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
     ],
@@ -140,30 +140,16 @@
     },
     "setupTestFrameworkScriptFile": "./__tests__/localStorage.js"
   },
-  "babel": {
-    "presets": [
-      "react-app",
-      "es2015"
-    ],
-    "plugins": [
-      "relay",
-      "transform-class-properties",
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./src"
-          ],
-          "alias": {
-            "Mutations": "./src/js/mutations",
-            "JS": "./src/js/components",
-            "Components": "./src/js/components",
-            "Submodules": "./submodules"
-          }
-        }
-      ]
-    ]
-  },
+  "babel":{
+   "presets": [
+     "react-app",
+     "es2015"
+   ],
+   "plugins": [
+     "relay",
+     "transform-class-properties"
+   ]
+ },
   "eslintConfig": {
     "extends": "react-app"
   }

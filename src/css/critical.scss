@@ -1,5 +1,7 @@
 //vendor
-@import '../../node_modules/bourbon/app/assets/stylesheets/_bourbon.scss';
+@import 'bourbon';
+@import 'neat';
+//@import "neat";
 @import '../../node_modules/normalize-sass/normalize';
 @import  'vendor/materialize.scss';
 @import  'vendor/sweetAlert.scss';
