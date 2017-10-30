@@ -5,6 +5,7 @@ import SweetAlert from 'sweetalert-react'
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
+import ChunkUploader from 'JS/utils/ChunkUploader'
 
 
 export default class ImportModule extends Component {
@@ -97,13 +98,18 @@ export default class ImportModule extends Component {
         }, 5000)
 
       }else{
+
+        ChunkUploader.chunkFile(file)
+
         this.setState({error: false})
         let fileReader = new FileReader();
 
+        console.log(file)
         fileReader.onloadend = function (evt) {
           let arrayBuffer = evt.target.result;
+
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
-      
+
           that.setState(
             {files: [
               {
