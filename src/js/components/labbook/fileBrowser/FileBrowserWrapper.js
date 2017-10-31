@@ -316,24 +316,26 @@ export default class FileBrowserWrapper extends Component {
   _formatFileJson(files){
 
       let formatedArray = []
+      if(files){
+        files.edges.forEach((edge) => {
+          if(edge){
+            formatedArray.push({
+              key: edge.node.key,
+              modified: edge.node.modifiedAt,
+              size: edge.node.size
+            })
+          }
+        })
 
-      files.edges.forEach((edge) => {
-        if(edge){
-          formatedArray.push({
-            key: edge.node.key,
-            modified: edge.node.modifiedAt,
-            size: edge.node.size
-          })
-        }
-      })
-
+      }
       return formatedArray
+
   }
   render(){
 
-    let files = this._formatFileJson(this.props.files)
+      let files = this._formatFileJson(this.props.files)
 
-    return(
+      return(
         <div id="code" className="Code flex flex-row justify-center">
           {/* <button className="Code__open-jupyter" onClick={() => this._openJupyter()}
           target="_blank">
@@ -366,5 +368,6 @@ export default class FileBrowserWrapper extends Component {
             />
         </div>
       )
+
   }
 }

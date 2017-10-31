@@ -20,14 +20,25 @@ export default function ImportLabbookMutation(
   user,
   owner,
   uploadables,
+  chunk,
   callback
 ) {
+  console.log(chunk)
   const variables = {
     input: {
       owner,
       user,
+      chunkUploadParams: {
+        fileSize: chunk.fileSize,
+        chunkSize: chunk.chunkSize,
+        totalChunks: chunk.totalChunks,
+        chunkIndex: chunk.chunkIndex,
+        filename: chunk.filename,
+        uploadId: chunk.uploadId,
+      },
       clientMutationId: '' + tempID++
-    }
+    },
+
   }
   commitMutation(
     environment,
@@ -36,7 +47,7 @@ export default function ImportLabbookMutation(
       variables,
       uploadables,
       onCompleted: (response, error ) => {
-  
+
         if(error){
           console.log(error)
         }

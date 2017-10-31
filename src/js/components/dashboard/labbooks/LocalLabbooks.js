@@ -77,6 +77,7 @@ class LocalLabbooks extends Component {
 
         return(
           <div className="LocalLabbooks">
+
             <WizardModal
               ref="wizardModal"
               handler={this.handler}
@@ -91,8 +92,8 @@ class LocalLabbooks extends Component {
               </h4>
 
             </div>
-            <div className='LocalLabbooks__labbooks justify--left'>
-
+            <div className='LocalLabbooks__labbooks'>
+              <div className="LocalLabbooks__sizer">
               <div
                 key={'addLabbook'}
                 onClick={()=> this.refs.wizardModal._showModal()}
@@ -123,7 +124,7 @@ class LocalLabbooks extends Component {
                   )
                 })
               }
-
+            </div>
 
           </div>
 
