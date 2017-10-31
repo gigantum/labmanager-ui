@@ -15,8 +15,16 @@
 
 .Code__toolbar{
   align-self: center;
-  width: 300px;
+  flex: 0 1 auto;
   @include flex(space-between, row);
+}
+
+.Code__filter{
+  margin: 0 10px;
+}
+
+.Code__filter:nth-last-child(1){
+  margin: 0 0 0 10px;
 }
 
 .Code__filter,
