@@ -11,6 +11,7 @@ const uploadChunk = (chunk) => {
 const ChunkUploader = {
 
   chunkFile: (file) => {
+    
     const id = uuidv4()
     const chunk = 1024 * 1024 * 4;
     const size = file.size;
@@ -27,10 +28,10 @@ const ChunkUploader = {
       uploadChunk({
         blob:blob,
         size: size,
-        chunck_size: (sliceUpperBound - fileLoadedSize),
-        total_chunks: totalChunks,
-        chunk_number: chunkNumber,
-        file_name: file.name,
+        chunckSize: (sliceUpperBound - fileLoadedSize),
+        totalChunks: totalChunks,
+        chunkNumber: chunkNumber,
+        fileName: file.name,
         id: id
       })
 
