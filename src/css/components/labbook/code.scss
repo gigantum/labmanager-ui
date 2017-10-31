@@ -69,6 +69,10 @@
 }
 
 .Code{
+
+  .FileBrowser__icon{
+    margin: 0 5px 0 0;
+  }
   .action-bar{
     flex-direction: space-between;
 
@@ -90,6 +94,7 @@
       background-color: initial;
       color: $charcoal;
       box-shadow: none;
+      padding: 0 10px;
     }
     .btn:hover{
       color: $font-grey;
@@ -113,7 +118,7 @@
     margin-left: 25px;
 
     li{
-      margin: 10px !important;
+      margin: 10px 0 !important;
     }
 
 
