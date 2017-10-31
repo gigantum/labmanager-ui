@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Tue Oct 24 2017 21:25:18 GMT-0400 (EDT)
+# timestamp: Mon Oct 30 2017 17:56:18 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -460,7 +460,7 @@ type LabbookFile implements Node {
   # The ID of the object.
   id: ID!
   isDir: Boolean
-  modifiedAt: DateTime
+  modifiedAt: Int
   key: String
   size: Int
 }
@@ -522,6 +522,8 @@ input MoveLabbookFileInput {
   clientMutationId: String
 }
 
+# Method to move/rename a file or directory. If file, both src_path and dst_path should contain the file name.
+# If a directory, be sure to include the trailing slash
 type MoveLabbookFilePayload {
   newLabbookFileEdge: LabbookFileEdge
   clientMutationId: String
