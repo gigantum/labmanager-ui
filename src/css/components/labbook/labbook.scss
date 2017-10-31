@@ -38,9 +38,13 @@
   div{
     a{
       color: $font-grey;
+      font-size: 16px;
     }
     padding: 5px 30px;
     cursor: pointer;
+  }
+  .Labbook__navigation-item--overview{
+    padding: 5px 30px 5px 0;
   }
   div:hover a{
     color: $labbooks;
