@@ -99,8 +99,6 @@ export default class ImportModule extends Component {
 
       }else{
 
-        ChunkUploader.chunkFile(file)
-
         this.setState({error: false})
         let fileReader = new FileReader();
 
@@ -199,35 +197,60 @@ export default class ImportModule extends Component {
   _fileUpload = (evt) => {
     this._importingState();
     let filepath = this.state.files[0].filename
-    let username = localStorage.getItem('username')
-    ImportLabbookMutation(username, username, this.state.files[0].file, (result, error)=>{
-      if(result){
-        JobStatus.getJobStatus(result.importLabbook.importJobKey).then((response)=>{
 
-          this.setState({
-            message: 'Lab Book Import ' + response.jobStatus.status.toUpperCase(),
-            show: (response.jobStatus.status === 'failed'),
-            type: (response.jobStatus.status === 'failed') ? 'error': 'success'
-        })
 
-        this._clearState()
+    ChunkUploader.chunkFile(this.state.files[0].file, filepath)
+    // let index = 0;
+    // let callback = (success) => {
+    //   index++;
+    //   if(success && (index === chunks[0].totalChunks)){
+    //     this._importMutation(chunks[index], callback, filepath)
+    //   }
+    // }
+    //
+    // this._importMutation(chunks[index], callback, filepath)
 
-        if(response.jobStatus.status === 'finished'){
-          let filename = filepath.split('/')[filepath.split('/').length -1]
-          let route = filename.split('_')[0]
 
-          this.props.history.replace(`/labbooks/${route}`)
-        }
+  }
+  /**
+  *  @param {Object, function, string} chunk, callback, filepath
+  *   trigger file upload
+  */
+  _importMutation(chunk, callback, filepath){
+    let username = localStorage.getItem('username');
+    ImportLabbookMutation(username, username, this.state.files[0].file, chunk, (result, error)=>{
+        if(result){
+          JobStatus.getJobStatus(result.importLabbook.importJobKey).then((response)=>{
 
-        }).catch((error)=>{
+            this.setState({
+              message: 'Lab Book Import ' + response.jobStatus.status.toUpperCase(),
+              show: (response.jobStatus.status === 'failed'),
+              type: (response.jobStatus.status === 'failed') ? 'error': 'success'
+            })
+
+            this._clearState()
+
+            if(response.jobStatus.status === 'finished'){
+              callback(true)
+              let filename = filepath.split('/')[filepath.split('/').length -1]
+              let route = filename.split('_')[0]
+
+              this.props.history.replace(`/labbooks/${route}`)
+            }else if(response.jobStatus.status === 'failed'){
+              callback(false)
+            }
+
+          }).catch((error)=>{
+            callback(false);
+            console.error(error)
+            this._clearState()
+          })
+        }else{
+          callback(false);
           console.error(error)
           this._clearState()
-        })
-      }else{
-        console.error(error)
-        this._clearState()
-      }
-    })
+        }
+      })
 
   }
 

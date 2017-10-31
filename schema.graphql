@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Tue Oct 24 2017 21:25:18 GMT-0400 (EDT)
+# timestamp: Tue Oct 31 2017 14:56:51 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -117,6 +117,18 @@ input CheckoutBranchInput {
 type CheckoutBranchPayload {
   labbook: Labbook
   clientMutationId: String
+}
+
+# Input Object for params needed for a chunked upload
+#
+# To use, add a field `chunk_upload_params` to your mutation input
+input ChunkUploadInput {
+  fileSize: Int!
+  chunkSize: Int!
+  totalChunks: Int!
+  chunkIndex: Int!
+  filename: String!
+  uploadId: String!
 }
 
 # An enumeration for container image status
@@ -359,6 +371,7 @@ enum ImageStatus {
 input ImportLabbookInput {
   owner: String!
   user: String!
+  chunkUploadParams: ChunkUploadInput!
   clientMutationId: String
 }
 
@@ -404,7 +417,7 @@ type Labbook implements Node, GitRepository {
   activeBranch: LabbookRef
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   environment: Environment
-  files(before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  files(baseDir: String, before: String, after: String, first: Int, last: Int): LabbookFileConnection
   favorites(subdir: String, before: String, after: String, first: Int, last: Int): LabbookFavoriteConnection
   notes(before: String, after: String, first: Int, last: Int): NoteConnection
 }
@@ -460,7 +473,7 @@ type LabbookFile implements Node {
   # The ID of the object.
   id: ID!
   isDir: Boolean
-  modifiedAt: DateTime
+  modifiedAt: Int
   key: String
   size: Int
 }
@@ -522,6 +535,8 @@ input MoveLabbookFileInput {
   clientMutationId: String
 }
 
+# Method to move/rename a file or directory. If file, both src_path and dst_path should contain the file name.
+# If a directory, be sure to include the trailing slash
 type MoveLabbookFilePayload {
   newLabbookFileEdge: LabbookFileEdge
   clientMutationId: String
