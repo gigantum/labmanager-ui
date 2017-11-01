@@ -66,14 +66,12 @@ html, body, .root{
   color: $charcoal;
   font-family: arial;
   position: relative;
-
-  //overflow-x: hidden;
 }
 
 body{
   overflow-y: auto;
   overflow-x: hidden;
-
+  background-color: $background-color;
 }
 
 h1,
