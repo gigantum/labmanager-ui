@@ -40,7 +40,7 @@ const ChunkUploader = {
         chunkIndex = 0,
         totalChunks = Math.ceil(file.size/chunk);
 
-
+    console.time('chunk')
     function getChunk(nextChunk){
       console.log(nextChunk)
       if(nextChunk){
@@ -48,18 +48,18 @@ const ChunkUploader = {
         let sliceUpperBound = (fileSize > (fileLoadedSize + chunk)) ? (fileLoadedSize + chunk) : ((fileSize - fileLoadedSize) + fileLoadedSize)
 
         let blob = file.slice(fileLoadedSize, sliceUpperBound)
-        let chunkSize = sliceUpperBound - fileLoadedSize;
+        //let chunkSize = sliceUpperBound - fileLoadedSize;
 
         fileLoadedSize = fileLoadedSize + chunk;
         chunkIndex++
 
-        if(chunkIndex < chunkSize){
+        if(chunkIndex < totalChunks){
           uploadChunk(
             file,
             {
               blob:blob,
-              fileSize: Math.round(fileSize/1024),
-              chunkSize: chunkSize,
+              fileSize: Math.round(fileSize/1024) ,
+              chunkSize: chunk,
               totalChunks: totalChunks,
               chunkIndex: chunkIndex - 1,
               filename: file.name,
@@ -69,6 +69,8 @@ const ChunkUploader = {
             getChunk
           )
 
+        }else{
+          console.timeEnd('chunk')
         }
       }
     }
