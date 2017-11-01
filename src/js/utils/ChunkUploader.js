@@ -9,39 +9,20 @@ const uploadChunk = (file, chunk, filepath, callback) => {
   console.log(chunk)
 
   let username = localStorage.getItem('username');
+  console.log(chunk.blob)
   ImportLabbookMutation(username, username, chunk.blob, chunk, (result, error)=>{
-      if(result){
-        JobStatus.getJobStatus(result.importLabbook.importJobKey).then((response)=>{
+      if(result === null){
+        callback(file)
+        let filename = filepath.split('/')[filepath.split('/').length -1]
+        let route = filename.split('_')[0]
 
-          // this.setState({
-          //   message: 'Lab Book Import ' + response.jobStatus.status.toUpperCase(),
-          //   show: (response.jobStatus.status === 'failed'),
-          //   type: (response.jobStatus.status === 'failed') ? 'error': 'success'
-          // })
-          //
-          // this._clearState()
-          console.log(response.jobStatus.status)
-          if(response.jobStatus.status === 'finished'){
-            callback(file)
-            let filename = filepath.split('/')[filepath.split('/').length -1]
-            let route = filename.split('_')[0]
-
-            //this.props.history.replace(`/labbooks/${route}`)
-          }else if(response.jobStatus.status === 'failed'){
-            callback(false)
-          }
-
-        }).catch((error)=>{
-          callback(false);
-          console.error(error)
-          //this._clearState()
-        })
+        //this.props.history.replace(`/labbooks/${route}`)
       }else{
-        callback(false);
-        console.error(error)
-        //this._clearState()
+        callback(false)
+        console.log(result, error)
       }
-    })
+
+  })
 
 }
 

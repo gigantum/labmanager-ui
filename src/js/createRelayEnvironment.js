@@ -34,15 +34,15 @@ function fetchQuery(
 
     body = JSON.stringify({
       query: queryString,
-      variables,
-      archiveFile: uploadables
+      variables
+      //uploadChunk: uploadables
     })
   }else{
 
     body = new FormData()
     body.append('query', queryString)
     body.append('variables', JSON.stringify(variables))
-    body.append('uploadFile', uploadables)
+    body.append('uploadChunk', uploadables)
   }
 
 
