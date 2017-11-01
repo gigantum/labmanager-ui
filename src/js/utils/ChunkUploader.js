@@ -53,7 +53,7 @@ const ChunkUploader = {
         fileLoadedSize = fileLoadedSize + chunk;
         chunkIndex++
 
-        if(chunkIndex < totalChunks){
+        if(chunkIndex <= totalChunks){
           uploadChunk(
             file,
             {
@@ -71,6 +71,7 @@ const ChunkUploader = {
 
         }else{
           console.timeEnd('chunk')
+          //componentCallback(true)
         }
       }
     }
