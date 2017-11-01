@@ -23,7 +23,7 @@ export default function ImportLabbookMutation(
   chunk,
   callback
 ) {
-  console.log(chunk)
+  console.log(chunk, uploadables)
   const variables = {
     input: {
       owner,
