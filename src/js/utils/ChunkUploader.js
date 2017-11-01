@@ -9,10 +9,11 @@ const uploadChunk = (file, chunk, filepath, callback) => {
   console.log(chunk)
 
   let username = localStorage.getItem('username');
-  console.log(chunk.blob)
+
   ImportLabbookMutation(username, username, chunk.blob, chunk, (result, error)=>{
-      if(result === null){
-        callback(file)
+      console.log(result)
+      if(result){
+        callback(true)
         let filename = filepath.split('/')[filepath.split('/').length -1]
         let route = filename.split('_')[0]
 
@@ -36,12 +37,13 @@ const ChunkUploader = {
           fileSize = file.size;
 
     let fileLoadedSize = 0,
-        chunkIndex = 1,
+        chunkIndex = 0,
         totalChunks = Math.ceil(file.size/chunk);
 
 
-    function getChunk(file){
-      if(file){
+    function getChunk(nextChunk){
+      console.log(nextChunk)
+      if(nextChunk){
 
         let sliceUpperBound = (fileSize > (fileLoadedSize + chunk)) ? (fileLoadedSize + chunk) : ((fileSize - fileLoadedSize) + fileLoadedSize)
 
@@ -51,12 +53,12 @@ const ChunkUploader = {
         fileLoadedSize = fileLoadedSize + chunk;
         chunkIndex++
 
-        if(sliceUpperBound <= fileSize){
+        if(chunkIndex < chunkSize){
           uploadChunk(
             file,
             {
               blob:blob,
-              fileSize: fileSize,
+              fileSize: Math.round(fileSize/1024),
               chunkSize: chunkSize,
               totalChunks: totalChunks,
               chunkIndex: chunkIndex - 1,
