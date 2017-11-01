@@ -19,6 +19,15 @@
 
 }
 
+.NotesCard__loader{
+  height: 40px;
+  width: calc(100% - 30px);
+  background: $white url('../images/icons/paragraph.svg') repeat-X 10px center;
+  padding: 0 5px;
+  background-size: 30px 30px;
+
+}
+
 .NotesCard:before, .Notes__date-tab:before{
   content: "";
   display: block;
@@ -119,7 +128,6 @@
 .NotesCard__expanded-view.no-height{
   height: 0px;
   padding: 0px;
-
   border: 0px;
   // overflow: hidden;
   // visibility: hidden;

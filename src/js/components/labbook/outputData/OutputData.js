@@ -16,11 +16,16 @@ class OutputData extends Component {
       'files': Config.files
     }
 
-
   }
 
-  render(){
+  componentDidMount() {
+    console.log(this.props.relay)
+  }
 
+
+
+  render(){
+    console.log(this.props)
     return(
         <FileBrowserWrapper
           ref="outPutBrowser"
@@ -39,7 +44,7 @@ export default createFragmentContainer(
   {
     labbook: graphql`
       fragment OutputData_labbook on Labbook{
-        files(first: 100)@connection(key: "OutputData_files"){
+        files(first: $first, baseDir: $baseDir, before: $cursor)@connection(key: "OutputData_files", filters: ["baseDir"]){
           edges{
             node{
               id
@@ -58,5 +63,41 @@ export default createFragmentContainer(
           }
         }
       }`
+  },
+  {
+    variables: {
+      baseDir: "output"
+    },
+    direction: 'forward',
+    getConnectionFromProps(props) {
+      return props.labbook
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
+      };
+    },
+    getVariables(props, {count, cursor}, fragmentVariables) {
+      let baseDir = "output"
+
+      return {
+        count,
+        cursor,
+        baseDir
+      };
+    },
+    query: graphql`
+      query OutputDataPaginationQuery(
+        $first: Int!
+        $cursor: String
+        $baseDir: String
+      ) {
+        labbook {
+          # You could reference the fragment defined previously.
+          ...OutputData_labbook
+        }
+      }
+    `
   }
 )

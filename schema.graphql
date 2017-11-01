@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Mon Oct 30 2017 17:56:18 GMT-0400 (EDT)
+# timestamp: Wed Nov 01 2017 11:04:23 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -221,6 +221,7 @@ input DeleteLabbookFileInput {
   owner: String!
   labbookName: String!
   filePath: String!
+  isDirectory: Boolean
   clientMutationId: String
 }
 
@@ -404,7 +405,7 @@ type Labbook implements Node, GitRepository {
   activeBranch: LabbookRef
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   environment: Environment
-  files(before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  files(baseDir: String, before: String, after: String, first: Int, last: Int): LabbookFileConnection
   favorites(subdir: String, before: String, after: String, first: Int, last: Int): LabbookFavoriteConnection
   notes(before: String, after: String, first: Int, last: Int): NoteConnection
 }

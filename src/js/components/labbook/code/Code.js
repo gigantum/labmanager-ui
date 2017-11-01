@@ -1,6 +1,6 @@
 // vendor
 import React, { Component } from 'react'
-import {createFragmentContainer, graphql} from 'react-relay'
+import {createPaginationContainer, graphql} from 'react-relay'
 //Config
 import Config from './CodeConfig'
 //mutations
@@ -60,12 +60,13 @@ class Code extends Component {
   }
 }
 
-export default createFragmentContainer(
+export default createPaginationContainer(
   Code,
   {
+
     labbook: graphql`
-      fragment Code_labbook on Labbook{
-        files(first: 100)@connection(key: "Code_files"){
+      fragment Code_labbook on Labbook {
+        files(first: $first, baseDir: $baseDir, before: $cursor)@connection(key: "Code_files", filters: ["baseDir"]){
           edges{
             node{
               id
@@ -83,24 +84,44 @@ export default createFragmentContainer(
             endCursor
           }
         }
-        favorites(first: 3)@connection(key: "Code_favorites"){
-          edges{
-            node{
-              id
-              isDir
-              index
-              key
-              description
-            }
-            cursor
-          }
-          pageInfo{
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-          }
-        }
+
       }`
+  },
+  {
+    variables: {
+      baseDir: "output"
+    },
+    direction: 'forward',
+    getConnectionFromProps(props) {
+      return props.labbook
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
+      };
+    },
+    getVariables(props, {count, cursor}, fragmentVariables) {
+      let baseDir = "code"
+
+      return {
+        first: count,
+        cursor,
+        baseDir
+      };
+    },
+    query: graphql`
+      query CodePaginationQuery(
+        $first: Int!
+        $cursor: String
+        $baseDir: String
+      ) {
+        labbook {
+          # You could reference the fragment defined previously.
+          ...Code_labbook
+        }
+      }
+    `
   }
+
 )
