@@ -101,7 +101,6 @@ export default class ImportModule extends Component {
         this.setState({error: false})
         let fileReader = new FileReader();
 
-        console.log(file)
         fileReader.onloadend = function (evt) {
           let arrayBuffer = evt.target.result;
 
@@ -234,7 +233,7 @@ export default class ImportModule extends Component {
     chunkUploadWorker.onmessage = function(e) {
 
       if(e.data.importLabbook){
-          callback(callback.data)
+          callback(e.data)
       }
     }
 
