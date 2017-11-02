@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Tue Oct 31 2017 14:56:51 GMT-0400 (EDT)
+# timestamp: Thu Nov 02 2017 15:28:29 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -54,6 +54,7 @@ input AddLabbookFileInput {
   owner: String!
   labbookName: String!
   filePath: String!
+  chunkUploadParams: ChunkUploadInput!
   clientMutationId: String
 }
 
@@ -123,7 +124,7 @@ type CheckoutBranchPayload {
 #
 # To use, add a field `chunk_upload_params` to your mutation input
 input ChunkUploadInput {
-  fileSize: Int!
+  fileSizeKb: Int!
   chunkSize: Int!
   totalChunks: Int!
   chunkIndex: Int!
@@ -233,6 +234,7 @@ input DeleteLabbookFileInput {
   owner: String!
   labbookName: String!
   filePath: String!
+  isDirectory: Boolean
   clientMutationId: String
 }
 
@@ -418,6 +420,9 @@ type Labbook implements Node, GitRepository {
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   environment: Environment
   files(baseDir: String, before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  codeFiles(baseDir: String = "code/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  inputFiles(baseDir: String = "input/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  outputFiles(baseDir: String = "output/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
   favorites(subdir: String, before: String, after: String, first: Int, last: Int): LabbookFavoriteConnection
   notes(before: String, after: String, first: Int, last: Int): NoteConnection
 }
