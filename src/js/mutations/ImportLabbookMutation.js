@@ -31,7 +31,7 @@ export default function ImportLabbookMutation(
       owner,
       user,
       chunkUploadParams: {
-        fileSize: chunk.fileSize,
+        fileSizeKb: chunk.fileSizeKb,
         chunkSize: chunk.chunkSize,
         totalChunks: chunk.totalChunks,
         chunkIndex: chunk.chunkIndex,
