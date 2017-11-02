@@ -21,8 +21,6 @@
 .Labbook__inner-container{
   //height: calc(100% - 160px);
   margin: 20px 40px;
-  border: 1px solid $labbooks;
-  border-top: 10px solid $labbooks;
   padding: 0 40px;
   min-height: 100%;
   height: auto;
@@ -40,9 +38,13 @@
   div{
     a{
       color: $font-grey;
+      font-size: 16px;
     }
     padding: 5px 30px;
     cursor: pointer;
+  }
+  .Labbook__navigation-item--overview{
+    padding: 5px 30px 5px 0;
   }
   div:hover a{
     color: $labbooks;

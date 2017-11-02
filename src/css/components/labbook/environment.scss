@@ -29,12 +29,11 @@
 }
 
 .Environment__card{
-  background-color: $grey-light;
+  background-color: $white;
   padding: 10px;
-  border: 1px solid $font-grey;
-  border-radius: 5px;
   color: $charcoal;
   width: 330px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -45,7 +44,7 @@
 }
 
 .Environment__card-text{
-  background-color: $grey-light;
+  //background-color: $grey-light;
   padding: 10px;
   width: 200px;
 }
@@ -83,17 +82,16 @@
 }
 
 .Environment__package-dependencies{
-  margin: 10px;
+  margin: 10px 20px 10px 0;
 
   .Environment__card-text{
-      background-color: $grey-light;
+      background-color: $white;
       width: 150px;
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
       p{
         margin: 0 5px 0 0;
       }
 
-      border: 1px solid $charcoal;
-      border-radius: 5px;
   }
 }
 
