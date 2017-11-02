@@ -18,24 +18,34 @@
 }
 
 .Overview__card{
-  background-color: $grey-light;
-  padding: 2px;
-  border: 1px solid $font-grey;
-  border-radius: 5px;
+  background-color: $white;
+  padding: 15px;
   color: $charcoal;
-  width: 180px;
+  width: 200px;
   font-size: 12px;
-  height: 120px;
+  height: 140px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
   p{
     padding: 0px;
     margin: 2px;
   }
 }
 
+.Overview__image-container{
+  padding: 0 10px;
+  @include flex(center, column)
+
+  img{
+    align-content: center;
+  }
+
+}
+
 .Overview__environment-list{
   li{
     padding: 10px;
-    width: 220px;
+    width: 240px;
+    align-self: center;
     .Overview__info{
       padding-right: 15px;
       border-right: 1px solid $font-grey;
@@ -90,17 +100,17 @@
   right: 5px;
   cursor: pointer;
 }
+
 .Overview__package-dependencies{
   margin: 10px;
 
   .Overview__card-text{
-      width: 150px;
+      width: 170px;
       p{
         margin: 0 5px 0 0;
       }
-      background-color: $grey;
-      border: 1px solid $font-grey;
-      border-radius: 5px;
+      background-color: $white;
+      border-radius: 0px;
   }
 }
 
@@ -114,16 +124,15 @@
 }
 
 .Overview__development-environment-item{
-  margin: 0 0 10px;
+  margin: 0;
 }
 
 .PackageCount__item{
-  background-color: $grey-light;
-  border: 1px solid $font-grey;
-  border-radius: 3px;
+  background-color: $white;
   color: $charcoal;
   padding: 5px 20px;
   margin: 0 10px 0 0;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
 
 .PackageCount__dependencies{
