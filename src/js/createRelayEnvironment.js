@@ -20,11 +20,18 @@ function fetchQuery(
       'accept': '*/*',
       'Access-Control-Allow-Origin': '*'
   }
+  console.log(uploadables)
+  if(uploadables && uploadables[0]){
+    if(uploadables[1]){
+      headers['authorization'] = `Bearer ${uploadables[1]}`
+    }
 
-  if(localStorage.getItem('access_token')){
+  } else{
+    if(localStorage.getItem('access_token')){
 
-    const accessToken = localStorage.getItem('access_token')
-    headers['authorization'] = `Bearer ${accessToken}`
+      const accessToken = localStorage.getItem('access_token')
+      headers['authorization'] = `Bearer ${accessToken}`
+    }
   }
 
 
@@ -34,15 +41,14 @@ function fetchQuery(
 
     body = JSON.stringify({
       query: queryString,
-      variables,
-      archiveFile: uploadables
+      variables
     })
   }else{
 
     body = new FormData()
     body.append('query', queryString)
     body.append('variables', JSON.stringify(variables))
-    body.append('uploadFile', uploadables)
+    body.append('uploadChunk', uploadables[0])
   }
 
 
@@ -52,14 +58,18 @@ function fetchQuery(
     'body': body,
   }).then(response => {
 
-    if(response.status === 404){
-      document.getElementById('apiDown').classList.remove('hidden')
-    }else{
-      document.getElementById('apiDown').classList.add('hidden')
+      if(!(uploadables && uploadables[0])){
+        if(response.status === 404){
+          document.getElementById('apiDown').classList.remove('hidden')
+        }else{
+
+          document.getElementById('apiDown').classList.add('hidden')
+        }
+      }
       return response.json()
-    }
 
   }).catch(error => {
+    console.log(error)
     console.log(error.message.toString())
 
     if((error.message.toString()+'') === 'Failed to fetch'){

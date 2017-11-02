@@ -5,7 +5,7 @@ import SweetAlert from 'sweetalert-react'
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
-
+import ChunkUploader from 'JS/utils/ChunkUploader'
 
 export default class ImportModule extends Component {
   constructor(props){
@@ -97,13 +97,15 @@ export default class ImportModule extends Component {
         }, 5000)
 
       }else{
+
         this.setState({error: false})
         let fileReader = new FileReader();
 
         fileReader.onloadend = function (evt) {
           let arrayBuffer = evt.target.result;
+
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
-      
+
           that.setState(
             {files: [
               {
@@ -190,41 +192,63 @@ export default class ImportModule extends Component {
   *  @param {Object}
   *   trigger file upload
   */
-  _fileUpload = (evt) => {
+  _fileUpload = (evt) => {//this code is going to be moved to the footer to complete the progress bar
+
     this._importingState();
+
     let filepath = this.state.files[0].filename
-    let username = localStorage.getItem('username')
-    ImportLabbookMutation(username, username, this.state.files[0].file, (result, error)=>{
-      if(result){
+    let self = this;
+    let callback = (result) => {
+
+      if(result.importLabbook){
         JobStatus.getJobStatus(result.importLabbook.importJobKey).then((response)=>{
 
-          this.setState({
-            message: 'Lab Book Import ' + response.jobStatus.status.toUpperCase(),
-            show: (response.jobStatus.status === 'failed'),
-            type: (response.jobStatus.status === 'failed') ? 'error': 'success'
-        })
+          if(response.jobStatus.status === 'finished'){
+            let filename = filepath.split('/')[filepath.split('/').length -1]
+            let route = filename.split('_')[0]
 
-        this._clearState()
-
-        if(response.jobStatus.status === 'finished'){
-          let filename = filepath.split('/')[filepath.split('/').length -1]
-          let route = filename.split('_')[0]
-
-          this.props.history.replace(`/labbooks/${route}`)
-        }
-
+            self.props.history.replace(`/labbooks/${route}`)
+          }else if(response.jobStatus.status === 'failed'){
+            self._showError("Import failed")
+          }
         }).catch((error)=>{
-          console.error(error)
-          this._clearState()
+          self._showError(error[0].message)
         })
       }else{
-        console.error(error)
-        this._clearState()
+        self._showError(result[0].message)
       }
-    })
+    }
+
+    let chunkUploadWorker = new ChunkUploader();
+    console.log(chunkUploadWorker)
+    let data = {
+      file: this.state.files[0].file,
+      filepath: filepath,
+      username: localStorage.getItem('username'),
+      accessToken: localStorage.getItem('access_token')
+    }
+
+    chunkUploadWorker.postMessage(data);
+
+    chunkUploadWorker.onmessage = function(e) {
+
+      if(e.data.importLabbook){
+          callback(e.data)
+      }
+    }
 
   }
-
+  /**
+    @param {object} error
+    shows error message
+  **/
+  _showError(message){
+    this.setState({
+      'show': true,
+      'message': message,
+      'type': 'error'
+    })
+  }
   /**
   *  @param {}
   *  sets state of app for importing

@@ -13,9 +13,13 @@ export default class LocalLabbookPanel extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       'exportPath': '',
-      'show': false
+      'show': false,
+      'message': '',
+      'title': 'Export Successful',
+      'type': 'success'
     }
 
     this._exportLabbook = this._exportLabbook.bind(this)
@@ -43,26 +47,35 @@ export default class LocalLabbookPanel extends Component {
       exportClassList.add('LocalLabbooks__export--downloading')
       let username = localStorage.getItem('username')
       ExportLabbookMutation(username, username, edge.node.name, (response, error)=>{
-        if(response){
+        if(response.exportLabbook){
           JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
 
               this.setState({
                 'exportPath': data.jobStatus.result ? data.jobStatus.result : '',
-                'show': true
+                'show': true,
+                'message': `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
+                'type': 'success',
+                'title': 'Export Successful'
               })
 
               exportClassList.remove('LocalLabbooks__export--downloading')
           }).catch((error)=>{
-              console.log(error)
               exportClassList.remove('LocalLabbooks__export--downloading')
           })
-        }
-      })
-    }else{
-      this.setState({'show': true})
-    }
+      }else{
 
-    return false;
+        this.setState({
+
+          'message': error[0].message,
+          'show': true,
+          'type': 'error',
+          'title': 'Export Failed'
+        })
+        exportClassList.remove('LocalLabbooks__export--downloading')
+      }
+    })
+  }
+
   }
   render(){
     let edge = this.props.edge;
@@ -112,9 +125,9 @@ export default class LocalLabbookPanel extends Component {
             <SweetAlert
               className="sa-error-container"
               show={this.state.show}
-              type="success"
-              title="Export Successful"
-              text={`Export file ${exportFile} is available in the export directory of your Gigantum working directory.`}
+              type={this.state.type}
+              title={this.state.title}
+              text={ this.state.message }
               onConfirm={() => {
                 this.setState({ show: false})
               }}

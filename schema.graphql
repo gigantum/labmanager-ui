@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Mon Oct 30 2017 17:56:18 GMT-0400 (EDT)
+# timestamp: Thu Nov 02 2017 15:28:29 GMT-0400 (EDT)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -54,6 +54,7 @@ input AddLabbookFileInput {
   owner: String!
   labbookName: String!
   filePath: String!
+  chunkUploadParams: ChunkUploadInput!
   clientMutationId: String
 }
 
@@ -117,6 +118,18 @@ input CheckoutBranchInput {
 type CheckoutBranchPayload {
   labbook: Labbook
   clientMutationId: String
+}
+
+# Input Object for params needed for a chunked upload
+#
+# To use, add a field `chunk_upload_params` to your mutation input
+input ChunkUploadInput {
+  fileSizeKb: Int!
+  chunkSize: Int!
+  totalChunks: Int!
+  chunkIndex: Int!
+  filename: String!
+  uploadId: String!
 }
 
 # An enumeration for container image status
@@ -221,6 +234,7 @@ input DeleteLabbookFileInput {
   owner: String!
   labbookName: String!
   filePath: String!
+  isDirectory: Boolean
   clientMutationId: String
 }
 
@@ -359,6 +373,7 @@ enum ImageStatus {
 input ImportLabbookInput {
   owner: String!
   user: String!
+  chunkUploadParams: ChunkUploadInput!
   clientMutationId: String
 }
 
@@ -404,7 +419,10 @@ type Labbook implements Node, GitRepository {
   activeBranch: LabbookRef
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   environment: Environment
-  files(before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  files(baseDir: String, before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  codeFiles(baseDir: String = "code/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  inputFiles(baseDir: String = "input/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  outputFiles(baseDir: String = "output/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
   favorites(subdir: String, before: String, after: String, first: Int, last: Int): LabbookFavoriteConnection
   notes(before: String, after: String, first: Int, last: Int): NoteConnection
 }
