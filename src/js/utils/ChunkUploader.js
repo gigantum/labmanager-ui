@@ -5,22 +5,13 @@ import JobStatus from './JobStatus'
 //mutations
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 
-const uploadChunk = (file, chunk, filepath, callback) => {
-  console.log(chunk)
+const uploadChunk = (file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
 
-  let username = localStorage.getItem('username');
-
-  ImportLabbookMutation(username, username, chunk.blob, chunk, (result, error)=>{
-      console.log(result)
-      if(result){
-        callback(true)
-        let filename = filepath.split('/')[filepath.split('/').length -1]
-        let route = filename.split('_')[0]
-
-        //this.props.history.replace(`/labbooks/${route}`)
+  ImportLabbookMutation(username, username, chunk.blob, chunk, accessToken, (result, error)=>{
+      if(result && (error === undefined)){
+        getChunkCallback(file, result)
       }else{
-        callback(false)
-        console.log(result, error)
+        getChunkCallback(error)
       }
 
   })
@@ -28,51 +19,77 @@ const uploadChunk = (file, chunk, filepath, callback) => {
 }
 
 
-const ChunkUploader = {
 
-  chunkFile: (file, filepath) => {
+const ChunkUploader = {
+  /*
+    @param {object} data includes file filepath username and accessToken
+  */
+  chunkFile: (data) => {
+
+    let file = data.file,
+      filepath = data.filepath,
+      username = data.username,
+      componentCallback = (response) => { //callback to trigger postMessage from worker
+        postMessage(response);
+      }
 
     const id = uuidv4(),
-          chunk = 1024 * 1024 * 4,
-          fileSize = file.size;
+          chunkSize = 1024 * 1024 * 48,
+          fileSize = file.size,
+          fileSizeKb = fileSize/1024;
 
     let fileLoadedSize = 0,
         chunkIndex = 0,
-        totalChunks = Math.ceil(file.size/chunk);
+        totalChunks = Math.ceil(file.size/chunkSize);
 
-    console.time('chunk')
-    function getChunk(nextChunk){
-      console.log(nextChunk)
-      if(nextChunk){
+    /*
+      @param{object, object} response result
+    */
 
-        let sliceUpperBound = (fileSize > (fileLoadedSize + chunk)) ? (fileLoadedSize + chunk) : ((fileSize - fileLoadedSize) + fileLoadedSize)
+    const getChunk = (response, result) => {
 
-        let blob = file.slice(fileLoadedSize, sliceUpperBound)
-        //let chunkSize = sliceUpperBound - fileLoadedSize;
+      if(response.name){ //checks if response is a file
 
-        fileLoadedSize = fileLoadedSize + chunk;
+        let sliceUpperBound = (fileSize > (fileLoadedSize + chunkSize))
+            ? (fileLoadedSize + chunkSize)
+            : ((fileSize - fileLoadedSize) + fileLoadedSize),
+            blob = file.slice(fileLoadedSize, sliceUpperBound)
+
+        fileLoadedSize = fileLoadedSize + chunkSize;
+
         chunkIndex++
 
-        if(chunkIndex <= totalChunks){
+        let chunkData =   {
+            blob: blob,
+            fileSizeKb: Math.round(fileSizeKb/1024) ,
+            chunkSize: chunkSize,
+            totalChunks: totalChunks,
+            chunkIndex: chunkIndex - 1,
+            filename: file.name,
+            uploadId: id
+          }
+
+        if(chunkIndex <= totalChunks){ //if  there is still chunks to process do next chunk
           uploadChunk(
             file,
-            {
-              blob:blob,
-              fileSize: Math.round(fileSize/1024) ,
-              chunkSize: chunk,
-              totalChunks: totalChunks,
-              chunkIndex: chunkIndex - 1,
-              filename: file.name,
-              uploadId: id
-            },
+            chunkData,
+            data.accessToken,
+            username,
             filepath,
-            getChunk
+            getChunk,
+            componentCallback
           )
 
-        }else{
-          console.timeEnd('chunk')
-          //componentCallback(true)
+          postMessage(chunkData) //post progress back to worker instantiator file
+
+        }else if(result){ //completes chunk upload task
+
+          componentCallback(result)
+        }else{ //chunk upload fails
+          componentCallback(response)
         }
+      }else{ //chunk upload fails
+        componentCallback(response)
       }
     }
 
@@ -80,5 +97,11 @@ const ChunkUploader = {
 
   }
 }
-
+/*
+  @param: {event} evt
+  waits for data to be passed before starting chunking
+*/
+onmessage = (evt) => {
+  ChunkUploader.chunkFile(evt.data)
+}
 export default ChunkUploader

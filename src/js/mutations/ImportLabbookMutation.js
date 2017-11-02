@@ -19,10 +19,12 @@ let tempID = 0;
 export default function ImportLabbookMutation(
   user,
   owner,
-  uploadables,
+  blob,
   chunk,
+  accessToken,
   callback
 ) {
+  let uploadables = [blob, accessToken]
   console.log(chunk, uploadables)
   const variables = {
     input: {
