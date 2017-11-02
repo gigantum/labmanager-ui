@@ -25,7 +25,7 @@ export default function ImportLabbookMutation(
   callback
 ) {
   let uploadables = [blob, accessToken]
-  console.log(chunk, uploadables)
+
   const variables = {
     input: {
       owner,

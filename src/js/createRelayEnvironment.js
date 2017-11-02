@@ -42,7 +42,6 @@ function fetchQuery(
     body = JSON.stringify({
       query: queryString,
       variables
-      //uploadChunk: uploadables
     })
   }else{
 

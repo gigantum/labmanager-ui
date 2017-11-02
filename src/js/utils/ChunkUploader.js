@@ -36,7 +36,7 @@ const ChunkUploader = {
     const id = uuidv4(),
           chunkSize = 1024 * 1024 * 48,
           fileSize = file.size,
-          fileSizeKb = fileSize/1024;
+          fileSizeKb = Math.round(fileSize/1024);
 
     let fileLoadedSize = 0,
         chunkIndex = 0,
