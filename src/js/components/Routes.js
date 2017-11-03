@@ -39,8 +39,11 @@ export default class Routes extends Component {
   constructor(props){
     super(props)
     this.state = {
-      history: history
+      history: history,
+      footerWorker: null,
+      filepath: ''
     }
+
   }
 
   login() {
@@ -70,6 +73,7 @@ export default class Routes extends Component {
                   path="/"
                   render={(props) =>
                     <Home
+                      history={history}
                       auth={auth}
                       {...props}
                     />
@@ -80,6 +84,7 @@ export default class Routes extends Component {
                   path="/:id"
                   render={(props) =>
                     <Home
+                      history={history}
                       auth={auth}
                       {...props}
                     />
@@ -142,7 +147,11 @@ export default class Routes extends Component {
                     )
                   }}
                 />
-                <Footer/>
+                <Footer
+                  ref="footer"
+                  footerWorker={this.state.footerWorker}
+                  filepath={this.state.filepath}
+                />
               </div>
             )}}
            />

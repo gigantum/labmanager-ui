@@ -7,10 +7,12 @@ import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 import JobStatus from 'JS/utils/JobStatus'
 import ChunkUploader from 'JS/utils/ChunkUploader'
 
+import store from 'JS/redux/store'
+
 export default class ImportModule extends Component {
   constructor(props){
   	super(props);
-
+    console.log(this)
     this.state = {
       'show': false,
       'message': '',
@@ -193,34 +195,14 @@ export default class ImportModule extends Component {
   *   trigger file upload
   */
   _fileUpload = (evt) => {//this code is going to be moved to the footer to complete the progress bar
+    let self = this;
 
     this._importingState();
 
     let filepath = this.state.files[0].filename
-    let self = this;
-    let callback = (result) => {
-
-      if(result.importLabbook){
-        JobStatus.getJobStatus(result.importLabbook.importJobKey).then((response)=>{
-
-          if(response.jobStatus.status === 'finished'){
-            let filename = filepath.split('/')[filepath.split('/').length -1]
-            let route = filename.split('_')[0]
-
-            self.props.history.replace(`/labbooks/${route}`)
-          }else if(response.jobStatus.status === 'failed'){
-            self._showError("Import failed")
-          }
-        }).catch((error)=>{
-          self._showError(error[0].message)
-        })
-      }else{
-        self._showError(result[0].message)
-      }
-    }
 
     let chunkUploadWorker = new ChunkUploader();
-    console.log(chunkUploadWorker)
+
     let data = {
       file: this.state.files[0].file,
       filepath: filepath,
@@ -230,14 +212,98 @@ export default class ImportModule extends Component {
 
     chunkUploadWorker.postMessage(data);
 
-    chunkUploadWorker.onmessage = function(e) {
+    // chunkUploadWorker.addListener('uncoverMask', function (result) {
+    //   self._clearState()
+    // });
 
-      if(e.data.importLabbook){
-          callback(e.data)
-      }
-    }
+    this._chunkLoader(chunkUploadWorker, filepath, this.state.files[0].file)
+
 
   }
+
+  _chunkLoader(chunkWorker, filepath, file){
+
+    store.dispatch({
+      type: 'LOADING_PROGRESS',
+      payload:{
+        bytesUploaded: 0,
+        percentage: 0,
+        totalBytes:  file.size,
+        loadingState: true
+      }
+    })
+
+
+    let self = this
+    chunkWorker.onmessage = function(e) {
+
+     if(e.data.importLabbook){
+        chunkWorker.terminate()
+        store.dispatch({
+          type: 'UPLOAD_MESSAGE',
+          payload: {uploadMessage: 'Upload Complete'}
+        })
+
+
+        let importLabbook = e.data.importLabbook
+         JobStatus.getJobStatus(importLabbook.importJobKey).then((response)=>{
+
+           store.dispatch({
+             type: 'UPLOAD_MESSAGE',
+             payload: {uploadMessage: 'Unzipping labbook'}
+           })
+
+           console.log(response, e.data)
+           if(response.jobStatus.status === 'finished'){
+
+             let route = self._getRoute()
+             self.props.history.replace(`/labbooks/${route}`)
+             self._clearState()
+
+           }else if(response.jobStatus.status === 'failed'){
+             console.log(response)
+
+             store.dispatch({
+               type: 'UPLOAD_MESSAGE',
+               payload: {
+                 uploadMessage: 'Import failed',
+                 error: true
+               }
+             })
+
+           }
+         }).catch((error)=>{
+           store.dispatch({
+             type: 'UPLOAD_MESSAGE',
+             payload: {
+               uploadMessage: 'Computation Error',
+               error: true
+             }
+           })
+           //self._clearState()
+         })
+      }else if(e.data.chunkSize){
+        let  bytesUploaded = (e.data.chunkSize * (e.data.chunkIndex + 1))/1024
+        let totalBytes = e.data.fileSizeKb * 1024
+
+        store.dispatch({
+          type: 'LOADING_PROGRESS',
+          payload: {
+            bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
+            totalBytes: totalBytes,
+            percentage: Math.floor((bytesUploaded/totalBytes) * 100),
+            loadingState: true
+          }
+        })
+
+        document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
+     } else{
+       //self._clearState()
+       chunkWorker.terminate()
+       self._showError(e.data)
+     }
+   }
+ }
   /**
     @param {object} error
     shows error message
