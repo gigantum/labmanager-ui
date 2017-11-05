@@ -4,6 +4,8 @@
 export const UPLOAD_ERROR = 'UPLOAD_ERROR';
 export const LOADING_PROGRESS = 'LOADING_PROGRESS';
 export const UPLOAD_MESSAGE = 'UPLOAD_MESSAGE';
+export const RESET_STORE = 'RESET_STORE';
+export const IMPORT_SUCCESS = 'IMPORT_SUCCESS';
 
 export default (
  state = {
@@ -12,7 +14,10 @@ export default (
    percentage: 0,
    loadingState: false,
    uploadMessage: '',
-   error: false
+   error: false,
+   success: false,
+   labbookname: ''
+
  },
  action
 ) => {
@@ -27,13 +32,36 @@ export default (
      bytesUploaded: action.payload.bytesUploaded,
      percentage: action.payload.percentage,
      totalBytes:  action.payload.totalBytes,
-     loadingState: action.payload.loadingState
+     loadingState: action.payload.loadingState,
+     uploadMessage: '',
+     labbookName: '',
+     error: false,
+     success: false
    };
  } else if (action.type === UPLOAD_MESSAGE) {
    return {
      ...state,
      uploadMessage: action.payload.uploadMessage,
      error: (action.payload.error === undefined) ? false :  action.payload.error
+   };
+ } else if(action.type === IMPORT_SUCCESS){
+   return {
+     ...state,
+     uploadMessage: action.payload.uploadMessage,
+     success: action.payload.success,
+     labbookname: action.payload.labbookName
+   };
+ } else if(action.type === RESET_STORE){
+   return {
+     ...state,
+     bytesUploaded: 0,
+     totalBytes: 0,
+     percentage: 0,
+     loadingState: false,
+     uploadMessage: '',
+     error: false,
+     success: false,
+     labbookname: ''
    };
  }
 

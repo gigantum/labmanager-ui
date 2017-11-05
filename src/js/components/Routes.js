@@ -39,11 +39,8 @@ export default class Routes extends Component {
   constructor(props){
     super(props)
     this.state = {
-      history: history,
-      footerWorker: null,
-      filepath: ''
+      history: history
     }
-
   }
 
   login() {
@@ -66,7 +63,9 @@ export default class Routes extends Component {
               path=""
               render={(location) => {return(
               <div className="Routes">
-                <Header auth={auth} history={history}/>
+                <Header
+                  auth={auth} history={history}
+                />
 
                 <Route
                   exact
@@ -149,8 +148,7 @@ export default class Routes extends Component {
                 />
                 <Footer
                   ref="footer"
-                  footerWorker={this.state.footerWorker}
-                  filepath={this.state.filepath}
+                  history={history}
                 />
               </div>
             )}}

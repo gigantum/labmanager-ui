@@ -221,6 +221,12 @@ export default class ImportModule extends Component {
 
   }
 
+  _getRoute(filepath){
+    let filename = filepath.split('/')[filepath.split('/').length -1]
+    return filename.split('_')[0]
+
+  }
+
   _chunkLoader(chunkWorker, filepath, file){
 
     store.dispatch({
@@ -253,15 +259,24 @@ export default class ImportModule extends Component {
              payload: {uploadMessage: 'Unzipping labbook'}
            })
 
-           console.log(response, e.data)
+           console.log(response)
            if(response.jobStatus.status === 'finished'){
 
-             let route = self._getRoute()
-             self.props.history.replace(`/labbooks/${route}`)
-             self._clearState()
+            let route = self._getRoute(filepath)
+
+             store.dispatch({
+               type: 'IMPORT_SUCCESS',
+               payload: {
+                 uploadMessage: `${route} Lab Book is Ready`,
+                 labbookName: route,
+                 success: true
+               }
+             })
+             console.log(self)
+             //self._clearState()
 
            }else if(response.jobStatus.status === 'failed'){
-             console.log(response)
+
 
              store.dispatch({
                type: 'UPLOAD_MESSAGE',
@@ -271,8 +286,11 @@ export default class ImportModule extends Component {
                }
              })
 
+            self._clearState()
+
            }
          }).catch((error)=>{
+           console.log(error)
            store.dispatch({
              type: 'UPLOAD_MESSAGE',
              payload: {
@@ -280,7 +298,7 @@ export default class ImportModule extends Component {
                error: true
              }
            })
-           //self._clearState()
+           self._clearState()
          })
       }else if(e.data.chunkSize){
         let  bytesUploaded = (e.data.chunkSize * (e.data.chunkIndex + 1))/1024
@@ -292,15 +310,19 @@ export default class ImportModule extends Component {
             bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
             totalBytes: totalBytes,
             percentage: Math.floor((bytesUploaded/totalBytes) * 100),
-            loadingState: true
+            loadingState: true,
+            uploadMessage: '',
+            labbookName: '',
+            error: false,
+            success: false
           }
         })
 
         document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
      } else{
-       //self._clearState()
-       chunkWorker.terminate()
-       self._showError(e.data)
+       console.log(e.data)
+       self._clearState()
+       //self._showError(e.data)
      }
    }
  }
@@ -333,7 +355,10 @@ export default class ImportModule extends Component {
   *  @return {}
   */
   _clearState = () => {
-    document.getElementById('dropZone__filename').classList.remove('ImportModule__animation')
+    if(document.getElementById('dropZone__filename')){
+        document.getElementById('dropZone__filename').classList.remove('ImportModule__animation')
+    }
+
     this.setState({
       files:[],
       isImporting: false

@@ -7,21 +7,24 @@ export default class Footer extends Component {
 
   constructor(props){
     super(props)
-    this.state = {
-      bytesUploaded: 0,
-      totalBytes: 0,
-      percentage: 0,
-      loadingState: false,
-      uploadMessage: '',
-      error: false
-    }
 
+    this.state = store.getState()
     this._clearState = this._clearState.bind(this)
-    this._getRoute = this._getRoute.bind(this)
+
 
     store.subscribe(() =>{
-        console.log(store.getState())
+      console.log(store.getState().footer)
+      this.storeDidUpdate(store.getState().footer)
     })
+  }
+
+  storeDidUpdate = () => {
+    this.setState(store.getState().footer);//triggers re-render when store updates
+  }
+
+  _openLabbook(){
+    this._clearState()
+    this.props.history.replace(`/labbooks/${this.state.labbookName}`)
   }
   /**
     @param {}
@@ -31,16 +34,7 @@ export default class Footer extends Component {
   _clearState(){
 
     document.getElementById('footerProgressBar').style.opacity = 0;
-
-    this.setState({
-      bytesUploaded: 0,
-      totalBytes: 0,
-      percentage: 0,
-      loadingState: false,
-      uploadMessage: '',
-      error: false
-    })
-
+    store.dispatch({type:'RESET_STORE', payload:{}})
 
     setTimeout(()=>{
       document.getElementById('footerProgressBar').style.width = "0%";
@@ -53,13 +47,6 @@ export default class Footer extends Component {
 
   _showError(message){
     console.log(message)
-  }
-
-  _getRoute(){
-    console.log(this)
-    let filename = this.props.filepath.split('/')[this.props.filepath.split('/').length -1]
-    return filename.split('_')[0]
-
   }
 
  _humanFileSize(bytes){
@@ -108,6 +95,14 @@ export default class Footer extends Component {
             className="Footer__button"
             onClick={()=> this._clearState()}>
             Got It
+          </button>
+        }
+
+        {this.state.success &&
+          <button
+            className="Footer__button"
+            onClick={()=> this._openLabbook()}>
+            Open Lab Book
           </button>
         }
       </div>
