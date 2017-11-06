@@ -171,7 +171,6 @@ module.exports = {
         test: /\.(js|jsx)$/,
         include: paths.submodules,
         loader: require.resolve('babel-loader'),
-
     },
     {
       test: /ChunkUploader\.js$/,
