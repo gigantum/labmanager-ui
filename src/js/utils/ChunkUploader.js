@@ -8,6 +8,7 @@ import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 const uploadChunk = (file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
 
   ImportLabbookMutation(username, username, chunk.blob, chunk, accessToken, (result, error)=>{
+      console.log(result, error)
       if(result && (error === undefined)){
         getChunkCallback(file, result)
       }else{
@@ -32,9 +33,9 @@ const ChunkUploader = {
       }
 
     const id = uuidv4(),
-          chunkSize = 1024 * 1024 * 48,
+          chunkSize = 1000 * 1000 * 48,
           fileSize = file.size,
-          fileSizeKb = Math.round(fileSize/1024);
+          fileSizeKb = Math.round(fileSize/1000);
 
     let fileLoadedSize = 0,
         chunkIndex = 0,
@@ -59,7 +60,7 @@ const ChunkUploader = {
 
         let chunkData =   {
             blob: blob,
-            fileSizeKb: Math.round(fileSizeKb/1024) ,
+            fileSizeKb: Math.round(fileSizeKb/1000, 10) ,
             chunkSize: chunkSize,
             totalChunks: totalChunks,
             chunkIndex: chunkIndex - 1,
@@ -100,6 +101,7 @@ const ChunkUploader = {
   waits for data to be passed before starting chunking
 */
 onmessage = (evt) => {
+  console.log(evt)
   ChunkUploader.chunkFile(evt.data)
 }
 export default ChunkUploader

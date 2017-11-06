@@ -171,21 +171,14 @@ module.exports = {
         test: /\.(js|jsx)$/,
         include: paths.submodules,
         loader: require.resolve('babel-loader'),
-
-      },
-      {
-       test: /ChunkUploader\.js$/,
-       include: paths.appSrc,
-       use: [
-         { loader: 'worker-loader' },
-         { loader: 'babel-loader' }
-       ]
-     },
-     {
+    },
+    {
       test: /ChunkUploader\.js$/,
       include: paths.appSrc,
       use: [
-        { loader: 'worker-loader' },
+        { loader: 'worker-loader',
+          options: { inline: true}
+        },
         { loader: 'babel-loader' }
       ]
     },
