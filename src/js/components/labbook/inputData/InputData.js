@@ -39,13 +39,9 @@ export default createFragmentContainer(
   InputData,
   {
     labbook: graphql`
-<<<<<<< HEAD
       fragment InputData_labbook on Labbook{
         files(first: 100, baseDir: "code")@connection(key: "InputData_files"){
-=======
-      fragment InputData_labbook on Labbook {
-        files(first: $first, baseDir: $baseDir, before: $cursor)@connection(key: "InputData_files", filters: ["baseDir"]){
->>>>>>> c6ea5302b104a549e88a071b6b335ea6eea023b1
+
           edges{
             node{
               id
