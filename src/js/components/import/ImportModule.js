@@ -14,15 +14,15 @@ import store from 'JS/redux/store'
  uses redux to dispatch file upload to the footer
 */
 const dispatchLoadingProgress = (wokerData) =>{
-  let bytesUploaded = (wokerData.data.chunkSize * (wokerData.data.chunkIndex + 1))/1024
-  let totalBytes = wokerData.data.fileSizeKb * 1024
+  let bytesUploaded = (wokerData.data.chunkSize * (wokerData.data.chunkIndex + 1))/1000
+  let totalBytes = wokerData.data.fileSizeKb * 1000
 
   store.dispatch({
     type: 'LOADING_PROGRESS',
     payload: {
       bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
       totalBytes: totalBytes,
-      percentage: Math.floor((bytesUploaded/totalBytes) * 100),
+      percentage: Math.floor((bytesUploaded/totalBytes) * 100) > 100 ? 100 : Math.floor((bytesUploaded/totalBytes) * 100),
       loadingState: true,
       uploadMessage: '',
       labbookName: '',
@@ -290,11 +290,10 @@ export default class ImportModule extends Component {
       payload:{
         bytesUploaded: 0,
         percentage: 0,
-        totalBytes:  file.size,
+        totalBytes:  file.size/1000,
         loadingState: true
       }
     })
-
 
     let self = this
     chunkWorker.onmessage = function(wokerData) {
