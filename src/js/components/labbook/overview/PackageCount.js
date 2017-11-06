@@ -49,7 +49,7 @@ export default class PackageCount extends Component {
       variables={{
         name: this.props.labbookName,
         owner: username,
-        first: 1000
+        first: 100
       }}
       query={packageQuery}
       environment={environment}

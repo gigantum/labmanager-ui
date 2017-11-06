@@ -15,17 +15,25 @@ import Config from 'JS/config'
 //lacoal variables
 let pagination = false;
 let isLoadingMore = false;
-let counter = 10;
+let counter = 2;
 
 class Notes extends Component {
   constructor(props){
   	super(props);
   	this.state = {
-      'modalVisible': false
+      'modalVisible': false,
+      'isPaginting': false
     };
     this._loadMore = this._loadMore.bind(this)
     this._toggleNote = this._toggleNote.bind(this)
     this._hideAddNote = this._hideAddNote.bind(this)
+    this._loadMore()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      'isPaginting': false
+    })
   }
   /**
   *  @param {}
@@ -49,10 +57,12 @@ class Notes extends Component {
     //     }
     //   )
     // }, 2000);
+
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
+      console.log(root)
       let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
-          expandOn = root.offsetHeight;
+          expandOn = root.scrollHeight;
       if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
           that._loadMore(e);
       }
@@ -63,17 +73,24 @@ class Notes extends Component {
   *  pagination container loads more items
   */
   _loadMore() {
+    console.log('loadmore')
     isLoadingMore = true
     pagination = true;
+    this.setState({
+      'isPaginting': true
+    })
     this.props.relay.loadMore(
      counter, // Fetch the next 10 feed items
      e => {
        isLoadingMore = false;
+       this.setState({
+         'isPaginting': false
+       })
      },{
        name: 'labbook'
      }
    );
-   counter += 10
+   counter += 5
   }
 
   /**
@@ -165,10 +182,30 @@ class Notes extends Component {
 
                           })
                         }
+
                     </div>
+
                   </div>)
                 })
               }
+              <div
+                key="Notes-loader-card-1"
+                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+              </div>
+              <div
+                key="Notes-loader-card-2"
+                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+              </div>
+              <div
+                key="Notes-loader-card-3" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+              </div>
+              <div
+                key="Notes-loader-card-4"
+                 className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+              </div>
+              <div
+                key="Notes-loader-card-5" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+              </div>
             </div>
           </div>
 
