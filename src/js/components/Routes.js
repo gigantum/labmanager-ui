@@ -63,13 +63,16 @@ export default class Routes extends Component {
               path=""
               render={(location) => {return(
               <div className="Routes">
-                <Header auth={auth} history={history}/>
+                <Header
+                  auth={auth} history={history}
+                />
 
                 <Route
                   exact
                   path="/"
                   render={(props) =>
                     <Home
+                      history={history}
                       auth={auth}
                       {...props}
                     />
@@ -80,6 +83,7 @@ export default class Routes extends Component {
                   path="/:id"
                   render={(props) =>
                     <Home
+                      history={history}
                       auth={auth}
                       {...props}
                     />
@@ -142,7 +146,10 @@ export default class Routes extends Component {
                     )
                   }}
                 />
-                <Footer/>
+                <Footer
+                  ref="footer"
+                  history={history}
+                />
               </div>
             )}}
            />

@@ -20,7 +20,7 @@ function fetchQuery(
       'accept': '*/*',
       'Access-Control-Allow-Origin': '*'
   }
-  console.log(uploadables)
+
   if(uploadables && uploadables[0]){
     if(uploadables[1]){
       headers['authorization'] = `Bearer ${uploadables[1]}`
@@ -28,7 +28,6 @@ function fetchQuery(
 
   } else{
     if(localStorage.getItem('access_token')){
-
       const accessToken = localStorage.getItem('access_token')
       headers['authorization'] = `Bearer ${accessToken}`
     }
@@ -69,14 +68,14 @@ function fetchQuery(
       return response.json()
 
   }).catch(error => {
-    console.log(error)
     console.log(error.message.toString())
-
-    if((error.message.toString()+'') === 'Failed to fetch'){
-      console.log('logs')
-      document.getElementById('apiDown').classList.remove('hidden')
-    }else{
-      document.getElementById('apiDown').classList.add('hidden')
+    if(!(uploadables && uploadables[0])){
+      if((error.message.toString()+'') === 'Failed to fetch'){
+        console.log('logs')
+        document.getElementById('apiDown').classList.remove('hidden')
+      }else{
+        document.getElementById('apiDown').classList.add('hidden')
+      }
     }
     return error
   });

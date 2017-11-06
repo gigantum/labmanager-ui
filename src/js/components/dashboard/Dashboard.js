@@ -39,7 +39,8 @@ export default class DashboardContainer extends Component {
 
     if(this.state.selectedComponent === 'datasets'){
 
-      return (<DatasetSets />)
+      return (
+        <DatasetSets/>)
     }else{
 
       return (<QueryRenderer
@@ -57,7 +58,10 @@ export default class DashboardContainer extends Component {
           } else if (props) {
 
               return (
-                <LocalLabbooks feed={props} history={this.props.history} />
+                <LocalLabbooks
+                  feed={props}
+                  history={this.props.history}
+                />
               )
 
           }else{

@@ -7,6 +7,76 @@ import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 import JobStatus from 'JS/utils/JobStatus'
 import ChunkUploader from 'JS/utils/ChunkUploader'
 
+import store from 'JS/redux/store'
+
+/*
+ @param {object} workerData
+ uses redux to dispatch file upload to the footer
+*/
+const dispatchLoadingProgress = (wokerData) =>{
+  let bytesUploaded = (wokerData.data.chunkSize * (wokerData.data.chunkIndex + 1))/1024
+  let totalBytes = wokerData.data.fileSizeKb * 1024
+
+  store.dispatch({
+    type: 'LOADING_PROGRESS',
+    payload: {
+      bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
+      totalBytes: totalBytes,
+      percentage: Math.floor((bytesUploaded/totalBytes) * 100),
+      loadingState: true,
+      uploadMessage: '',
+      labbookName: '',
+      error: false,
+      success: false
+    }
+  })
+
+  document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
+}
+
+/*
+ @param {}
+ uses redux to dispatch file upload failed status to the footer
+*/
+const dispatchFailedStatus = () => {
+  store.dispatch({
+    type: 'UPLOAD_MESSAGE',
+    payload: {
+      uploadMessage: 'Import failed',
+      error: true
+    }
+  })
+}
+
+/*
+ @param {string} filePath
+  gets new labbook name and url route
+ @return
+*/
+const getRoute = (filepath) => {
+  let filename = filepath.split('/')[filepath.split('/').length -1]
+  return filename.split('_')[0]
+
+}
+/*
+ @param {string} filePath
+ dispatched upload success message and passes labbookName/route to the footer
+*/
+const dispatchFinishedStatus = (filepath) =>{
+  let route = getRoute(filepath)
+
+   store.dispatch({
+     type: 'IMPORT_SUCCESS',
+     payload: {
+       uploadMessage: `${route} Lab Book is Ready`,
+       labbookName: route, //route is labbookName
+       success: true
+     }
+   })
+}
+
+
+
 export default class ImportModule extends Component {
   constructor(props){
   	super(props);
@@ -193,34 +263,14 @@ export default class ImportModule extends Component {
   *   trigger file upload
   */
   _fileUpload = (evt) => {//this code is going to be moved to the footer to complete the progress bar
+    let self = this;
 
     this._importingState();
 
     let filepath = this.state.files[0].filename
-    let self = this;
-    let callback = (result) => {
-
-      if(result.importLabbook){
-        JobStatus.getJobStatus(result.importLabbook.importJobKey).then((response)=>{
-
-          if(response.jobStatus.status === 'finished'){
-            let filename = filepath.split('/')[filepath.split('/').length -1]
-            let route = filename.split('_')[0]
-
-            self.props.history.replace(`/labbooks/${route}`)
-          }else if(response.jobStatus.status === 'failed'){
-            self._showError("Import failed")
-          }
-        }).catch((error)=>{
-          self._showError(error[0].message)
-        })
-      }else{
-        self._showError(result[0].message)
-      }
-    }
 
     let chunkUploadWorker = new ChunkUploader();
-    console.log(chunkUploadWorker)
+
     let data = {
       file: this.state.files[0].file,
       filepath: filepath,
@@ -230,14 +280,75 @@ export default class ImportModule extends Component {
 
     chunkUploadWorker.postMessage(data);
 
-    chunkUploadWorker.onmessage = function(e) {
-
-      if(e.data.importLabbook){
-          callback(e.data)
-      }
-    }
-
+    this._chunkLoader(chunkUploadWorker, filepath, this.state.files[0].file)
   }
+
+  _chunkLoader(chunkWorker, filepath, file){
+
+    store.dispatch({
+      type: 'LOADING_PROGRESS',
+      payload:{
+        bytesUploaded: 0,
+        percentage: 0,
+        totalBytes:  file.size,
+        loadingState: true
+      }
+    })
+
+
+    let self = this
+    chunkWorker.onmessage = function(wokerData) {
+
+     if(wokerData.data.importLabbook){
+        chunkWorker.terminate()
+        store.dispatch({
+          type: 'UPLOAD_MESSAGE',
+          payload: {uploadMessage: 'Upload Complete'}
+        })
+
+
+        let importLabbook = wokerData.data.importLabbook
+         JobStatus.getJobStatus(importLabbook.importJobKey).then((response)=>{
+
+           store.dispatch({
+             type: 'UPLOAD_MESSAGE',
+             payload: {uploadMessage: 'Unzipping labbook'}
+           })
+
+           if(response.jobStatus.status === 'finished'){
+
+             dispatchFinishedStatus(filepath)
+
+             self._clearState()
+
+           }else if(response.jobStatus.status === 'failed'){
+
+             dispatchFailedStatus()
+
+             self._clearState()
+
+           }
+         }).catch((error)=>{
+
+           store.dispatch({
+             type: 'UPLOAD_MESSAGE',
+             payload: {
+               uploadMessage: 'Computation Error',
+               error: true
+             }
+           })
+           self._clearState()
+         })
+      }else if(wokerData.data.chunkSize){
+
+        dispatchLoadingProgress(wokerData)
+
+     } else{
+
+       self._clearState()
+     }
+   }
+ }
   /**
     @param {object} error
     shows error message
@@ -267,7 +378,10 @@ export default class ImportModule extends Component {
   *  @return {}
   */
   _clearState = () => {
-    document.getElementById('dropZone__filename').classList.remove('ImportModule__animation')
+    if(document.getElementById('dropZone__filename')){
+        document.getElementById('dropZone__filename').classList.remove('ImportModule__animation')
+    }
+
     this.setState({
       files:[],
       isImporting: false

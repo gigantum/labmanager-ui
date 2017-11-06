@@ -18,8 +18,6 @@ const uploadChunk = (file, chunk, accessToken, username, filepath, getChunkCallb
 
 }
 
-
-
 const ChunkUploader = {
   /*
     @param {object} data includes file filepath username and accessToken
