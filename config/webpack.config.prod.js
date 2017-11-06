@@ -173,6 +173,14 @@ module.exports = {
         loader: require.resolve('babel-loader'),
 
       },
+      {
+       test: /ChunkUploader\.js$/,
+       include: paths.appSrc,
+       use: [
+         { loader: 'worker-loader' },
+         { loader: 'babel-loader' }
+       ]
+     },git
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
