@@ -343,6 +343,7 @@ export default class FileBrowserWrapper extends Component {
             key={this.props.connection}
             keyPrefix={this.props.connection}
             files={files}
+            rootFolder={this.props.rootFolder}
             onCreateFolder={this.handleCreateFolder}
             onCreateFiles={this.handleCreateFiles}
             onMoveFolder={this.handleRenameFolder}

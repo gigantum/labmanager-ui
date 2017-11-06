@@ -1,6 +1,6 @@
 // vendor
 import React, { Component } from 'react'
-import {createFragmentContainer, graphql} from 'react-relay'
+import {createPaginationContainer, graphql} from 'react-relay'
 //Config
 import Config from './InputConfig'
 //mutations
@@ -35,13 +35,13 @@ class InputData extends Component {
 }
 
 
-export default createFragmentContainer(
+export default createPaginationContainer(
   InputData,
   {
+
     labbook: graphql`
       fragment InputData_labbook on Labbook{
-        files(first: 100, baseDir: "code")@connection(key: "InputData_files"){
-
+        inputFiles(after: $cursor, first: $first, baseDir: "input")@connection(key: "InputData_inputFiles"){
           edges{
             node{
               id
@@ -59,12 +59,10 @@ export default createFragmentContainer(
             endCursor
           }
         }
+
       }`
   },
   {
-    variables: {
-      baseDir: "output"
-    },
     direction: 'forward',
     getConnectionFromProps(props) {
       return props.labbook
@@ -79,16 +77,15 @@ export default createFragmentContainer(
       let baseDir = "input"
 
       return {
-        count,
+        first: count,
         cursor,
         baseDir
       };
     },
     query: graphql`
       query InputDataPaginationQuery(
-        $first: Int!
+        $first: Int
         $cursor: String
-        $baseDir: String
       ) {
         labbook {
           # You could reference the fragment defined previously.

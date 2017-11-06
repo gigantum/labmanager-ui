@@ -7,10 +7,31 @@ import Config from './CodeConfig'
 
 import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
 
-
+let counter = 10;
 class Code extends Component {
   constructor(props){
   	super(props);
+
+    console.log(props)
+  }
+
+  componentDidMount() {
+    this._loadMore()
+  }
+
+
+  _loadMore() {
+
+
+    this.props.relay.loadMore(
+     counter, // Fetch the next 10 feed items
+     e => {
+       console.log('paginate')
+     },{
+       name: 'labbook'
+     }
+   );
+   counter += 5
   }
 
 
@@ -46,7 +67,7 @@ class Code extends Component {
             <FileBrowserWrapper
               ref='codeBrowser'
               rootFolder={"code"}
-              files={this.props.labbook.files}
+              files={this.props.labbook.codeFiles}
               connection="Code_files"
               {...this.props}
             />
@@ -65,7 +86,7 @@ export default createPaginationContainer(
 
     labbook: graphql`
       fragment Code_labbook on Labbook{
-        files(first: 100, baseDir: "code")@connection(key: "Code_files"){
+        codeFiles(after: $cursor, first: $first, baseDir: "code")@connection(key: "Code_codeFiles"){
           edges{
             node{
               id
@@ -87,9 +108,6 @@ export default createPaginationContainer(
       }`
   },
   {
-    variables: {
-      baseDir: "output"
-    },
     direction: 'forward',
     getConnectionFromProps(props) {
       return props.labbook
@@ -111,9 +129,8 @@ export default createPaginationContainer(
     },
     query: graphql`
       query CodePaginationQuery(
-        $first: Int!
+        $first: Int
         $cursor: String
-        $baseDir: String
       ) {
         labbook {
           # You could reference the fragment defined previously.

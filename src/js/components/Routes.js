@@ -14,7 +14,7 @@ import Loader from 'Components/shared/Loader'
 import environment from 'JS/createRelayEnvironment'
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
-  query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String, $baseDir: String!){
+  query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
     labbook(name: $name, owner: $owner){
       id
       description
@@ -101,8 +101,7 @@ export default class Routes extends Component {
                           {
                             name: parentProps.match.params.labbookName,
                             owner: username,
-                            first: 2,
-                            baseDir: "code"
+                            first: 2
 
                           }
                         }
