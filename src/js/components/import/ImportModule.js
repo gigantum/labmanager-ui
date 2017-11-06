@@ -9,10 +9,78 @@ import ChunkUploader from 'JS/utils/ChunkUploader'
 
 import store from 'JS/redux/store'
 
+/*
+ @param {object} workerData
+ uses redux to dispatch file upload to the footer
+*/
+const dispatchLoadingProgress = (wokerData) =>{
+  let bytesUploaded = (wokerData.data.chunkSize * (wokerData.data.chunkIndex + 1))/1024
+  let totalBytes = wokerData.data.fileSizeKb * 1024
+
+  store.dispatch({
+    type: 'LOADING_PROGRESS',
+    payload: {
+      bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
+      totalBytes: totalBytes,
+      percentage: Math.floor((bytesUploaded/totalBytes) * 100),
+      loadingState: true,
+      uploadMessage: '',
+      labbookName: '',
+      error: false,
+      success: false
+    }
+  })
+
+  document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
+}
+
+/*
+ @param {}
+ uses redux to dispatch file upload failed status to the footer
+*/
+const dispatchFailedStatus = () => {
+  store.dispatch({
+    type: 'UPLOAD_MESSAGE',
+    payload: {
+      uploadMessage: 'Import failed',
+      error: true
+    }
+  })
+}
+
+/*
+ @param {string} filePath
+  gets new labbook name and url route
+ @return
+*/
+const getRoute = (filepath) => {
+  let filename = filepath.split('/')[filepath.split('/').length -1]
+  return filename.split('_')[0]
+
+}
+/*
+ @param {string} filePath
+ dispatched upload success message and passes labbookName/route to the footer
+*/
+const dispatchFinishedStatus = (filepath) =>{
+  let route = getRoute(filepath)
+
+   store.dispatch({
+     type: 'IMPORT_SUCCESS',
+     payload: {
+       uploadMessage: `${route} Lab Book is Ready`,
+       labbookName: route, //route is labbookName
+       success: true
+     }
+   })
+}
+
+
+
 export default class ImportModule extends Component {
   constructor(props){
   	super(props);
-    console.log(this)
+
     this.state = {
       'show': false,
       'message': '',
@@ -212,19 +280,7 @@ export default class ImportModule extends Component {
 
     chunkUploadWorker.postMessage(data);
 
-    // chunkUploadWorker.addListener('uncoverMask', function (result) {
-    //   self._clearState()
-    // });
-
     this._chunkLoader(chunkUploadWorker, filepath, this.state.files[0].file)
-
-
-  }
-
-  _getRoute(filepath){
-    let filename = filepath.split('/')[filepath.split('/').length -1]
-    return filename.split('_')[0]
-
   }
 
   _chunkLoader(chunkWorker, filepath, file){
@@ -241,9 +297,9 @@ export default class ImportModule extends Component {
 
 
     let self = this
-    chunkWorker.onmessage = function(e) {
+    chunkWorker.onmessage = function(wokerData) {
 
-     if(e.data.importLabbook){
+     if(wokerData.data.importLabbook){
         chunkWorker.terminate()
         store.dispatch({
           type: 'UPLOAD_MESSAGE',
@@ -251,7 +307,7 @@ export default class ImportModule extends Component {
         })
 
 
-        let importLabbook = e.data.importLabbook
+        let importLabbook = wokerData.data.importLabbook
          JobStatus.getJobStatus(importLabbook.importJobKey).then((response)=>{
 
            store.dispatch({
@@ -259,38 +315,21 @@ export default class ImportModule extends Component {
              payload: {uploadMessage: 'Unzipping labbook'}
            })
 
-           console.log(response)
            if(response.jobStatus.status === 'finished'){
 
-            let route = self._getRoute(filepath)
+             dispatchFinishedStatus(filepath)
 
-             store.dispatch({
-               type: 'IMPORT_SUCCESS',
-               payload: {
-                 uploadMessage: `${route} Lab Book is Ready`,
-                 labbookName: route,
-                 success: true
-               }
-             })
-             console.log(self)
-             //self._clearState()
+             self._clearState()
 
            }else if(response.jobStatus.status === 'failed'){
 
+             dispatchFailedStatus()
 
-             store.dispatch({
-               type: 'UPLOAD_MESSAGE',
-               payload: {
-                 uploadMessage: 'Import failed',
-                 error: true
-               }
-             })
-
-            self._clearState()
+             self._clearState()
 
            }
          }).catch((error)=>{
-           console.log(error)
+
            store.dispatch({
              type: 'UPLOAD_MESSAGE',
              payload: {
@@ -300,29 +339,13 @@ export default class ImportModule extends Component {
            })
            self._clearState()
          })
-      }else if(e.data.chunkSize){
-        let  bytesUploaded = (e.data.chunkSize * (e.data.chunkIndex + 1))/1024
-        let totalBytes = e.data.fileSizeKb * 1024
+      }else if(wokerData.data.chunkSize){
 
-        store.dispatch({
-          type: 'LOADING_PROGRESS',
-          payload: {
-            bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
-            totalBytes: totalBytes,
-            percentage: Math.floor((bytesUploaded/totalBytes) * 100),
-            loadingState: true,
-            uploadMessage: '',
-            labbookName: '',
-            error: false,
-            success: false
-          }
-        })
+        dispatchLoadingProgress(wokerData)
 
-        document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
      } else{
-       console.log(e.data)
+
        self._clearState()
-       //self._showError(e.data)
      }
    }
  }

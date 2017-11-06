@@ -49,7 +49,7 @@ export default (
      ...state,
      uploadMessage: action.payload.uploadMessage,
      success: action.payload.success,
-     labbookname: action.payload.labbookName
+     labbookName: action.payload.labbookName
    };
  } else if(action.type === RESET_STORE){
    return {

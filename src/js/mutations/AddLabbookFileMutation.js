@@ -44,7 +44,7 @@ export default function AddLabbookFileMutation(
       clientMutationId: '' + tempID++
     }
   }
-  console.log(uploadables)
+
   commitMutation(
     environment,
     {
@@ -61,7 +61,6 @@ export default function AddLabbookFileMutation(
         edgeName: 'newLabbookFileEdge'
       }],
       onCompleted: (response, error ) => {
-        console.log(response, error)
         if(error){
           console.log(error)
         }

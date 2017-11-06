@@ -11,9 +11,10 @@ export default class Footer extends Component {
     this.state = store.getState()
     this._clearState = this._clearState.bind(this)
 
-
+    /*
+      subscribe to store to update state
+    */
     store.subscribe(() =>{
-      console.log(store.getState().footer)
       this.storeDidUpdate(store.getState().footer)
     })
   }
@@ -30,10 +31,10 @@ export default class Footer extends Component {
     @param {}
     add scroll listener to pop up footer
   */
-
   _clearState(){
 
     document.getElementById('footerProgressBar').style.opacity = 0;
+
     store.dispatch({type:'RESET_STORE', payload:{}})
 
     setTimeout(()=>{
@@ -45,10 +46,10 @@ export default class Footer extends Component {
     },1000)
   }
 
-  _showError(message){
-    console.log(message)
-  }
-
+  /*
+    @param {number} bytes
+    converts bytes into suitable units
+  */
  _humanFileSize(bytes){
 
     let thresh = 1000;
@@ -67,6 +68,10 @@ export default class Footer extends Component {
     return bytes.toFixed(1)+' '+units[u];
  }
 
+ /*
+  @param {}
+  gets upload message which tracks progess
+ */
  _getMessage(){
    let uploadProgress = this._humanFileSize(this.state.bytesUploaded)
 
