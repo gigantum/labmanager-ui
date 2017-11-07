@@ -43,7 +43,6 @@ class InputData extends Component {
 
   render(){
 
-    console.log(this.props.labbook)
     if(this.props.labbook && this.props.labbook.inputFiles){
       let inputFiles = this.props.labbook.inputFiles
       if(this.props.labbook.inputFiles.edges.length === 0){
