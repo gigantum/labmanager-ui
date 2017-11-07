@@ -173,14 +173,14 @@ module.exports = {
         loader: require.resolve('babel-loader'),
 
       },
-      {
-       test: /ChunkUploader\.js$/,
-       include: paths.appSrc,
-       use: [
-         { loader: 'worker-loader' },
-         { loader: 'babel-loader' }
-       ]
-     },
+    //   {
+    //    test: /ChunkUploader\.js$/,
+    //    include: paths.appSrc,
+    //    use: [
+    //      { loader: 'worker-loader' },
+    //      { loader: 'babel-loader' }
+    //    ]
+    //  },
     //  {
     //   test: /ChunkUploader\.js$/,
     //   include: paths.appSrc,
