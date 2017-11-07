@@ -9,6 +9,8 @@ import StopContainerMutation from 'Mutations/StopContainerMutation'
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import environment from 'JS/createRelayEnvironment'
 
+import reduxStore from 'JS/redux/store'
+
 const containerStatusQuery = graphql`
   query ContainerStatusQuery($name: String!, $owner: String!, $first: Int!){
   labbook(name: $name, owner: $owner){
@@ -46,7 +48,7 @@ export default class ContainerStatus extends Component {
     this._tick = this._tick.bind(this)
     this._checkJupyterStatus = this._checkJupyterStatus.bind(this)
     this._getContainerStatusText = this._getContainerStatusText.bind(this)
-    this._openCloseContainer =  this._openCloseContainer.bind(this)
+    this._openCloseContainer = this._openCloseContainer.bind(this)
   }
   /**
   *  @param {}
@@ -62,6 +64,19 @@ export default class ContainerStatus extends Component {
   *  @return {string}
   */
   componentDidMount(){
+
+    let status = this._getContainerStatusText(
+      {
+      containerStatus:this.props.containerStatus, imageStatus: this.props.imageStatus
+      })
+
+    reduxStore.dispatch({
+      type: 'UPDATE_CONTAINER_STATE',
+      payload:{
+        labbookId: this.props.labbookId,
+        containerState: status
+      }
+    })
     this.interval = setInterval(this._tick, 2000);
   }
   /**
@@ -69,6 +84,16 @@ export default class ContainerStatus extends Component {
   *  update container state before rendering new props
   */
   componentWillReceiveProps(nextProps) {
+
+    let status = this._getContainerStatusText(nextProps.containerStatus, nextProps.imageStatus)
+
+    reduxStore.dispatch({
+      type: 'UPDATE_CONTAINER_STATE',
+      payload:{
+        labbookId: this.props.labbookId,
+        containerState: this._getContainerStatusText({containerStatus:nextProps.containerStatus, image:nextProps.imageStatus})
+      }
+    })
 
     this.setState({
       'containerStatus': nextProps.containerStatus,
@@ -111,6 +136,7 @@ export default class ContainerStatus extends Component {
     status = ((status === 'Open') && (this.state.status === "Stopping")) ? "Stopping" : status;
 
     tempStatus = status
+
 
     return status;
   }

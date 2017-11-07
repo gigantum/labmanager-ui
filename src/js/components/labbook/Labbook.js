@@ -131,6 +131,7 @@ class Labbook extends Component {
                    containerStatus={this.props.labbook.environment.containerStatus}
                    imageStatus={this.props.labbook.environment.imageStatus}
                    labbookName={labbookName}
+                   labbookId={this.props.labbook.id}
                    setBuildingState={this._setBuildingState}
                    isBuilding={this.state.isBuilding}
                  />
@@ -156,6 +157,7 @@ class Labbook extends Component {
                           labbook={this.props.labbook}
                           description={this.props.labbook.description}
                           labbookName={labbookName}
+                          labbookId={this.props.labbook.id}
                           setBuildingState={this._setBuildingState}
                         />)
                       }}
