@@ -37,11 +37,11 @@ export default function DeleteLabbookFileMutation(
     }
   }
 
-  function sharedUpdater(store, labbookID, deletedID) {
+  function sharedUpdater(store, labbookID, deletedID, connectionKey) {
     const userProxy = store.get(labbookID);
     const conn = RelayRuntime.ConnectionHandler.getConnection(
       userProxy,
-      'Code_files',
+      connectionKey,
     );
     RelayRuntime.ConnectionHandler.deleteNode(
       conn,
@@ -74,10 +74,10 @@ export default function DeleteLabbookFileMutation(
       onError: err => console.error(err),
 
       updater: (store) => {
-        sharedUpdater(store, labbookId, deleteLabbookFileId);
+        sharedUpdater(store, labbookId, deleteLabbookFileId, connectionKey);
       },
       optimisticUpdater: (store) => {
-        sharedUpdater(store, labbookId, deleteLabbookFileId);
+        sharedUpdater(store, labbookId, deleteLabbookFileId, connectionKey);
       },
     },
   )

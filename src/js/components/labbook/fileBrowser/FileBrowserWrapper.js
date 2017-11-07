@@ -15,14 +15,13 @@ import MoveLabbookFileMutation from 'Mutations/MoveLabbookFileMutation'
 import ChunkUploader from 'JS/utils/ChunkUploader'
 //store
 import store from 'JS/redux/store'
-console.log(RelayRuntime, relayStore, Environment)
 /*
  @param {object} workerData
  uses redux to dispatch file upload to the footer
 */
 const dispatchLoadingProgress = (workerData) =>{
-  let bytesUploaded = (workerData.data.chunkSize * (workerData.data.chunkIndex + 1))/1000
-  let totalBytes = workerData.data.fileSizeKb * 1000
+  let bytesUploaded = (workerData.chunkSize * (workerData.chunkIndex + 1))/1000
+  let totalBytes = workerData.fileSizeKb * 1000
 
   store.dispatch({
     type: 'LOADING_PROGRESS',
@@ -154,7 +153,7 @@ export default class FileBrowserWrapper extends Component {
 
 
     const postMessage = (workerData) => {
-      console.log(workerData)
+
      if(workerData.addLabbookFile){
 
 
@@ -178,7 +177,7 @@ export default class FileBrowserWrapper extends Component {
         }, 1000)
 
 
-      }else if(workerData.data.chunkSize){
+      }else if(workerData.chunkSize){
 
         dispatchLoadingProgress(workerData)
 
@@ -188,7 +187,7 @@ export default class FileBrowserWrapper extends Component {
      }
    }
 
-   ChunkUploader.chunkFile(data)
+   ChunkUploader.chunkFile(data, postMessage)
  }
 
   /**
@@ -211,15 +210,10 @@ export default class FileBrowserWrapper extends Component {
         fileReader.onloadend = function (evt) {
           let arrayBuffer = evt.target.result;
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
-
-
-
           //complete the progress bar
 
             //this._importingState();
-
             let filepath = newKey
-
 
             let data = {
               file: file,

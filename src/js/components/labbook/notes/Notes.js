@@ -60,7 +60,7 @@ class Notes extends Component {
 
     window.addEventListener('scroll', function(e){
       let root = document.getElementById('root')
-      console.log(root)
+
       let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
           expandOn = root.scrollHeight;
       if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
@@ -73,7 +73,7 @@ class Notes extends Component {
   *  pagination container loads more items
   */
   _loadMore() {
-    console.log('loadmore')
+
     isLoadingMore = true
     pagination = true;
     this.setState({
