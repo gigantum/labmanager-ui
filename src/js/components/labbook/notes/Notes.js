@@ -28,6 +28,7 @@ class Notes extends Component {
     this._toggleNote = this._toggleNote.bind(this)
     this._hideAddNote = this._hideAddNote.bind(this)
     this._loadMore()
+    this._handleScroll = this._handleScroll.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,6 +36,7 @@ class Notes extends Component {
       'isPaginting': false
     })
   }
+
   /**
   *  @param {}
   *   add scroll listener
@@ -43,30 +45,15 @@ class Notes extends Component {
   componentDidMount() {
 
     let notes = this.props.labbook.notes
-    // let relay = this.props.relay;
-    // let cursor =  notes.edges[0].cursor;
-    let that =  this;
+
     pagination = false;
-    // setInterval(function(){ //removed because of race condition on backend
-    //   relay.refetchConnection(
-    //     counter,
-    //     (response) =>{
-    //     },
-    //     {
-    //       cursor: cursor
-    //     }
-    //   )
-    // }, 2000);
 
-    window.addEventListener('scroll', function(e){
-      let root = document.getElementById('root')
+    window.addEventListener('scroll', this._handleScroll);
+  }
 
-      let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
-          expandOn = root.scrollHeight;
-      if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
-          that._loadMore(e);
-      }
-    });
+  componentWillUnmount() {
+
+    window.removeEventListener('scroll', this._handleScroll);
   }
   /**
   *  @param {}
@@ -92,7 +79,21 @@ class Notes extends Component {
    );
    counter += 5
   }
+  /**
+  *  @param {evt}
+  *   handles scolls and passes off loading to pagination container
+  *
+  */
+  _handleScroll(evt){
+    let notes = this.props.labbook.notes
+    let root = document.getElementById('root')
 
+    let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
+        expandOn = root.scrollHeight;
+    if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
+        this._loadMore(evt);
+    }
+  }
   /**
   *   @param {array}
   *   loops through notes array and sorts into days

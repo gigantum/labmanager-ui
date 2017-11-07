@@ -96,7 +96,9 @@ class CustomDependencies extends Component {
             <div className={blockClass + '__info flex justify--left'}>
               {
                 customDependencies.edges.map((edge, index) => {
-                  return this._customDependencyItem(edge, index, blockClass)
+                  if(edge.node){
+                    return this._customDependencyItem(edge, index, blockClass)
+                  }
                 })
               }
             </div>
@@ -111,26 +113,49 @@ class CustomDependencies extends Component {
   }
 
   _customDependencyItem(edge, index, blockClass){
-    return(
-      <div
-        key={this.props.labbookName + edge.node.id + index} className={blockClass + '__dependencies'}>
-        <div className={blockClass + '__card flex justify--space-around'}>
+      if(edge.node.info){
+        return(
+          <div
+            key={this.props.labbookName + edge.node.id + index} className={blockClass + '__dependencies'}>
+            <div className={blockClass + '__card flex justify--space-around'}>
 
-            <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
-              <img
-                height="50"
-                width="50"
-                src={edge.node.info.icon}
-                alt={edge.node.info.humanName} />
+                <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
+                  <img
+                    height="50"
+                    width="50"
+                    src={edge.node.info.icon}
+                    alt={edge.node.info.humanName} />
+                </div>
+
+                <div className={blockClass + '__card-text flex-1-0-auto'}>
+                  <p>{edge.node.info.humanName}</p>
+                  <p>{edge.node.info.description}</p>
+                </div>
+
             </div>
+        </div>)
+    }else{
+      return(
+        <div
+          key={this.props.labbookName + edge.node.id + index} className={blockClass + '__dependencies'}>
+          <div className={blockClass + '__card flex justify--space-around'}>
 
-            <div className={blockClass + '__card-text flex-1-0-auto'}>
-              <p>{edge.node.info.humanName}</p>
-              <p>{edge.node.info.description}</p>
-            </div>
+              <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
+                <img
+                  height="50"
+                  width="50"
+                  src={''}
+                  alt={'no-package'} />
+              </div>
 
-        </div>
-    </div>)
+              <div className={blockClass + '__card-text flex-1-0-auto'}>
+                <p>{'issue with package'}</p>
+                <p>{'this package had trouble rendering metadata'}</p>
+              </div>
+
+          </div>
+      </div>)
+    }
   }
 }
 

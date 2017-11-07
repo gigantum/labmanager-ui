@@ -33,7 +33,6 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
     connectionKey
   );
 
-  console.log(conn, node)
   if(conn){
     const newEdge = RelayRuntime.ConnectionHandler.createEdge(
       store,
@@ -42,7 +41,6 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
       "newLabbookFileEdge"
     )
 
-    console.log(newEdge)
     RelayRuntime.ConnectionHandler.insertEdgeAfter(
       conn,
       newEdge
@@ -64,14 +62,7 @@ export default function AddLabbookFileMutation(
   callback
 ) {
   let uploadables = [chunk.blob, accessToken]
-  console.log(connectionKey,
-  user,
-  owner,
-  labbookName,
-  labbookId,
-  filePath,
-  chunk,
-  accessToken)
+
   const variables = {
     input: {
       user,
@@ -124,8 +115,6 @@ export default function AddLabbookFileMutation(
           node.setValue(response.addLabbookFile.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
           node.setValue(response.addLabbookFile.newLabbookFileEdge.node.size, 'size')
 
-
-          console.log(store, response)
           sharedUpdater(store, labbookId, connectionKey, node)
         }
 

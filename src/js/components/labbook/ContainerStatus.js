@@ -193,7 +193,7 @@ export default class ContainerStatus extends Component {
 
           if(error){
             console.error(error)
-            return(this._erroMessage(error))
+            return(this._errorMessage(error))
           }else if(props){
 
             let status = this._getContainerStatusText(props.labbook.environment)

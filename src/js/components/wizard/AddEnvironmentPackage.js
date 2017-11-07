@@ -159,7 +159,7 @@ export default class AddEnvironmentPackage extends React.Component {
                         key={index + '_select'}
                         className="AddEnvironmentPackage__select"
                         onChange={(e) => this._setCurrentPackageManager(e, index)}>
-                        {
+                        { this.props.availablePackageManagers &&
                           this.props.availablePackageManagers.map((pm) => {
                             return(<option
                               className="AddEnvironmentPackage__select"

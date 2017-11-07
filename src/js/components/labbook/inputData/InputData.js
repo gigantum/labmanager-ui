@@ -24,7 +24,7 @@ class InputData extends Component {
       let root = document.getElementById('root')
       let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
       expandOn = root.scrollHeight;
-      if ((distanceY > expandOn) && self.props.labbook.inputFiles.pageInfo.hasNextPage) {
+      if ((distanceY > expandOn) && self.props.labbook.inputFiles && self.props.labbook.inputFiles.pageInfo.hasNextPage) {
           self._loadMore(e);
       }
     });
@@ -43,23 +43,22 @@ class InputData extends Component {
 
   render(){
 
-    let inputFiles = this.props.labbook.inputFiles
-    if(this.props.labbook.inputFiles.edges.length === 0){
-      inputFiles = {
-        edges: [{
-          node:{
-            modified: new Date(),
-            key: 'input/',
-            isDir: true,
-            size: 0,
-            id: 'input_temp'
-          }
-        }],
-        pageInfo: this.props.labbook.inputFiles.pageInfo
+    if(this.props.labbook && this.props.labbook.inputFiles){
+      let inputFiles = this.props.labbook.inputFiles
+      if(this.props.labbook.inputFiles.edges.length === 0){
+        inputFiles = {
+          edges: [{
+            node:{
+              modified: new Date(),
+              key: 'input/',
+              isDir: true,
+              size: 0,
+              id: 'input_temp'
+            }
+          }],
+          pageInfo: this.props.labbook.inputFiles.pageInfo
+        }
       }
-    }
-    if(this.props.labbook){
-
       return(
       <div className="Code">
         <div className="Code__header">
@@ -84,7 +83,7 @@ class InputData extends Component {
       </div>
       )
     }else{
-      return(<div>loading</div>)
+      return(<div>No Files Found</div>)
     }
   }
 }

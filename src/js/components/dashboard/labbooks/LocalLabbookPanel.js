@@ -89,7 +89,7 @@ export default class LocalLabbookPanel extends Component {
 
         <div className="LocalLabbooks__icon-row">
           <div onClick={() => this.props.goToLabbook(edge.node.name)} className="LocalLabbooks__labbook-icon"></div>
-          <div className="LocalLabbooks__containerStatus flex flex--column">
+          <div className="LocalLabbooks__containerStatus flex justify--space-between flex--column">
             <div className={'LocalLabbooks__containerStatus--state ' + status}>
               {status}
             </div>
@@ -97,11 +97,15 @@ export default class LocalLabbookPanel extends Component {
         </div>
 
         <div className="LocalLabbooks__text-row">
-          <h4
-            className="LocalLabbooks__panel-title"
-            onClick={() => this.props.goToLabbook(edge.node.name)}>
-            {edge.node.name}
-          </h4>
+          <div className="LocalLabbooks__title-row">
+            <h4
+              className="LocalLabbooks__panel-title"
+              onClick={() => this.props.goToLabbook(edge.node.name)}>
+              {edge.node.name}
+            </h4>
+            <div className="LocalLabbooks__edit-button" onClick={() => this.props.renameLabbookModal(edge.node.name)}>
+            </div>
+          </div>
           <p
             onClick={() => this.props.goToLabbook(edge.node.name)} className="LocalLabbooks__description">
             {edge.node.description}

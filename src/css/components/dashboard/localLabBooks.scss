@@ -36,6 +36,23 @@
 }
 
 
+.LocalLabbooks__rename-modal{
+  @include modal(300px, 400px);
+  @include flex(space-between, column)
+  padding: 20px;
+}
+
+.LocalLabbooks__rename-error{
+  color: $labbooks;
+}
+
+.LocalLabbooks__rename-close{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+
 .LocalLabbooks__labbooks{
   height: calc(100% - 90px);
   overflow-y: auto;
@@ -44,6 +61,21 @@
   @include flex(center, row)
 }
 
+.LocalLabbooks__edit-button{
+  font-weight: light;
+  color: $font-grey;
+  font-size: 14px;
+  height: 30px;
+  width: 30px;
+  padding: 5px;
+  border: 0px;
+  background: url('./../images/icons/edit.svg') no-repeat center center;
+  background-size: 22px;
+}
+
+.LocalLabbooks__title-row{
+    @include flex(space-between, row)
+}
 
 .LocalLabbooks__title-bar{
   margin: 0 80px 0 0px;
