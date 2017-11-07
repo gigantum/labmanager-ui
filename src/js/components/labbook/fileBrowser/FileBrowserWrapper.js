@@ -1,16 +1,88 @@
 // vendor
 import React, { Component } from 'react'
+import RelayRuntime from 'relay-runtime'
 import {createFragmentContainer, graphql} from 'react-relay'
 import SweetAlert from 'sweetalert-react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
 import Moment from 'moment'
-
+import Environment, {relayStore} from 'JS/createRelayEnvironment'
 //mutations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import DeleteLabbookFileMutation from 'Mutations/DeleteLabbookFileMutation'
 import MakeLabbookDirectoryMutation from 'Mutations/MakeLabbookDirectoryMutation'
 import MoveLabbookFileMutation from 'Mutations/MoveLabbookFileMutation'
-import AddLabbookFileMutation from 'Mutations/AddLabbookFileMutation'
+//utilities
+import ChunkUploader from 'JS/utils/ChunkUploader'
+//store
+import store from 'JS/redux/store'
+console.log(RelayRuntime, relayStore, Environment)
+/*
+ @param {object} workerData
+ uses redux to dispatch file upload to the footer
+*/
+const dispatchLoadingProgress = (workerData) =>{
+  let bytesUploaded = (workerData.data.chunkSize * (workerData.data.chunkIndex + 1))/1000
+  let totalBytes = workerData.data.fileSizeKb * 1000
+
+  store.dispatch({
+    type: 'LOADING_PROGRESS',
+    payload: {
+      bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
+      totalBytes: totalBytes,
+      percentage: Math.floor((bytesUploaded/totalBytes) * 100) > 100 ? 100 : Math.floor((bytesUploaded/totalBytes) * 100),
+      loadingState: true,
+      uploadMessage: '',
+      labbookName: '',
+      error: false,
+      success: false
+    }
+  })
+
+  document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
+}
+
+/*
+ @param {}
+ uses redux to dispatch file upload failed status to the footer
+*/
+const dispatchFailedStatus = () => {
+  store.dispatch({
+    type: 'UPLOAD_MESSAGE',
+    payload: {
+      uploadMessage: 'Import failed',
+      error: true
+    }
+  })
+}
+
+/*
+ @param {string} filePath
+  gets new labbook name and url route
+ @return
+*/
+const getRoute = (filepath) => {
+  let filename = filepath.split('/')[filepath.split('/').length -1]
+  return filename.split('_')[0]
+
+}
+/*
+ @param {string} filePath
+ dispatched upload success message and passes labbookName/route to the footer
+*/
+const dispatchFinishedStatus = (filepath) =>{
+  let route = getRoute(filepath)
+
+   store.dispatch({
+     type: 'IMPORT_SUCCESS',
+     payload: {
+       uploadMessage: `${route} Lab Book is Ready`,
+       labbookName: route, //route is labbookName
+       success: true
+     }
+   })
+}
+
+
 
 export default class FileBrowserWrapper extends Component {
   constructor(props){
@@ -67,11 +139,64 @@ export default class FileBrowserWrapper extends Component {
     )
   }
 
+  _chunkLoader(filepath, file, data){
+    let self = this
+
+    store.dispatch({
+      type: 'LOADING_PROGRESS',
+      payload:{
+        bytesUploaded: 0,
+        percentage: 0,
+        totalBytes:  file.size/1000,
+        loadingState: true
+      }
+    })
+
+
+    const postMessage = (workerData) => {
+      console.log(workerData)
+     if(workerData.addLabbookFile){
+
+
+        document.getElementById('footerProgressBar').style.opacity = 0;
+
+        store.dispatch({
+          type: 'UPLOAD_MESSAGE',
+          payload: {uploadMessage: `Upload Succesfull`}
+        })
+        self.hideMask()
+        setTimeout(()=>{
+          document.getElementById('footerProgressBar').style.width = "0%";
+          store.dispatch({
+            type: 'RESET_STORE',
+            payload: {}
+          })
+
+          setTimeout(() =>{
+            document.getElementById('footerProgressBar').style.opacity = 1;
+          }, 1000)
+        }, 1000)
+
+
+      }else if(workerData.data.chunkSize){
+
+        dispatchLoadingProgress(workerData)
+
+     } else{
+
+       //self._clearState()
+     }
+   }
+
+   ChunkUploader.chunkFile(data)
+ }
+
   /**
   *  @param {string, string} key,prefix  file key, prefix is root folder -
   *  creates a file using AddLabbookFileMutation by passing a blob
   */
   handleCreateFiles(files, prefix) {
+    let self = this;
     this.showMask()
     this.setState(state => {
       let newFiles = files.map((file) => {
@@ -82,35 +207,43 @@ export default class FileBrowserWrapper extends Component {
         newKey += file.name;
 
         let fileReader = new FileReader();
-        let that = this;
 
         fileReader.onloadend = function (evt) {
           let arrayBuffer = evt.target.result;
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
 
-          AddLabbookFileMutation(
-            that.props.connection,
-            localStorage.getItem('username'),
-            localStorage.getItem('username'),
-            that.props.labbookName,
-            that.props.labbookId,
-            newKey,
-            blob,
-            () =>{
-              that.hideMask()
 
+
+          //complete the progress bar
+
+            //this._importingState();
+
+            let filepath = newKey
+
+
+            let data = {
+              file: file,
+              filepath: filepath,
+              username: localStorage.getItem('username'),
+              accessToken: localStorage.getItem('access_token'),
+              connectionKey: self.props.connection,
+              labbookName: self.props.labbookName,
+              labbookId: self.props.labbookId
             }
-          )
-        };
+
+
+            self._chunkLoader(filepath, file, data)
+          }
+
 
         fileReader.readAsArrayBuffer(file);
-          return {
-            key: newKey,
-            size: file.size,
-            modified: + Moment(),
-          };
-        });
-      })
+        return {
+          key: newKey,
+          size: file.size,
+          modified: + Moment(),
+        };
+      });
+    })
   }
   /**
   *  @param {string, string} oldKey,newKey  file key, prefix is root folder -

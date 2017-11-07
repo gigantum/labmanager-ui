@@ -15,8 +15,8 @@ import store from 'JS/redux/store'
 */
 const dispatchLoadingProgress = (wokerData) =>{
 
-  let bytesUploaded = (wokerData.data.chunkSize * (wokerData.data.chunkIndex + 1))/1000
-  let totalBytes = wokerData.data.fileSizeKb * 1000
+  let bytesUploaded = (wokerData.chunkSize * (wokerData.chunkIndex + 1))/1000
+  let totalBytes = wokerData.fileSizeKb * 1000
 
   store.dispatch({
     type: 'LOADING_PROGRESS',
