@@ -68,7 +68,7 @@ function fetchQuery(
       return response.json()
 
   }).catch(error => {
-    console.log(error.message.toString())
+
     if(!(uploadables && uploadables[0])){
       if((error.message.toString()+'') === 'Failed to fetch'){
 

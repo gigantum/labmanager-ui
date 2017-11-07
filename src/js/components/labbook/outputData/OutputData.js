@@ -19,22 +19,70 @@ class OutputData extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.relay)
+    let self = this;
+    this._loadMore()
+
+    window.addEventListener('scroll', function(e){
+      let root = document.getElementById('root')
+      let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
+      expandOn = root.scrollHeight;
+
+      if ((distanceY > expandOn) && self.props.labbook.outputFiles.pageInfo.hasNextPage) {
+          self._loadMore(e);
+      }
+    });
   }
 
 
+  _loadMore() {
 
+    this.props.relay.loadMore(
+     10, // Fetch the next 10 feed items
+     (r, e) => {
+       console.log(r,e)
+     }
+   );
+  }
   render(){
-    console.log(this.props)
+
+    let outputFiles = this.props.labbook.outputFiles
+    if(this.props.labbook.outputFiles.edges.length === 0){
+      outputFiles = {
+        edges: [{
+          node:{
+            modified: new Date(),
+            key: 'output/',
+            isDir: true,
+            size: 0,
+            id: 'output_temp'
+          }
+        }],
+        pageInfo: this.props.labbook.outputFiles.pageInfo
+      }
+    }
+
     return(
-        <FileBrowserWrapper
-          ref="outPutBrowser"
-          files={this.props.labbook.files}
-          rootFoler="output"
-          connection="OutputData_files"
-          {...this.props}
-        />
-      )
+        <div className="Code">
+          <div className="Code__header">
+            <h5 className="Code__subtitle">Output Browser</h5>
+            <div className="Code__toolbar">
+              <p className="Code__import-text">
+                <a className="Code__import-file">Import File</a>
+                or Drag and Drop File Below
+              </p>
+
+            </div>
+          </div>
+          <div className="Code__file-browser">
+            <FileBrowserWrapper
+              ref="outPutBrowser"
+              files={outputFiles}
+              rootFoler="output"
+              connection="OutputData_outputFiles"
+              {...this.props}
+            />
+        </div>
+      </div>)
   }
 }
 
@@ -45,7 +93,7 @@ export default createPaginationContainer(
 
     labbook: graphql`
       fragment OutputData_labbook on Labbook{
-        outputFiles(after: $cursor, first: $first, baseDir: "output")@connection(key: "OutputData_outputFiles"){
+        outputFiles(after: $cursor, first: $first, baseDir: "output")@connection(key: "OutputData_outputFiles", filters:[]){
           edges{
             node{
               id
@@ -69,7 +117,7 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.labbook
+      return props.labbook && props.labbook.outputFiles
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -79,19 +127,26 @@ export default createPaginationContainer(
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
       let baseDir = "output"
+      const username = localStorage.getItem('username')
 
       return {
         first: count,
         cursor,
-        baseDir
+        baseDir,
+        owner: username,
+        name: props.labbookName
       };
     },
     query: graphql`
       query OutputDataPaginationQuery(
         $first: Int
         $cursor: String
+        $owner: String!
+        $name: String!
       ) {
-        labbook {
+        labbook(name: $name, owner: $owner){
+           id
+           description
           # You could reference the fragment defined previously.
           ...OutputData_labbook
         }

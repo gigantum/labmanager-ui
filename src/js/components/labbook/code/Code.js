@@ -11,32 +11,51 @@ let counter = 10;
 class Code extends Component {
   constructor(props){
   	super(props);
-
-    console.log(props)
   }
 
   componentDidMount() {
+    let self = this;
     this._loadMore()
+
+    window.addEventListener('scroll', function(e){
+      let root = document.getElementById('root')
+      let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
+      expandOn = root.scrollHeight;
+
+      if ((distanceY > expandOn) && self.props.labbook.codeFiles.pageInfo.hasNextPage) {
+          self._loadMore(e);
+      }
+    });
   }
 
 
   _loadMore() {
 
-
     this.props.relay.loadMore(
-     counter, // Fetch the next 10 feed items
-     e => {
-       console.log('paginate')
-     },{
-       name: 'labbook'
+     10, // Fetch the next 10 feed items
+     (r, e) => {
+       console.log(r,e)
      }
    );
-   counter += 5
   }
 
 
   render(){
-
+    let codeFiles = this.props.labbook.codeFiles
+    if(this.props.labbook.codeFiles.edges.length === 0){
+      codeFiles = {
+        edges: [{
+          node:{
+            modified: new Date(),
+            key: 'code/',
+            isDir: true,
+            size: 0,
+            id: 'code_temp'
+          }
+        }],
+        pageInfo: this.props.labbook.codeFiles.pageInfo
+      }
+    }
     if(this.props.labbook){
       return(
 
@@ -67,8 +86,8 @@ class Code extends Component {
             <FileBrowserWrapper
               ref='codeBrowser'
               rootFolder={"code"}
-              files={this.props.labbook.codeFiles}
-              connection="Code_files"
+              files={codeFiles}
+              connection="Code_codeFiles"
               {...this.props}
             />
           </div>
@@ -86,7 +105,7 @@ export default createPaginationContainer(
 
     labbook: graphql`
       fragment Code_labbook on Labbook{
-        codeFiles(after: $cursor, first: $first, baseDir: "code")@connection(key: "Code_codeFiles"){
+        codeFiles(after: $cursor, first: $first, baseDir: "code")@connection(key: "Code_codeFiles", filters: []){
           edges{
             node{
               id
@@ -110,31 +129,39 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.labbook
+      return props.labbook && props.labbook.codeFiles
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
         ...prevVars,
-        count: totalCount,
+        first: totalCount,
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
+      const username = localStorage.getItem('username')
       let baseDir = "code"
 
       return {
         first: count,
         cursor,
-        baseDir
+        baseDir,
+        owner: username,
+        name: props.labbookName
       };
     },
     query: graphql`
       query CodePaginationQuery(
         $first: Int
         $cursor: String
+        $owner: String!
+        $name: String!
       ) {
-        labbook {
+        labbook(name: $name, owner: $owner){
+           id
+           description
           # You could reference the fragment defined previously.
           ...Code_labbook
+
         }
       }
     `
