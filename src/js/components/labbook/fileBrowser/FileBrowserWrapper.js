@@ -314,16 +314,17 @@ export default class FileBrowserWrapper extends Component {
   _formatFileJson(files){
 
       let formatedArray = []
-
-      files.edges.forEach((edge) => {
-        if(edge){
-          formatedArray.push({
-            key: edge.node.key,
-            modified: edge.node.modifiedAt,
-            size: edge.node.size
-          })
-        }
-      })
+      if(files){
+        files.edges.forEach((edge) => {
+          if(edge){
+            formatedArray.push({
+              key: edge.node.key,
+              modified: edge.node.modifiedAt,
+              size: edge.node.size
+            })
+          }
+        })
+      }
 
       return formatedArray
   }
@@ -342,6 +343,7 @@ export default class FileBrowserWrapper extends Component {
             key={this.props.connection}
             keyPrefix={this.props.connection}
             files={files}
+            rootFolder={this.props.rootFolder}
             onCreateFolder={this.handleCreateFolder}
             onCreateFiles={this.handleCreateFiles}
             onMoveFolder={this.handleRenameFolder}

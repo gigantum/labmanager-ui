@@ -1,16 +1,37 @@
 // vendor
 import React, { Component } from 'react'
-import {createFragmentContainer, graphql} from 'react-relay'
+import {createPaginationContainer, graphql} from 'react-relay'
 //Config
 import Config from './CodeConfig'
 //mutations
 
 import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
 
-
+let counter = 10;
 class Code extends Component {
   constructor(props){
   	super(props);
+
+    console.log(props)
+  }
+
+  componentDidMount() {
+    this._loadMore()
+  }
+
+
+  _loadMore() {
+
+
+    this.props.relay.loadMore(
+     counter, // Fetch the next 10 feed items
+     e => {
+       console.log('paginate')
+     },{
+       name: 'labbook'
+     }
+   );
+   counter += 5
   }
 
 
@@ -46,7 +67,7 @@ class Code extends Component {
             <FileBrowserWrapper
               ref='codeBrowser'
               rootFolder={"code"}
-              files={this.props.labbook.files}
+              files={this.props.labbook.codeFiles}
               connection="Code_files"
               {...this.props}
             />
@@ -59,12 +80,13 @@ class Code extends Component {
   }
 }
 
-export default createFragmentContainer(
+export default createPaginationContainer(
   Code,
   {
+
     labbook: graphql`
       fragment Code_labbook on Labbook{
-        files(first: 100, baseDir: "code")@connection(key: "Code_files"){
+        codeFiles(after: $cursor, first: $first, baseDir: "code")@connection(key: "Code_codeFiles"){
           edges{
             node{
               id
@@ -82,24 +104,40 @@ export default createFragmentContainer(
             endCursor
           }
         }
-        favorites(first: 3)@connection(key: "Code_favorites"){
-          edges{
-            node{
-              id
-              isDir
-              index
-              key
-              description
-            }
-            cursor
-          }
-          pageInfo{
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-          }
-        }
+
       }`
+  },
+  {
+    direction: 'forward',
+    getConnectionFromProps(props) {
+      return props.labbook
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
+      };
+    },
+    getVariables(props, {count, cursor}, fragmentVariables) {
+      let baseDir = "code"
+
+      return {
+        first: count,
+        cursor,
+        baseDir
+      };
+    },
+    query: graphql`
+      query CodePaginationQuery(
+        $first: Int
+        $cursor: String
+      ) {
+        labbook {
+          # You could reference the fragment defined previously.
+          ...Code_labbook
+        }
+      }
+    `
   }
+
 )

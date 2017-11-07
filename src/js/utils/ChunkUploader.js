@@ -14,7 +14,7 @@ const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChu
 
 
   ImportLabbookMutation(username, username, chunk.blob, chunk, accessToken, (result, error)=>{
-      // console.log(result, error)
+     
       if(result && (error === undefined)){
         getChunkCallback(file, result)
       }else{
@@ -37,6 +37,7 @@ const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepa
     chunk,
     accessToken,
     (result, error)=>{
+
       if(result && (error === undefined)){
         getChunkCallback(file, result)
       }else{
@@ -151,4 +152,5 @@ const ChunkUploader = {
   @param: {event} evt
   waits for data to be passed before starting chunking
 */
+
 export default ChunkUploader

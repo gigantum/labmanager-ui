@@ -14,8 +14,9 @@ import store from 'JS/redux/store'
  uses redux to dispatch file upload to the footer
 */
 const dispatchLoadingProgress = (wokerData) =>{
-  let bytesUploaded = (wokerData.chunkSize * (wokerData.chunkIndex + 1))/1024
-  let totalBytes = wokerData.fileSizeKb * 1024
+
+  let bytesUploaded = (wokerData.data.chunkSize * (wokerData.data.chunkIndex + 1))/1000
+  let totalBytes = wokerData.data.fileSizeKb * 1000
 
   store.dispatch({
     type: 'LOADING_PROGRESS',
@@ -286,7 +287,6 @@ export default class ImportModule extends Component {
         loadingState: true
       }
     })
-
 
     const postMessage = (wokerData) => {
 
