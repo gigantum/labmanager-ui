@@ -22,7 +22,7 @@ class Code extends Component {
       let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
       expandOn = root.scrollHeight;
 
-      if ((distanceY > expandOn) && self.props.labbook.codeFiles.pageInfo.hasNextPage) {
+      if ((distanceY > expandOn) && self.props.labbook.codeFiles && self.props.labbook.codeFiles.pageInfo.hasNextPage) {
           self._loadMore(e);
       }
     });
@@ -41,22 +41,24 @@ class Code extends Component {
 
 
   render(){
-    let codeFiles = this.props.labbook.codeFiles
-    if(this.props.labbook.codeFiles.edges.length === 0){
-      codeFiles = {
-        edges: [{
-          node:{
-            modified: new Date(),
-            key: 'code/',
-            isDir: true,
-            size: 0,
-            id: 'code_temp'
-          }
-        }],
-        pageInfo: this.props.labbook.codeFiles.pageInfo
+
+    if(this.props.labbook && this.props.labbook.codeFiles){
+
+      let codeFiles = this.props.labbook.codeFiles
+      if(this.props.labbook.codeFiles.edges.length === 0){
+        codeFiles = {
+          edges: [{
+            node:{
+              modified: new Date(),
+              key: 'code/',
+              isDir: true,
+              size: 0,
+              id: 'code_temp'
+            }
+          }],
+          pageInfo: this.props.labbook.codeFiles.pageInfo
+        }
       }
-    }
-    if(this.props.labbook){
       return(
 
         <div className="Code">
@@ -94,7 +96,7 @@ class Code extends Component {
         </div>
       )
     }else{
-      return(<div>Loading</div>)
+      return(<div>No Files Found</div>)
     }
   }
 }

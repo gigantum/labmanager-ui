@@ -27,7 +27,7 @@ class OutputData extends Component {
       let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
       expandOn = root.scrollHeight;
 
-      if ((distanceY > expandOn) && self.props.labbook.outputFiles.pageInfo.hasNextPage) {
+      if ((distanceY > expandOn) && self.props.labbook.outputFile && self.props.labbook.outputFiles.pageInfo.hasNextPage) {
           self._loadMore(e);
       }
     });
@@ -44,45 +44,48 @@ class OutputData extends Component {
    );
   }
   render(){
-
-    let outputFiles = this.props.labbook.outputFiles
-    if(this.props.labbook.outputFiles.edges.length === 0){
-      outputFiles = {
-        edges: [{
-          node:{
-            modified: new Date(),
-            key: 'output/',
-            isDir: true,
-            size: 0,
-            id: 'output_temp'
-          }
-        }],
-        pageInfo: this.props.labbook.outputFiles.pageInfo
+    if(this.props.labbook && this.props.labbook.outputFiles){
+      let outputFiles = this.props.labbook.outputFiles
+      if(this.props.labbook.outputFiles.edges.length === 0){
+        outputFiles = {
+          edges: [{
+            node:{
+              modified: new Date(),
+              key: 'output/',
+              isDir: true,
+              size: 0,
+              id: 'output_temp'
+            }
+          }],
+          pageInfo: this.props.labbook.outputFiles.pageInfo
+        }
       }
-    }
 
-    return(
-        <div className="Code">
-          <div className="Code__header">
-            <h5 className="Code__subtitle">Output Browser</h5>
-            <div className="Code__toolbar">
-              <p className="Code__import-text">
-                <a className="Code__import-file">Import File</a>
-                or Drag and Drop File Below
-              </p>
+      return(
+          <div className="Code">
+            <div className="Code__header">
+              <h5 className="Code__subtitle">Output Browser</h5>
+              <div className="Code__toolbar">
+                <p className="Code__import-text">
+                  <a className="Code__import-file">Import File</a>
+                  or Drag and Drop File Below
+                </p>
 
+              </div>
             </div>
+            <div className="Code__file-browser">
+              <FileBrowserWrapper
+                ref="outPutBrowser"
+                files={outputFiles}
+                rootFoler="output"
+                connection="OutputData_outputFiles"
+                {...this.props}
+              />
           </div>
-          <div className="Code__file-browser">
-            <FileBrowserWrapper
-              ref="outPutBrowser"
-              files={outputFiles}
-              rootFoler="output"
-              connection="OutputData_outputFiles"
-              {...this.props}
-            />
-        </div>
-      </div>)
+        </div>)
+    }else {
+      return(<div>No Files Found</div>)
+    }
   }
 }
 

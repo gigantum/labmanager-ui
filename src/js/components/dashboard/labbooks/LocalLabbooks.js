@@ -9,6 +9,10 @@ import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
 import LocalLabbookPanel from 'Components/dashboard/labbooks/LocalLabbookPanel'
 import ImportModule from 'Components/import/ImportModule'
+//Mutations
+import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
+//utils
+import Validation from 'JS/utils/Validation'
 
 
 
@@ -20,8 +24,17 @@ class LocalLabbooks extends Component {
   constructor(props){
   	super(props);
 
+    this.state = {
+      labbookModalVisible: false,
+      oldLabbookName: '',
+      newLabbookName:'',
+      renameError: '',
+      showNamingError: false
+    }
+
     this._goToLabbook = this._goToLabbook.bind(this)
     this._loadMore = this._loadMore.bind(this)
+    this._renameLabbookModal = this._renameLabbookModal.bind(this)
 
   }
 
@@ -70,6 +83,66 @@ class LocalLabbooks extends Component {
     );
   }
 
+  _renameLabbookModal(labbookName){
+    this.setState({
+      labbookModalVisible: true,
+      oldLabbookName: labbookName
+    })
+
+    if(document.getElementById('modal__cover')){
+      document.getElementById('modal__cover').classList.remove('hidden')
+    }
+  }
+
+  _closeLabbook(labbookName){
+    this.setState({
+      labbookModalVisible: false,
+      oldLabbookName: '',
+      newLabbookName:'',
+      showNamingError: false
+    })
+
+    if(document.getElementById('modal__cover')){
+      document.getElementById('modal__cover').classList.add('hidden')
+    }
+  }
+
+  _setLabbookTitle(evt){
+
+    let isValid = Validation.labbookName(evt.target.value)
+    if(isValid){
+      this.setState({
+        newLabbookName: evt.target.value,
+        showNamingError: false
+      })
+    }else{
+      this.setState({showNamingError: true})
+    }
+  }
+
+  _renameMutation(){
+    const username = localStorage.getItem('username')
+    let self = this;
+    RenameLabbookMutation(
+      username,
+      username,
+      this.state.oldLabbookName,
+      this.state.newLabbookName,
+      (response, error) =>{
+        console.log(response, error)
+        if(error){
+          self.setState({renameError: error[0].message})
+        }
+        if(response.renameLabbook.success){
+          if(document.getElementById('modal__cover')){
+            document.getElementById('modal__cover').classList.add('hidden')
+          }
+          self.props.history.replace(`labbooks/${self.state.newLabbookName}`)
+        }
+      }
+    )
+  }
+
   render(){
       let {props} = this;
 
@@ -77,6 +150,30 @@ class LocalLabbooks extends Component {
 
         return(
           <div className="LocalLabbooks">
+            { this.state.labbookModalVisible &&
+              <div className="LocalLabbooks__rename-modal">
+                <div
+                  onClick={()=> this._closeLabbook()}
+                  className="LocalLabbooks__rename-close">
+                  X
+                </div>
+                <input
+                  onKeyUp={(evt)=> this._setLabbookTitle(evt)}
+                  className="LocalLabbooks__rename-input"
+                  type="text"
+                  placeholder="New Labbook Name"></input>
+                {this.state.showNamingError && <p className="LocalLabbooks__rename-error">Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)</p>}
+                {this.state.renameError && <p className="LocalLabbooks__rename-error">{this.state.renameError}</p>}
+                <button
+                  disabled={(this.state.newLabbookName.length === 0) && !this.state.showNamingError}
+                  className="LocalLabbooks__rename-submit"
+                  onClick={()=> this._renameMutation()}>
+                  Rename Lab Book
+                </button>
+
+              </div>
+            }
+
 
             <WizardModal
               ref="wizardModal"
@@ -120,6 +217,7 @@ class LocalLabbooks extends Component {
                       ref={'LocalLabbookPanel' + edge.node.name}
                       className="LocalLabbooks__panel"
                       edge={edge}
+                      renameLabbookModal={this._renameLabbookModal}
                       goToLabbook={this._goToLabbook}/>
                   )
                 })

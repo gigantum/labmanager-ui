@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Mon Nov 06 2017 10:54:56 GMT-0500 (EST)
+# timestamp: Tue Nov 07 2017 13:03:55 GMT-0500 (EST)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -551,6 +551,7 @@ type Mutation {
   importLabbook(input: ImportLabbookInput!): ImportLabbookPayload
   exportLabbook(input: ExportLabbookInput!): ExportLabbookPayload
   createLabbook(input: CreateLabbookInput!): CreateLabbookPayload
+  renameLabbook(input: RenameLabbookInput!): RenameLabbookPayload
   createBranch(input: CreateBranchInput!): CreateBranchPayload
   checkoutBranch(input: CheckoutBranchInput!): CheckoutBranchPayload
   buildImage(input: BuildImageInput!): BuildImagePayload
@@ -722,6 +723,20 @@ input RemoveUserIdentityInput {
 # Mutation to remove a locally stored user identity (no-op if not running in local mode)
 type RemoveUserIdentityPayload {
   userIdentityEdge: UserIdentity
+  clientMutationId: String
+}
+
+input RenameLabbookInput {
+  user: String!
+  owner: String!
+  originalLabbookName: String!
+  newLabbookName: String!
+  clientMutationId: String
+}
+
+# Rename a labbook
+type RenameLabbookPayload {
+  success: Boolean
   clientMutationId: String
 }
 
