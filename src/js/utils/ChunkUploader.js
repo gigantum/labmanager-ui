@@ -59,7 +59,7 @@ const ChunkUploader = {
   /*
     @param {object} data includes file filepath username and accessToken
   */
-  chunkFile: (data) => {
+  chunkFile: (data, postMessage) => {
     let requestFlag = false
     let uploadAttempts = 0
     let file = data.file,
@@ -122,36 +122,36 @@ const ChunkUploader = {
               componentCallback
             )
 
-            let uploadLabbookChunkCounter = 0;
+            //let uploadLabbookChunkCounter = 0;
 
-            let uploadInterval = setInterval(()=>{
-
-              uploadLabbookChunkCounter += 5;
-
-              if(requestFlag){
-                clearInterval(uploadInterval);
-                requestFlag = false
-              }else{
-
-                if(uploadLabbookChunkCounter > 60){
-
-                  uploadAttempts++;
-
-                  uploadLabbookChunk(
-                    file,
-                    chunkData,
-                    data.accessToken,
-                    username,
-                    filepath,
-                    getChunk,
-                    requestFlag,
-                    uploadAttempts,
-                    componentCallback
-                  )
-                  clearInterval(uploadInterval);
-                }
-              }
-            }, 5000);
+            // let uploadInterval = setInterval(()=>{
+            //
+            //   uploadLabbookChunkCounter += 5;
+            //
+            //   if(requestFlag){
+            //     clearInterval(uploadInterval);
+            //     requestFlag = false
+            //   }else{
+            //
+            //     if(uploadLabbookChunkCounter > 60){
+            //
+            //       uploadAttempts++;
+            //
+            //       uploadLabbookChunk(
+            //         file,
+            //         chunkData,
+            //         data.accessToken,
+            //         username,
+            //         filepath,
+            //         getChunk,
+            //         requestFlag,
+            //         uploadAttempts,
+            //         componentCallback
+            //       )
+            //       clearInterval(uploadInterval);
+            //     }
+            //   }
+            // }, 5000);
 
 
             postMessage(chunkData) //post progress back to worker instantiator file
@@ -196,9 +196,4 @@ const ChunkUploader = {
   @param: {event} evt
   waits for data to be passed before starting chunking
 */
-onmessage = (evt) => {
-  console.log(evt)
-  evt.preventDefault();
-  ChunkUploader.chunkFile(evt.data)
-}
 export default ChunkUploader

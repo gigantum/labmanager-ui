@@ -14,8 +14,8 @@ import store from 'JS/redux/store'
  uses redux to dispatch file upload to the footer
 */
 const dispatchLoadingProgress = (wokerData) =>{
-  let bytesUploaded = (wokerData.data.chunkSize * (wokerData.data.chunkIndex + 1))/1024
-  let totalBytes = wokerData.data.fileSizeKb * 1024
+  let bytesUploaded = (wokerData.chunkSize * (wokerData.chunkIndex + 1))/1024
+  let totalBytes = wokerData.fileSizeKb * 1024
 
   store.dispatch({
     type: 'LOADING_PROGRESS',
@@ -269,7 +269,7 @@ export default class ImportModule extends Component {
 
     let filepath = this.state.files[0].filename
 
-    let chunkUploadWorker = new ChunkUploader();
+    //let chunkUploadWorker = new ChunkUploader();
 
     let data = {
       file: this.state.files[0].file,
@@ -278,36 +278,29 @@ export default class ImportModule extends Component {
       accessToken: localStorage.getItem('access_token')
     }
 
-    chunkUploadWorker.postMessage(data);
-
-    this._chunkLoader(chunkUploadWorker, filepath, this.state.files[0].file)
-  }
-
-  _chunkLoader(chunkWorker, filepath, file){
 
     store.dispatch({
       type: 'LOADING_PROGRESS',
       payload:{
         bytesUploaded: 0,
         percentage: 0,
-        totalBytes:  file.size,
+        totalBytes:  this.state.files[0].file.size,
         loadingState: true
       }
     })
 
 
-    let self = this
-    chunkWorker.onmessage = function(wokerData) {
+    const postMessage = (wokerData) => {
+    console.log(wokerData)
+     if(wokerData.importLabbook){
 
-     if(wokerData.data.importLabbook){
-        chunkWorker.terminate()
         store.dispatch({
           type: 'UPLOAD_MESSAGE',
           payload: {uploadMessage: 'Upload Complete'}
         })
 
 
-        let importLabbook = wokerData.data.importLabbook
+        let importLabbook = wokerData.importLabbook
          JobStatus.getJobStatus(importLabbook.importJobKey).then((response)=>{
 
            store.dispatch({
@@ -339,7 +332,7 @@ export default class ImportModule extends Component {
            })
            self._clearState()
          })
-      }else if(wokerData.data.chunkSize){
+      }else if(wokerData.chunkSize){
 
         dispatchLoadingProgress(wokerData)
 
@@ -348,6 +341,8 @@ export default class ImportModule extends Component {
        self._clearState()
      }
    }
+
+   ChunkUploader.chunkFile(data, postMessage);
  }
   /**
     @param {object} error
