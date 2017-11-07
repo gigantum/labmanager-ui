@@ -5,9 +5,8 @@ import JobStatus from './JobStatus'
 //mutations
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 import AddLabbookFileMutation from 'Mutations/AddLabbookFileMutation'
-let requestFlag = false;
-let uploadAttempts = 0;
-const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
+
+const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChunkCallback, requestFlag, uploadAttempts, componentCallback) => {
 
 
   ImportLabbookMutation(username, username, chunk.blob, chunk, accessToken, (result, error)=>{
@@ -61,7 +60,8 @@ const ChunkUploader = {
     @param {object} data includes file filepath username and accessToken
   */
   chunkFile: (data) => {
-
+    let requestFlag = false
+    let uploadAttempts = 0
     let file = data.file,
       filepath = data.filepath,
       username = data.username,
@@ -84,6 +84,7 @@ const ChunkUploader = {
 
     const getChunk = (response, result) => {
 
+      console.log(uploadAttempts, requestFlag)
       if(response.name && (uploadAttempts < 4)){ //checks if response is a file
 
         let sliceUpperBound = (fileSize > (fileLoadedSize + chunkSize))
@@ -116,6 +117,8 @@ const ChunkUploader = {
               username,
               filepath,
               getChunk,
+              requestFlag,
+              uploadAttempts,
               componentCallback
             )
 
@@ -124,12 +127,16 @@ const ChunkUploader = {
             let uploadInterval = setInterval(()=>{
 
               uploadLabbookChunkCounter += 5;
+
               if(requestFlag){
                 clearInterval(uploadInterval);
                 requestFlag = false
               }else{
+
                 if(uploadLabbookChunkCounter > 60){
+
                   uploadAttempts++;
+
                   uploadLabbookChunk(
                     file,
                     chunkData,
@@ -137,13 +144,13 @@ const ChunkUploader = {
                     username,
                     filepath,
                     getChunk,
+                    requestFlag,
+                    uploadAttempts,
                     componentCallback
                   )
                   clearInterval(uploadInterval);
                 }
               }
-
-
             }, 5000);
 
 
