@@ -22,7 +22,7 @@ const dispatchLoadingProgress = (wokerData) =>{
     payload: {
       bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
       totalBytes: totalBytes,
-      percentage: Math.floor((bytesUploaded/totalBytes) * 100),
+      percentage: (Math.floor((bytesUploaded/totalBytes) * 100) <= 100) ? Math.floor((bytesUploaded/totalBytes) * 100) : 100,
       loadingState: true,
       uploadMessage: '',
       labbookName: '',
@@ -269,8 +269,6 @@ export default class ImportModule extends Component {
 
     let filepath = this.state.files[0].filename
 
-    //let chunkUploadWorker = new ChunkUploader();
-
     let data = {
       file: this.state.files[0].file,
       filepath: filepath,
@@ -278,20 +276,21 @@ export default class ImportModule extends Component {
       accessToken: localStorage.getItem('access_token')
     }
 
-
+    //dispatch loading progress
     store.dispatch({
       type: 'LOADING_PROGRESS',
       payload:{
         bytesUploaded: 0,
         percentage: 0,
-        totalBytes:  this.state.files[0].file.size,
+        totalBytes:  this.state.files[0].file.size/1000,
         loadingState: true
       }
     })
 
 
     const postMessage = (wokerData) => {
-    console.log(wokerData)
+
+
      if(wokerData.importLabbook){
 
         store.dispatch({
@@ -337,7 +336,13 @@ export default class ImportModule extends Component {
         dispatchLoadingProgress(wokerData)
 
      } else{
-
+       store.dispatch({
+         type: 'UPLOAD_MESSAGE',
+         payload: {
+           uploadMessage: wokerData[0].message,
+           error: true
+         }
+       })
        self._clearState()
      }
    }

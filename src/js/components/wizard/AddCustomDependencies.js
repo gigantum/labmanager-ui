@@ -103,7 +103,7 @@ export default class AddCustomDependencies extends React.Component {
       this.props.labbookName,
       username,
       (response, error) => {
-        console.log(response, error)
+
         let showAlert = ((error !== undefined) && (error !== null))
         if(showAlert){
           let message = showAlert ? error[0].message : '';

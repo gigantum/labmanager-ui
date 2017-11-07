@@ -6,12 +6,14 @@ import JobStatus from './JobStatus'
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 import AddLabbookFileMutation from 'Mutations/AddLabbookFileMutation'
 
-const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChunkCallback, requestFlag, uploadAttempts, componentCallback) => {
+
+/*
+
+*/
+const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
 
 
   ImportLabbookMutation(username, username, chunk.blob, chunk, accessToken, (result, error)=>{
-      requestFlag = true;
-      uploadAttempts = 0;
       // console.log(result, error)
       if(result && (error === undefined)){
         getChunkCallback(file, result)
@@ -24,16 +26,7 @@ const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChu
 }
 
 const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
-  console.log(
-    data.connectionKey,
-    username,
-    username,
-    data.labbookName,
-    data.labbookId,
-    filepath,
-    chunk,
-    accessToken
-  )
+
   AddLabbookFileMutation(
     data.connectionKey,
     username,
@@ -44,7 +37,6 @@ const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepa
     chunk,
     accessToken,
     (result, error)=>{
-      console.log(result, error)
       if(result && (error === undefined)){
         getChunkCallback(file, result)
       }else{
@@ -60,12 +52,11 @@ const ChunkUploader = {
     @param {object} data includes file filepath username and accessToken
   */
   chunkFile: (data, postMessage) => {
-    let requestFlag = false
-    let uploadAttempts = 0
+
     let file = data.file,
       filepath = data.filepath,
       username = data.username,
-      componentCallback = (response) => { //callback to trigger postMessage from worker
+      componentCallback = (response) => { //callback to trigger postMessage from initializer
         postMessage(response);
       }
 
@@ -84,8 +75,8 @@ const ChunkUploader = {
 
     const getChunk = (response, result) => {
 
-      console.log(uploadAttempts, requestFlag)
-      if(response.name && (uploadAttempts < 4)){ //checks if response is a file
+
+      if(response.name){ //checks if response is a file
 
         let sliceUpperBound = (fileSize > (fileLoadedSize + chunkSize))
             ? (fileLoadedSize + chunkSize)
@@ -117,41 +108,8 @@ const ChunkUploader = {
               username,
               filepath,
               getChunk,
-              requestFlag,
-              uploadAttempts,
               componentCallback
             )
-
-            //let uploadLabbookChunkCounter = 0;
-
-            // let uploadInterval = setInterval(()=>{
-            //
-            //   uploadLabbookChunkCounter += 5;
-            //
-            //   if(requestFlag){
-            //     clearInterval(uploadInterval);
-            //     requestFlag = false
-            //   }else{
-            //
-            //     if(uploadLabbookChunkCounter > 60){
-            //
-            //       uploadAttempts++;
-            //
-            //       uploadLabbookChunk(
-            //         file,
-            //         chunkData,
-            //         data.accessToken,
-            //         username,
-            //         filepath,
-            //         getChunk,
-            //         requestFlag,
-            //         uploadAttempts,
-            //         componentCallback
-            //       )
-            //       clearInterval(uploadInterval);
-            //     }
-            //   }
-            // }, 5000);
 
 
             postMessage(chunkData) //post progress back to worker instantiator file
@@ -179,12 +137,9 @@ const ChunkUploader = {
           componentCallback(response)
         }
       }else{ //chunk upload fails
-        if(uploadAttempts > 2){
-          console.log('Too Many Failed Attempts')
-          componentCallback([{message: 'Too many failed attempts'}])
-        }else{
-          componentCallback(response)
-        }
+
+        componentCallback(response)
+
       }
     }
 
