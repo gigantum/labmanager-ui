@@ -4,11 +4,40 @@ import uuidv4 from 'uuid/v4'
 import JobStatus from './JobStatus'
 //mutations
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
+import AddLabbookFileMutation from 'Mutations/AddLabbookFileMutation'
 
-const uploadChunk = (file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
+
+/*
+
+*/
+const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
+
 
   ImportLabbookMutation(username, username, chunk.blob, chunk, accessToken, (result, error)=>{
-      console.log(result, error)
+     
+      if(result && (error === undefined)){
+        getChunkCallback(file, result)
+      }else{
+        getChunkCallback(error)
+      }
+
+  })
+
+}
+
+const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
+
+  AddLabbookFileMutation(
+    data.connectionKey,
+    username,
+    username,
+    data.labbookName,
+    data.labbookId,
+    filepath,
+    chunk,
+    accessToken,
+    (result, error)=>{
+
       if(result && (error === undefined)){
         getChunkCallback(file, result)
       }else{
@@ -23,12 +52,12 @@ const ChunkUploader = {
   /*
     @param {object} data includes file filepath username and accessToken
   */
-  chunkFile: (data) => {
+  chunkFile: (data, postMessage) => {
 
     let file = data.file,
       filepath = data.filepath,
       username = data.username,
-      componentCallback = (response) => { //callback to trigger postMessage from worker
+      componentCallback = (response) => { //callback to trigger postMessage from initializer
         postMessage(response);
       }
 
@@ -46,6 +75,7 @@ const ChunkUploader = {
     */
 
     const getChunk = (response, result) => {
+
 
       if(response.name){ //checks if response is a file
 
@@ -69,17 +99,37 @@ const ChunkUploader = {
           }
 
         if(chunkIndex <= totalChunks){ //if  there is still chunks to process do next chunk
-          uploadChunk(
-            file,
-            chunkData,
-            data.accessToken,
-            username,
-            filepath,
-            getChunk,
-            componentCallback
-          )
+          //select type of mutation
+          if(file.name.indexOf('.lbk') > -1){
 
-          postMessage(chunkData) //post progress back to worker instantiator file
+            uploadLabbookChunk(
+              file,
+              chunkData,
+              data.accessToken,
+              username,
+              filepath,
+              getChunk,
+              componentCallback
+            )
+
+
+            postMessage(chunkData) //post progress back to worker instantiator file
+
+          }
+          else{
+            uploadFileBrowserChunk(
+              data,
+              file,
+              chunkData,
+              data.accessToken,
+              username,
+              filepath,
+              getChunk,
+              componentCallback
+            )
+
+            postMessage(chunkData)
+          }
 
         }else if(result){ //completes chunk upload task
 
@@ -88,7 +138,9 @@ const ChunkUploader = {
           componentCallback(response)
         }
       }else{ //chunk upload fails
+
         componentCallback(response)
+
       }
     }
 
@@ -100,8 +152,5 @@ const ChunkUploader = {
   @param: {event} evt
   waits for data to be passed before starting chunking
 */
-onmessage = (evt) => {
-  console.log(evt)
-  ChunkUploader.chunkFile(evt.data)
-}
+
 export default ChunkUploader

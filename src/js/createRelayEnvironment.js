@@ -71,7 +71,7 @@ function fetchQuery(
     console.log(error.message.toString())
     if(!(uploadables && uploadables[0])){
       if((error.message.toString()+'') === 'Failed to fetch'){
-        console.log('logs')
+
         document.getElementById('apiDown').classList.remove('hidden')
       }else{
         document.getElementById('apiDown').classList.add('hidden')
