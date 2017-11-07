@@ -118,30 +118,32 @@ const ChunkUploader = {
               getChunk,
               componentCallback
             )
+
             let uploadLabbookChunkCounter = 0;
 
             let uploadInterval = setInterval(()=>{
 
               uploadLabbookChunkCounter += 5;
-
-              if(uploadLabbookChunkCounter > 60){
-                uploadAttempts++;
-                uploadLabbookChunk(
-                  file,
-                  chunkData,
-                  data.accessToken,
-                  username,
-                  filepath,
-                  getChunk,
-                  componentCallback
-                )
-                clearInterval(uploadInterval);
-              }
-
               if(requestFlag){
                 clearInterval(uploadInterval);
                 requestFlag = false
+              }else{
+                if(uploadLabbookChunkCounter > 60){
+                  uploadAttempts++;
+                  uploadLabbookChunk(
+                    file,
+                    chunkData,
+                    data.accessToken,
+                    username,
+                    filepath,
+                    getChunk,
+                    componentCallback
+                  )
+                  clearInterval(uploadInterval);
+                }
               }
+
+
             }, 5000);
 
 
