@@ -20,13 +20,186 @@ exports[`Test DevEnvironments rendering 1`] = `
       <p>
          Dev Environment
       </p>
+      <div
+        className="Loader"
+      >
+        <svg
+          id="circle-middle"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#EDEDED"
+            r="6"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            fill="#26A6D1"
+            r="4.5"
+          />
+        </svg>
+      </div>
     </div>
   </div>
-  <h4
-    className="Environment__header"
+  <div
+    className="Environment__header-container"
   >
-    Development Environments
-  </h4>
+    <h4
+      className="Environment__header"
+    >
+      Development Environments
+    </h4>
+    <div
+      className="Environment__edit-container"
+    >
+      <button
+        className="Environment__edit-button"
+        disabled={false}
+        id="devEnvironmentsEdit"
+        onClick={[Function]}
+      />
+    </div>
+  </div>
   <div
     className="Environment__info flex justify--left flex--wrap"
   >
@@ -37,7 +210,7 @@ exports[`Test DevEnvironments rendering 1`] = `
         className="Environment__card flex justify--space-around"
       >
         <div
-          className="flex-1-0-auto flex flex--wrap flex--column justify-center"
+          className="Environment__image-container flex-1-0-auto flex flex--column justify-center"
         >
           <img
             alt="Python 3 Jupyter Notebook for Ubuntu"
@@ -57,17 +230,6 @@ exports[`Test DevEnvironments rendering 1`] = `
           </p>
         </div>
       </div>
-    </div>
-    <div
-      className="Environment__edit-container"
-    >
-      <button
-        className="Environment__edit-button"
-        id="devEnvironmentsEdit"
-        onClick={[Function]}
-      >
-        Edit
-      </button>
     </div>
   </div>
 </div>

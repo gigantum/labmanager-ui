@@ -5,45 +5,54 @@ import {createPaginationContainer, graphql} from 'react-relay'
 import SelectDevelopmentEnvironment from 'Components/wizard/SelectDevelopmentEnvironment'
 import Loader from 'Components/shared/Loader'
 
-let devEnvironments;
-
 class DevEnvironments extends Component {
   constructor(props){
   	super(props);
-  	this.state = {'modal_visible': false};
 
-    devEnvironments = this;
+    this.state = {
+      'modal_visible': false
+    };
+
+    this._openModal = this._openModal.bind(this)
+    this._hideModal = this._hideModal.bind(this)
+    this._setComponent = this._setComponent.bind(this)
   }
-  /*
-    function()
-    open modal view
+  /**
+  *  @param {None}
+  *  open modal view
   */
-  _openModal(){
+  _openModal = () => {
       this.setState({'modal_visible': true})
       if(document.getElementById('modal__cover')){
         document.getElementById('modal__cover').classList.remove('hidden')
       }
   }
-  /*
-    function()
-    hide modal view
+  /**
+  *  @param {None}
+  *  hide modal view
   */
-  _hideModal(){
+  _hideModal = () =>{
       this.setState({'modal_visible': false})
       if(document.getElementById('modal__cover')){
         document.getElementById('modal__cover').classList.add('hidden')
       }
   }
+  /**
+  *  @param {object}
+  *  hide modal view
+  */
+  _setComponent = (comp) => {
 
-  _setComponent(comp){
-
-    devEnvironments._hideModal();
+    this._hideModal();
   }
 
   render(){
 
-    let devEnvs = this.props.environment.devEnvs;
-    let blockClass = this.props.blockClass;
+    const {devEnvs} = this.props.environment;
+    const {blockClass} = this.props;
+
+    let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
+
     if (devEnvs) {
       return(
         <div className={ blockClass + '__development-environment'}>
@@ -55,28 +64,43 @@ class DevEnvironments extends Component {
               X
             </div>
             <SelectDevelopmentEnvironment
+              {...this.props}
               availablePackageManagers={(this.props.baseImage) ? this.props.baseImage.availablePackageManagers : null}
-              labbookName={this.props.labbookName}
-              environmentId={this.props.environmentId}
-              setBaseImage={this.props.setBaseImage}
               setComponent={this._setComponent}
-              buildCallback={this.props.buildCallback}
               nextComponent={"continue"}
               connection={'DevEnvironments_devEnvs'}
               environmentView={true}
               toggleDisabledContinue={() => function(){}}
             />
           </div>
+          <div className={blockClass + '__header-container'}>
+              <h4 className={blockClass + '__header'}>Development Environments</h4>
+              {
+                  (this.props.editVisible) &&
+                  <div className="Environment__edit-container">
+                      <button
+                        id="devEnvironmentsEdit"
+                        onClick={()=> this._openModal()}
+                        className="Environment__edit-button"
+                        disabled={editDisabled}
+                        >
 
-            <h4 className={blockClass + '__header'}>Development Environments</h4>
+                      </button>
+                  </div>
+              }
+            </div>
+
+
             <div className={blockClass + '__info flex justify--left flex--wrap'}>
             {
               devEnvs.edges.map((edge, index) => {
               return(
-                <div key={this.props.labbookName + edge.node.id} className={blockClass + '__development-environment-item'}>
+                <div
+                  key={this.props.labbookName + edge.node.id}
+                  className={blockClass + '__development-environment-item'}>
 
                   <div className={blockClass + '__card flex justify--space-around'}>
-                    <div className="flex-1-0-auto flex flex--wrap flex--column justify-center">
+                    <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
                       <img height="50" width="50" src={edge.node.info.icon} alt={edge.node.info.humanName} />
                     </div>
                     <div className={blockClass + '__card-text flex-1-0-auto'}>
@@ -90,16 +114,7 @@ class DevEnvironments extends Component {
               })
 
             }
-            {
-                (this.props.editVisible) &&
-                <div className="Environment__edit-container">
-                    <button
-                      id="devEnvironmentsEdit"
-                      onClick={()=> this._openModal()} className="Environment__edit-button">
-                      Edit
-                    </button>
-                </div>
-            }
+
           </div>
 
         </div>
@@ -111,6 +126,11 @@ class DevEnvironments extends Component {
     }
   }
 }
+
+/**
+*  @param {ReactElement, Object}
+*   open modal window
+*/
 
 export default createPaginationContainer(
   DevEnvironments,
@@ -175,10 +195,10 @@ export default createPaginationContainer(
      };
    },
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-
+    const username = localStorage.getItem('username')
     first = 10;
     name = props.labbookName;
-    owner = 'default';
+    owner = username;
      return {
        first,
        cursor,

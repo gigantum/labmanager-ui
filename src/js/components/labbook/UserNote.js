@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import SimpleMDE from 'simplemde'
 import { WithContext as ReactTags } from 'react-tag-input';
 import CreateUserNoteMutation from 'Mutations/CreateUserNoteMutation'
+
 let simple;
-let addNote;
-export default class UserNote extends React.Component {
+
+export default class UserNote extends Component {
   constructor(props){
   	super(props);
     this.state = {
@@ -13,10 +14,16 @@ export default class UserNote extends React.Component {
       'userSummaryText': '',
     }
 
-    addNote = this;
+    this._addNote = this._addNote.bind(this)
+    this._handleDelete = this._handleDelete.bind(this)
+    this._handleAddition = this._handleAddition.bind(this)
+    this._handleDrag= this._handleDrag.bind(this)
   }
+  /**
+    @param {}
+    after component mounts apply simplemde to the dom element id:markdown
+  */
   componentDidMount() {
-
     if(document.getElementById('markDown')){
       simple = new SimpleMDE({
         element: document.getElementById('markDown'),
@@ -25,19 +32,25 @@ export default class UserNote extends React.Component {
     }
   }
 
-  _addNote(){
+  /**
+    @param {}
+    calls CreateUserNoteMutation adds note to activity feed
+  */
+  _addNote = () => {
     const tags = this.state.tags.map(tag => {return (tag.text)});
+    const {labbookName, labbookId} = this.props;
+    const username = localStorage.getItem('username')
     CreateUserNoteMutation(
-      this.props.labbookName,
+      labbookName,
       this.state.userSummaryText,
       simple.value(),
-      'default',
+      username,
       [],
       tags,
-      this.props.labbookId,
+      labbookId,
       (response, error) => {
-        addNote.props.hideLabbookModal();
-        addNote.setState({
+        this.props.hideLabbookModal();
+        this.setState({
           'tags': [],
           'userSummaryText': '',
           'addNoteEnabled': false
@@ -48,46 +61,63 @@ export default class UserNote extends React.Component {
 
   }
 
-  _setUserSummaryText(e){
+  /**
+    @param {object} event
+    calls updates state for summary text
+    and enables addNote button if > 0
+  */
+  _setUserSummaryText(evt){
 
-    const summaryText =  e.target.value;
+    const summaryText =  evt.target.value;
+
     this.setState({
       'userSummaryText': summaryText,
       'addNoteEnabled': (summaryText.length > 0)
     })
   }
+  /**
+    @param {number} i
+    removes tag from list
+  */
+   _handleDelete = (i) => {
+       let {tags} = this.state;
 
-   handleDelete(i) {
-       let tags = addNote.state.tags;
        tags.splice(i, 1);
-       addNote.setState({tags: tags});
+
+       this.setState({tags: tags});
    }
+   /**
+     @param {number} i
+     add tag to list
+   */
+   _handleAddition = (tag) => {
 
-   handleAddition(tag) {
-
-       let tags = addNote.state.tags;
+       let {tags} = this.state;
 
        tags.push({
            id: tags.length + 1,
            text: tag
        });
-       addNote.setState({tags: tags});
-   }
 
-   handleDrag(tag, currPos, newPos) {
-       let tags = addNote.state.tags;
+       this.setState({tags: tags});
+   }
+   /**
+     @param {number} i
+     drags tag to new position.
+   */
+   _handleDrag = (tag, currPos, newPos) => {
+       let {tags} = this.state;
 
        // mutate array
        tags.splice(currPos, 1);
        tags.splice(newPos, 0, tag);
 
        // re-render
-       addNote.setState({ tags: tags });
+       this.setState({ tags: tags });
    }
 
 
   render(){
-
     const {tags} = this.state;
     return(
       <div className="UserNote flex flex--column">
@@ -108,10 +138,10 @@ export default class UserNote extends React.Component {
               id='TagsInput'
               tags={tags}
               // suggestions={suggestions}
-              handleDelete={this.handleDelete}
-              handleAddition={this.handleAddition}
-              handleDrag={this.handleDrag} />
-        <button className="UserNote__add-note" disabled={!this.state.addNoteEnabled} onClick={() => this._addNote()}> Add Note</button>
+              handleDelete={(index) => {this._handleDelete(index)}}
+              handleAddition={(tag) => {this._handleAddition(tag)}}
+              handleDrag={(tag, currPos, newPos) => {this._handleDrag(tag, currPos, newPos)}} />
+        <button className="UserNote__add-note" disabled={!this.state.addNoteEnabled} onClick={() => {this._addNote()}}>Add Note</button>
       </div>
     )
   }

@@ -35,12 +35,32 @@ exports[`Test Header rendering 1`] = `
         </a>
       </li>
     </ul>
-    <button
-      className="Header__button Header__button--logout btn-margin"
-      onClick={[Function]}
+    <div
+      className="User"
+      id="user"
     >
-      Log Out
-    </button>
+      <h6
+        className="User__name"
+        id="username"
+        onClick={[Function]}
+      >
+        
+      </h6>
+      <div
+        className="hidden"
+      />
+      <div
+        className="hidden"
+      >
+        <button
+          className="User__button btn-margin"
+          id="logout"
+          onClick={[Function]}
+        >
+          Log Out
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 `;

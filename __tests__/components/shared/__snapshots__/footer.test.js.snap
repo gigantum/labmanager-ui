@@ -2,7 +2,17 @@
 
 exports[`Test Footer rendering 1`] = `
 <div
-  className="Footer flex flex--row justify--space-between"
+  className="Footer"
   id="footer"
-/>
+>
+  <div
+    className="hidden"
+  >
+    NaN MB of NaN MB uploaded (undefined%)
+  </div>
+  <div
+    className="Footer__progress-bar"
+    id="footerProgressBar"
+  />
+</div>
 `;

@@ -5,12 +5,11 @@ import DatasetSets from './datasets/DatasetSets';
 import LocalLabbooks from './labbooks/LocalLabbooks';
 import environment from 'JS/createRelayEnvironment'
 import WizardModal from 'Components/wizard/WizardModal'
+import Loader from 'Components/shared/Loader'
 
 
 const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String){
-  #localLabbooks(first:$first, after: $cursor){
     ...LocalLabbooks_feed
-  #}
 }`
 
 export default class DashboardContainer extends Component {
@@ -21,24 +20,27 @@ export default class DashboardContainer extends Component {
       selectedComponent: props.match.params.id
     }
   }
-
-
+  /**
+  *  @param {Object} nextProps
+  *  update select component before component renders
+  */
   componentWillReceiveProps(nextProps){
     this.setState({
       selectedComponent: nextProps.match.params.id
     })
   }
 
-  /*
-    function()
-    returns jsx of selected component
-    return jsx
+  /**
+  *  @param {}
+  *  returns jsx of selected component
+  *  @return {jsx}
   */
   _displaySelectedComponent(){
 
     if(this.state.selectedComponent === 'datasets'){
 
-      return (<DatasetSets />)
+      return (
+        <DatasetSets/>)
     }else{
 
       return (<QueryRenderer
@@ -51,24 +53,21 @@ export default class DashboardContainer extends Component {
         render={({error, props}) => {
 
           if (error) {
-
+            console.log(error)
             return <div>{error.message}</div>
           } else if (props) {
 
               return (
-                <LocalLabbooks feed={props} history={this.props.history} />
+                <LocalLabbooks
+                  feed={props}
+                  history={this.props.history}
+                />
               )
 
           }else{
 
             return (
-              <div>
-                <WizardModal
-                  handler={this.handler}
-                  history={this.props.history}
-                  {...this.props}
-                />
-              </div>
+              <Loader />
             )
           }
         }}

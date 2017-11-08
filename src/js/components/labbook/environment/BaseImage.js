@@ -4,44 +4,60 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import SelectBaseImage from 'Components/wizard/SelectBaseImage'
 import Loader from 'Components/shared/Loader'
-let baseImage = null;
+
 class BaseImage extends Component {
 
   constructor(props){
     super(props);
     this.state = {'modal_visible': false};
-    baseImage = this;
+
+    this._openModal = this._openModal.bind(this)
+    this._hideModal = this._hideModal.bind(this)
+    this._setComponent = this._setComponent.bind(this)
   }
 
+  /**
+  *  @param {none}
+  *  check if edit is enabled
+  */
   _editVisible(){
-    return this.props.editVisible
+    return false;//this.props.editVisible //alwasys false until api can support rebuilding base image
   }
-
-  _openModal(){
+  /**
+  *  @param {none}
+  *   open modal window
+  */
+  _openModal = () =>{
       this.setState({'modal_visible': true})
       if(document.getElementById('modal__cover')){
         document.getElementById('modal__cover').classList.remove('hidden')
       }
   }
-  /*
-    function()
-    hide modal view
+  /**
+  *  @param {none}
+  *   hide modal window
   */
-  _hideModal(){
+  _hideModal = () => {
     this.setState({'modal_visible': false})
     if(document.getElementById('modal__cover')){
       document.getElementById('modal__cover').classList.add('hidden')
     }
   }
+  /**
+  *  @param {Object}
+  *  hidemodal
+  */
+  _setComponent = (comp) => {
 
-  _setComponent(comp){
-
-    baseImage._hideModal();
+    this._hideModal();
   }
 
   render(){
-    let baseImage = this.props.environment.baseImage;
-    let blockClass = this.props.blockClass;
+    const {baseImage} = this.props.environment;
+    const {blockClass} = this.props;
+
+    let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
+
     if (baseImage) {
       return(
         <div className={blockClass + '__base-image'}>
@@ -66,12 +82,25 @@ class BaseImage extends Component {
                   toggleDisabledContinue={() => function(){}}/>
 
             </div>
-            <h4 className={blockClass + '__header'}>Base Image</h4>
-
+            <div className={blockClass + '__header-container' }>
+              <h4 className={blockClass + '__header'}>Base Image</h4>
+              {
+                this._editVisible() &&
+                <div className={blockClass + '__edit-container'}>
+                    <button
+                      id="baseImageEdit"
+                      onClick={() => this._openModal()}
+                      className={blockClass + '__edit-button'}
+                      disabled={editDisabled}
+                    >
+                    </button>
+                </div>
+              }
+            </div>
             <div className={blockClass + '__info flex justify--left'}>
 
               <div className={ blockClass + '__card flex justify--space-around'}>
-                <div className="flex-1-0-auto flex flex--column justify-center">
+                <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
                   <img height="50" width="50" src={baseImage.info.icon} alt={baseImage.info.humanName} />
                 </div>
 
@@ -81,17 +110,7 @@ class BaseImage extends Component {
                 </div>
               </div>
 
-              {
-                this._editVisible() &&
-                <div className={blockClass + '__edit-container'}>
-                    <button
-                      id="baseImageEdit"
-                      onClick={() => this._openModal()}
-                      className={blockClass + '__edit-button'}>
-                      Edit
-                    </button>
-                </div>
-              }
+
           </div>
         </div>
       )

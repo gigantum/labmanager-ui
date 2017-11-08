@@ -12,8 +12,6 @@ import CustomDependencies from './CustomDependencies'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
 
-let environ;
-
 class Environment extends Component {
   constructor(props){
   	super(props);
@@ -24,37 +22,40 @@ class Environment extends Component {
       'show': false,
       'message': ''
     }
-    environ = this; //set variable for encapsulation
+
+    this._buildCallback = this._buildCallback.bind(this)
+    this._setBaseImage = this._setBaseImage.bind(this)
   }
 
-  /*
-    function()
-    callback that triggers buildImage mutation
+  /**
+  *  @param {None}
+  *  callback that triggers buildImage mutation
   */
+  _buildCallback = () => {
+    const username = localStorage.getItem('username')
+    const {labbookName} = this.props
+    this.props.setBuildingState(true)
 
-  _buildCallback(){
+    if(this.props.labbook.environment.containerStatus === "RUNNING"){
 
-    environ.props.setBuildingState(true)
-    
-    if(environ.props.labbook.environment.containerStatus === "RUNNING"){
       StopContainerMutation(
-        environ.props.labbookName,
-        'default',
+        labbookName,
+        username,
         'clientMutationId',
         (error) =>{
 
             BuildImageMutation(
-              environ.props.labbookName,
-              'default',
+            labbookName,
+              username,
               (error) => {
 
                 let showAlert = ((error !== null) && (error !== undefined))
                 let message = showAlert ? error[0].message : '';
-                environ.setState({
+                this.setState({
                   'show': showAlert,
                   'message': message
                 })
-                environ.props.setBuildingState(false)
+                this.props.setBuildingState(false)
                 return "finished"
               }
             )
@@ -63,17 +64,17 @@ class Environment extends Component {
     }else {
 
       BuildImageMutation(
-        environ.props.labbookName,
-        'default',
+        labbookName,
+        username,
         (error) => {
 
           let showAlert = ((error !== null) && (error !== undefined))
           let message = showAlert ? error[0].message : '';
-          environ.setState({
+          this.setState({
             'show': showAlert,
             'message': message
           })
-          environ.props.setBuildingState(false)
+          this.props.setBuildingState(false)
           return "finished"
         }
       )
@@ -81,14 +82,18 @@ class Environment extends Component {
     }
   }
 
+  /**
+  *  @param {Obect}
+  *  sets readyToBuild state to true
+  */
   _setBaseImage(baseImage){
-      environ.setState({"readyToBuild": true})
+      this.setState({"readyToBuild": true})
   }
 
   render(){
     if(this.props.labbook){
-      let env = this.props.labbook.environment;
-      let baseImage = env.baseImage;
+      const env = this.props.labbook.environment;
+      const {baseImage} = env;
 
       return(
         <div className="Environment">
@@ -99,11 +104,13 @@ class Environment extends Component {
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               editVisible={true}
+              containerStatus={this.props.containerStatus}
               setComponent={this._setComponent}
               setBaseImage={this._setBaseImage}
               buildCallback={this._buildCallback}
               blockClass="Environment"
               baseImage={baseImage}
+
              />
 
             <DevEnvironments
@@ -111,6 +118,7 @@ class Environment extends Component {
               labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
+              containerStatus={this.props.containerStatus}
               editVisible={true}
               buildCallback={this._buildCallback}
               blockClass="Environment"
@@ -121,10 +129,12 @@ class Environment extends Component {
               labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
+              containerStatus={this.props.containerStatus}
               setBaseImage={this._setBaseImage}
               setComponent={this._setComponent}
               buildCallback={this._buildCallback}
               baseImage={baseImage}
+              blockClass="Environment"
             />
 
             <CustomDependencies
@@ -135,6 +145,7 @@ class Environment extends Component {
               editVisible={true}
               labbookName={this.props.labbookName}
               environmentId={this.props.labbook.environment.id}
+              containerStatus={this.props.containerStatus}
             />
 
             <SweetAlert
@@ -145,8 +156,6 @@ class Environment extends Component {
               text={this.state.message}
               onConfirm={() => this.setState({ show: false })} />
           </div>
-
-
       )
     }else{
       return(

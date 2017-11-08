@@ -2,21 +2,31 @@ import React, {Component} from 'react';
 
 //import CreatePage from './components/CreatePage';
 export default class Login extends Component {
-
+  /**
+    @param {string} route
+    update route
+  */
   goTo(route) {
-    this.props.history.replace(`/datasets`)
+    this.props.history.replace(`/labbooks`)
   }
-
+  /**
+    @param {}
+    login through Auth0
+  */
   login() {
     this.props.auth.login();
   }
-
+  /**
+    @param {}
+    logout through Auth0
+  */
   logout() {
     this.props.auth.logout();
   }
 
   render(){
     const { isAuthenticated } = this.props.auth;
+
     return(
       <div className="Login">
 

@@ -24,13 +24,176 @@ exports[`Test Environment rendering 1`] = `
         <p>
            Base Image 
         </p>
+        <div
+          className="Loader"
+        >
+          <svg
+            id="circle-middle"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#EDEDED"
+              r="6"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+        </div>
       </div>
     </div>
-    <h4
-      className="Environment__header"
+    <div
+      className="Environment__header-container"
     >
-      Base Image
-    </h4>
+      <h4
+        className="Environment__header"
+      >
+        Base Image
+      </h4>
+    </div>
     <div
       className="Environment__info flex justify--left"
     >
@@ -38,7 +201,7 @@ exports[`Test Environment rendering 1`] = `
         className="Environment__card flex justify--space-around"
       >
         <div
-          className="flex-1-0-auto flex flex--column justify-center"
+          className="Environment__image-container flex-1-0-auto flex flex--column justify-center"
         >
           <img
             alt="Ubuntu 16.04 Python 3 Developer Dup"
@@ -59,17 +222,6 @@ exports[`Test Environment rendering 1`] = `
             A base image for python 3 developers using Ubuntu 16.04
           </p>
         </div>
-      </div>
-      <div
-        className="Environment__edit-container"
-      >
-        <button
-          className="Environment__edit-button"
-          id="baseImageEdit"
-          onClick={[Function]}
-        >
-          Edit
-        </button>
       </div>
     </div>
   </div>
@@ -92,13 +244,186 @@ exports[`Test Environment rendering 1`] = `
         <p>
            Dev Environment
         </p>
+        <div
+          className="Loader"
+        >
+          <svg
+            id="circle-middle"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#EDEDED"
+              r="6"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+        </div>
       </div>
     </div>
-    <h4
-      className="Environment__header"
+    <div
+      className="Environment__header-container"
     >
-      Development Environments
-    </h4>
+      <h4
+        className="Environment__header"
+      >
+        Development Environments
+      </h4>
+      <div
+        className="Environment__edit-container"
+      >
+        <button
+          className="Environment__edit-button"
+          disabled={false}
+          id="devEnvironmentsEdit"
+          onClick={[Function]}
+        />
+      </div>
+    </div>
     <div
       className="Environment__info flex justify--left flex--wrap"
     >
@@ -109,7 +434,7 @@ exports[`Test Environment rendering 1`] = `
           className="Environment__card flex justify--space-around"
         >
           <div
-            className="flex-1-0-auto flex flex--wrap flex--column justify-center"
+            className="Environment__image-container flex-1-0-auto flex flex--column justify-center"
           >
             <img
               alt="Python 3 Jupyter Notebook for Ubuntu"
@@ -129,17 +454,6 @@ exports[`Test Environment rendering 1`] = `
             </p>
           </div>
         </div>
-      </div>
-      <div
-        className="Environment__edit-container"
-      >
-        <button
-          className="Environment__edit-button"
-          id="devEnvironmentsEdit"
-          onClick={[Function]}
-        >
-          Edit
-        </button>
       </div>
     </div>
   </div>
@@ -218,11 +532,25 @@ exports[`Test Environment rendering 1`] = `
         </div>
       </div>
     </div>
-    <h4
-      className="Environment__header"
+    <div
+      className="Environment__header-container"
     >
-      Package Dependencies
-    </h4>
+      <h4
+        className="Environment__header"
+      >
+        Package Dependencies
+      </h4>
+      <div
+        className="Environment__edit-container"
+      >
+        <button
+          className="Environment__edit-button"
+          disabled={false}
+          id="packageManagerEdit"
+          onClick={[Function]}
+        />
+      </div>
+    </div>
     <div
       className="Environment__info flex flex--row justify--left"
     >
@@ -278,17 +606,6 @@ exports[`Test Environment rendering 1`] = `
           </div>
         </li>
       </ul>
-      <div
-        className="Environment__edit-container"
-      >
-        <button
-          className="Environment__edit-button"
-          id="packageManagerEdit"
-          onClick={[Function]}
-        >
-          Edit
-        </button>
-      </div>
     </div>
   </div>
   <div
@@ -310,13 +627,186 @@ exports[`Test Environment rendering 1`] = `
         <p>
            Select Custom Dependencies 
         </p>
+        <div
+          className="Loader"
+        >
+          <svg
+            id="circle-middle"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#EDEDED"
+              r="6"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="#26A6D1"
+              r="4.5"
+            />
+          </svg>
+        </div>
       </div>
     </div>
-    <h4
-      className="Environment__header"
+    <div
+      className="Environment__header-container"
     >
-      Custom Dependencies
-    </h4>
+      <h4
+        className="Environment__header"
+      >
+        Custom Dependencies
+      </h4>
+      <div
+        className="Environment__edit-container"
+      >
+        <button
+          className="Environment__edit-button"
+          disabled={false}
+          id="customDependenciesEdit"
+          onClick={[Function]}
+        />
+      </div>
+    </div>
     <div
       className="Environment__info flex justify--left"
     >
@@ -327,7 +817,7 @@ exports[`Test Environment rendering 1`] = `
           className="Environment__card flex justify--space-around"
         >
           <div
-            className="flex-1-0-auto flex flex--column justify-center"
+            className="Environment__image-container flex-1-0-auto flex flex--column justify-center"
           >
             <img
               alt="Pillow"
@@ -347,17 +837,6 @@ exports[`Test Environment rendering 1`] = `
             </p>
           </div>
         </div>
-      </div>
-      <div
-        className="Environment__edit-container"
-      >
-        <button
-          className="Environment__edit-button"
-          id="customDependenciesEdit"
-          onClick={[Function]}
-        >
-          Edit
-        </button>
       </div>
     </div>
   </div>

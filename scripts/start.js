@@ -40,11 +40,12 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 }
 
 // Tools like Cloud9 rely on this.
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
+const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 10000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 // We attempt to use the default port but if it is busy, we offer the user to
 // run on a different port. `detect()` Promise resolves to the next free port.
+console.log(DEFAULT_PORT)
 choosePort(HOST, DEFAULT_PORT)
   .then(port => {
     if (port == null) {
@@ -65,6 +66,7 @@ choosePort(HOST, DEFAULT_PORT)
       urls.lanUrlForConfig
     );
     const devServer = new WebpackDevServer(compiler, serverConfig);
+    console.log(port)
     // Launch WebpackDevServer.
     devServer.listen(port, HOST, err => {
       if (err) {

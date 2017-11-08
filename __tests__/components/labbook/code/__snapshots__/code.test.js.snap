@@ -1,16 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test Code rendering 1`] = `
-<div
-  className="Code flex flex-row justify-center"
-  id="code"
->
-  <button
-    className="Code__open-jupyter"
-    onClick={[Function]}
-    target="_blank"
-  >
-    Open Jupyter
-  </button>
+<div>
+  Loading
 </div>
 `;

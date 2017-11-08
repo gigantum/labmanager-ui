@@ -4,9 +4,10 @@ export default class SuccessMessage extends React.Component {
   constructor(props){
     super(props)
     this.continueSave = this.continueSave.bind(this);
+    this.props.toggleDisabledContinue()
   }
-  /*
-    function()
+  /**
+    @param {}
     gets labbook name from props and sends user to labbook view
   */
   continueSave(){

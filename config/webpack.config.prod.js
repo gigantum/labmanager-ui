@@ -74,7 +74,7 @@ module.exports = {
     // We placed these paths second because we want `node_modules` to "win"
     // if there are any conflicts. This matches Node resolution mechanism.
     // https://github.com/facebookincubator/create-react-app/issues/253
-    modules: ['node_modules', paths.appNodeModules].concat(
+    modules: ['node_modules', 'submodules', paths.appNodeModules].concat(
       // It is guaranteed to exist because we tweak it in `env.js`
       process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
     ),
@@ -90,7 +90,8 @@ module.exports = {
       'react-native': 'react-native-web',
       Components: path.resolve(__dirname, '../src/js/components/'),
       Mutations: path.resolve(__dirname, '../src/js/mutations/'),
-      JS: path.resolve(__dirname, '../src/js/')
+      JS: path.resolve(__dirname, '../src/js/'),
+      'Submodules': path.resolve(__dirname, '../submodules/')
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -98,7 +99,8 @@ module.exports = {
       // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
-      new ModuleScopePlugin(paths.appSrc),
+      // new ModuleScopePlugin(paths.appSrc),
+      // new ModuleScopePlugin(paths.submodules),
     ],
   },
   module: {
@@ -164,6 +166,13 @@ module.exports = {
         loader: require.resolve('babel-loader'),
 
       },
+
+      {
+        test: /\.(js|jsx)$/,
+        include: paths.submodules,
+        loader: require.resolve('babel-loader'),
+
+      },
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -210,9 +219,15 @@ module.exports = {
                   },
                 },
                 {
-                 loader: 'sass-loader',
-
-               }
+                  loader: 'sass-loader',
+                  options:{
+                    sourceMap: true,
+                    includePaths: [
+                      require("bourbon").includePaths[0],
+                      require("bourbon-neat").includePaths[0]
+                    ]
+                  }
+                }
               ],
             },
             extractTextPluginOptions

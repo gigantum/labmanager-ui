@@ -43,13 +43,13 @@ let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: Strin
 export default class PackageCount extends Component {
 
   render(){
-
+    const username = localStorage.getItem('username')
     return(
     <QueryRenderer
       variables={{
         name: this.props.labbookName,
-        owner: 'default',
-        first: 1000
+        owner: username,
+        first: 100
       }}
       query={packageQuery}
       environment={environment}
@@ -71,11 +71,18 @@ export default class PackageCount extends Component {
                 <div className="PackageCount__dependencies">
                   <h4 className={'Overview__header'}>Dependencies</h4>
                   <ul className="flex flex--wrap">
-                    {
+
+                    { (Object.keys(packages).length > 0) && (
+
                        Object.keys(packages).map(key => {
 
-                         return (<li className="PackageCount__item">{packages[key] + ' ' + key + ' package(s)' }</li>)
-                       })
+                         return (<li key={this.props.labbookName + key} className="PackageCount__item">{packages[key] + ' ' + key + ' package(s)' }</li>)
+                       }))
+                    }
+
+                    {
+                      (Object.keys(packages).length === 0) && (() =>{ return (<li className="PackageCount__item" key={this.props.labbookName + 'none'}>{'0 pip and apt-get packages'}</li>)})()
+
                     }
                   </ul>
                 </div>

@@ -30,6 +30,13 @@ module.exports = {
   // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
   // See the discussion in https://github.com/facebookincubator/create-react-app/issues/343.
   devtool: 'source-map',
+  watchOptions: {
+    poll: true
+  },
+
+  devServer: {
+    hot: true
+  },
   // These are the "entry points" to our application.
   // This means they will be the "root" imports that are included in JS bundle.
   // The first two entry points enable "hot" CSS and auto-refreshes for JS.
@@ -91,18 +98,21 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
-      Components: path.resolve(__dirname, '../src/js/components/'),
-      Mutations: path.resolve(__dirname, '../src/js/mutations/'),
-      JS: path.resolve(__dirname, '../src/js/')
+      'Components': path.resolve(__dirname, '../src/js/components/'),
+      'Mutations': path.resolve(__dirname, '../src/js/mutations/'),
+      'JS': path.resolve(__dirname, '../src/js/'),
+      'Submodules': path.resolve(__dirname, '../submodules/')
 
     },
     plugins: [
+
       // Prevents users from importing files from outside of src/ (or node_modules/).
       // This often causes confusion because we only process files within src/ with babel.
       // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
-      new ModuleScopePlugin(paths.appSrc),
+      // new ModuleScopePlugin(paths.appSrc),
+      // new ModuleScopePlugin(paths.submodules),
     ],
   },
   module: {
@@ -179,6 +189,18 @@ module.exports = {
           cacheDirectory: true,
         },
       },
+      {
+        test: /\.(js|jsx)$/,
+        include: paths.submodules,
+        loader: require.resolve('babel-loader'),
+        options: {
+
+          // This is a feature of `babel-loader` for webpack (not Babel itself).
+          // It enables caching results in ./node_modules/.cache/babel-loader/
+          // directory for faster rebuilds.
+          cacheDirectory: true,
+        },
+      },
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
       // "style" loader turns CSS into JS modules that inject <style> tags.
@@ -186,46 +208,24 @@ module.exports = {
       // in development "style" loader enables hot editing of CSS.
       {
         test: /\.(scss|css)$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
-        /*use: [
-          require.resolve('style-loader'),
+        loaders: [
+          'style-loader',
+          'css-loader',
+          // {
+          //   loader: 'css-loader',
+          //   sourceMap: true
+          // },
           {
-            loader: require.resolve('sass-loader'),
-            options: {
-              importLoaders: 1,
-            },
-          },
-          {
-            loader: require.resolve('css-loader'),
-            options: {
-              importLoaders: 1,
-            },
-          },
-          {
-            loader: require.resolve('postcss-loader'),
-            options: {
-              ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
-              plugins: () => [
-                require('postcss-flexbugs-fixes'),
-                autoprefixer({
-                  browsers: [
-                    '>1%',
-                    'last 4 versions',
-                    'Firefox ESR',
-                    'not ie < 9', // React doesn't support IE8 anyway
-                  ],
-                  flexbox: 'no-2009',
-                }),
-              ],
-            },
-          },
-
-        ],*/
-      },
-      {
-       test: /\.ipynb$/,
-       exclude: /node_modules/,
-       loader: ['file-loader']
+            loader: 'sass-loader',
+            options:{
+              sourceMap: true,
+              includePaths: [
+                require("bourbon").includePaths[0],
+                require("bourbon-neat").includePaths[0]
+              ]
+            }
+          }
+        ]
       }
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "file" loader exclusion list.
@@ -251,7 +251,7 @@ module.exports = {
     // Watcher doesn't work well if you mistype casing in a path so we use
     // a plugin that prints an error when you attempt to do this.
     // See https://github.com/facebookincubator/create-react-app/issues/240
-    new CaseSensitivePathsPlugin(),
+    //new CaseSensitivePathsPlugin(),
     // If you require a missing module and then `npm install` it, you still have
     // to restart the development server for Webpack to discover it. This plugin
     // makes the discovery automatic so you don't have to restart.
@@ -275,7 +275,7 @@ module.exports = {
   // splitting or minification in interest of speed. These warnings become
   // cumbersome.
   performance: {
-    hints: false,
+    hints: "warning",
   },
   externals:[{
     xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'

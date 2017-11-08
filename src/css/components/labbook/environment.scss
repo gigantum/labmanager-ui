@@ -4,22 +4,47 @@
   width: 100%;
 }
 
+.Environment__header-container{
+  @include flex(left, row)
+}
+
 .Environment__header{
   font-weight: light;
   color: $font-grey;
   font-size: 22px;
 }
 
+.Environment__edit-button,
+.Environment__edit-button:hover,
+.Environment__edit-button:focus{
+  font-weight: light;
+  color: $font-grey;
+  font-size: 14px;
+  height: 30px;
+  width: 30px;
+  padding: 5px;
+  border: 0px;
+  background: url('./../images/icons/edit.svg') no-repeat center center;
+  background-size: 22px;
+}
+
 .Environment__card{
-  background-color: $grey;
+  background-color: $white;
   padding: 10px;
-  border: 1px solid $font-grey;
-  border-radius: 5px;
   color: $charcoal;
   width: 330px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+
+.Environment__image-container{
+  align-items: center;
+  align-content: center;
+  align-self: center;
 }
 
 .Environment__card-text{
+  //background-color: $grey-light;
   padding: 10px;
   width: 200px;
 }
@@ -55,17 +80,18 @@
   right: 5px;
   cursor: pointer;
 }
+
 .Environment__package-dependencies{
-  margin: 10px;
+  margin: 10px 20px 10px 0;
 
   .Environment__card-text{
+      background-color: $white;
       width: 150px;
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
       p{
         margin: 0 5px 0 0;
       }
-      background-color: $grey;
-      border: 1px solid $charcoal;
-      border-radius: 5px;
+
   }
 }
 

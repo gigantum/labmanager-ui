@@ -1,6 +1,6 @@
 //vendor
 import React, {Component} from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
 import Auth from 'JS/Auth/Auth';
 import history from 'JS/history';
@@ -10,8 +10,8 @@ import Home from 'Components/home/Home';
 import Header from 'Components/shared/Header';
 import Footer from 'Components/shared/Footer';
 import Labbook from 'Components/labbook/Labbook';
-import environment from 'JS/createRelayEnvironment'
 import Loader from 'Components/shared/Loader'
+import environment from 'JS/createRelayEnvironment'
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
   query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
@@ -55,8 +55,6 @@ export default class Routes extends Component {
 
     return(
 
-
-
         <Router history={history}>
 
           <Switch>
@@ -65,13 +63,16 @@ export default class Routes extends Component {
               path=""
               render={(location) => {return(
               <div className="Routes">
-                <Header auth={auth} history={history}/>
+                <Header
+                  auth={auth} history={history}
+                />
 
                 <Route
                   exact
                   path="/"
                   render={(props) =>
                     <Home
+                      history={history}
                       auth={auth}
                       {...props}
                     />
@@ -82,6 +83,7 @@ export default class Routes extends Component {
                   path="/:id"
                   render={(props) =>
                     <Home
+                      history={history}
                       auth={auth}
                       {...props}
                     />
@@ -91,11 +93,18 @@ export default class Routes extends Component {
                 <Route
                   path="/labbooks/:labbookName"
                   render={(parentProps) =>{
-
+                      const username = localStorage.getItem('username')
                       return (<QueryRenderer
                         environment={environment}
                         query={LabbookQuery}
-                        variables={{name:parentProps.match.params.labbookName, owner: 'default', first: 20}}
+                        variables={
+                          {
+                            name: parentProps.match.params.labbookName,
+                            owner: username,
+                            first: 2
+
+                          }
+                        }
                         render={({error, props}) => {
 
                           if(error){
@@ -138,7 +147,10 @@ export default class Routes extends Component {
                     )
                   }}
                 />
-                <Footer/>
+                <Footer
+                  ref="footer"
+                  history={history}
+                />
               </div>
             )}}
            />

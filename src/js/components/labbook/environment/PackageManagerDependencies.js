@@ -5,50 +5,64 @@ import {createPaginationContainer, graphql} from 'react-relay'
 import AddEnvironmentPackage from 'Components/wizard/AddEnvironmentPackage'
 import Loader from 'Components/shared/Loader'
 
-let packageManager;
 class PackageManagerDependencies extends Component {
   constructor(props){
     super(props);
-    this.state = {'modal_visible': false};
-    packageManager = this;
+    this.state = {
+      'modal_visible': false
+    };
+
+    this._openModal = this._openModal.bind(this)
+    this._hideModal = this._hideModal.bind(this)
+    this._setBaseImage = this._setBaseImage.bind(this)
+    this._setComponent = this._setComponent.bind(this)
   }
-  /*
-    function()
-    open modal view
+  /**
+  *  @param {None}
+  *  open modal sets state
   */
-  _openModal(){
+  _openModal = () =>{
       this.setState({'modal_visible': true})
       if(document.getElementById('modal__cover')){
         document.getElementById('modal__cover').classList.remove('hidden')
       }
   }
-  /*
-    function()
-    hide modal view
+  /**
+  *  @param {None}
+  *  hides modal
   */
-  _hideModal(){
+  _hideModal = () => {
       this.setState({'modal_visible': false})
       if(document.getElementById('modal__cover')){
         document.getElementById('modal__cover').classList.add('hidden')
       }
 
   }
-
-  _setBaseImage(baseImage){
-      this.setState({"readyToBuild": true})
-
+  /**
+  *  @param {None}
+  *  set readyToBuild state to true
+  */
+  _setBaseImage = (baseImage) => {
+    this.setState({"readyToBuild": true})
   }
 
-  _setComponent(comp){
-    // packageManager.props.setContainerState("Building")
-    // packageManager.setState({"readyToBuild": true})
-    packageManager._hideModal();
+  /**
+  *  @param {Object}
+  *  hides packagemanager modal
+  */
+  _setComponent = (comp) =>{
+    // this.props.setContainerState("Building")
+    // this.setState({"readyToBuild": true})
+    this._hideModal();
   }
-
 
   render(){
 
-    let packageManagerDependencies = this.props.environment.packageManagerDependencies;
+    const {packageManagerDependencies} = this.props.environment;
+    const {blockClass} = this.props;
+
+    let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
+
 
     if (packageManagerDependencies) {
       return(
@@ -61,48 +75,40 @@ class PackageManagerDependencies extends Component {
             X
           </div>
           <AddEnvironmentPackage
+            {...this.props}
             availablePackageManagers={(this.props.baseImage) ? this.props.baseImage.availablePackageManagers : null}
-            labbookName={this.props.labbookName}
-            environmentId={this.props.environmentId}
-            setBaseImage={this.props.setBaseImage}
             setComponent={this._setComponent}
-            buildCallback={this.props.buildCallback}
             nextComponent={"continue"}
             environmentView={true}
             toggleDisabledContinue={() => function(){}}
           />
         </div>
-        <h4 className="Environment__header">Package Dependencies</h4>
+
+        <div className={blockClass + '__header-container'}>
+          <h4 className="Environment__header">Package Dependencies</h4>
+          <div className="Environment__edit-container">
+            <button
+              id="packageManagerEdit"
+              className="Environment__edit-button"
+              onClick={() => this._openModal()}
+              disabled={editDisabled}
+            >
+            </button>
+          </div>
+        </div>
+
         <div className="Environment__info flex flex--row justify--left">
           <ul className="flex flex--row justify--left flex--wrap">
           {
-
             packageManagerDependencies.edges.map((edge, index) => {
               return(
-                <li key={edge.packageName + edge.node.packageManager + index}>
-                  <div className="Environment__package-dependencies">
-
-                      <div className="Environment__card-text flex flex--row justify--space-around flex-1-0-auto">
-                        <p>{edge.node.packageManager}</p>
-                        <p>{edge.node.packageName}</p>
-                      </div>
-                  </div>
-
-                </li>
+                this._packageListItem(edge, index)
               )
             })
-
           }
         </ul>
 
-        <div className="Environment__edit-container">
-          <button
-            id="packageManagerEdit"
-            className="Environment__edit-button"
-            onClick={() => this._openModal()}>
-            Edit
-          </button>
-        </div>
+
       </div>
     </div>
 
@@ -112,6 +118,21 @@ class PackageManagerDependencies extends Component {
           <Loader />
         )
     }
+  }
+
+  _packageListItem(edge, index){
+    return(
+      <li key={edge.packageName + edge.node.packageManager + index}>
+
+          <div className="Environment__package-dependencies">
+
+              <div className="Environment__card-text flex flex--row justify--space-around flex-1-0-auto">
+                <p>{edge.node.packageManager}</p>
+                <p>{edge.node.packageName}</p>
+              </div>
+          </div>
+
+      </li>)
   }
 }
 
@@ -150,10 +171,10 @@ export default createPaginationContainer(
      };
    },
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-
+    const username = localStorage.getItem('username')
     first = 10;
     name = props.labbookName;
-    owner = 'default';
+    owner = username;
      return {
        first,
        cursor,

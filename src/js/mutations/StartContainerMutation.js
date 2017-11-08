@@ -2,7 +2,7 @@ import {
   commitMutation,
   graphql,
 } from 'react-relay'
-import environment from '../createRelayEnvironment'
+import environment from 'JS/createRelayEnvironment'
 
 const mutation = graphql`
   mutation StartContainerMutation($input: StartContainerInput!){

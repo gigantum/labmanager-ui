@@ -1,6 +1,84 @@
 .LocalLabbooks{
-  list-style: none;
+
   height: 100%;
+
+  // $neat-grid: (
+  //   columns: 12,
+  //   gutter: 20px,
+  // );
+  margin: auto;
+  width: auto;
+  max-width: 1400px;
+  @include flex(space-between, column);
+  //@include span-columns(12)
+}
+
+.LocalLabbooks__sizer{
+  flex-shrink: 1;
+  width: 1100px !important;
+  @include flex(left, row)
+  flex-wrap: wrap;
+
+
+}
+
+@media screen and (max-width: 2000px) and (min-width: 1420px) {
+  .LocalLabbooks__sizer{width: 1420px !important;}
+}
+@media screen and (max-width: 1420px) and (min-width: 1075px) {
+  .LocalLabbooks__sizer{width: 1075px !important;}
+}
+@media screen and (max-width: 1074px) and (min-width: 735px) {
+  .LocalLabbooks__sizer{width: 735px !important;}
+}
+@media screen and (max-width: 734px) and (min-width: 340px) {
+  .LocalLabbooks__sizer{width: 340px !important;}
+}
+
+
+.LocalLabbooks__rename-modal{
+  @include modal(300px, 400px);
+  @include flex(space-between, column)
+  padding: 20px;
+}
+
+.LocalLabbooks__rename-error{
+  color: $labbooks;
+}
+
+.LocalLabbooks__rename-close{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+
+.LocalLabbooks__labbooks{
+  height: calc(100% - 90px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 20px;
+  @include flex(center, row)
+}
+
+.LocalLabbooks__edit-button{
+  font-weight: light;
+  color: $font-grey;
+  font-size: 14px;
+  height: 30px;
+  width: 30px;
+  padding: 5px;
+  border: 0px;
+  background: url('./../images/icons/edit.svg') no-repeat center center;
+  background-size: 22px;
+}
+
+.LocalLabbooks__title-row{
+    @include flex(space-between, row)
+}
+
+.LocalLabbooks__title-bar{
+  margin: 0 80px 0 0px;
 }
 
 .LocalLabbooks__title{
@@ -11,8 +89,8 @@
   cursor: pointer;
   width: 280px;
 }
-.LocalLabbooks__title-add{
 
+.LocalLabbooks__title-add{
   background: $labbooks url('../images/icons/add.svg') no-repeat center center;
   background-size: 10px;
   height: 20px;
@@ -25,6 +103,26 @@
 
 }
 
+.LocalLabbooks__import{
+  position: relative;
+  color: $labbooks;
+  padding: 20px 40px 0;
+  width: 120px;
+  cursor: pointer;
+}
+
+.LocalLabbooks__import-icon{
+  background: $labbooks url('../images/icons/crane.svg') no-repeat center center;
+  background-size: 20px;
+  height: 20px;
+  width: 20px;
+  border-radius: 12px;
+  position: absolute;
+  top: 14px;
+  left: 100px;
+  transition: all 0.3s;
+}
+
 .LocalLabbooks__title:hover{
   .LocalLabbooks__title-add{
     height: 24px;
@@ -35,28 +133,26 @@
   }
 }
 
-.LocalLabbooks__labbooks{
-  height: calc(100% - 90px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 0 20px;
-
-}
 
 .LocalLabbooks__panel{
+  position: relative;
+
+  @include span-columns(3 of 12);
+
+  padding: 0 1px 1px 1px;
   height: 350px;
-  width: auto;
-  max-width: 300px;
-  min-width: 300px;
-  flex: 1 1 280px;
-  margin: 20px 20px;
+
+  min-width: 320px;
+  flex: 1 1 320px;
+  max-width: 320px;
+  margin: 20px 10px;
   word-break: break-all;
 
   cursor: pointer;
   text-align: center;
 
   color: $charcoal;
-  background: $grey-light;
+  background: $white;
   background-size: 50px;
   border: 1px solid $labbooks;
   border-top: 10px solid $labbooks;
@@ -69,11 +165,20 @@
   };
 }
 
+.LocalLabbooks__panel-title:hover,
+.LocalLabbooks__description:hover{
+  color: $labbooks;
+}
+
 .LocalLabbooks__panel--add{
+@include flex(center, row)
   height: 350px !important;
   border: 1px solid $charcoal !important;
+
   .LocalLabbooks__labbook-icon{
     align-self: center;
+    align-content: center;
+    align-items: center;
     position: relative;
     .LocalLabbooks__title-add{
       top: -10px;
@@ -87,16 +192,13 @@
   }
 }
 
+.LocalLabbooks__panel--import{
+  padding: 0px;
+}
+
 .LocalLabbooks__panel:before,
 .LocalLabbooks__panel:after{
   padding: 0 10px;
-}
-
-.LocalLabbooks__panel:hover{
-  align-self: flex-start;
-  color: $cream;
-  background: $charcoal;
-  background-size: 50px;
 }
 
 .LocalLabbooks__description{
@@ -108,18 +210,53 @@
   word-break: initial;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  box-orient: vertical;
+  height: 60px;
 }
 
 .LocalLabbooks__icon-row{
   padding: 20px;
+  height: 68px;
+  @include flex(space-between, row);
 }
 
 .LocalLabbooks__labbook-icon{
   height: 60px;
   width: 60px;
   background: $labbooks url('../images/icons/labbooks.svg') no-repeat center center;
-  border-radius: 30px;
+  border-radius: 36px;
   background-size: 40px;
+  transition: 0.25s all;
+  opacity: 0.85;
+}
+.LocalLabbooks__labbook-icon:hover{
+  height: 64px;
+  width: 64px;
+  opacity: 1;
+  margin: -2px 0px 0px -2px;
+}
+
+.LocalLabbooks__export,
+.LocalLabbooks__export--downloading{
+  height: auto;
+  width: 100px;
+  padding: 0 40px 0 0;
+
+  padding: 5px;
+  font-size: 16px;
+}
+.LocalLabbooks__export{
+  background: url('../images/icons/download.svg') no-repeat center right;
+  background-size: 15px !important;
+}
+
+.LocalLabbooks__export--downloading{
+  background: url('../images/icons/rings.svg') no-repeat center right;
+  background-size: 20px !important;
+}
+
+.LocalLabbooks__export:hover{
+  color: $datasets;
 }
 
 .LocalLabbooks__text-row{
@@ -156,4 +293,35 @@
 
 .LocalLabbooks__next-button-container{
   text-align: center;
+}
+
+
+.LocalLabbooks__containerStatus{
+  width: 80px;
+  color: white;
+}
+
+.LocalLabbooks__containerStatus--state{
+  border-radius: 12px;
+  padding: 2px 5px;
+  height: 24px;
+  line-height: 24px;
+}
+
+.LocalLabbooks__containerStatus--state.Closed{
+  background: $labbooks;
+}
+
+.LocalLabbooks__containerStatus--state.Open{
+  background: $activity;
+}
+
+.LocalLabbooks__containerStatus--state.Building{
+  background: $datasets;
+}
+
+.LocalLabbooks__path{
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
 }

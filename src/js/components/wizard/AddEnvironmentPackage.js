@@ -5,7 +5,6 @@ import SweetAlert from 'sweetalert-react';
 import AddEnvironmentPackageMutation from 'Mutations/AddEnvironmentPackageMutation'
 
 
-let addEnvionmentPackage;
 export default class AddEnvironmentPackage extends React.Component {
   constructor(props){
   	super(props);
@@ -19,97 +18,118 @@ export default class AddEnvironmentPackage extends React.Component {
       'show': false,
       'message': ''
     };
-    addEnvionmentPackage = this;
 
     this.props.toggleDisabledContinue(false);
     this.continueSave = this.continueSave.bind(this);
+    this._setCurrentPackageManager = this._setCurrentPackageManager.bind(this)
+    this._updateDependencyName = this._updateDependencyName.bind(this)
+    this._addRemovePackage = this._addRemovePackage.bind(this)
+    this._environmentView = this._environmentView.bind(this)
   }
 
-  _environmentView(){
+  _environmentView = () => {
     return this.props.environmentView
   }
-
-  /*
-    function()
+  /**
+    @param {}
     installs environents pacakges
     gets environment package state and loops through packages
     pushes mutations into a promise and resolves if succesful
     if all promises resolve, setComponent is triggered and next component is loaded
   */
-  continueSave(){
-    let all = [];
-    this.props.setComponent(this.props.nextWindow)
+  continueSave = (isSkip) => {
 
-    this.state.environmentPackages.forEach((pack) => {
-      if(pack.dependencyName){
-        let promise = new Promise((resolve, reject) => {
+    if(!isSkip){
+      let all = [],
+      {environmentPackages} = this.state;
+      const username = localStorage.getItem('username')
 
-          AddEnvironmentPackageMutation(
-            this.props.labbookName,
-            'default',
-            pack.packageManager,
-            pack.dependencyName,
-            this.props.environmentId,
-            (error) => {
-              console.log(error)
-              let showAlert = ((error !== null) && (error !== undefined))
-              let message = showAlert ? error[0].message : '';
-              addEnvionmentPackage.setState({
-                'show': showAlert,
-                'message': message,
+      this.props.setComponent(this.props.nextWindow)
 
-              })
-              if(!showAlert){
-                resolve()
-              }else{
-                addEnvionmentPackage.setState({
-                  'reject': reject
+      environmentPackages.forEach(({dependencyName, packageManager}) => {
+        if(dependencyName){
+          let promise = new Promise((resolve, reject) => {
+
+            AddEnvironmentPackageMutation(
+              this.props.labbookName,
+              username,
+              packageManager,
+              dependencyName,
+              this.props.environmentId,
+              (error) => {
+                console.log(error)
+                let showAlert = ((error !== null) && (error !== undefined))
+                let message = showAlert ? error[0].message : '';
+
+                this.setState({
+                  'show': showAlert,
+                  'message': message,
                 })
+
+                if(!showAlert){
+                  resolve()
+                }else{
+                  this.setState({
+                    'reject': reject
+                  })
+                }
+
               }
+            )
+          })
 
-            }
-          )
-        })
-
-        all.push(promise)
-      }
-    })
+          all.push(promise)
+        }
+      })
 
 
-    Promise.all(all).then(values => {
+      Promise.all(all).then(values => {
 
-      if(this.props.environmentView){
+        if(this.props.environmentView){
 
-        addEnvionmentPackage.props.buildCallback();
-      }else{
-          this.props.setComponent(this.props.nextWindow)
-      }
+          this.props.buildCallback();
+        }else{
+            this.props.setComponent(this.props.nextWindow)
+        }
 
-    }, reason => {
-      console.error(reason)
-    })
+      }, reason => {
+        console.error(reason)
+      })
+    } else{
+      this.props.setComponent(this.props.nextWindow)
+    }
 
   }
-
-  _setCurrentPackageManager(e, index){
+  /**
+    @param {Object, number} evt,index
+    sets package manager for adding pacakges
+  */
+  _setCurrentPackageManager = (evt, index) => {
 
     let newEnvironmentPackages = this.state.environmentPackages;
-    newEnvironmentPackages[index]['packageManager'] = e.target.value;
+    newEnvironmentPackages[index]['packageManager'] = evt.target.value;
     this.setState({'environmentPackages': newEnvironmentPackages})
   }
-
-  _updateDependencyName(e, index){
-    if(e.key !== 'Enter'){
+  /**
+    @param {Object, number} evt,index
+    sets state for enviroment package on key stroke ENTER
+    adds/remvoes a package via addRemovePackage function
+  */
+  _updateDependencyName = (evt, index) =>{
+    if(evt.key !== 'Enter'){
       let newEnvironmentPackages = this.state.environmentPackages;
-      newEnvironmentPackages[index]['dependencyName'] = e.target.value;
+      newEnvironmentPackages[index]['dependencyName'] = evt.target.value;
 
       this.setState({'environmentPackages': newEnvironmentPackages})
     }else{
-      this._addRemovePackage(e, 'Add', index);
+      this._addRemovePackage(evt, 'Add', index);
     }
   }
-
-  _addRemovePackage(e, packSate, index){
+  /**
+    @param {Object, string, number} evt,packState,index
+    adds or remvoes a package
+  */
+  _addRemovePackage = (evt, packSate, index) => {
       let newEnvironmentPackages = this.state.environmentPackages;
       if(packSate === 'Add'){
         newEnvironmentPackages[index]['state'] = 'Remove';
@@ -119,7 +139,6 @@ export default class AddEnvironmentPackage extends React.Component {
       }
 
       this.setState({'environmentPackages': newEnvironmentPackages})
-
   }
 
   render(){
@@ -140,7 +159,7 @@ export default class AddEnvironmentPackage extends React.Component {
                         key={index + '_select'}
                         className="AddEnvironmentPackage__select"
                         onChange={(e) => this._setCurrentPackageManager(e, index)}>
-                        {
+                        { this.props.availablePackageManagers &&
                           this.props.availablePackageManagers.map((pm) => {
                             return(<option
                               className="AddEnvironmentPackage__select"

@@ -1,0 +1,25 @@
+{
+ "presets": [
+   "react-app",
+   "es2015"
+ ],
+ "plugins": [
+   "relay",
+   "transform-class-properties",
+   [
+     "module-resolver",
+     {
+       "root": [
+         "./src",
+         "./submodules"
+       ],
+       "alias": {
+         "Mutations": "./src/js/mutations",
+         "JS": "./src/js/components",
+         "Components": "./src/js/components",
+         "Submodules": "./submodules"
+       }
+     }
+   ]
+ ]
+}

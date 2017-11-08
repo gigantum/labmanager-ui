@@ -2,6 +2,7 @@ import Labbook from 'Components/labbook/Labbook';
 import React from 'react';
 import config from './config'
 import renderer from 'react-test-renderer';
+
 import {LabbookQuery} from 'Components/Routes'
 import { mount, shallow } from 'enzyme';
 import Auth from 'JS/Auth/Auth';
@@ -9,11 +10,14 @@ import history from 'JS/history'
 import {MemoryRouter } from 'react-router-dom'
 const auth = new Auth();
 
+const variables = {first:20, labbook: 'demo-lab-book'}
+export default variables
+
 
 auth.isAuthenticated = function(){return true};
 
-test('Test Labbook Rendering', () => {
-      const component = renderer.create(
+test('Test Labbook Rendering', async () => {
+      const component = await renderer.create(
         <MemoryRouter history={MemoryRouter}>
           <Labbook
             key={'demo-lab-book'}
@@ -21,17 +25,19 @@ test('Test Labbook Rendering', () => {
             history={history}
             labbookName={'demo-lab-book'}
             location={{pathname: '/demo-lab-book'}}
-            labbook={config.data.labbook}
+            //labbook={config.data.labbook}
             match={{params: {labbook_name: 'demo-labbook-2'}}}/>
         </MemoryRouter>
       )
+
+      console.log(component._component._currentElement.props.child.props.children)
       let tree = component.toJSON();
       expect(tree).toMatchSnapshot();
 })
 
-describe('Test nav item default state', () =>{
+describe('Test nav item default state', async () =>{
 
-  let labbook = mount(
+  let labbook = await mount(
     <MemoryRouter history={MemoryRouter}>
       <Labbook
         key={'demo-lab-book'}
@@ -51,9 +57,9 @@ describe('Test nav item default state', () =>{
 })
 
 
-describe('Test nav item default state', () =>{
+describe('Test nav item default state', async () =>{
 
-  let labbook = mount(
+  let labbook = await mount(
     <MemoryRouter history={MemoryRouter}>
       <Labbook
         key={'demo-lab-book'}

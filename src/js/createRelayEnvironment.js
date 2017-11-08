@@ -9,27 +9,77 @@ const {
 function fetchQuery(
   operation,
   variables,
+  cacheConfig,
+  uploadables
 ) {
 
-  var queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
+  let queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
+  let body;
 
-  return fetch(process.env.GIGANTUM_API, {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
+  let headers = {
+      'accept': '*/*',
       'Access-Control-Allow-Origin': '*'
-    },
-    body: JSON.stringify({
+  }
+
+  if(uploadables && uploadables[0]){
+    if(uploadables[1]){
+      headers['authorization'] = `Bearer ${uploadables[1]}`
+    }
+
+  } else{
+    if(localStorage.getItem('access_token')){
+      const accessToken = localStorage.getItem('access_token')
+      headers['authorization'] = `Bearer ${accessToken}`
+    }
+  }
+
+
+  if(uploadables === undefined){
+
+    headers['content-type'] = 'application/json';
+
+    body = JSON.stringify({
       query: queryString,
       variables
-    }),
+    })
+  }else{
+
+    body = new FormData()
+    body.append('query', queryString)
+    body.append('variables', JSON.stringify(variables))
+    body.append('uploadChunk', uploadables[0])
+  }
+
+
+  return fetch(process.env.GIGANTUM_API, {
+    'method': 'POST',
+    'headers': headers,
+    'body': body,
   }).then(response => {
-  
-    return response.json()
+
+      if(!(uploadables && uploadables[0])){
+        if(response.status === 404){
+          document.getElementById('apiDown').classList.remove('hidden')
+        }else{
+
+          document.getElementById('apiDown').classList.add('hidden')
+        }
+      }
+      return response.json()
+
   }).catch(error => {
 
-    console.error(error)
-  })
+    if(!(uploadables && uploadables[0])){
+      if((error.message.toString()+'') === 'Failed to fetch'){
+
+        document.getElementById('apiDown').classList.remove('hidden')
+      }else{
+        document.getElementById('apiDown').classList.add('hidden')
+      }
+    }
+    return error
+  });
+
 }
 
 const network = Network.create(fetchQuery);
@@ -42,3 +92,5 @@ export default new Environment({
   network,
   store,
 })
+
+export {network, fetchQuery}

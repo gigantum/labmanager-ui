@@ -76,11 +76,25 @@ exports[`Test PakageManager rendering 1`] = `
       </div>
     </div>
   </div>
-  <h4
-    className="Environment__header"
+  <div
+    className="Environment__header-container"
   >
-    Package Dependencies
-  </h4>
+    <h4
+      className="Environment__header"
+    >
+      Package Dependencies
+    </h4>
+    <div
+      className="Environment__edit-container"
+    >
+      <button
+        className="Environment__edit-button"
+        disabled={false}
+        id="packageManagerEdit"
+        onClick={[Function]}
+      />
+    </div>
+  </div>
   <div
     className="Environment__info flex flex--row justify--left"
   >
@@ -136,17 +150,6 @@ exports[`Test PakageManager rendering 1`] = `
         </div>
       </li>
     </ul>
-    <div
-      className="Environment__edit-container"
-    >
-      <button
-        className="Environment__edit-button"
-        id="packageManagerEdit"
-        onClick={[Function]}
-      >
-        Edit
-      </button>
-    </div>
   </div>
 </div>
 `;

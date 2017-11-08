@@ -1,11 +1,13 @@
 import React from 'react';
 import BaseImage from 'Components/labbook/environment/BaseImage';
 import renderer from 'react-test-renderer';
+import json from './../../__relaydata__/Routes.json'
 import sinon from 'sinon';
 import {shallow, mount, render} from 'enzyme'
-import config from './../config'
 
 
+const variables = {first:20, labbook: 'demo-lab-book', name: 'defualt', owner: 'default'}
+export default variables
 
 let baseImage = {};
 let _setComponent = (comp) => {
@@ -18,15 +20,15 @@ test('Test BaseImage rendering', () => {
   //const isAuthenticated = function(){return true};
   const component = renderer.create(
     <BaseImage
-      environment={config.data.labbook.environment}
+      environment={json.data.labbook.environment}
       blockClass={"Environment"}
-      labbookName={config.data.labbook.name}
-      environmentId={config.data.labbook.environment.id}
+      labbookName={json.data.labbook.name}
+      environmentId={json.data.labbook.environment.id}
       editVisible={true}
       setComponent={_setComponent}
       setBaseImage={_setBaseImage}
       buildCallback={_buildCallback}
-      baseImage={config.data.labbook.environment.baseImage}
+      baseImage={json.data.labbook.environment.baseImage}
 
     />
   );
@@ -61,15 +63,15 @@ describe("Test Modal Visible", () =>{
 
   const wrapper = mount(
       <BaseImage
-        environment={config.data.labbook.environment}
+        environment={json.data.labbook.environment}
         blockClass={"Environment"}
-        labbookName={config.data.labbook.name}
-        environmentId={config.data.labbook.environment.id}
+        labbookName={json.data.labbook.name}
+        environmentId={json.data.labbook.environment.id}
         editVisible={true}
         setComponent={_setComponent}
         setBaseImage={_setBaseImage}
         buildCallback={_buildCallback}
-        baseImage={config.data.labbook.environment.baseImage}
+        baseImage={json.data.labbook.environment.baseImage}
 
       />
   );

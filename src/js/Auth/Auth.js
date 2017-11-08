@@ -1,15 +1,16 @@
 import history from 'JS/history';
 import auth0 from 'auth0-js';
 import { AUTH_CONFIG } from './auth0-variables';
+import RemoveUserIdentityMutation from 'Mutations/RemoveUserIdentityMutation'
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: AUTH_CONFIG.domain,
     clientID: AUTH_CONFIG.clientId,
     redirectUri: AUTH_CONFIG.callbackUrl,
-    audience: `https://${AUTH_CONFIG.domain}/userinfo`,
+    audience:  AUTH_CONFIG.audience,
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid profile email user_metadata'
   });
 
   constructor() {
@@ -17,6 +18,7 @@ export default class Auth {
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
+
   }
 
   login() {
@@ -24,12 +26,13 @@ export default class Auth {
   }
 
   handleAuthentication() {
+
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
+
         this.setSession(authResult);
-        history.replace('/labbooks');
+
       } else if (err) {
-        history.replace('/labbooks');
         console.error(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
       }
@@ -42,23 +45,34 @@ export default class Auth {
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
-    // navigate to the home route
-    history.replace('/labbooks');
+    localStorage.setItem('family_name', authResult.idTokenPayload.family_name);
+    localStorage.setItem('given_name', authResult.idTokenPayload.given_name);
+    localStorage.setItem('email', authResult.idTokenPayload.email);
+    localStorage.setItem('username', authResult.idTokenPayload.nickname);
+    //redirect to labbooks when user logs in
+    history.replace(`/labbooks`)
   }
 
   logout() {
-    // Clear access token and ID token from local storage
+
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
-    // navigate to the home route
-    history.replace('/labbooks');
+    localStorage.removeItem('family_name')
+    localStorage.removeItem('given_name');
+    localStorage.removeItem('email');
+    localStorage.removeItem('username');
+    RemoveUserIdentityMutation(()=>{
+      //redirect to root when user logs out
+      history.replace('/');
+    })
   }
 
   isAuthenticated() {
     // Check whether the current time is past the
     // access token's expiry time
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+
     return new Date().getTime() < expiresAt;
   }
 }

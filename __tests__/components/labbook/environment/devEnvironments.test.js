@@ -1,27 +1,30 @@
 import React from 'react';
 import DevEnvironments from 'Components/labbook/environment/DevEnvironments';
 import renderer from 'react-test-renderer';
-import config from './../config'
+import json from './../../__relaydata__/Routes.json'
 import {mount} from 'Enzyme'
-
+import relayTestingUtils from 'relay-testing-utils'
 let _buildCallback = () => ({})
 let devEnvironments = {}
 let _setComponent = (comp) => {
    devEnvironments.comp = comp;
 };
 
+const variables = {first:20, name: 'demo-lab-book', cursor: 'MA==', owner: 'default'}
+export default variables
+
 test('Test DevEnvironments rendering', () => {
 
   //const isAuthenticated = function(){return true};
   const component = renderer.create(
-    <DevEnvironments
-      environment={config.data.labbook.environment}
+    relayTestingUtils.relayWrap(<DevEnvironments
+      environment={json.data.labbook.environment}
       blockClass={"Environment"}
-      labbookName={config.data.labbook.name}
-      environmentId={config.data.labbook.environment.id}
+      labbookName={json.data.labbook.name}
+      environmentId={json.data.labbook.environment.id}
       editVisible={true}
       buildCallback={_buildCallback}
-    />
+    />, {}, json.data.labbook.environment.devEnvs)
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
@@ -36,14 +39,14 @@ describe("Test Modal Visible", () =>{
 
 
   const wrapper = mount(
-      <DevEnvironments
-        environment={config.data.labbook.environment}
-        blockClass={"Environment"}
-        labbookName={config.data.labbook.name}
-        environmentId={config.data.labbook.environment.id}
-        editVisible={true}
-        buildCallback={_buildCallback}
-      />
+    relayTestingUtils.relayWrap(<DevEnvironments
+      environment={json.data.labbook.environment}
+      blockClass={"Environment"}
+      labbookName={json.data.labbook.name}
+      environmentId={json.data.labbook.environment.id}
+      editVisible={true}
+      buildCallback={_buildCallback}
+    />, {}, json.data.labbook.environment.devEnvs)
   );
 
 

@@ -1,5 +1,5 @@
-# source: http://localhost:5000/labbook/
-# timestamp: Fri Sep 15 2017 11:45:19 GMT-0400 (EDT)
+# source: http://localhost:10001/labbook/
+# timestamp: Tue Nov 07 2017 13:03:55 GMT-0500 (EST)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -14,6 +14,7 @@ input AddEnvironmentComponentInput {
 
 # Mutation to add a new environment component to a LabBook
 type AddEnvironmentComponentPayload {
+  environmentComponent: EnvironmentComponent
   clientMutationId: String
 }
 
@@ -28,6 +29,39 @@ input AddEnvironmentPackageInput {
 
 # Mutation to add a new package to labbook. 
 type AddEnvironmentPackagePayload {
+  environmentPackage: PackageManager
+  clientMutationId: String
+}
+
+input AddLabbookFavoriteInput {
+  owner: String!
+  labbookName: String!
+  subdir: String!
+  key: String!
+  description: String
+  isDir: String
+  index: Int
+  clientMutationId: String
+}
+
+type AddLabbookFavoritePayload {
+  newFavoriteEdge: LabbookFavoriteEdge
+  clientMutationId: String
+}
+
+input AddLabbookFileInput {
+  user: String!
+  owner: String!
+  labbookName: String!
+  filePath: String!
+  chunkUploadParams: ChunkUploadInput!
+  clientMutationId: String
+}
+
+# Mutation to add a file to a labbook. File should be sent in the `uploadFile` key as a multi-part/form upload.
+# file_path is the relative path from the labbook root.
+type AddLabbookFilePayload {
+  newLabbookFileEdge: LabbookFileEdge
   clientMutationId: String
 }
 
@@ -84,6 +118,18 @@ input CheckoutBranchInput {
 type CheckoutBranchPayload {
   labbook: Labbook
   clientMutationId: String
+}
+
+# Input Object for params needed for a chunked upload
+#
+# To use, add a field `chunk_upload_params` to your mutation input
+input ChunkUploadInput {
+  fileSizeKb: Int!
+  chunkSize: Int!
+  totalChunks: Int!
+  chunkIndex: Int!
+  filename: String!
+  uploadId: String!
 }
 
 # An enumeration for container image status
@@ -183,6 +229,20 @@ type CustomDependencyEdge {
 # [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 scalar DateTime
 
+input DeleteLabbookFileInput {
+  user: String!
+  owner: String!
+  labbookName: String!
+  filePath: String!
+  isDirectory: Boolean
+  clientMutationId: String
+}
+
+type DeleteLabbookFilePayload {
+  success: Boolean
+  clientMutationId: String
+}
+
 # A type that represents a Development Environment Environment Component
 type DevEnv implements Node {
   # The ID of the object.
@@ -269,6 +329,18 @@ type EnvironmentInfo implements Node {
   icon: String
 }
 
+input ExportLabbookInput {
+  user: String!
+  owner: String!
+  labbookName: String!
+  clientMutationId: String
+}
+
+type ExportLabbookPayload {
+  jobKey: String
+  clientMutationId: String
+}
+
 # An interface for any object that is represented by a git commit
 interface GitCommit {
   hash: String
@@ -295,6 +367,20 @@ enum ImageStatus {
   BUILD_IN_PROGRESS
   EXISTS
   STALE
+  BUILD_FAILED
+}
+
+input ImportLabbookInput {
+  owner: String!
+  user: String!
+  chunkUploadParams: ChunkUploadInput!
+  clientMutationId: String
+}
+
+type ImportLabbookPayload {
+  importJobKey: String
+  buildImageJobKey: String
+  clientMutationId: String
 }
 
 # A query to get the status of a background task launched with the Dispatcher
@@ -333,6 +419,11 @@ type Labbook implements Node, GitRepository {
   activeBranch: LabbookRef
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   environment: Environment
+  files(baseDir: String, before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  codeFiles(baseDir: String = "code/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  inputFiles(baseDir: String = "input/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  outputFiles(baseDir: String = "output/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  favorites(subdir: String, before: String, after: String, first: Int, last: Int): LabbookFavoriteConnection
   notes(before: String, after: String, first: Int, last: Int): NoteConnection
 }
 
@@ -353,7 +444,53 @@ type LabbookConnection {
 
 type LabbookEdge {
   # The item at the end of the edge
-  node: LabbookSummary
+  node: Labbook
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# A type representing a file or directory that has been favorited in the labbook file system.
+type LabbookFavorite implements Node {
+  # The ID of the object.
+  id: ID!
+  index: Int
+  key: String
+  description: String
+  isDir: Boolean
+}
+
+type LabbookFavoriteConnection {
+  pageInfo: PageInfo!
+  edges: [LabbookFavoriteEdge]!
+}
+
+type LabbookFavoriteEdge {
+  # The item at the end of the edge
+  node: LabbookFavorite
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# A type representing a file or directory inside the labbook file system.
+type LabbookFile implements Node {
+  # The ID of the object.
+  id: ID!
+  isDir: Boolean
+  modifiedAt: Int
+  key: String
+  size: Int
+}
+
+type LabbookFileConnection {
+  pageInfo: PageInfo!
+  edges: [LabbookFileEdge]!
+}
+
+type LabbookFileEdge {
+  # The item at the end of the edge
+  node: LabbookFile
 
   # A cursor for use in pagination
   cursor: String!
@@ -381,19 +518,40 @@ type LabbookRefEdge {
   cursor: String!
 }
 
-# A type representing a summary of a LabBook used for listing LabBooks
-#
-# LabBooks are uniquely identified by both the "owner" and the "name" of the LabBook
-type LabbookSummary implements Node, GitRepository {
-  # The ID of the object.
-  id: ID!
-  name: String
-  description: String
-  owner: Owner
+input MakeLabbookDirectoryInput {
+  user: String!
+  owner: String!
+  labbookName: String!
+  dirName: String!
+  clientMutationId: String
+}
+
+type MakeLabbookDirectoryPayload {
+  newLabbookFileEdge: LabbookFileEdge
+  clientMutationId: String
+}
+
+input MoveLabbookFileInput {
+  user: String!
+  owner: String!
+  labbookName: String!
+  srcPath: String!
+  dstPath: String!
+  clientMutationId: String
+}
+
+# Method to move/rename a file or directory. If file, both src_path and dst_path should contain the file name.
+# If a directory, be sure to include the trailing slash
+type MoveLabbookFilePayload {
+  newLabbookFileEdge: LabbookFileEdge
+  clientMutationId: String
 }
 
 type Mutation {
+  importLabbook(input: ImportLabbookInput!): ImportLabbookPayload
+  exportLabbook(input: ExportLabbookInput!): ExportLabbookPayload
   createLabbook(input: CreateLabbookInput!): CreateLabbookPayload
+  renameLabbook(input: RenameLabbookInput!): RenameLabbookPayload
   createBranch(input: CreateBranchInput!): CreateBranchPayload
   checkoutBranch(input: CheckoutBranchInput!): CheckoutBranchPayload
   buildImage(input: BuildImageInput!): BuildImagePayload
@@ -403,6 +561,13 @@ type Mutation {
   createUserNote(input: CreateUserNoteInput!): CreateUserNotePayload
   addEnvironmentComponent(input: AddEnvironmentComponentInput!): AddEnvironmentComponentPayload
   addEnvironmentPackage(input: AddEnvironmentPackageInput!): AddEnvironmentPackagePayload
+  addLabbookFile(input: AddLabbookFileInput!): AddLabbookFilePayload
+  moveLabbookFile(input: MoveLabbookFileInput!): MoveLabbookFilePayload
+  deleteLabbookFile(input: DeleteLabbookFileInput!): DeleteLabbookFilePayload
+  makeLabbookDirectory(input: MakeLabbookDirectoryInput!): MakeLabbookDirectoryPayload
+  removeUserIdentity(input: RemoveUserIdentityInput!): RemoveUserIdentityPayload
+  addFavorite(input: AddLabbookFavoriteInput!): AddLabbookFavoritePayload
+  removeFavorite(input: RemoveLabbookFavoriteInput!): RemoveLabbookFavoritePayload
 }
 
 # An object with an ID
@@ -481,6 +646,9 @@ type Owner implements Node, User {
   # The ID of the object.
   id: ID!
   username: String
+  email: String
+  givenName: String
+  familyName: String
 }
 
 # A type that represents a Package Manager based Environment Component
@@ -532,10 +700,48 @@ type Query {
   availableDevEnvVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): DevEnvConnection
   availableCustomDependencies(before: String, after: String, first: Int, last: Int): CustomDependencyConnection
   availableCustomDependenciesVersions(repository: String, namespace: String, component: String, before: String, after: String, first: Int, last: Int): CustomDependencyConnection
+  userIdentity: UserIdentity
+}
+
+input RemoveLabbookFavoriteInput {
+  owner: String!
+  labbookName: String!
+  subdir: String!
+  index: Int!
+  clientMutationId: String
+}
+
+type RemoveLabbookFavoritePayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+input RemoveUserIdentityInput {
+  clientMutationId: String
+}
+
+# Mutation to remove a locally stored user identity (no-op if not running in local mode)
+type RemoveUserIdentityPayload {
+  userIdentityEdge: UserIdentity
+  clientMutationId: String
+}
+
+input RenameLabbookInput {
+  user: String!
+  owner: String!
+  originalLabbookName: String!
+  newLabbookName: String!
+  clientMutationId: String
+}
+
+# Rename a labbook
+type RenameLabbookPayload {
+  success: Boolean
+  clientMutationId: String
 }
 
 input StartContainerInput {
-  owner: String
+  owner: String!
   labbookName: String!
   clientMutationId: String
 }
@@ -563,4 +769,17 @@ type StopContainerPayload {
 # Interface representing a user in the system
 interface User {
   username: String
+  email: String
+  givenName: String
+  familyName: String
+}
+
+# A type representing the identity of the logged in user
+type UserIdentity implements Node, User {
+  # The ID of the object.
+  id: ID!
+  username: String
+  email: String
+  givenName: String
+  familyName: String
 }

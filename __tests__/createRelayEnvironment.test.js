@@ -22,11 +22,9 @@ let operation = {text: containerStatusQuery}
 test('test create relay environment', () => {
   let envrionment = createRelayEnvironment;
 
-  console.log(process.env.GIGANTUM_API)
-  //console.log(envrionment._network.request())
   it('has source', async () => {
       let data = await envrionment._network.fetch(containerStatusQuery(), {name: 'demo-lab-book', owner: 'default', first: 3})
-      console.log(data)
+
       expect(data).toBeDefined()
 
 })
