@@ -15,7 +15,6 @@ import Config from 'JS/config'
 //lacoal variables
 let pagination = false;
 let isLoadingMore = false;
-let counter = 2;
 
 class Notes extends Component {
   constructor(props){
@@ -67,7 +66,7 @@ class Notes extends Component {
       'isPaginting': true
     })
     this.props.relay.loadMore(
-     counter, // Fetch the next 10 feed items
+     5, // Fetch the next 10 feed items
      e => {
        isLoadingMore = false;
        this.setState({
@@ -77,7 +76,6 @@ class Notes extends Component {
        name: 'labbook'
      }
    );
-   counter += 5
   }
   /**
   *  @param {evt}
@@ -265,10 +263,10 @@ export default createPaginationContainer(
        first: first,
      };
    },
-   getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
+   getVariables(props, {count, cursor, name, owner}, fragmentVariables) {
     const username = localStorage.getItem('username')
     cursor = pagination ? props.labbook.notes.edges[props.labbook.notes.edges.length - 1].cursor : null
-    first = counter;
+    let first = count;
     name = props.labbookName;
     owner = username;
      return {

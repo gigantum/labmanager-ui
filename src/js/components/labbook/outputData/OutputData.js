@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //Config
-import Config from './OutputConfig'
 import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
 
 
@@ -13,27 +12,51 @@ class OutputData extends Component {
     this.state = {
       'show': false,
       'message': '',
-      'files': Config.files
+      'files': []
     }
-
+    this._handleScroll = this._handleScroll.bind(this)
   }
 
+  /*
+    handle state and addd listeners when component mounts
+  */
   componentDidMount() {
-    let self = this;
     this._loadMore()
 
-    window.addEventListener('scroll', function(e){
-      let root = document.getElementById('root')
-      let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
-      expandOn = root.scrollHeight;
-
-      if ((distanceY > expandOn) && self.props.labbook.outputFile && self.props.labbook.outputFiles.pageInfo.hasNextPage) {
-          self._loadMore(e);
-      }
-    });
+    window.addEventListener('scroll', this._handleScroll);
   }
 
+  /*
+    handle state and remove listeners when component unmounts
+  */
+  componentWillUnmount() {
 
+    window.removeEventListener('scroll', this._handleScroll);
+  }
+
+  /*
+    @param {event} evt
+  */
+  _handleScroll(evt){
+    let root = document.getElementById('root')
+
+    let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
+    expandOn = root.scrollHeight;
+
+    if ((distanceY > expandOn) &&
+      this.props.labbook.outputFiles &&
+      this.props.labbook.outputFiles.pageInfo.hasNextPage) {
+
+        this._loadMore(evt);
+    }
+  }
+
+  /*
+    @param
+    triggers relay pagination function loadMore
+    increments by 10
+    logs callback
+  */
   _loadMore() {
 
     this.props.relay.loadMore(

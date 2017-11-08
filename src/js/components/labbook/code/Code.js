@@ -1,8 +1,6 @@
 // vendor
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
-//Config
-import Config from './CodeConfig'
 //mutations
 
 import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
@@ -11,24 +9,51 @@ let counter = 10;
 class Code extends Component {
   constructor(props){
   	super(props);
+    this._handleScroll = this._handleScroll.bind(this)
   }
 
+  /*
+    handle state and addd listeners when component mounts
+  */
   componentDidMount() {
-    let self = this;
-    this._loadMore()
+    this._loadMore() //routes query only loads 2, call loadMore
 
-    window.addEventListener('scroll', function(e){
-      let root = document.getElementById('root')
-      let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
-      expandOn = root.scrollHeight;
-
-      if ((distanceY > expandOn) && self.props.labbook.codeFiles && self.props.labbook.codeFiles.pageInfo.hasNextPage) {
-          self._loadMore(e);
-      }
-    });
+    window.addEventListener('scroll', this._handleScroll);
   }
 
+  /*
+    handle state and remove listeners when component unmounts
+  */
+  componentWillUnmount() {
 
+    window.removeEventListener('scroll', this._handleScroll);
+  }
+
+  /*
+    @param {event} evt
+  */
+  _handleScroll(evt){
+
+    let root = document.getElementById('root')
+
+    let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
+    expandOn = root.scrollHeight;
+
+    if ((distanceY > expandOn) &&
+      this.props.labbook.codeFiles &&
+      this.props.labbook.codeFiles.pageInfo.hasNextPage) {
+
+        this._loadMore(evt);
+
+    }
+  }
+
+  /*
+    @param
+    triggers relay pagination function loadMore
+    increments by 10
+    logs callback
+  */
   _loadMore() {
 
     this.props.relay.loadMore(
