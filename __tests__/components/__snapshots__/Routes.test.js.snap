@@ -18,7 +18,7 @@ ShallowWrapper {
             "entries": Array [
               Object {
                 "hash": "",
-                "key": "wjveyc",
+                "key": "c9j9nc",
                 "pathname": "/callback",
                 "search": "",
                 "state": undefined,
@@ -32,7 +32,7 @@ ShallowWrapper {
             "listen": [Function],
             "location": Object {
               "hash": "",
-              "key": "wjveyc",
+              "key": "c9j9nc",
               "pathname": "/callback",
               "search": "",
               "state": undefined,
@@ -55,7 +55,7 @@ ShallowWrapper {
                   "entries": Array [
                     Object {
                       "hash": "",
-                      "key": "wjveyc",
+                      "key": "c9j9nc",
                       "pathname": "/callback",
                       "search": "",
                       "state": undefined,
@@ -69,7 +69,7 @@ ShallowWrapper {
                   "listen": [Function],
                   "location": Object {
                     "hash": "",
-                    "key": "wjveyc",
+                    "key": "c9j9nc",
                     "pathname": "/callback",
                     "search": "",
                     "state": undefined,
@@ -97,7 +97,7 @@ ShallowWrapper {
 >
         <Routes />
 </MemoryRouter>,
-      "_debugID": 75,
+      "_debugID": 80,
       "_hostContainerInfo": null,
       "_hostParent": null,
       "_instance": MemoryRouter {
@@ -111,7 +111,7 @@ ShallowWrapper {
           "entries": Array [
             Object {
               "hash": "",
-              "key": "wjveyc",
+              "key": "c9j9nc",
               "pathname": "/callback",
               "search": "",
               "state": undefined,
@@ -125,7 +125,7 @@ ShallowWrapper {
           "listen": [Function],
           "location": Object {
             "hash": "",
-            "key": "wjveyc",
+            "key": "c9j9nc",
             "pathname": "/callback",
             "search": "",
             "state": undefined,
@@ -169,7 +169,7 @@ ShallowWrapper {
                               "entries": Array [
                                 Object {
                                   "hash": "",
-                                  "key": "wjveyc",
+                                  "key": "c9j9nc",
                                   "pathname": "/callback",
                                   "search": "",
                                   "state": undefined,
@@ -183,7 +183,7 @@ ShallowWrapper {
                               "listen": [Function],
                               "location": Object {
                                 "hash": "",
-                                "key": "wjveyc",
+                                "key": "c9j9nc",
                                 "pathname": "/callback",
                                 "search": "",
                                 "state": undefined,
@@ -195,7 +195,7 @@ ShallowWrapper {
 >
           <Routes />
 </Router>,
-        "_debugID": 76,
+        "_debugID": 81,
         "_renderedOutput": <Router
           history={
                     Object {
@@ -206,7 +206,7 @@ ShallowWrapper {
                               "entries": Array [
                                 Object {
                                   "hash": "",
-                                  "key": "wjveyc",
+                                  "key": "c9j9nc",
                                   "pathname": "/callback",
                                   "search": "",
                                   "state": undefined,
@@ -220,7 +220,7 @@ ShallowWrapper {
                               "listen": [Function],
                               "location": Object {
                                 "hash": "",
-                                "key": "wjveyc",
+                                "key": "c9j9nc",
                                 "pathname": "/callback",
                                 "search": "",
                                 "state": undefined,
@@ -273,7 +273,7 @@ ShallowWrapper {
             "entries": Array [
               Object {
                 "hash": "",
-                "key": "s7yja4",
+                "key": "p8m3zx",
                 "pathname": "/labbooks/demo-lab-book/",
                 "search": "",
                 "state": undefined,
@@ -287,7 +287,7 @@ ShallowWrapper {
             "listen": [Function],
             "location": Object {
               "hash": "",
-              "key": "s7yja4",
+              "key": "p8m3zx",
               "pathname": "/labbooks/demo-lab-book/",
               "search": "",
               "state": undefined,
@@ -310,7 +310,7 @@ ShallowWrapper {
                   "entries": Array [
                     Object {
                       "hash": "",
-                      "key": "s7yja4",
+                      "key": "p8m3zx",
                       "pathname": "/labbooks/demo-lab-book/",
                       "search": "",
                       "state": undefined,
@@ -324,7 +324,7 @@ ShallowWrapper {
                   "listen": [Function],
                   "location": Object {
                     "hash": "",
-                    "key": "s7yja4",
+                    "key": "p8m3zx",
                     "pathname": "/labbooks/demo-lab-book/",
                     "search": "",
                     "state": undefined,
@@ -365,7 +365,7 @@ ShallowWrapper {
 >
         <Routes />
 </MemoryRouter>,
-      "_debugID": 71,
+      "_debugID": 76,
       "_hostContainerInfo": null,
       "_hostParent": null,
       "_instance": MemoryRouter {
@@ -379,7 +379,7 @@ ShallowWrapper {
           "entries": Array [
             Object {
               "hash": "",
-              "key": "s7yja4",
+              "key": "p8m3zx",
               "pathname": "/labbooks/demo-lab-book/",
               "search": "",
               "state": undefined,
@@ -393,7 +393,7 @@ ShallowWrapper {
           "listen": [Function],
           "location": Object {
             "hash": "",
-            "key": "s7yja4",
+            "key": "p8m3zx",
             "pathname": "/labbooks/demo-lab-book/",
             "search": "",
             "state": undefined,
@@ -448,7 +448,7 @@ ShallowWrapper {
                               "entries": Array [
                                 Object {
                                   "hash": "",
-                                  "key": "s7yja4",
+                                  "key": "p8m3zx",
                                   "pathname": "/labbooks/demo-lab-book/",
                                   "search": "",
                                   "state": undefined,
@@ -462,7 +462,7 @@ ShallowWrapper {
                               "listen": [Function],
                               "location": Object {
                                 "hash": "",
-                                "key": "s7yja4",
+                                "key": "p8m3zx",
                                 "pathname": "/labbooks/demo-lab-book/",
                                 "search": "",
                                 "state": undefined,
@@ -474,7 +474,7 @@ ShallowWrapper {
 >
           <Routes />
 </Router>,
-        "_debugID": 72,
+        "_debugID": 77,
         "_renderedOutput": <Router
           history={
                     Object {
@@ -485,7 +485,7 @@ ShallowWrapper {
                               "entries": Array [
                                 Object {
                                   "hash": "",
-                                  "key": "s7yja4",
+                                  "key": "p8m3zx",
                                   "pathname": "/labbooks/demo-lab-book/",
                                   "search": "",
                                   "state": undefined,
@@ -499,7 +499,7 @@ ShallowWrapper {
                               "listen": [Function],
                               "location": Object {
                                 "hash": "",
-                                "key": "s7yja4",
+                                "key": "p8m3zx",
                                 "pathname": "/labbooks/demo-lab-book/",
                                 "search": "",
                                 "state": undefined,
@@ -565,7 +565,7 @@ ShallowWrapper {
             "entries": Array [
               Object {
                 "hash": "",
-                "key": "gwj1ow",
+                "key": "r39euy",
                 "pathname": "/labbooks/demo-lab-book/",
                 "search": "",
                 "state": undefined,
@@ -579,7 +579,7 @@ ShallowWrapper {
             "listen": [Function],
             "location": Object {
               "hash": "",
-              "key": "gwj1ow",
+              "key": "r39euy",
               "pathname": "/labbooks/demo-lab-book/",
               "search": "",
               "state": undefined,
@@ -602,7 +602,7 @@ ShallowWrapper {
                   "entries": Array [
                     Object {
                       "hash": "",
-                      "key": "gwj1ow",
+                      "key": "r39euy",
                       "pathname": "/labbooks/demo-lab-book/",
                       "search": "",
                       "state": undefined,
@@ -616,7 +616,7 @@ ShallowWrapper {
                   "listen": [Function],
                   "location": Object {
                     "hash": "",
-                    "key": "gwj1ow",
+                    "key": "r39euy",
                     "pathname": "/labbooks/demo-lab-book/",
                     "search": "",
                     "state": undefined,
@@ -644,7 +644,7 @@ ShallowWrapper {
 >
         <Routes />
 </MemoryRouter>,
-      "_debugID": 73,
+      "_debugID": 78,
       "_hostContainerInfo": null,
       "_hostParent": null,
       "_instance": MemoryRouter {
@@ -658,7 +658,7 @@ ShallowWrapper {
           "entries": Array [
             Object {
               "hash": "",
-              "key": "gwj1ow",
+              "key": "r39euy",
               "pathname": "/labbooks/demo-lab-book/",
               "search": "",
               "state": undefined,
@@ -672,7 +672,7 @@ ShallowWrapper {
           "listen": [Function],
           "location": Object {
             "hash": "",
-            "key": "gwj1ow",
+            "key": "r39euy",
             "pathname": "/labbooks/demo-lab-book/",
             "search": "",
             "state": undefined,
@@ -716,7 +716,7 @@ ShallowWrapper {
                               "entries": Array [
                                 Object {
                                   "hash": "",
-                                  "key": "gwj1ow",
+                                  "key": "r39euy",
                                   "pathname": "/labbooks/demo-lab-book/",
                                   "search": "",
                                   "state": undefined,
@@ -730,7 +730,7 @@ ShallowWrapper {
                               "listen": [Function],
                               "location": Object {
                                 "hash": "",
-                                "key": "gwj1ow",
+                                "key": "r39euy",
                                 "pathname": "/labbooks/demo-lab-book/",
                                 "search": "",
                                 "state": undefined,
@@ -742,7 +742,7 @@ ShallowWrapper {
 >
           <Routes />
 </Router>,
-        "_debugID": 74,
+        "_debugID": 79,
         "_renderedOutput": <Router
           history={
                     Object {
@@ -753,7 +753,7 @@ ShallowWrapper {
                               "entries": Array [
                                 Object {
                                   "hash": "",
-                                  "key": "gwj1ow",
+                                  "key": "r39euy",
                                   "pathname": "/labbooks/demo-lab-book/",
                                   "search": "",
                                   "state": undefined,
@@ -767,7 +767,7 @@ ShallowWrapper {
                               "listen": [Function],
                               "location": Object {
                                 "hash": "",
-                                "key": "gwj1ow",
+                                "key": "r39euy",
                                 "pathname": "/labbooks/demo-lab-book/",
                                 "search": "",
                                 "state": undefined,
@@ -861,9 +861,19 @@ exports[`Test Routes Rendering 1`] = `
     </div>
   </div>
   <div
-    className="Footer flex flex--row justify--space-between"
+    className="Footer"
     id="footer"
-  />
+  >
+    <div
+      className="hidden"
+    >
+      NaN MB of NaN MB uploaded (undefined%)
+    </div>
+    <div
+      className="Footer__progress-bar"
+      id="footerProgressBar"
+    />
+  </div>
 </div>
 `;
 

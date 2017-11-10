@@ -73,11 +73,16 @@ export default class Footer extends Component {
   gets upload message which tracks progess
  */
  _getMessage(){
-   let uploadProgress = this._humanFileSize(this.state.bytesUploaded)
+   let message = ''
+   if(this.state.totalFiles !== 0){
+     const uploadProgress = this._humanFileSize(this.state.bytesUploaded)
 
-   let total = this._humanFileSize(this.state.totalBytes)
+     const total = this._humanFileSize(this.state.totalBytes)
 
-   let message = this.state.uploadMessage ? this.state.uploadMessage : uploadProgress + ' of ' + total + ' uploaded (' + this.state.percentage + '%)'
+     message = this.state.uploadMessage ? this.state.uploadMessage : uploadProgress + ' of ' + total + ' uploaded (' + this.state.percentage + '%)'
+   }else{
+      message = `uploading ${this.state.totalFile} files`
+   }
 
    return message
  }

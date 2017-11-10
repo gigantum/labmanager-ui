@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
-
+import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
   mutation MakeLabbookDirectoryMutation($input: MakeLabbookDirectoryInput!){
@@ -22,6 +22,30 @@ const mutation = graphql`
     }
   }
 `;
+
+
+function sharedUpdater(store, labbookId, connectionKey, node) {
+  const labbookProxy = store.get(labbookId);
+
+  const conn = RelayRuntime.ConnectionHandler.getConnection(
+    labbookProxy,
+    connectionKey
+  );
+
+  if(conn){
+    const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+      store,
+      conn,
+      node,
+      "newLabbookFileEdge"
+    )
+
+    RelayRuntime.ConnectionHandler.insertEdgeAfter(
+      conn,
+      newEdge
+    );
+  }
+}
 
 let tempID = 0;
 
@@ -64,8 +88,34 @@ export default function MakeLabbookDirectoryMutation(
         callback(response, error)
       },
       onError: err => console.error(err),
+      optimisticUpdater: (store)=>{
+        const id = 'client:newCodeFile:'+ tempID++;
+        const node = store.create(id, 'CodeFile')
 
-      updater: (store) => {
+        // if(response.makeLabbookDirectory.newLabbookFileEdge){
+        //   node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.id, "id")
+        //   node.setValue(false, 'isDir')
+        //   node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.key, 'key')
+        //   node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
+        //   node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.size, 'size')
+        //
+        //   sharedUpdater(store, labbookId, connectionKey, node)
+        // }
+      },
+      updater: (store, response) => {
+        const id = 'client:newCodeFile:'+ tempID++;
+        const node = store.create(id, 'CodeFile')
+
+        if(response.makeLabbookDirectory.newLabbookFileEdge){
+          node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.id, "id")
+          node.setValue(false, 'isDir')
+          node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.key, 'key')
+          node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
+          node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.size, 'size')
+
+          sharedUpdater(store, labbookId, connectionKey, node)
+        }
+
       },
     },
   )

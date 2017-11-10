@@ -40,6 +40,21 @@ const dispatchLoadingProgress = (workerData) =>{
   document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
 }
 
+const dispatchBatchLoadingProgress = (files, index) =>{
+
+  console.log(files, index)
+  store.dispatch({
+    type: 'BATCH_LOADING_PROGRESS',
+    payload: {
+      index: index,
+      totalFiles: files.length,
+      loadingState: true
+    }
+  })
+
+  document.getElementById('footerProgressBar').style.width = Math.floor((index/files.length) * 100) + '%'
+}
+
 /*
  @param {}
  uses redux to dispatch file upload failed status to the footer
@@ -102,6 +117,19 @@ export default class FileBrowserWrapper extends Component {
     this._openJupyter = this._openJupyter.bind(this)
 
   }
+
+  componentDidMount() {
+
+      // var dropzone = document.getElementById(this.props.connection);
+      // dropzone.ondrop = function(event) {
+      //   console.log(event)
+      //   var length = event.dataTransfer.files.length;
+      //   for (var i = 0; i < length; i++) {
+      //     var file = event.dataTransfer.files[i];
+      //     console.log(file)
+      //   }
+      // }
+  }
   /**
   *  @param {none}
   *  uses dom to show mask on file directory
@@ -122,7 +150,7 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFolder(key) {
     let self = this;
-    this.showMask()
+    // this.showMask()
 
     MakeLabbookDirectoryMutation(
       this.props.connection,
@@ -132,24 +160,35 @@ export default class FileBrowserWrapper extends Component {
       this.props.labbookId,
       key,
       (response) => {
-        self.hideMask()
+        // self.hideMask()
 
       }
     )
   }
 
-  _chunkLoader(filepath, file, data){
+  _chunkLoader(filepath, file, data, batchUpload, files, index){
+    console.log(filepath, file, data, batchUpload, files, index)
     let self = this
-
-    store.dispatch({
-      type: 'LOADING_PROGRESS',
-      payload:{
-        bytesUploaded: 0,
-        percentage: 0,
-        totalBytes:  file.size/1000,
-        loadingState: true
-      }
-    })
+    if(!batchUpload){
+      store.dispatch({
+        type: 'LOADING_PROGRESS',
+        payload:{
+          bytesUploaded: 0,
+          percentage: 0,
+          totalBytes:  file.size/1000,
+          loadingState: true
+        }
+      })
+    }else{
+      store.dispatch({
+        type: 'BATCH_LOADING_PROGRESS',
+        payload:{
+          index: index,
+          totalFiles:  files.length,
+          loadingState: true
+        }
+      })
+    }
 
 
     const postMessage = (workerData) => {
@@ -178,9 +217,11 @@ export default class FileBrowserWrapper extends Component {
 
 
       }else if(workerData.chunkSize){
-
-        dispatchLoadingProgress(workerData)
-
+        if(!batchUpload){
+          dispatchLoadingProgress(workerData)
+        }else{
+          dispatchBatchLoadingProgress(files, index)
+        }
      } else{
 
        //self._clearState()
@@ -196,9 +237,12 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFiles(files, prefix) {
     let self = this;
-    this.showMask()
+    //this.showMask()
     this.setState(state => {
-      let newFiles = files.map((file) => {
+
+      console.log(files, prefix)
+      const batchUpload = (files.length > 1)
+      let newFiles = files.map((file, index) => {
         let newKey = prefix;
         if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
           newKey += '/';
@@ -208,6 +252,7 @@ export default class FileBrowserWrapper extends Component {
         let fileReader = new FileReader();
 
         fileReader.onloadend = function (evt) {
+          console.log(evt)
           let arrayBuffer = evt.target.result;
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
           //complete the progress bar
@@ -225,12 +270,36 @@ export default class FileBrowserWrapper extends Component {
               labbookId: self.props.labbookId
             }
 
-
-            self._chunkLoader(filepath, file, data)
+            self._chunkLoader(filepath, file, data, batchUpload, files, index)
           }
 
 
-        fileReader.readAsArrayBuffer(file);
+          fileReader.readAsArrayBuffer(file);
+
+
+
+
+        // window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+        // window.directoryEntry = window.directoryEntry || window.webkitDirectoryEntry;
+        // function onError(error){
+        //   console.log(error)
+        // }
+        // function onFs(fs){
+        //   console.log(fs)
+        //   fs.root.getDirectory('Spinner', {create:true}, function(directoryEntry){
+        //     console.log(directoryEntry)
+        //     //directoryEntry.isFile === false
+        //     //directoryEntry.isDirectory === true
+        //     //directoryEntry.name === 'Documents'
+        //     //directoryEntry.fullPath === '/Documents'
+        //
+        //     }, onError);
+        //
+        //   }
+        //
+        // // Opening a file system with temporary storage
+        // window.requestFileSystem(file, 1024*1024*1024*1024 /*1TB*/, onFs, onError);
+
         return {
           key: newKey,
           size: file.size,
@@ -246,7 +315,7 @@ export default class FileBrowserWrapper extends Component {
 
   handleRenameFolder(oldKey, newKey) {
     let self = this;
-    this.showMask()
+  //  this.showMask()
     let edgesToMove = this.props.files.edges.filter((edge) => {
       return edge && (edge.node.key.indexOf(oldKey) > -1)
     })
@@ -333,7 +402,7 @@ export default class FileBrowserWrapper extends Component {
   */
   handleRenameFile(oldKey, newKey) {
     let that = this;
-    this.showMask()
+    //this.showMask()
     let edgeToMove = this.props.files.edges.filter((edge) => {
       return edge && (oldKey === edge.node.key)
     })[0]
@@ -362,7 +431,7 @@ export default class FileBrowserWrapper extends Component {
   */
   handleDeleteFolder(folderKey) {
     let self = this
-    this.showMask()
+    //this.showMask()
 
     let edgeToDelete = this.props.files.edges.filter((edge) => {
       return edge && (folderKey === edge.node.key)
@@ -388,7 +457,7 @@ export default class FileBrowserWrapper extends Component {
   handleDeleteFile(fileKey) {
 
     let self = this
-    this.showMask()
+    //this.showMask()
 
     let edgeToDelete = this.props.files.edges.filter((edge) => {
       return edge && (fileKey === edge.node.key)
@@ -442,6 +511,7 @@ export default class FileBrowserWrapper extends Component {
 
       let formatedArray = []
       if(files){
+        console.log(files)
         files.edges.forEach((edge) => {
           if(edge){
             formatedArray.push({
@@ -469,6 +539,7 @@ export default class FileBrowserWrapper extends Component {
             ref={this.props.connection}
             key={this.props.connection}
             keyPrefix={this.props.connection}
+            connectionKey={this.props.connection}
             files={files}
             rootFolder={this.props.rootFolder}
             onCreateFolder={this.handleCreateFolder}

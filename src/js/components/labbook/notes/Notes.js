@@ -189,21 +189,21 @@ class Notes extends Component {
               }
               <div
                 key="Notes-loader-card-1"
-                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
                 key="Notes-loader-card-2"
-                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
-                key="Notes-loader-card-3" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+                key="Notes-loader-card-3" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
                 key="Notes-loader-card-4"
-                 className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+                 className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
-                key="Notes-loader-card-5" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+                key="Notes-loader-card-5" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
             </div>
           </div>

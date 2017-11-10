@@ -84,13 +84,41 @@ export default function MoveLabbookFileMutation(
         callback(response, error)
       },
       onError: err => console.error(err),
+      optimisticUpdater: (store) => {
+        console.log(store, labbookId, edge.node.id, connectionKey)
+        sharedUpdater(store, labbookId, edge.node.id, connectionKey);
+        const id = 'client:newCodeFileMove:'+ tempID++;
+        const userProxy = store.get(labbookId);
+        const conn = RelayRuntime.ConnectionHandler.getConnection(
+          userProxy,
+          connectionKey,
+        );
+        const node = store.create(id, 'CodeFile')
 
+        if(conn){
+          const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+            store,
+            conn,
+            node,
+            "newLabbookFileEdge"
+          )
+          node.setValue(id, "id")
+          node.setValue(false, 'isDir')
+          node.setValue(dstPath, 'key')
+          node.setValue(0, 'modifiedAt')
+          node.setValue(302, 'size')
+
+
+          RelayRuntime.ConnectionHandler.insertEdgeAfter(
+            conn,
+            newEdge
+          );
+        }
+      },
       updater: (store) => {
         sharedUpdater(store, labbookId, edge.node.id, connectionKey);
-      },
-      optimisticUpdater: (store) => {
-        sharedUpdater(store, labbookId, edge.node.id, connectionKey);
       }
+
     },
   )
 }

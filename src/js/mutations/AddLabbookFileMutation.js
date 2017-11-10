@@ -104,7 +104,19 @@ export default function AddLabbookFileMutation(
         callback(response, error)
       },
       onError: err => console.error(err),
+      optimisticUpdater:(store)=>{
+        const id = 'client:newCodeFile:'+ tempID++;
+        const node = store.create(id, 'CodeFile')
+        console.log(filePath)
+        node.setValue(id, "id")
+        node.setValue(false, 'isDir')
+        node.setValue('code/' + chunk.filename, 'key')
+        node.setValue(0, 'modifiedAt')
+        node.setValue(chunk.chunkSize, 'size')
 
+        sharedUpdater(store, labbookId, connectionKey, node)
+
+      },
       updater: (store, response) => {
         const id = 'client:newCodeFile:'+ tempID++;
         const node = store.create(id, 'CodeFile')
