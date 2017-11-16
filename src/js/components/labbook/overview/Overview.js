@@ -20,17 +20,23 @@ class Overview extends Component {
     this._openJupyter = this._openJupyter.bind(this)
 
     this.state = reduxStore.getState().overview
-    /*
-      subscribe to store to update state
-    */
+    this._openJupyter = this._openJupyter.bind(this)
+  }
+  /*
+    subscribe to store to update state
+  */
+  componentDidMount() {
     reduxStore.subscribe(() =>{
       this.storeDidUpdate(reduxStore.getState().overview)
     })
   }
+  /*
+    @param {object} overview
+    updates components state
+  */
+  storeDidUpdate = (overview) => {
 
-  storeDidUpdate = () => {
-
-    this.setState(reduxStore.getState().overview);//triggers re-render when store updates
+    this.setState(overview);//triggers re-render when store updates
   }
 
   _openJupyter(){

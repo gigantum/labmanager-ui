@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Tue Nov 07 2017 13:03:55 GMT-0500 (EST)
+# timestamp: Tue Nov 14 2017 15:42:39 GMT-0500 (EST)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -39,7 +39,7 @@ input AddLabbookFavoriteInput {
   subdir: String!
   key: String!
   description: String
-  isDir: String
+  isDir: Boolean
   index: Int
   clientMutationId: String
 }
@@ -50,7 +50,6 @@ type AddLabbookFavoritePayload {
 }
 
 input AddLabbookFileInput {
-  user: String!
   owner: String!
   labbookName: String!
   filePath: String!
@@ -230,7 +229,6 @@ type CustomDependencyEdge {
 scalar DateTime
 
 input DeleteLabbookFileInput {
-  user: String!
   owner: String!
   labbookName: String!
   filePath: String!
@@ -330,7 +328,6 @@ type EnvironmentInfo implements Node {
 }
 
 input ExportLabbookInput {
-  user: String!
   owner: String!
   labbookName: String!
   clientMutationId: String
@@ -372,7 +369,6 @@ enum ImageStatus {
 
 input ImportLabbookInput {
   owner: String!
-  user: String!
   chunkUploadParams: ChunkUploadInput!
   clientMutationId: String
 }
@@ -420,10 +416,9 @@ type Labbook implements Node, GitRepository {
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   environment: Environment
   files(baseDir: String, before: String, after: String, first: Int, last: Int): LabbookFileConnection
-  codeFiles(baseDir: String = "code/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
-  inputFiles(baseDir: String = "input/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
-  outputFiles(baseDir: String = "output/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
-  favorites(subdir: String, before: String, after: String, first: Int, last: Int): LabbookFavoriteConnection
+  code: LabbookSection
+  input: LabbookSection
+  output: LabbookSection
   notes(before: String, after: String, first: Int, last: Int): NoteConnection
 }
 
@@ -518,8 +513,16 @@ type LabbookRefEdge {
   cursor: String!
 }
 
+# A type representing a section within a LabBook (i.e., code, input, output
+#     
+type LabbookSection implements Node {
+  # The ID of the object.
+  id: ID!
+  files(root: String, before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  favorites(before: String, after: String, first: Int, last: Int): LabbookFavoriteConnection
+}
+
 input MakeLabbookDirectoryInput {
-  user: String!
   owner: String!
   labbookName: String!
   dirName: String!
@@ -532,7 +535,6 @@ type MakeLabbookDirectoryPayload {
 }
 
 input MoveLabbookFileInput {
-  user: String!
   owner: String!
   labbookName: String!
   srcPath: String!
@@ -727,7 +729,6 @@ type RemoveUserIdentityPayload {
 }
 
 input RenameLabbookInput {
-  user: String!
   owner: String!
   originalLabbookName: String!
   newLabbookName: String!

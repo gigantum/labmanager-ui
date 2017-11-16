@@ -2,18 +2,21 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //mutations
-
 import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
 
-let codeRootFolder = ''
 
-class CodeBrowser extends Component {
+let inputRootFolder = ''
+
+class InputDataBrowser extends Component {
   constructor(props){
   	super(props);
 
     this.state = {
-      rootFolder: ''
+      'show': false,
+      'message': '',
+      'files': []
     }
+
     this._handleScroll = this._handleScroll.bind(this)
     this.setRootFolder = this.setRootFolder.bind(this)
   }
@@ -22,7 +25,7 @@ class CodeBrowser extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore() //routes query only loads 2, call loadMore
+    this._loadMore()
 
     window.addEventListener('scroll', this._handleScroll);
   }
@@ -39,18 +42,24 @@ class CodeBrowser extends Component {
     @param {event} evt
   */
   _handleScroll(evt){
-
     let root = document.getElementById('root')
 
     let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
     expandOn = root.scrollHeight;
 
-    if ((distanceY > expandOn) &&
-      this.props.code.files &&
-      this.props.code.files.pageInfo.hasNextPage) {
+    if ((distanceY > expandOn) && this.props.input &&
+      this.props.input.files &&
+      this.props.input.files.pageInfo.hasNextPage) {
 
         this._loadMore(evt);
+
     }
+  }
+
+  setRootFolder(key){
+    this.setState({rootFolder: key})
+    inputRootFolder = key
+    this._loadMore()
   }
 
   /*
@@ -59,6 +68,7 @@ class CodeBrowser extends Component {
     increments by 10
     logs callback
   */
+
   _loadMore() {
 
     this.props.relay.loadMore(
@@ -67,50 +77,40 @@ class CodeBrowser extends Component {
        if(error){
          console.error(error)
        }
-     },
-     {baseDir: this.state.rootFolder}
+     }
    );
-  }
-  /*
-    @param
-    sets root folder by key
-    loads more files
-  */
-  setRootFolder(key){
-    this.setState({rootFolder: key})
-    codeRootFolder = key.replace('code/', '')
-    this._loadMore()
   }
 
   render(){
-    if(this.props.code && this.props.code.files){
 
-      let codeFiles = this.props.code.files
-      if(this.props.code.files.edges.length === 0){
-        codeFiles = {
+    if(this.props.input && this.props.input.files){
+      let inputFiles = this.props.input.files
+      if(this.props.input.files.edges.length === 0){
+        inputFiles = {
           edges: [{
             node:{
               modified: new Date(),
-              key: 'code/',
+              key: 'input/',
               isDir: true,
               size: 0,
-              id: 'code_temp'
+              id: 'input_temp'
             }
           }],
-          pageInfo: this.props.code.files.pageInfo
+          pageInfo: this.props.input.files.pageInfo
         }
       }
+
       return(
-          <FileBrowserWrapper
-            ref='codeBrowser'
-            rootFolder={this.state.rootFolder}
-            setRootFolder={this.setRootFolder}
-            files={codeFiles}
-            parentId={this.props.codeId}
-            connection="CodeBrowser_files"
-            favoriteConnection="CodeFavorites_favorites"
-            {...this.props}
-          />
+        <FileBrowserWrapper
+          ref='inputBrowser'
+          rootFoler="input"
+          setRootFolder={this.setRootFolder}
+          files={inputFiles}
+          connection="InputData_files"
+          parentId={this.props.inputId}
+          favoriteConnection="InputFavorites_favorites"
+          {...this.props}
+        />
       )
     }else{
       return(<div>No Files Found</div>)
@@ -118,13 +118,14 @@ class CodeBrowser extends Component {
   }
 }
 
+
 export default createPaginationContainer(
-  CodeBrowser,
+  InputDataBrowser,
   {
 
-    code: graphql`
-      fragment CodeBrowser_code on LabbookSection{
-        files(after: $cursor, first: $first, root: $root)@connection(key: "CodeBrowser_files", filters: []){
+    input: graphql`
+      fragment InputDataBrowser_input on LabbookSection{
+        files(after: $cursor, first: $first, root: $root)@connection(key: "InputDataBrowser_files", filters: []){
           edges{
             node{
               id
@@ -148,30 +149,28 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.code && props.code.files
+      return props.input && props.input.files
     },
-    getFragmentVariables(prevVars, totalCount,) {
-
+    getFragmentVariables(prevVars, totalCount) {
       return {
         ...prevVars,
-        first: totalCount,
+        count: totalCount,
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
+      let root = ''
       const username = localStorage.getItem('username')
-
-      let root = codeRootFolder
 
       return {
         first: count,
-        cursor: (root !== '') ? null : cursor,
+        cursor,
         root,
         owner: username,
         name: props.labbookName
       };
     },
     query: graphql`
-      query CodeBrowserPaginationQuery(
+      query InputDataBrowserPaginationQuery(
         $first: Int
         $cursor: String
         $owner: String!
@@ -179,16 +178,12 @@ export default createPaginationContainer(
         $root: String
       ) {
         labbook(name: $name, owner: $owner){
-           id
-           description
-           code{
-             id
+          input{
             # You could reference the fragment defined previously.
-            ...CodeBrowser_code
-            }
+            ...InputDataBrowser_input
+          }
         }
       }
     `
   }
-
 )

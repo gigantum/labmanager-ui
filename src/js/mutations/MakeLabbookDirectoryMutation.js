@@ -60,7 +60,6 @@ export default function MakeLabbookDirectoryMutation(
 ) {
   const variables = {
     input: {
-      user,
       owner,
       labbookName,
       dirName,

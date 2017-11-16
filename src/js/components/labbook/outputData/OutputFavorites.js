@@ -5,8 +5,7 @@ import {createPaginationContainer, graphql} from 'react-relay'
 import FavoriteCard from './../fileBrowser/FavoriteCard'
 //mutations
 //
-let counter = 10;
-class CodeFavorites extends Component {
+class OutputFavorites extends Component {
   constructor(props){
   	super(props);
   }
@@ -36,6 +35,7 @@ class CodeFavorites extends Component {
     this.props.relay.loadMore(
      3, // Fetch the next 10 feed items
      (response, error) => {
+
        if(error){
          console.error(error)
        }
@@ -46,23 +46,23 @@ class CodeFavorites extends Component {
 
 
   render(){
-
-    if(this.props.code && this.props.code.favorites){
-      if(this.props.code.favorites.edges.length > 0){
+    if(this.props.output && this.props.output.favorites){
+      if(this.props.output.favorites.edges.length > 0){
         return(
           <div className="Favorite">
             <div className="Favorite__list">
               {
-                this.props.code.favorites.edges.map((edge)=>{
+                this.props.output.favorites.edges.map((edge)=>{
                     return(
                       <div
                         key={edge.node.key}
                         className="Favorite__card-wrapper">
+
                         <FavoriteCard
                           labbookName={this.props.labbookName}
-                          parentId={this.props.codeId}
-                          root={'code'}
-                          connection={"CodeFavorites_favorites"}
+                          parentId={this.props.outputId}
+                          root={'output'}
+                          connection={"OutputFavorites_favorites"}
                           favorite={edge.node}
                         />
                       </div>)
@@ -70,7 +70,7 @@ class CodeFavorites extends Component {
             }
             </div>
 
-            <div className={this.props.code.favorites.pageInfo.hasNextPage ? "Favorite__action-bar" : "hidden"}>
+            <div className={this.props.output.favorites.pageInfo.hasNextPage ? "Favorite__action-bar" : "hidden"}>
               <button
                 className="Favorite__load-more"
                 onClick={()=>{this._loadMore()}}
@@ -92,12 +92,12 @@ class CodeFavorites extends Component {
 }
 
 export default createPaginationContainer(
-  CodeFavorites,
+  OutputFavorites,
   {
 
-    code: graphql`
-      fragment CodeFavorites_code on LabbookSection{
-        favorites(after: $cursor, first: $first)@connection(key: "CodeFavorites_favorites", filters: []){
+    output: graphql`
+      fragment OutputFavorites_output on LabbookSection{
+        favorites(after: $cursor, first: $first)@connection(key: "OutputFavorites_favorites", filters: []){
           edges{
             node{
               id
@@ -121,7 +121,7 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.code && props.code.favorites
+      return props.output && props.output.favorites
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -142,7 +142,7 @@ export default createPaginationContainer(
       };
     },
     query: graphql`
-      query CodeFavoritesPaginationQuery(
+      query OutputFavoritesPaginationQuery(
         $first: Int
         $cursor: String
         $owner: String!
@@ -152,8 +152,8 @@ export default createPaginationContainer(
            id
            description
            # You could reference the fragment defined previously.
-           code{
-             ...CodeFavorites_code
+           output{
+             ...OutputFavorites_output
            }
         }
       }

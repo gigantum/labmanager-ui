@@ -6,6 +6,8 @@ import {
   graphql
 } from 'react-relay'
 
+import store from "JS/redux/store"
+
 //components
 import Notes from './notes/Notes'
 import Code from './code/Code'
@@ -22,28 +24,68 @@ class Labbook extends Component {
   constructor(props){
   	super(props);
 
-    this.state = {
-      'selectedComponent': (props.location.pathname.split('/').length > 3) ? this.props.location.pathname.split('/')[3] : 'overview' ,
-      'containerState': props.containerStatus,
-      'imageStatus': props.imageStatus,
-      'isBuilding': false,
-      'containerStatus': '',
-      'modalVisible': ''
-    }
+    store.dispatch({
+      type: 'INITIALIZE',
+      payload:{
+        'selectedComponent': (props.location.pathname.split('/').length > 3) ? props.location.pathname.split('/')[3] : 'overview' ,
+        'containerState': props.labbook.environment.containerStatus,
+        'imageStatus': props.labbook.environment.imageStatus
+      }
+    })
+    this.state = store.getState()
+
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
     this._setBuildingState = this._setBuildingState.bind(this)
     this._showLabbookModal = this._showLabbookModal.bind(this)
     this._hideLabbookModal = this._hideLabbookModal.bind(this)
-  }
+
+
+}
+componentDidMount() {
+  /*
+    subscribe to store to update state
+  */
+  store.subscribe(() =>{
+
+    this.storeDidUpdate(store.getState().labbook)
+  })
+}
+/**
+  @param {object} labbook
+  updates state of labbook when prompted ot by the store
+  updates history prop
+*/
+storeDidUpdate = (labbook) => {
+  //console.trace(labbook)
+  //for(this.state)
+  this.setState(labbook);//triggers re-render when store updates
+}
   /**
     @param {string} componentName - input string componenetName
     updates state of selectedComponent
     updates history prop
   */
   _setSelectedComponent = (componentName) =>{
-    this.setState({'selectedComponent': componentName})
 
-    this.props.history.replace(`../../labbooks/${this.props.match.params.labbookName}/${componentName}`)
+    if(componentName !== this.state.selectedComponent){
+      store.dispatch({
+        type: 'UPDATE_DETAIL_VIEW',
+        payload: {
+          detailView: false
+        }
+      })
+
+      store.dispatch(
+        {type: 'SELECTED_COMPONENT',
+        payload:{
+          'selectedComponent': componentName
+        }
+      })
+
+      this.props.history.replace(`../../labbooks/${this.props.match.params.labbookName}/${componentName}`)
+    }
+
+
   }
   /**
     @param {boolean} isBuilding
@@ -54,7 +96,14 @@ class Labbook extends Component {
 
     this.refs['ContainerStatus'].setState({'isBuilding': isBuilding})
 
-    this.setState({'isBuilding': isBuilding})
+    if(this.state.isBuilding !== isBuilding){
+      store.dispatch(
+        {type: 'IS_BUILDING',
+        payload:{
+          'isBuilding': isBuilding
+        }
+      })
+    }
   }
 
   /**
@@ -90,7 +139,16 @@ class Labbook extends Component {
       document.getElementById('modal__cover').classList.remove('hidden')
     }
 
-    this.setState({'modalVisible': true})
+    if(!this.state.modalVisible){
+      store.dispatch(
+        {
+          type: 'MODAL_VISIBLE',
+          payload:{
+            'modalVisible': true
+          }
+      })
+    }
+
   }
   /**
     @param {}
@@ -106,7 +164,15 @@ class Labbook extends Component {
       document.getElementById('modal__cover').classList.add('hidden')
     }
 
-    this.setState({'modalVisible': false})
+    if(this.state.modalVisible){
+      store.dispatch(
+        {
+          type: 'MODAL_VISIBLE',
+          payload:{
+            'modalVisible': false
+          }
+      })
+    }
   }
 
   render(){
@@ -115,7 +181,8 @@ class Labbook extends Component {
 
     if(this.props.labbook){
       return(
-        <div className="Labbook">
+        <div
+          className={this.state.detailMode ? "Labbook Labbook--detail-mode" : "Labbook"}>
 
            <div className="Labbook__inner-container flex flex--row">
              <div className="Labbook__component-container flex flex--column">
@@ -126,7 +193,7 @@ class Labbook extends Component {
                    {labbookName}
                  </h4>
 
-                 <ContainerStatus
+                 {/* <ContainerStatus
                    ref="ContainerStatus"
                    containerStatus={this.props.labbook.environment.containerStatus}
                    imageStatus={this.props.labbook.environment.imageStatus}
@@ -134,7 +201,7 @@ class Labbook extends Component {
                    labbookId={this.props.labbook.id}
                    setBuildingState={this._setBuildingState}
                    isBuilding={this.state.isBuilding}
-                 />
+                 /> */}
               </div>
 
               <div className="Labbook__navigation-container mui-container flex-0-0-auto">
@@ -150,7 +217,10 @@ class Labbook extends Component {
                <div className="Labbook__view mui-container flex flex-1-0-auto">
 
                   <Switch>
-                    <Route exact path={`${this.props.match.path}`} render={() => {
+                    <Route
+                      exact
+                      path={`${this.props.match.path}`}
+                      render={() => {
 
                         return (<Overview
                           key={this.props.labbookName + '_overview'}
@@ -165,7 +235,9 @@ class Labbook extends Component {
 
                     <Route path={`${this.props.match.path}/:labbookMenu`}>
                       <Switch>
-                        <Route path={`${this.props.match.path}/overview`} render={() => {
+                        <Route
+                          path={`${this.props.match.path}/overview`}
+                          render={() => {
                             return (<Overview
                               key={this.props.labbookName + '_overview'}
                               labbook={this.props.labbook}
@@ -176,7 +248,9 @@ class Labbook extends Component {
                           }}
                         />
 
-                        <Route path={`${this.props.match.path}/notes`} render={() => {
+                        <Route
+                          path={`${this.props.match.path}/notes`}
+                          render={() => {
                           return (<Notes
                               key={this.props.labbookName + '_notes'}
                               labbook={this.props.labbook}
@@ -188,17 +262,20 @@ class Labbook extends Component {
                             />)
                         }} />
 
-                        <Route path={`${this.props.match.url}/environment`} render={() => {
-                          return (<Environment
-                            key={labbookName + '_environment'}
-                            labbook={this.props.labbook}
-                            labbookId={this.props.labbook.id}
-                            setBuildingState={this._setBuildingState}
-                            labbookName={labbookName}
-                            containerStatus={this.refs.ContainerStatus}
-                            {...this.props}
-                          />)
-                        }} />
+                        <Route
+                          path={`${this.props.match.url}/environment`}
+                          render={() => {
+                            return (<Environment
+                              key={labbookName + '_environment'}
+                              labbook={this.props.labbook}
+                              labbookId={this.props.labbook.id}
+                              setBuildingState={this._setBuildingState}
+                              labbookName={labbookName}
+                              containerStatus={this.refs.ContainerStatus}
+                              {...this.props}
+                            />)
+                          }}
+                        />
 
                         <Route path={`${this.props.match.url}/code`} render={() => {
                           return (
@@ -235,16 +312,6 @@ class Labbook extends Component {
 
             </div>
 
-            {/* <div className="Labbook__info">
-              <div className="Labbook__info-card">
-                <div
-                  className="Labbook__user-note"
-                  onClick={() => this._showLabbookModal()}>
-                   <h5>Add Note</h5>
-                   <div className="Labbook__user-note--add"></div>
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
       )

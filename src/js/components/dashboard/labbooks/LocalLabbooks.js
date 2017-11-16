@@ -129,7 +129,7 @@ class LocalLabbooks extends Component {
       this.state.oldLabbookName,
       this.state.newLabbookName,
       (response, error) =>{
-        console.log(response, error)
+
         if(error){
           self.setState({renameError: error[0].message})
         }

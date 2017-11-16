@@ -3,6 +3,18 @@
   margin-top: 50px;
   min-height: calc(100% - 230px);
   height: auto;
+  width: 100%;
+  transition: width 0.25s;
+}
+
+.Labbook--detail-mode{
+  width: calc(100% - 350px);
+
+  .Labbook__navigation div {
+    transition: padding 0.25s;
+    padding: 5px 10px;
+    white-space: nowrap;
+  }
 }
 
 .Labbook__header{
@@ -35,6 +47,7 @@
   height: 34px;
   background-color: inherit;
   line-height: normal;
+  white-space: nowrap;
   div{
     a{
       color: $font-grey;

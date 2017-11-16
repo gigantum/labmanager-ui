@@ -3,17 +3,15 @@ import React, { Component } from 'react'
 import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import CodeBrowser from './CodeBrowser'
+import CodeFavorites from './CodeFavorites'
 
 class Code extends Component {
   constructor(props){
   	super(props);
 
   }
-
-
-
   render(){
-    console.log(this.props.labbook)
+
     if(this.props.labbook){
       return(
 
@@ -27,7 +25,11 @@ class Code extends Component {
             </div>
           </div>
           <div className="Code__favorites">
-
+            <CodeFavorites
+              codeId={this.props.labbook.code.id}
+              code={this.props.labbook.code}
+              labbookName={this.props.labbookName}
+            />
           </div>
           <div className="Code__header">
             <h5 className="Code__subtitle">Code Browser</h5>
@@ -42,7 +44,8 @@ class Code extends Component {
           <div className="Code__file-browser">
             <CodeBrowser
               labbookId={this.props.labbookId}
-              labbook={this.props.labbook}
+              codeId={this.props.labbook.code.id}
+              code={this.props.labbook.code}
               labbookName={this.props.labbookName}
             />
           </div>
@@ -59,8 +62,12 @@ class Code extends Component {
 export default createFragmentContainer(
   Code,
   graphql`
-    fragment Code_labbook on Labbook {
-      ...CodeBrowser_labbook
+    fragment Code_labbook on Labbook{
+      code{
+        id
+        ...CodeBrowser_code
+        ...CodeFavorites_code
+      }
     }
   `,
 );

@@ -11,10 +11,14 @@ export default class Footer extends Component {
     this.state = store.getState()
     this._clearState = this._clearState.bind(this)
 
+  }
+
+  componentDidMount() {
     /*
       subscribe to store to update state
     */
     store.subscribe(() =>{
+      
       this.storeDidUpdate(store.getState().footer)
     })
   }
