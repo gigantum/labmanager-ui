@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
+//utilities
 import JobStatus from 'JS/utils/JobStatus'
-
+//store
 import store from "JS/redux/store"
+
+let unsubscribe
 
 export default class Footer extends Component {
 
@@ -12,19 +15,27 @@ export default class Footer extends Component {
     this._clearState = this._clearState.bind(this)
 
   }
-
+  /*
+    subscribe to store to update state
+  */
   componentDidMount() {
-    /*
-      subscribe to store to update state
-    */
-    store.subscribe(() =>{
-      
+
+    unsubscribe = store.subscribe(() =>{
+
       this.storeDidUpdate(store.getState().footer)
     })
   }
+  /*
+    unsubscribe from redux store
+  */
+  componentWillUnmount() {
+    unsubscribe()
+  }
 
-  storeDidUpdate = () => {
-    this.setState(store.getState().footer);//triggers re-render when store updates
+  storeDidUpdate = (footer) => {
+    if(this.state !== footer){
+      this.setState(footer);//triggers re-render when store updates
+    }
   }
 
   _openLabbook(){
@@ -78,7 +89,8 @@ export default class Footer extends Component {
  */
  _getMessage(){
    let message = ''
-   if(this.state.totalFiles !== 0){
+   console.log(this.state.totalFiles)
+   if(this.state.totalFiles === 0){
      const uploadProgress = this._humanFileSize(this.state.bytesUploaded)
 
      const total = this._humanFileSize(this.state.totalBytes)

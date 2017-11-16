@@ -27,7 +27,7 @@ export default (
    return {
      ...state,
      previousDetailMode: state.detailMode,
-     detailMode: action.payload.detailView
+     detailMode: action.payload.detailMode
   };
  }else if(action.type === INITIALIZE){
 

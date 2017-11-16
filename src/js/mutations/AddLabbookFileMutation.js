@@ -105,8 +105,8 @@ export default function AddLabbookFileMutation(
       onError: err => console.error(err),
       optimisticUpdater:(store)=>{
         const id = uuidv4()
-        const node = store.create(id, 'CodeFile')
-        console.log(filePath)
+        const node = store.create(id, 'LabbookFile')
+
         node.setValue(id, "id")
         node.setValue(false, 'isDir')
         node.setValue('code/' + chunk.filename, 'key')
@@ -118,7 +118,7 @@ export default function AddLabbookFileMutation(
       },
       updater: (store, response) => {
         const id = uuidv4()
-        const node = store.create(id, 'CodeFile')
+        const node = store.create(id, 'LabbookFile')
         if(response.addLabbookFile.newLabbookFileEdge){
           node.setValue(response.addLabbookFile.newLabbookFileEdge.node.id, "id")
           node.setValue(false, 'isDir')

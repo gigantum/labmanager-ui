@@ -20,6 +20,7 @@ import Loader from 'Components/shared/Loader'
 
 import Config from 'JS/config'
 
+let unsubscribe
 class Labbook extends Component {
   constructor(props){
   	super(props);
@@ -41,14 +42,21 @@ class Labbook extends Component {
 
 
 }
+/*
+  subscribe to store to update state
+  set unsubcribe for store
+*/
 componentDidMount() {
-  /*
-    subscribe to store to update state
-  */
-  store.subscribe(() =>{
+  unsubscribe = store.subscribe(() =>{
 
     this.storeDidUpdate(store.getState().labbook)
   })
+}
+/*
+  unsubscribe from redux store
+*/
+componentWillUnmount() {
+  unsubscribe()
 }
 /**
   @param {object} labbook
@@ -56,9 +64,10 @@ componentDidMount() {
   updates history prop
 */
 storeDidUpdate = (labbook) => {
-  //console.trace(labbook)
   //for(this.state)
-  this.setState(labbook);//triggers re-render when store updates
+  if(this.state !== labbook){
+    this.setState(labbook);//triggers re-render when store updates
+  }
 }
   /**
     @param {string} componentName - input string componenetName
@@ -72,9 +81,10 @@ storeDidUpdate = (labbook) => {
         store.dispatch({
           type: 'UPDATE_DETAIL_VIEW',
           payload: {
-            detailView: false
+            detailMode: false
           }
         })
+
       }
 
       store.dispatch(

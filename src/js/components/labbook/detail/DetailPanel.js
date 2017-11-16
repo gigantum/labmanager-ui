@@ -1,27 +1,33 @@
+/*
+  This is a multi-use panel for a labbook
+  File information and activty details are explored here
+*/
 // vendor
 import React, { Component } from 'react'
 //store
 import store from 'JS/redux/store'
 
-
+let unsubscribe;
 export default class DetailPanel extends Component {
   constructor(props){
   	super(props);
-
+    //sets state to store
     this.state = store.getState().detailView
-    this._closePanel = this._closePanel.bind(this)
-    /*
-      subscribe to store to update state
-    */
 
+    //bind functions here
+    this._closePanel = this._closePanel.bind(this)
   }
 
+  /*
+    sets unsubcribe method,
+    subscribes to redux store
+    opens panel with or without transitions depeneding on components state
+  */
   componentDidMount() {
-      store.subscribe(() =>{
-
+      unsubscribe = store.subscribe(() =>{
         this.storeDidUpdate(store.getState().detailView)
       })
-      
+
       if(this.props.name){
         if(this.state.detailMode && !this.state.previousDetailMode){
           setTimeout(()=>{
@@ -34,7 +40,15 @@ export default class DetailPanel extends Component {
         }
       }
   }
-
+  /*
+    must unsubscribe from the store on unmount
+  */
+  componentWillUnmount() {
+    unsubscribe()
+  }
+  /*
+    opens or closes the detail panel
+  */
   componentDidUpdate(prevProps, prevState) {
 
     if(this.state.detailMode){
@@ -45,37 +59,44 @@ export default class DetailPanel extends Component {
 
   }
 
+  /*
+    updates state if and only of state is different from the store
+  */
   storeDidUpdate(detailView){
-    this.setState(detailView)
+    if(JSON.stringify(this.state) !== JSON.stringify(detailView)){
+      this.setState(detailView)
+    }
   }
 
+  /*
+    updates redux store to close detail panel
+  */
   _closePanel(){
 
     store.dispatch({
       type: 'UPDATE_DETAIL_VIEW',
       payload: {
-        detailView: false
+        detailMode: false
       }
     })
+
   }
   render(){
-
       return(
 
         <div
           ref="DetailPanel"
-          className="DetailPanel"
-        >
+          className="DetailPanel">
           <div
             className="DetailPanel--close"
-            onClick={()=> this._closePanel()}
-          >
+            onClick={()=> this._closePanel()}>
             X
           </div>
+
           <p>{this.props.name}</p>
-          <p>{this.props.key}</p>
+
           <p>{this.props.extension}</p>
-          <p>{this.props.url}</p>
+
         </div>
       )
   }

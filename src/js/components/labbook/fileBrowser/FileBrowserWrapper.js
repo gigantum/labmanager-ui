@@ -23,8 +23,20 @@ import store from 'JS/redux/store'
  uses redux to dispatch file upload to the footer
 */
 const dispatchLoadingProgress = (workerData) =>{
+  console.log(workerData)
   let bytesUploaded = (workerData.chunkSize * (workerData.chunkIndex + 1))/1000
-  let totalBytes = workerData.fileSizeKb * 1000
+  let totalBytes = workerData.fileSizeKb
+
+  console.log({
+        bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
+        totalBytes: totalBytes,
+        percentage: Math.floor((bytesUploaded/totalBytes) * 100) > 100 ? 100 : Math.floor((bytesUploaded/totalBytes) * 100),
+        loadingState: true,
+        uploadMessage: '',
+        labbookName: '',
+        error: false,
+        success: false
+      })
 
   store.dispatch({
     type: 'LOADING_PROGRESS',
@@ -42,7 +54,10 @@ const dispatchLoadingProgress = (workerData) =>{
 
   document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
 }
-
+/*
+ @param {array, number} files,index
+ dispatches batch loading progess to the store
+*/
 const dispatchBatchLoadingProgress = (files, index) =>{
 
 
@@ -98,8 +113,6 @@ const dispatchFinishedStatus = (filepath) =>{
      }
    })
 }
-
-
 
 export default class FileBrowserWrapper extends Component {
   constructor(props){
@@ -211,6 +224,7 @@ export default class FileBrowserWrapper extends Component {
 
 
       }else if(workerData.chunkSize){
+        console.log(batchUpload)
         if(!batchUpload){
           dispatchLoadingProgress(workerData)
         }else{
@@ -565,7 +579,7 @@ export default class FileBrowserWrapper extends Component {
     store.dispatch({
       type: 'UPDATE_DETAIL_VIEW',
       payload: {
-        detailView: true
+        detailMode: true
       }
     })
   }

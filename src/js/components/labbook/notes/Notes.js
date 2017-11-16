@@ -26,7 +26,6 @@ class Notes extends Component {
     this._loadMore = this._loadMore.bind(this)
     this._toggleNote = this._toggleNote.bind(this)
     this._hideAddNote = this._hideAddNote.bind(this)
-    this._loadMore()
     this._handleScroll = this._handleScroll.bind(this)
   }
 
@@ -48,6 +47,8 @@ class Notes extends Component {
     pagination = false;
 
     window.addEventListener('scroll', this._handleScroll);
+
+    this._loadMore()
   }
 
   componentWillUnmount() {
