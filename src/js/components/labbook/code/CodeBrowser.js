@@ -43,6 +43,7 @@ class CodeBrowser extends Component {
     let root = document.getElementById('root')
 
     let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
+
     expandOn = root.scrollHeight;
 
     if ((distanceY > expandOn) &&

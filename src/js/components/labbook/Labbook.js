@@ -68,12 +68,14 @@ storeDidUpdate = (labbook) => {
   _setSelectedComponent = (componentName) =>{
 
     if(componentName !== this.state.selectedComponent){
-      store.dispatch({
-        type: 'UPDATE_DETAIL_VIEW',
-        payload: {
-          detailView: false
-        }
-      })
+      if(store.getState().detailView.selectedComponent == true){
+        store.dispatch({
+          type: 'UPDATE_DETAIL_VIEW',
+          payload: {
+            detailView: false
+          }
+        })
+      }
 
       store.dispatch(
         {type: 'SELECTED_COMPONENT',
@@ -193,7 +195,7 @@ storeDidUpdate = (labbook) => {
                    {labbookName}
                  </h4>
 
-                 {/* <ContainerStatus
+                 <ContainerStatus
                    ref="ContainerStatus"
                    containerStatus={this.props.labbook.environment.containerStatus}
                    imageStatus={this.props.labbook.environment.imageStatus}
@@ -201,7 +203,7 @@ storeDidUpdate = (labbook) => {
                    labbookId={this.props.labbook.id}
                    setBuildingState={this._setBuildingState}
                    isBuilding={this.state.isBuilding}
-                 /> */}
+                 />
               </div>
 
               <div className="Labbook__navigation-container mui-container flex-0-0-auto">

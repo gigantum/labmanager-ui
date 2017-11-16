@@ -13,10 +13,19 @@ export default class FavoriteCard extends Component {
     }
   }
 
+  /*
+    @param {boolean} value
+    sets editMode to true or false
+    displays textarea if true
+  */
   _editDescription(value){
     this.setState({editMode: value})
   }
-
+  /*
+    @param {event, string} evt,key
+    triggers add favorite mutation on key ENTER
+    hides editMode
+  */
   _updateDescription(evt, key){
     const username = localStorage.getItem('username')
     let filepath = key.replace(this.props.root + '/', '')
@@ -43,7 +52,11 @@ export default class FavoriteCard extends Component {
 
   }
 
-  _unfavorite(node){
+  /*
+    @param {object} node
+    triggers remove favorite mutation
+  */
+  _removeFavorite(node){
 
     const username = localStorage.getItem('username')
     RemoveFavoriteMutation(
@@ -70,12 +83,16 @@ export default class FavoriteCard extends Component {
     return(
       <div className="Favorite__card card">
         <div
-          onClick={()=>{ this._unfavorite(this.props.favorite) }}
+          onClick={()=>{ this._removeFavorite(this.props.favorite) }}
           className="Favorite__star">
         </div>
+
         <h6 className="Favorite__card-header">{filename}</h6>
+
         <p className="Favorite__path">{path}</p>
+
         <div className="Favorite__description-section">
+
           { !this.state.editMode && (this.props.favorite.description.length > 0) &&
 
               <p className="Favorite__description">{this.props.favorite.description} <button
@@ -100,11 +117,10 @@ export default class FavoriteCard extends Component {
               placeholder={this.props.favorite.description}>
               {this.props.favorite.description}
             </textarea>
-
           }
 
-
         </div>
+
       </div>
     )
   }

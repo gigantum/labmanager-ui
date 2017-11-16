@@ -14,7 +14,7 @@ const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChu
 
 
   ImportLabbookMutation(username, username, chunk.blob, chunk, accessToken, (result, error)=>{
-     
+
       if(result && (error === undefined)){
         getChunkCallback(file, result)
       }else{
@@ -32,7 +32,7 @@ const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepa
     username,
     username,
     data.labbookName,
-    data.labbookId,
+    data.parentId,
     filepath,
     chunk,
     accessToken,

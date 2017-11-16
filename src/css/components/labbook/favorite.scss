@@ -6,20 +6,67 @@
 .Favorite__card-wrapper{
   flex: 1 0;
   height: 240px;
-  min-width: 300px;
-  width: 33%;
-  max-width: 33%;
+  min-width: 33.333%;
+  width: 33.333%;
+  max-width: 33.333%;
   color: $font-grey;;
 }
+
+
+@media screen and (max-width: 50000px) and (min-width: 1080px) {
+  .Favorite__card-wrapper{
+    min-width: 33.333%;
+    width: 33.333%;
+    max-width: 33.333%;
+  }
+  .Favorite__card-wrapper:nth-child(3n+0){
+    @include flex(flex-end, row);
+  }
+
+  .Favorite__card-wrapper:nth-child(3n+1){
+    @include flex(left, row);
+  }
+
+  .Favorite__card-wrapper:nth-child(3n+2){
+    @include flex(space-around, row);
+  }
+}
+@media screen and (max-width: 1079px) and (min-width: 778px) {
+  .Favorite__card-wrapper{
+    min-width: 50%;
+    width: 50%;
+    max-width: 50%;
+  }
+  .Favorite__card-wrapper:nth-child(2n+0){
+    @include flex(flex-end, row);
+  }
+
+  .Favorite__card-wrapper:nth-child(2n+1){
+    @include flex(left, row);
+  }
+}
+@media screen and (max-width: 777px) and (min-width: 0px) {
+  .Favorite__card-wrapper{
+    min-width: 100%;
+    width: 100%;
+    max-width: 100%;
+  }
+    .Favorite__card-wrapper{
+      @include flex(space-around, row);
+    }
+}
+
 
 .Favorite__card{
   width: calc(100% - 20px);
   height: 220px;
+  min-width: 300px;
+  max-width: 400px;
   position: relative;
   text-align: left;
   padding: 20px;
   P{
-    font-size: 16px;
+    font-size: 14px;
     padding: 2px 0;
   }
 }
@@ -55,7 +102,7 @@
 }
 
 .Favorite__card-header{
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   padding: 5px 0;
   color: $charcoal;
