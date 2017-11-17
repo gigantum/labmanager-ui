@@ -3,7 +3,7 @@
  */
 export const INITIALIZE = 'INITIALIZE';
 export const UPDATE_DETAIL_VIEW = 'UPDATE_DETAIL_VIEW';
-export const RESET_STORE = 'RESET_STORE';
+export const RESET_LABBOOK_STORE = 'RESET_LABBOOK_STORE';
 export const IS_BUILDING = 'IS_BUILDING'
 export const MODAL_VISIBLE = 'MODAL_VISIBLE'
 export const SELECTED_COMPONENT = 'SELECTED_COMPONENT'
@@ -55,11 +55,18 @@ export default (
      ...state,
      'modalVisible': action.payload.modalVisible,
    };
- }else if(action.type === RESET_STORE){
+ }else if(action.type === RESET_LABBOOK_STORE){
 
    return {
      ...state,
-     containerStates: {}
+     'selectedComponent': '',
+     'containerState': '',
+     'imageStatus': '',
+     'isBuilding': false,
+     'containerStatus': '',
+     'modalVisible': '',
+     'detailMode': false,
+     'previousDetailMode': false
    };
  }
 

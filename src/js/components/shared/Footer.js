@@ -50,7 +50,7 @@ export default class Footer extends Component {
 
     document.getElementById('footerProgressBar').style.opacity = 0;
 
-    store.dispatch({type:'RESET_STORE', payload:{}})
+    store.dispatch({type:'RESET_FOOTER_STORE', payload:{}})
 
     setTimeout(()=>{
       document.getElementById('footerProgressBar').style.width = "0%";
@@ -89,7 +89,7 @@ export default class Footer extends Component {
  */
  _getMessage(){
    let message = ''
-   console.log(this.state.totalFiles)
+
    if(this.state.totalFiles === 0){
      const uploadProgress = this._humanFileSize(this.state.bytesUploaded)
 
@@ -97,7 +97,7 @@ export default class Footer extends Component {
 
      message = this.state.uploadMessage ? this.state.uploadMessage : uploadProgress + ' of ' + total + ' uploaded (' + this.state.percentage + '%)'
    }else{
-      message = `uploading ${this.state.totalFile} files`
+      message = `uploaded ${this.state.index} of ${this.state.totalFiles} files`
    }
 
    return message

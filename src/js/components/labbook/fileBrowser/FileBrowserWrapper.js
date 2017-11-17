@@ -22,21 +22,11 @@ import store from 'JS/redux/store'
  @param {object} workerData
  uses redux to dispatch file upload to the footer
 */
+let fileCompleteCounter = 0
+
 const dispatchLoadingProgress = (workerData) =>{
-  console.log(workerData)
   let bytesUploaded = (workerData.chunkSize * (workerData.chunkIndex + 1))/1000
   let totalBytes = workerData.fileSizeKb
-
-  console.log({
-        bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
-        totalBytes: totalBytes,
-        percentage: Math.floor((bytesUploaded/totalBytes) * 100) > 100 ? 100 : Math.floor((bytesUploaded/totalBytes) * 100),
-        loadingState: true,
-        uploadMessage: '',
-        labbookName: '',
-        error: false,
-        success: false
-      })
 
   store.dispatch({
     type: 'LOADING_PROGRESS',
@@ -114,6 +104,35 @@ const dispatchFinishedStatus = (filepath) =>{
    })
 }
 
+/*
+
+*/
+const dispatchUploadFinished = () => {
+  document.getElementById('footerProgressBar').style.opacity = 0;
+
+  store.dispatch({
+    type: 'UPLOAD_MESSAGE',
+    payload: {
+      uploadMessage: 'Upload Succesfull',
+    }
+  })
+
+  setTimeout(()=>{
+
+    document.getElementById('footerProgressBar').style.width = "0%";
+    store.dispatch({
+      type: 'RESET_FOOTER_STORE',
+      payload: {}
+    })
+
+    setTimeout(() =>{
+      document.getElementById('footerProgressBar').style.opacity = 1;
+    }, 1000)
+  }, 1000)
+}
+
+
+
 export default class FileBrowserWrapper extends Component {
   constructor(props){
   	super(props);
@@ -187,48 +206,46 @@ export default class FileBrowserWrapper extends Component {
         }
       })
     }else{
-      store.dispatch({
-        type: 'BATCH_LOADING_PROGRESS',
-        payload:{
-          index: index,
-          totalFiles:  files.length,
-          loadingState: true
-        }
-      })
+      if(index === 0){
+        store.dispatch({
+          type: 'BATCH_LOADING_PROGRESS',
+          payload:{
+            index: 0,
+            totalFiles:  files.length,
+            loadingState: true
+          }
+        })
+      }
     }
 
 
     const postMessage = (workerData) => {
 
      if(workerData.addLabbookFile){
+        if(!batchUpload){
 
+          dispatchUploadFinished()
+        }else if(batchUpload && ((files.length - 1) === fileCompleteCounter)){
 
-        document.getElementById('footerProgressBar').style.opacity = 0;
+          fileCompleteCounter++
 
-        store.dispatch({
-          type: 'UPLOAD_MESSAGE',
-          payload: {uploadMessage: `Upload Succesfull`}
-        })
-        self.hideMask()
-        setTimeout(()=>{
-          document.getElementById('footerProgressBar').style.width = "0%";
-          store.dispatch({
-            type: 'RESET_STORE',
-            payload: {}
-          })
+          dispatchBatchLoadingProgress(files, fileCompleteCounter)
 
-          setTimeout(() =>{
-            document.getElementById('footerProgressBar').style.opacity = 1;
-          }, 1000)
-        }, 1000)
+          setTimeout(() => {
+            dispatchUploadFinished()
+            fileCompleteCounter=0;
+          }, 500)
+
+        }else{
+          fileCompleteCounter++
+          dispatchBatchLoadingProgress(files, fileCompleteCounter)
+        }
 
 
       }else if(workerData.chunkSize){
-        console.log(batchUpload)
+
         if(!batchUpload){
           dispatchLoadingProgress(workerData)
-        }else{
-          dispatchBatchLoadingProgress(files, index)
         }
      } else{
 
