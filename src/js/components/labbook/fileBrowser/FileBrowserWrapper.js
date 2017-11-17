@@ -8,12 +8,14 @@ import Moment from 'moment'
 import Environment, {relayStore} from 'JS/createRelayEnvironment'
 //components
 import DetailPanel from './../detail/DetailPanel'
+import DragAndDrop from './DragDrop'
 //mutations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import DeleteLabbookFileMutation from 'Mutations/DeleteLabbookFileMutation'
 import MakeLabbookDirectoryMutation from 'Mutations/MakeLabbookDirectoryMutation'
 import MoveLabbookFileMutation from 'Mutations/MoveLabbookFileMutation'
 import AddFavoriteMutation from 'Mutations/AddFavoriteMutation'
+
 //utilities
 import ChunkUploader from 'JS/utils/ChunkUploader'
 //store
@@ -156,6 +158,9 @@ export default class FileBrowserWrapper extends Component {
     this.handleFileFavoriting = this.handleFileFavoriting.bind(this)
 
   }
+  componentDidMount() {
+    //DragAndDrop.dragAndDrop()
+  }
   /**
   *  @param {none}
   *  uses dom to show mask on file directory
@@ -262,7 +267,7 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFiles(files, prefix) {
     let self = this;
-    //this.showMask()
+    console.log(files, prefix)
     this.setState(state => {
 
       const batchUpload = (files.length > 1)
