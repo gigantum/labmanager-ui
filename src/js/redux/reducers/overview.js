@@ -2,7 +2,7 @@
  * constants
  */
 export const UPDATE_CONTAINER_STATE = 'UPDATE_CONTAINER_STATE';
-export const RESET_STORE = 'RESET_STORE';
+export const RESET_OVERVIEW_STORE = 'RESET_OVERVIEW_STORE';
 
 
 export default (
@@ -18,7 +18,7 @@ export default (
      ...state,
      containerStates: containerStates
    };
- } else if(action.type === RESET_STORE){
+ } else if(action.type === RESET_OVERVIEW_STORE){
    return {
      ...state,
      containerStates: {}

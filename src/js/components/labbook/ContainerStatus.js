@@ -38,7 +38,7 @@ export default class ContainerStatus extends Component {
   	super(props);
     this.state = {
       'status': "",
-      'building': this.props.isBuilding ? true : false,
+      'building': this.props.isBuilding,
       'secondsElapsed': 0,
       'containerStatus': props.containerStatus,
       'imageStatus': props.imageStatus
@@ -69,14 +69,21 @@ export default class ContainerStatus extends Component {
       {
       containerStatus:this.props.containerStatus, imageStatus: this.props.imageStatus
       })
+    const hasLabbookId = reduxStore.getState().overview.containerStates[this.props.labbookId]
 
-    reduxStore.dispatch({
-      type: 'UPDATE_CONTAINER_STATE',
-      payload:{
-        labbookId: this.props.labbookId,
-        containerState: status
+    if(hasLabbookId){
+      const storeStatus = reduxStore.getState().overview.containerStates[this.props.labbookId]
+
+      if(storeStatus !== status){
+        reduxStore.dispatch({
+          type: 'UPDATE_CONTAINER_STATE',
+          payload:{
+            labbookId: this.props.labbookId,
+            containerState: status
+          }
+        })
       }
-    })
+    }
     this.interval = setInterval(this._tick, 2000);
   }
   /**
@@ -86,14 +93,22 @@ export default class ContainerStatus extends Component {
   componentWillReceiveProps(nextProps) {
 
     let status = this._getContainerStatusText(nextProps.containerStatus, nextProps.imageStatus)
+    const hasLabbookId = reduxStore.getState().overview.containerStates[this.props.labbookId]
 
-    reduxStore.dispatch({
-      type: 'UPDATE_CONTAINER_STATE',
-      payload:{
-        labbookId: this.props.labbookId,
-        containerState: this._getContainerStatusText({containerStatus:nextProps.containerStatus, image:nextProps.imageStatus})
+    if(hasLabbookId){
+      const storeStatus = reduxStore.getState().overview.containerStates[this.props.labbookId]
+
+      if(storeStatus !== status){
+        reduxStore.dispatch({
+          type: 'UPDATE_CONTAINER_STATE',
+          payload:{
+            labbookId: this.props.labbookId,
+            containerState: this._getContainerStatusText({containerStatus:nextProps.containerStatus, image:nextProps.imageStatus})
+          }
+        })
       }
-    })
+
+    }
 
     this.setState({
       'containerStatus': nextProps.containerStatus,

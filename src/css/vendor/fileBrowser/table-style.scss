@@ -28,6 +28,9 @@ div.rendered-react-keyed-file-browser{
         color: #3B3738;
       }
     }
+    td.grey{
+      color: #9c9c9c !important;
+    }
     th, td{
       &.size, &.modified{
         text-align: right;

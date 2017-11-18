@@ -106,7 +106,8 @@
     "update-json-schema": "babel-node ./scripts/updateSchema.js",
     "build-tests": "BABEL_ENV='development' babel-node ./scripts/buildTests.js",
     "mock": "node __mocks__/react-relay.js",
-    "polyfills": "babel-node ./config/polyfills.js"
+    "polyfills": "babel-node ./config/polyfills.js",
+    "rebuild-sass": "npm rebuild node-sass --force"
   },
   "jest": {
     "collectCoverageFrom": [

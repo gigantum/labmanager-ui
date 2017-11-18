@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
+//utilities
 import JobStatus from 'JS/utils/JobStatus'
-
+//store
 import store from "JS/redux/store"
+
+let unsubscribe
 
 export default class Footer extends Component {
 
@@ -11,16 +14,28 @@ export default class Footer extends Component {
     this.state = store.getState()
     this._clearState = this._clearState.bind(this)
 
-    /*
-      subscribe to store to update state
-    */
-    store.subscribe(() =>{
+  }
+  /*
+    subscribe to store to update state
+  */
+  componentDidMount() {
+
+    unsubscribe = store.subscribe(() =>{
+
       this.storeDidUpdate(store.getState().footer)
     })
   }
+  /*
+    unsubscribe from redux store
+  */
+  componentWillUnmount() {
+    unsubscribe()
+  }
 
-  storeDidUpdate = () => {
-    this.setState(store.getState().footer);//triggers re-render when store updates
+  storeDidUpdate = (footer) => {
+    if(this.state !== footer){
+      this.setState(footer);//triggers re-render when store updates
+    }
   }
 
   _openLabbook(){
@@ -35,7 +50,7 @@ export default class Footer extends Component {
 
     document.getElementById('footerProgressBar').style.opacity = 0;
 
-    store.dispatch({type:'RESET_STORE', payload:{}})
+    store.dispatch({type:'RESET_FOOTER_STORE', payload:{}})
 
     setTimeout(()=>{
       document.getElementById('footerProgressBar').style.width = "0%";
@@ -73,11 +88,17 @@ export default class Footer extends Component {
   gets upload message which tracks progess
  */
  _getMessage(){
-   let uploadProgress = this._humanFileSize(this.state.bytesUploaded)
+   let message = ''
 
-   let total = this._humanFileSize(this.state.totalBytes)
+   if(this.state.totalFiles === 0){
+     const uploadProgress = this._humanFileSize(this.state.bytesUploaded)
 
-   let message = this.state.uploadMessage ? this.state.uploadMessage : uploadProgress + ' of ' + total + ' uploaded (' + this.state.percentage + '%)'
+     const total = this._humanFileSize(this.state.totalBytes)
+
+     message = this.state.uploadMessage ? this.state.uploadMessage : uploadProgress + ' of ' + total + ' uploaded (' + this.state.percentage + '%)'
+   }else{
+      message = `uploaded ${this.state.index} of ${this.state.totalFiles} files`
+   }
 
    return message
  }

@@ -13,23 +13,6 @@ const mutation = graphql`
   }
 `;
 
-// let tempID = 0;
-//
-// function sharedUpdater(store, id, newEdge, connection) {
-//   const environmentProxy = store.get(id);
-//
-//   const conn = RelayRuntime.ConnectionHandler.getConnection(
-//     environmentProxy,
-//     connection
-//   );
-//
-//   if(conn){
-//     RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
-//   }
-//
-// }
-
-
 export default function AddEnvironmentComponentMutation(
   labbookName,
   owner,

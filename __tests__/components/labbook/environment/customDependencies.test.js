@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import json from './../../__relaydata__/Routes.json'
 import {mount} from 'enzyme'
 import relayTestingUtils from 'relay-testing-utils'
-
+import sinon from 'sinon';
 //import data from './__relaydata__/CustomDependencies.json'
 
 
@@ -90,8 +90,8 @@ describe("Test Modal Visible", () =>{
   let newDiv = document.createElement("div");
   newDiv.id = 'modal__cover'
 
-
-  const wrapper = mount(
+  // sinon.spy(CustomDependencies.prototype, 'componentDidMount');
+  const wrapper = renderer.create(
     relayTestingUtils.relayWrap(<CustomDependencies
       environment={json.data.labbook.environment}
       blockClass={"Environment"}
@@ -104,19 +104,28 @@ describe("Test Modal Visible", () =>{
       baseImage={json.data.labbook.environment.baseImage}
     />, {}, json.data.labbook.environment)
   );
+  console.log(wrapper)
+  const component = mount(wrapper._component._currentElement)
+  console.log(component)
+  it('calls componentDidMount', () => {
+
+    //expect(CustomDependencies.prototype.componentDidMount.calledOnce).to.equal(true);
+  });
 
 
   it('test modal open' , () =>{
-    console.log(wrapper)
-    let button = wrapper.find('.Environment__edit-button')
+
+    component.component.node.state['modal_visible'] = true
+    let button = component.find('.Environment__edit-button')
+
     button.simulate('click')
-    expect(wrapper.node.state.modal_visible).toBeTruthy()
+    expect(component.component.node.state.modal_visible).toBeTruthy()
   })
 
   it('test modal closed' , () =>{
-    let button = wrapper.find('.Environment__modal-close')
+    let button = component.find('.Environment__modal-close')
     button.simulate('click')
-    expect(!wrapper.node.state.modal_visible).toBeTruthy()
+    expect(!component.component.node.state.modal_visible).toBeTruthy()
   })
 
 

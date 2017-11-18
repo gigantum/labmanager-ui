@@ -10,8 +10,9 @@ import DevEnvironments from 'Components/labbook/environment/DevEnvironments'
 import PackageCount from './PackageCount'
 import Loader from 'Components/shared/Loader'
 //store
-import reduxStore from 'JS/redux/store'
+import store from 'JS/redux/store'
 
+let unsubscribe;
 
 class Overview extends Component {
   constructor(props){
@@ -19,18 +20,31 @@ class Overview extends Component {
 
     this._openJupyter = this._openJupyter.bind(this)
 
-    this.state = reduxStore.getState().overview
-    /*
-      subscribe to store to update state
-    */
-    reduxStore.subscribe(() =>{
-      this.storeDidUpdate(reduxStore.getState().overview)
+    this.state = store.getState().overview
+    this._openJupyter = this._openJupyter.bind(this)
+  }
+  /*
+    subscribe to store to update state
+  */
+  componentDidMount() {
+    unsubscribe = store.subscribe(() =>{
+      this.storeDidUpdate(store.getState().overview)
     })
   }
-
-  storeDidUpdate = () => {
-
-    this.setState(reduxStore.getState().overview);//triggers re-render when store updates
+  /*
+    unsubscribe from redux store
+  */
+  componentWillUnmount() {
+    unsubscribe()
+  }
+  /*
+    @param {object} overview
+    updates components state
+  */
+  storeDidUpdate = (overview) => {
+    if(this.state !== overview){
+      this.setState(overview);//triggers re-render when store updates
+    }
   }
 
   _openJupyter(){

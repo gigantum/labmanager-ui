@@ -1,0 +1,229 @@
+.Favorite__list{
+  @include flex(left, row)
+  flex-wrap: wrap;
+}
+
+.Favorite__card-wrapper{
+  flex: 1 0;
+  height: 240px;
+  min-width: 33.333%;
+  width: 33.333%;
+  max-width: 33.333%;
+  color: $font-grey;;
+}
+
+
+
+
+.Favorite__card{
+  width: calc(100% - 20px);
+  height: 220px;
+  min-width: 300px;
+  max-width: 400px;
+  position: relative;
+  text-align: left;
+  padding: 20px;
+  P{
+    font-size: 14px;
+    padding: 2px 0;
+  }
+}
+
+.Favorite__edit-button,
+.Favorite__edit-button:hover,
+.Favorite__edit-button:focus{
+  font-weight: light;
+  color: $font-grey;
+  font-size: 14px;
+  height: 30px;
+  width: 30px;
+  padding: 5px;
+  border: 0px;
+  background: url('./../images/icons/edit.svg') no-repeat center center;
+  background-size: 22px;
+}
+
+.Favorite__description-editor{
+  resize: none;
+  height: 90px;
+  width: 100%;
+  max-width: 100%;
+}
+
+
+.Favorite__description-filler{
+  background-color: #fff;
+  line-height: 30px;
+  height: 90px;
+  background: linear-gradient(#eee 0.1em, transparent 0.1em) repeat 30px 34px;
+  background-size: 100% 38px;
+}
+
+.Favorite__card-header{
+  font-size: 18px;
+  font-weight: bold;
+  padding: 5px 0;
+  color: $charcoal;
+  word-break: break-all;
+  width: calc(100% - 20px);
+}
+
+.Favorite__star{
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  height: 30px;
+  width: 30px;
+  background-size: 24px;
+  background: url('../images/icons/star__on.svg') no-repeat center center;
+}
+
+.Favorite__star:hover{
+  background-size: 34px;
+}
+
+.Favorite__load-more{
+  position: absolute;
+  top: -31px;
+}
+
+.Favorite__load-more,
+.Favorite__load-more:hover,
+.Favorite__load-more:focus{
+  background: none;
+  color: $charcoal;
+  border: 0px;
+}
+
+.Favorite__load-more:hover{
+  color: $datasets;
+}
+
+.Favorite__action-bar{
+  margin: 30px 0 15px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.Favorite__action-bar:after{
+  border-top: 1px solid $font-grey;
+  content:"";
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  height: 0.5em;
+  z-index: -1;
+  text-align: center;
+  width: calc(50% - 50px);
+}
+
+
+.Favorite__action-bar:before{
+  border-top: 1px solid $font-grey;
+  content:"";
+  position: absolute;
+  bottom: 3px;
+  right: 0;
+  height: 0.5em;
+  z-index: -1;
+  text-align: center;
+  width: calc(50% - 50px);
+}
+
+@media screen and (max-width: 50000px) and (min-width: 2001px) {
+  .Favorite__card-wrapper{
+    min-width: 25%;
+    width: 25%;
+    max-width: 25%;
+  }
+
+  .Favorite__card-wrapper:nth-child(4n+0){
+    @include flex(flex-end, row);
+  }
+
+  .Favorite__card-wrapper:nth-child(4n+1),
+  .Favorite__card-wrapper:nth-child(4n+2){
+    @include flex(left, row);
+  }
+
+  .Favorite__card-wrapper:nth-child(4n+3){
+    @include flex(space-around, row);
+  }
+}
+
+
+@media screen and (max-width: 2000px) and (min-width: 1080px) {
+  .Favorite__card-wrapper{
+    min-width: 33.333%;
+    width: 33.333%;
+    max-width: 33.333%;
+  }
+
+  .Favorite__card-wrapper:nth-child(3n+0){
+    @include flex(flex-end, row);
+  }
+
+  .Favorite__card-wrapper:nth-child(3n+1){
+    @include flex(left, row);
+  }
+
+  .Favorite__card-wrapper:nth-child(3n+2){
+    @include flex(space-around, row);
+  }
+}
+@media screen and (max-width: 1079px) and (min-width: 778px) {
+  .Favorite__card-wrapper{
+    min-width: 50%;
+    width: 50%;
+    max-width: 50%;
+  }
+  .Favorite__card-wrapper:nth-child(2n+0){
+    @include flex(flex-end, row);
+  }
+
+  .Favorite__card-wrapper:nth-child(2n+1){
+    @include flex(left, row);
+  }
+}
+@media screen and (max-width: 777px) and (min-width: 0px) {
+  .Favorite__card-wrapper{
+    min-width: 100%;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .Favorite__card-wrapper{
+    @include flex(space-around, row);
+  }
+}
+
+@media screen and (max-width: 1440px) and (min-width: 1130px) {
+  .Labbook--detail-mode{
+    .Favorite__card-wrapper{
+      min-width: 50%;
+      width: 50%;
+      max-width: 50%;
+    }
+    .Favorite__card-wrapper:nth-child(2n+0){
+      @include flex(flex-end, row);
+    }
+
+    .Favorite__card-wrapper:nth-child(2n+1){
+      @include flex(left, row);
+    }
+  }
+}
+@media screen and (max-width: 1129px) and (min-width: 0px) {
+  .Labbook--detail-mode{
+    .Favorite__card-wrapper{
+      min-width: 100%;
+      width: 100%;
+      max-width: 100%;
+    }
+    .Favorite__card-wrapper{
+      @include flex(space-around, row);
+    }
+  }
+}

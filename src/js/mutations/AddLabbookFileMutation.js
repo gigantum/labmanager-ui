@@ -4,6 +4,7 @@ import {
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
+import uuidv4 from 'uuid/v4'
 
 
 const mutation = graphql`
@@ -48,7 +49,6 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
   }
 }
 
-let tempID = 0;
 
 export default function AddLabbookFileMutation(
   connectionKey,
@@ -62,10 +62,9 @@ export default function AddLabbookFileMutation(
   callback
 ) {
   let uploadables = [chunk.blob, accessToken]
-
+  const id = uuidv4()
   const variables = {
     input: {
-      user,
       owner,
       labbookName,
       filePath,
@@ -77,7 +76,7 @@ export default function AddLabbookFileMutation(
         filename: chunk.filename,
         uploadId: chunk.uploadId,
       },
-      clientMutationId: '' + tempID++
+      clientMutationId: id
     }
   }
 
@@ -104,10 +103,22 @@ export default function AddLabbookFileMutation(
         callback(response, error)
       },
       onError: err => console.error(err),
+      optimisticUpdater:(store)=>{
+        const id = uuidv4()
+        const node = store.create(id, 'LabbookFile')
 
+        node.setValue(id, "id")
+        node.setValue(false, 'isDir')
+        node.setValue('code/' + chunk.filename, 'key')
+        node.setValue(0, 'modifiedAt')
+        node.setValue(chunk.chunkSize, 'size')
+
+        sharedUpdater(store, labbookId, connectionKey, node)
+
+      },
       updater: (store, response) => {
-        const id = 'client:newCodeFile:'+ tempID++;
-        const node = store.create(id, 'CodeFile')
+        const id = uuidv4()
+        const node = store.create(id, 'LabbookFile')
         if(response.addLabbookFile.newLabbookFileEdge){
           node.setValue(response.addLabbookFile.newLabbookFileEdge.node.id, "id")
           node.setValue(false, 'isDir')

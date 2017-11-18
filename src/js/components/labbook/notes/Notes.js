@@ -26,7 +26,6 @@ class Notes extends Component {
     this._loadMore = this._loadMore.bind(this)
     this._toggleNote = this._toggleNote.bind(this)
     this._hideAddNote = this._hideAddNote.bind(this)
-    this._loadMore()
     this._handleScroll = this._handleScroll.bind(this)
   }
 
@@ -48,6 +47,8 @@ class Notes extends Component {
     pagination = false;
 
     window.addEventListener('scroll', this._handleScroll);
+
+    this._loadMore()
   }
 
   componentWillUnmount() {
@@ -189,21 +190,21 @@ class Notes extends Component {
               }
               <div
                 key="Notes-loader-card-1"
-                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
                 key="Notes-loader-card-2"
-                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
-                key="Notes-loader-card-3" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+                key="Notes-loader-card-3" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
                 key="Notes-loader-card-4"
-                 className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+                 className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
-                key="Notes-loader-card-5" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'hiddden'}>
+                key="Notes-loader-card-5" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
             </div>
           </div>

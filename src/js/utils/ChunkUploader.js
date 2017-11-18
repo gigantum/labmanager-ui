@@ -14,7 +14,7 @@ const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChu
 
 
   ImportLabbookMutation(username, username, chunk.blob, chunk, accessToken, (result, error)=>{
-     
+
       if(result && (error === undefined)){
         getChunkCallback(file, result)
       }else{
@@ -32,7 +32,7 @@ const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepa
     username,
     username,
     data.labbookName,
-    data.labbookId,
+    data.parentId,
     filepath,
     chunk,
     accessToken,
@@ -64,7 +64,7 @@ const ChunkUploader = {
     const id = uuidv4(),
           chunkSize = 1000 * 1000 * 48,
           fileSize = file.size,
-          fileSizeKb = Math.round(fileSize/1000);
+          fileSizeKb = Math.round(fileSize/1000, 10);
 
     let fileLoadedSize = 0,
         chunkIndex = 0,
@@ -90,7 +90,7 @@ const ChunkUploader = {
 
         let chunkData =   {
             blob: blob,
-            fileSizeKb: Math.round(fileSizeKb/1000, 10) ,
+            fileSizeKb: fileSizeKb,
             chunkSize: chunkSize,
             totalChunks: totalChunks,
             chunkIndex: chunkIndex - 1,
