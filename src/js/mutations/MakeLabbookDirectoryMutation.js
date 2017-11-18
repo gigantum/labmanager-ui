@@ -91,15 +91,15 @@ export default function MakeLabbookDirectoryMutation(
         const id = 'client:newCodeFile:'+ tempID++;
         const node = store.create(id, 'CodeFile')
 
-        // if(response.makeLabbookDirectory.newLabbookFileEdge){
-        //   node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.id, "id")
-        //   node.setValue(false, 'isDir')
-        //   node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.key, 'key')
-        //   node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
-        //   node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.size, 'size')
-        //
-        //   sharedUpdater(store, labbookId, connectionKey, node)
-        // }
+
+        node.setValue(id, "id")
+        node.setValue(false, 'isDir')
+        node.setValue(dirName, 'key')
+        node.setValue(0, 'modifiedAt')
+        node.setValue(100, 'size')
+
+        sharedUpdater(store, labbookId, connectionKey, node)
+
       },
       updater: (store, response) => {
         const id = 'client:newCodeFile:'+ tempID++;

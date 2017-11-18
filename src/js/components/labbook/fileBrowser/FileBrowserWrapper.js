@@ -162,26 +162,12 @@ export default class FileBrowserWrapper extends Component {
     //DragAndDrop.dragAndDrop()
   }
   /**
-  *  @param {none}
-  *  uses dom to show mask on file directory
-  */
-  showMask(){
-    document.getElementById('filebrowser-mask').classList.remove('hidden')
-  }
-  /**
-  *  @param {none}
-  *  uses dom to hide mask on file directory
-  */
-  hideMask(){
-    document.getElementById('filebrowser-mask').classList.add('hidden')
-  }
-  /**
   *  @param {string} key - file key
   *  creates a directory using MakeLabbookDirectoryMutation
   */
   handleCreateFolder(key) {
     let self = this;
-    // this.showMask()
+
 
     MakeLabbookDirectoryMutation(
       this.props.connection,
@@ -190,9 +176,11 @@ export default class FileBrowserWrapper extends Component {
       this.props.labbookName,
       this.props.parentId,
       key,
-      (response) => {
-        // self.hideMask()
+      (response, error) => {
 
+        if(error){
+          console.error(error)
+        }
       }
     )
   }
@@ -341,7 +329,6 @@ export default class FileBrowserWrapper extends Component {
 
   handleRenameFolder(oldKey, newKey) {
     let self = this;
-  //  this.showMask()
     let edgesToMove = this.props.files.edges.filter((edge) => {
       return edge && (edge.node.key.indexOf(oldKey) > -1)
     })
@@ -409,9 +396,11 @@ export default class FileBrowserWrapper extends Component {
             this.props.parentId,
             edgeToDelete.node.id,
             oldKey,
-            (response) => {
+            (response, error) => {
+              if(error){
+                console.error(error)
+              }
 
-              self.hideMask()
             }
           )
         }).catch(error =>{
@@ -428,7 +417,6 @@ export default class FileBrowserWrapper extends Component {
   */
   handleRenameFile(oldKey, newKey) {
     let that = this;
-    //this.showMask()
     let edgeToMove = this.props.files.edges.filter((edge) => {
       if(edge && edge.node){
         return edge && (oldKey === edge.node.key)
@@ -445,9 +433,11 @@ export default class FileBrowserWrapper extends Component {
         edgeToMove,
         oldKey,
         newKey,
-        (response) => {
+        (response, error) => {
+          if(error){
+            console.error(error)
+          }
 
-          that.hideMask()
         }
       )
     }
@@ -459,7 +449,6 @@ export default class FileBrowserWrapper extends Component {
   */
   handleDeleteFolder(folderKey) {
     let self = this
-    //this.showMask()
 
     let edgeToDelete = this.props.files.edges.filter((edge) => {
       return edge && (folderKey === edge.node.key)
@@ -473,8 +462,10 @@ export default class FileBrowserWrapper extends Component {
       this.props.parentId,
       edgeToDelete.node.id,
       folderKey,
-      (response) => {
-        self.hideMask()
+      (response, error) => {
+        if(error){
+          console.error(error)
+        }
       }
     )
   }
@@ -485,7 +476,6 @@ export default class FileBrowserWrapper extends Component {
   handleDeleteFile(fileKey) {
 
     let self = this
-    //this.showMask()
 
     let edgeToDelete = this.props.files.edges.filter((edge) => {
       return edge && (fileKey === edge.node.key)
@@ -499,8 +489,10 @@ export default class FileBrowserWrapper extends Component {
       this.props.parentId,
       edgeToDelete.node.id,
       fileKey,
-      (response) => {
-        self.hideMask()
+      (response, error) => {
+        if(error){
+          console.error(error)
+        }
       }
     )
   }

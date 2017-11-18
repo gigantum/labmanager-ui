@@ -28,12 +28,12 @@ class OutputFavorites extends Component {
   /*
     @param
     triggers relay pagination function loadMore
-    increments by 10
+    increments by 3
     logs callback
   */
   _loadMore() {
     this.props.relay.loadMore(
-     3, // Fetch the next 10 feed items
+     3, // Fetch the next 3 feed items
      (response, error) => {
 
        if(error){
