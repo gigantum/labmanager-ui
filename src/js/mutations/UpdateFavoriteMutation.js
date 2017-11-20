@@ -8,9 +8,9 @@ import uuidv4 from 'uuid/v4'
 
 
 const mutation = graphql`
-  mutation AddFavoriteMutation($input: AddLabbookFavoriteInput!){
-    addFavorite(input: $input){
-      newFavoriteEdge{
+  mutation UpdateFavoriteMutation($input: UpdateLabbookFavoriteInput!){
+    updateFavorite(input: $input){
+      updatedFavoriteEdge{
         node{
           id
           index
@@ -52,27 +52,28 @@ function sharedUpdater(store, parentId, connectionKey, node) {
 }
 
 
-export default function AddFavoriteMutation(
+export default function UpdateFavoriteMutation(
   connectionKey,
   parentId,
   owner,
   labbookName,
-  key,
-  description,
-  isDir,
+  updatedKey,
+  updatedDescription,
   index,
+  updatedIndex,
   section,
   callback
 ) {
+
   const clientMutationId = uuidv4()
   const variables = {
     input: {
       owner,
       labbookName,
-      key,
-      description,
-      isDir,
+      updatedKey,
+      updatedDescription,
       index,
+      updatedIndex,
       section,
       clientMutationId
     }
@@ -97,23 +98,23 @@ export default function AddFavoriteMutation(
 
         node.setValue(id, "id")
         node.setValue(false, 'isDir')
-        node.setValue(key, 'key')
-        node.setValue(description, 'description')
+        node.setValue(updatedKey, 'key')
+        node.setValue(updatedDescription, 'description')
 
         sharedUpdater(store, parentId, connectionKey, node)
 
       },
       updater: (store, response) => {
-
+        console.log(store, response)
         const id = uuidv4()
         const node = store.create(id, 'Favorite')
 
-        if(response.addFavorite && response.addFavorite.newFavoriteEdge){
-          node.setValue(response.addFavorite.newFavoriteEdge.node.id, "id")
+        if(response.updatedFavorite && response.addFavorite.updatedFavoriteEdge){
+          node.setValue(response.updatedFavorite.updatedFavoriteEdge.node.id, "id")
           node.setValue(false, 'isDir')
-          node.setValue(response.addFavorite.newFavoriteEdge.node.key, 'key')
-          node.setValue(response.addFavorite.newFavoriteEdge.node.description, 'description')
-          node.setValue(response.addFavorite.newFavoriteEdge.node.index, 'index')
+          node.setValue(response.updatedFavorite.updatedFavoriteEdge.node.key, 'key')
+          node.setValue(response.updatedFavorite.updatedFavoriteEdge.node.description, 'description')
+          node.setValue(response.updatedFavorite.updatedFavoriteEdge.node.index, 'index')
 
           sharedUpdater(store, parentId, connectionKey, node)
         }

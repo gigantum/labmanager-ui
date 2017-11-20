@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 //Mutations
 import AddFavoriteMutation from 'Mutations/AddFavoriteMutation'
 import RemoveFavoriteMutation from 'Mutations/RemoveFavoriteMutation'
+import UpdateFavoriteMutation from 'Mutations/UpdateFavoriteMutation'
 
 export default class FavoriteCard extends Component {
   constructor(props){
@@ -26,21 +27,21 @@ export default class FavoriteCard extends Component {
     triggers add favorite mutation on key ENTER
     hides editMode
   */
-  _updateDescription(evt, key){
+  _updateDescription(evt, favorite){
     const username = localStorage.getItem('username')
-    let filepath = key.replace(this.props.root + '/', '')
+    let filepath = favorite.key.replace(this.props.section + '/', '')
 
     if(evt.keyCode === 13){
-        AddFavoriteMutation(
+        UpdateFavoriteMutation(
           this.props.connection,
           this.props.parentId,
           username,
           this.props.labbookName,
-          this.props.root,
           filepath,
           evt.target.value,
-          false,
-          0,
+          favorite.index,
+          favorite.index,
+          this.props.section,
           (response, error)=>{
             if(error){
               console.error(error)
@@ -113,7 +114,7 @@ export default class FavoriteCard extends Component {
             this.state.editMode &&
             <textarea
               className="Favorite__description-editor"
-              onKeyDown={(evt)=>this._updateDescription(evt, this.props.favorite.key)}
+              onKeyDown={(evt)=>this._updateDescription(evt, this.props.favorite)}
               placeholder={this.props.favorite.description}>
               {this.props.favorite.description}
             </textarea>

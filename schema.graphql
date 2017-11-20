@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Tue Nov 14 2017 15:42:39 GMT-0500 (EST)
+# timestamp: Sun Nov 19 2017 20:07:25 GMT-0500 (EST)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -36,7 +36,7 @@ type AddEnvironmentPackagePayload {
 input AddLabbookFavoriteInput {
   owner: String!
   labbookName: String!
-  subdir: String!
+  section: String!
   key: String!
   description: String
   isDir: Boolean
@@ -52,13 +52,14 @@ type AddLabbookFavoritePayload {
 input AddLabbookFileInput {
   owner: String!
   labbookName: String!
+  section: String!
   filePath: String!
   chunkUploadParams: ChunkUploadInput!
   clientMutationId: String
 }
 
 # Mutation to add a file to a labbook. File should be sent in the `uploadFile` key as a multi-part/form upload.
-# file_path is the relative path from the labbook root.
+# file_path is the relative path from the labbook section specified.
 type AddLabbookFilePayload {
   newLabbookFileEdge: LabbookFileEdge
   clientMutationId: String
@@ -231,6 +232,7 @@ scalar DateTime
 input DeleteLabbookFileInput {
   owner: String!
   labbookName: String!
+  section: String!
   filePath: String!
   isDirectory: Boolean
   clientMutationId: String
@@ -415,7 +417,6 @@ type Labbook implements Node, GitRepository {
   activeBranch: LabbookRef
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   environment: Environment
-  files(baseDir: String, before: String, after: String, first: Int, last: Int): LabbookFileConnection
   code: LabbookSection
   input: LabbookSection
   output: LabbookSection
@@ -473,6 +474,7 @@ type LabbookFile implements Node {
   # The ID of the object.
   id: ID!
   isDir: Boolean
+  isFavorite: Boolean
   modifiedAt: Int
   key: String
   size: Int
@@ -519,13 +521,15 @@ type LabbookSection implements Node {
   # The ID of the object.
   id: ID!
   files(root: String, before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  allFiles(before: String, after: String, first: Int, last: Int): LabbookFileConnection
   favorites(before: String, after: String, first: Int, last: Int): LabbookFavoriteConnection
 }
 
 input MakeLabbookDirectoryInput {
   owner: String!
   labbookName: String!
-  dirName: String!
+  section: String!
+  directory: String!
   clientMutationId: String
 }
 
@@ -537,6 +541,7 @@ type MakeLabbookDirectoryPayload {
 input MoveLabbookFileInput {
   owner: String!
   labbookName: String!
+  section: String!
   srcPath: String!
   dstPath: String!
   clientMutationId: String
@@ -569,6 +574,7 @@ type Mutation {
   makeLabbookDirectory(input: MakeLabbookDirectoryInput!): MakeLabbookDirectoryPayload
   removeUserIdentity(input: RemoveUserIdentityInput!): RemoveUserIdentityPayload
   addFavorite(input: AddLabbookFavoriteInput!): AddLabbookFavoritePayload
+  updateFavorite(input: UpdateLabbookFavoriteInput!): UpdateLabbookFavoritePayload
   removeFavorite(input: RemoveLabbookFavoriteInput!): RemoveLabbookFavoritePayload
 }
 
@@ -708,7 +714,7 @@ type Query {
 input RemoveLabbookFavoriteInput {
   owner: String!
   labbookName: String!
-  subdir: String!
+  section: String!
   index: Int!
   clientMutationId: String
 }
@@ -764,6 +770,22 @@ input StopContainerInput {
 type StopContainerPayload {
   environment: Environment
   backgroundJobKey: String
+  clientMutationId: String
+}
+
+input UpdateLabbookFavoriteInput {
+  owner: String!
+  labbookName: String!
+  section: String!
+  index: Int!
+  updatedIndex: Int
+  updatedKey: String
+  updatedDescription: String
+  clientMutationId: String
+}
+
+type UpdateLabbookFavoritePayload {
+  updatedFavoriteEdge: LabbookFavoriteEdge
   clientMutationId: String
 }
 

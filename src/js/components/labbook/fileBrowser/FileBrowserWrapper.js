@@ -176,6 +176,7 @@ export default class FileBrowserWrapper extends Component {
       this.props.labbookName,
       this.props.parentId,
       key,
+      this.props.section,
       (response, error) => {
 
         if(error){
@@ -284,7 +285,8 @@ export default class FileBrowserWrapper extends Component {
               accessToken: localStorage.getItem('access_token'),
               connectionKey: self.props.connection,
               labbookName: self.props.labbookName,
-              parentId: self.props.parentId
+              parentId: self.props.parentId,
+              section: self.props.section
             }
 
             self._chunkLoader(filepath, file, data, batchUpload, files, index)
@@ -344,6 +346,7 @@ export default class FileBrowserWrapper extends Component {
       this.props.labbookName,
       this.props.parentId,
       newKey,
+      this.props.section,
       (response) => {
 
         let all = []
@@ -362,6 +365,7 @@ export default class FileBrowserWrapper extends Component {
                   edge,
                   edge.node.key,
                   newKeyComputed,
+                  this.props.section,
                   (response) => {
 
                     if(response.moveLabbookFile){
@@ -396,6 +400,7 @@ export default class FileBrowserWrapper extends Component {
             this.props.parentId,
             edgeToDelete.node.id,
             oldKey,
+            this.props.section,
             (response, error) => {
               if(error){
                 console.error(error)
@@ -433,6 +438,7 @@ export default class FileBrowserWrapper extends Component {
         edgeToMove,
         oldKey,
         newKey,
+        this.props.section,
         (response, error) => {
           if(error){
             console.error(error)
@@ -462,6 +468,7 @@ export default class FileBrowserWrapper extends Component {
       this.props.parentId,
       edgeToDelete.node.id,
       folderKey,
+      this.props.section,
       (response, error) => {
         if(error){
           console.error(error)
@@ -489,6 +496,7 @@ export default class FileBrowserWrapper extends Component {
       this.props.parentId,
       edgeToDelete.node.id,
       fileKey,
+      this.props.section,
       (response, error) => {
         if(error){
           console.error(error)
@@ -550,20 +558,18 @@ export default class FileBrowserWrapper extends Component {
   *  triggers file favorite mutation
   */
   handleFileFavoriting(key){
-    const subdir = key.split('/')[0]
-    const fileKey = key.replace(subdir + '/', '')
     const username = localStorage.getItem('username')
-
+  
     AddFavoriteMutation(
       this.props.favoriteConnection,
       this.props.parentId,
       username,
       this.props.labbookName,
-      subdir,
-      fileKey,
+      key,
       '',
       false,
       0,
+      this.props.section,
       (response, error)=>{
         if(error){
           console.error(error)
@@ -614,7 +620,7 @@ export default class FileBrowserWrapper extends Component {
             files={files}
             toggleFolder={this.toggleFolder}
             openDetailPanel={this.openDetailPanel}
-            rootFolder={this.props.rootFolder}
+            rootFolder={this.props.section}
             onCreateFolder={this.handleCreateFolder}
             onCreateFiles={this.handleCreateFiles}
             onMoveFolder={this.handleRenameFolder}

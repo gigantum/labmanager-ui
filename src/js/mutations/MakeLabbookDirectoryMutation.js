@@ -55,14 +55,16 @@ export default function MakeLabbookDirectoryMutation(
   owner,
   labbookName,
   labbookId,
-  dirName,
+  directory,
+  section,
   callback
 ) {
   const variables = {
     input: {
       owner,
       labbookName,
-      dirName,
+      directory,
+      section,
       clientMutationId: '' + tempID++
     }
   }
@@ -94,7 +96,7 @@ export default function MakeLabbookDirectoryMutation(
 
         node.setValue(id, "id")
         node.setValue(false, 'isDir')
-        node.setValue(dirName, 'key')
+        node.setValue(directory, 'key')
         node.setValue(0, 'modifiedAt')
         node.setValue(100, 'size')
 

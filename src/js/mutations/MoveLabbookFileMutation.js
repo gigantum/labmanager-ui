@@ -49,6 +49,7 @@ export default function MoveLabbookFileMutation(
   edge,
   srcPath,
   dstPath,
+  section,
   callback
 ) {
 
@@ -58,9 +59,12 @@ export default function MoveLabbookFileMutation(
       labbookName,
       srcPath,
       dstPath,
+      section,
       clientMutationId: '' + tempID++
     }
   }
+
+  console.log(variables)
   commitMutation(
     environment,
     {
@@ -86,31 +90,35 @@ export default function MoveLabbookFileMutation(
       optimisticUpdater: (store) => {
 
         sharedUpdater(store, labbookId, edge.node.id, connectionKey);
-        const id = 'client:newCodeFileMove:'+ tempID++;
+        const id = 'client:newFileMove:'+ tempID++;
         const userProxy = store.get(labbookId);
+
         const conn = RelayRuntime.ConnectionHandler.getConnection(
           userProxy,
           connectionKey,
         );
-        const node = store.create(id, 'CodeFile')
 
+        const node = store.create(id, 'MoveFile')
+        console.log(conn)
         if(conn){
+
           const newEdge = RelayRuntime.ConnectionHandler.createEdge(
             store,
             conn,
             node,
             "newLabbookFileEdge"
           )
+
           node.setValue(id, "id")
           node.setValue(false, 'isDir')
           node.setValue(dstPath, 'key')
           node.setValue(0, 'modifiedAt')
-          node.setValue(0, 'size')
+          node.setValue(100, 'size')
 
-
+          console.log(dstPath)
           RelayRuntime.ConnectionHandler.insertEdgeAfter(
             conn,
-            node
+            newEdge
           );
         }
       },

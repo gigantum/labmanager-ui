@@ -77,7 +77,7 @@ storeDidUpdate = (labbook) => {
   _setSelectedComponent = (componentName) =>{
 
     if(componentName !== this.state.selectedComponent){
-      if(store.getState().detailView.selectedComponent == true){
+      if(store.getState().detailView.selectedComponent === true){
         store.dispatch({
           type: 'UPDATE_DETAIL_VIEW',
           payload: {

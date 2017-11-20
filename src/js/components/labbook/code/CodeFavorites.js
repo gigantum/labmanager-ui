@@ -61,7 +61,7 @@ class CodeFavorites extends Component {
                         <FavoriteCard
                           labbookName={this.props.labbookName}
                           parentId={this.props.codeId}
-                          root={'code'}
+                          section={'code'}
                           connection={"CodeFavorites_favorites"}
                           favorite={edge.node}
                         />
@@ -131,12 +131,10 @@ export default createPaginationContainer(
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
       const username = localStorage.getItem('username')
-      let root = ""
 
       return {
         first: count,
         cursor,
-        root,
         owner: username,
         name: props.labbookName
       };

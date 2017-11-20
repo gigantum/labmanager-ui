@@ -25,7 +25,7 @@ const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChu
 
 }
 
-const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
+const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepath, section, getChunkCallback, componentCallback) => {
 
   AddLabbookFileMutation(
     data.connectionKey,
@@ -36,6 +36,7 @@ const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepa
     filepath,
     chunk,
     accessToken,
+    section,
     (result, error)=>{
 
       if(result && (error === undefined)){
@@ -57,6 +58,7 @@ const ChunkUploader = {
     let file = data.file,
       filepath = data.filepath,
       username = data.username,
+      section = data.section,
       componentCallback = (response) => { //callback to trigger postMessage from initializer
         postMessage(response);
       }
@@ -124,6 +126,7 @@ const ChunkUploader = {
               data.accessToken,
               username,
               filepath,
+              section,
               getChunk,
               componentCallback
             )

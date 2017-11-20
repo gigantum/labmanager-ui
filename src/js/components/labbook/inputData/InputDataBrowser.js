@@ -48,8 +48,8 @@ class InputDataBrowser extends Component {
     expandOn = root.scrollHeight;
 
     if ((distanceY > expandOn) && this.props.input &&
-      this.props.input.files &&
-      this.props.input.files.pageInfo.hasNextPage) {
+      this.props.input.allFiles &&
+      this.props.input.allFiles.pageInfo.hasNextPage) {
 
         this._loadMore(evt);
 
@@ -83,9 +83,9 @@ class InputDataBrowser extends Component {
 
   render(){
 
-    if(this.props.input && this.props.input.files){
-      let inputFiles = this.props.input.files
-      if(this.props.input.files.edges.length === 0){
+    if(this.props.input && this.props.input.allFiles){
+      let inputFiles = this.props.input.allFiles
+      if(this.props.input.allFiles.edges.length === 0){
         inputFiles = {
           edges: [{
             node:{
@@ -96,17 +96,17 @@ class InputDataBrowser extends Component {
               id: 'input_temp'
             }
           }],
-          pageInfo: this.props.input.files.pageInfo
+          pageInfo: this.props.input.allFiles.pageInfo
         }
       }
 
       return(
         <FileBrowserWrapper
           ref='inputBrowser'
-          rootFoler="input"
+          section="input"
           setRootFolder={this.setRootFolder}
           files={inputFiles}
-          connection="InputData_files"
+          connection="InputData_allFiles"
           parentId={this.props.inputId}
           favoriteConnection="InputFavorites_favorites"
           {...this.props}
@@ -125,11 +125,12 @@ export default createPaginationContainer(
 
     input: graphql`
       fragment InputDataBrowser_input on LabbookSection{
-        files(after: $cursor, first: $first, root: $root)@connection(key: "InputDataBrowser_files", filters: []){
+        allFiles(after: $cursor, first: $first)@connection(key: "InputDataBrowser_allFiles", filters: []){
           edges{
             node{
               id
               isDir
+              isFavorite
               modifiedAt
               key
               size
@@ -149,7 +150,7 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.input && props.input.files
+      return props.input && props.input.allFiles
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -158,13 +159,12 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-      let root = ''
+
       const username = localStorage.getItem('username')
 
       return {
         first: count,
         cursor,
-        root,
         owner: username,
         name: props.labbookName
       };
@@ -175,7 +175,6 @@ export default createPaginationContainer(
         $cursor: String
         $owner: String!
         $name: String!
-        $root: String
       ) {
         labbook(name: $name, owner: $owner){
           input{

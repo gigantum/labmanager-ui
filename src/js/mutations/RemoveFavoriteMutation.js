@@ -22,7 +22,7 @@ export default function RemoveFavoriteMutation(
   parentId,
   owner,
   labbookName,
-  subdir,
+  section,
   index,
   removeFavoriteId,
   callback
@@ -32,7 +32,7 @@ export default function RemoveFavoriteMutation(
     input: {
       owner,
       labbookName,
-      subdir,
+      section,
       index,
       clientMutationId
     }
