@@ -1,6 +1,8 @@
 .Favorite__list{
   @include flex(left, row)
   flex-wrap: wrap;
+
+  position: relative;
 }
 
 .Favorite__card-wrapper{
@@ -12,10 +14,22 @@
   color: $font-grey;;
 }
 
+/* Standard syntax */
+@keyframes fluxuateLoad {
+    0% {opacity: 0.1;}
+    50% {opacity: 0.5;}
+    100% {opacity: 0.1;}
 
+}
 
+.Favorite__card--opaque{
+  opacity: 0.1;
+  animation: fluxuateLoad 3s infinite;
+}
 
-.Favorite__card{
+.Favorite__card,
+.Favorite__card--opaque{
+
   width: calc(100% - 20px);
   height: 220px;
   min-width: 300px;
@@ -73,11 +87,16 @@
   position: absolute;
   top: 5px;
   right: 5px;
+}
+
+.Favorite__star,
+.Favorite__star--file{
   height: 30px;
   width: 30px;
   background-size: 24px;
   background: url('../images/icons/star__on.svg') no-repeat center center;
 }
+
 
 .Favorite__star:hover{
   background-size: 34px;
@@ -130,6 +149,15 @@
   z-index: -1;
   text-align: center;
   width: calc(50% - 50px);
+}
+
+.Favorite__mask{
+  position: absolute;
+
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
 }
 
 @media screen and (max-width: 50000px) and (min-width: 2001px) {

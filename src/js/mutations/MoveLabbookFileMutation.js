@@ -64,7 +64,6 @@ export default function MoveLabbookFileMutation(
     }
   }
 
-  console.log(variables)
   commitMutation(
     environment,
     {
@@ -99,7 +98,7 @@ export default function MoveLabbookFileMutation(
         );
 
         const node = store.create(id, 'MoveFile')
-        console.log(conn)
+
         if(conn){
 
           const newEdge = RelayRuntime.ConnectionHandler.createEdge(
@@ -115,7 +114,7 @@ export default function MoveLabbookFileMutation(
           node.setValue(0, 'modifiedAt')
           node.setValue(100, 'size')
 
-          console.log(dstPath)
+    
           RelayRuntime.ConnectionHandler.insertEdgeAfter(
             conn,
             newEdge

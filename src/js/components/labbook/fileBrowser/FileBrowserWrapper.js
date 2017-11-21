@@ -256,7 +256,7 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFiles(files, prefix) {
     let self = this;
-    console.log(files, prefix)
+
     this.setState(state => {
 
       const batchUpload = (files.length > 1)
@@ -545,7 +545,9 @@ export default class FileBrowserWrapper extends Component {
             formatedArray.push({
               key: edge.node.key,
               modified: edge.node.modifiedAt,
-              size: edge.node.size
+              size: edge.node.size,
+              isFavorite: edge.node.isFavorite,
+              id: edge.node.id
             })
           }
         })
@@ -559,7 +561,11 @@ export default class FileBrowserWrapper extends Component {
   */
   handleFileFavoriting(key){
     const username = localStorage.getItem('username')
-  
+    let fileItem = this.props.files.edges.filter((edge)=>{
+        if(edge.node.key === key){
+          return edge.node
+        }
+    })[0]
     AddFavoriteMutation(
       this.props.favoriteConnection,
       this.props.parentId,
@@ -569,6 +575,7 @@ export default class FileBrowserWrapper extends Component {
       '',
       false,
       0,
+      fileItem,
       this.props.section,
       (response, error)=>{
         if(error){

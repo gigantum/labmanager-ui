@@ -37,10 +37,12 @@ export default class FavoriteCard extends Component {
           this.props.parentId,
           username,
           this.props.labbookName,
+          favorite.id,
           filepath,
           evt.target.value,
           favorite.index,
           favorite.index,
+          favorite,
           this.props.section,
           (response, error)=>{
             if(error){
@@ -65,7 +67,7 @@ export default class FavoriteCard extends Component {
       this.props.parentId,
       username,
       this.props.labbookName,
-      this.props.root,
+      this.props.section,
       node.index,
       node.id,
       (response, error)=>{
@@ -82,7 +84,7 @@ export default class FavoriteCard extends Component {
     let path = this.props.favorite.key.replace(filename, '')
 
     return(
-      <div className="Favorite__card card">
+      <div className={(this.props.favorite.index !== undefined) ? 'Favorite__card card' : 'Favorite__card--opaque card'}>
         <div
           onClick={()=>{ this._removeFavorite(this.props.favorite) }}
           className="Favorite__star">
@@ -119,6 +121,8 @@ export default class FavoriteCard extends Component {
               {this.props.favorite.description}
             </textarea>
           }
+
+          <div className={(this.props.favorite.index !== undefined) ? 'Favorite__mask hidden' : 'Favorite__mask'}></div>
 
         </div>
 

@@ -26,7 +26,7 @@ const mutation = graphql`
 `;
 
 
-function sharedUpdater(store, parentId, connectionKey, node) {
+function sharedUpdater(store, parentId, connectionKey, node, deleteId) {
 
   const labbookProxy = store.get(parentId);
 
@@ -34,7 +34,7 @@ function sharedUpdater(store, parentId, connectionKey, node) {
     labbookProxy,
     connectionKey
   );
-
+  console.log(conn)
   if(conn){
 
     const newEdge = RelayRuntime.ConnectionHandler.createEdge(
@@ -48,19 +48,21 @@ function sharedUpdater(store, parentId, connectionKey, node) {
       conn,
       newEdge
     );
+
   }
 }
-
 
 export default function UpdateFavoriteMutation(
   connectionKey,
   parentId,
   owner,
   labbookName,
+  deleteId,
   updatedKey,
   updatedDescription,
   index,
   updatedIndex,
+  favorite,
   section,
   callback
 ) {
@@ -91,35 +93,19 @@ export default function UpdateFavoriteMutation(
         callback(response, error)
       },
       onError: err => console.error(err),
+
       optimisticUpdater:(store)=>{
 
-        const id = uuidv4()
-        const node = store.create(id, 'Favorite')
+        const node = store.get(favorite.id)
 
-        node.setValue(id, "id")
+        node.setValue(favorite.id, "id")
         node.setValue(false, 'isDir')
         node.setValue(updatedKey, 'key')
         node.setValue(updatedDescription, 'description')
 
-        sharedUpdater(store, parentId, connectionKey, node)
-
       },
-      updater: (store, response) => {
-        console.log(store, response)
-        const id = uuidv4()
-        const node = store.create(id, 'Favorite')
 
-        if(response.updatedFavorite && response.addFavorite.updatedFavoriteEdge){
-          node.setValue(response.updatedFavorite.updatedFavoriteEdge.node.id, "id")
-          node.setValue(false, 'isDir')
-          node.setValue(response.updatedFavorite.updatedFavoriteEdge.node.key, 'key')
-          node.setValue(response.updatedFavorite.updatedFavoriteEdge.node.description, 'description')
-          node.setValue(response.updatedFavorite.updatedFavoriteEdge.node.index, 'index')
 
-          sharedUpdater(store, parentId, connectionKey, node)
-        }
-
-      }
     },
   )
 }

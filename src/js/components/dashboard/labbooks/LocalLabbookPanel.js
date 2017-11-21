@@ -46,7 +46,7 @@ export default class LocalLabbookPanel extends Component {
 
       exportClassList.add('LocalLabbooks__export--downloading')
       let username = localStorage.getItem('username')
-      ExportLabbookMutation(username, username, edge.node.name, (response, error)=>{
+      ExportLabbookMutation(username, edge.node.name, (response, error)=>{
         if(response.exportLabbook){
           JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
 

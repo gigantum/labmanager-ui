@@ -49,11 +49,13 @@ class CodeFavorites extends Component {
 
     if(this.props.code && this.props.code.favorites){
       if(this.props.code.favorites.edges.length > 0){
+        let favorites = this.props.code.favorites.edges.filter((edge)=>{if(edge){return (edge.node !== undefined)}})
         return(
           <div className="Favorite">
             <div className="Favorite__list">
               {
-                this.props.code.favorites.edges.map((edge)=>{
+                favorites.map((edge)=>{
+
                     return(
                       <div
                         key={edge.node.key}

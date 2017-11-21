@@ -27,6 +27,15 @@ export default function RemoveFavoriteMutation(
   removeFavoriteId,
   callback
 ) {
+
+  console.log(
+    connectionKey,
+    parentId,
+    owner,
+    labbookName,
+    section,
+    index,
+    removeFavoriteId)
   const clientMutationId = uuidv4()
   const variables = {
     input: {
@@ -39,15 +48,17 @@ export default function RemoveFavoriteMutation(
   }
 
   console.log(variables)
-  function sharedUpdater(store, parentID, deletedID, connectionKey) {
+  function sharedUpdater(store, parentID, deletedId, connectionKey) {
     const userProxy = store.get(parentID);
+
     const conn = RelayRuntime.ConnectionHandler.getConnection(
       userProxy,
       connectionKey,
     );
+        console.log(conn)
     RelayRuntime.ConnectionHandler.deleteNode(
       conn,
-      deletedID,
+      deletedId,
     );
   }
   commitMutation(
