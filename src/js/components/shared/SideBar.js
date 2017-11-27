@@ -7,7 +7,6 @@ import User from './User'
 export default class SideBar extends Component {
   constructor(props){
   	super(props);
-    console.log(this.props.history)
   }
   /**
     @param {}

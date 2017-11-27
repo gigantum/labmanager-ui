@@ -18,23 +18,28 @@ class OutputDataBrowser extends Component {
     this.setRootFolder = this.setRootFolder.bind(this)
   }
 
-
+  /*
+    handle state and addd listeners when component mounts
+  */
+  componentDidMount() {
+    this._loadMore()
+  }
 
   /*
     @param
     triggers relay pagination function loadMore
-    increments by 10
+    increments by 50
     logs callback
   */
   _loadMore() {
     let self = this;
     this.props.relay.loadMore(
-     10, // Fetch the next 10 feed items
+     50, // Fetch the next 50 feed items
      (response, error) => {
        if(error){
          console.error(error)
-         if(self.props.code.allFiles &&
-           self.props.code.allFiles.pageInfo.hasNextPage) {
+         if(self.props.output.allFiles &&
+           self.props.output.allFiles.pageInfo.hasNextPage) {
 
            self._loadMore()
          }

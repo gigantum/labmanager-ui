@@ -17,7 +17,6 @@ class InputDataBrowser extends Component {
       'files': []
     }
 
-    this._handleScroll = this._handleScroll.bind(this)
     this.setRootFolder = this.setRootFolder.bind(this)
   }
 
@@ -26,34 +25,6 @@ class InputDataBrowser extends Component {
   */
   componentDidMount() {
     this._loadMore()
-
-    window.addEventListener('scroll', this._handleScroll);
-  }
-
-  /*
-    handle state and remove listeners when component unmounts
-  */
-  componentWillUnmount() {
-
-    window.removeEventListener('scroll', this._handleScroll);
-  }
-
-  /*
-    @param {event} evt
-  */
-  _handleScroll(evt){
-    let root = document.getElementById('root')
-
-    let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
-    expandOn = root.scrollHeight;
-
-    if ((distanceY > expandOn) && this.props.input &&
-      this.props.input.allFiles &&
-      this.props.input.allFiles.pageInfo.hasNextPage) {
-
-        this._loadMore(evt);
-
-    }
   }
 
   setRootFolder(key){
@@ -65,17 +36,23 @@ class InputDataBrowser extends Component {
   /*
     @param
     triggers relay pagination function loadMore
-    increments by 10
+    increments by 50
     logs callback
   */
 
   _loadMore() {
-
+    let self = this;
     this.props.relay.loadMore(
-     10, // Fetch the next 10 feed items
+     50, // Fetch the next 50 feed items
      (response, error) => {
        if(error){
          console.error(error)
+       }
+
+       if(self.props.input.allFiles &&
+         self.props.input.allFiles.pageInfo.hasNextPage) {
+
+         self._loadMore()
        }
      }
    );

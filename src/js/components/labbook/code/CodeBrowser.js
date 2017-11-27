@@ -15,7 +15,6 @@ class CodeBrowser extends Component {
     this.state = {
       rootFolder: ''
     }
-    this._handleScroll = this._handleScroll.bind(this)
     this.setRootFolder = this.setRootFolder.bind(this)
   }
 
@@ -24,37 +23,7 @@ class CodeBrowser extends Component {
   */
   componentDidMount() {
     this._loadMore() //routes query only loads 2, call loadMore
-
-  //  window.addEventListener('scroll', this._handleScroll);
   }
-
-  /*
-    handle state and remove listeners when component unmounts
-  */
-  componentWillUnmount() {
-
-    //window.removeEventListener('scroll', this._handleScroll);
-  }
-
-  /*
-    @param {event} evt
-  */
-  _handleScroll(evt){
-
-    let root = document.getElementById('root')
-
-    let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
-
-    expandOn = root.scrollHeight;
-
-    if ((distanceY > expandOn) &&
-      this.props.code.allFiles &&
-      this.props.code.allFiles.pageInfo.hasNextPage) {
-
-        this._loadMore(evt);
-    }
-  }
-
   /*
     @param
     triggers relay pagination function loadMore
@@ -63,10 +32,9 @@ class CodeBrowser extends Component {
   */
 
   _loadMore() {
-    console.log('load more')
     let self = this;
     this.props.relay.loadMore(
-     50, // Fetch the next 10 feed items
+     50, // Fetch the next 50 feed items
      (response, error) => {
        if(error){
          console.error(error)

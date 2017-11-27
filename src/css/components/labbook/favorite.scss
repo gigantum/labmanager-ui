@@ -219,7 +219,7 @@
   bottom: 0px;
 }
 
-@media screen and (max-width: 50000px) and (min-width: 2001px) {
+@media screen and (max-width: 50000px) and (min-width: 1601px) {
   .Favorite__card-wrapper{
     min-width: 25%;
     width: 25%;
@@ -241,7 +241,7 @@
 }
 
 
-@media screen and (max-width: 2000px) and (min-width: 1080px) {
+@media screen and (max-width: 1600px) and (min-width: 1180px) {
   .Favorite__card-wrapper{
     min-width: 33.333%;
     width: 33.333%;
@@ -260,7 +260,7 @@
     @include flex(space-around, row);
   }
 }
-@media screen and (max-width: 1079px) and (min-width: 778px) {
+@media screen and (max-width: 1179px) and (min-width: 878px) {
   .Favorite__card-wrapper{
     min-width: 50%;
     width: 50%;
@@ -274,7 +274,7 @@
     @include flex(left, row);
   }
 }
-@media screen and (max-width: 777px) and (min-width: 0px) {
+@media screen and (max-width: 877px) and (min-width: 0px) {
   .Favorite__card-wrapper{
     min-width: 100%;
     width: 100%;
@@ -302,7 +302,7 @@
     }
   }
 }
-@media screen and (max-width: 1129px) and (min-width: 0px) {
+@media screen and (max-width: 1229px) and (min-width: 0px) {
   .Labbook--detail-mode{
     .Favorite__card-wrapper{
       min-width: 100%;
