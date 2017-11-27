@@ -15,18 +15,9 @@ class OutputDataBrowser extends Component {
       'message': '',
       'files': []
     }
-    this._handleScroll = this._handleScroll.bind(this)
     this.setRootFolder = this.setRootFolder.bind(this)
   }
 
-  /*
-    handle state and addd listeners when component mounts
-  */
-  componentDidMount() {
-
-
-
-  }
 
 
   /*

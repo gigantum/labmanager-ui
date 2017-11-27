@@ -7,7 +7,7 @@ import history from 'JS/history';
 import {QueryRenderer, graphql} from 'react-relay'
 // components
 import Home from 'Components/home/Home';
-import Header from 'Components/shared/Header';
+import SideBar from 'Components/shared/SideBar';
 import Footer from 'Components/shared/Footer';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
@@ -63,9 +63,10 @@ export default class Routes extends Component {
               path=""
               render={(location) => {return(
               <div className="Routes">
-                <Header
+                <SideBar
                   auth={auth} history={history}
                 />
+                <div className="Routes__main">
 
                 <Route
                   exact
@@ -150,6 +151,7 @@ export default class Routes extends Component {
                   ref="footer"
                   history={history}
                 />
+              </div>
               </div>
             )}}
            />

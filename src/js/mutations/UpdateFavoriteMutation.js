@@ -97,7 +97,7 @@ export default function UpdateFavoriteMutation(
       optimisticUpdater:(store)=>{
 
         const node = store.get(favorite.id)
-
+        
         node.setValue(favorite.id, "id")
         node.setValue(false, 'isDir')
         node.setValue(updatedKey, 'key')
