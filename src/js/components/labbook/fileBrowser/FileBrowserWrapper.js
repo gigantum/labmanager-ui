@@ -6,6 +6,7 @@ import SweetAlert from 'sweetalert-react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
 import Moment from 'moment'
 import Environment, {relayStore} from 'JS/createRelayEnvironment'
+import {getFiles} from 'html-dir-content/dist/html-dir-content'
 //components
 import DetailPanel from './../detail/DetailPanel'
 import DragAndDrop from './DragDrop'
@@ -254,12 +255,13 @@ export default class FileBrowserWrapper extends Component {
   *  @param {string, string} key,prefix  file key, prefix is root folder -
   *  creates a file using AddLabbookFileMutation by passing a blob
   */
-  handleCreateFiles(files, prefix) {
+  handleCreateFiles(files, prefix, items) {
     let self = this;
+    console.log(files, prefix, items)
 
-    this.setState(state => {
-
+    if(!files[0][0].entry){
       const batchUpload = (files.length > 1)
+
       let newFiles = files.map((file, index) => {
         let newKey = prefix;
         if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
@@ -294,35 +296,25 @@ export default class FileBrowserWrapper extends Component {
 
 
           fileReader.readAsArrayBuffer(file);
-
-        // window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-        // window.directoryEntry = window.directoryEntry || window.webkitDirectoryEntry;
-        // function onError(error){
-        //   console.log(error)
-        // }
-        // function onFs(fs){
-        //   console.log(fs)
-        //   fs.root.getDirectory('Spinner', {create:true}, function(directoryEntry){
-        //     console.log(directoryEntry)
-        //     //directoryEntry.isFile === false
-        //     //directoryEntry.isDirectory === true
-        //     //directoryEntry.name === 'Documents'
-        //     //directoryEntry.fullPath === '/Documents'
-        //
-        //     }, onError);
-        //
-        //   }
-        //
-        // // Opening a file system with temporary storage
-        // window.requestFileSystem(file, 1024*1024*1024*1024 /*1TB*/, onFs, onError);
-
-        return {
-          key: newKey,
-          size: file.size,
-          modified: + Moment(),
-        };
       });
-    })
+    }else{
+      console.log(files, prefix, items)
+      let flattenedFiles = []
+      function flattenFiles(filesArray){
+          if(filesArray.entry){
+            flattenedFiles.push(filesArray)
+          }else{
+            filesArray.map(filesSubArray=>{
+              files(filesSubArray)
+            })
+          }
+      }
+
+      flattenFiles(files)
+
+      console.log(flattenedFiles)
+    }
+
   }
   /**
   *  @param {string, string} oldKey,newKey  file key, prefix is root folder -

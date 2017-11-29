@@ -52,7 +52,6 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
 
 export default function AddLabbookFileMutation(
   connectionKey,
-  user,
   owner,
   labbookName,
   labbookId,
@@ -121,7 +120,7 @@ export default function AddLabbookFileMutation(
       updater: (store, response) => {
         const id = uuidv4()
         const node = store.create(id, 'LabbookFile')
-        
+
         if(response.addLabbookFile && response.addLabbookFile.newLabbookFileEdge){
           node.setValue(response.addLabbookFile.newLabbookFileEdge.node.id, "id")
           node.setValue(false, 'isDir')

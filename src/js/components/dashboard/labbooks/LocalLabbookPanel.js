@@ -5,6 +5,9 @@ import SweetAlert from 'sweetalert-react'
 import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
+//store
+import store from 'JS/redux/store'
+
 /**
 *  labbook panel is to only render the edge passed to it
 */
@@ -46,17 +49,39 @@ export default class LocalLabbookPanel extends Component {
 
       exportClassList.add('LocalLabbooks__export--downloading')
       let username = localStorage.getItem('username')
+
+      store.dispatch({
+        type: 'UPLOAD_MESSAGE',
+        payload: {
+          uploadMessage: 'Exporting Lab Book',
+          loadingState: true,
+          success: false,
+          error: false
+        }
+      })
+
       ExportLabbookMutation(username, edge.node.name, (response, error)=>{
         if(response.exportLabbook){
           JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
 
-              this.setState({
-                'exportPath': data.jobStatus.result ? data.jobStatus.result : '',
-                'show': true,
-                'message': `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-                'type': 'success',
-                'title': 'Export Successful'
-              })
+              // this.setState({
+              //   'exportPath': data.jobStatus.result ? data.jobStatus.result : '',
+              //   'show': true,
+              //   'message': `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
+              //   'type': 'success',
+              //   'title': 'Export Successful'
+              // })
+              if(data.jobStatus.result){
+                store.dispatch({
+                  type: 'UPLOAD_MESSAGE',
+                  payload: {
+                    uploadMessage: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
+                    loadingState: true,
+                    success: false,
+                    error: false
+                  }
+                })
+              }
 
               exportClassList.remove('LocalLabbooks__export--downloading')
           }).catch((error)=>{
@@ -64,13 +89,16 @@ export default class LocalLabbookPanel extends Component {
           })
       }else{
 
-        this.setState({
-
-          'message': error[0].message,
-          'show': true,
-          'type': 'error',
-          'title': 'Export Failed'
+        store.dispatch({
+          type: 'UPLOAD_MESSAGE',
+          payload: {
+            uploadMessage: 'Export Failed: ' + error[0].message,
+            loadingState: true,
+            success: false,
+            error: true
+          }
         })
+
         exportClassList.remove('LocalLabbooks__export--downloading')
       }
     })
