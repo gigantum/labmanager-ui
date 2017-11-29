@@ -30,7 +30,6 @@ const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepa
   AddLabbookFileMutation(
     data.connectionKey,
     username,
-    username,
     data.labbookName,
     data.parentId,
     filepath,
