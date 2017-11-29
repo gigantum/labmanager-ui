@@ -1,12 +1,12 @@
 const DragAndDrop = {
   dragAndDrop: () => {
-      console.log(document.getElementById('OutputData_files'))
+
     	document.getElementById('OutputData_files').addEventListener('drop', function (e) {
     		e.stopPropagation();
     		e.preventDefault();
 
     		var uploadFile = function(file, path) {
-    			console.log(path, file);
+
     			// handle file uploading
     		};
 
@@ -14,7 +14,7 @@ const DragAndDrop = {
     			for (var i = 0; i < filesAndDirs.length; i++) {
     				if (typeof filesAndDirs[i].getFilesAndDirectories === 'function') {
     					var path = filesAndDirs[i].path;
-              console.log(filesAndDirs)
+
     					// this recursion enables deep traversal of directories
     					filesAndDirs[i].getFilesAndDirectories().then(function(subFilesAndDirs) {
     						// iterate through files and directories in sub-directory

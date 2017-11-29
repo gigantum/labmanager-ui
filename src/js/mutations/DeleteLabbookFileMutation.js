@@ -25,14 +25,15 @@ export default function DeleteLabbookFileMutation(
   labbookId,
   deleteLabbookFileId,
   filePath,
+  section,
   callback
 ) {
   const variables = {
     input: {
-      user,
       owner,
       labbookName,
       filePath,
+      section,
       clientMutationId: '' + tempID++
     }
   }

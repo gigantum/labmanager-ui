@@ -62,7 +62,7 @@ class InputFavorites extends Component {
                         <FavoriteCard
                           labbookName={this.props.labbookName}
                           parentId={this.props.inputId}
-                          root={'input'}
+                          section={'input'}
                           connection={"InputFavorites_favorites"}
                           favorite={edge.node}
                         />

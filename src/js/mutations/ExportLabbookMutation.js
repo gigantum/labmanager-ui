@@ -16,7 +16,6 @@ const mutation = graphql`
 let tempID = 0;
 
 export default function ExportLabbookMutation(
-  user,
   owner,
   labbookName,
   callback
@@ -24,7 +23,6 @@ export default function ExportLabbookMutation(
   const variables = {
     input: {
       owner,
-      user,
       labbookName,
       clientMutationId: '' + tempID++
     }

@@ -17,7 +17,6 @@ class InputDataBrowser extends Component {
       'files': []
     }
 
-    this._handleScroll = this._handleScroll.bind(this)
     this.setRootFolder = this.setRootFolder.bind(this)
   }
 
@@ -26,34 +25,6 @@ class InputDataBrowser extends Component {
   */
   componentDidMount() {
     this._loadMore()
-
-    window.addEventListener('scroll', this._handleScroll);
-  }
-
-  /*
-    handle state and remove listeners when component unmounts
-  */
-  componentWillUnmount() {
-
-    window.removeEventListener('scroll', this._handleScroll);
-  }
-
-  /*
-    @param {event} evt
-  */
-  _handleScroll(evt){
-    let root = document.getElementById('root')
-
-    let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
-    expandOn = root.scrollHeight;
-
-    if ((distanceY > expandOn) && this.props.input &&
-      this.props.input.files &&
-      this.props.input.files.pageInfo.hasNextPage) {
-
-        this._loadMore(evt);
-
-    }
   }
 
   setRootFolder(key){
@@ -65,17 +36,23 @@ class InputDataBrowser extends Component {
   /*
     @param
     triggers relay pagination function loadMore
-    increments by 10
+    increments by 50
     logs callback
   */
 
   _loadMore() {
-
+    let self = this;
     this.props.relay.loadMore(
-     10, // Fetch the next 10 feed items
+     50, // Fetch the next 50 feed items
      (response, error) => {
        if(error){
          console.error(error)
+       }
+
+       if(self.props.input.allFiles &&
+         self.props.input.allFiles.pageInfo.hasNextPage) {
+
+         self._loadMore()
        }
      }
    );
@@ -83,9 +60,9 @@ class InputDataBrowser extends Component {
 
   render(){
 
-    if(this.props.input && this.props.input.files){
-      let inputFiles = this.props.input.files
-      if(this.props.input.files.edges.length === 0){
+    if(this.props.input && this.props.input.allFiles){
+      let inputFiles = this.props.input.allFiles
+      if(this.props.input.allFiles.edges.length === 0){
         inputFiles = {
           edges: [{
             node:{
@@ -96,17 +73,17 @@ class InputDataBrowser extends Component {
               id: 'input_temp'
             }
           }],
-          pageInfo: this.props.input.files.pageInfo
+          pageInfo: this.props.input.allFiles.pageInfo
         }
       }
 
       return(
         <FileBrowserWrapper
           ref='inputBrowser'
-          rootFoler="input"
+          section="input"
           setRootFolder={this.setRootFolder}
           files={inputFiles}
-          connection="InputData_files"
+          connection="InputData_allFiles"
           parentId={this.props.inputId}
           favoriteConnection="InputFavorites_favorites"
           {...this.props}
@@ -125,11 +102,12 @@ export default createPaginationContainer(
 
     input: graphql`
       fragment InputDataBrowser_input on LabbookSection{
-        files(after: $cursor, first: $first, root: $root)@connection(key: "InputDataBrowser_files", filters: []){
+        allFiles(after: $cursor, first: $first)@connection(key: "InputDataBrowser_allFiles", filters: []){
           edges{
             node{
               id
               isDir
+              isFavorite
               modifiedAt
               key
               size
@@ -149,7 +127,7 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.input && props.input.files
+      return props.input && props.input.allFiles
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -158,13 +136,12 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-      let root = ''
+
       const username = localStorage.getItem('username')
 
       return {
         first: count,
         cursor,
-        root,
         owner: username,
         name: props.labbookName
       };
@@ -175,7 +152,6 @@ export default createPaginationContainer(
         $cursor: String
         $owner: String!
         $name: String!
-        $root: String
       ) {
         labbook(name: $name, owner: $owner){
           input{

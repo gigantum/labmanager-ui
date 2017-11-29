@@ -6,6 +6,7 @@ import {createPaginationContainer, graphql} from 'react-relay'
 import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
 
 let codeRootFolder = ''
+let totalCount = 2
 
 class CodeBrowser extends Component {
   constructor(props){
@@ -14,7 +15,6 @@ class CodeBrowser extends Component {
     this.state = {
       rootFolder: ''
     }
-    this._handleScroll = this._handleScroll.bind(this)
     this.setRootFolder = this.setRootFolder.bind(this)
   }
 
@@ -23,53 +23,29 @@ class CodeBrowser extends Component {
   */
   componentDidMount() {
     this._loadMore() //routes query only loads 2, call loadMore
-
-    window.addEventListener('scroll', this._handleScroll);
   }
-
-  /*
-    handle state and remove listeners when component unmounts
-  */
-  componentWillUnmount() {
-
-    window.removeEventListener('scroll', this._handleScroll);
-  }
-
-  /*
-    @param {event} evt
-  */
-  _handleScroll(evt){
-
-    let root = document.getElementById('root')
-
-    let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
-
-    expandOn = root.scrollHeight;
-
-    if ((distanceY > expandOn) &&
-      this.props.code.files &&
-      this.props.code.files.pageInfo.hasNextPage) {
-
-        this._loadMore(evt);
-    }
-  }
-
   /*
     @param
     triggers relay pagination function loadMore
     increments by 10
     logs callback
   */
-  _loadMore() {
 
+  _loadMore() {
+    let self = this;
     this.props.relay.loadMore(
-     10, // Fetch the next 10 feed items
+     50, // Fetch the next 50 feed items
      (response, error) => {
        if(error){
          console.error(error)
        }
-     },
-     {baseDir: this.state.rootFolder}
+
+       if(self.props.code.allFiles &&
+         self.props.code.allFiles.pageInfo.hasNextPage) {
+
+         self._loadMore()
+       }
+     }
    );
   }
   /*
@@ -80,14 +56,14 @@ class CodeBrowser extends Component {
   setRootFolder(key){
     this.setState({rootFolder: key})
     codeRootFolder = key.replace('code/', '')
-    this._loadMore()
   }
 
   render(){
-    if(this.props.code && this.props.code.files){
 
-      let codeFiles = this.props.code.files
-      if(this.props.code.files.edges.length === 0){
+    if(this.props.code && this.props.code.allFiles){
+
+      let codeFiles = this.props.code.allFiles
+      if(this.props.code.allFiles.edges.length === 0){
         codeFiles = {
           edges: [{
             node:{
@@ -98,17 +74,17 @@ class CodeBrowser extends Component {
               id: 'code_temp'
             }
           }],
-          pageInfo: this.props.code.files.pageInfo
+          pageInfo: this.props.code.allFiles.pageInfo
         }
       }
       return(
           <FileBrowserWrapper
             ref='codeBrowser'
-            rootFolder={this.state.rootFolder}
+            section="code"
             setRootFolder={this.setRootFolder}
             files={codeFiles}
             parentId={this.props.codeId}
-            connection="CodeBrowser_files"
+            connection="CodeBrowser_allFiles"
             favoriteConnection="CodeFavorites_favorites"
             {...this.props}
           />
@@ -125,11 +101,12 @@ export default createPaginationContainer(
 
     code: graphql`
       fragment CodeBrowser_code on LabbookSection{
-        files(after: $cursor, first: $first, root: $root)@connection(key: "CodeBrowser_files", filters: []){
+        allFiles(after: $cursor, first: $first)@connection(key: "CodeBrowser_allFiles", filters: []){
           edges{
             node{
               id
               isDir
+              isFavorite
               modifiedAt
               key
               size
@@ -149,7 +126,7 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.code && props.code.files
+      return props.code && props.code.allFiles
     },
     getFragmentVariables(prevVars, totalCount,) {
 
@@ -160,13 +137,10 @@ export default createPaginationContainer(
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
       const username = localStorage.getItem('username')
-
-      let root = codeRootFolder
-
+      totalCount += count
       return {
-        first: count,
-        cursor: (root !== '') ? null : cursor,
-        root,
+        first: totalCount,
+        cursor: cursor,
         owner: username,
         name: props.labbookName
       };
@@ -177,7 +151,6 @@ export default createPaginationContainer(
         $cursor: String
         $owner: String!
         $name: String!
-        $root: String
       ) {
         labbook(name: $name, owner: $owner){
            id

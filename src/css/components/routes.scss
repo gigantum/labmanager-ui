@@ -1,4 +1,10 @@
 .Routes{
   height: 100%;
   width: 100%;
+  @include flex(flex-start, row)
+}
+
+.Routes__main{
+  flex: 1 0;
+  margin-left: 100px;
 }

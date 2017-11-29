@@ -9,13 +9,16 @@ let counter = 10;
 class CodeFavorites extends Component {
   constructor(props){
   	super(props);
+    this.state = {
+      loading: false
+    }
   }
 
   /*
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore() //routes query only loads 2, call loadMore
+    //this._loadMore() //routes query only loads 2, call loadMore
 
     this.props.relay.loadMore(
      1, // Fetch the next 10 feed items
@@ -33,9 +36,16 @@ class CodeFavorites extends Component {
     logs callback
   */
   _loadMore() {
+    let self = this
+
+    this.setState({loading: true})
+
     this.props.relay.loadMore(
      3, // Fetch the next 10 feed items
      (response, error) => {
+
+       self.setState({loading: false})
+
        if(error){
          console.error(error)
        }
@@ -48,12 +58,18 @@ class CodeFavorites extends Component {
   render(){
 
     if(this.props.code && this.props.code.favorites){
+
+      let loadingClass = (this.props.code.favorites.pageInfo.hasNextPage) ? 'Favorite__action-bar' : 'hidden'
+      loadingClass = (this.state.loading) ? 'Favorite__action-bar--loading' : loadingClass
+      console.log(loadingClass)
       if(this.props.code.favorites.edges.length > 0){
+        let favorites = this.props.code.favorites.edges.filter((edge)=>{if(edge){return (edge.node !== undefined)}})
         return(
           <div className="Favorite">
             <div className="Favorite__list">
               {
-                this.props.code.favorites.edges.map((edge)=>{
+                favorites.map((edge)=>{
+
                     return(
                       <div
                         key={edge.node.key}
@@ -61,7 +77,7 @@ class CodeFavorites extends Component {
                         <FavoriteCard
                           labbookName={this.props.labbookName}
                           parentId={this.props.codeId}
-                          root={'code'}
+                          section={'code'}
                           connection={"CodeFavorites_favorites"}
                           favorite={edge.node}
                         />
@@ -70,7 +86,7 @@ class CodeFavorites extends Component {
             }
             </div>
 
-            <div className={this.props.code.favorites.pageInfo.hasNextPage ? "Favorite__action-bar" : "hidden"}>
+            <div className={loadingClass}>
               <button
                 className="Favorite__load-more"
                 onClick={()=>{this._loadMore()}}
@@ -131,12 +147,10 @@ export default createPaginationContainer(
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
       const username = localStorage.getItem('username')
-      let root = ""
 
       return {
         first: count,
         cursor,
-        root,
         owner: username,
         name: props.labbookName
       };

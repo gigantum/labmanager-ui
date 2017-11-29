@@ -7,14 +7,14 @@ import history from 'JS/history';
 import {QueryRenderer, graphql} from 'react-relay'
 // components
 import Home from 'Components/home/Home';
-import Header from 'Components/shared/Header';
+import SideBar from 'Components/shared/SideBar';
 import Footer from 'Components/shared/Footer';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
 import environment from 'JS/createRelayEnvironment'
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
-  query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String, $root: String){
+  query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
     labbook(name: $name, owner: $owner){
       id
       description
@@ -63,9 +63,10 @@ export default class Routes extends Component {
               path=""
               render={(location) => {return(
               <div className="Routes">
-                <Header
+                <SideBar
                   auth={auth} history={history}
                 />
+                <div className="Routes__main">
 
                 <Route
                   exact
@@ -101,9 +102,7 @@ export default class Routes extends Component {
                           {
                             name: parentProps.match.params.labbookName,
                             owner: username,
-                            first: 2,
-                            root: null
-
+                            first: 2
                           }
                         }
                         render={({error, props}) => {
@@ -152,6 +151,7 @@ export default class Routes extends Component {
                   ref="footer"
                   history={history}
                 />
+              </div>
               </div>
             )}}
            />

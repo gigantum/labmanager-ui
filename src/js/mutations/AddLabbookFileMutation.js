@@ -59,6 +59,7 @@ export default function AddLabbookFileMutation(
   filePath,
   chunk,
   accessToken,
+  section,
   callback
 ) {
   let uploadables = [chunk.blob, accessToken]
@@ -76,6 +77,7 @@ export default function AddLabbookFileMutation(
         filename: chunk.filename,
         uploadId: chunk.uploadId,
       },
+      section,
       clientMutationId: id
     }
   }
@@ -109,7 +111,7 @@ export default function AddLabbookFileMutation(
 
         node.setValue(id, "id")
         node.setValue(false, 'isDir')
-        node.setValue('code/' + chunk.filename, 'key')
+        node.setValue(filePath, 'key')
         node.setValue(0, 'modifiedAt')
         node.setValue(chunk.chunkSize, 'size')
 
@@ -119,7 +121,8 @@ export default function AddLabbookFileMutation(
       updater: (store, response) => {
         const id = uuidv4()
         const node = store.create(id, 'LabbookFile')
-        if(response.addLabbookFile.newLabbookFileEdge){
+        
+        if(response.addLabbookFile && response.addLabbookFile.newLabbookFileEdge){
           node.setValue(response.addLabbookFile.newLabbookFileEdge.node.id, "id")
           node.setValue(false, 'isDir')
           node.setValue(response.addLabbookFile.newLabbookFileEdge.node.key, 'key')

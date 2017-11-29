@@ -34,7 +34,6 @@ export default function AddEnvironmentComponentMutation(
       namespace,
       component,
       version,
-      clientMutationId,
       componentClass,
       clientMutationId: environmentId
     }
@@ -44,22 +43,28 @@ export default function AddEnvironmentComponentMutation(
     {
       mutation,
       variables,
-      // config: [{
-      //   type: 'RANGE_ADD',
-      //   parentID: environmentId,
-      //   connectionInfo: [{
-      //     key: connection,
-      //     rangeBehavior: 'append',
-      //   }],
-      //   edgeName: 'newEnvironmentEdge',
-      // }],
+      config: [{
+        type: 'RANGE_ADD',
+        parentID: environmentId,
+        connectionInfo: [{
+          key: connection,
+          rangeBehavior: 'append',
+        }],
+        edgeName: 'newEnvironmentEdge',
+      }],
       onCompleted: (response, error) => {
         if(error){
           console.log(error)
         }
         callback(error)
       },
-      onError: err => console.error(err)
+      onError: err => console.error(err),
+      optimisticUpdater: (store) => {
+
+      },
+      updater: (store, response) => {
+      
+      }
     },
   )
 }

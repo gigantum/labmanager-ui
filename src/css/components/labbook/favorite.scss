@@ -1,6 +1,8 @@
 .Favorite__list{
   @include flex(left, row)
   flex-wrap: wrap;
+
+  position: relative;
 }
 
 .Favorite__card-wrapper{
@@ -9,13 +11,25 @@
   min-width: 33.333%;
   width: 33.333%;
   max-width: 33.333%;
-  color: $font-grey;;
+  color: $lightGrey;
 }
 
+/* Standard syntax */
+@keyframes fluxuateLoad {
+    0% {opacity: 0.1;}
+    50% {opacity: 0.5;}
+    100% {opacity: 0.1;}
 
+}
 
+.Favorite__card--opaque{
+  opacity: 0.1;
+  animation: fluxuateLoad 3s infinite;
+}
 
-.Favorite__card{
+.Favorite__card,
+.Favorite__card--opaque{
+
   width: calc(100% - 20px);
   height: 220px;
   min-width: 300px;
@@ -33,7 +47,7 @@
 .Favorite__edit-button:hover,
 .Favorite__edit-button:focus{
   font-weight: light;
-  color: $font-grey;
+  color: $lightGrey;
   font-size: 14px;
   height: 30px;
   width: 30px;
@@ -63,7 +77,7 @@
   font-size: 18px;
   font-weight: bold;
   padding: 5px 0;
-  color: $charcoal;
+  color: $slateBlue;
   word-break: break-all;
   width: calc(100% - 20px);
 }
@@ -73,11 +87,16 @@
   position: absolute;
   top: 5px;
   right: 5px;
+}
+
+.Favorite__star,
+.Favorite__star--file{
   height: 30px;
   width: 30px;
   background-size: 24px;
   background: url('../images/icons/star__on.svg') no-repeat center center;
 }
+
 
 .Favorite__star:hover{
   background-size: 34px;
@@ -89,26 +108,47 @@
 }
 
 .Favorite__load-more,
+.Favorite__action-bar--loading,
 .Favorite__load-more:hover,
 .Favorite__load-more:focus{
   background: none;
-  color: $charcoal;
+  color: $slateBlue;
   border: 0px;
 }
 
 .Favorite__load-more:hover{
-  color: $datasets;
+  color: $turquise;
 }
 
-.Favorite__action-bar{
+.Favorite__action-bar,
+.Favorite__action-bar--loading{
   margin: 30px 0 15px;
   position: relative;
   display: flex;
   justify-content: center;
 }
 
+
+/* Standard syntax */
+@keyframes loadingBar {
+    0% {background-color: $slateBlue;}
+    50% {background-color: $turquise;}
+    100% {background-color: $slateBlue;}
+}
+@keyframes Gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position:  100% 50%;
+	}
+	100% {
+		background-position-y: 0% 50%;
+	}
+}
+
 .Favorite__action-bar:after{
-  border-top: 1px solid $font-grey;
+  border-top: 1px solid $slateBlue;
   content:"";
   position: absolute;
   bottom: 3px;
@@ -117,11 +157,12 @@
   z-index: -1;
   text-align: center;
   width: calc(50% - 50px);
+
 }
 
 
 .Favorite__action-bar:before{
-  border-top: 1px solid $font-grey;
+  border-top: 1px solid $slateBlue;
   content:"";
   position: absolute;
   bottom: 3px;
@@ -130,9 +171,55 @@
   z-index: -1;
   text-align: center;
   width: calc(50% - 50px);
+
+}
+.Favorite__action-bar:hover:after,
+.Favorite__action-bar:hover:before{
+  border-top: 1px solid $turquise;
 }
 
-@media screen and (max-width: 50000px) and (min-width: 2001px) {
+
+.Favorite__action-bar--loading:after{
+  border-top: 0px solid $lightGrey;
+  content:"";
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  height: 1px;
+  z-index: -1;
+  text-align: center;
+  width: calc(50% - 50px);
+  background: linear-gradient(-45deg, $slateBlue, $purple, $turquise, $goldenLemon);
+  background-size: 200% 200%;
+  animation: $purple, 7s ease infinite;
+}
+
+
+.Favorite__action-bar--loading:before{
+  border-top: 0px solid $lightGrey;
+  content:"";
+  position: absolute;
+  bottom: 8px;
+  right: 0;
+  height: 1px;
+  z-index: -1;
+  text-align: center;
+  width: calc(50% - 50px);
+  background: linear-gradient(45deg, $goldenLemon, $turquise, $purple, $slateBlue);
+  background-size: 200% 200%;
+  animation: Gradient 7s ease infinite;
+}
+
+.Favorite__mask{
+  position: absolute;
+
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+}
+
+@media screen and (max-width: 50000px) and (min-width: 1601px) {
   .Favorite__card-wrapper{
     min-width: 25%;
     width: 25%;
@@ -154,7 +241,7 @@
 }
 
 
-@media screen and (max-width: 2000px) and (min-width: 1080px) {
+@media screen and (max-width: 1600px) and (min-width: 1180px) {
   .Favorite__card-wrapper{
     min-width: 33.333%;
     width: 33.333%;
@@ -173,7 +260,7 @@
     @include flex(space-around, row);
   }
 }
-@media screen and (max-width: 1079px) and (min-width: 778px) {
+@media screen and (max-width: 1179px) and (min-width: 878px) {
   .Favorite__card-wrapper{
     min-width: 50%;
     width: 50%;
@@ -187,7 +274,7 @@
     @include flex(left, row);
   }
 }
-@media screen and (max-width: 777px) and (min-width: 0px) {
+@media screen and (max-width: 877px) and (min-width: 0px) {
   .Favorite__card-wrapper{
     min-width: 100%;
     width: 100%;
@@ -215,7 +302,7 @@
     }
   }
 }
-@media screen and (max-width: 1129px) and (min-width: 0px) {
+@media screen and (max-width: 1229px) and (min-width: 0px) {
   .Labbook--detail-mode{
     .Favorite__card-wrapper{
       min-width: 100%;

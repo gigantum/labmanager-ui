@@ -1,0 +1,105 @@
+.SideBar{
+  position: fixed;
+  z-index: 100;
+  top: 0px;
+
+  flex: 0 1;
+
+  width: 100px;
+  height: 100%;
+
+  background-color: $jet;
+}
+
+.SideBar__inner-container{
+  width: 100%;
+  @include flex(flex-start, column)
+}
+
+.SideBar__title{
+  color: $cream;
+}
+
+.SideBar__nav{
+  @include flex(flex-start, column)
+  align-items: center;
+}
+
+.SideBar__nav-item{
+  align-content: center;
+
+  width: 80px;
+  height: 120px;
+  color: $white;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+
+  @include flex(center, column)
+}
+
+.SideBar__nav-item--selected{
+  color: $turquise;
+}
+
+.SideBar__nav-item--datasets{
+  align-items: center;
+
+  margin: 0 10px;
+  padding: 0 15px 0 0;
+}
+
+.SideBar__nav-item--labbooks{
+  align-items: center;
+  padding: 0 15px 0 0;
+}
+
+.SideBar__icon{
+  height: 80px;
+  width: 60px;
+  margin: 0 2px;
+  align-items: center;
+
+}
+
+.SideBar__icon--datasets{
+  background: url('../images/icons/datasets.svg') no-repeat center center;
+  background-size: 60px;
+}
+
+
+.SideBar__icon--datasets-selected{
+  background: url('../images/icons/datasets-selected.svg') no-repeat center center;
+  background-size: 60px;
+}
+
+.SideBar__icon--labbooks{
+  background: url('../images/icons/labbooks.svg') no-repeat center center;
+  background-size: 60px;
+}
+
+.SideBar__icon--labbooks-selected{
+  background: url('../images/icons/labbooks-selected.svg') no-repeat center center;
+  background-size: 60px;
+}
+
+.SideBar__button{
+  background-color: $orange;
+  border: 1px solid $cream;
+  color: $cream;
+}
+
+.SideBar__button:hover{
+  background-color: $cream;
+  border: 1px solid $cream;
+  border-width: 0px;
+  color: $orange;
+}
+
+.SideBar__button--logout{
+  position: absolute;
+  top: 20px;
+}
