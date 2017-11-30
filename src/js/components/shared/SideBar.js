@@ -19,7 +19,7 @@ export default class SideBar extends Component {
     const { isAuthenticated } = this.props.auth;
     const isLabbooks = (window.location.href.indexOf('labbooks') > 0);
     return (
-      <div className="SideBar">
+      <div className="SideBar col-sm-1">
         <div className={'SideBar__inner-container'}>
 
           <ul className='SideBar__nav'>

@@ -190,21 +190,21 @@ class Notes extends Component {
               }
               <div
                 key="Notes-loader-card-1"
-                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
+                className={isLoadingMore ? 'NotesCard NotesCard__loader NotesCard__loader--1 card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
                 key="Notes-loader-card-2"
-                className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
+                className={isLoadingMore ? 'NotesCard NotesCard__loader NotesCard__loader--2 card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
-                key="Notes-loader-card-3" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
+                key="Notes-loader-card-3" className={isLoadingMore ? 'NotesCard NotesCard__loader NotesCard__loader--3 card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
                 key="Notes-loader-card-4"
-                 className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
+                 className={isLoadingMore ? 'NotesCard NotesCard__loader NotesCard__loader--4 card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
               <div
-                key="Notes-loader-card-5" className={isLoadingMore ? 'NotesCard NotesCard__loader card': 'NotesCard NotesCard__loader-hidden'}>
+                key="Notes-loader-card-5" className={isLoadingMore ? 'NotesCard NotesCard__loader NotesCard__loader--5 card': 'NotesCard NotesCard__loader-hidden'}>
               </div>
             </div>
           </div>

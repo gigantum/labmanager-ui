@@ -190,7 +190,7 @@ storeDidUpdate = (labbook) => {
   render(){
 
     const {labbookName} = this.props;
-
+    const username = localStorage.getItem('username')
     if(this.props.labbook){
       return(
         <div
@@ -201,9 +201,9 @@ storeDidUpdate = (labbook) => {
 
                <div className="Labbook__header flex flex--row justify--space-between">
 
-                 <h4 className="Labbook__name-title">
-                   {labbookName}
-                 </h4>
+                 <p className="Labbook__name-title">
+                   {username + '/' + labbookName}
+                 </p>
 
                  <ContainerStatus
                    ref="ContainerStatus"
