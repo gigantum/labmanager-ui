@@ -20,6 +20,17 @@
   color: $cream;
 }
 
+.SideBar__list-item{
+  width: 100%;
+}
+
+.SideBar__list-item--selected{
+  @extend .SideBar__list-item;
+}
+
+.SideBar__list-item--selected:after{
+}
+
 .SideBar__nav{
   @include flex(flex-start, column)
   align-items: center;
@@ -32,6 +43,7 @@
   width: 80px;
   height: 120px;
   color: $white;
+  margin: 0 auto;
 
   border-radius: 20px;
 
@@ -48,8 +60,6 @@
 
 .SideBar__nav-item--datasets{
   align-items: center;
-
-  margin: 0 10px;
 }
 
 .SideBar__nav-item--labbooks{
