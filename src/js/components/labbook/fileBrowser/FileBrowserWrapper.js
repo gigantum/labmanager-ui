@@ -6,7 +6,6 @@ import SweetAlert from 'sweetalert-react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
 import Moment from 'moment'
 import Environment, {relayStore} from 'JS/createRelayEnvironment'
-import {getFiles} from 'html-dir-content/dist/html-dir-content'
 //components
 import DetailPanel from './../detail/DetailPanel'
 import DragAndDrop from './DragDrop'
@@ -16,6 +15,8 @@ import DeleteLabbookFileMutation from 'Mutations/DeleteLabbookFileMutation'
 import MakeLabbookDirectoryMutation from 'Mutations/MakeLabbookDirectoryMutation'
 import MoveLabbookFileMutation from 'Mutations/MoveLabbookFileMutation'
 import AddFavoriteMutation from 'Mutations/AddFavoriteMutation'
+//helpers
+import FolderUpload from './folderUpload'
 
 //utilities
 import ChunkUploader from 'JS/utils/ChunkUploader'
@@ -255,11 +256,10 @@ export default class FileBrowserWrapper extends Component {
   *  @param {string, string} key,prefix  file key, prefix is root folder -
   *  creates a file using AddLabbookFileMutation by passing a blob
   */
-  handleCreateFiles(files, prefix, items) {
+  handleCreateFiles(files, prefix) {
     let self = this;
-    console.log(files, prefix, items)
-
-    if(!files[0][0].entry){
+    console.log(files, prefix)
+    if(files.length === 1){
       const batchUpload = (files.length > 1)
 
       let newFiles = files.map((file, index) => {
@@ -298,7 +298,6 @@ export default class FileBrowserWrapper extends Component {
           fileReader.readAsArrayBuffer(file);
       });
     }else{
-      console.log(files, prefix, items)
       let flattenedFiles = []
       function flattenFiles(filesArray){
           if(filesArray.entry){
@@ -311,10 +310,12 @@ export default class FileBrowserWrapper extends Component {
       }
 
       flattenFiles(files)
+      let filterFiles = flattenedFiles.filter((fileItem) => {
+          return (fileItem.file.name !== '.DS_Store')
+      })
 
-      console.log(flattenedFiles)
+      FolderUpload.uploadFiles(filterFiles, prefix, self.props.labbookName, self.props.section)
 
-      
     }
 
   }
