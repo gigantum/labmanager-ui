@@ -53,7 +53,7 @@ const checkIfFolderExists = (variables, section) => {
           console.log(response)
         if(response.data){
 
-          resolve(response.data)
+          resolve({data: response.data, variables: variables})
         }else{
           reject(response.error)
         }
@@ -108,6 +108,10 @@ const FolderUpload = {
 
       Promise.all(all).then((labbooks)=>{
         console.log(labbooks)
+        labbooks.forEach((labbook)=>{
+          console.log(labbook)
+        })
+
         // if(labbook[section] === null){
         //   let path = filePath.slice(1, filePath.length)
         // }
