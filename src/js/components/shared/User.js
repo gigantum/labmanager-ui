@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import userSVG from 'images/icons/user.svg'
-console.log(userSVG)
+
 export default class User extends Component {
 
   constructor(props){
@@ -71,7 +71,7 @@ export default class User extends Component {
           onClick={() => { this._toggleDropdown()}}
           className={this.state.dropdownVisible ? 'User__name--active' :  'User__name'}>
             {this.state.username}
-          
+
         </h6>
 
         <div className={ this.state.dropdownVisible ? 'User__dropdown--arrow' : 'hidden'}></div>

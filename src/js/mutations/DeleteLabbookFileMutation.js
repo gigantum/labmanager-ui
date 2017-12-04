@@ -28,12 +28,16 @@ export default function DeleteLabbookFileMutation(
   section,
   callback
 ) {
+
+  const isDirectory = (filePath.indexOf('.') < 0)
+  console.log(isDirectory)
   const variables = {
     input: {
       owner,
       labbookName,
       filePath,
       section,
+      isDirectory,
       clientMutationId: '' + tempID++
     }
   }

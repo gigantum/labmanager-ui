@@ -18,6 +18,7 @@ export default class UserNote extends Component {
     this._openMenu = this._openMenu.bind(this)
 
   }
+
   /**
   *  @param {}
   *  toggles open menu state
@@ -38,8 +39,14 @@ export default class UserNote extends Component {
     })
   }
 
+  /**
+  *  @param {}
+  *  adds remote url to labbook
+  *  example: url ssh://git@ec2-107-22-88-175.compute-1.amazonaws.com:9922/root/test-ui.git
+  *  @return {string}
+  */
   _addRemote(){
-    //ssh://git@ec2-107-22-88-175.compute-1.amazonaws.com:9922/root/test-ui.git
+
     let remote = 'ssh://' + this.state.remoteURL.replace('com:root', 'com:9922/root')
     let self = this;
     if(this.state.remoteURL.length > -1){
@@ -74,6 +81,12 @@ export default class UserNote extends Component {
       'remoteURL': ''
     })
   }
+
+  /**
+  *  @param {}
+  *  pushes code to remote
+  *  @return {string}
+  */
   _pushToRemote(){
     PushActiveBranchToRemoteMutation(
       localStorage.getItem('username'),
@@ -89,7 +102,7 @@ export default class UserNote extends Component {
   }
   render(){
     const {tags} = this.state;
-    console.log(this.props)
+
     return(
       <div className="BranchMenu flex flex--column">
           <button onClick={()=>{this._openMenu()}} className="BranchMenu__button"></button>

@@ -174,7 +174,6 @@ export default class FileBrowserWrapper extends Component {
     MakeLabbookDirectoryMutation(
       this.props.connection,
       localStorage.getItem('username'),
-      localStorage.getItem('username'),
       this.props.labbookName,
       this.props.parentId,
       key,
@@ -258,7 +257,7 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFiles(files, prefix) {
     let self = this;
-    console.log(files, prefix)
+
     if(files.length === 1){
       const batchUpload = (files.length > 1)
 
@@ -333,10 +332,9 @@ export default class FileBrowserWrapper extends Component {
     let folderToMove = edgesToMove.filter((edge) => {
       return edge.node.key.indexOf('.') < 0
     })[0]
-
+    console.log(newKey)
     MakeLabbookDirectoryMutation(
       this.props.connection,
-      localStorage.getItem('username'),
       localStorage.getItem('username'),
       this.props.labbookName,
       this.props.parentId,
@@ -349,11 +347,10 @@ export default class FileBrowserWrapper extends Component {
         edgesToMove.forEach((edge) => {
           if(edge.node.key.indexOf('.') > -1 ){
             all.push(new Promise((resolve, reject)=>{
-              let newKeyComputed = edge.node.key.replace(oldKey, newKey)
+                let newKeyComputed = edge.node.key.replace(oldKey, newKey)
 
                 MoveLabbookFileMutation(
                   this.props.connection,
-                  localStorage.getItem('username'),
                   localStorage.getItem('username'),
                   this.props.labbookName,
                   this.props.parentId,
@@ -426,7 +423,6 @@ export default class FileBrowserWrapper extends Component {
     if(edgeToMove){
       MoveLabbookFileMutation(
         this.props.connection,
-        localStorage.getItem('username'),
         localStorage.getItem('username'),
         this.props.labbookName,
         this.props.parentId,

@@ -6,7 +6,7 @@ import {
 import {fetchQuery} from 'JS/createRelayEnvironment';
 
 const fileExistenceQuery = graphql`
-query folderUploadQuery($labbookName: String!, $owner: String!, $path: String!){
+  query folderUploadQuery($labbookName: String!, $owner: String!, $path: String!){
     labbook(name: $labbookName, owner: $owner){
       id
       code{
@@ -43,6 +43,11 @@ query folderUploadQuery($labbookName: String!, $owner: String!, $path: String!){
   }
 `;
 
+/**
+*  @param {object, string} variables,section
+*  checks if a folder or file exists
+*  @return {promise}
+*/
 const checkIfFolderExists = (variables, section) => {
 
   let promise = new Promise((resolve, reject) =>{
@@ -50,7 +55,7 @@ const checkIfFolderExists = (variables, section) => {
     let fetchData = function(){
 
       fetchQuery(fileExistenceQuery(), variables).then((response) => {
-          console.log(response)
+
         if(response.data){
 
           resolve({data: response.data, variables: variables})
@@ -71,19 +76,24 @@ const checkIfFolderExists = (variables, section) => {
   return promise
 }
 
-
 const FolderUpload = {
+  /**
+  *  @param {array, string, string, string} files,prefix,labbbookName,section
+  *  sorts files and folders
+  *  checks if files and folders exist
+  *  uploads file and folder if checks pass
+  *  @return {boolean}
+  */
   uploadFiles: (files, prefix, labbookName, section) =>{
     let index = 0;
     let existingPaths = []
-    console.log(files, prefix, labbookName, section)
+
     function fileCheck(fileItem){
       index++
-      console.log(fileItem)
       let filePath = fileItem.entry.fullPath.replace('/' + fileItem.file.name, '')
       const path = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
       const folderNames = path.split('/')
-      console.log(folderNames)
+
       let folderPaths = []
 
       folderNames.forEach((folderName, index)=>{
@@ -93,8 +103,6 @@ const FolderUpload = {
             folderPaths.push(((folderName + '/') === prefix) ? folderName : prefix + folderName)
           }
       })
-
-      console.log(folderPaths)
 
       let all = []
       folderPaths.forEach((folderPath)=>{
@@ -107,7 +115,6 @@ const FolderUpload = {
       })
 
       Promise.all(all).then((labbooks)=>{
-        console.log(labbooks)
         labbooks.forEach((labbook)=>{
           console.log(labbook)
         })

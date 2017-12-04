@@ -49,6 +49,7 @@ class Branches extends Component {
     loads more edges via pagination
   */
   _loadMore() {
+
     let self = this;
     this.props.relay.loadMore(
      5, // Fetch the next 5 feed items
@@ -65,7 +66,7 @@ class Branches extends Component {
      }
    );
   }
-  /*
+  /**
     @param {object} overview
     updates components state
   */
@@ -74,12 +75,14 @@ class Branches extends Component {
       this.setState(overview);//triggers re-render when store updates
     }
   }
-
+  /**
+    @param {}
+    updates branchOpen state
+  */
   _toggleBranchesView(){
-    console.log(!this.state.branchesOpen)
     this.setState({branchesOpen: !this.state.branchesOpen})
   }
-  /*
+  /**
     @param {string} branchName
     creates a new branch
   */
@@ -103,7 +106,7 @@ class Branches extends Component {
       })
 
   }
-  /*
+  /**
     @param {object} event
     validates new branch name and sets state if it passes validation
   */
@@ -152,7 +155,7 @@ class Branches extends Component {
             </div>
             {
               this.props.labbook.branches.edges.map((edge)=>{
-                return (<BranchCard edge={edge} />)
+                return (<BranchCard key={edge.node.id} edge={edge} />)
               })
             }
           </div>

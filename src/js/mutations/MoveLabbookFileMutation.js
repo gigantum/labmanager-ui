@@ -42,7 +42,6 @@ function sharedUpdater(store, labbookID, deletedID, connectionKey) {
 
 export default function MoveLabbookFileMutation(
   connectionKey,
-  user,
   owner,
   labbookName,
   labbookId,
@@ -52,7 +51,8 @@ export default function MoveLabbookFileMutation(
   section,
   callback
 ) {
-
+  console.log(srcPath,
+  dstPath)
   const variables = {
     input: {
       owner,
@@ -114,7 +114,7 @@ export default function MoveLabbookFileMutation(
           node.setValue(0, 'modifiedAt')
           node.setValue(100, 'size')
 
-    
+
           RelayRuntime.ConnectionHandler.insertEdgeAfter(
             conn,
             newEdge
