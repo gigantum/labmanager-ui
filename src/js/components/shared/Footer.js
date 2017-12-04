@@ -15,7 +15,7 @@ export default class Footer extends Component {
     this._clearState = this._clearState.bind(this)
 
   }
-  /*
+  /**
     subscribe to store to update state
   */
   componentDidMount() {
@@ -25,7 +25,7 @@ export default class Footer extends Component {
       this.storeDidUpdate(store.getState().footer)
     })
   }
-  /*
+  /**
     unsubscribe from redux store
   */
   componentWillUnmount() {
@@ -61,7 +61,7 @@ export default class Footer extends Component {
     },1000)
   }
 
-  /*
+  /**
     @param {number} bytes
     converts bytes into suitable units
   */
@@ -83,14 +83,14 @@ export default class Footer extends Component {
     return bytes.toFixed(1)+' '+units[u];
  }
 
- /*
+ /**
   @param {}
   gets upload message which tracks progess
  */
  _closeFooter(){
    store.dispatch({type:'RESET_FOOTER_STORE', payload:{}})
  }
- /*
+ /**
   @param {}
   gets upload message which tracks progess
  */
@@ -108,7 +108,7 @@ export default class Footer extends Component {
    }else{
      message = this.state.uploadMessage
    }
-   console.log(message)
+
    return message
  }
 

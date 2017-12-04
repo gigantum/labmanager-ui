@@ -28,7 +28,8 @@
   height: 100%;
   left: 0;
   top: 0;
-  background-color: $kellyGreen;
+  background-color: $turquise;
+  color: $jet !important;
   z-index: 50;
   position: absolute;
   transition: width 1s, opacity 1s;
@@ -70,6 +71,7 @@
 .Footer__message{
     flex: 1;
     margin: 0 10px;
+    color: $azure;
 }
 
 .Footer__close{

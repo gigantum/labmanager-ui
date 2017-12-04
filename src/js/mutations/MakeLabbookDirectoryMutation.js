@@ -27,23 +27,27 @@ const mutation = graphql`
 function sharedUpdater(store, labbookId, connectionKey, node) {
   const labbookProxy = store.get(labbookId);
 
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    labbookProxy,
-    connectionKey
-  );
 
-  if(conn){
-    const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-      store,
-      conn,
-      node,
-      "newLabbookFileEdge"
-    )
-
-    RelayRuntime.ConnectionHandler.insertEdgeAfter(
-      conn,
-      newEdge
+  if(labbookProxy){
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      labbookProxy,
+      connectionKey
     );
+
+
+    if(conn){
+      const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+        store,
+        conn,
+        node,
+        "newLabbookFileEdge"
+      )
+
+      RelayRuntime.ConnectionHandler.insertEdgeAfter(
+        conn,
+        newEdge
+      );
+    }
   }
 }
 
@@ -51,7 +55,6 @@ let tempID = 0;
 
 export default function MakeLabbookDirectoryMutation(
   connectionKey,
-  user,
   owner,
   labbookName,
   labbookId,
@@ -59,6 +62,14 @@ export default function MakeLabbookDirectoryMutation(
   section,
   callback
 ) {
+
+  console.log(  connectionKey,
+    owner,
+    labbookName,
+    labbookId,
+    directory,
+    section,
+    callback)
   const variables = {
     input: {
       owner,
