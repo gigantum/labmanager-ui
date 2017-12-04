@@ -1,0 +1,83 @@
+.Brances{
+  color: $jet;
+}
+
+.Branches__title{
+  h5{
+    margin: 2px 0;
+    padding: 0 0 10px 0;
+    cursor: pointer;
+  }
+}
+
+
+.Branches__branches-list{
+  height: 200px;
+  transition: height 0.6s;
+  @include flex(flex-start, row);
+}
+
+.Branches__branches-list--collapsed{
+  height: 0px;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.BranchCard{
+  @extend .card;
+  padding: 5px 15px;
+  height: 160px;
+  width: 250px;
+  margin: 10px 10px 10px 0;
+  opacity: 1;
+  transition: height 0.5s ease, opacity 0.5s ease;
+}
+
+
+.BranchCard__name-input{
+  margin: 2px 0 !important;
+  height: 30px !important;
+  border-bottom: 2px solid $turquise !important;
+}
+
+.Branches__branches-list--collapsed{
+  .BranchCard{
+    height: 0px;
+    opacity: 0;
+  }
+  .BranchCard--create-new{
+    height: 0px;
+    opacity: 0;
+  }
+}
+
+.BranchCard--create-new{
+  @include flex(space-around, column);
+  @extend .BranchCard;
+}
+
+.Branch__error{
+  font-size: 12px;
+  margin: 5px 0;
+  line-height: 14px;
+  height: 42px;
+}
+
+.BranchCard__create-branch{
+  align-self: center;
+  margin: 0 auto;
+  padding: 5px 10px;
+  background: none;
+  border: 2px solid $azure;
+  border-radius: 20px;
+  color: $azure;
+}
+
+.BranchCard__create-branch:hover{
+  background: $azure;
+  color: $white;
+}
+
+.BranchCard__create-branch:disabled{
+  background: none;
+}

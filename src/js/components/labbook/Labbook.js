@@ -17,10 +17,12 @@ import Overview from './overview/Overview'
 import Environment from './environment/Environment'
 import ContainerStatus from './ContainerStatus'
 import Loader from 'Components/shared/Loader'
+import Branches from './branches/Branches'
+import BranchMenu from './BranchMenu'
 
 import Config from 'JS/config'
 
-let unsubscribe
+let unsubscribe;
 class Labbook extends Component {
   constructor(props){
   	super(props);
@@ -56,7 +58,7 @@ componentDidMount() {
   unsubscribe from redux store
 */
 componentWillUnmount() {
-  unsubscribe()
+  //unsubscribe()
 }
 /**
   @param {object} labbook
@@ -198,7 +200,11 @@ storeDidUpdate = (labbook) => {
 
            <div className="Labbook__inner-container flex flex--row">
              <div className="Labbook__component-container flex flex--column">
-
+               <BranchMenu
+                defaultRemote={this.props.labbook.defaultRemote}
+                labbookName={labbookName}
+                labbookId={this.props.labbook.id}
+              />
                <div className="Labbook__header flex flex--row justify--space-between">
 
                  <h4 className="Labbook__name-title">
@@ -215,7 +221,12 @@ storeDidUpdate = (labbook) => {
                    isBuilding={this.state.isBuilding}
                  />
               </div>
-
+              <Branches
+                defaultRemote={this.props.labbook.defaultRemote}
+                labbookName={labbookName}
+                labbook={this.props.labbook}
+                labbookId={this.props.labbook.id}
+              />
               <div className="Labbook__navigation-container mui-container flex-0-0-auto">
                  <nav className="Labbook__navigation flex flex--row">
                    {
@@ -341,6 +352,9 @@ export default createFragmentContainer(
       fragment Labbook_labbook on Labbook{
           id
           description
+          updatesAvailableCount
+          isRepoClean
+          defaultRemote
           activeBranch{
             id
             name
@@ -363,6 +377,7 @@ export default createFragmentContainer(
           ...Code_labbook
           ...InputData_labbook
           ...OutputData_labbook
+          ...Branches_labbook
 
       }`
   }

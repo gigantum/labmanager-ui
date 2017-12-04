@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Sun Nov 19 2017 20:07:25 GMT-0500 (EST)
+# timestamp: Sun Dec 03 2017 21:02:17 GMT-0500 (EST)
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -62,6 +62,19 @@ input AddLabbookFileInput {
 # file_path is the relative path from the labbook section specified.
 type AddLabbookFilePayload {
   newLabbookFileEdge: LabbookFileEdge
+  clientMutationId: String
+}
+
+input AddLabbookRemoteInput {
+  owner: String!
+  labbookName: String!
+  remoteName: String!
+  remoteUrl: String!
+  clientMutationId: String
+}
+
+type AddLabbookRemotePayload {
+  success: Boolean
   clientMutationId: String
 }
 
@@ -381,6 +394,18 @@ type ImportLabbookPayload {
   clientMutationId: String
 }
 
+input ImportRemoteLabbookInput {
+  owner: String!
+  labbookName: String!
+  remoteUrl: String!
+  clientMutationId: String
+}
+
+type ImportRemoteLabbookPayload {
+  activeBranch: String
+  clientMutationId: String
+}
+
 # A query to get the status of a background task launched with the Dispatcher
 type JobStatus implements Node {
   # The ID of the object.
@@ -415,7 +440,10 @@ type Labbook implements Node, GitRepository {
   description: String
   owner: Owner
   activeBranch: LabbookRef
+  defaultRemote: String
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
+  updatesAvailableCount: Int
+  isRepoClean: Boolean
   environment: Environment
   code: LabbookSection
   input: LabbookSection
@@ -556,11 +584,15 @@ type MoveLabbookFilePayload {
 
 type Mutation {
   importLabbook(input: ImportLabbookInput!): ImportLabbookPayload
+  importRemoteLabbook(input: ImportRemoteLabbookInput!): ImportRemoteLabbookPayload
   exportLabbook(input: ExportLabbookInput!): ExportLabbookPayload
   createLabbook(input: CreateLabbookInput!): CreateLabbookPayload
   renameLabbook(input: RenameLabbookInput!): RenameLabbookPayload
   createBranch(input: CreateBranchInput!): CreateBranchPayload
   checkoutBranch(input: CheckoutBranchInput!): CheckoutBranchPayload
+  pullActiveBranchFromRemote(input: PullActiveBranchFromRemoteInput!): PullActiveBranchFromRemotePayload
+  pushActiveBranchToRemote(input: PushActiveBranchToRemoteInput!): PushActiveBranchToRemotePayload
+  addLabbookRemote(input: AddLabbookRemoteInput!): AddLabbookRemotePayload
   buildImage(input: BuildImageInput!): BuildImagePayload
   startContainer(input: StartContainerInput!): StartContainerPayload
   stopContainer(input: StopContainerInput!): StopContainerPayload
@@ -693,6 +725,30 @@ type PageInfo {
 
   # When paginating forwards, the cursor to continue.
   endCursor: String
+}
+
+input PullActiveBranchFromRemoteInput {
+  owner: String!
+  labbookName: String!
+  remoteName: String
+  clientMutationId: String
+}
+
+type PullActiveBranchFromRemotePayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+input PushActiveBranchToRemoteInput {
+  owner: String!
+  labbookName: String!
+  remoteName: String
+  clientMutationId: String
+}
+
+type PushActiveBranchToRemotePayload {
+  success: Boolean
+  clientMutationId: String
 }
 
 type Query {

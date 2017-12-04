@@ -1,0 +1,34 @@
+.BranchMenu{
+  position: relative;
+  @include flex(flex-end, row)
+  overflow: visible;
+
+  height: 30px;
+  min-height: 30px;
+}
+
+.BranchMenu__button,
+.BranchMenu__button:focus{
+  width: 40px;
+  border-radius: 10px;
+  height: 20px;
+  border: 1px solid $lightGrey;
+
+  background: $white url('./../images/icons/ellipsis.svg') no-repeat center center;
+  background-size: 30px 30px;
+}
+
+.BranchMenu__button:hover{
+  background: $white url('./../images/icons/ellipsis.svg') no-repeat center center;
+  background-size: 32px 32px;
+}
+.BranchMenu__menu{
+  position: absolute;
+  right: 0px;
+  top: 30px;
+  background: $white;
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 400;
+  width: 200px;
+}
