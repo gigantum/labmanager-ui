@@ -332,7 +332,7 @@ export default class FileBrowserWrapper extends Component {
     let folderToMove = edgesToMove.filter((edge) => {
       return edge.node.key.indexOf('.') < 0
     })[0]
-    console.log(newKey)
+    console.log(oldKey, newKey)
     MakeLabbookDirectoryMutation(
       this.props.connection,
       localStorage.getItem('username'),
@@ -367,7 +367,8 @@ export default class FileBrowserWrapper extends Component {
                         resolve(response.moveLabbookFile)
                       },1050)
                     }else{
-                        reject(response[0].message)
+                      console.log(response)
+                        reject(response)
                     }
                   }
                 )
@@ -379,14 +380,13 @@ export default class FileBrowserWrapper extends Component {
         })
 
         Promise.all(all).then(values =>{
-
+          console.log(values)
           let edgeToDelete = this.props.files.edges.filter((edge) => {
             return edge && (oldKey === edge.node.key)
           })[0]
-
+          console.log(edgeToDelete)
           DeleteLabbookFileMutation(
             this.props.connection,
-            localStorage.getItem('username'),
             localStorage.getItem('username'),
             this.props.labbookName,
             this.props.parentId,
@@ -401,7 +401,7 @@ export default class FileBrowserWrapper extends Component {
             }
           )
         }).catch(error =>{
-          console.error(error[0].message)
+          console.error(error)
         })
       }
     )
@@ -454,7 +454,6 @@ export default class FileBrowserWrapper extends Component {
     DeleteLabbookFileMutation(
       this.props.connection,
       localStorage.getItem('username'),
-      localStorage.getItem('username'),
       this.props.labbookName,
       this.props.parentId,
       edgeToDelete.node.id,
@@ -481,7 +480,6 @@ export default class FileBrowserWrapper extends Component {
 
     DeleteLabbookFileMutation(
       this.props.connection,
-      localStorage.getItem('username'),
       localStorage.getItem('username'),
       this.props.labbookName,
       this.props.parentId,
@@ -553,7 +551,8 @@ export default class FileBrowserWrapper extends Component {
   handleFileFavoriting(key){
     const username = localStorage.getItem('username')
     let fileItem = this.props.files.edges.filter((edge)=>{
-        if(edge.node.key === key){
+
+        if(edge && (edge.node.key === key)){
           return edge.node
         }
     })[0]
@@ -606,7 +605,7 @@ export default class FileBrowserWrapper extends Component {
   render(){
 
     let files = this._formatFileJson(this.props.files)
-
+    console.log(files)
     return(
         <div id="code" className="Code flex flex-row justify-center">
 

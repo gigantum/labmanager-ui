@@ -19,7 +19,6 @@ let tempID = 0;
 
 export default function DeleteLabbookFileMutation(
   connectionKey,
-  user,
   owner,
   labbookName,
   labbookId,
@@ -30,7 +29,7 @@ export default function DeleteLabbookFileMutation(
 ) {
 
   const isDirectory = (filePath.indexOf('.') < 0)
-  console.log(isDirectory)
+
   const variables = {
     input: {
       owner,
@@ -43,11 +42,14 @@ export default function DeleteLabbookFileMutation(
   }
 
   function sharedUpdater(store, labbookID, deletedID, connectionKey) {
+
     const userProxy = store.get(labbookID);
     const conn = RelayRuntime.ConnectionHandler.getConnection(
       userProxy,
       connectionKey,
     );
+
+    console.log(conn, deletedID)
     RelayRuntime.ConnectionHandler.deleteNode(
       conn,
       deletedID,

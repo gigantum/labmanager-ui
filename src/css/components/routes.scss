@@ -2,6 +2,7 @@
   height: 100%;
   width: 100%;
   @include flex(flex-start, row)
+  border-top: 5px solid $jet;
 }
 
 .Routes__main{

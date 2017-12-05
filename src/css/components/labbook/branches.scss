@@ -2,19 +2,14 @@
   color: $jet;
 }
 
-.Branches__title{
-  h5{
-    margin: 2px 0;
-    padding: 0 0 10px 0;
-    cursor: pointer;
-  }
-}
 
 
 .Branches__branches-list{
   height: 200px;
   transition: height 0.6s;
   @include flex(flex-start, row);
+  padding: 0 20px;
+  //background: linear-gradient($slateBlueOpaque, #f0f1f5, #f0f1f5, #f0f1f5, #f0f1f5, #f0f1f5, #f0f1f5, #f0f1f5, #f0f1f5, $slateBlueOpaque);
 }
 
 .Branches__branches-list--collapsed{

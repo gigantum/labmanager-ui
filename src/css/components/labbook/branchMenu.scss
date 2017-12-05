@@ -5,6 +5,20 @@
 
   height: 30px;
   min-height: 30px;
+  width: 50%;
+  align-self: flex-end;
+
+}
+
+.BranchModal{
+  position: relative;
+  padding: 15px;
+  @include flex(space-between, column);
+  @include modal(200px, 300px);
+}
+
+.BranchModal--close{
+  @include close()
 }
 
 .BranchMenu__button,
@@ -28,7 +42,13 @@
   top: 30px;
   background: $white;
   border-radius: 10px;
-  padding: 10px;
-  z-index: 400;
+  padding: 20px;
+  z-index: 60;
   width: 200px;
+
+  @extend .box-shadow;
+}
+
+.BranchMenu__sync{
+  width: 100%
 }

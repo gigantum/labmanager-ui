@@ -7,6 +7,7 @@ export const RESET_LABBOOK_STORE = 'RESET_LABBOOK_STORE';
 export const IS_BUILDING = 'IS_BUILDING'
 export const MODAL_VISIBLE = 'MODAL_VISIBLE'
 export const SELECTED_COMPONENT = 'SELECTED_COMPONENT'
+export const UPDATE_BRANCHES_VIEW = 'UPDATE_BRANCHES_VIEW'
 
 
 export default (
@@ -18,10 +19,14 @@ export default (
    'containerStatus': '',
    'modalVisible': '',
    'detailMode': false,
-   'previousDetailMode': false
+   'previousDetailMode': false,
+   'branchesOpen': false
  },
  action
 ) => {
+
+console.log(action)
+
  if (action.type === UPDATE_DETAIL_VIEW) {
 
    return {
@@ -54,6 +59,12 @@ export default (
    return {
      ...state,
      'modalVisible': action.payload.modalVisible,
+   };
+ }else if(action.type === UPDATE_BRANCHES_VIEW){
+   console.log(UPDATE_BRANCHES_VIEW, action.payload)
+   return {
+     ...state,
+     'branchesOpen': action.payload.branchesOpen,
    };
  }else if(action.type === RESET_LABBOOK_STORE){
 

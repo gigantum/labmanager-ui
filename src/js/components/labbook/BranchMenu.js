@@ -1,9 +1,17 @@
 import React, { Component } from 'react'
 import SimpleMDE from 'simplemde'
 import { WithContext as ReactTags } from 'react-tag-input';
-
+//utilities
+import validation from 'JS/utils/Validation'
+//mutations
+import CreateBranchMutation from 'Mutations/branches/CreateBranchMutation'
 import AddLabbookRemoteMutation from 'Mutations/branches/AddLabbookRemoteMutation'
 import PushActiveBranchToRemoteMutation from 'Mutations/branches/PushActiveBranchToRemoteMutation'
+import PullActiveBranchFromRemoteMutation from 'Mutations/branches/PullActiveBranchFromRemoteMutation'
+//store
+import store from 'JS/redux/store'
+
+
 
 let simple;
 
@@ -13,10 +21,74 @@ export default class UserNote extends Component {
     this.state = {
       'addNoteEnabled': false,
       'remoteURL': '',
+      'newBranchName': '',
+      'isValid': true,
+      'createBranchVisible': false,
+      'addRemoteVisible': false,
+      'addedRemoteThisSession': false
     }
 
     this._openMenu = this._openMenu.bind(this)
+    this._toggleModal = this._toggleModal.bind(this)
+    this._createNewBranch = this._createNewBranch.bind(this)
+    this._sync = this._sync.bind(this)
+  }
+  /**
+    @param {string} branchName
+    creates a new branch
+  */
+  _createNewBranch(branchName){
+    this.setState({
+      branchesOpen: true,
+      newBranchName: '',
+      isValid: true
+    })
+    let username = localStorage.getItem('username')
 
+    CreateBranchMutation(
+      username,
+      this.props.labbookName,
+      branchName,
+      this.props.labbookId,
+      (error)=>{
+        if(error){
+
+        }
+      })
+
+  }
+  /**
+    @param {string} value
+    sets state on createBranchVisible and toggles modal cover
+  */
+  _toggleModal(value){
+    if(!this.state[value]){
+      document.getElementById('modal__cover').classList.remove('hidden')
+    }else{
+      document.getElementById('modal__cover').classList.add('hidden')
+    }
+    this.setState({
+      [value]: !this.state[value]
+    })
+  }
+  /**
+    @param {object} event
+    validates new branch name and sets state if it passes validation
+  */
+  _setNewBranchName(evt){
+
+      let isValid = validation.labbookName(evt.target.value);
+
+      if(isValid){
+        this.setState({
+          newBranchName: evt.target.value,
+          isValid: true
+        })
+      }else{
+        this.setState({
+          isValid: false
+        })
+      }
   }
 
   /**
@@ -47,8 +119,21 @@ export default class UserNote extends Component {
   */
   _addRemote(){
 
-    let remote = 'ssh://' + this.state.remoteURL.replace('com:root', 'com:9922/root')
+    let remote = 'ssh://' + this.state.remoteURL.replace('io:root', 'io:9922/root')
     let self = this;
+
+    this._toggleModal('addRemoteVisible')
+
+    store.dispatch({
+      type: 'UPLOAD_MESSAGE',
+      payload: {
+        uploadMessage: 'Adding remote server ..',
+        error: false,
+        loadingState: true,
+        success: false
+      }
+    })
+
     if(this.state.remoteURL.length > -1){
       AddLabbookRemoteMutation(
         localStorage.getItem('username'),
@@ -58,9 +143,28 @@ export default class UserNote extends Component {
         this.props.labbookId,
         (error)=>{
           if(error){
-            console.log(error)
 
+            self.setState({'addedRemoteThisSession': true})
+
+            store.dispatch({
+              type: 'UPLOAD_MESSAGE',
+              payload: {
+                uploadMessage: 'Could not add remote.',
+                error: false,
+                loadingState: true,
+                success: false
+              }
+            })
           }else{
+            store.dispatch({
+              type: 'UPLOAD_MESSAGE',
+              payload: {
+                uploadMessage: 'Pushing to remote ...',
+                error: false,
+                loadingState: true,
+                success: false
+              }
+            })
             PushActiveBranchToRemoteMutation(
               localStorage.getItem('username'),
               self.props.labbookName,
@@ -69,6 +173,25 @@ export default class UserNote extends Component {
               (error)=>{
                 if(error){
                   console.log(error)
+                  store.dispatch({
+                    type: 'UPLOAD_MESSAGE',
+                    payload: {
+                      uploadMessage: 'Could not push code to server, remote was added succesfully',
+                      error: false,
+                      loadingState: true,
+                      success: false
+                    }
+                  })
+                }else{
+                  store.dispatch({
+                    type: 'UPLOAD_MESSAGE',
+                    payload: {
+                      uploadMessage: 'Remote server added succesfully',
+                      error: false,
+                      loadingState: true,
+                      success: false
+                    }
+                  })
                 }
               }
             )
@@ -87,7 +210,90 @@ export default class UserNote extends Component {
   *  pushes code to remote
   *  @return {string}
   */
-  _pushToRemote(){
+  _sync(){
+    console.log('sync')
+    store.dispatch({
+      type: 'UPLOAD_MESSAGE',
+      payload: {
+        uploadMessage: 'Pulling from remote ...',
+        error: false,
+        loadingState: true,
+        success: false
+      }
+    })
+    PullActiveBranchFromRemoteMutation(
+      localStorage.getItem('username'),
+      this.props.labbookName,
+      'origin',
+      this.props.labbookId,
+      (error)=>{
+        if(error){
+          console.log(error)
+
+          store.dispatch({
+            type: 'UPLOAD_MESSAGE',
+            payload: {
+              uploadMessage: 'Could not pull from remote',
+              error: true,
+              loadingState: true,
+              success: false
+            }
+          })
+        }else{
+          store.dispatch({
+            type: 'UPLOAD_MESSAGE',
+            payload: {
+              uploadMessage: 'Pushing to remote ...',
+              error: false,
+              loadingState: true,
+              success: false
+            }
+
+          })
+
+          PushActiveBranchToRemoteMutation(
+            localStorage.getItem('username'),
+            this.props.labbookName,
+            'origin',
+            this.props.labbookId,
+            (error)=>{
+              console.log(error)
+              if(error){
+                console.log(error)
+                store.dispatch({
+                  type: 'UPLOAD_MESSAGE',
+                  payload: {
+                    uploadMessage: 'Could not push to remote',
+                    error: false,
+                    loadingState: true,
+                    success: false
+                  }
+                })
+              }
+
+              store.dispatch({
+                type: 'UPLOAD_MESSAGE',
+                payload: {
+                  uploadMessage: 'Sync Complete',
+                  error: false,
+                  loadingState: true,
+                  success: false
+                }
+              })
+            }
+          )
+        }
+      }
+    )
+
+  }
+
+  /**
+  *  @param {}
+  *  pushes code to remote
+  *  @return {string}
+  */
+  _pullFromRemote(){
     PushActiveBranchToRemoteMutation(
       localStorage.getItem('username'),
       this.props.labbookName,
@@ -105,40 +311,77 @@ export default class UserNote extends Component {
 
     return(
       <div className="BranchMenu flex flex--column">
+          <div
+            className={ this.state.createBranchVisible ? 'BranchModal' : 'hidden'}>
+            <div
+              onClick={()=>{this._toggleModal('createBranchVisible')}}
+              className="BranchModal--close">
+            </div>
+            <input
+              className="BranchCard__name-input"
+              onKeyUp={(evt)=>{this._setNewBranchName(evt)}}
+              type="text"
+              placeholder="Branch name"
+            />
+            <p className={!this.state.isValid ? 'Branch__error error': 'Branch__error visibility-hidden'}> Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. my-branch-name)</p>
+            <button
+              className="BranchCard__create-branch"
+              disabled={(this.state.newBranchName.length === 0) && this.state.isValid}
+              onClick={()=>{this._createNewBranch(this.state.newBranchName)}}>
+              Create Branch
+            </button>
+          </div>
+
+          <div
+            className={ this.state.addRemoteVisible ? 'BranchModal' : 'hidden'}>
+            <div className="BranchMenu__add-remote-container">
+              <div
+                onClick={()=>{this._toggleModal('addRemoteVisible')}}
+                className="BranchModal--close">
+              </div>
+              <input
+                type="text"
+                placeholder="Paste remote address here"
+                onKeyUp={(evt)=>{this._updateRemote(evt)}}
+                onChange={(evt)=>{this._updateRemote(evt)}}
+              />
+              <button
+                disabled={(this.state.remoteURL.length === 0)}
+                onClick={() => this._addRemote()}
+                >
+                Add Remote
+              </button>
+            </div>
+          </div>
           <button onClick={()=>{this._openMenu()}} className="BranchMenu__button"></button>
           <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
             <ul>
-              <li>New Branch</li>
+              <li>
+                <a onClick={()=>{this._toggleModal('createBranchVisible')}}>New Branch</a>
+              </li>
               <li>Merge</li>
               <li>Dead-end</li>
               <li>Favorite</li>
             </ul>
             <hr />
             {/* <button>Publish</button> */}
-            { (this.props.defaultRemote === null) &&
-              <div className="BranchMenu__add-remote-container">
-                <input
-                  type="text"
-                  placeholder="Paste remote address here"
-                  onKeyUp={(evt)=>{this._updateRemote(evt)}}
-                  onChange={(evt)=>{this._updateRemote(evt)}}
-                />
-
+            { ((this.props.defaultRemote === null) && !this.state.addedRemoteThisSession) &&
+              <div className="BranchMenu__publish">
                 <button
-                  disabled={(this.state.remoteURL.length === 0)}
-                  onClick={() => this._addRemote()}
+                  onClick={()=>{this._toggleModal('addRemoteVisible')}}
                   >
-                  Add Remote
+                  Publish
                 </button>
               </div>
             }
 
-            { (this.props.defaultRemote !== null) &&
-              <div className="BranchMenu__push">
+            { ((this.props.defaultRemote !== null) || (this.state.addedRemoteThisSession)) &&
+              <div className="BranchMenu__sync">
                 <button
-                  onClick={() => this._pushToRemote()}
+
+                  onClick={() => this._sync()}
                   >
-                  Push To Remote
+                  Sync Branch
                 </button>
               </div>
             }
