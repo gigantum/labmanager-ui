@@ -6,6 +6,55 @@
   transition: width 0.25s;
 }
 
+.Labbook__branch-title{
+  h5{
+      margin: 2px 0;
+      padding: 0 0 10px 0;
+      cursor: pointer;
+  }
+  h5:hover{
+    color: $turquise;
+  }
+  height: 32px;
+
+  @include flex(flex-start, row)
+}
+
+.Labbook__branch-toggle{
+  height: 20px;
+  width: 20px;
+  border: 2px solid $romanSilver;
+  border-radius: 10px;
+  margin: 0 15px;
+  cursor: pointer;
+  align-self: center;
+}
+
+.Labbook__branch-title--open{
+  .Labbook__branch-toggle{
+    background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
+    background-size: 14px;
+  }
+}
+
+.Labbook__branch-title--closed{
+  .Labbook__branch-toggle{
+    background: url('./../images/icons/up-arrow-silver.svg') no-repeat center center;
+    background-size: 14px;
+  }
+
+}
+
+.Labbook__header-conatiner{
+  min-height: 30px;
+  @include flex(space-between, row);
+}
+
+.Labbook__name-title{
+  width: 50%;
+  margin: 0;
+}
+
 .Labbook--detail-mode{
   width: calc(100% - 350px);
 
@@ -19,6 +68,7 @@
 .Labbook__header{
   padding: 10px 0px;
   min-height: 80px;
+  height: auto;
   .Labbook__name-title{
     padding: 0px;
     color: $romanSilver;

@@ -8,9 +8,10 @@
 
   margin: (-($height/2)) 0 0 (-($width/2));
 
-  border: 1px solid $grey;
-  background-color: $grey-light;
-  box-shadow: 10px 10px 5px #888888;
+  border: 1px solid $white;
+  border-radius: 8px;
+  background-color: $white;
+  @extend .box-shadow;
 
 }
 
@@ -30,6 +31,16 @@
   background: url('./../images/icons/close.svg') no-repeat center center;
   background-size: 18px;
   cursor: pointer;
+}
+
+@mixin card($height, $width){
+  width: $width;
+  height: $height;
+
+  border: 1px solid $white;
+  background-color: $white;
+  @extend .box-shadow;
+
 }
 
 @mixin triangle($direction, $size, $color) {

@@ -7,12 +7,9 @@ import {
 //componenets
 import Loader from 'Components/shared/Loader'
 import BranchCard from './BranchCard'
-//mutations
-import CreateBranchMutation from 'Mutations/branches/CreateBranchMutation'
 //store
 import store from 'JS/redux/store'
-//utilities
-import validation from 'JS/utils/Validation'
+
 
 let unsubscribe;
 
@@ -20,16 +17,12 @@ class Branches extends Component {
   constructor(props){
     super(props)
     this.state = {
-      branchesOpen: false,
       newBranchName: '',
       isValid: true
     }
-    //this.state = store.getState().overview
-    //
-    this._toggleBranchesView = this._toggleBranchesView.bind(this)
-    this._createNewBranch = this._createNewBranch.bind(this)
+
   }
-  /*
+  /**
     subscribe to store to update state
   */
   componentDidMount() {
@@ -45,7 +38,7 @@ class Branches extends Component {
     this._loadMore()
   }
 
-  /*
+  /**
     loads more edges via pagination
   */
   _loadMore() {
@@ -75,56 +68,7 @@ class Branches extends Component {
       this.setState(overview);//triggers re-render when store updates
     }
   }
-  /**
-    @param {}
-    updates branchOpen state
-  */
-  _toggleBranchesView(){
-    this.setState({branchesOpen: !this.state.branchesOpen})
-  }
-  /**
-    @param {string} branchName
-    creates a new branch
-  */
-  _createNewBranch(branchName){
-    this.setState({
-      branchesOpen: true,
-      newBranchName: '',
-      isValid: true
-    })
-    let username = localStorage.getItem('username')
 
-    CreateBranchMutation(
-      username,
-      this.props.labbookName,
-      branchName,
-      this.props.labbookId,
-      (error)=>{
-        if(error){
-
-        }
-      })
-
-  }
-  /**
-    @param {object} event
-    validates new branch name and sets state if it passes validation
-  */
-  _setNewBranchName(evt){
-
-      let isValid = validation.labbookName(evt.target.value);
-
-      if(isValid){
-        this.setState({
-          newBranchName: evt.target.value,
-          isValid: true
-        })
-      }else{
-        this.setState({
-          isValid: false
-        })
-      }
-  }
 
   render(){
 
@@ -132,27 +76,9 @@ class Branches extends Component {
 
       return(
         <div className="Branches">
-          <div className="Branches__title">
-            <h5 onClick={()=> this._toggleBranchesView()}>{this.props.labbook.activeBranch.name}</h5>
-          </div>
 
-          <div className={this.state.branchesOpen ? 'Branches__branches-list' : 'Branches__branches-list Branches__branches-list--collapsed' }>
-            <div
-              className={'BranchCard--create-new'}>
-              <input
-                className="BranchCard__name-input"
-                onKeyUp={(evt)=>{this._setNewBranchName(evt)}}
-                type="text"
-                placeholder="Branch name"
-              />
-              <p className={!this.state.isValid ? 'Branch__error error': 'Branch__error visibility-hidden'}> Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. my-branch-name)</p>
-              <button
-                className="BranchCard__create-branch"
-                disabled={(this.state.newBranchName.length === 0) && this.state.isValid}
-                onClick={()=>{this._createNewBranch(this.state.newBranchName)}}>
-                Create Branch
-              </button>
-            </div>
+          <div className={this.props.branchesOpen ? 'Branches__branches-list' : 'Branches__branches-list Branches__branches-list--collapsed' }>
+
             {
               this.props.labbook.branches.edges.map((edge)=>{
                 return (<BranchCard key={edge.node.id} edge={edge} />)
