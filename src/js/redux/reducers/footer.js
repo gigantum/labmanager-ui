@@ -43,7 +43,7 @@ export default (
 
    };
  } else if (action.type === BATCH_LOADING_PROGRESS) {
-   console.trace(action)
+
     return {
       ...state,
       index:  action.payload.index,

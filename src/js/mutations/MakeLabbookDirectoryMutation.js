@@ -53,7 +53,6 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
 }
 
 function deleteOptimisticEdge(store, labbookID, deletedID, connectionKey) {
-  console.log(labbookID)
   const userProxy = store.get(labbookID);
   const conn = RelayRuntime.ConnectionHandler.getConnection(
     userProxy,
@@ -61,7 +60,6 @@ function deleteOptimisticEdge(store, labbookID, deletedID, connectionKey) {
   );
 
   if(conn){
-    console.log(conn)
     RelayRuntime.ConnectionHandler.deleteNode(
       conn,
       deletedID,
