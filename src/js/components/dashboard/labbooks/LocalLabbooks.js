@@ -125,7 +125,6 @@ class LocalLabbooks extends Component {
     let self = this;
     RenameLabbookMutation(
       username,
-      username,
       this.state.oldLabbookName,
       this.state.newLabbookName,
       (response, error) =>{

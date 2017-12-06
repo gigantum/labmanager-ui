@@ -1,8 +1,6 @@
 // vendor
 import React, { Component } from 'react'
 import SweetAlert from 'sweetalert-react'
-//mutations
-import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
 import ChunkUploader from 'JS/utils/ChunkUploader'

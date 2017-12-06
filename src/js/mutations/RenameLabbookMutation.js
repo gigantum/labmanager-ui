@@ -32,7 +32,6 @@ function sharedUpdater(store, labbookID, deletedID, connectionKey) {
 
 
 export default function RenameLabbookMutation(
-  user,
   owner,
   originalLabbookName,
   newLabbookName,
@@ -41,7 +40,6 @@ export default function RenameLabbookMutation(
 
   const variables = {
     input: {
-      user,
       owner,
       originalLabbookName,
       newLabbookName,
