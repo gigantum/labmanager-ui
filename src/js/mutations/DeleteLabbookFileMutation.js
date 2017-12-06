@@ -49,11 +49,12 @@ export default function DeleteLabbookFileMutation(
       connectionKey,
     );
 
-    console.log(conn, deletedID)
-    RelayRuntime.ConnectionHandler.deleteNode(
-      conn,
-      deletedID,
-    );
+    if(conn){
+      RelayRuntime.ConnectionHandler.deleteNode(
+        conn,
+        deletedID,
+      );
+    }
   }
 
 
@@ -63,14 +64,13 @@ export default function DeleteLabbookFileMutation(
       mutation,
       variables,
       configs: [{ //commented out until nodes are returned
-        type: 'RANGE_DELETE',
-        parentID: labbookId,
+        type: 'NODE_DELETE',
+        deletedIDFieldName: deleteLabbookFileId,
         connectionKeys: [{
-          key: connectionKey,
-          rangeBehavior: 'append'
+          key: connectionKey
         }],
-        pathToConnection: ['labbook', 'files'],
-        deletedIDFieldName: deleteLabbookFileId
+        parentId: labbookId
+        // pathToConnection: ['labbook', 'files'],
       }],
       onCompleted: (response, error ) => {
         if(error){

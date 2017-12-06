@@ -34,7 +34,7 @@ function sharedUpdater(store, parentId, connectionKey, node, deleteId) {
     labbookProxy,
     connectionKey
   );
-  console.log(conn)
+
   if(conn){
 
     const newEdge = RelayRuntime.ConnectionHandler.createEdge(
@@ -97,7 +97,7 @@ export default function UpdateFavoriteMutation(
       optimisticUpdater:(store)=>{
 
         const node = store.get(favorite.id)
-        
+
         node.setValue(favorite.id, "id")
         node.setValue(false, 'isDir')
         node.setValue(updatedKey, 'key')

@@ -150,19 +150,7 @@ export default function MoveLabbookFileMutation(
         }
       },
       updater: (store, response) => {
-        console.log(srcPath)
         sharedDeleteUpdater(store, labbookId, edge.node.id, connectionKey);
-
-        // if(response.moveLabbookFile && response.moveLabbookFile.newLabbookFileEdge){
-        //   const node = store.create('client:newFile:'+ (tempID++), 'CodeFile')
-        //   node.setValue(response.moveLabbookFile.newLabbookFileEdge.node.id, "id")
-        //   node.setValue(false, 'isDir')
-        //   node.setValue(response.moveLabbookFile.newLabbookFileEdge.node.key, 'key')
-        //   node.setValue(response.moveLabbookFile.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
-        //   node.setValue(response.moveLabbookFile.newLabbookFileEdge.node.size, 'size')
-        //
-        //   sharedUpdater(store, labbookId, connectionKey, node)
-        // }
       }
 
     },

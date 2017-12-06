@@ -25,8 +25,6 @@ export default (
  action
 ) => {
 
-console.log(action)
-
  if (action.type === UPDATE_DETAIL_VIEW) {
 
    return {
@@ -61,7 +59,6 @@ console.log(action)
      'modalVisible': action.payload.modalVisible,
    };
  }else if(action.type === UPDATE_BRANCHES_VIEW){
-   console.log(UPDATE_BRANCHES_VIEW, action.payload)
    return {
      ...state,
      'branchesOpen': action.payload.branchesOpen,

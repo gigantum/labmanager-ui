@@ -332,7 +332,7 @@ export default class FileBrowserWrapper extends Component {
     let folderToMove = edgesToMove.filter((edge) => {
       return edge.node.key.indexOf('.') < 0
     })[0]
-    console.log(oldKey, newKey)
+
     MakeLabbookDirectoryMutation(
       this.props.connection,
       localStorage.getItem('username'),
@@ -367,7 +367,7 @@ export default class FileBrowserWrapper extends Component {
                         resolve(response.moveLabbookFile)
                       },1050)
                     }else{
-                      console.log(response)
+
                         reject(response)
                     }
                   }
@@ -380,11 +380,11 @@ export default class FileBrowserWrapper extends Component {
         })
 
         Promise.all(all).then(values =>{
-          console.log(values)
+
           let edgeToDelete = this.props.files.edges.filter((edge) => {
             return edge && (oldKey === edge.node.key)
           })[0]
-          console.log(edgeToDelete)
+
           DeleteLabbookFileMutation(
             this.props.connection,
             localStorage.getItem('username'),
@@ -605,7 +605,7 @@ export default class FileBrowserWrapper extends Component {
   render(){
 
     let files = this._formatFileJson(this.props.files)
-    console.log(files)
+
     return(
         <div id="code" className="Code flex flex-row justify-center">
 

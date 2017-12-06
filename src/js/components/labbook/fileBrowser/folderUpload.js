@@ -116,12 +116,8 @@ const FolderUpload = {
 
       Promise.all(all).then((labbooks)=>{
         labbooks.forEach((labbook)=>{
-          console.log(labbook)
-        })
 
-        // if(labbook[section] === null){
-        //   let path = filePath.slice(1, filePath.length)
-        // }
+        })
 
         if(index < files.length){
           fileCheck(files[index])

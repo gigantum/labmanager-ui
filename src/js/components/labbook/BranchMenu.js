@@ -211,7 +211,7 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _sync(){
-    console.log('sync')
+
     store.dispatch({
       type: 'UPLOAD_MESSAGE',
       payload: {
