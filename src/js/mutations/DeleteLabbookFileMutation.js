@@ -69,8 +69,8 @@ export default function DeleteLabbookFileMutation(
         connectionKeys: [{
           key: connectionKey
         }],
-        parentId: labbookId
-        pathToConnection: ['labbook', 'allFiles'],
+        parentId: labbookId,
+        pathToConnection: ['labbook', 'allFiles']
       }],
       onCompleted: (response, error ) => {
         if(error){
