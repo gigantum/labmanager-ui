@@ -43,7 +43,7 @@ export default (
 
    };
  } else if (action.type === BATCH_LOADING_PROGRESS) {
-   console.trace(action)
+
     return {
       ...state,
       index:  action.payload.index,
@@ -60,6 +60,8 @@ export default (
    return {
      ...state,
      uploadMessage: action.payload.uploadMessage,
+     loadingState: action.payload.loadingState,
+     success: action.payload.success,
      error: (action.payload.error === undefined) ? false :  action.payload.error
    };
  } else if(action.type === RESET_FOOTER_STORE){

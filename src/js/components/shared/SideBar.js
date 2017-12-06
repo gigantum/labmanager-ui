@@ -19,11 +19,11 @@ export default class SideBar extends Component {
     const { isAuthenticated } = this.props.auth;
     const isLabbooks = (window.location.href.indexOf('labbooks') > 0);
     return (
-      <div className="SideBar">
+      <div className="SideBar col-sm-1">
         <div className={'SideBar__inner-container'}>
 
           <ul className='SideBar__nav'>
-            <li>
+            <li className={!isLabbooks ? 'SideBar__list-item--selected' : 'SideBar__list-item'}>
               <Link
                 className={!isLabbooks ? 'SideBar__nav-item SideBar__nav-item--datasets SideBar__nav-item--selected' : 'SideBar__nav-item SideBar__nav-item--datasets'}
                 to={{pathname: '/datasets'}}
@@ -32,7 +32,7 @@ export default class SideBar extends Component {
                 Datasets
               </Link>
             </li>
-            <li>
+            <li className={isLabbooks ? 'SideBar__list-item--selected' : 'SideBar__list-item'}>
               <Link
                 className={isLabbooks ? 'SideBar__nav-item SideBar__nav-item--labbooks SideBar__nav-item--selected' : 'SideBar__nav-item SideBar__nav-item--labbooks'}
                 to={{pathname: '/labbooks'}}

@@ -81,7 +81,7 @@ class OutputDataBrowser extends Component {
           section="output"
           parentId={this.props.outputId}
           favoriteConnection="OutputFavorites_favorites"
-          connection="OutputData_allFiles"
+          connection="OutputDataBrowser_allFiles"
           {...this.props}
         />
       )

@@ -17,10 +17,12 @@ import Overview from './overview/Overview'
 import Environment from './environment/Environment'
 import ContainerStatus from './ContainerStatus'
 import Loader from 'Components/shared/Loader'
+import Branches from './branches/Branches'
+import BranchMenu from './BranchMenu'
 
 import Config from 'JS/config'
 
-let unsubscribe
+let unsubscribe;
 class Labbook extends Component {
   constructor(props){
   	super(props);
@@ -30,8 +32,10 @@ class Labbook extends Component {
       payload:{
         'selectedComponent': (props.location.pathname.split('/').length > 3) ? props.location.pathname.split('/')[3] : 'overview' ,
         'containerState': props.labbook.environment.containerStatus,
-        'imageStatus': props.labbook.environment.imageStatus
+        'imageStatus': props.labbook.environment.imageStatus,
+        'branchesOpen': false
       }
+
     })
     this.state = store.getState()
 
@@ -39,7 +43,7 @@ class Labbook extends Component {
     this._setBuildingState = this._setBuildingState.bind(this)
     this._showLabbookModal = this._showLabbookModal.bind(this)
     this._hideLabbookModal = this._hideLabbookModal.bind(this)
-
+    this._toggleBranchesView = this._toggleBranchesView.bind(this)
 
 }
 /*
@@ -64,7 +68,7 @@ componentWillUnmount() {
   updates history prop
 */
 storeDidUpdate = (labbook) => {
-  //for(this.state)
+
   if(this.state !== labbook){
     this.setState(labbook);//triggers re-render when store updates
   }
@@ -187,9 +191,25 @@ storeDidUpdate = (labbook) => {
     }
   }
 
+  /**
+    @param {}
+    updates branchOpen state
+  */
+  _toggleBranchesView(){
+
+    store.dispatch({
+      type: 'UPDATE_BRANCHES_VIEW',
+      payload: {
+        branchesOpen: !this.state.branchesOpen
+      }
+    })
+  }
+
+
   render(){
 
     const {labbookName} = this.props;
+    const username = localStorage.getItem('username');
 
     if(this.props.labbook){
       return(
@@ -198,12 +218,24 @@ storeDidUpdate = (labbook) => {
 
            <div className="Labbook__inner-container flex flex--row">
              <div className="Labbook__component-container flex flex--column">
-
+               <div className="Labbook__header-conatiner">
+                 <div className="Labbook__name-title">
+                   {username + '/' + labbookName}
+                 </div>
+                 <BranchMenu
+                  defaultRemote={this.props.labbook.defaultRemote}
+                  labbookName={labbookName}
+                  labbookId={this.props.labbook.id}
+                  />
+              </div>
                <div className="Labbook__header flex flex--row justify--space-between">
 
-                 <h4 className="Labbook__name-title">
-                   {labbookName}
-                 </h4>
+                 <div className={(this.state.branchesOpen) ? 'Labbook__branch-title Labbook__branch-title--open' : 'Labbook__branch-title Labbook__branch-title--closed'}>
+                   <h5 onClick={()=> this._toggleBranchesView()}>{this.props.labbook.activeBranch.name}</h5>
+                   <div
+                     onClick={()=> this._toggleBranchesView()}
+                    className="Labbook__branch-toggle"></div>
+                 </div>
 
                  <ContainerStatus
                    ref="ContainerStatus"
@@ -214,6 +246,15 @@ storeDidUpdate = (labbook) => {
                    setBuildingState={this._setBuildingState}
                    isBuilding={this.state.isBuilding}
                  />
+              </div>
+              <div className="Labbook__navigation-container">
+                <Branches
+                  defaultRemote={this.props.labbook.defaultRemote}
+                  labbookName={labbookName}
+                  branchesOpen={this.state.branchesOpen}
+                  labbook={this.props.labbook}
+                  labbookId={this.props.labbook.id}
+                />
               </div>
 
               <div className="Labbook__navigation-container mui-container flex-0-0-auto">
@@ -341,6 +382,9 @@ export default createFragmentContainer(
       fragment Labbook_labbook on Labbook{
           id
           description
+          updatesAvailableCount
+          isRepoClean
+          defaultRemote
           activeBranch{
             id
             name
@@ -363,6 +407,7 @@ export default createFragmentContainer(
           ...Code_labbook
           ...InputData_labbook
           ...OutputData_labbook
+          ...Branches_labbook
 
       }`
   }

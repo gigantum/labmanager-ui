@@ -19,7 +19,6 @@ let tempID = 0;
 
 export default function DeleteLabbookFileMutation(
   connectionKey,
-  user,
   owner,
   labbookName,
   labbookId,
@@ -28,26 +27,34 @@ export default function DeleteLabbookFileMutation(
   section,
   callback
 ) {
+
+  const isDirectory = (filePath.indexOf('.') < 0)
+
   const variables = {
     input: {
       owner,
       labbookName,
       filePath,
       section,
+      isDirectory,
       clientMutationId: '' + tempID++
     }
   }
 
   function sharedUpdater(store, labbookID, deletedID, connectionKey) {
+
     const userProxy = store.get(labbookID);
     const conn = RelayRuntime.ConnectionHandler.getConnection(
       userProxy,
       connectionKey,
     );
-    RelayRuntime.ConnectionHandler.deleteNode(
-      conn,
-      deletedID,
-    );
+
+    if(conn){
+      RelayRuntime.ConnectionHandler.deleteNode(
+        conn,
+        deletedID,
+      );
+    }
   }
 
 
@@ -56,15 +63,14 @@ export default function DeleteLabbookFileMutation(
     {
       mutation,
       variables,
-      configs: [{ //commented out until nodes are returned
-        type: 'RANGE_DELETE',
-        parentID: labbookId,
+      configs: [{
+        type: 'NODE_DELETE',
+        deletedIDFieldName: deleteLabbookFileId,
         connectionKeys: [{
-          key: connectionKey,
-          rangeBehavior: 'append'
+          key: connectionKey
         }],
-        pathToConnection: ['labbook', 'files'],
-        deletedIDFieldName: deleteLabbookFileId
+        parentId: labbookId
+        pathToConnection: ['labbook', 'allFiles'],
       }],
       onCompleted: (response, error ) => {
         if(error){

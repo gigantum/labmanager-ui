@@ -1,18 +1,18 @@
 .SideBar{
   position: fixed;
   z-index: 100;
-  top: 0px;
+  top: 5px;
 
-  flex: 0 1;
-
-  width: 100px;
   height: 100%;
 
-  background-color: $jet;
+  background: $jet;
+  background: linear-gradient($jet, $azure);
+  width: 120px;
 }
 
 .SideBar__inner-container{
   width: 100%;
+  height: 100%;
   @include flex(flex-start, column)
 }
 
@@ -20,9 +20,21 @@
   color: $cream;
 }
 
+.SideBar__list-item{
+  width: 100%;
+}
+
+.SideBar__list-item--selected{
+  @extend .SideBar__list-item;
+}
+
+.SideBar__list-item--selected:after{
+}
+
 .SideBar__nav{
   @include flex(flex-start, column)
   align-items: center;
+  height: 50%;
 }
 
 .SideBar__nav-item{
@@ -31,6 +43,7 @@
   width: 80px;
   height: 120px;
   color: $white;
+  margin: 0 auto;
 
   border-radius: 20px;
 
@@ -47,18 +60,14 @@
 
 .SideBar__nav-item--datasets{
   align-items: center;
-
-  margin: 0 10px;
-  padding: 0 15px 0 0;
 }
 
 .SideBar__nav-item--labbooks{
   align-items: center;
-  padding: 0 15px 0 0;
 }
 
 .SideBar__icon{
-  height: 80px;
+  height: 55px;
   width: 60px;
   margin: 0 2px;
   align-items: center;
@@ -67,23 +76,23 @@
 
 .SideBar__icon--datasets{
   background: url('../images/icons/datasets.svg') no-repeat center center;
-  background-size: 60px;
+  background-size: 40px;
 }
 
 
 .SideBar__icon--datasets-selected{
   background: url('../images/icons/datasets-selected.svg') no-repeat center center;
-  background-size: 60px;
+  background-size: 40px;
 }
 
 .SideBar__icon--labbooks{
   background: url('../images/icons/labbooks.svg') no-repeat center center;
-  background-size: 60px;
+  background-size: 40px;
 }
 
 .SideBar__icon--labbooks-selected{
   background: url('../images/icons/labbooks-selected.svg') no-repeat center center;
-  background-size: 60px;
+  background-size: 40px;
 }
 
 .SideBar__button{

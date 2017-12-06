@@ -28,14 +28,6 @@ export default function RemoveFavoriteMutation(
   callback
 ) {
 
-  console.log(
-    connectionKey,
-    parentId,
-    owner,
-    labbookName,
-    section,
-    index,
-    removeFavoriteId)
   const clientMutationId = uuidv4()
   const variables = {
     input: {
@@ -47,7 +39,6 @@ export default function RemoveFavoriteMutation(
     }
   }
 
-  console.log(variables)
   function sharedUpdater(store, parentID, deletedId, connectionKey) {
     const userProxy = store.get(parentID);
 
@@ -55,27 +46,18 @@ export default function RemoveFavoriteMutation(
       userProxy,
       connectionKey,
     );
-        console.log(conn)
-    RelayRuntime.ConnectionHandler.deleteNode(
-      conn,
-      deletedId,
-    );
+    if(conn){
+      RelayRuntime.ConnectionHandler.deleteNode(
+        conn,
+        deletedId,
+      );
+    }
   }
   commitMutation(
     environment,
     {
       mutation,
       variables,
-      // configs: [{ //commented out until nodes are returned
-      //   type: 'RANGE_ADD',
-      //   parentID: labbookId,
-      //   connectionInfo: [{
-      //     key: connectionKey,
-      //     rangeBehavior: 'append',
-      //     filters: {baseDir: 'code', first: 2}
-      //   }],
-      //   edgeName: 'newLabbookFileEdge'
-      // }],
       onCompleted: (response, error ) => {
         if(error){
           console.log(error)
@@ -85,14 +67,12 @@ export default function RemoveFavoriteMutation(
       onError: err => console.error(err),
       optimisticUpdater:(store)=>{
 
-
         sharedUpdater(store, parentId, removeFavoriteId, connectionKey)
 
       },
       updater: (store, response) => {
 
         sharedUpdater(store, parentId, removeFavoriteId, connectionKey)
-
 
       }
     },

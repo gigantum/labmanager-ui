@@ -1,21 +1,22 @@
 button{
-  padding: 10px 25px;
-  border: 2px solid $datasets;
-  border-radius: 5px;
+  padding: 5px 25px;
+  border: 2px solid $azure;
+  border-radius: 20px;
   color: $white;
-  background: $datasets;
+  background: $azure;
   cursor: pointer;
 }
 
 button:hover{
 
-  color: $datasets;
-  background: $white;
+  color: $white;
+  background: $turquise;
+  border: 2px solid $turquise;
 }
 
 button:focus{
   color: $white;
-  background: $datasets;
+  background: $azure;
 }
 
 
@@ -27,7 +28,7 @@ button:disabled{
 
 .flat--button{
   padding: 10px 25px;
-  border: 0px solid $datasets;
+  border: 0px solid $azure;
   border-radius: 0px;
   color: $font-grey;
   background: none;
@@ -35,10 +36,10 @@ button:disabled{
 }
 
 .flat--button:hover{
-  color: $datasets;
+  color: $azure;
   background: none;
 }
 .flat--button:focus{
-  color: $datasets;
+  color: $azure;
   background: none;
 }

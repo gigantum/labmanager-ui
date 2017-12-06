@@ -15,6 +15,8 @@ import DeleteLabbookFileMutation from 'Mutations/DeleteLabbookFileMutation'
 import MakeLabbookDirectoryMutation from 'Mutations/MakeLabbookDirectoryMutation'
 import MoveLabbookFileMutation from 'Mutations/MoveLabbookFileMutation'
 import AddFavoriteMutation from 'Mutations/AddFavoriteMutation'
+//helpers
+import FolderUpload from './folderUpload'
 
 //utilities
 import ChunkUploader from 'JS/utils/ChunkUploader'
@@ -172,7 +174,6 @@ export default class FileBrowserWrapper extends Component {
     MakeLabbookDirectoryMutation(
       this.props.connection,
       localStorage.getItem('username'),
-      localStorage.getItem('username'),
       this.props.labbookName,
       this.props.parentId,
       key,
@@ -257,9 +258,9 @@ export default class FileBrowserWrapper extends Component {
   handleCreateFiles(files, prefix) {
     let self = this;
 
-    this.setState(state => {
-
+    if(files.length === 1){
       const batchUpload = (files.length > 1)
+
       let newFiles = files.map((file, index) => {
         let newKey = prefix;
         if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
@@ -294,35 +295,28 @@ export default class FileBrowserWrapper extends Component {
 
 
           fileReader.readAsArrayBuffer(file);
-
-        // window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-        // window.directoryEntry = window.directoryEntry || window.webkitDirectoryEntry;
-        // function onError(error){
-        //   console.log(error)
-        // }
-        // function onFs(fs){
-        //   console.log(fs)
-        //   fs.root.getDirectory('Spinner', {create:true}, function(directoryEntry){
-        //     console.log(directoryEntry)
-        //     //directoryEntry.isFile === false
-        //     //directoryEntry.isDirectory === true
-        //     //directoryEntry.name === 'Documents'
-        //     //directoryEntry.fullPath === '/Documents'
-        //
-        //     }, onError);
-        //
-        //   }
-        //
-        // // Opening a file system with temporary storage
-        // window.requestFileSystem(file, 1024*1024*1024*1024 /*1TB*/, onFs, onError);
-
-        return {
-          key: newKey,
-          size: file.size,
-          modified: + Moment(),
-        };
       });
-    })
+    }else{
+      let flattenedFiles = []
+      function flattenFiles(filesArray){
+          if(filesArray.entry){
+            flattenedFiles.push(filesArray)
+          }else{
+            filesArray.map(filesSubArray=>{
+              flattenFiles(filesSubArray)
+            })
+          }
+      }
+
+      flattenFiles(files)
+      let filterFiles = flattenedFiles.filter((fileItem) => {
+          return (fileItem.file.name !== '.DS_Store')
+      })
+
+      FolderUpload.uploadFiles(filterFiles, prefix, self.props.labbookName, self.props.section)
+
+    }
+
   }
   /**
   *  @param {string, string} oldKey,newKey  file key, prefix is root folder -
@@ -342,7 +336,6 @@ export default class FileBrowserWrapper extends Component {
     MakeLabbookDirectoryMutation(
       this.props.connection,
       localStorage.getItem('username'),
-      localStorage.getItem('username'),
       this.props.labbookName,
       this.props.parentId,
       newKey,
@@ -354,11 +347,10 @@ export default class FileBrowserWrapper extends Component {
         edgesToMove.forEach((edge) => {
           if(edge.node.key.indexOf('.') > -1 ){
             all.push(new Promise((resolve, reject)=>{
-              let newKeyComputed = edge.node.key.replace(oldKey, newKey)
+                let newKeyComputed = edge.node.key.replace(oldKey, newKey)
 
                 MoveLabbookFileMutation(
                   this.props.connection,
-                  localStorage.getItem('username'),
                   localStorage.getItem('username'),
                   this.props.labbookName,
                   this.props.parentId,
@@ -375,7 +367,8 @@ export default class FileBrowserWrapper extends Component {
                         resolve(response.moveLabbookFile)
                       },1050)
                     }else{
-                        reject(response[0].message)
+
+                        reject(response)
                     }
                   }
                 )
@@ -395,7 +388,6 @@ export default class FileBrowserWrapper extends Component {
           DeleteLabbookFileMutation(
             this.props.connection,
             localStorage.getItem('username'),
-            localStorage.getItem('username'),
             this.props.labbookName,
             this.props.parentId,
             edgeToDelete.node.id,
@@ -409,7 +401,7 @@ export default class FileBrowserWrapper extends Component {
             }
           )
         }).catch(error =>{
-          console.error(error[0].message)
+          console.error(error)
         })
       }
     )
@@ -431,7 +423,6 @@ export default class FileBrowserWrapper extends Component {
     if(edgeToMove){
       MoveLabbookFileMutation(
         this.props.connection,
-        localStorage.getItem('username'),
         localStorage.getItem('username'),
         this.props.labbookName,
         this.props.parentId,
@@ -463,7 +454,6 @@ export default class FileBrowserWrapper extends Component {
     DeleteLabbookFileMutation(
       this.props.connection,
       localStorage.getItem('username'),
-      localStorage.getItem('username'),
       this.props.labbookName,
       this.props.parentId,
       edgeToDelete.node.id,
@@ -490,7 +480,6 @@ export default class FileBrowserWrapper extends Component {
 
     DeleteLabbookFileMutation(
       this.props.connection,
-      localStorage.getItem('username'),
       localStorage.getItem('username'),
       this.props.labbookName,
       this.props.parentId,
@@ -562,7 +551,8 @@ export default class FileBrowserWrapper extends Component {
   handleFileFavoriting(key){
     const username = localStorage.getItem('username')
     let fileItem = this.props.files.edges.filter((edge)=>{
-        if(edge.node.key === key){
+
+        if(edge && (edge.node.key === key)){
           return edge.node
         }
     })[0]

@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import dateformat from 'dateformat'
 import ReactMarkdown from 'react-markdown'
 import SimpleMDE from 'simplemde'
+import userSVG from 'Images/icons/user.svg'
 
 export default class NotesCard extends Component {
   constructor(props){
@@ -47,9 +48,12 @@ export default class NotesCard extends Component {
         <div className="NotesCard card">
 
           <div className="NotesCard__title flex flex--row justify--space-between">
-              <p className="NotesCard__time">
-                {this._getTimeOfDay(this.props.edge.node.timestamp)}
-              </p>
+              <div className="NotesCard__stack">
+                <p className="NotesCard__time">
+                  {this._getTimeOfDay(this.props.edge.node.timestamp)}
+                </p>
+                <img src={userSVG} className="NotesCard__user" />
+              </div>
               <h6 className="NotesCard__commit-message">{this.props.edge.node.message}</h6>
 
 

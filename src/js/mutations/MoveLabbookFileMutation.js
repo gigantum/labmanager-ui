@@ -26,23 +26,51 @@ const mutation = graphql`
 
 let tempID = 0;
 
-function sharedUpdater(store, labbookID, deletedID, connectionKey) {
+function sharedDeleteUpdater(store, labbookID, deletedID, connectionKey) {
   const userProxy = store.get(labbookID);
   const conn = RelayRuntime.ConnectionHandler.getConnection(
     userProxy,
     connectionKey,
   );
 
-  RelayRuntime.ConnectionHandler.deleteNode(
-    conn,
-    deletedID
-  );
+  if(conn){
+    RelayRuntime.ConnectionHandler.deleteNode(
+      conn,
+      deletedID
+    );
+  }
+}
+
+function sharedUpdater(store, labbookId, connectionKey, node) {
+  const labbookProxy = store.get(labbookId);
+
+
+  if(labbookProxy){
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      labbookProxy,
+      connectionKey
+    );
+
+
+    if(conn){
+      const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+        store,
+        conn,
+        node,
+        "newLabbookFileEdge"
+      )
+
+      RelayRuntime.ConnectionHandler.insertEdgeAfter(
+        conn,
+        newEdge
+      );
+    }
+  }
 }
 
 
 export default function MoveLabbookFileMutation(
   connectionKey,
-  user,
   owner,
   labbookName,
   labbookId,
@@ -88,7 +116,6 @@ export default function MoveLabbookFileMutation(
       onError: err => console.error(err),
       optimisticUpdater: (store) => {
 
-        sharedUpdater(store, labbookId, edge.node.id, connectionKey);
         const id = 'client:newFileMove:'+ tempID++;
         const userProxy = store.get(labbookId);
 
@@ -114,15 +141,15 @@ export default function MoveLabbookFileMutation(
           node.setValue(0, 'modifiedAt')
           node.setValue(100, 'size')
 
-    
+
           RelayRuntime.ConnectionHandler.insertEdgeAfter(
             conn,
             newEdge
           );
         }
       },
-      updater: (store) => {
-        sharedUpdater(store, labbookId, edge.node.id, connectionKey);
+      updater: (store, response) => {
+        sharedDeleteUpdater(store, labbookId, edge.node.id, connectionKey);
       }
 
     },

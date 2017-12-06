@@ -4,6 +4,7 @@ import {
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
+import uuidv4 from 'uuid/v4'
 
 const mutation = graphql`
   mutation MakeLabbookDirectoryMutation($input: MakeLabbookDirectoryInput!){
@@ -27,31 +28,50 @@ const mutation = graphql`
 function sharedUpdater(store, labbookId, connectionKey, node) {
   const labbookProxy = store.get(labbookId);
 
+
+  if(labbookProxy){
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      labbookProxy,
+      connectionKey
+    );
+
+
+    if(conn){
+      const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+        store,
+        conn,
+        node,
+        "newLabbookFileEdge"
+      )
+
+      RelayRuntime.ConnectionHandler.insertEdgeAfter(
+        conn,
+        newEdge
+      );
+    }
+  }
+}
+
+function deleteOptimisticEdge(store, labbookID, deletedID, connectionKey) {
+  const userProxy = store.get(labbookID);
   const conn = RelayRuntime.ConnectionHandler.getConnection(
-    labbookProxy,
-    connectionKey
+    userProxy,
+    connectionKey,
   );
 
   if(conn){
-    const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-      store,
+    RelayRuntime.ConnectionHandler.deleteNode(
       conn,
-      node,
-      "newLabbookFileEdge"
-    )
-
-    RelayRuntime.ConnectionHandler.insertEdgeAfter(
-      conn,
-      newEdge
+      deletedID,
     );
   }
 }
 
 let tempID = 0;
 
+
 export default function MakeLabbookDirectoryMutation(
   connectionKey,
-  user,
   owner,
   labbookName,
   labbookId,
@@ -59,6 +79,7 @@ export default function MakeLabbookDirectoryMutation(
   section,
   callback
 ) {
+
   const variables = {
     input: {
       owner,
@@ -68,20 +89,22 @@ export default function MakeLabbookDirectoryMutation(
       clientMutationId: '' + tempID++
     }
   }
+
+  const tempNodeId = uuidv4()
   commitMutation(
     environment,
     {
       mutation,
       variables,
-      configs: [{ //commented out until nodes are returned
-        type: 'RANGE_ADD',
-        parentID: labbookId,
-        connectionInfo: [{
-          key: connectionKey,
-          rangeBehavior: 'prepend'
-        }],
-        edgeName: 'newLabbookFileEdge'
-      }],
+      // configs: [{ //commented out until nodes are returned
+      //   type: 'RANGE_ADD',
+      //   parentID: labbookId,
+      //   connectionInfo: [{
+      //     key: connectionKey,
+      //     rangeBehavior: 'prepend'
+      //   }],
+      //   edgeName: 'newLabbookFileEdge'
+      // }],
       onCompleted: (response, error ) => {
         if(error){
           console.log(error)
@@ -90,11 +113,10 @@ export default function MakeLabbookDirectoryMutation(
       },
       onError: err => console.error(err),
       optimisticUpdater: (store)=>{
-        const id = 'client:newCodeFile:'+ tempID++;
-        const node = store.create(id, 'CodeFile')
 
+        const node = store.create(tempNodeId, 'CodeFile')
 
-        node.setValue(id, "id")
+        node.setValue(tempNodeId, "id")
         node.setValue(false, 'isDir')
         node.setValue(directory, 'key')
         node.setValue(0, 'modifiedAt')
@@ -104,8 +126,11 @@ export default function MakeLabbookDirectoryMutation(
 
       },
       updater: (store, response) => {
+
         const id = 'client:newCodeFile:'+ tempID++;
         const node = store.create(id, 'CodeFile')
+
+        //deleteOptimisticEdge(store, labbookId, tempNodeId, connectionKey)
 
         if(response.makeLabbookDirectory && response.makeLabbookDirectory.newLabbookFileEdge){
           node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.id, "id")

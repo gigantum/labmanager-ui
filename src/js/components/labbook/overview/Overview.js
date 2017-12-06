@@ -21,7 +21,7 @@ class Overview extends Component {
     this._openJupyter = this._openJupyter.bind(this)
 
     this.state = store.getState().overview
-    this._openJupyter = this._openJupyter.bind(this)
+
   }
   /*
     subscribe to store to update state

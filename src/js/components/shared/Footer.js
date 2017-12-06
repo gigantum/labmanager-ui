@@ -15,7 +15,7 @@ export default class Footer extends Component {
     this._clearState = this._clearState.bind(this)
 
   }
-  /*
+  /**
     subscribe to store to update state
   */
   componentDidMount() {
@@ -25,7 +25,7 @@ export default class Footer extends Component {
       this.storeDidUpdate(store.getState().footer)
     })
   }
-  /*
+  /**
     unsubscribe from redux store
   */
   componentWillUnmount() {
@@ -61,7 +61,7 @@ export default class Footer extends Component {
     },1000)
   }
 
-  /*
+  /**
     @param {number} bytes
     converts bytes into suitable units
   */
@@ -83,7 +83,14 @@ export default class Footer extends Component {
     return bytes.toFixed(1)+' '+units[u];
  }
 
- /*
+ /**
+  @param {}
+  gets upload message which tracks progess
+ */
+ _closeFooter(){
+   store.dispatch({type:'RESET_FOOTER_STORE', payload:{}})
+ }
+ /**
   @param {}
   gets upload message which tracks progess
  */
@@ -96,33 +103,40 @@ export default class Footer extends Component {
      const total = this._humanFileSize(this.state.totalBytes)
 
      message = this.state.uploadMessage ? this.state.uploadMessage : uploadProgress + ' of ' + total + ' uploaded (' + this.state.percentage + '%)'
-   }else{
+   }else if(this.state.totalFiles){
       message = `uploaded ${this.state.index} of ${this.state.totalFiles} files`
+   }else{
+     message = this.state.uploadMessage
    }
 
    return message
  }
 
  render() {
+    let footerClass = this.state.loadingState ? 'Footer Footer--expand' : 'Footer'
+    footerClass += (this.state.error ? ' Footer--error' : '');
     return (
-      <div id="footer" className={this.state.loadingState ? 'Footer Footer__expand' : 'Footer'}>
+      <div id="footer" className={footerClass}>
 
         <div
           className={this.state.loadingState ? 'Footer__status' : 'hidden'}>
-            {this._getMessage()}
+            <div className="Footer__message">{this._getMessage()}</div>
+            <div
+              onClick={()=>{this._closeFooter()}}
+              className="Footer__close"></div>
         </div>
 
         <div
           id="footerProgressBar" className={(this.state.error) ? 'Footer__progress-bar Footer__progress-bar__error' : 'Footer__progress-bar' }>
         </div>
 
-        {this.state.error &&
+        {/* {this.state.error &&
           <button
             className="Footer__button"
             onClick={()=> this._clearState()}>
             Got It
           </button>
-        }
+        } */}
 
         {this.state.success &&
           <button
@@ -131,6 +145,7 @@ export default class Footer extends Component {
             Open Lab Book
           </button>
         }
+
       </div>
     )
   }

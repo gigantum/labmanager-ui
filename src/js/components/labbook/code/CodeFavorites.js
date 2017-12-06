@@ -14,7 +14,7 @@ class CodeFavorites extends Component {
     }
   }
 
-  /*
+  /**
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
@@ -29,7 +29,7 @@ class CodeFavorites extends Component {
     })
   }
 
-  /*
+  /**
     @param
     triggers relay pagination function loadMore
     increments by 10
@@ -61,7 +61,7 @@ class CodeFavorites extends Component {
 
       let loadingClass = (this.props.code.favorites.pageInfo.hasNextPage) ? 'Favorite__action-bar' : 'hidden'
       loadingClass = (this.state.loading) ? 'Favorite__action-bar--loading' : loadingClass
-      console.log(loadingClass)
+
       if(this.props.code.favorites.edges.length > 0){
         let favorites = this.props.code.favorites.edges.filter((edge)=>{if(edge){return (edge.node !== undefined)}})
         return(
