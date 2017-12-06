@@ -64,15 +64,7 @@ class InputDataBrowser extends Component {
       let inputFiles = this.props.input.allFiles
       if(this.props.input.allFiles.edges.length === 0){
         inputFiles = {
-          edges: [{
-            node:{
-              modified: new Date(),
-              key: 'input/',
-              isDir: true,
-              size: 0,
-              id: 'input_temp'
-            }
-          }],
+          edges: [],
           pageInfo: this.props.input.allFiles.pageInfo
         }
       }
@@ -83,7 +75,7 @@ class InputDataBrowser extends Component {
           section="input"
           setRootFolder={this.setRootFolder}
           files={inputFiles}
-          connection="InputData_allFiles"
+          connection="InputDataBrowser_allFiles"
           parentId={this.props.inputId}
           favoriteConnection="InputFavorites_favorites"
           {...this.props}
