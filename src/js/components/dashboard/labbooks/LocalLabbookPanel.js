@@ -64,13 +64,7 @@ export default class LocalLabbookPanel extends Component {
         if(response.exportLabbook){
           JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
 
-              // this.setState({
-              //   'exportPath': data.jobStatus.result ? data.jobStatus.result : '',
-              //   'show': true,
-              //   'message': `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-              //   'type': 'success',
-              //   'title': 'Export Successful'
-              // })
+          
               if(data.jobStatus.result){
                 store.dispatch({
                   type: 'UPLOAD_MESSAGE',

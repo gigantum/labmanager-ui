@@ -14,7 +14,7 @@ class CodeFavorites extends Component {
     }
   }
 
-  /**å
+  /**
     handle state and addd listeners when component mounts
   */
   componentDidMount() {

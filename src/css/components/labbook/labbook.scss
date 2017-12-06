@@ -32,14 +32,14 @@
 
 .Labbook__branch-title--open{
   .Labbook__branch-toggle{
-    background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
+    background: url('./../images/icons/up-arrow-silver.svg') no-repeat center center;
     background-size: 14px;
   }
 }
 
 .Labbook__branch-title--closed{
   .Labbook__branch-toggle{
-    background: url('./../images/icons/up-arrow-silver.svg') no-repeat center center;
+    background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
     background-size: 14px;
   }
 

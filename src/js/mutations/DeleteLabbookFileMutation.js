@@ -63,14 +63,14 @@ export default function DeleteLabbookFileMutation(
     {
       mutation,
       variables,
-      configs: [{ //commented out until nodes are returned
+      configs: [{
         type: 'NODE_DELETE',
         deletedIDFieldName: deleteLabbookFileId,
         connectionKeys: [{
           key: connectionKey
         }],
         parentId: labbookId
-        // pathToConnection: ['labbook', 'files'],
+        pathToConnection: ['labbook', 'allFiles'],
       }],
       onCompleted: (response, error ) => {
         if(error){

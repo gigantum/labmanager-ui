@@ -116,7 +116,7 @@ const FolderUpload = {
 
       Promise.all(all).then((labbooks)=>{
         labbooks.forEach((labbook)=>{
-
+          console.log(labbook)
         })
 
         if(index < files.length){

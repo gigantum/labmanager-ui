@@ -26,16 +26,9 @@ class Branches extends Component {
     subscribe to store to update state
   */
   componentDidMount() {
-    // unsubscribe = store.subscribe(() =>{
-    //   this.storeDidUpdate(store.getState().overview)
-    // })
-  }
-  /*
-    unsubscribe from redux store
-  */
-  componentWillUnmount() {
-    //unsubscribe()
-    this._loadMore()
+    if(this.props.labbook.branches.pageInfo.hasNextPage){
+      this._loadMore()
+    }
   }
 
   /**

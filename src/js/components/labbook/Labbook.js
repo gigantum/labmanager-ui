@@ -60,7 +60,7 @@ componentDidMount() {
   unsubscribe from redux store
 */
 componentWillUnmount() {
-  //unsubscribe()
+  unsubscribe()
 }
 /**
   @param {object} labbook
@@ -68,8 +68,7 @@ componentWillUnmount() {
   updates history prop
 */
 storeDidUpdate = (labbook) => {
-  //for(this.state)
-  console.log(labbook)
+
   if(this.state !== labbook){
     this.setState(labbook);//triggers re-render when store updates
   }

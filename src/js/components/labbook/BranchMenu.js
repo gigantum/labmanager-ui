@@ -114,7 +114,6 @@ export default class UserNote extends Component {
   /**
   *  @param {}
   *  adds remote url to labbook
-  *  example: url ssh://git@ec2-107-22-88-175.compute-1.amazonaws.com:9922/root/test-ui.git
   *  @return {string}
   */
   _addRemote(){

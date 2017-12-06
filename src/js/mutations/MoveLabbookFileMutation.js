@@ -116,7 +116,6 @@ export default function MoveLabbookFileMutation(
       onError: err => console.error(err),
       optimisticUpdater: (store) => {
 
-        // sharedUpdater(store, labbookId, edge.node.id, connectionKey);
         const id = 'client:newFileMove:'+ tempID++;
         const userProxy = store.get(labbookId);
 
