@@ -303,7 +303,7 @@ export default class FileBrowserWrapper extends Component {
             flattenedFiles.push(filesArray)
           }else{
             filesArray.map(filesSubArray=>{
-              files(filesSubArray)
+              flattenFiles(filesSubArray)
             })
           }
       }

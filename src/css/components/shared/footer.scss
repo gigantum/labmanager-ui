@@ -1,11 +1,11 @@
 .Footer{
   background-color: $slateBlue;
 
-  left: 100px;
+  left: 120px;
   right: 0;
   position: fixed;
   bottom: 0;
-  height: 20px;
+  height: 0px;
   z-index: 50;
   max-height: 200px;
   transition: height 0.5s;
@@ -14,8 +14,12 @@
   font-weight: 100;
 }
 
-.Footer--expand {
+.Footer--open {
     height: 90px;
+}
+
+.Footer--expand {
+    height: 40px;
 }
 
 .Footer--error{

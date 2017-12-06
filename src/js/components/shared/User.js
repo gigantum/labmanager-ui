@@ -65,12 +65,13 @@ export default class User extends Component {
       <div
         id="user"
         className="User">
-
+        <img className="User__image" src={userSVG}/>
         <h6
           id="username"
           onClick={() => { this._toggleDropdown()}}
           className={this.state.dropdownVisible ? 'User__name--active' :  'User__name'}>
             {this.state.username}
+
         </h6>
 
         <div className={ this.state.dropdownVisible ? 'User__dropdown--arrow' : 'hidden'}></div>

@@ -1,38 +1,50 @@
 .User{
   height: 200px;
-  width: 100px;
+  width: 120px;
   position: relative;
-  @include flex(space-around, column);
+  border-top: 5px solid $jet;
+  @include flex(flex-start, column);
+  padding: 20px 0
+}
+
+.User__image{
+  height: 60px;
+  width: 60px;
+  align-self: center;
 }
 
 .User__name{
-  height: 100%;
-  line-height: 70px;
-  flex: 1;
+  height: 30px;
+  line-height: 20px;
+  font-size: 14px;
+  text-align: center;
   align-self: center;
+  padding: 5px 20px 5px 0;
   color: $white;
-  padding-top: 60px;
-  background: url('./../images/icons/user.svg') no-repeat center 40px;
-  background-size: 30px;
+  background: url('./../images/icons/down-arrow-white.svg') no-repeat center right;
+  background-size: 16px;
   cursor: pointer;
+
 }
 
 .User__name--active{
   @extend .User__name;
+  background: url('./../images/icons/up-arrow-white.svg') no-repeat center right;
+    background-size: 16px;
 }
 
 .User__dropdown{
-  width: 100px;
+  width: 120px;
   padding: 5px;
 
 }
 
-.User__dropdown--arrow{
-  position: absolute;
-  top: 81px;
-  right: 5px;
-  @include triangle('up', 10px, $jet)
-}
+// .User__dropdown--arrow{
+//   position: absolute;
+//   top: 81px;
+//   right: 5px;
+//   @include triangle('up', 10px, $jet)
+// }
 
 
 .User__button{

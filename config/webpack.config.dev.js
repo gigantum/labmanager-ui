@@ -101,7 +101,8 @@ module.exports = {
       'Components': path.resolve(__dirname, '../src/js/components/'),
       'Mutations': path.resolve(__dirname, '../src/js/mutations/'),
       'JS': path.resolve(__dirname, '../src/js/'),
-      'Submodules': path.resolve(__dirname, '../submodules/')
+      'Submodules': path.resolve(__dirname, '../submodules/'),
+      'Images': path.resolve(__dirname, '../src/images/')
 
     },
     plugins: [
