@@ -69,7 +69,6 @@ class Activity extends Component {
       'isPaginting': true
     })
 
-    console.log('paginating')
     this.props.relay.loadMore(
      5, // Fetch the next 10 feed items
      e => {
@@ -181,6 +180,7 @@ class Activity extends Component {
                         {
                           activityRecordsTime[k].map((obj) => {
                           return(<ActivityCard
+                              labbookName={this.props.labbookName}
                               key={obj.edge.node.id}
                               edge={obj.edge}
                             />)
@@ -250,6 +250,7 @@ export default createPaginationContainer(
                 key
                 show
                 importance
+                type
               }
             }
             cursor

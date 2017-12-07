@@ -4,6 +4,7 @@ import dateformat from 'dateformat'
 import ReactMarkdown from 'react-markdown'
 import SimpleMDE from 'simplemde'
 import userSVG from 'Images/icons/user.svg'
+import ActivityDetails from 'Components/labbook/activity/ActivityDetails'
 
 export default class ActivityCard extends Component {
   constructor(props){
@@ -46,62 +47,41 @@ export default class ActivityCard extends Component {
     console.log(this.props.edge)
 
     const node = this.props.edge.node;
+    const type = this.props.edge.node.type.toLowerCase()
     return(
         <div className="ActivityCard card">
-
-          <div className="ActivityCard__title flex flex--row justify--space-between">
-              <div className="ActivityCard__stack">
-                <p className="ActivityCard__time">
-                  {this._getTimeOfDay(this.props.edge.node.timestamp)}
-                </p>
-                <img src={userSVG} className="ActivityCard__user" />
-              </div>
-              <h6 className="ActivityCard__commit-message">{this.props.edge.node.message}</h6>
-
-
-
-              <button className={!this.state.showExtraInfo ? "ActivityCard__toggle-button closed flex justify--space-around": "ActivityCard__toggle-button open flex justify--space-around"}
-              onClick={() => this._toggleExtraInfo()}
-              >
-                Activity Detail
-                <div className="ActivityCard__toggle-icon"></div>
-              </button>
+          <div className={'ActivityCard__badge ActivityCard__badge--' + type}>
           </div>
-          {(node.detailObjects.length < 2) &&
-            <div className="ActivityCard__details">{node.detailObjects.length + ' detail'}</div>
-
-          }
-          { (node.detailObjects.length > 1) &&
-            <div className="ActivityCard__details">{node.detailObjects.length + ' details'}</div>
-          }
-
-          <div className={this.state.showExtraInfo ? 'ActivityCard__expanded-view' : 'ActivityCard__expanded-view no-height'}>
+          <div className="ActivityCard__content">
+            <div className="ActivityCard__title flex flex--row justify--space-between">
 
 
-          {
-            (this.props.edge.node.freeText !== "") &&
-            <div id={this.props.edge.node.commit} className="ActivityCard__markdown-container">
-               <ReactMarkdown source={this.props.edge.node.freeText} />
-            </div>}
+                <div className="ActivityCard__stack">
+                  <p className="ActivityCard__time">
+                    {this._getTimeOfDay(this.props.edge.node.timestamp)}
+                  </p>
+                  <img src={userSVG} className="ActivityCard__user" />
+                </div>
+                <h6 className="ActivityCard__commit-message">{this.props.edge.node.message}</h6>
 
-            <div>
-              <ul className="ActivityCard__tags-list flex flex--row flex--wrap">
-                <div>Tags: {' '}</div>
-
-                { tags && tags.map((tag, index) => {
-                  return(
-                    <li
-                      key={tag + index + this.props.edge.node.commit}
-                    >
-                      {tag}
-                    </li>)
-                  })
-                }
-              </ul>
             </div>
 
-          </div>
+            {/* {(node.detailObjects.length > 1) && */}
 
+              <ActivityDetails
+                labbookName={this.props.labbookName}
+                key={node.id + '_activity-details'}
+                node={node}
+              />
+            {/* } */}
+            {/* { (node.detailObjects.length < 2) &&
+
+              <div>
+                <div className="ActivityCard__details">{node.detailObjects.length + ' details'}</div>
+                <ReactMarkdown source={this.props.edge.node.freeText} />
+             </div>
+            } */}
+        </div>
       </div>
     )
   }

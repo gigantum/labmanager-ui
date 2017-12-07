@@ -17,13 +17,14 @@
   position: relative;
   background: white;
 
-
-
   border-bottom: 10px solid $azure;
 
+  @include flex(flex-start, row)
 }
 
 .ActivityCard__stack{
+  margin: 5px 0;
+  font-size: 18px;
   @include flex(flex-start, column)
 }
 
@@ -38,7 +39,8 @@
   max-width: 120px;
   margin: 2px 0;
   color: $romanSilver;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: bold;
 
 }
 
@@ -304,4 +306,115 @@
 }
 .ActivityCard.ActivityCard__loader--5{
   transition: opacity 3.6s;
+}
+
+
+
+.ActivityDetail__details{
+  margin: -1px 0px;
+}
+
+.ActivityDetail__details-title{
+  border-top: 1px solid $romanSilver;
+  border-bottom: 1px solid $romanSilver;
+  padding: 5px;
+  p{
+    margin: 0;
+  }
+
+  cursor: pointer;
+
+}
+
+.ActivityDetail__details-title--open:hover{
+  color: $turquise;
+  background: url('./../images/icons/up-arrow-turquise.svg') no-repeat 98% center;
+  background-size: 20px;
+
+}
+
+.ActivityDetail__details-title--closed:hover{
+  color: $turquise;
+  background: url('./../images/icons/down-arrow-turquise.svg') no-repeat 98% center;
+  background-size: 20px;
+
+}
+
+.ActivityDetail__details-title--open{
+  background: url('./../images/icons/up-arrow-silver.svg') no-repeat 98% center;
+  background-size: 20px;
+}
+
+.ActivityDetail__details-title--closed{
+  background: url('./../images/icons/down-arrow-silver.svg') no-repeat 98% center;
+  background-size: 20px;
+}
+
+.ActivityDetail__header{
+  @include flex(flex-start, row)
+}
+
+.ActivityDetail__content{
+  align-self: center;
+}
+
+.ActivityCard__content{
+  flex: 1;
+}
+
+
+.ActivityCard__badge{
+  height: 60px;
+  width: 60px;
+  margin: 10px 20px 0 0;
+  text-align: center;
+  align-self: top;
+  line-height: 40px;
+}
+.ActivityCard__badge:before{
+  font-size: 40px !important;
+}
+.ActivityDetail__badge{
+  height: 40px;
+  width: 40px;
+  margin: 0 20px 0 0;
+  text-align: center;
+  align-self: center;
+  line-height: 40px;
+}
+.ActivityDetail__badge:before{
+  font-size: 20px !important;
+}
+.ActivityCard__badge--code,
+.ActivityDetail__badge--code{
+  color: $azure;
+  @extend .code-icon;
+}
+.ActivityCard__badge--code_executed,
+.ActivityDetail__badge--code_executed{
+  color: $jet;
+  @extend .terminal-icon;
+}
+.ActivityCard__badge--result,
+.ActivityDetail__badge--result{
+  color: $flame;
+  @extend .fa-bar-chart;
+}
+
+.ActivityCard__badge--note,
+.ActivityDetail__badge--note{
+  color: $goldenLemon;
+  @extend .fa-sticky-note-o;
+}
+
+.ActivityCard__badge--input_data,
+.ActivityDetail__badge--input_data{
+  color: $kellyGreen;
+  @extend .fa-sticky-note-o;
+}
+
+.ActivityCard__badge--output_data,
+.ActivityDetail__badge--output_data{
+  color: $crimson;
+  @extend .fa-sticky-note-o;
 }

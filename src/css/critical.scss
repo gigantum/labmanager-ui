@@ -11,6 +11,7 @@
 @import 'vendor/fileBrowser/list-style.scss';
 @import 'vendor/fileBrowser/table-style.scss';
 @import 'vendor/fileIcons/fileIcons.scss';
+@import 'vendor/font-awesome/fontawesome.scss';
 
 //generic
 @import '_variables';
@@ -42,6 +43,7 @@
 //labbook components
 @import  'components/labbook/labbook.scss';
 @import  'components/labbook/activity.scss';
+@import  'components/labbook/detail.scss';
 @import  'components/labbook/environment.scss';
 @import  'components/labbook/overview.scss';
 @import  'components/labbook/userNote.scss';
