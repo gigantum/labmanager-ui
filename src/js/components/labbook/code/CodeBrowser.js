@@ -59,21 +59,13 @@ class CodeBrowser extends Component {
   }
 
   render(){
-  
+
     if(this.props.code && this.props.code.allFiles){
 
       let codeFiles = this.props.code.allFiles
       if(this.props.code.allFiles.edges.length === 0){
         codeFiles = {
-          edges: [{
-            node:{
-              modified: new Date(),
-              key: 'code/',
-              isDir: true,
-              size: 0,
-              id: 'code_temp'
-            }
-          }],
+          edges: [],
           pageInfo: this.props.code.allFiles.pageInfo
         }
       }

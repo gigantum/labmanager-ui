@@ -60,15 +60,7 @@ class OutputDataBrowser extends Component {
       let outputFiles = this.props.output.allFiles
       if(this.props.output.allFiles.edges.length === 0){
         outputFiles = {
-          edges: [{
-            node:{
-              modified: new Date(),
-              key: 'output/',
-              isDir: true,
-              size: 0,
-              id: 'output_temp'
-            }
-          }],
+          edges: [],
           pageInfo: this.props.output.allFiles.pageInfo
         }
       }

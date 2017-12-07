@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import SimpleMDE from 'simplemde'
 import userSVG from 'Images/icons/user.svg'
 
-export default class NotesCard extends Component {
+export default class ActivityCard extends Component {
   constructor(props){
     const level = props.edge.node.level
   	super(props);
@@ -43,53 +43,52 @@ export default class NotesCard extends Component {
   render(){
 
     let tags = (typeof this.props.edge.node.tags === 'string') ? JSON.parse(this.props.edge.node.tags) : this.props.edge.node.tags
+    console.log(this.props.edge)
 
+    const node = this.props.edge.node;
     return(
-        <div className="NotesCard card">
+        <div className="ActivityCard card">
 
-          <div className="NotesCard__title flex flex--row justify--space-between">
-              <div className="NotesCard__stack">
-                <p className="NotesCard__time">
+          <div className="ActivityCard__title flex flex--row justify--space-between">
+              <div className="ActivityCard__stack">
+                <p className="ActivityCard__time">
                   {this._getTimeOfDay(this.props.edge.node.timestamp)}
                 </p>
-                <img src={userSVG} className="NotesCard__user" />
+                <img src={userSVG} className="ActivityCard__user" />
               </div>
-              <h6 className="NotesCard__commit-message">{this.props.edge.node.message}</h6>
+              <h6 className="ActivityCard__commit-message">{this.props.edge.node.message}</h6>
 
 
-              <button className={!this.state.showExtraInfo ? "NotesCard__toggle-button closed flex justify--space-around": "NotesCard__toggle-button open flex justify--space-around"}
+
+              <button className={!this.state.showExtraInfo ? "ActivityCard__toggle-button closed flex justify--space-around": "ActivityCard__toggle-button open flex justify--space-around"}
               onClick={() => this._toggleExtraInfo()}
               >
                 Activity Detail
-                <div className="NotesCard__toggle-icon"></div>
+                <div className="ActivityCard__toggle-icon"></div>
               </button>
           </div>
+          {(node.detailObjects.length < 2) &&
+            <div className="ActivityCard__details">{node.detailObjects.length + ' detail'}</div>
 
-          <div className={this.state.showExtraInfo ? 'NotesCard__expanded-view' : 'NotesCard__expanded-view no-height'}>
+          }
+          { (node.detailObjects.length > 1) &&
+            <div className="ActivityCard__details">{node.detailObjects.length + ' details'}</div>
+          }
+
+          <div className={this.state.showExtraInfo ? 'ActivityCard__expanded-view' : 'ActivityCard__expanded-view no-height'}>
 
 
           {
             (this.props.edge.node.freeText !== "") &&
-            <div id={this.props.edge.node.commit} className="NotesCard__markdown-container">
+            <div id={this.props.edge.node.commit} className="ActivityCard__markdown-container">
                <ReactMarkdown source={this.props.edge.node.freeText} />
             </div>}
-            <div className="NotesCard__row flex justify--space-around flex--row">
-              <p>
-                Id: {this.props.edge.node.commit}
-              </p>
-              <p>
-                Level: {this.props.edge.node.level.replace('_',' ')}
-              </p>
-
-              <p>
-                {dateformat(this.props.edge.node.timestamp, "dddd, mmmm dS, yyyy, h:MM:ss TT")}
-              </p>
-            </div>
 
             <div>
-              <ul className="NotesCard__tags-list flex flex--row flex--wrap">
+              <ul className="ActivityCard__tags-list flex flex--row flex--wrap">
                 <div>Tags: {' '}</div>
-                {tags.map((tag, index) => {
+
+                { tags && tags.map((tag, index) => {
                   return(
                     <li
                       key={tag + index + this.props.edge.node.commit}

@@ -9,16 +9,27 @@ const mutation = graphql`
   mutation CreateUserNoteMutation($input: CreateUserNoteInput!){
     createUserNote(input: $input){
       clientMutationId
-      note{
-        linkedCommit
-        commit
-        level
-        tags
-        timestamp
-        freeText
-        message
-        id
-        author
+      newActivityRecordEdge{
+        node{
+          id
+          linkedCommit
+          commit
+          tags
+          type
+          show
+          message
+          importance
+          detailObjects{
+            id
+            key
+            data
+            type
+            show
+            importance
+            tags
+          }
+        }
+        cursor
       }
     }
   }
@@ -28,8 +39,8 @@ let tempID = 0;
 
 export default function CreateUserNoteMutation(
   labbookName,
-  message,
-  freeText,
+  title,
+  body,
   owner,
   objects,
   tags,
@@ -40,10 +51,9 @@ export default function CreateUserNoteMutation(
   const variables = {
     input: {
       labbookName,
-      message,
-      freeText,
+      title,
+      body,
       owner,
-      objects,
       tags,
       clientMutationId: tempID++
     }
@@ -53,15 +63,15 @@ export default function CreateUserNoteMutation(
     {
       mutation,
       variables,
-      // configs: [{ //commented out until nodes are returned
-      //   type: 'RANGE_ADD',
-      //   parentID: labbookId,
-      //   connectionInfo: [{
-      //     key: 'Notes_notes',
-      //     rangeBehavior: 'prepend'
-      //   }],
-      //   edgeName: 'note'
-      // }],
+      configs: [{ //commented out until nodes are returned
+        type: 'RANGE_ADD',
+        parentID: labbookId,
+        connectionInfo: [{
+          key: 'Activity_activityRecords',
+          rangeBehavior: 'prepend'
+        }],
+        edgeName: 'newActivityRecordEdge'
+      }],
       onCompleted: (response, error) => {
 
         if(error){
@@ -72,33 +82,39 @@ export default function CreateUserNoteMutation(
       },
       onError: err => console.error(err),
 
-      updater: (store) => {
+      updater: (store, response) => {
 
-        const id = 'client:newNote:'+ tempID++;
+        const id = 'client:newActivity:'+ tempID++;
         const node = store.create(id, 'Note')
 
+          console.log(response)
+
           node.setValue(labbookName, 'labbookName')
-          node.setValue(message, 'message')
-          node.setValue(freeText, 'freeText')
+          node.setValue(title, 'message')
+
+          console.log(node)
+          //node.setValue(response.createUserNote.newActivityRecordEdge.detailObjects, 'detailObjects')
           node.setValue(JSON.stringify(tags), 'tags')
           node.setValue(owner, 'owner')
           node.setValue('USER_NOTE', 'level')
           node.setValue('new', 'commit')
+          node.setValue('new', 'timestamp')
 
-         const notesProxy = store.get(labbookId);
+         const activityProxy = store.get(labbookId);
          const conn = RelayRuntime.ConnectionHandler.getConnection(
-           notesProxy,
-           'Notes_notes',
+           activityProxy,
+           'Activity_activityRecords',
          );
-
+         console.log(conn)
          if(conn){
+
            const newEdge = RelayRuntime.ConnectionHandler.createEdge(
              store,
              conn,
              node,
-             "noteEdge"
+             "newActivityRecordEdge"
            )
-           RelayRuntime.ConnectionHandler.insertEdgeBefore(conn, newEdge)
+           //RelayRuntime.ConnectionHandler.insertEdgeBefore(conn, newEdge)
         }
       },
     },

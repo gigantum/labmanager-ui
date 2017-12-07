@@ -33,7 +33,7 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
     labbookProxy,
     connectionKey
   );
-
+  console.log(labbookProxy, conn, connectionKey)
   if(conn){
     const newEdge = RelayRuntime.ConnectionHandler.createEdge(
       store,
@@ -61,6 +61,7 @@ export default function AddLabbookFileMutation(
   section,
   callback
 ) {
+
   let uploadables = [chunk.blob, accessToken]
   const id = uuidv4()
   const variables = {
@@ -118,6 +119,8 @@ export default function AddLabbookFileMutation(
 
       },
       updater: (store, response) => {
+
+        console.log(store, response)
         const id = uuidv4()
         const node = store.create(id, 'LabbookFile')
 

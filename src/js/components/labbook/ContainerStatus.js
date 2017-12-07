@@ -20,7 +20,7 @@ const containerStatusQuery = graphql`
       containerStatus
       imageStatus
     }
-    notes(first: $first){
+    activityRecords(first: $first){
       edges{
         node{
           id
