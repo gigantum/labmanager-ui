@@ -42,15 +42,15 @@ export default class UserNote extends Component {
     switch(item[0]){
       case 'text/plain':
         return(<b>{item[1]}</b>)
-      case 'img/png':
+      case 'image/png':
         return(<img src={item[1]} />)
-      case 'img/jpg':
+      case 'image/jpg':
         return(<img src={item[1]} />)
-      case 'img/jpeg':
+      case 'image/jpeg':
         return(<img src={item[1]} />)
-      case 'img/bpg':
+      case 'image/bpg':
         return(<img src={item[1]} />)
-      case 'img/gif':
+      case 'image/gif':
         return(<img src={item[1]} />)
       case 'text/markdown':
         return(<ReactMarkdown source={item[1]} />)
@@ -66,7 +66,7 @@ export default class UserNote extends Component {
         query={DetailRecordsQuery}
         variables={this.props.variables}
         render={({props, error})=>{
-      
+
             if(props){
                 return(
                   <div className="DetailsRecords">

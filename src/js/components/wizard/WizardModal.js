@@ -162,7 +162,6 @@ export default class WizardModal extends React.Component {
               <div
                 className="WizardModal__modal-close"
                 onClick={() => this._hideModal()}>
-                X
               </div>
 
               {this._currentComponent()}
@@ -204,6 +203,7 @@ export default class WizardModal extends React.Component {
             setComponent={this._setComponent}
             setLabbookName={this._setLabbookName}
             nextWindow={'selectBaseImage'}
+            history={this.props.history}
           />)
         case 'selectBaseImage':
           return(

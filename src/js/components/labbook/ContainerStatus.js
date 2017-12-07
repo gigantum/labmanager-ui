@@ -41,7 +41,8 @@ export default class ContainerStatus extends Component {
       'building': this.props.isBuilding,
       'secondsElapsed': 0,
       'containerStatus': props.containerStatus,
-      'imageStatus': props.imageStatus
+      'imageStatus': props.imageStatus,
+      'pluginsMenu': false
     }
     tempStatus = "Closed";
 
@@ -253,9 +254,37 @@ export default class ContainerStatus extends Component {
     )
   }
 
+  _openPluginMenu(){
+    this.setState({
+      pluginsMenu: !this.state.pluginsMenu
+    })
+  }
+
   _containerStatus(status, key){
     return(
-      <div className="ContainerStatus flex flex--column">
+      <div className="ContainerStatus flex flex--row">
+        { (status === 'Open') &&
+            <div className="ContainerStatus__plugins">
+                <div
+                  className="ContainerStatus__plugins-button"
+                  onClick={()=>{this._openPluginMenu()}}>
+                </div>
+                <div
+                  className={this.state.pluginsMenu ? 'ContainerStatus__plugins-menu': 'ContainerStatus__plugins-menu hidden'}>
+                  <b>Launch</b>
+                  <ul>
+                    <li>
+                      <a
+                        href="localhost:8888"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                          Jupyter
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+            </div>
+        }
         <div
           onClick={(evt) => this._openCloseContainer(evt, status)}
           key={key}

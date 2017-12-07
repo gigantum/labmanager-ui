@@ -5,7 +5,9 @@ import SweetAlert from 'sweetalert-react';
 import validation from 'JS/utils/Validation'
 //mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
-
+import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
+//store
+import store from 'JS/redux/store'
 
 export default class CreateLabbook extends React.Component {
   constructor(props){
@@ -18,12 +20,14 @@ export default class CreateLabbook extends React.Component {
       'showError': false,
       'show': false,
       'message': '',
-      'errorType': ''
+      'errorType': '',
+      'remoteURL': ''
     };
 
 
     this.continueSave = this.continueSave.bind(this)
     this._updateTextState = this._updateTextState.bind(this)
+    this._updateRemoteUrl =  this._updateRemoteUrl.bind(this)
 
   }
    /**
@@ -36,43 +40,97 @@ export default class CreateLabbook extends React.Component {
   continueSave = (evt) => {
     let viewerId = 'localLabbooks';//Todo: figure out what to do with viewerId in the mutation context
     let name = this.state.name;
-    //create new labbook
-    let isMatch = validation.labookNameSend(name);
+    let self = this;
+    if(this.state.remoteURL.length > 0){
+      const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1].replace('.git', '')
+      let remote = 'ssh://' + this.state.remoteURL.replace('io:root', 'io:9922/root')
+      console.log(labbookName)
 
-    if(isMatch){
-      CreateLabbookMutation(
-        this.state.description,
-        name,
-        viewerId,
-        (error) => {
+      store.dispatch(
+        {
+          type: "UPLOAD_MESSAGE",
+          payload: {
+            error: false,
+            loadingState: true,
+            success: false,
+            uploadMessage: 'Importing lab book please wait'
+          }
+        })
+      ImportRemoteLabbookMutation(
+        localStorage.getItem('username'),
+        labbookName,
+        remote,
+        (response, error) => {
+          console.log(response, error)
 
-          let showAlert = (error !== null)
-
-          if(!showAlert){
-            let message = showAlert ? error[0].message : '';
-            this.setState({
-              'show': showAlert,
-              'message': message,
+          if(error){
+            store.dispatch(
+              {
+                type:"UPLOAD_MESSAGE",
+                payload: {
+                error: true,
+                loadingState: true,
+                success: false,
+                uploadMessage: 'Could not import remote lab book'
+              }
             })
+          }else if(response){
+
+            store.dispatch(
+              {
+                type: "UPLOAD_MESSAGE",
+                payload: {
+                  error: false,
+                  loadingState: true,
+                  success: false,
+                  uploadMessage: 'Successfully imported remote lab book'
+                }
+              })
+            document.getElementById('modal__cover').classList.add('hidden')
+            this.props.history.replace(`/labbooks/${labbookName}`)
           }
-
-          this.props.setLabbookName(this.state.name)
-
-          if(this.props.nextWindow){
-            this.props.toggleDisabledContinue(true)
-            this.props.setComponent(this.props.nextWindow)
-          } else{
-
-            this._hideModal();
-          }
-
-        }//route to new labbook on callback
+        }
       )
-    }else{
-      this.setState({
-      'showError': true,
-      'errorType': 'send'
-      })
+    }
+    else{
+      //create new labbook
+      let isMatch = validation.labookNameSend(name);
+      if(isMatch){
+        CreateLabbookMutation(
+          this.state.description,
+          name,
+          viewerId,
+          (error) => {
+
+            let showAlert = (error !== null)
+
+            if(!showAlert){
+              let message = showAlert ? error[0].message : '';
+              this.setState({
+                'show': showAlert,
+                'message': message,
+              })
+            }
+
+            this.props.setLabbookName(this.state.name)
+
+            if(this.props.nextWindow){
+              this.props.toggleDisabledContinue(true)
+              this.props.setComponent(this.props.nextWindow)
+            } else{
+
+              this._hideModal();
+            }
+
+          }//route to new labbook on callback
+        )
+      }
+      else{
+        this.setState({
+        'showError': true,
+        'errorType': 'send'
+        })
+      }
     }
   }
 
@@ -97,11 +155,28 @@ export default class CreateLabbook extends React.Component {
     this.setState(state)
   }
 
+
+    /**
+      @param {}
+      returns error message
+      @return {string} errorMessage
+    */
   _getErrorText(){
     return this.state.errorType === 'send' ? 'Error: Last character cannot be a hyphen.' : 'Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)'
   }
 
+  /**
+    @param {event} evt
+    updates remote url state
+  */
+  _updateRemoteUrl(evt){
 
+    this.setState({
+      remoteURL: evt.target.value
+    })
+
+    this.props.toggleDisabledContinue((this.state.remoteURL.length > 1));
+  }
   render(){
     return(
       <div className="CreateLabbook">
@@ -133,6 +208,8 @@ export default class CreateLabbook extends React.Component {
             <div>
               <label>Add public Lab Books</label>
               <input
+                //onChange={(evt) => this._updateRemoteUrl(evt)}
+                onKeyUp={(evt) => this._updateRemoteUrl(evt)}
                 type='text'
                 placeholder="Enter URL Location"
               />

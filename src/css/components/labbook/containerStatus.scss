@@ -47,3 +47,31 @@
   background: $azure;
   color: $white;
 }
+
+.ContainerStatus__plugins{
+  position: relative;
+  overflow: visible;
+}
+
+.ContainerStatus__plugins-button{
+  height: 20px;
+  width: 30px;
+  background-color: #ddd;
+  border-radius: 10px 0 0 10px;
+  position: absolute;
+  top: 5px;
+  left: -25px;
+}
+
+.ContainerStatus__plugins-menu{
+  position: absolute;
+  top: 40px;
+  right: 0px;
+  width: 200px;
+  background: $white;
+  color: $romanSilver;
+  height: auto;
+  border-radius: 8px;
+  @extend .box-shadow;
+  z-index: 200;
+}
