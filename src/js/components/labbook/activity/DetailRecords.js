@@ -48,7 +48,7 @@ export default class UserNote extends Component {
         return(<img src={item[1]} />)
       case 'image/jpeg':
         return(<img src={item[1]} />)
-      case 'image/bpg':
+      case 'image/bmp':
         return(<img src={item[1]} />)
       case 'image/gif':
         return(<img src={item[1]} />)

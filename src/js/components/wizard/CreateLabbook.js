@@ -207,7 +207,6 @@ export default class CreateLabbook extends React.Component {
             <div>
               <label>Add public Lab Books</label>
               <input
-                //onChange={(evt) => this._updateRemoteUrl(evt)}
                 onKeyUp={(evt) => this._updateRemoteUrl(evt)}
                 type='text'
                 placeholder="Enter URL Location"

@@ -137,7 +137,6 @@ export default class UserNote extends Component {
         <ReactTags
               id='TagsInput'
               tags={tags}
-              // suggestions={suggestions}
               handleDelete={(index) => {this._handleDelete(index)}}
               handleAddition={(tag) => {this._handleAddition(tag)}}
               handleDrag={(tag, currPos, newPos) => {this._handleDrag(tag, currPos, newPos)}} />

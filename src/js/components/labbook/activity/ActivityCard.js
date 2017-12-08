@@ -54,7 +54,6 @@ export default class ActivityCard extends Component {
           <div className="ActivityCard__content">
             <div className="ActivityCard__title flex flex--row justify--space-between">
 
-
                 <div className="ActivityCard__stack">
                   <p className="ActivityCard__time">
                     {this._getTimeOfDay(this.props.edge.node.timestamp)}
@@ -65,21 +64,11 @@ export default class ActivityCard extends Component {
 
             </div>
 
-            {/* {(node.detailObjects.length > 1) && */}
-
               <ActivityDetails
                 labbookName={this.props.labbookName}
                 key={node.id + '_activity-details'}
                 node={node}
               />
-            {/* } */}
-            {/* { (node.detailObjects.length < 2) &&
-
-              <div>
-                <div className="ActivityCard__details">{node.detailObjects.length + ' details'}</div>
-                <ReactMarkdown source={this.props.edge.node.freeText} />
-             </div>
-            } */}
         </div>
       </div>
     )

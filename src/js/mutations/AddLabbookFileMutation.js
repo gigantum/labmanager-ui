@@ -120,7 +120,6 @@ export default function AddLabbookFileMutation(
       },
       updater: (store, response) => {
 
-        console.log(store, response)
         const id = uuidv4()
         const node = store.create(id, 'LabbookFile')
 
