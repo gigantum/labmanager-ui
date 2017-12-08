@@ -370,6 +370,7 @@
   text-align: center;
   align-self: top;
   line-height: 40px;
+  color: $jet;
 }
 .ActivityCard__badge:before{
   font-size: 40px !important;
@@ -381,48 +382,42 @@
   text-align: center;
   align-self: center;
   line-height: 40px;
+  color: $jet;
 }
 .ActivityDetail__badge:before{
   font-size: 20px !important;
 }
 .ActivityCard__badge--code,
 .ActivityDetail__badge--code{
-  color: $azure;
   @extend .code-icon;
 }
 .ActivityCard__badge--code_executed,
 .ActivityDetail__badge--code_executed{
-  color: $jet;
   @extend .terminal-icon;
 }
 .ActivityCard__badge--result,
 .ActivityDetail__badge--result{
-  color: $flame;
   @extend .fa-bar-chart;
 }
 
 .ActivityCard__badge--note,
 .ActivityDetail__badge--note{
-  color: $goldenLemon;
   @extend .fa-sticky-note;
 }
 
 .ActivityCard__badge--input_data,
 .ActivityDetail__badge--input_data{
-  color: $kellyGreen;
   @extend .fa-arrow-down;
 }
 
 .ActivityCard__badge--output_data,
 .ActivityDetail__badge--output_data{
-  color: $crimson;
   @extend .fa-arrow-up;
 }
 
 .ActivityCard__badge--environment,
 .ActivityDetail__badge--environment{
-  color: $kellyGreen;
-  @extend .fa-globe;
+  @extend .fa-gears;
 }
 .ActivityCard__badge--labbook{
   background: url('./../images/icons/labbooks-selected.svg') no-repeat center center;

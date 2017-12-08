@@ -316,6 +316,8 @@ export default class UserNote extends Component {
               onClick={()=>{this._toggleModal('createBranchVisible')}}
               className="BranchModal--close">
             </div>
+            <h4 className="BranchModal__header--new-branch">New Branch</h4>
+            <hr />
             <input
               className="BranchCard__name-input"
               onKeyUp={(evt)=>{this._setNewBranchName(evt)}}
@@ -353,14 +355,15 @@ export default class UserNote extends Component {
             </div>
           </div>
           <button onClick={()=>{this._openMenu()}} className="BranchMenu__button"></button>
+          <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
           <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
             <ul>
-              <li>
+              <li className="BranchMenu__item--new-branch">
                 <a onClick={()=>{this._toggleModal('createBranchVisible')}}>New Branch</a>
               </li>
-              <li>Merge</li>
-              <li>Dead-end</li>
-              <li>Favorite</li>
+              <li className="BranchMenu__item--merge">Merge</li>
+              <li className="BranchMenu__item--deadend">Dead-end</li>
+              <li className="BranchMenu__item--favorite">Favorite</li>
             </ul>
             <hr />
             {/* <button>Publish</button> */}
