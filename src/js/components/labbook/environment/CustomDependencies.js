@@ -60,7 +60,6 @@ class CustomDependencies extends Component {
                 id="customDependenciesEditClose"
                 className="Environment__modal-close"
                 onClick={() => this._hideModal()}>
-                X
               </div>
               <AddCustomDependencies
                 {...this.props}

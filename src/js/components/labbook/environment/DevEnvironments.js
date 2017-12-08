@@ -61,7 +61,6 @@ class DevEnvironments extends Component {
               id="devEnvironmentsEditClose"
               className="Environment__modal-close"
               onClick={() => this._hideModal()}>
-              X
             </div>
             <SelectDevelopmentEnvironment
               {...this.props}

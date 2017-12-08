@@ -231,7 +231,7 @@ storeDidUpdate = (labbook) => {
                <div className="Labbook__header flex flex--row justify--space-between">
 
                  <div className={(this.state.branchesOpen) ? 'Labbook__branch-title Labbook__branch-title--open' : 'Labbook__branch-title Labbook__branch-title--closed'}>
-                   <h5 onClick={()=> this._toggleBranchesView()}>{this.props.labbook.activeBranch.name}</h5>
+                   <h2 onClick={()=> this._toggleBranchesView()}>{this.props.labbook.activeBranch.name}</h2>
                    <div
                      onClick={()=> this._toggleBranchesView()}
                     className="Labbook__branch-toggle"></div>
@@ -247,7 +247,8 @@ storeDidUpdate = (labbook) => {
                    isBuilding={this.state.isBuilding}
                  />
               </div>
-              <div className="Labbook__navigation-container">
+              <div className="Labbook__branches-container">
+                
                 <Branches
                   defaultRemote={this.props.labbook.defaultRemote}
                   labbookName={labbookName}

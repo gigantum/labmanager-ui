@@ -49,7 +49,7 @@ export default class ActivityCard extends Component {
       keys: this.props.categorizedDetails.detailKeys[this.props.itemKey],
       owner: localStorage.getItem('username')
     }
-
+  
     let type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase()
 
     return(

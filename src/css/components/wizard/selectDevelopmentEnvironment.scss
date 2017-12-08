@@ -20,10 +20,14 @@
   border: 4px solid $activity;
   border-radius: 5px;
 
-  img,
+  img{
+    align-self: center;
+    height: 36;
+  }
   p{
     align-self: center;
     height: 50px;
+    margin: 0 4px;
   }
 }
 .SelectDevelopmentEnvironment__image{
@@ -40,10 +44,14 @@
   border: 1px solid $grey-light;
   border-radius: 5px;
 
-  img,
+  img{
+    align-self: center;
+    height: 36px;
+  }
   p{
     align-self: center;
     height: 50px;
+    margin: 0 4px;
   }
 }
 .SelectDevelopmentEnvironment__image:hover{
@@ -64,10 +72,15 @@
 
   border: 1px dashed $grey;
 
-  img,
+  img{
+    align-self: center;
+    height: 36px;
+  }
+
   p{
     align-self: center;
     height: 50px;
+    margin: 0 4px;
   }
 }
 
