@@ -33,7 +33,7 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
     labbookProxy,
     connectionKey
   );
-  console.log(labbookProxy, conn, connectionKey)
+
   if(conn){
     const newEdge = RelayRuntime.ConnectionHandler.createEdge(
       store,

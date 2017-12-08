@@ -80,43 +80,7 @@ export default function CreateUserNoteMutation(
 
         callback(response, error)
       },
-      onError: err => console.error(err),
-
-      updater: (store, response) => {
-
-        const id = 'client:newActivity:'+ tempID++;
-        const node = store.create(id, 'Note')
-
-          console.log(response)
-
-          node.setValue(labbookName, 'labbookName')
-          node.setValue(title, 'message')
-
-          console.log(node)
-          //node.setValue(response.createUserNote.newActivityRecordEdge.detailObjects, 'detailObjects')
-          node.setValue(JSON.stringify(tags), 'tags')
-          node.setValue(owner, 'owner')
-          node.setValue('USER_NOTE', 'level')
-          node.setValue('new', 'commit')
-          node.setValue('new', 'timestamp')
-
-         const activityProxy = store.get(labbookId);
-         const conn = RelayRuntime.ConnectionHandler.getConnection(
-           activityProxy,
-           'Activity_activityRecords',
-         );
-         console.log(conn)
-         if(conn){
-
-           const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-             store,
-             conn,
-             node,
-             "newActivityRecordEdge"
-           )
-           //RelayRuntime.ConnectionHandler.insertEdgeBefore(conn, newEdge)
-        }
-      },
-    },
+      onError: err => console.error(err)
+    }
   )
 }

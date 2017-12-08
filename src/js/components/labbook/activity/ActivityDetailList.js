@@ -5,7 +5,7 @@ export default class ActivityCard extends Component {
 
   constructor(props){
   	super(props);
-    console.log(props)
+
     this.state = {
       show: props.categorizedDetails.detailObjects[this.props.itemKey][0].show
     }

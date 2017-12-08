@@ -1,6 +1,11 @@
 .UserNote{
   padding: 20px 0;
   position: relative;
+  flex: 1;
+
+  .fa{
+    font-family: FontAwesome !important;
+  }
 }
 
 

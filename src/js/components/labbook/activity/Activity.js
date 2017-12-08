@@ -105,7 +105,7 @@ class Activity extends Component {
 
     let activityTime = {}
     activityRecords.edges.forEach((edge) => {
-      console.log(edge)
+
       let date = (edge.node && edge.node.timestamp) ? new Date(edge.node.timestamp) : new Date()
       let timeHash = date.getYear() + '_' + date.getMonth() + ' _' + date.getDate();
       let newActivityObject = {edge: edge, date: date}
@@ -129,7 +129,7 @@ class Activity extends Component {
 
   render(){
     let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
-    console.log(this.props.labbbook)
+
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='Activity'>
