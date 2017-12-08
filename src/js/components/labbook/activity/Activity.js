@@ -16,6 +16,8 @@ import Config from 'JS/config'
 let pagination = false;
 let isLoadingMore = false;
 
+let counter = 10;
+
 class Activity extends Component {
   constructor(props){
   	super(props);
@@ -44,13 +46,27 @@ class Activity extends Component {
 
     let activityRecords = this.props.labbook.activityRecords
 
-    pagination = false;
-
     window.addEventListener('scroll', this._handleScroll);
 
     if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
       this._loadMore()
     }
+
+    let relay = this.props.relay;
+    let activity = this.props.labbook.activityRecords
+    console.log(activity)
+    let cursor =  activity.edges[0].cursor;
+    pagination = false;
+    setInterval(function(){
+      relay.refetchConnection(
+        counter,
+        (response) =>{
+        },
+        {
+          cursor: cursor
+        }
+      )
+    }, 2000);
   }
 
   componentWillUnmount() {
@@ -62,7 +78,7 @@ class Activity extends Component {
   *  pagination container loads more items
   */
   _loadMore() {
-
+    pagination = true
     isLoadingMore = true
     pagination = true;
     this.setState({
@@ -70,7 +86,7 @@ class Activity extends Component {
     })
 
     this.props.relay.loadMore(
-     5, // Fetch the next 10 feed items
+     counter, // Fetch the next 10 feed items
      e => {
        isLoadingMore = false;
        this.setState({
@@ -80,6 +96,7 @@ class Activity extends Component {
        name: 'labbook'
      }
    );
+   counter += 5
   }
   /**
   *  @param {evt}
@@ -281,7 +298,7 @@ export default createPaginationContainer(
 
     const username = localStorage.getItem('username')
     cursor = pagination ? props.labbook.activityRecords.edges[props.labbook.activityRecords.edges.length - 1].cursor : null
-    let first = count;
+    let first = counter;
     name = props.labbookName;
     owner = username;
      return {

@@ -1,10 +1,10 @@
 .SideBar{
   position: fixed;
   z-index: 60;
-  top: 5px;
+  top: 10px;
 
   height: 100%;
-
+  border-top: 1px solid $white;
   background: $jet;
   background: linear-gradient($jet, $azure);
   width: 120px;
@@ -13,7 +13,7 @@
 .SideBar__logo{
   max-width: 80%;
   height: auto;
-  margin: 5px auto;
+  margin: 10px auto;
 }
 
 .SideBar__inner-container{
