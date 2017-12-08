@@ -157,7 +157,7 @@ export default class WizardModal extends React.Component {
                 </ul>
               </div>
 
-              <h4 className="WizardModal__title">Create a Lab Book</h4>
+              <h4 className="WizardModal__title">Create a LabBook</h4>
 
               <div
                 className="WizardModal__modal-close"

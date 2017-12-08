@@ -101,7 +101,7 @@ const dispatchFinishedStatus = (filepath) =>{
    store.dispatch({
      type: 'IMPORT_SUCCESS',
      payload: {
-       uploadMessage: `${route} Lab Book is Ready`,
+       uploadMessage: `${route} LabBook is Ready`,
        labbookName: route, //route is labbookName
        success: true
      }
@@ -258,7 +258,7 @@ export default class FileBrowserWrapper extends Component {
   handleCreateFiles(files, prefix) {
     let self = this;
 
-    if(files.length === 1){
+    if(files.length){
       const batchUpload = (files.length > 1)
 
       let newFiles = files.map((file, index) => {
@@ -299,12 +299,15 @@ export default class FileBrowserWrapper extends Component {
     }else{
       let flattenedFiles = []
       function flattenFiles(filesArray){
+      
           if(filesArray.entry){
             flattenedFiles.push(filesArray)
           }else{
-            filesArray.map(filesSubArray=>{
-              flattenFiles(filesSubArray)
-            })
+            if(filesArray.map){
+              filesArray.map(filesSubArray=>{
+                flattenFiles(filesSubArray)
+              })
+            }
           }
       }
 

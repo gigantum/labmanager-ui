@@ -53,7 +53,7 @@ export default class CreateLabbook extends React.Component {
             error: false,
             loadingState: true,
             success: false,
-            uploadMessage: 'Importing lab book please wait'
+            uploadMessage: 'Importing LabBook please wait'
           }
         })
       ImportRemoteLabbookMutation(
@@ -71,7 +71,7 @@ export default class CreateLabbook extends React.Component {
                 error: true,
                 loadingState: true,
                 success: false,
-                uploadMessage: 'Could not import remote lab book'
+                uploadMessage: 'Could not import remote LabBook'
               }
             })
           }else if(response){
@@ -83,7 +83,7 @@ export default class CreateLabbook extends React.Component {
                   error: false,
                   loadingState: true,
                   success: false,
-                  uploadMessage: 'Successfully imported remote lab book'
+                  uploadMessage: 'Successfully imported remote LabBook'
                 }
               })
             BuildImageMutation(
@@ -208,14 +208,14 @@ export default class CreateLabbook extends React.Component {
                 type="text"
                 onChange={(evt) => this._updateTextState(evt, 'description')}
 
-                placeholder="Briefly describe this lab book, its purpose and any other key details. "
+                placeholder="Briefly describe this LabBook, its purpose and any other key details. "
               />
             </div>
             <div className="CreateLabbook__text-divider-container">
               <span className="CreateLabbook__text-divider">or</span>
             </div>
             <div>
-              <label>Add public Lab Book</label>
+              <label>Add public LabBook</label>
               <input
                 onChange={(evt) => this._updateRemoteUrl(evt)}
                 type='text'
