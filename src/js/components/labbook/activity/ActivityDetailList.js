@@ -60,7 +60,7 @@ export default class ActivityCard extends Component {
             className={this.state.show ? 'ActivityDetail__details-title ActivityDetail__details-title--open' : 'ActivityDetail__details-title ActivityDetail__details-title--closed'}>
 
             <div className="ActivityDetail__header">
-              <div className={'ActivityDetail__badge ActivityDetail__badge--' + type}>
+              <div className={'fa ActivityDetail__badge ActivityDetail__badge--' + type }>
               </div>
               <div className="ActivityDetail__content">
                 <p>{this._formatTitle(this.props.itemKey)}</p>

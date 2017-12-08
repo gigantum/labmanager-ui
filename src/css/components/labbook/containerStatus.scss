@@ -6,11 +6,9 @@
   color: $romanSilver;
   line-height: 26px;
   cursor: pointer;
-
-}
-
-.ContainerStatus__container-state{
   border: 2px solid rgba(0,0,0,0);
+  z-index: 100;
+  background: $background-color;
 }
 
 .ContainerStatus__container-state.Open{
@@ -54,19 +52,40 @@
 }
 
 .ContainerStatus__plugins-button{
-  height: 20px;
+  height: 24px;
   width: 30px;
-  background-color: #ddd;
-  border-radius: 10px 0 0 10px;
+  background-color: #aaa;
+  border-radius: 12px 0 0 12px;
   position: absolute;
-  top: 5px;
+  top: 3px;
   left: -25px;
+  color: white;
+  text-align: center;
+  line-height: 25px;
+  cursor: pointer;
+  @extend .fa-rocket;
+}
+.ContainerStatus__plugins-title{
+  text-align: center;
+  width: 100%;
+  border-bottom: 1px solid $romanSilver;
+}
+
+.ContainerStatus__plugins-list{
+  .jupyter-icon:before{
+    padding: 0 6px 0 0;
+    font-size: 17px;
+  }
+}
+
+.ContainerStatus__plugins-item:hover{
+  color: $turquise;
 }
 
 .ContainerStatus__plugins-menu{
   position: absolute;
   top: 40px;
-  right: 0px;
+  right: -100px;
   width: 200px;
   background: $white;
   color: $romanSilver;
@@ -74,4 +93,7 @@
   border-radius: 8px;
   @extend .box-shadow;
   z-index: 200;
+  padding: 15px;
+
+
 }

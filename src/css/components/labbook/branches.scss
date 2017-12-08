@@ -9,7 +9,6 @@
   transition: height 0.6s;
   @include flex(flex-start, row);
   padding: 0 20px;
-  //background: linear-gradient($slateBlueOpaque, #f0f1f5, #f0f1f5, #f0f1f5, #f0f1f5, #f0f1f5, #f0f1f5, #f0f1f5, #f0f1f5, $slateBlueOpaque);
 }
 
 .Branches__branches-list--collapsed{

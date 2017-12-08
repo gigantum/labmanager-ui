@@ -153,7 +153,6 @@ export default class ContainerStatus extends Component {
 
     tempStatus = status
 
-
     return status;
   }
   /**
@@ -266,15 +265,16 @@ export default class ContainerStatus extends Component {
         { (status === 'Open') &&
             <div className="ContainerStatus__plugins">
                 <div
-                  className="ContainerStatus__plugins-button"
+                  className="fa ContainerStatus__plugins-button"
                   onClick={()=>{this._openPluginMenu()}}>
                 </div>
                 <div
                   className={this.state.pluginsMenu ? 'ContainerStatus__plugins-menu': 'ContainerStatus__plugins-menu hidden'}>
-                  <b>Launch</b>
-                  <ul>
+                  <div className="ContainerStatus__plugins-title">Launch</div>
+                  <ul className="ContainerStatus__plugins-list">
                     <li>
                       <a
+                        className="ContainerStatus__plugins-item jupyter-icon"
                         href="localhost:8888"
                         target="_blank"
                         rel="noopener noreferrer">

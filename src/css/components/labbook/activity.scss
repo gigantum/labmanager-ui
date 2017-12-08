@@ -404,17 +404,32 @@
 .ActivityCard__badge--note,
 .ActivityDetail__badge--note{
   color: $goldenLemon;
-  @extend .fa-sticky-note-o;
+  @extend .fa-sticky-note;
 }
 
 .ActivityCard__badge--input_data,
 .ActivityDetail__badge--input_data{
   color: $kellyGreen;
-  @extend .fa-sticky-note-o;
+  @extend .fa-arrow-down;
 }
 
 .ActivityCard__badge--output_data,
 .ActivityDetail__badge--output_data{
   color: $crimson;
-  @extend .fa-sticky-note-o;
+  @extend .fa-arrow-up;
+}
+
+.ActivityCard__badge--environment,
+.ActivityDetail__badge--environment{
+  color: $kellyGreen;
+  @extend .fa-globe;
+}
+.ActivityCard__badge--labbook{
+  background: url('./../images/icons/labbooks-selected.svg') no-repeat center center;
+  background-size: 40px;
+}
+
+.ActivityDetail__badge--labbook{
+  background: url('./../images/icons/labbooks-selected.svg') no-repeat center center;
+  background-size: 20px;
 }

@@ -50,7 +50,7 @@ export default class ActivityCard extends Component {
     const type = this.props.edge.node.type.toLowerCase()
     return(
         <div className="ActivityCard card">
-          <div className={'ActivityCard__badge ActivityCard__badge--' + type}>
+          <div className={'fa ActivityCard__badge ActivityCard__badge--' + type}>
           </div>
           <div className="ActivityCard__content">
             <div className="ActivityCard__title flex flex--row justify--space-between">
