@@ -275,7 +275,7 @@ export default class ContainerStatus extends Component {
                     <li>
                       <a
                         className="ContainerStatus__plugins-item jupyter-icon"
-                        href="localhost:8888"
+                        href={window.location.protocol + '//' + window.location.hostname + ':8888'}
                         target="_blank"
                         rel="noopener noreferrer">
                           Jupyter

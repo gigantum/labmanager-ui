@@ -66,7 +66,6 @@ class BaseImage extends Component {
                   id="baseImageEditClose"
                   className="Environment__modal-close"
                   onClick={() => this._hideModal()}>
-                  X
                 </div>
 
                 <SelectBaseImage

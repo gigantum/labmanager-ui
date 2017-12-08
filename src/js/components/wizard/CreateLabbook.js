@@ -6,6 +6,7 @@ import validation from 'JS/utils/Validation'
 //mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
 
@@ -85,6 +86,12 @@ export default class CreateLabbook extends React.Component {
                   uploadMessage: 'Successfully imported remote lab book'
                 }
               })
+            BuildImageMutation(
+            labbookName,
+            localStorage.getItem('username'),
+            (error)=>{
+
+            })
             document.getElementById('modal__cover').classList.add('hidden')
             this.props.history.replace(`/labbooks/${labbookName}`)
           }
@@ -173,8 +180,11 @@ export default class CreateLabbook extends React.Component {
     this.setState({
       remoteURL: evt.target.value
     })
-
-    this.props.toggleDisabledContinue((this.state.remoteURL.length > 1));
+    if(evt.target.value.length > 0){
+      this.props.toggleDisabledContinue(false);
+    }else{
+      this.props.toggleDisabledContinue(true);
+    }
   }
   render(){
     return(
@@ -205,10 +215,10 @@ export default class CreateLabbook extends React.Component {
               <span className="CreateLabbook__text-divider">or</span>
             </div>
             <div>
-              <label>Add public Lab Books</label>
+              <label>Add public Lab Book</label>
               <input
-                //onChange={(evt) => this._updateRemoteUrl(evt)}
-                onKeyUp={(evt) => this._updateRemoteUrl(evt)}
+                onChange={(evt) => this._updateRemoteUrl(evt)}
+                //onKeyUp={(evt) => this._updateRemoteUrl(evt)}
                 type='text'
                 placeholder="Enter URL Location"
               />

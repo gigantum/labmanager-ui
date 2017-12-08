@@ -6,6 +6,12 @@
   padding: 10px;
   width: 100%;
   height: calc(100% - 13px);
+  .DetailsRecords__item{
+    img {
+      width: fit-content;
+      height: fit-content;
+    }
+  }
 }
 
 .ActivityCard{

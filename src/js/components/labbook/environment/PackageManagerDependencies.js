@@ -72,7 +72,6 @@ class PackageManagerDependencies extends Component {
             id="packageManagerEditClose"
             className="Environment__modal-close"
             onClick={() => this._hideModal()}>
-            X
           </div>
           <AddEnvironmentPackage
             {...this.props}

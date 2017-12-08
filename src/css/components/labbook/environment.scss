@@ -56,17 +56,8 @@
 
 .Environment__modal{
   position: fixed;
-  left: 50%;
-  top: 50%;
-  z-index: 100;
-  width: 800px;
-  height: 600px;
 
-  margin: -300px 0 0 -400px;
-
-  border: 1px solid $grey;
-  background-color: $grey-light;
-  box-shadow: 10px 10px 5px #888888;
+  @include modal(600px, 800px)
 
   .SelectBaseImage__progress-button{
     display: none;
@@ -75,9 +66,7 @@
 }
 
 .Environment__modal-close{
-  position: absolute;
-  top: 5px;
-  right: 5px;
+  @include close();
   cursor: pointer;
 }
 
