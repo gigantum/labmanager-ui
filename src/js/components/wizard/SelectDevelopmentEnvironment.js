@@ -146,7 +146,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
                           {
                             (this.state.selectedDevelopmentEnvironment !== null) && (
                               <div className="SelectDevelopmentEnvironment__selected-image">
-                                <img alt="" src={this.state.selectedDevelopmentEnvironment.node.info.icon} height="50" width="50" />
+                                <img alt="" src={this.state.selectedDevelopmentEnvironment.node.info.icon} height="36" width="auto" />
                                 <p>{this.state.selectedDevelopmentEnvironment.node.info.humanName}</p>
                               </div>
                             )
@@ -158,7 +158,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
 
                             return(
                               <div className={(this.state.selectedDevelopmentEnvironmentId === edge.node.id) ? 'SelectDevelopmentEnvironment__image--selected': 'SelectDevelopmentEnvironment__image'} onClick={()=> this._selectDevelopmentEnvironment(edge)} key={edge.node.id}>
-                                <img alt="" src={edge.node.info.icon} height="50" width="50" />
+                                <img alt="" src={edge.node.info.icon} height="36" width="auto" />
                                 <p>{edge.node.info.humanName}</p>
                               </div>
                             )

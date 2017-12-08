@@ -14,7 +14,19 @@
   position: relative;
   padding: 15px;
   @include flex(space-between, column);
-  @include modal(200px, 300px);
+  @include modal(300px, 500px);
+}
+.BranchModal__header{
+  padding: 5px 0 5px 0px;
+  color: $azure;
+  text-align: center;
+  width: 300px;
+  margin: 0 auto;
+}
+.BranchModal__header--new-branch{
+  @extend .BranchModal__header;
+  background: url('./../images/icons/new-branch.svg') no-repeat left 5px;
+  background-size: 40px;
 }
 
 .BranchModal--close{
@@ -44,9 +56,59 @@
   border-radius: 10px;
   padding: 20px;
   z-index: 201;
-  width: 200px;
-
+  width: 230px;
   @extend .box-shadow;
+
+  ul{
+    margin-top: 0px;
+  }
+
+  hr{
+    background-color: $lightGrey;
+    border-color: $lightGrey;
+  }
+}
+
+.BranchMenu__menu-arrow{
+  z-index: 203;
+  position: absolute;
+  top: 22px;
+  right: 16px;
+  @include triangle('up', 14px, $white);
+}
+.BranchMenu__item{
+  padding: 2px 0 2px 30px;
+  line-height: 24px;
+  cursor: pointer;
+  color: $romanSilver;
+  a{
+    color: $romanSilver;
+  }
+}
+
+.BranchMenu__item:hover{
+  color: $turquise;
+  a{color: $turquise};
+}
+.BranchMenu__item--new-branch{
+  @extend .BranchMenu__item;
+  background: url('./../images/icons/new-branch.svg') no-repeat left center;
+  background-size: 16px;
+}
+.BranchMenu__item--merge{
+  @extend .BranchMenu__item;
+  background: url('./../images/icons/merge.svg') no-repeat left center;
+  background-size: 16px;
+}
+.BranchMenu__item--deadend{
+  @extend .BranchMenu__item;
+  background: url('./../images/icons/deadend.svg') no-repeat left center;
+  background-size: 16px;
+}
+.BranchMenu__item--favorite{
+  @extend .BranchMenu__item;
+  background: url('./../images/icons/favestar.svg') no-repeat left center;
+  background-size: 16px;
 }
 
 .BranchMenu__sync{

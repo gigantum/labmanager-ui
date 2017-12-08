@@ -42,8 +42,10 @@ export default class ActivityCard extends Component {
       detailObjects: {},
       detailKeys: {}
     }
+
     node.detailObjects.forEach((detail)=>{
-      if(!categories[detail.type]){
+
+      if(categories.detailObjects[detail.type] === undefined){
         categories.detailObjects[detail.type] = [detail]
         categories.detailKeys[detail.type] = [detail.key]
       }else{
@@ -51,10 +53,12 @@ export default class ActivityCard extends Component {
         categories.detailKeys[detail.type].push(detail.key)
       }
     })
+
     return categories;
   }
 
   render(){
+    
     const categorizedDetails = this._catagorizeDetails(this.props.node);
     return(
       <div className="ActivityDetail">
