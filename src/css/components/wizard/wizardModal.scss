@@ -1,16 +1,7 @@
 .WizardModal__modal{
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  z-index: 100;
-  width: 800px;
-  height: 600px;
+  @include modal(620px, 800px);
 
-  margin: -300px 0 0 -400px;
-
-  border: 1px solid $grey;
-  background-color: $grey-light;
-  box-shadow: 10px 10px 5px #888888;
+  padding: 15px 15px;
 
 }
 
@@ -21,7 +12,7 @@
 }
 
 .WizardModal__title{
-  color: $labbooks;
+  color: $jet;
   text-align: center;
 }
 
@@ -31,6 +22,7 @@
   top: 5px;
   right: 5px;
   cursor: pointer;
+  @include close();
 }
 
 .WizardModal__button--margin {
@@ -49,7 +41,7 @@
     justify-content: space-between;
     li{
       flex: 1 0 auto;
-      border-top: 2px solid $labbooks;
+      border-top: 2px solid $azure;
       text-align: center;
       padding: 2px;
       height: 4px;
@@ -58,7 +50,7 @@
     }
 
     li.selected{
-      border-top: 6px solid $labbooks;
+      border-top: 6px solid $azure;
     }
 }
 

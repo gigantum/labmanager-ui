@@ -61,6 +61,7 @@ export default function AddLabbookFileMutation(
   section,
   callback
 ) {
+
   let uploadables = [chunk.blob, accessToken]
   const id = uuidv4()
   const variables = {
@@ -118,6 +119,7 @@ export default function AddLabbookFileMutation(
 
       },
       updater: (store, response) => {
+
         const id = uuidv4()
         const node = store.create(id, 'LabbookFile')
 

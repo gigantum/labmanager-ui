@@ -9,7 +9,7 @@ import {
 import store from "JS/redux/store"
 
 //components
-import Notes from './notes/Notes'
+import Activity from './activity/Activity'
 import Code from './code/Code'
 import InputData from './inputData/InputData'
 import OutputData from './outputData/OutputData'
@@ -302,15 +302,15 @@ storeDidUpdate = (labbook) => {
                         />
 
                         <Route
-                          path={`${this.props.match.path}/notes`}
+                          path={`${this.props.match.path}/activity`}
                           render={() => {
-                          return (<Notes
-                              key={this.props.labbookName + '_notes'}
+                          return (
+                            <Activity
+                              key={this.props.labbookName + '_activity'}
                               labbook={this.props.labbook}
-                              notes={this.props.notes}
+                              activityRecords={this.props.activityRecords}
                               labbookName={labbookName}
                               labbookId={this.props.labbook.id}
-
                               {...this.props}
                             />)
                         }} />
@@ -318,15 +318,16 @@ storeDidUpdate = (labbook) => {
                         <Route
                           path={`${this.props.match.url}/environment`}
                           render={() => {
-                            return (<Environment
-                              key={labbookName + '_environment'}
-                              labbook={this.props.labbook}
-                              labbookId={this.props.labbook.id}
-                              setBuildingState={this._setBuildingState}
-                              labbookName={labbookName}
-                              containerStatus={this.refs.ContainerStatus}
-                              {...this.props}
-                            />)
+                            return (
+                              <Environment
+                                key={labbookName + '_environment'}
+                                labbook={this.props.labbook}
+                                labbookId={this.props.labbook.id}
+                                setBuildingState={this._setBuildingState}
+                                labbookName={labbookName}
+                                containerStatus={this.refs.ContainerStatus}
+                                {...this.props}
+                              />)
                           }}
                         />
 
@@ -403,7 +404,7 @@ export default createFragmentContainer(
 
           ...Environment_labbook
           ...Overview_labbook
-          ...Notes_labbook
+          ...Activity_labbook
           ...Code_labbook
           ...InputData_labbook
           ...OutputData_labbook

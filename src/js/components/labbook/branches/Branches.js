@@ -89,8 +89,8 @@ class Branches extends Component {
 
 
 /*
-  notes pagination container
-  contains notes fragment and for query consumption
+  activity pagination container
+  contains activity fragment and for query consumption
 */
 export default createPaginationContainer(
   Branches,

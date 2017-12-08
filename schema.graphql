@@ -1,5 +1,67 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Sun Dec 03 2017 21:02:17 GMT-0500 (EST)
+# timestamp: Wed Dec 06 2017 17:01:59 GMT-0500 (EST)
+
+type ActivityConnection {
+  pageInfo: PageInfo!
+  edges: [ActivityEdge]!
+}
+
+# Container for Activity Detail Records
+type ActivityDetailObject implements Node {
+  # The ID of the object.
+  id: ID!
+  key: String
+  data: [[String]]
+  type: ActivityDetailType
+  show: Boolean
+  importance: Int
+  tags: [String]
+}
+
+enum ActivityDetailType {
+  NOTE
+  LABBOOK
+  INPUT_DATA
+  CODE
+  CODE_EXECUTED
+  RESULT
+  OUTPUT_DATA
+  ENVIRONMENT
+}
+
+type ActivityEdge {
+  # The item at the end of the edge
+  node: ActivityRecordObject
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# Container for Activity Records
+type ActivityRecordObject implements Node {
+  # The ID of the object.
+  id: ID!
+  commit: String
+  linkedCommit: String
+  message: String
+  detailObjects: [ActivityDetailObject]
+  type: ActivityType
+  show: Boolean
+  importance: Int
+  tags: [String]
+  timestamp: DateTime
+}
+
+enum ActivityType {
+  NOTE
+  ENVIRONMENT
+  CODE
+  INPUT_DATA
+  OUTPUT_DATA
+  MILESTONE
+  BRANCH
+  LABBOOK
+}
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -177,39 +239,20 @@ type CreateLabbookPayload {
   clientMutationId: String
 }
 
-input CreateNoteInput {
-  labbookName: String!
-  owner: String
-  level: NoteLogLevel!
-  message: String!
-  linkedCommit: String!
-  tags: [String]
-  freeText: String
-  objects: [NoteObjectInput]
-  clientMutationId: String
-}
-
-# Mutation to create a new note entry
-type CreateNotePayload {
-  note: Note
-  clientMutationId: String
-}
-
 input CreateUserNoteInput {
-  labbookName: String!
   owner: String
-  message: String!
-  freeText: String
+  labbookName: String!
+  title: String!
+  body: String
   tags: [String]
-  objects: [NoteObjectInput]
   clientMutationId: String
 }
 
 # Mutation to create a new user note entry in the activity feed of lab book
 #
-# The log level is set to USER_NOTE automatically and the `linked_commit` is an empty string
+# The `linked_commit` is an empty string since there is no linked commit
 type CreateUserNotePayload {
-  note: Note
+  newActivityRecordEdge: ActivityEdge
   clientMutationId: String
 }
 
@@ -448,7 +491,9 @@ type Labbook implements Node, GitRepository {
   code: LabbookSection
   input: LabbookSection
   output: LabbookSection
-  notes(before: String, after: String, first: Int, last: Int): NoteConnection
+  activityRecords(before: String, after: String, first: Int, last: Int): ActivityConnection
+  detailRecord(key: String): ActivityDetailObject
+  detailRecords(keys: [String]): [ActivityDetailObject]
 }
 
 # An object representing a commit to a LabBook
@@ -596,7 +641,6 @@ type Mutation {
   buildImage(input: BuildImageInput!): BuildImagePayload
   startContainer(input: StartContainerInput!): StartContainerPayload
   stopContainer(input: StopContainerInput!): StopContainerPayload
-  createNote(input: CreateNoteInput!): CreateNotePayload
   createUserNote(input: CreateUserNoteInput!): CreateUserNotePayload
   addEnvironmentComponent(input: AddEnvironmentComponentInput!): AddEnvironmentComponentPayload
   addEnvironmentPackage(input: AddEnvironmentPackageInput!): AddEnvironmentPackagePayload
@@ -614,71 +658,6 @@ type Mutation {
 interface Node {
   # The ID of the object.
   id: ID!
-}
-
-# A type representing a single note entry in a labbook
-type Note implements Node {
-  # The ID of the object.
-  id: ID!
-  commit: ID
-  linkedCommit: ID
-  message: String
-  author: String
-  level: NoteLogLevel
-  tags: [String]
-  timestamp: DateTime
-  freeText: String
-  objects(before: String, after: String, first: Int, last: Int): NoteObjectConnection
-}
-
-type NoteConnection {
-  pageInfo: PageInfo!
-  edges: [NoteEdge]!
-}
-
-type NoteEdge {
-  # The item at the end of the edge
-  node: Note
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-enum NoteLogLevel {
-  USER_NOTE
-  USER_MAJOR
-  USER_MINOR
-  AUTO_MAJOR
-  AUTO_MINOR
-  AUTO_DETAIL
-}
-
-# Container for arbitrary objects stored within a note
-type NoteObject implements Node {
-  # The ID of the object.
-  id: ID!
-  key: String
-  type: String
-  value: String
-}
-
-type NoteObjectConnection {
-  pageInfo: PageInfo!
-  edges: [NoteObjectEdge]!
-}
-
-type NoteObjectEdge {
-  # The item at the end of the edge
-  node: NoteObject
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-input NoteObjectInput {
-  key: String
-  type: String
-  value: String
 }
 
 # A type representing the owner of a LabBook or Dataset

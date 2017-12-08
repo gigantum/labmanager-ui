@@ -5,13 +5,14 @@ import Callback from 'JS/Callback/Callback';
 import Auth from 'JS/Auth/Auth';
 import history from 'JS/history';
 import {QueryRenderer, graphql} from 'react-relay'
+import environment from 'JS/createRelayEnvironment'
 // components
 import Home from 'Components/home/Home';
 import SideBar from 'Components/shared/SideBar';
 import Footer from 'Components/shared/Footer';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
-import environment from 'JS/createRelayEnvironment'
+
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
   query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){

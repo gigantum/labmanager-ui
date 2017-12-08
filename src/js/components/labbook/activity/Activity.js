@@ -5,9 +5,9 @@ import {
   graphql
 } from 'react-relay'
 //Components
-import NotesCard from './NotesCard'
+import ActivityCard from './ActivityCard'
 import Loader from 'Components/shared/Loader'
-import UserNote from './../UserNote'
+import UserNote from './UserNote'
 
 //utilities
 import Config from 'JS/config'
@@ -16,7 +16,7 @@ import Config from 'JS/config'
 let pagination = false;
 let isLoadingMore = false;
 
-class Notes extends Component {
+class Activity extends Component {
   constructor(props){
   	super(props);
   	this.state = {
@@ -24,8 +24,8 @@ class Notes extends Component {
       'isPaginting': false
     };
     this._loadMore = this._loadMore.bind(this)
-    this._toggleNote = this._toggleNote.bind(this)
-    this._hideAddNote = this._hideAddNote.bind(this)
+    this._toggleActivity = this._toggleActivity.bind(this)
+    this._hideAddActivity = this._hideAddActivity.bind(this)
     this._handleScroll = this._handleScroll.bind(this)
   }
 
@@ -38,17 +38,19 @@ class Notes extends Component {
   /**
   *  @param {}
   *   add scroll listener
-  *   add interval to poll for new notes
+  *   add interval to poll for new activityRecords
   */
   componentDidMount() {
 
-    let notes = this.props.labbook.notes
+    let activityRecords = this.props.labbook.activityRecords
 
     pagination = false;
 
     window.addEventListener('scroll', this._handleScroll);
 
-    this._loadMore()
+    if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
+      this._loadMore()
+    }
   }
 
   componentWillUnmount() {
@@ -66,6 +68,7 @@ class Notes extends Component {
     this.setState({
       'isPaginting': true
     })
+
     this.props.relay.loadMore(
      5, // Fetch the next 10 feed items
      e => {
@@ -84,79 +87,80 @@ class Notes extends Component {
   *
   */
   _handleScroll(evt){
-    let notes = this.props.labbook.notes
+    let activityRecords = this.props.labbook.activityRecords
     let root = document.getElementById('root')
 
     let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
         expandOn = root.scrollHeight;
-    if ((distanceY > expandOn) && !isLoadingMore && notes.pageInfo.hasNextPage) {
+    if ((distanceY > expandOn) && !isLoadingMore && activityRecords.pageInfo.hasNextPage) {
         this._loadMore(evt);
     }
   }
   /**
   *   @param {array}
-  *   loops through notes array and sorts into days
+  *   loops through activityRecords array and sorts into days
   *   @return {Object}
   */
-  _transformNotes(notes){
+  _transformActivity(activityRecords){
 
-    let notesTime = {}
-    notes.edges.forEach((note) => {
-      let date = (note.node.timestamp) ? new Date(note.node.timestamp) : new Date()
+    let activityTime = {}
+    activityRecords.edges.forEach((edge) => {
+
+      let date = (edge.node && edge.node.timestamp) ? new Date(edge.node.timestamp) : new Date()
       let timeHash = date.getYear() + '_' + date.getMonth() + ' _' + date.getDate();
-      let newNoteObject = {edge: note, date: date}
-      notesTime[timeHash] ? notesTime[timeHash].push(newNoteObject) : notesTime[timeHash] = [newNoteObject];
+      let newActivityObject = {edge: edge, date: date}
+      activityTime[timeHash] ? activityTime[timeHash].push(newActivityObject) : activityTime[timeHash] = [newActivityObject];
     })
 
-    return notesTime
+    return activityTime
   }
 
-  _toggleNote(){
+  _toggleActivity(){
     this.setState({
       'modalVisible': !this.state.modalVisible
     })
   }
 
-  _hideAddNote(){
+  _hideAddActivity(){
     this.setState({
       'modalVisible': false
     })
   }
 
   render(){
-    let notesTime = this._transformNotes(this.props.labbook.notes);
+    let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
 
     if(this.props.labbook){
       return(
-        <div key={this.props.labbook} className='Notes'>
+        <div key={this.props.labbook} className='Activity'>
 
-          <div key={this.props.labbook + '_labbooks__container'} className="Notes__inner-container flex flex--row flex--wrap justify--space-around">
+          <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
 
-            <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Notes__sizer flex-1-0-auto">
+            <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Activity__sizer flex-1-0-auto">
 
               {
-                Object.keys(notesTime).map((k, i) => {
+                Object.keys(activityRecordsTime).map((k, i) => {
 
                   return (
                     <div key={k}>
 
 
-                      <div className="Notes__date-tab flex flex--column justify--space-around">
-                        <div className="Notes__date-day">{k.split('_')[2]}</div>
-                        <div className="Notes__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
+                      <div className="Activity__date-tab flex flex--column justify--space-around">
+                        <div className="Activity__date-day">{k.split('_')[2]}</div>
+                        <div className="Activity__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
                       </div>
 
                       {
                         (i===0) && (
-                          <div className="UserNote__container">
-                            <div className="Notes__user-note"
+                          <div className="UserActivity__container">
+                            <div className="Activity__user-note"
 
-                              onClick={() => this._toggleNote()}>
-                              <div className={this.state.modalVisible ? 'Notes__user-note--remove' : 'Notes__user-note--add'}></div>
-                              <h5>Add Note</h5>
+                              onClick={() => this._toggleActivity()}>
+                              <div className={this.state.modalVisible ? 'Activity__user-note--remove' : 'Activity__user-note--add'}></div>
+                              <h5>Add Activity</h5>
 
                             </div>
-                            <div className={this.state.modalVisible ? 'Notes__add NotesCard' : 'hidden'}>
+                            <div className={this.state.modalVisible ? 'Activity__add ActivityCard' : 'hidden'}>
 
                               {
                                 (this.state.modalVisible) &&
@@ -164,7 +168,7 @@ class Notes extends Component {
                                   labbookId={this.props.labbook.id}
                                   {...this.props}
                                   labbookName={this.props.labbookName}
-                                  hideLabbookModal={this._hideAddNote}/>
+                                  hideLabbookModal={this._hideAddActivity}/>
                               }
                             </div>
                         </div>
@@ -174,8 +178,9 @@ class Notes extends Component {
                       <div key={k + 'card'}>
 
                         {
-                          notesTime[k].map((obj) => {
-                          return(<NotesCard
+                          activityRecordsTime[k].map((obj) => {
+                          return(<ActivityCard
+                              labbookName={this.props.labbookName}
                               key={obj.edge.node.id}
                               edge={obj.edge}
                             />)
@@ -189,22 +194,22 @@ class Notes extends Component {
                 })
               }
               <div
-                key="Notes-loader-card-1"
-                className={isLoadingMore ? 'NotesCard NotesCard__loader NotesCard__loader--1 card': 'NotesCard NotesCard__loader-hidden'}>
+                key="Activity-loader-card-1"
+                className={isLoadingMore ? 'ActivityCard ActivityCard__loader ActivityCard__loader--1 card': 'ActivityCard ActivityCard__loader-hidden'}>
               </div>
               <div
-                key="Notes-loader-card-2"
-                className={isLoadingMore ? 'NotesCard NotesCard__loader NotesCard__loader--2 card': 'NotesCard NotesCard__loader-hidden'}>
+                key="Activity-loader-card-2"
+                className={isLoadingMore ? 'ActivityCard ActivityCard__loader ActivityCard__loader--2 card': 'ActivityCard ActivityCard__loader-hidden'}>
               </div>
               <div
-                key="Notes-loader-card-3" className={isLoadingMore ? 'NotesCard NotesCard__loader NotesCard__loader--3 card': 'NotesCard NotesCard__loader-hidden'}>
+                key="Activity-loader-card-3" className={isLoadingMore ? 'ActivityCard ActivityCard__loader ActivityCard__loader--3 card': 'ActivityCard ActivityCard__loader-hidden'}>
               </div>
               <div
-                key="Notes-loader-card-4"
-                 className={isLoadingMore ? 'NotesCard NotesCard__loader NotesCard__loader--4 card': 'NotesCard NotesCard__loader-hidden'}>
+                key="Activity-loader-card-4"
+                 className={isLoadingMore ? 'ActivityCard ActivityCard__loader ActivityCard__loader--4 card': 'ActivityCard ActivityCard__loader-hidden'}>
               </div>
               <div
-                key="Notes-loader-card-5" className={isLoadingMore ? 'NotesCard NotesCard__loader NotesCard__loader--5 card': 'NotesCard NotesCard__loader-hidden'}>
+                key="Activity-loader-card-5" className={isLoadingMore ? 'ActivityCard ActivityCard__loader ActivityCard__loader--5 card': 'ActivityCard ActivityCard__loader-hidden'}>
               </div>
             </div>
           </div>
@@ -220,26 +225,33 @@ class Notes extends Component {
 }
 
 /*
-  notes pagination container
-  contains notes fragment and for query consumption
+  activity pagination container
+  contains activity fragment and for query consumption
 */
 export default createPaginationContainer(
-  Notes,
+  Activity,
   {
     labbook: graphql`
-      fragment Notes_labbook on Labbook{
-        notes(first: $first, after: $cursor) @connection(key: "Notes_notes"){
+      fragment Activity_labbook on Labbook{
+        activityRecords(first: $first, after: $cursor) @connection(key: "Activity_activityRecords"){
           edges{
             node{
-              linkedCommit
-              commit
-              level
-              tags
-              timestamp
-              freeText
-              message
               id
-              author
+              commit
+              linkedCommit
+              type
+              show
+              importance
+              tags
+              message
+              timestamp
+              detailObjects{
+                id
+                key
+                show
+                importance
+                type
+              }
             }
             cursor
           }
@@ -255,7 +267,8 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-        return props.labbook && props.labbook.notes;
+
+        return props.labbook && props.labbook.activityRecords;
     },
     getFragmentVariables(prevVars, first, cursor) {
 
@@ -265,8 +278,9 @@ export default createPaginationContainer(
      };
    },
    getVariables(props, {count, cursor, name, owner}, fragmentVariables) {
+
     const username = localStorage.getItem('username')
-    cursor = pagination ? props.labbook.notes.edges[props.labbook.notes.edges.length - 1].cursor : null
+    cursor = pagination ? props.labbook.activityRecords.edges[props.labbook.activityRecords.edges.length - 1].cursor : null
     let first = count;
     name = props.labbookName;
     owner = username;
@@ -281,11 +295,11 @@ export default createPaginationContainer(
      };
    },
    query: graphql`
-     query NotesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+     query ActivityPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
        labbook(name: $name, owner: $owner){
          id
          description
-         ...Notes_labbook
+         ...Activity_labbook
        }
      }`
 

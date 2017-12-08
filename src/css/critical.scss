@@ -11,6 +11,7 @@
 @import 'vendor/fileBrowser/list-style.scss';
 @import 'vendor/fileBrowser/table-style.scss';
 @import 'vendor/fileIcons/fileIcons.scss';
+@import 'vendor/font-awesome/fontawesome.scss';
 
 //generic
 @import '_variables';
@@ -41,13 +42,14 @@
 @import  'components/import/importModules.scss';
 //labbook components
 @import  'components/labbook/labbook.scss';
-@import  'components/labbook/notes.scss';
+@import  'components/labbook/activity.scss';
+@import  'components/labbook/detail.scss';
 @import  'components/labbook/environment.scss';
 @import  'components/labbook/overview.scss';
 @import  'components/labbook/userNote.scss';
 @import  'components/labbook/code.scss';
 @import  'components/labbook/containerStatus.scss';
-@import 'components/labbook/notes_markdown.scss';
+@import 'components/labbook/activity_markdown.scss';
 @import 'components/labbook/detailPanel.scss';
 @import 'components/labbook/favorite.scss';
 @import 'components/labbook/branches.scss';
@@ -101,7 +103,7 @@ h6{
   left: 0px;
   background-color: $white;
   opacity: 0.5;
-  z-index: 70;
+  z-index: 900;
 }
 
 .ApiDown{
