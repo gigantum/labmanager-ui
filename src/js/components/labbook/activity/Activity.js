@@ -16,7 +16,7 @@ import Config from 'JS/config'
 let pagination = false;
 let isLoadingMore = false;
 
-let counter = 10;
+let counter = 5;
 
 class Activity extends Component {
   constructor(props){
@@ -45,7 +45,7 @@ class Activity extends Component {
   componentDidMount() {
 
     let activityRecords = this.props.labbook.activityRecords
-
+    let self = this;
     window.addEventListener('scroll', this._handleScroll);
 
     if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
@@ -54,13 +54,16 @@ class Activity extends Component {
 
     let relay = this.props.relay;
     let activity = this.props.labbook.activityRecords
-    console.log(activity)
+
     let cursor =  activity.edges[0].cursor;
     pagination = false;
     setInterval(function(){
       relay.refetchConnection(
         counter,
         (response) =>{
+          if(!self.props.labbook.activityRecords.pageInfo.hasNextPage){
+            isLoadingMore = false;
+          }
         },
         {
           cursor: cursor
@@ -111,6 +114,7 @@ class Activity extends Component {
         expandOn = root.scrollHeight;
     if ((distanceY > expandOn) && !isLoadingMore && activityRecords.pageInfo.hasNextPage) {
         this._loadMore(evt);
+
     }
   }
   /**
@@ -146,7 +150,9 @@ class Activity extends Component {
 
   render(){
     let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
-
+    if(!this.props.labbook.activityRecords.pageInfo.hasNextPage){
+      isLoadingMore = false;
+    }
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='Activity'>

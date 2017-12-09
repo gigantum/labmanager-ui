@@ -305,6 +305,10 @@ export default class UserNote extends Component {
       }
     )
   }
+
+  _togglePublish(){
+    this.setState({'addedRemoteThisSession': !this.state.addedRemoteThisSession})
+  }
   render(){
     const {tags} = this.state;
 
@@ -361,7 +365,7 @@ export default class UserNote extends Component {
               <li className="BranchMenu__item--new-branch">
                 <a onClick={()=>{this._toggleModal('createBranchVisible')}}>New Branch</a>
               </li>
-              <li className="BranchMenu__item--merge">Merge</li>
+              <li className="BranchMenu__item--merge" onClick={()=>{this._togglePublish()}}>Merge</li>
               <li className="BranchMenu__item--deadend">Dead-end</li>
               <li className="BranchMenu__item--favorite">Favorite</li>
             </ul>
