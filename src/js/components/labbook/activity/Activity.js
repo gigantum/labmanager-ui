@@ -54,22 +54,23 @@ class Activity extends Component {
 
     let relay = this.props.relay;
     let activity = this.props.labbook.activityRecords
-
-    let cursor =  activity.edges[0].cursor;
-    pagination = false;
-    setInterval(function(){
-      relay.refetchConnection(
-        counter,
-        (response) =>{
-          if(!self.props.labbook.activityRecords.pageInfo.hasNextPage){
-            isLoadingMore = false;
+    if(activity.edges){
+      let cursor =  activity.edges[0].cursor;
+      pagination = false;
+      setInterval(function(){
+        relay.refetchConnection(
+          counter,
+          (response) =>{
+            if(!self.props.labbook.activityRecords.pageInfo.hasNextPage){
+              isLoadingMore = false;
+            }
+          },
+          {
+            cursor: cursor
           }
-        },
-        {
-          cursor: cursor
-        }
-      )
-    }, 2000);
+        )
+      }, 2000);
+    }
   }
 
   componentWillUnmount() {
@@ -180,7 +181,7 @@ class Activity extends Component {
 
                               onClick={() => this._toggleActivity()}>
                               <div className={this.state.modalVisible ? 'Activity__user-note--remove' : 'Activity__user-note--add'}></div>
-                              <h5>Add Activity</h5>
+                              <h5>Add Note</h5>
 
                             </div>
                             <div className={this.state.modalVisible ? 'Activity__add ActivityCard' : 'hidden'}>
