@@ -64,6 +64,7 @@ export default class Routes extends Component {
               path=""
               render={(location) => {return(
               <div className="Routes">
+                <div className="Header"></div>
                 <SideBar
                   auth={auth} history={history}
                 />

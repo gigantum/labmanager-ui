@@ -67,7 +67,7 @@ const dispatchFinishedStatus = (filepath) =>{
    store.dispatch({
      type: 'IMPORT_SUCCESS',
      payload: {
-       uploadMessage: `${route} Lab Book is Ready`,
+       uploadMessage: `${route} LabBook is Ready`,
        labbookName: route, //route is labbookName
        success: true
      }
@@ -405,7 +405,7 @@ export default class ImportModule extends Component {
               onClick={(evt)=>{this._fileUpload(evt)}}
               disabled={(this.state.files.length < 1)}
             >
-              Import Lab Book
+              Import LabBook
             </button>
             <div
               id="dropZone"

@@ -1,8 +1,16 @@
 .Routes{
-  height: 100%;
+  height: calc(100% - 10px);
   width: 100%;
   @include flex(flex-start, row)
-  border-top: 5px solid $jet;
+
+}
+.Header{
+  position: fixed;
+  width: 100%;
+  height: 10px;
+  background-color: $jet;
+  top: 0px;
+  z-index: 800;
 }
 
 .Routes__main{

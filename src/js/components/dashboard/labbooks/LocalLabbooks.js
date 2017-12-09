@@ -167,7 +167,7 @@ class LocalLabbooks extends Component {
                   disabled={(this.state.newLabbookName.length === 0) && !this.state.showNamingError}
                   className="LocalLabbooks__rename-submit"
                   onClick={()=> this._renameMutation()}>
-                  Rename Lab Book
+                  Rename LabBook
                 </button>
 
               </div>
@@ -183,7 +183,7 @@ class LocalLabbooks extends Component {
 
             <div className="LocalLabbooks__title-bar flex flex--row justify--space-between">
               <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
-                Lab Books
+                LabBooks
                 <div className="LocalLabbooks__title-add"></div>
               </h4>
 

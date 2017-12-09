@@ -16,6 +16,8 @@ import Config from 'JS/config'
 let pagination = false;
 let isLoadingMore = false;
 
+let counter = 5;
+
 class Activity extends Component {
   constructor(props){
   	super(props);
@@ -43,14 +45,31 @@ class Activity extends Component {
   componentDidMount() {
 
     let activityRecords = this.props.labbook.activityRecords
-
-    pagination = false;
-
+    let self = this;
     window.addEventListener('scroll', this._handleScroll);
 
     if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
       this._loadMore()
     }
+
+    let relay = this.props.relay;
+    let activity = this.props.labbook.activityRecords
+
+    let cursor =  activity.edges[0].cursor;
+    pagination = false;
+    setInterval(function(){
+      relay.refetchConnection(
+        counter,
+        (response) =>{
+          if(!self.props.labbook.activityRecords.pageInfo.hasNextPage){
+            isLoadingMore = false;
+          }
+        },
+        {
+          cursor: cursor
+        }
+      )
+    }, 2000);
   }
 
   componentWillUnmount() {
@@ -62,7 +81,7 @@ class Activity extends Component {
   *  pagination container loads more items
   */
   _loadMore() {
-
+    pagination = true
     isLoadingMore = true
     pagination = true;
     this.setState({
@@ -70,7 +89,7 @@ class Activity extends Component {
     })
 
     this.props.relay.loadMore(
-     5, // Fetch the next 10 feed items
+     counter, // Fetch the next 10 feed items
      e => {
        isLoadingMore = false;
        this.setState({
@@ -80,6 +99,7 @@ class Activity extends Component {
        name: 'labbook'
      }
    );
+   counter += 5
   }
   /**
   *  @param {evt}
@@ -94,6 +114,7 @@ class Activity extends Component {
         expandOn = root.scrollHeight;
     if ((distanceY > expandOn) && !isLoadingMore && activityRecords.pageInfo.hasNextPage) {
         this._loadMore(evt);
+
     }
   }
   /**
@@ -129,7 +150,9 @@ class Activity extends Component {
 
   render(){
     let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
-
+    if(!this.props.labbook.activityRecords.pageInfo.hasNextPage){
+      isLoadingMore = false;
+    }
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='Activity'>
@@ -281,7 +304,7 @@ export default createPaginationContainer(
 
     const username = localStorage.getItem('username')
     cursor = pagination ? props.labbook.activityRecords.edges[props.labbook.activityRecords.edges.length - 1].cursor : null
-    let first = count;
+    let first = counter;
     name = props.labbookName;
     owner = username;
      return {

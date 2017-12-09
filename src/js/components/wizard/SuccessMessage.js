@@ -20,8 +20,8 @@ export default class SuccessMessage extends React.Component {
     return(
       <div className="SuccessMessage flex flex--column justify--space-around">
           <p className="SuccessMessage__message">Success!</p>
-          <p className="SuccessMessage__message">You have create a new Lab Book. You can always edit and update your Lab Book on its detail page.</p>
-          {/* <button className="SuccessMessage__button" onClick={()=> this._openLabbook()}>Open Lab Book</button> */}
+          <p className="SuccessMessage__message">You have create a new LabBook. You can always edit and update your LabBook on its detail page.</p>
+          {/* <button className="SuccessMessage__button" onClick={()=> this._openLabbook()}>Open LabBook</button> */}
       </div>
       )
   }

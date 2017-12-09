@@ -53,7 +53,7 @@ export default class LocalLabbookPanel extends Component {
       store.dispatch({
         type: 'UPLOAD_MESSAGE',
         payload: {
-          uploadMessage: 'Exporting Lab Book',
+          uploadMessage: 'Exporting LabBook',
           loadingState: true,
           success: false,
           error: false
@@ -64,7 +64,7 @@ export default class LocalLabbookPanel extends Component {
         if(response.exportLabbook){
           JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
 
-          
+
               if(data.jobStatus.result){
                 store.dispatch({
                   type: 'UPLOAD_MESSAGE',

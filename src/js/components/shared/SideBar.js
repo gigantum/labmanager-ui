@@ -30,7 +30,7 @@ export default class SideBar extends Component {
                 to={{pathname: '/labbooks'}}
               >
                 <div className={isLabbooks ? 'SideBar__icon SideBar__icon--labbooks-selected' : 'SideBar__icon SideBar__icon--labbooks'}></div>
-                Lab Books
+                LabBooks
               </Link>
             </li>
             <li className={!isLabbooks ? 'SideBar__list-item--selected' : 'SideBar__list-item'}>

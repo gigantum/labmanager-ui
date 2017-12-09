@@ -142,7 +142,7 @@ export default class Footer extends Component {
           <button
             className="Footer__button"
             onClick={()=> this._openLabbook()}>
-            Open Lab Book
+            Open LabBook
           </button>
         }
 
