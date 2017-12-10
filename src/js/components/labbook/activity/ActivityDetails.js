@@ -8,10 +8,12 @@ export default class ActivityCard extends Component {
 
   	super(props);
     this.state = {
-      showExtraInfo: props.node.show
+      showExtraInfo: props.node.show,
+      showEllispsis: !props.node.show
     }
 
     this._toggleExtraInfo = this._toggleExtraInfo.bind(this)
+    this._hideElipsis = this._hideElipsis.bind(this)
   }
 
   /**
@@ -57,6 +59,10 @@ export default class ActivityCard extends Component {
     return categories;
   }
 
+
+  _hideElipsis(){
+    this.setState('showEllispsis': false)
+  }
   render(){
 
     const categorizedDetails = this._catagorizeDetails(this.props.node);
@@ -66,11 +72,15 @@ export default class ActivityCard extends Component {
           Object.keys(categorizedDetails.detailObjects).map((key, index) => {
             return(
               <ActivityDetailList
+                hideElipsis={this._hideElipsis}
+                edge={this.props.edge}
                 labbookName={this.props.labbookName}
                 categorizedDetails={categorizedDetails}
                 itemKey={key}
                 key={key + index}
                 siblingCount={this.props.node.detailObjects.length}
+                show={this.props.show}
+                showEllispsis={this.state.showEllispsis}
               />
             )
           })

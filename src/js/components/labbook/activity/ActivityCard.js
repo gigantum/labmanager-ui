@@ -49,11 +49,10 @@ export default class ActivityCard extends Component {
     const type = this.props.edge.node.type.toLowerCase()
     return(
         <div className={this.state.showExtraInfo ? 'ActivityCard card': 'ActivityCard--collapsed card'}>
-          { this.state.showExtraInfo &&
+
             <div className={'fa ActivityCard__badge ActivityCard__badge--' + type}>
             </div>
-          }
-          { this.state.showExtraInfo &&
+
             <div className="ActivityCard__content">
               <div className="ActivityCard__title flex flex--row justify--space-between">
 
@@ -67,20 +66,24 @@ export default class ActivityCard extends Component {
 
                 </div>
 
-                <ActivityDetails
-                  labbookName={this.props.labbookName}
-                  key={node.id + '_activity-details'}
-                  node={node}
-                />
-              </div>
-            }
+                { !this.state.showExtraInfo &&
 
-            { !this.state.showExtraInfo &&
-              <div className="ActivityCard__collapsed-container">
-                <div className="ActivityCard__collapsed-text">1 Related Activity</div>
-                <div className="ActivityCard__ellipsis" onClick={()=>{this._toggleExtraInfo()}}></div>
+                  <div className="ActivityCard__ellipsis" onClick={()=>{this._toggleExtraInfo()}}></div>
+
+                }
+                { this.state.showExtraInfo &&
+                  <ActivityDetails
+                    edge={this.props.edge}
+                    show={this.state.showExtraInfo}
+                    labbookName={this.props.labbookName}
+                    key={node.id + '_activity-details'}
+                    node={node}
+                  />
+                }
               </div>
-            }
+
+
+
 
 
       </div>

@@ -1,13 +1,23 @@
 //vendor
 import React, { Component } from 'react'
 import DetailRecords from './DetailRecords'
-export default class ActivityCard extends Component {
+export default class ActivityDefaultList extends Component {
 
   constructor(props){
   	super(props);
 
+    let show = true;
+
+    props.edge.node.detailObjects.map((detail)=>{
+      if(detail.show){
+        show = false;
+      }
+    });
+
     this.state = {
-      show: props.categorizedDetails.detailObjects[this.props.itemKey][0].show || (this.props.siblingCount > 1)
+      show: props.categorizedDetails.detailObjects[this.props.itemKey][0].show,
+      showEllipsis: show,
+      showDetails: this.props.show
     }
     this._toggleDetailsList =  this._toggleDetailsList.bind(this)
   }
@@ -18,6 +28,13 @@ export default class ActivityCard extends Component {
   */
   _toggleDetailsList = () => {
     this.setState({show: !this.state.show})
+  }
+
+
+  _toggleDetailsView = () => {
+
+    this.setState({showDetails: true, showEllipsis: false})
+    this.props.hideElipsis()
   }
 
   /**
@@ -51,12 +68,11 @@ export default class ActivityCard extends Component {
     }
 
     let type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase()
-
     return(
 
         <div className="ActivityDetail__details">
           {
-            (this.props.siblingCount > 1) &&
+            this.state.showDetails &&
             <div
               onClick={() => {this._toggleDetailsList()}}
               className={this.state.show ? 'ActivityDetail__details-title ActivityDetail__details-title--open' : 'ActivityDetail__details-title ActivityDetail__details-title--closed'}>
@@ -75,6 +91,12 @@ export default class ActivityCard extends Component {
             <div className="ActivtyDetail_list">
                 <DetailRecords variables={variables}/>
             </div>
+          }
+
+          {this.props.showEllipsis &&
+
+            <div className="ActivityCard__ellipsis ActivityCard__ellipsis-detail" onClick={()=>{this._toggleDetailsView()}}></div>
+
           }
         </div>
     )

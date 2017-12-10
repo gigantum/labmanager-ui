@@ -22,7 +22,7 @@
   z-index: 200;
   position: relative;
   background: white;
-
+  min-height: 80px;
   border-bottom: 10px solid $azure;
 
   @include flex(flex-start, row)
@@ -30,7 +30,7 @@
 
 .ActivityCard--collapsed{
   @extend .ActivityCard;
-  height: 40px;
+  height: 80px;
 }
 
 .ActivityCard__stack{
@@ -300,6 +300,8 @@
 
 .ActivityCard.ActivityCard__loader{
   opacity: 1;
+  height: auto !important;
+  min-height: 50px;
 }
 
 .ActivityCard.ActivityCard__loader--1{
@@ -447,23 +449,30 @@
   text-align: center;
   width: 100%;
 }
+
 .ActivityCard__ellipsis,
 .ActivityCard__ellipsis:focus{
   width: 40px;
   border-radius: 10px;
-  height: 20px;
+  height: 60px;
 
   position: absolute;
 
   left: calc(50% - 20px);
-  top: 20px;
+  bottom: -30px;
   cursor: pointer;
 
   background: url('./../images/icons/ellipsis.svg') no-repeat center center;
   background-size: 30px 30px;
 }
 
+
+
 .ActivityCard__ellipsis:hover{
   background: url('./../images/icons/ellipsis.svg') no-repeat center center;
   background-size: 32px 32px;
+}
+
+.ActivityCard__ellipsis-detail{
+  z-index:400;
 }
