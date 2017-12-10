@@ -58,7 +58,7 @@ export default class ActivityCard extends Component {
   }
 
   render(){
-    
+
     const categorizedDetails = this._catagorizeDetails(this.props.node);
     return(
       <div className="ActivityDetail">
@@ -70,6 +70,7 @@ export default class ActivityCard extends Component {
                 categorizedDetails={categorizedDetails}
                 itemKey={key}
                 key={key + index}
+                siblingCount={this.props.node.detailObjects.length}
               />
             )
           })

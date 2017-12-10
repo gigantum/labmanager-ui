@@ -66,7 +66,8 @@
   text-align: center;
   line-height: 25px;
   cursor: pointer;
-  @extend .fa-rocket;
+  background: #aaa url('./../images/icons/rocket.svg') no-repeat center -3px;
+  background-size: 30px;
 }
 .ContainerStatus__plugins-title{
   text-align: center;

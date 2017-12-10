@@ -24,8 +24,7 @@ function sharedUpdater(store, id, newEdge) {
   const userProxy = store.get(id);
   const conn = RelayRuntime.ConnectionHandler.getConnection(
     userProxy,
-    'PackageManagerDependencies_packageManagerDependencies',
-    {'first': 20}
+    'PackageManagerDependencies_packageManagerDependencies'
   );
   if(conn){
     RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);

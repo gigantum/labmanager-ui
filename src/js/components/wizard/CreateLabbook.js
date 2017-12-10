@@ -43,8 +43,8 @@ export default class CreateLabbook extends React.Component {
     let name = this.state.name;
     let self = this;
     if(this.state.remoteURL.length > 0){
-      const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1].replace('.git', '')
-      let remote = 'ssh://' + this.state.remoteURL.replace('io:root', 'io:9922/root')
+      const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
+      let remote = `ssh://git@repo.gigantum.io:9922/root/${labbookName}.git`
 
       store.dispatch(
         {
@@ -61,9 +61,10 @@ export default class CreateLabbook extends React.Component {
         labbookName,
         remote,
         (response, error) => {
-          console.log(response, error)
+
 
           if(error){
+            console.error(error)
             store.dispatch(
               {
                 type:"UPLOAD_MESSAGE",
@@ -74,6 +75,7 @@ export default class CreateLabbook extends React.Component {
                 uploadMessage: 'Could not import remote LabBook'
               }
             })
+
           }else if(response){
 
             store.dispatch(
@@ -90,10 +92,42 @@ export default class CreateLabbook extends React.Component {
             labbookName,
             localStorage.getItem('username'),
             (error)=>{
-
+              if(error){
+                console.error(error)
+                store.dispatch(
+                  {
+                    type:"UPLOAD_MESSAGE",
+                    payload: {
+                    error: true,
+                    loadingState: true,
+                    success: false,
+                    uploadMessage: 'Build failed'
+                  }
+                })
+              }
             })
             document.getElementById('modal__cover').classList.add('hidden')
             this.props.history.replace(`/labbooks/${labbookName}`)
+          }else{
+
+            BuildImageMutation(
+            labbookName,
+            localStorage.getItem('username'),
+            (error)=>{
+              if(error){
+                console.error(error)
+                store.dispatch(
+                  {
+                    type:"UPLOAD_MESSAGE",
+                    payload: {
+                    error: true,
+                    loadingState: true,
+                    success: false,
+                    uploadMessage: 'Build failed'
+                  }
+                })
+              }
+            })
           }
         }
       )

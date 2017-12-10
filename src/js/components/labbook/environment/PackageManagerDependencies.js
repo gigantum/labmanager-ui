@@ -4,7 +4,7 @@ import {createPaginationContainer, graphql} from 'react-relay'
 //components
 import AddEnvironmentPackage from 'Components/wizard/AddEnvironmentPackage'
 import Loader from 'Components/shared/Loader'
-
+let totalCount = 2
 class PackageManagerDependencies extends Component {
   constructor(props){
     super(props);
@@ -16,6 +16,37 @@ class PackageManagerDependencies extends Component {
     this._hideModal = this._hideModal.bind(this)
     this._setBaseImage = this._setBaseImage.bind(this)
     this._setComponent = this._setComponent.bind(this)
+    this._loadMore = this._loadMore.bind(this)
+  }
+  /*
+    handle state and addd listeners when component mounts
+  */
+  componentDidMount() {
+    this._loadMore() //routes query only loads 2, call loadMore
+  }
+  /*
+    @param
+    triggers relay pagination function loadMore
+    increments by 10
+    logs callback
+  */
+  _loadMore() {
+
+    let self = this;
+    this.props.relay.loadMore(
+     100, // Fetch the next 100 feed items
+     (response, error) => {
+       if(error){
+         console.error(error)
+       }
+
+       if(self.props.environment.packageManagerDependencies &&
+         self.props.environment.packageManagerDependencies.pageInfo.hasNextPage) {
+
+         self._loadMore()
+       }
+     }
+   );
   }
   /**
   *  @param {None}
@@ -139,7 +170,7 @@ export default createPaginationContainer(
   PackageManagerDependencies,
   {
     environment: graphql`fragment PackageManagerDependencies_environment on Environment {
-    packageManagerDependencies(first: $first, after: $cursor) @connection(key: "PackageManagerDependencies_packageManagerDependencies" filters: ["first"]){
+    packageManagerDependencies(first: $first, after: $cursor) @connection(key: "PackageManagerDependencies_packageManagerDependencies" filters: []){
         edges{
           node{
             id
@@ -161,7 +192,8 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-        return props.labbook && props.labbook.environment;
+
+        return props.environment && props.environment.packageManagerDependencies;
     },
     getFragmentVariables(prevVars, first) {
       return {
@@ -169,11 +201,15 @@ export default createPaginationContainer(
        first: first,
      };
    },
-   getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
+   getVariables(props, {count}, fragmentVariables) {
     const username = localStorage.getItem('username')
-    first = 10;
-    name = props.labbookName;
-    owner = username;
+    totalCount += count
+    let first = totalCount;
+    let length = props.environment.packageManagerDependencies.edges.length
+    let name = props.labbookName;
+    let owner = username;
+    let cursor = props.environment.packageManagerDependencies.edges[length-1].cursor
+
      return {
        first,
        cursor,
@@ -185,8 +221,8 @@ export default createPaginationContainer(
      };
    },
    query: graphql`
-    query PackageManagerDependenciesPaginationQuery($first: Int!, $cursor: String!){
-     labbook{
+    query PackageManagerDependenciesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+     labbook(name: $name, owner: $owner){
        environment{
          ...PackageManagerDependencies_environment
        }

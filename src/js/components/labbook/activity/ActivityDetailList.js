@@ -7,7 +7,7 @@ export default class ActivityCard extends Component {
   	super(props);
 
     this.state = {
-      show: props.categorizedDetails.detailObjects[this.props.itemKey][0].show
+      show: props.categorizedDetails.detailObjects[this.props.itemKey][0].show || (this.props.siblingCount > 1)
     }
     this._toggleDetailsList =  this._toggleDetailsList.bind(this)
   }
@@ -49,25 +49,28 @@ export default class ActivityCard extends Component {
       keys: this.props.categorizedDetails.detailKeys[this.props.itemKey],
       owner: localStorage.getItem('username')
     }
-  
+
     let type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase()
 
     return(
 
         <div className="ActivityDetail__details">
-          <div
-            onClick={() => {this._toggleDetailsList()}}
-            className={this.state.show ? 'ActivityDetail__details-title ActivityDetail__details-title--open' : 'ActivityDetail__details-title ActivityDetail__details-title--closed'}>
+          {
+            (this.props.siblingCount > 1) &&
+            <div
+              onClick={() => {this._toggleDetailsList()}}
+              className={this.state.show ? 'ActivityDetail__details-title ActivityDetail__details-title--open' : 'ActivityDetail__details-title ActivityDetail__details-title--closed'}>
 
-            <div className="ActivityDetail__header">
-              <div className={'fa ActivityDetail__badge ActivityDetail__badge--' + type }>
+              <div className="ActivityDetail__header">
+                <div className={'fa ActivityDetail__badge ActivityDetail__badge--' + type }>
+                </div>
+                <div className="ActivityDetail__content">
+                  <p>{this._formatTitle(this.props.itemKey)}</p>
+                </div>
               </div>
-              <div className="ActivityDetail__content">
-                <p>{this._formatTitle(this.props.itemKey)}</p>
-              </div>
+
             </div>
-
-          </div>
+          }
           {this.state.show &&
             <div className="ActivtyDetail_list">
                 <DetailRecords variables={variables}/>

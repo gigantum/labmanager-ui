@@ -8,10 +8,10 @@ import ActivityDetails from 'Components/labbook/activity/ActivityDetails'
 
 export default class ActivityCard extends Component {
   constructor(props){
-    const level = props.edge.node.level
+
   	super(props);
     this.state = {
-      showExtraInfo: ((level === "AUTO_MAJOR") || (level === "USER_NOTE"))
+      showExtraInfo: props.edge.node.show
     }
 
     this._toggleExtraInfo = this._toggleExtraInfo.bind(this)
@@ -48,28 +48,41 @@ export default class ActivityCard extends Component {
     const node = this.props.edge.node;
     const type = this.props.edge.node.type.toLowerCase()
     return(
-        <div className="ActivityCard card">
-          <div className={'fa ActivityCard__badge ActivityCard__badge--' + type}>
-          </div>
-          <div className="ActivityCard__content">
-            <div className="ActivityCard__title flex flex--row justify--space-between">
-
-                <div className="ActivityCard__stack">
-                  <p className="ActivityCard__time">
-                    {this._getTimeOfDay(this.props.edge.node.timestamp)}
-                  </p>
-                  <img src={userSVG} className="ActivityCard__user" />
-                </div>
-                <h6 className="ActivityCard__commit-message">{this.props.edge.node.message}</h6>
-
+        <div className={this.state.showExtraInfo ? 'ActivityCard card': 'ActivityCard--collapsed card'}>
+          { this.state.showExtraInfo &&
+            <div className={'fa ActivityCard__badge ActivityCard__badge--' + type}>
             </div>
+          }
+          { this.state.showExtraInfo &&
+            <div className="ActivityCard__content">
+              <div className="ActivityCard__title flex flex--row justify--space-between">
 
-              <ActivityDetails
-                labbookName={this.props.labbookName}
-                key={node.id + '_activity-details'}
-                node={node}
-              />
-        </div>
+                  <div className="ActivityCard__stack">
+                    <p className="ActivityCard__time">
+                      {this._getTimeOfDay(this.props.edge.node.timestamp)}
+                    </p>
+                    <img src={userSVG} className="ActivityCard__user" />
+                  </div>
+                  <h6 className="ActivityCard__commit-message">{this.props.edge.node.message}</h6>
+
+                </div>
+
+                <ActivityDetails
+                  labbookName={this.props.labbookName}
+                  key={node.id + '_activity-details'}
+                  node={node}
+                />
+              </div>
+            }
+
+            { !this.state.showExtraInfo &&
+              <div className="ActivityCard__collapsed-container">
+                <div className="ActivityCard__collapsed-text">1 Related Activity</div>
+                <div className="ActivityCard__ellipsis" onClick={()=>{this._toggleExtraInfo()}}></div>
+              </div>
+            }
+
+
       </div>
     )
   }

@@ -25,7 +25,7 @@ export default class UserNote extends Component {
       'isValid': true,
       'createBranchVisible': false,
       'addRemoteVisible': false,
-      'addedRemoteThisSession': false
+      'addedRemoteThisSession': !(this.props.defaultRemote === null)
     }
 
     this._openMenu = this._openMenu.bind(this)
@@ -118,10 +118,8 @@ export default class UserNote extends Component {
   */
   _addRemote(){
 
-    let remote = 'ssh://' + this.state.remoteURL.replace('io:root', 'io:9922/root')
+    let remote = 'ssh://git@repo.gigantum.io:9922/root/' + this.props.labbookName + '.git'
     let self = this;
-
-    this._toggleModal('addRemoteVisible')
 
     store.dispatch({
       type: 'UPLOAD_MESSAGE',
@@ -143,8 +141,6 @@ export default class UserNote extends Component {
         (error)=>{
           if(error){
 
-            self.setState({'addedRemoteThisSession': true})
-
             store.dispatch({
               type: 'UPLOAD_MESSAGE',
               payload: {
@@ -155,6 +151,8 @@ export default class UserNote extends Component {
               }
             })
           }else{
+
+            self.setState({'addedRemoteThisSession': true})
             store.dispatch({
               type: 'UPLOAD_MESSAGE',
               payload: {
@@ -164,6 +162,8 @@ export default class UserNote extends Component {
                 success: false
               }
             })
+            let labbookName = self.props.labbookName;
+            let username = localStorage.getItem('username')
             PushActiveBranchToRemoteMutation(
               localStorage.getItem('username'),
               self.props.labbookName,
@@ -185,7 +185,7 @@ export default class UserNote extends Component {
                   store.dispatch({
                     type: 'UPLOAD_MESSAGE',
                     payload: {
-                      uploadMessage: 'Remote server added succesfully',
+                      uploadMessage: `Added remote repo.gigantum.io/${username}/${labbookName}`,
                       error: false,
                       loadingState: true,
                       success: false
@@ -371,17 +371,17 @@ export default class UserNote extends Component {
             </ul>
             <hr />
             {/* <button>Publish</button> */}
-            { ((this.props.defaultRemote === null) && !this.state.addedRemoteThisSession) &&
+            {!this.state.addedRemoteThisSession &&
               <div className="BranchMenu__publish">
                 <button
-                  onClick={()=>{this._toggleModal('addRemoteVisible')}}
+                  onClick={()=>{this._addRemote()}}
                   >
                   Publish
                 </button>
               </div>
             }
 
-            { ((this.props.defaultRemote !== null) || (this.state.addedRemoteThisSession)) &&
+            { this.state.addedRemoteThisSession &&
               <div className="BranchMenu__sync">
                 <button
 

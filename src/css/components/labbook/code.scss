@@ -8,6 +8,7 @@
 }
 
 .Code__favorites{
+
   width: 100%;
 }
 
@@ -52,11 +53,11 @@
 
 .Code__filter:hover,
 .Code__import-file:hover{
-  color: $charcoal;
+  color: $jet;
 }
 
 .Code__filter--selected{
-  color: $charcoal;
+  color: $jet;
 }
 
 .Code__favorites-card{
