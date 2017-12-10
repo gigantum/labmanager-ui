@@ -6,8 +6,17 @@ export default class ActivityCard extends Component {
   constructor(props){
   	super(props);
 
+    let show = true;
+
+    props.edge.node.detailObjects.map((detail)=>{
+      if(detail.show){
+        show = false;
+      }
+    });
+
     this.state = {
-      show: props.categorizedDetails.detailObjects[this.props.itemKey][0].show || (this.props.siblingCount > 1)
+      show: props.categorizedDetails.detailObjects[this.props.itemKey][0].show,
+      showEllipsis: show
     }
     this._toggleDetailsList =  this._toggleDetailsList.bind(this)
   }
@@ -51,12 +60,13 @@ export default class ActivityCard extends Component {
     }
 
     let type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase()
+    console.log(this.props.edge)
 
     return(
 
         <div className="ActivityDetail__details">
           {
-            (this.props.siblingCount > 1) &&
+            this.state.show &&
             <div
               onClick={() => {this._toggleDetailsList()}}
               className={this.state.show ? 'ActivityDetail__details-title ActivityDetail__details-title--open' : 'ActivityDetail__details-title ActivityDetail__details-title--closed'}>
@@ -75,6 +85,12 @@ export default class ActivityCard extends Component {
             <div className="ActivtyDetail_list">
                 <DetailRecords variables={variables}/>
             </div>
+          }
+
+          {(this.props.show  && !this.state.show && this.state.showEllipsis) &&
+
+            <div className="ActivityCard__ellipsis" onClick={()=>{this._toggleDetailsList()}}></div>
+
           }
         </div>
     )

@@ -91,7 +91,10 @@ class Activity extends Component {
 
     this.props.relay.loadMore(
      counter, // Fetch the next 10 feed items
-     e => {
+     error => {
+       if(error){
+         console.error(error)
+       }
        isLoadingMore = false;
        this.setState({
          'isPaginting': false
@@ -204,6 +207,7 @@ class Activity extends Component {
                         {
                           activityRecordsTime[k].map((obj) => {
                           return(<ActivityCard
+                        
                               labbookName={this.props.labbookName}
                               key={obj.edge.node.id}
                               edge={obj.edge}

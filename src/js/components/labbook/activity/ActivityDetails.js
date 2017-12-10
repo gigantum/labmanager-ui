@@ -66,11 +66,13 @@ export default class ActivityCard extends Component {
           Object.keys(categorizedDetails.detailObjects).map((key, index) => {
             return(
               <ActivityDetailList
+                edge={this.props.edge}
                 labbookName={this.props.labbookName}
                 categorizedDetails={categorizedDetails}
                 itemKey={key}
                 key={key + index}
                 siblingCount={this.props.node.detailObjects.length}
+                show={this.props.show}
               />
             )
           })
