@@ -17,6 +17,7 @@ class CustomDependencies extends Component {
     this._hideModal = this._hideModal.bind(this)
     this._setComponent = this._setComponent.bind(this)
   }
+  
   /**
   *  @param {none}
   *  open modal window

@@ -43,8 +43,8 @@ export default class CreateLabbook extends React.Component {
     let name = this.state.name;
     let self = this;
     if(this.state.remoteURL.length > 0){
-      const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1].replace('.git', '')
-      let remote = 'ssh://' + this.state.remoteURL.replace('io:root', 'io:9922/root')
+      const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
+      let remote = `ssh://git@repo.gigantum.io:9922/root/${labbookName}.git`
 
       store.dispatch(
         {

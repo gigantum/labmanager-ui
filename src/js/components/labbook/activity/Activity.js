@@ -69,7 +69,7 @@ class Activity extends Component {
             cursor: cursor
           }
         )
-      }, 2000);
+      }, 3000);
     }
   }
 

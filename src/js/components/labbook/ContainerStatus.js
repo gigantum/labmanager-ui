@@ -260,6 +260,7 @@ export default class ContainerStatus extends Component {
   }
 
   _containerStatus(status, key){
+    let jupyterLink = (window.location.hostname.indexOf('localhost') > -1) ? window.location.protocol + '//' + window.location.hostname + ':8888' : 'http://jupyter.gigantum.io'
     return(
       <div className="ContainerStatus flex flex--row">
         { (status === 'Open') &&
@@ -275,7 +276,7 @@ export default class ContainerStatus extends Component {
                     <li>
                       <a
                         className="ContainerStatus__plugins-item jupyter-icon"
-                        href={window.location.protocol + '//' + window.location.hostname + ':8888'}
+                        href={jupyterLink}
                         target="_blank"
                         rel="noopener noreferrer">
                           Jupyter

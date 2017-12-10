@@ -28,6 +28,11 @@
   @include flex(flex-start, row)
 }
 
+.ActivityCard--collapsed{
+  @extend .ActivityCard;
+  height: 40px;
+}
+
 .ActivityCard__stack{
   margin: 5px 0;
   font-size: 18px;
@@ -435,4 +440,30 @@
 .ActivityDetail__badge--labbook{
   background: url('./../images/icons/labbooks-selected.svg') no-repeat center center;
   background-size: 20px;
+}
+
+.ActivityCard__collapsed-container,
+.ActivityCard__collapsed-text{
+  text-align: center;
+  width: 100%;
+}
+.ActivityCard__ellipsis,
+.ActivityCard__ellipsis:focus{
+  width: 40px;
+  border-radius: 10px;
+  height: 20px;
+
+  position: absolute;
+
+  left: calc(50% - 20px);
+  top: 20px;
+  cursor: pointer;
+
+  background: url('./../images/icons/ellipsis.svg') no-repeat center center;
+  background-size: 30px 30px;
+}
+
+.ActivityCard__ellipsis:hover{
+  background: url('./../images/icons/ellipsis.svg') no-repeat center center;
+  background-size: 32px 32px;
 }
