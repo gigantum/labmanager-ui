@@ -30,7 +30,7 @@
 
 .ActivityCard--collapsed{
   @extend .ActivityCard;
-  height: 40px;
+  height: 80px;
 }
 
 .ActivityCard__stack{
@@ -451,12 +451,12 @@
 .ActivityCard__ellipsis:focus{
   width: 40px;
   border-radius: 10px;
-  height: 20px;
+  height: 60px;
 
   position: absolute;
 
   left: calc(50% - 20px);
-  top: 20px;
+  top: 40px;
   cursor: pointer;
 
   background: url('./../images/icons/ellipsis.svg') no-repeat center center;
