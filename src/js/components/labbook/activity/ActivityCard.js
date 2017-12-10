@@ -74,7 +74,7 @@ export default class ActivityCard extends Component {
                 { this.state.showExtraInfo &&
                   <ActivityDetails
                     edge={this.props.edge}
-                    show={this.props.edge.node.show}
+                    show={this.state.showExtraInfo}
                     labbookName={this.props.labbookName}
                     key={node.id + '_activity-details'}
                     node={node}

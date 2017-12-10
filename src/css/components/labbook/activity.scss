@@ -459,7 +459,7 @@
   position: absolute;
 
   left: calc(50% - 20px);
-  top: 40px;
+  bottom: -30px;
   cursor: pointer;
 
   background: url('./../images/icons/ellipsis.svg') no-repeat center center;
@@ -471,4 +471,8 @@
 .ActivityCard__ellipsis:hover{
   background: url('./../images/icons/ellipsis.svg') no-repeat center center;
   background-size: 32px 32px;
+}
+
+.ActivityCard__ellipsis-detail{
+  z-index:400;
 }

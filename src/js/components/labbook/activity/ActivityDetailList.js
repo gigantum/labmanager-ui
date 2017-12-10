@@ -1,7 +1,7 @@
 //vendor
 import React, { Component } from 'react'
 import DetailRecords from './DetailRecords'
-export default class ActivityCard extends Component {
+export default class ActivityDefaultList extends Component {
 
   constructor(props){
   	super(props);
@@ -16,7 +16,8 @@ export default class ActivityCard extends Component {
 
     this.state = {
       show: props.categorizedDetails.detailObjects[this.props.itemKey][0].show,
-      showEllipsis: show
+      showEllipsis: show,
+      showDetails: this.props.show
     }
     this._toggleDetailsList =  this._toggleDetailsList.bind(this)
   }
@@ -27,6 +28,13 @@ export default class ActivityCard extends Component {
   */
   _toggleDetailsList = () => {
     this.setState({show: !this.state.show})
+  }
+
+
+  _toggleDetailsView = () => {
+
+    this.setState({showDetails: true, showEllipsis: false})
+    this.props.hideElipsis()
   }
 
   /**
@@ -60,13 +68,11 @@ export default class ActivityCard extends Component {
     }
 
     let type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase()
-    console.log(this.props.edge)
-
     return(
 
         <div className="ActivityDetail__details">
           {
-            this.state.show &&
+            this.state.showDetails &&
             <div
               onClick={() => {this._toggleDetailsList()}}
               className={this.state.show ? 'ActivityDetail__details-title ActivityDetail__details-title--open' : 'ActivityDetail__details-title ActivityDetail__details-title--closed'}>
@@ -87,9 +93,9 @@ export default class ActivityCard extends Component {
             </div>
           }
 
-          {(this.props.show  && !this.state.show && this.state.showEllipsis) &&
+          {this.props.showEllipsis &&
 
-            <div className="ActivityCard__ellipsis" onClick={()=>{this._toggleDetailsList()}}></div>
+            <div className="ActivityCard__ellipsis ActivityCard__ellipsis-detail" onClick={()=>{this._toggleDetailsView()}}></div>
 
           }
         </div>
