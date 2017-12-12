@@ -44,6 +44,8 @@ export default function DeleteLabbookFileMutation(
   function sharedUpdater(store, labbookID, deletedID, connectionKey) {
 
     const userProxy = store.get(labbookID);
+
+    console.log(userProxy)
     const conn = RelayRuntime.ConnectionHandler.getConnection(
       userProxy,
       connectionKey,

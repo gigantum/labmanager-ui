@@ -53,15 +53,19 @@ class Activity extends Component {
     }
 
     let relay = this.props.relay;
-    let activity = this.props.labbook.activityRecords
-    if(activity.edges){
-      let cursor =  activity.edges[0].cursor;
+
+    console.log(activityRecords, this.props)
+    if(activityRecords.edges && activityRecords.edges.length){
+
+      let cursor =  activityRecords.edges[0].node.cursor;
+
       pagination = false;
+
       setInterval(function(){
         relay.refetchConnection(
           counter,
           (response) =>{
-            if(!self.props.labbook.activityRecords.pageInfo.hasNextPage){
+            if(!activityRecords.pageInfo.hasNextPage){
               isLoadingMore = false;
             }
           },
@@ -207,7 +211,7 @@ class Activity extends Component {
                         {
                           activityRecordsTime[k].map((obj) => {
                           return(<ActivityCard
-                        
+
                               labbookName={this.props.labbookName}
                               key={obj.edge.node.id}
                               edge={obj.edge}

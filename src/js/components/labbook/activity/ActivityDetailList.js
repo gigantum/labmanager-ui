@@ -30,7 +30,10 @@ export default class ActivityDefaultList extends Component {
     this.setState({show: !this.state.show})
   }
 
-
+  /**
+  *   @param {}
+  *  reverse state of showExtraInfo
+  */
   _toggleDetailsView = () => {
 
     this.setState({showDetails: true, showEllipsis: false})

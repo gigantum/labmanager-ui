@@ -11,10 +11,10 @@ import DetailPanel from './../detail/DetailPanel'
 import DragAndDrop from './DragDrop'
 //mutations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
-import DeleteLabbookFileMutation from 'Mutations/DeleteLabbookFileMutation'
-import MakeLabbookDirectoryMutation from 'Mutations/MakeLabbookDirectoryMutation'
-import MoveLabbookFileMutation from 'Mutations/MoveLabbookFileMutation'
-import AddFavoriteMutation from 'Mutations/AddFavoriteMutation'
+import DeleteLabbookFileMutation from 'Mutations/fileBrowser/DeleteLabbookFileMutation'
+import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
+import MoveLabbookFileMutation from 'Mutations/fileBrowser/MoveLabbookFileMutation'
+import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
 //helpers
 import FolderUpload from './folderUpload'
 
@@ -299,7 +299,7 @@ export default class FileBrowserWrapper extends Component {
     }else{
       let flattenedFiles = []
       function flattenFiles(filesArray){
-      
+
           if(filesArray.entry){
             flattenedFiles.push(filesArray)
           }else{

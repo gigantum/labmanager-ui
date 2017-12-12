@@ -1,9 +1,9 @@
 //vendor
 import React, { Component } from 'react'
 //Mutations
-import AddFavoriteMutation from 'Mutations/AddFavoriteMutation'
-import RemoveFavoriteMutation from 'Mutations/RemoveFavoriteMutation'
-import UpdateFavoriteMutation from 'Mutations/UpdateFavoriteMutation'
+import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
+import RemoveFavoriteMutation from 'Mutations/fileBrowser/RemoveFavoriteMutation'
+import UpdateFavoriteMutation from 'Mutations/fileBrowser/UpdateFavoriteMutation'
 
 export default class FavoriteCard extends Component {
   constructor(props){

@@ -4,7 +4,7 @@ import uuidv4 from 'uuid/v4'
 import JobStatus from './JobStatus'
 //mutations
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
-import AddLabbookFileMutation from 'Mutations/AddLabbookFileMutation'
+import AddLabbookFileMutation from 'Mutations/fileBrowser/AddLabbookFileMutation'
 
 
 /*
