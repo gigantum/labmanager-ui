@@ -258,7 +258,7 @@ export default class FileBrowserWrapper extends Component {
   handleCreateFiles(files, prefix) {
     let self = this;
 
-    if(files.length){
+    if(files[0].name){
       const batchUpload = (files.length > 1)
 
       let newFiles = files.map((file, index) => {
@@ -316,7 +316,7 @@ export default class FileBrowserWrapper extends Component {
           return (fileItem.file.name !== '.DS_Store')
       })
 
-      FolderUpload.uploadFiles(filterFiles, prefix, self.props.labbookName, self.props.section)
+      FolderUpload.uploadFiles(filterFiles, prefix, self.props.labbookName, self.props.section, this.props.connection, this.props.parentId, self._chunkLoader)
 
     }
 

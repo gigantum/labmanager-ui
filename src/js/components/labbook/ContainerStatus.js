@@ -42,7 +42,8 @@ export default class ContainerStatus extends Component {
       'secondsElapsed': 0,
       'containerStatus': props.containerStatus,
       'imageStatus': props.imageStatus,
-      'pluginsMenu': false
+      'pluginsMenu': false,
+      'contanerMenuOpen': false
     }
     tempStatus = "Closed";
 
@@ -293,6 +294,10 @@ export default class ContainerStatus extends Component {
           className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
           {this.props.isBuilding ? 'Building' : status}
         </div>
+        {
+          this.state.contanerMenuOpen &&
+          <div></div>
+        }
       </div>)
   }
 
