@@ -54,10 +54,9 @@ class Activity extends Component {
 
     let relay = this.props.relay;
 
-    console.log(activityRecords, this.props)
     if(activityRecords.edges && activityRecords.edges.length){
 
-      let cursor =  activityRecords.edges[0].node.cursor;
+      let cursor =  activityRecords.edges[ activityRecords.edges.length - 1].node.cursor;
 
       pagination = false;
 

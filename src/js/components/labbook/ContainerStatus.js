@@ -269,6 +269,7 @@ export default class ContainerStatus extends Component {
                   className="fa ContainerStatus__plugins-button"
                   onClick={()=>{this._openPluginMenu()}}>
                 </div>
+                <div className={this.state.pluginsMenu ? 'ContainerStatus__plugins-menu-arrow': 'ContainerStatus__plugins-menu-arrow hidden'} ></div>
                 <div
                   className={this.state.pluginsMenu ? 'ContainerStatus__plugins-menu': 'ContainerStatus__plugins-menu hidden'}>
                   <div className="ContainerStatus__plugins-title">Launch</div>
