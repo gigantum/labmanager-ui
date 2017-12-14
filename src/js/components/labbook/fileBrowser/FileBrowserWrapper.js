@@ -38,7 +38,7 @@ const dispatchLoadingProgress = (workerData) =>{
       bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
       totalBytes: totalBytes,
       percentage: Math.floor((bytesUploaded/totalBytes) * 100) > 100 ? 100 : Math.floor((bytesUploaded/totalBytes) * 100),
-      loadingState: true,
+      open: true,
       uploadMessage: '',
       labbookName: '',
       error: false,
@@ -60,7 +60,7 @@ const dispatchBatchLoadingProgress = (files, index) =>{
     payload: {
       index: index,
       totalFiles: files.length,
-      loadingState: true
+      open: true
     }
   })
 
@@ -122,7 +122,7 @@ const dispatchUploadFinished = () => {
   })
 
   setTimeout(()=>{
-
+    
     document.getElementById('footerProgressBar').style.width = "0%";
     store.dispatch({
       type: 'RESET_FOOTER_STORE',
@@ -197,7 +197,7 @@ export default class FileBrowserWrapper extends Component {
           bytesUploaded: 0,
           percentage: 0,
           totalBytes:  file.size/1000,
-          loadingState: true
+          open: true
         }
       })
     }else{
@@ -207,7 +207,7 @@ export default class FileBrowserWrapper extends Component {
           payload:{
             index: 0,
             totalFiles:  files.length,
-            loadingState: true
+            open: true
           }
         })
       }

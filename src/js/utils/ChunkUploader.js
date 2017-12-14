@@ -12,7 +12,6 @@ import AddLabbookFileMutation from 'Mutations/fileBrowser/AddLabbookFileMutation
 */
 const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
 
-
   ImportLabbookMutation(username, chunk.blob, chunk, accessToken, (result, error)=>{
 
       if(result && (error === undefined)){

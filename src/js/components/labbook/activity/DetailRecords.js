@@ -59,7 +59,7 @@ export default class UserNote extends Component {
 
 
   render(){
-    console.log(this.props)
+
     return(
       <QueryRenderer
         environment={environment}

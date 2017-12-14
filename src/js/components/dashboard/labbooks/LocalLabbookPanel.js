@@ -54,7 +54,7 @@ export default class LocalLabbookPanel extends Component {
         type: 'UPLOAD_MESSAGE',
         payload: {
           uploadMessage: 'Exporting LabBook',
-          loadingState: true,
+          open: true,
           success: false,
           error: false
         }
@@ -70,7 +70,7 @@ export default class LocalLabbookPanel extends Component {
                   type: 'UPLOAD_MESSAGE',
                   payload: {
                     uploadMessage: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-                    loadingState: true,
+                    open: true,
                     success: false,
                     error: false
                   }
@@ -87,7 +87,7 @@ export default class LocalLabbookPanel extends Component {
           type: 'UPLOAD_MESSAGE',
           payload: {
             uploadMessage: 'Export Failed: ' + error[0].message,
-            loadingState: true,
+            open: true,
             success: false,
             error: true
           }

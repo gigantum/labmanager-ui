@@ -126,14 +126,6 @@ path,
 section,
 prefix,
 chunkLoader) =>{
-  console.log(files,
-  connectionKey,
-  owner,
-  labbookName,
-  sectionId,
-  path,
-  section,
-  chunkLoader)
 
   files.forEach((file, index) =>{
 
@@ -143,12 +135,9 @@ chunkLoader) =>{
 
     let arrayBuffer = evt.target.result;
     let blob = new Blob([new Uint8Array(arrayBuffer)]);
-    //complete the progress bar
+    let filePath = (prefix !== '/') ? prefix + file.entry.fullPath : file.entry.fullPath;
 
-      //this._importingState();
-
-      let filePath = (prefix !== '/') ? prefix + file.entry.fullPath : file.entry.fullPath;
-      let data = {
+    let data = {
         file: file.file,
         filepath: filePath,
         username: localStorage.getItem('username'),
@@ -159,7 +148,6 @@ chunkLoader) =>{
         section: section
       }
 
-      console.log(filePath, file, data, true, files, index)
       chunkLoader(filePath, file, data, true, files, index)
     }
 
@@ -219,8 +207,6 @@ const FolderUpload = {
         let directoryAll = []
         labbooks.forEach((response)=>{
 
-
-          console.log(response, section)
           if(response.labbook[section].files === null){
             let directoryPromise = makeDirectory(
                 connectionKey,
@@ -235,7 +221,6 @@ const FolderUpload = {
         })
 
         if(directoryAll.length > 1){
-          console.log(filePaths)
 
           addFiles(filePaths,
           connectionKey,
@@ -249,7 +234,6 @@ const FolderUpload = {
         }
         else{
           Promise.all(directoryAll).then((result) =>{
-            console.log(filePaths);
             addFiles(filePaths,
             connectionKey,
             localStorage.getItem('username'),

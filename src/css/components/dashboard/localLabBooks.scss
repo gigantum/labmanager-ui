@@ -62,8 +62,8 @@
 }
 
 .LocalLabbooks__edit-button{
-  font-weight: light;
-  color: $font-grey;
+  font-weight: 100;
+  color: $romanSilver;
   font-size: 14px;
   height: 30px;
   width: 30px;
@@ -138,8 +138,8 @@
   position: relative;
 
   padding: 0 1px 1px 1px;
-  height: 350px;
-  @include card(350px, 320px);
+  height: 300px;
+  @include card(300px, 320px);
 
   min-width: 320px;
   flex: 1 1 320px;
@@ -169,7 +169,7 @@
 
 .LocalLabbooks__panel--add{
 @include flex(center, row)
-  height: 350px !important;
+  height: 300px !important;
 
   .LocalLabbooks__labbook-icon{
     align-self: center;
@@ -182,7 +182,7 @@
       height: 30px;
       width: 30px;
       border-radius: 15px;
-      border: 2px solid $grey-light;
+      border: 2px solid $romanSilver;
     }
 
   }
@@ -252,7 +252,7 @@
 }
 
 .LocalLabbooks__export:hover{
-  color: $datasets;
+  color: $azure;
 }
 
 .LocalLabbooks__text-row{
@@ -265,14 +265,14 @@
   }
   p{
     font-size: 14px;
-    color: $font-grey;
+    color: $romanSilver;
   }
 }
 
 .LocalLabbooks__info-row{
   height: 100px;
   padding: 20px;
-  color: $font-grey;
+  color: $romanSilver;
   font-size: 12px;
 }
 .LocalLabbooks__owner{
@@ -300,6 +300,7 @@
 .LocalLabbooks__containerStatus{
   width: 80px;
   color: white;
+  font-weight: 100;
 }
 
 .LocalLabbooks__containerStatus--state{
@@ -311,7 +312,7 @@
 }
 
 .LocalLabbooks__containerStatus--state.Closed{
-  border: 3px solid $jet;
+  border: 3px solid $crimson;
 }
 
 .LocalLabbooks__containerStatus--state.Open{
@@ -320,7 +321,7 @@
 }
 
 .LocalLabbooks__containerStatus--state.Building{
-  border: 3px solid $azure;
+  border: 3px solid $goldenLemon;
 }
 
 .LocalLabbooks__path{

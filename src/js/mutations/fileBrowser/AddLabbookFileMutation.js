@@ -33,7 +33,7 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
     labbookProxy,
     connectionKey
   );
-  console.log(conn)
+
   if(conn){
     const newEdge = RelayRuntime.ConnectionHandler.createEdge(
       store,
@@ -53,13 +53,11 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
   function deleteEdge(store, labbookID, deletedID, connectionKey) {
 
     const userProxy = store.get(labbookID);
-
-    console.log(userProxy)
     const conn = RelayRuntime.ConnectionHandler.getConnection(
       userProxy,
       connectionKey,
     );
-    console.log(conn)
+
     if(conn){
       RelayRuntime.ConnectionHandler.deleteNode(
         conn,

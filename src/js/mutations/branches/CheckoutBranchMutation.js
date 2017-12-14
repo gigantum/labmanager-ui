@@ -26,8 +26,7 @@ let tempID = 0;
 export default function CheckoutBranchMutation(
   owner,
   labbookName,
-  remoteName,
-  remoteUrl,
+  branchName,
   labbookId,
   callback
 ) {
@@ -37,7 +36,7 @@ export default function CheckoutBranchMutation(
     input: {
       owner,
       labbookName,
-      remoteName,
+      branchName,
       clientMutationId: tempID++
     }
   }
@@ -57,6 +56,7 @@ export default function CheckoutBranchMutation(
       onError: err => {console.error(err)},
       updater: (store, response) => {
       }
+
     },
   )
 }

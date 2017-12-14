@@ -51,7 +51,7 @@ export default class CreateLabbook extends React.Component {
           type: "UPLOAD_MESSAGE",
           payload: {
             error: false,
-            loadingState: true,
+            open: true,
             success: false,
             uploadMessage: 'Importing LabBook please wait'
           }
@@ -70,7 +70,7 @@ export default class CreateLabbook extends React.Component {
                 type:"UPLOAD_MESSAGE",
                 payload: {
                 error: true,
-                loadingState: true,
+                open: true,
                 success: false,
                 uploadMessage: 'Could not import remote LabBook'
               }
@@ -83,7 +83,7 @@ export default class CreateLabbook extends React.Component {
                 type: "UPLOAD_MESSAGE",
                 payload: {
                   error: false,
-                  loadingState: true,
+                  open: true,
                   success: false,
                   uploadMessage: 'Successfully imported remote LabBook'
                 }
@@ -99,7 +99,7 @@ export default class CreateLabbook extends React.Component {
                     type:"UPLOAD_MESSAGE",
                     payload: {
                     error: true,
-                    loadingState: true,
+                    open: true,
                     success: false,
                     uploadMessage: 'Build failed'
                   }
@@ -121,7 +121,7 @@ export default class CreateLabbook extends React.Component {
                     type:"UPLOAD_MESSAGE",
                     payload: {
                     error: true,
-                    loadingState: true,
+                    open: true,
                     success: false,
                     uploadMessage: 'Build failed'
                   }

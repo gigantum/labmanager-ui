@@ -55,7 +55,7 @@
 
 .Footer__button{
   border: 1px solid $white;
-  border-radius: 0px;
+  border-radius: 20px;
   position: absolute;
   right: 10px;
   top: 5px;
@@ -63,7 +63,8 @@
   height: 30px;
   line-height: 10px;
 
-  background-color: $crimson !important;
+
+  background-color: $azure !important;
   color: $white;
 }
 

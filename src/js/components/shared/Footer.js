@@ -113,30 +113,25 @@ export default class Footer extends Component {
  }
 
  render() {
-    let footerClass = this.state.loadingState ? 'Footer Footer--expand' : 'Footer'
-    footerClass += (this.state.error ? ' Footer--error' : '');
+    let footerClass = (this.state.open) ? 'Footer Footer--expand' : 'Footer'
+    footerClass = (this.state.error ? ' Footer Footer--expand Footer--error' : footerClass);
+
     return (
       <div id="footer" className={footerClass}>
 
         <div
-          className={this.state.loadingState ? 'Footer__status' : 'hidden'}>
+          className={this.state.open ? 'Footer__status' : 'hidden'}>
             <div className="Footer__message">{this._getMessage()}</div>
             <div
               onClick={()=>{this._closeFooter()}}
               className="Footer__close"></div>
         </div>
 
-        <div
-          id="footerProgressBar" className={(this.state.error) ? 'Footer__progress-bar Footer__progress-bar__error' : 'Footer__progress-bar' }>
-        </div>
 
-        {/* {this.state.error &&
-          <button
-            className="Footer__button"
-            onClick={()=> this._clearState()}>
-            Got It
-          </button>
-        } */}
+          <div
+            id="footerProgressBar" className={(this.state.showProgressBar) ? 'Footer__progress-bar' : 'hidden' }>
+          </div>
+
 
         {this.state.success &&
           <button
