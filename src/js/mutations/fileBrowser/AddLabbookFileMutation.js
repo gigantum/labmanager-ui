@@ -50,6 +50,23 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
 }
 
 
+  function deleteEdge(store, labbookID, deletedID, connectionKey) {
+
+    const userProxy = store.get(labbookID);
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      userProxy,
+      connectionKey,
+    );
+
+    if(conn){
+      RelayRuntime.ConnectionHandler.deleteNode(
+        conn,
+        deletedID,
+      );
+    }
+  }
+
+
 export default function AddLabbookFileMutation(
   connectionKey,
   owner,
@@ -64,6 +81,7 @@ export default function AddLabbookFileMutation(
 
   let uploadables = [chunk.blob, accessToken]
   const id = uuidv4()
+  const optimisticId = uuidv4()
   const variables = {
     input: {
       owner,
@@ -93,8 +111,7 @@ export default function AddLabbookFileMutation(
         parentID: labbookId,
         connectionInfo: [{
           key: connectionKey,
-          rangeBehavior: 'append',
-          filters: {baseDir: 'code', first: 2}
+          rangeBehavior: 'append'
         }],
         edgeName: 'newLabbookFileEdge'
       }],
@@ -106,10 +123,10 @@ export default function AddLabbookFileMutation(
       },
       onError: err => console.error(err),
       optimisticUpdater:(store)=>{
-        const id = uuidv4()
-        const node = store.create(id, 'LabbookFile')
 
-        node.setValue(id, "id")
+        const node = store.create(optimisticId, 'LabbookFile')
+
+        node.setValue(optimisticId, "id")
         node.setValue(false, 'isDir')
         node.setValue(filePath, 'key')
         node.setValue(0, 'modifiedAt')
@@ -119,7 +136,7 @@ export default function AddLabbookFileMutation(
 
       },
       updater: (store, response) => {
-
+        deleteEdge(store, labbookId, optimisticId, connectionKey)
         const id = uuidv4()
         const node = store.create(id, 'LabbookFile')
 
@@ -130,7 +147,7 @@ export default function AddLabbookFileMutation(
           node.setValue(response.addLabbookFile.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
           node.setValue(response.addLabbookFile.newLabbookFileEdge.node.size, 'size')
 
-          sharedUpdater(store, labbookId, connectionKey, node)
+          //sharedUpdater(store, labbookId, connectionKey, node)
         }
 
       },

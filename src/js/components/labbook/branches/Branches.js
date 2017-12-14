@@ -18,7 +18,9 @@ class Branches extends Component {
     super(props)
     this.state = {
       newBranchName: '',
-      isValid: true
+      isValid: true,
+      listPosition: 0,
+      width: 0,
     }
 
   }
@@ -29,6 +31,8 @@ class Branches extends Component {
     if(this.props.labbook.branches.pageInfo.hasNextPage){
       this._loadMore()
     }
+    const width = this.refs.Branches__branchesList.offsetWidth
+    this.setState({width: width})
   }
 
   /**
@@ -61,23 +65,63 @@ class Branches extends Component {
       this.setState(overview);//triggers re-render when store updates
     }
   }
-
+  _updatePosition(value){
+      //if((-this.state.listPosition > 0) && (270*(this.props.labbook.branches.edges.length))){
+        this.setState({listPosition: (this.state.listPosition + value)})
+    //  }
+  }
 
   render(){
+    let cardsShowing = Math.round(100/25) + 1
+    let showRightBumper = (-this.state.listPosition < (25*(this.props.labbook.branches.edges.length - 4)))
 
     if(this.props.labbook){
+      let branches = this.props.labbook.branches.edges;
+      let activeBranch;
 
+      branches = branches.filter((branch) => {
+
+        if(branch.node.name === this.props.labbook.activeBranch.name){
+          activeBranch = branch;
+        }
+        return (branch.node.name !== this.props.labbook.activeBranch.name)
+      });
+
+      if(activeBranch){
+        branches.unshift(activeBranch);
+      }
+      
       return(
-        <div className="Branches">
+        <div className={this.props.branchesOpen ? 'Branches': 'Branches--closed' }>
 
-          <div className={this.props.branchesOpen ? 'Branches__branches-list' : 'Branches__branches-list Branches__branches-list--collapsed' }>
+          <button
+            onClick={() => {this._updatePosition(25)}}
+            className={(-this.state.listPosition > 0) ? 'Brances__slider-button--left' : 'hidden'}></button>
+          <div
+            ref="Branches__branchesList"
+            className={this.props.branchesOpen ? 'Branches__branches-list' : 'Branches__branches-list Branches__branches-list--collapsed'}
+            style={{left: (this.state.listPosition < 0) ? ' calc(' + this.state.listPosition + 'vw - 200px)' : ' 0vw'}}>
 
             {
-              this.props.labbook.branches.edges.map((edge)=>{
-                return (<BranchCard key={edge.node.id} edge={edge} />)
+              branches.map((edge)=>{
+                return (
+
+                  <div
+                    key={edge.node.id}
+                    className="Branches__card-wrapper">
+                      <BranchCard
+                        activeBranch={this.props.activeBranch}
+                        edge={edge}
+                        labbookName={this.props.labbookName}
+                        labbookId={this.props.labbookId}
+                      />
+                  </div>)
               })
             }
           </div>
+          <button
+            onClick={() => {this._updatePosition(-25)}}
+            className={ this.props.branchesOpen && (showRightBumper)  ? 'Brances__slider-button--right' : 'hidden'}></button>
 
         </div>
       )

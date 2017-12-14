@@ -247,15 +247,18 @@ storeDidUpdate = (labbook) => {
                    isBuilding={this.state.isBuilding}
                  />
               </div>
-              <div className="Labbook__branches-container">
-                
+              <div className={(this.state.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
+                <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
+
                 <Branches
                   defaultRemote={this.props.labbook.defaultRemote}
                   labbookName={labbookName}
                   branchesOpen={this.state.branchesOpen}
                   labbook={this.props.labbook}
                   labbookId={this.props.labbook.id}
+                  activeBranch={this.props.labbook.activeBranch}
                 />
+                  <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
               </div>
 
               <div className="Labbook__navigation-container mui-container flex-0-0-auto">

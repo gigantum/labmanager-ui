@@ -38,6 +38,16 @@ export default class ActivityDefaultList extends Component {
   }
 
   /**
+  *   @param {}
+  *  reverse state of showExtraInfo
+  */
+  _toggleDetailsView = () => {
+
+    this.setState({showDetails: true, showEllipsis: false})
+    this.props.hideElipsis()
+  }
+
+  /**
     @param {string} timestamp
     if input is undefined. current time of day is used
     inputs a time stamp and return the time of day HH:MM am/pm

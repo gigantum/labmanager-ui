@@ -90,21 +90,21 @@ export default function MakeLabbookDirectoryMutation(
     }
   }
 
-  const tempNodeId = uuidv4()
+  const optimisticId = uuidv4()
   commitMutation(
     environment,
     {
       mutation,
       variables,
-      // configs: [{ //commented out until nodes are returned
-      //   type: 'RANGE_ADD',
-      //   parentID: labbookId,
-      //   connectionInfo: [{
-      //     key: connectionKey,
-      //     rangeBehavior: 'prepend'
-      //   }],
-      //   edgeName: 'newLabbookFileEdge'
-      // }],
+      configs: [{ //commented out until nodes are returned
+        type: 'RANGE_ADD',
+        parentID: labbookId,
+        connectionInfo: [{
+          key: connectionKey,
+          rangeBehavior: 'prepend'
+        }],
+        edgeName: 'newLabbookFileEdge'
+      }],
       onCompleted: (response, error ) => {
         if(error){
           console.log(error)
@@ -114,15 +114,17 @@ export default function MakeLabbookDirectoryMutation(
       onError: err => console.error(err),
       optimisticUpdater: (store)=>{
 
-        const node = store.create(tempNodeId, 'CodeFile')
+        const node = store.create(optimisticId, 'CodeFile')
 
-        node.setValue(tempNodeId, "id")
+        node.setValue(optimisticId, "id")
         node.setValue(false, 'isDir')
         node.setValue(directory, 'key')
         node.setValue(0, 'modifiedAt')
         node.setValue(100, 'size')
 
         sharedUpdater(store, labbookId, connectionKey, node)
+
+        deleteOptimisticEdge(store, labbookId, optimisticId, connectionKey)
 
       },
       updater: (store, response) => {
@@ -139,7 +141,7 @@ export default function MakeLabbookDirectoryMutation(
           node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
           node.setValue(response.makeLabbookDirectory.newLabbookFileEdge.node.size, 'size')
 
-          sharedUpdater(store, labbookId, connectionKey, node)
+          //sharedUpdater(store, labbookId, connectionKey, node)
         }
 
 

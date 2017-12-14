@@ -88,7 +88,7 @@
 
 .ContainerStatus__plugins-menu{
   position: absolute;
-  top: 40px;
+  top: 42px;
   right: -100px;
   width: 200px;
   background: $white;
@@ -98,6 +98,12 @@
   @extend .box-shadow;
   z-index: 200;
   padding: 15px;
+}
 
-
+.ContainerStatus__plugins-menu-arrow{
+  z-index: 203;
+  position: absolute;
+  top: 29px;
+  right: -3px;
+  @include triangle('up', 14px, $white);
 }

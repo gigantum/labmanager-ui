@@ -42,7 +42,8 @@ export default class ContainerStatus extends Component {
       'secondsElapsed': 0,
       'containerStatus': props.containerStatus,
       'imageStatus': props.imageStatus,
-      'pluginsMenu': false
+      'pluginsMenu': false,
+      'contanerMenuOpen': false
     }
     tempStatus = "Closed";
 
@@ -269,6 +270,7 @@ export default class ContainerStatus extends Component {
                   className="fa ContainerStatus__plugins-button"
                   onClick={()=>{this._openPluginMenu()}}>
                 </div>
+                <div className={this.state.pluginsMenu ? 'ContainerStatus__plugins-menu-arrow': 'ContainerStatus__plugins-menu-arrow hidden'} ></div>
                 <div
                   className={this.state.pluginsMenu ? 'ContainerStatus__plugins-menu': 'ContainerStatus__plugins-menu hidden'}>
                   <div className="ContainerStatus__plugins-title">Launch</div>
@@ -292,6 +294,10 @@ export default class ContainerStatus extends Component {
           className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
           {this.props.isBuilding ? 'Building' : status}
         </div>
+        {
+          this.state.contanerMenuOpen &&
+          <div></div>
+        }
       </div>)
   }
 

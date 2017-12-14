@@ -12,7 +12,8 @@ export default (
    bytesUploaded: 0,
    totalBytes: 0,
    percentage: 0,
-   loadingState: false,
+   open: false,
+   showProgressBar: true,
    uploadMessage: '',
    error: false,
    success: false,
@@ -25,15 +26,29 @@ export default (
  if (action.type === UPLOAD_ERROR) {
    return {
      ...state,
-     error: action.payload.error
+     error: action.payload.error,
+    showProgressBar: false,
+    open: true,
+    success: false
    };
- } else if (action.type === LOADING_PROGRESS) {
+ } else if (action.type === IMPORT_SUCCESS) {
+  return {
+    ...state,
+    uploadMessage: action.payload.uploadMessage,
+    labbookName: action.payload.labbookName,
+    open: true,
+    success: action.payload.success,
+    showProgressBar: true,
+    error: false
+  };
+}else if (action.type === LOADING_PROGRESS) {
    return {
      ...state,
      bytesUploaded: action.payload.bytesUploaded,
      percentage: action.payload.percentage,
      totalBytes:  action.payload.totalBytes,
-     loadingState: action.payload.loadingState,
+     open: true,
+     showProgressBar: true,
      uploadMessage: '',
      labbookName: '',
      error: false,
@@ -50,8 +65,9 @@ export default (
       totalFiles:  action.payload.totalFiles,
       percentage: 0,
       totalBytes:  0,
-      loadingState: action.payload.loadingState,
+      open: true,
       uploadMessage: '',
+      showProgressBar: true,
       labbookName: '',
       error: false,
       success: false
@@ -60,9 +76,10 @@ export default (
    return {
      ...state,
      uploadMessage: action.payload.uploadMessage,
-     loadingState: action.payload.loadingState,
+     open: true,
      success: action.payload.success,
-     error: (action.payload.error === undefined) ? false :  action.payload.error
+     error: (action.payload.error === undefined) ? false :  action.payload.error,
+     showProgressBar: false
    };
  } else if(action.type === RESET_FOOTER_STORE){
    return {
@@ -70,7 +87,8 @@ export default (
      bytesUploaded: 0,
      totalBytes: 0,
      percentage: 0,
-     loadingState: false,
+     open: false,
+     showProgressBar: false,
      uploadMessage: '',
      error: false,
      success: false,

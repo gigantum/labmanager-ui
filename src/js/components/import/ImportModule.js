@@ -22,7 +22,7 @@ const dispatchLoadingProgress = (wokerData) =>{
       bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
       totalBytes: totalBytes,
       percentage: (Math.floor((bytesUploaded/totalBytes) * 100) <= 100) ? Math.floor((bytesUploaded/totalBytes) * 100) : 100,
-      loadingState: true,
+      open: true,
       uploadMessage: '',
       labbookName: '',
       error: false,
@@ -30,7 +30,9 @@ const dispatchLoadingProgress = (wokerData) =>{
     }
   })
 
-  document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
+  if(document.getElementById('footerProgressBar')){
+    document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
+  }
 }
 
 /*
@@ -69,9 +71,14 @@ const dispatchFinishedStatus = (filepath) =>{
      payload: {
        uploadMessage: `${route} LabBook is Ready`,
        labbookName: route, //route is labbookName
-       success: true
+       success: true,
+       open: true
      }
    })
+
+   if(document.getElementById('footerProgressBar')){
+     document.getElementById('footerProgressBar').style.width = '0%'
+   }
 }
 
 
@@ -282,7 +289,7 @@ export default class ImportModule extends Component {
         bytesUploaded: 0,
         percentage: 0,
         totalBytes:  this.state.files[0].file.size/1000,
-        loadingState: true
+        open: true
       }
     })
 

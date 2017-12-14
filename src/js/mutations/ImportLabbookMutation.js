@@ -47,10 +47,11 @@ export default function ImportLabbookMutation(
       variables,
       uploadables,
       onCompleted: (response, error ) => {
-
+    
         if(error){
           console.log(error)
         }
+
         callback(response, error)
       },
       onError: err => console.error(err),

@@ -38,10 +38,11 @@ export default class UserNote extends Component {
     creates a new branch
   */
   _createNewBranch(branchName){
+    let self = this;
     this.setState({
       branchesOpen: true,
       newBranchName: '',
-      isValid: true
+      isValid: true,
     })
     let username = localStorage.getItem('username')
 
@@ -50,8 +51,19 @@ export default class UserNote extends Component {
       this.props.labbookName,
       branchName,
       this.props.labbookId,
-      (error)=>{
+      (error, response)=>{
+        self._toggleModal('createBranchVisible')
         if(error){
+          store.dispatch({
+            type: 'UPLOAD_MESSAGE',
+            payload: {
+              uploadMessage: error[0].message,
+              error: true,
+              open: true,
+              success: false
+            }
+          })
+
 
         }
       })
@@ -126,7 +138,7 @@ export default class UserNote extends Component {
       payload: {
         uploadMessage: 'Adding remote server ..',
         error: false,
-        loadingState: true,
+        open: true,
         success: false
       }
     })
@@ -146,7 +158,7 @@ export default class UserNote extends Component {
               payload: {
                 uploadMessage: 'Could not add remote.',
                 error: false,
-                loadingState: true,
+                open: true,
                 success: false
               }
             })
@@ -158,7 +170,7 @@ export default class UserNote extends Component {
               payload: {
                 uploadMessage: 'Pushing to remote ...',
                 error: false,
-                loadingState: true,
+                open: true,
                 success: false
               }
             })
@@ -177,7 +189,7 @@ export default class UserNote extends Component {
                     payload: {
                       uploadMessage: 'Could not push code to server, remote was added succesfully',
                       error: false,
-                      loadingState: true,
+                      open: true,
                       success: false
                     }
                   })
@@ -187,7 +199,7 @@ export default class UserNote extends Component {
                     payload: {
                       uploadMessage: `Added remote repo.gigantum.io/${username}/${labbookName}`,
                       error: false,
-                      loadingState: true,
+                      open: true,
                       success: false
                     }
                   })
@@ -216,7 +228,7 @@ export default class UserNote extends Component {
       payload: {
         uploadMessage: 'Pulling from remote ...',
         error: false,
-        loadingState: true,
+        open: true,
         success: false
       }
     })
@@ -234,7 +246,7 @@ export default class UserNote extends Component {
             payload: {
               uploadMessage: 'Could not pull from remote',
               error: true,
-              loadingState: true,
+              open: true,
               success: false
             }
           })
@@ -244,7 +256,7 @@ export default class UserNote extends Component {
             payload: {
               uploadMessage: 'Pushing to remote ...',
               error: false,
-              loadingState: true,
+              open: true,
               success: false
             }
 
@@ -264,7 +276,7 @@ export default class UserNote extends Component {
                   payload: {
                     uploadMessage: 'Could not push to remote',
                     error: false,
-                    loadingState: true,
+                    open: true,
                     success: false
                   }
                 })
@@ -275,7 +287,7 @@ export default class UserNote extends Component {
                 payload: {
                   uploadMessage: 'Sync Complete',
                   error: false,
-                  loadingState: true,
+                  open: true,
                   success: false
                 }
               })
@@ -315,6 +327,7 @@ export default class UserNote extends Component {
     return(
       <div className="BranchMenu flex flex--column">
           <div
+
             className={ this.state.createBranchVisible ? 'BranchModal' : 'hidden'}>
             <div
               onClick={()=>{this._toggleModal('createBranchVisible')}}

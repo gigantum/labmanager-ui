@@ -4,6 +4,8 @@ import {
 } from 'react-relay'
 //environment
 import {fetchQuery} from 'JS/createRelayEnvironment';
+import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation';
+import ChunkUploader from 'JS/utils/ChunkUploader'
 
 const fileExistenceQuery = graphql`
   query folderUploadQuery($labbookName: String!, $owner: String!, $path: String!){
@@ -58,7 +60,7 @@ const checkIfFolderExists = (variables, section) => {
 
         if(response.data){
 
-          resolve({data: response.data, variables: variables})
+          resolve({labbook: response.data.labbook, variables: variables})
         }else{
           reject(response.error)
         }
@@ -67,13 +69,90 @@ const checkIfFolderExists = (variables, section) => {
         reject(error)
       })
     }
-
     fetchData()
-
 
   })
 
   return promise
+}
+
+/**
+*  @param {string, string, string, string, string, string} variables,section
+*  checks if a folder or file exists
+*  @return {promise}
+*/
+const makeDirectory = (
+  connectionKey,
+  owner,
+  labbookName,
+  sectionId,
+  path,
+  section) => {
+
+  let promise = new Promise((resolve, reject) =>{
+
+      MakeLabbookDirectoryMutation(
+        connectionKey,
+        owner,
+        labbookName,
+        sectionId,
+        path,
+        section,
+        (response, error)=>{
+          if(error){
+            console.error(error)
+            reject(error)
+          }else{
+            resolve(response)
+          }
+        }
+      )
+  })
+
+  return promise
+}
+
+/**
+*  @param {string, string, string, string, string, string} variables,section
+*  checks if a folder or file exists
+*  @return {promise}
+*/
+const addFiles = (files,
+connectionKey,
+owner,
+labbookName,
+sectionId,
+path,
+section,
+prefix,
+chunkLoader) =>{
+
+  files.forEach((file, index) =>{
+
+  let fileReader = new FileReader();
+
+  fileReader.onloadend = function (evt) {
+
+    let arrayBuffer = evt.target.result;
+    let blob = new Blob([new Uint8Array(arrayBuffer)]);
+    let filePath = (prefix !== '/') ? prefix + file.entry.fullPath : file.entry.fullPath;
+
+    let data = {
+        file: file.file,
+        filepath: filePath,
+        username: localStorage.getItem('username'),
+        accessToken: localStorage.getItem('access_token'),
+        connectionKey: connectionKey,
+        labbookName: labbookName,
+        parentId: sectionId,
+        section: section
+      }
+
+      chunkLoader(filePath, file, data, true, files, index)
+    }
+
+    fileReader.readAsArrayBuffer(file.file);
+  });
 }
 
 const FolderUpload = {
@@ -84,9 +163,10 @@ const FolderUpload = {
   *  uploads file and folder if checks pass
   *  @return {boolean}
   */
-  uploadFiles: (files, prefix, labbookName, section) =>{
+  uploadFiles: (files, prefix, labbookName, section, connectionKey, sectionId, chunkLoader) =>{
     let index = 0;
     let existingPaths = []
+    let filePaths = []
 
     function fileCheck(fileItem){
       index++
@@ -94,15 +174,24 @@ const FolderUpload = {
       const path = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
       const folderNames = path.split('/')
 
+      filePaths.push(fileItem)
+
       let folderPaths = []
 
       folderNames.forEach((folderName, index)=>{
           if(index > 0){
-            folderPaths.push(folderPaths[index - 1] + '/' + folderName)
+            let folderPath = folderPaths[index - 1] + '/' + folderName;
+            if(folderPaths.indexOf(folderPath) <  0){
+              folderPaths.push(folderPaths[index - 1] + '/' + folderName)
+            }
           }else{
-            folderPaths.push(((folderName + '/') === prefix) ? folderName : prefix + folderName)
+            let folderPath = ((folderName + '/') === prefix) ? folderName : prefix + folderName
+            if(folderPaths.indexOf(folderPath) < 0 ){
+              folderPaths.push(folderPath)
+            }
           }
       })
+
 
       let all = []
       folderPaths.forEach((folderPath)=>{
@@ -115,9 +204,48 @@ const FolderUpload = {
       })
 
       Promise.all(all).then((labbooks)=>{
-        labbooks.forEach((labbook)=>{
-          console.log(labbook)
+        let directoryAll = []
+        labbooks.forEach((response)=>{
+
+          if(response.labbook[section].files === null){
+            let directoryPromise = makeDirectory(
+                connectionKey,
+                localStorage.getItem('username'),
+                labbookName,
+                sectionId,
+                path,
+                section)
+
+            directoryAll.push(directoryPromise)
+          }
         })
+
+        if(directoryAll.length > 1){
+
+          addFiles(filePaths,
+          connectionKey,
+          localStorage.getItem('username'),
+          labbookName,
+          sectionId,
+          path,
+          section,
+          prefix,
+          chunkLoader)
+        }
+        else{
+          Promise.all(directoryAll).then((result) =>{
+            addFiles(filePaths,
+            connectionKey,
+            localStorage.getItem('username'),
+            labbookName,
+            sectionId,
+            path,
+            section,
+            prefix,
+            chunkLoader)
+
+          })
+        }
 
         if(index < files.length){
           fileCheck(files[index])
