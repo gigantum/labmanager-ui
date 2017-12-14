@@ -14,9 +14,6 @@ import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
 //utils
 import Validation from 'JS/utils/Validation'
 
-
-
-
 let isLoadingMore = false;
 
 class LocalLabbooks extends Component {
@@ -181,12 +178,19 @@ class LocalLabbooks extends Component {
               {...props}
             />
 
-            <div className="LocalLabbooks__title-bar flex flex--row justify--space-between">
-              <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
+            <div className="LocalLabbooks__title-bar">
+              <h6 className="LocalLabbooks__username">{localStorage.getItem('username')}</h6>
+              <h2 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
                 LabBooks
-                <div className="LocalLabbooks__title-add"></div>
-              </h4>
+              </h2>
 
+            </div>
+            <div className="LocalLabbooks__menu">
+              <nav className="LocalLabbooks__nav">
+                <div className="LocalLabbooks__nav-item selected"><a>All</a></div>
+                <div className="LocalLabbooks__nav-item"><a>My LabBooks</a></div>
+                <div className="LocalLabbooks__nav-item"><a>Shared With ME</a></div>
+              </nav>
             </div>
             <div className='LocalLabbooks__labbooks'>
               <div className="LocalLabbooks__sizer">

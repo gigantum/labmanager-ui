@@ -126,7 +126,7 @@ path,
 section,
 prefix,
 chunkLoader) =>{
-  
+
   files.forEach((file, index) =>{
 
   let fileReader = new FileReader();
