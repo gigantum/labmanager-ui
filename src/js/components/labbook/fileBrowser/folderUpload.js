@@ -126,7 +126,7 @@ path,
 section,
 prefix,
 chunkLoader) =>{
-
+  
   files.forEach((file, index) =>{
 
   let fileReader = new FileReader();
@@ -136,7 +136,9 @@ chunkLoader) =>{
     let arrayBuffer = evt.target.result;
     let blob = new Blob([new Uint8Array(arrayBuffer)]);
     let filePath = (prefix !== '/') ? prefix + file.entry.fullPath : file.entry.fullPath;
-
+    if(filePath.indexOf('/') === 0){
+      filePath = filePath.replace('/', '')
+    }
     let data = {
         file: file.file,
         filepath: filePath,
@@ -220,7 +222,7 @@ const FolderUpload = {
           }
         })
 
-        if(directoryAll.length > 1){
+        if(directoryAll.length < 1){
 
           addFiles(filePaths,
           connectionKey,

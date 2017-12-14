@@ -144,7 +144,7 @@ export default class ContainerStatus extends Component {
     @return {string}
   */
   _getContainerStatusText = ({containerStatus, imageStatus}) => {
-    console.log(containerStatus, imageStatus)
+
     let status = (containerStatus === 'RUNNING') ? 'Open' : containerStatus;
     status = (containerStatus === 'NOT_RUNNING') ? 'Closed' : status;
     status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
@@ -189,7 +189,7 @@ export default class ContainerStatus extends Component {
       username,
       'clientMutationId',
       (error) =>{
-        console.log(error)
+      
         if(error){
           console.log(error)
         }else{

@@ -42,12 +42,11 @@ export default function BuildImageMutation(
             type: 'UPLOAD_MESSAGE',
             payload:{
               error: true,
-              message: 'LabBook failed to build',
+              uploadMessage: 'LabBook failed to build',
               showProgressBar: false,
               open: true,
               success: false
             }
-
           })
         }
         callback(error)
