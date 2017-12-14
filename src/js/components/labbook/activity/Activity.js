@@ -210,7 +210,6 @@ class Activity extends Component {
                         {
                           activityRecordsTime[k].map((obj) => {
                           return(<ActivityCard
-
                               labbookName={this.props.labbookName}
                               key={obj.edge.node.id}
                               edge={obj.edge}
