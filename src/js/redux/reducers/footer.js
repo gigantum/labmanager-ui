@@ -26,7 +26,7 @@ export default (
  if (action.type === UPLOAD_ERROR) {
    return {
      ...state,
-     error: action.payload.error,
+    error: action.payload.error,
     showProgressBar: false,
     open: true,
     success: false
