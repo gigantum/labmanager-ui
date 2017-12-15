@@ -110,8 +110,8 @@ export default class LocalLabbookPanel extends Component {
         className='LocalLabbooks__panel flex flex--column justify--space-between'>
 
         <div className="LocalLabbooks__icon-row">
-          <div onClick={() => this.props.goToLabbook(edge.node.name)} className="LocalLabbooks__labbook-icon"></div>
-          <div className="LocalLabbooks__containerStatus flex justify--space-between flex--column">
+
+          <div className="LocalLabbooks__containerStatus">
             <div className={'LocalLabbooks__containerStatus--state ' + status}>
               {status}
             </div>

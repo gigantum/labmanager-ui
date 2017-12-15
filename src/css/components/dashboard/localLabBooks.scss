@@ -143,13 +143,14 @@
 }
 
 .LocalLabbooks__title-add{
-  background: $jet url('../images/icons/add.svg') no-repeat center center;
-  background-size: 10px;
+  background: $lightBlue url('../images/icons/add.svg') no-repeat center center;
+  background-size: 12px;
   height: 20px;
   width: 20px;
   border-radius: 12px;
+  border-width: 0px;
   position: absolute;
-  top: 14px;
+  top: 100px;
   left: 210px;
   transition: all 0.3s;
 
@@ -163,25 +164,9 @@
   cursor: pointer;
 }
 
-.LocalLabbooks__import-icon{
-  background: $azure url('../images/icons/crane.svg') no-repeat center center;
-  background-size: 20px;
-  height: 20px;
-  width: 20px;
-  border-radius: 12px;
-  position: absolute;
-  top: 14px;
-  left: 100px;
-  transition: all 0.3s;
-}
-
 .LocalLabbooks__title:hover{
   .LocalLabbooks__title-add{
-    height: 24px;
-    width: 24px;
-    background-size: 14px;
-    top: 12px;
-    left: 208px;
+    opacity: 1;
   }
 }
 
@@ -220,8 +205,10 @@
 }
 
 .LocalLabbooks__panel--add{
-@include flex(center, row)
+  @include flex(flex-end, column)
+
   height: 300px !important;
+  color: $lightBlue;
 
   .LocalLabbooks__labbook-icon{
     align-self: center;
@@ -229,16 +216,28 @@
     align-items: center;
     position: relative;
     .LocalLabbooks__title-add{
-      top: -10px;
-      left: 44px;
+      top: 75px;
+      left: 70px;
       height: 30px;
       width: 30px;
       border-radius: 15px;
-      border: 2px solid $romanSilver;
+      border: 0px solid $romanSilver;
     }
 
   }
+  .LocalLabbooks__add-text{
+    height: 100px;
+    h4{
+      padding: 5px 0;
+    }
+    p{
+      padding: 5px 0;
+      margin: 0;
+    }
+  }
 }
+
+
 
 .LocalLabbooks__panel--import{
   padding: 0px;
@@ -269,19 +268,15 @@
 }
 
 .LocalLabbooks__labbook-icon{
-  height: 60px;
-  width: 60px;
-  background: $azure url('../images/icons/labbooks.svg') no-repeat center center;
-  border-radius: 36px;
-  background-size: 40px;
+  height: 160px;
+  width: 100px;
+  background: url('../images/icons/labbooks-blue.svg') no-repeat center center;
+  background-size: 200px;
   transition: 0.25s all;
   opacity: 0.85;
 }
 .LocalLabbooks__labbook-icon:hover{
-  height: 64px;
-  width: 64px;
   opacity: 1;
-  margin: -2px 0px 0px -2px;
 }
 
 .LocalLabbooks__export,
@@ -350,9 +345,10 @@
 
 
 .LocalLabbooks__containerStatus{
-  width: 80px;
+  width: 100%;
   color: white;
   font-weight: 100;
+  @include flex(flex-end, row);
 }
 
 .LocalLabbooks__containerStatus--state{

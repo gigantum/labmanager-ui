@@ -197,11 +197,17 @@ class LocalLabbooks extends Component {
               <div
                 key={'addLabbook'}
                 onClick={()=> this.refs.wizardModal._showModal()}
-                className="LocalLabbooks__panel LocalLabbooks__panel--add flex flex--row justify--center">
+                className="LocalLabbooks__panel LocalLabbooks__panel--add">
                 <div
                   // onClick={()=> this._openImport()}
                   className="LocalLabbooks__labbook-icon">
                     <div className="LocalLabbooks__title-add"></div>
+                </div>
+                <div
+                  // onClick={()=> this._openImport()}
+                  className="LocalLabbooks__add-text">
+                    <h4>Create LabBook</h4>
+                    <p>Or drag lbk file here to import.</p>
                 </div>
               </div>
 
