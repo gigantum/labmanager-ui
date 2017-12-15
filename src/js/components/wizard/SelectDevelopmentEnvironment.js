@@ -125,7 +125,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
     return(
       <div className="SelectDevelopmentEnvironment">
 
-        <p> Dev Environment</p>
+        <p className="SelectDevelopmentEnvironment__title">Dev Environment</p>
         <QueryRenderer
           variables={{
             first: 20

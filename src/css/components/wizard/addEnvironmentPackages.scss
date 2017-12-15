@@ -34,7 +34,11 @@
 
 .Environment__modal{
   .AddEnvironmentPackage__inner-container{
-    height: 500px;
+    height: 250px;
+  }
+  .AddEnvironmentPackage__progress-buttons{
+    display: flex;
+    justify-content: center;
   }
   .AddEnvironmentPackage__progress-button{
     display: flex;

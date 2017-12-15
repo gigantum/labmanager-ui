@@ -1,6 +1,27 @@
 .ContainerStatus{
   align-self: center;
+  position: relative;
 }
+.ContainerStatus__button-menu{
+  top: 42px;
+  right: 0px;
+  position: absolute;
+  background: $white;
+  z-index: 400;
+  padding: 15px;
+  border-radius: 8px;
+  @extend .box-shadow;
+  width: 200px;
+}
+
+.ContainerStatus__menu-pointer{
+  top: 30px;
+  right: 75px;
+  position: absolute;
+  z-index: 401;
+  @include triangle('up', 14px, $white);
+}
+
 .ContainerStatus__container-state{
   width: 120px;
   text-align: center;
@@ -11,7 +32,13 @@
   cursor: pointer;
   border: 2px solid rgba(0,0,0,0);
   z-index: 100;
-  background: $background-color;
+  padding-right: 10px;
+  background: $background-color url('./../images/icons/down-arrow-silver.svg') no-repeat 90% center;
+}
+
+.ContainerStatus__container-state--menu-open{
+  @extend .ContainerStatus__container-state;
+  background: $background-color url('./../images/icons/up-arrow-silver.svg') no-repeat 90% center;
 }
 
 .ContainerStatus__container-state.Open{
@@ -19,10 +46,10 @@
   background-size: 20px;
 }
 .ContainerStatus__container-state.Building{
-  border: 1px solid $azure;
+  border: 3px solid $goldenLemon;
 }
 .ContainerStatus__container-state.Closed{
-  border: 3px solid $jet;
+  border: 3px solid $crimson;
   background-size: 20px;
 }
 
@@ -36,18 +63,18 @@
   opacity: 0.75;
 }
 
-.ContainerStatus__container-state.open:hover{
-  background: $turquise;
-  color: $white;
-}
-.ContainerStatus__container-state.Closed:hover{
-  background: $jet;
-  color: $white;
-}
-.ContainerStatus__container-state.Building:hover{
-  background: $azure;
-  color: $white;
-}
+// .ContainerStatus__container-state.open:hover{
+//   //background: $turquise;
+//   color: $turquise;
+// }
+// .ContainerStatus__container-state.Closed:hover{
+//   color: $crimson;
+//   // color: $white;
+// }
+// .ContainerStatus__container-state.Building:hover{
+//   color: $goldenLemon;
+// //  color: $white;
+// }
 
 .ContainerStatus__plugins{
   position: relative;
@@ -69,6 +96,7 @@
   background: #aaa url('./../images/icons/rocket.svg') no-repeat center -3px;
   background-size: 30px;
 }
+
 .ContainerStatus__plugins-title{
   text-align: center;
   width: 100%;

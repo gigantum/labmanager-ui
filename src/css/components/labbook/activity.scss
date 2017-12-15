@@ -435,13 +435,13 @@
   @extend .fa-gears;
 }
 .ActivityCard__badge--labbook{
-  background: url('./../images/icons/labbooks-selected.svg') no-repeat center center;
-  background-size: 40px;
+  background: url('./../images/icons/labbooks-selected.svg') no-repeat center -20px;
+  background-size: 100px;
 }
 
 .ActivityDetail__badge--labbook{
-  background: url('./../images/icons/labbooks-selected.svg') no-repeat center center;
-  background-size: 20px;
+  background: url('./../images/icons/labbooks-selected.svg') no-repeat center 0px;
+  background-size: 40px;
 }
 
 .ActivityCard__collapsed-container,

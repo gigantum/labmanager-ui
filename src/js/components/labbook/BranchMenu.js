@@ -29,9 +29,31 @@ export default class UserNote extends Component {
     }
 
     this._openMenu = this._openMenu.bind(this)
+    this._closeMenu = this._closeMenu.bind(this)
     this._toggleModal = this._toggleModal.bind(this)
     this._createNewBranch = this._createNewBranch.bind(this)
     this._sync = this._sync.bind(this)
+  }
+
+  /**
+   * attach window listener evetns here
+  */
+  componentDidMount(){
+    window.addEventListener('click', this._closeMenu)
+  }
+  /**
+   * detach window listener evetns here
+  */
+  componentWillUnmount() {
+
+    window.removeEventListener('click', this._closeMenu)
+  }
+  _closeMenu(evt){
+    let isBranchMenu = evt.target.className.indexOf('BranchMenu') > -1
+
+    if(!isBranchMenu && this.state.menuOpen ){
+      this.setState({menuOpen: false})
+    }
   }
   /**
     @param {string} branchName
@@ -74,6 +96,7 @@ export default class UserNote extends Component {
     sets state on createBranchVisible and toggles modal cover
   */
   _toggleModal(value){
+    this.setState({menuOpen: false})
     if(!this.state[value]){
       document.getElementById('modal__cover').classList.remove('hidden')
     }else{
@@ -132,7 +155,7 @@ export default class UserNote extends Component {
 
     let remote = 'ssh://git@repo.gigantum.io:9922/root/' + this.props.labbookName + '.git'
     let self = this;
-
+    this.setState({menuOpen: false})
     store.dispatch({
       type: 'UPLOAD_MESSAGE',
       payload: {
@@ -317,10 +340,6 @@ export default class UserNote extends Component {
       }
     )
   }
-
-  _togglePublish(){
-    this.setState({'addedRemoteThisSession': !this.state.addedRemoteThisSession})
-  }
   render(){
     const {tags} = this.state;
 
@@ -366,6 +385,7 @@ export default class UserNote extends Component {
               <button
                 disabled={(this.state.remoteURL.length === 0)}
                 onClick={() => this._addRemote()}
+
                 >
                 Add Remote
               </button>
@@ -374,19 +394,21 @@ export default class UserNote extends Component {
           <button onClick={()=>{this._openMenu()}} className="BranchMenu__button"></button>
           <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
           <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
-            <ul>
+            <ul className="BranchMenu__list">
               <li className="BranchMenu__item--new-branch">
-                <a onClick={()=>{this._toggleModal('createBranchVisible')}}>New Branch</a>
+                <a className="BranchMenu__list-button"
+                  onClick={()=>{this._toggleModal('createBranchVisible')}}>New Branch</a>
               </li>
-              <li className="BranchMenu__item--merge" onClick={()=>{this._togglePublish()}}>Merge</li>
+              <li className="BranchMenu__item--merge">Merge</li>
               <li className="BranchMenu__item--deadend">Dead-end</li>
               <li className="BranchMenu__item--favorite">Favorite</li>
             </ul>
-            <hr />
+            <hr calssName="BranchMenu__line"/>
             {/* <button>Publish</button> */}
             {!this.state.addedRemoteThisSession &&
               <div className="BranchMenu__publish">
                 <button
+                  className="BranchMenu__remote-button"
                   onClick={()=>{this._addRemote()}}
                   >
                   Publish
@@ -397,7 +419,7 @@ export default class UserNote extends Component {
             { this.state.addedRemoteThisSession &&
               <div className="BranchMenu__sync">
                 <button
-
+                  className="BranchMenu__button"
                   onClick={() => this._sync()}
                   >
                   Sync Branch

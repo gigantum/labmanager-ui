@@ -92,6 +92,13 @@ h6 {
   font-weight: 100;
 }
 
+h1 { font-size: $h1-fontsize; line-height: 110%;}
+h2 { font-size: $h2-fontsize; line-height: 110%;}
+h3 { font-size: $h3-fontsize; line-height: 110%;}
+h4 { font-size: $h4-fontsize; line-height: 110%;}
+h5 { font-size: $h5-fontsize; line-height: 110%;}
+h6 { font-size: $h6-fontsize; line-height: 110%;}
+
 h6{
   font-size: 1.2rem;
 }

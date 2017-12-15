@@ -219,6 +219,8 @@ const FolderUpload = {
                 section)
 
             directoryAll.push(directoryPromise)
+          }else{
+            existingPaths.push(path)
           }
         })
 
@@ -233,8 +235,11 @@ const FolderUpload = {
           section,
           prefix,
           chunkLoader)
+
+          filePaths = [];//must empty file list for nested files
         }
         else{
+
           Promise.all(directoryAll).then((result) =>{
             addFiles(filePaths,
             connectionKey,
@@ -245,12 +250,14 @@ const FolderUpload = {
             section,
             prefix,
             chunkLoader)
-
+            filePaths = [];//must empty file list for nested files
           })
         }
 
         if(index < files.length){
+
           fileCheck(files[index])
+
         }
       })
     }

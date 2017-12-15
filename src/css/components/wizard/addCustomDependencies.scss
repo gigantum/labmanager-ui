@@ -82,11 +82,15 @@
 
 .Environment__modal{
   .AddCustomDependencies__inner-container{
-    height: 500px;
+    height: 400px;
   }
   .AddCustomDependencies__progress-button{
     display: flex;
     justify-content: space-around;
     visibility: hidden;
+  }
+  .AddCustomDependencies__progress-buttons{
+    display: flex;
+    justify-content: center;
   }
 }

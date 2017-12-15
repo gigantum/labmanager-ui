@@ -151,8 +151,8 @@ class LocalLabbooks extends Component {
                 <div
                   onClick={()=> this._closeLabbook()}
                   className="LocalLabbooks__rename-close">
-                  X
                 </div>
+                <h4 className="LocalLabbooks__modal-title">Rename Labbook</h4>
                 <input
                   onKeyUp={(evt)=> this._setLabbookTitle(evt)}
                   className="LocalLabbooks__rename-input"

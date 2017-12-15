@@ -89,8 +89,14 @@
 
 .Environment__modal{
   .SelectDevelopmentEnvironment__inner-container{
-    height: 500px;
+    height: 400px;
+    margin: 20px 0;
   }
+  .SelectBaseImage__progress-buttons{
+    display: flex;
+    justify-content: center;
+  }
+
   .SelectDevelopmentEnvironment__progress-button{
     display: flex;
     justify-content: space-around;

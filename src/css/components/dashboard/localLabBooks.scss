@@ -92,12 +92,16 @@
 .LocalLabbooks__rename-error{
   color: $azure;
 }
+.LocalLabbooks__modal-title{
+  color: $azure;
+  text-align: center;
+  border-bottom: 1px solid $azure;
+  padding: 10px;
+  margin-top: 0px;
 
+}
 .LocalLabbooks__rename-close{
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  cursor: pointer;
+  @include close();
 }
 
 .LocalLabbooks__labbooks{
@@ -229,9 +233,10 @@
     height: 100px;
     h4{
       padding: 5px 0;
+      margin: 0;
     }
     p{
-      padding: 5px 0;
+      padding: 0px 0;
       margin: 0;
     }
   }
@@ -268,9 +273,9 @@
 }
 
 .LocalLabbooks__labbook-icon{
-  height: 160px;
+  height: 100px;
   width: 100px;
-  background: url('../images/icons/labbooks-blue.svg') no-repeat center center;
+  background: url('../images/icons/labbooks-blue.svg') no-repeat center -52px;
   background-size: 200px;
   transition: 0.25s all;
   opacity: 0.85;
@@ -317,17 +322,15 @@
 }
 
 .LocalLabbooks__info-row{
-  height: 100px;
+  height: 80px;
   padding: 20px;
   color: $romanSilver;
   font-size: 12px;
 }
 .LocalLabbooks__owner{
-  height: 60px;
-  line-height: 22px;
-  align-self: center;
-  align-content: center;
-  align-items: center;
+  height: 20px;
+  line-height: 20px;
+  margin: 2px;
 }
 .LocalLabbooks__owner-icon{
   background: url('../images/icons/user.svg') no-repeat center center;

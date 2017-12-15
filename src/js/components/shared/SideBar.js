@@ -34,16 +34,14 @@ export default class SideBar extends Component {
               </Link>
             </li>
             <li className={!isLabbooks ? 'SideBar__list-item--selected' : 'SideBar__list-item'}>
-              <Link
+              <div
                 className={!isLabbooks ? 'SideBar__nav-item SideBar__nav-item--datasets SideBar__nav-item--selected' : 'SideBar__nav-item SideBar__nav-item--datasets'}
                 to={{pathname: '/datasets'}}
-              >
+                >
                 <div className={!isLabbooks ? 'SideBar__icon SideBar__icon--datasets-selected' : 'SideBar__icon SideBar__icon--datasets'}></div>
                 Datasets
-              </Link>
+               </div>
             </li>
-
-
           </ul>
 
           {

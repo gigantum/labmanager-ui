@@ -128,6 +128,7 @@ export default class LocalLabbookPanel extends Component {
             <div className="LocalLabbooks__edit-button" onClick={() => this.props.renameLabbookModal(edge.node.name)}>
             </div>
           </div>
+          <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner.username}</p>
           <p
             onClick={() => this.props.goToLabbook(edge.node.name)} className="LocalLabbooks__description">
             {edge.node.description}
@@ -136,8 +137,6 @@ export default class LocalLabbookPanel extends Component {
 
         <div className="LocalLabbooks__info-row flex flex--row justify--space-between">
           <div className="LocalLabbooks__owner flex flex--row">
-              <div>Owner</div>
-              <div className="LocalLabbooks__owner-icon"></div>
               {/* <div> {owner.username}</div> */}
 
           </div>

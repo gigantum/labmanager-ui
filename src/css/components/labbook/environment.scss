@@ -56,8 +56,17 @@
 
 .Environment__modal{
   position: fixed;
+  .SelectDevelopmentEnvironment__title,
+  .AddEnvironmentPackage__title,
+  .AddCustomDependencies__title{
+    font-size: 1.5em;
+    text-align: center;
+    border-bottom: 1px solid $azure;
+    padding: 5px;
+    color: $azure;
+  }
 
-  @include modal(600px, 800px)
+  @include modal(500px, 800px)
 
   .SelectBaseImage__progress-button{
     display: none;

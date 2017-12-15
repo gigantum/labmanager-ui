@@ -145,8 +145,9 @@ export default class AddEnvironmentPackage extends React.Component {
 
     return(
       <div className="AddEnvironmentPackage">
+          <p className="AddEnvironmentPackage__title">Install dependencies via Package Manager</p>
           <div className="AddEnvironmentPackage__inner-container">
-            <p>Install dependencies via Package Manager</p>
+
 
 
             {
