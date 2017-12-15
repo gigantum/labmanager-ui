@@ -210,7 +210,7 @@ export default class AddCustomDependencies extends React.Component {
     return(
       <div className="AddCustomDependencies">
 
-        <p> Select Custom Dependencies </p>
+        <p className="AddCustomDependencies__title"> Select Custom Dependencies </p>
 
         <QueryRenderer
           variables={{

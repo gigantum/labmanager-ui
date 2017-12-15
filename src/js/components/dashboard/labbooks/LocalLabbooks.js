@@ -14,9 +14,6 @@ import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
 //utils
 import Validation from 'JS/utils/Validation'
 
-
-
-
 let isLoadingMore = false;
 
 class LocalLabbooks extends Component {
@@ -154,8 +151,8 @@ class LocalLabbooks extends Component {
                 <div
                   onClick={()=> this._closeLabbook()}
                   className="LocalLabbooks__rename-close">
-                  X
                 </div>
+                <h4 className="LocalLabbooks__modal-title">Rename Labbook</h4>
                 <input
                   onKeyUp={(evt)=> this._setLabbookTitle(evt)}
                   className="LocalLabbooks__rename-input"
@@ -181,23 +178,36 @@ class LocalLabbooks extends Component {
               {...props}
             />
 
-            <div className="LocalLabbooks__title-bar flex flex--row justify--space-between">
-              <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
+            <div className="LocalLabbooks__title-bar">
+              <h6 className="LocalLabbooks__username">{localStorage.getItem('username')}</h6>
+              <h2 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
                 LabBooks
-                <div className="LocalLabbooks__title-add"></div>
-              </h4>
+              </h2>
 
+            </div>
+            <div className="LocalLabbooks__menu">
+              <nav className="LocalLabbooks__nav">
+                <div className="LocalLabbooks__nav-item selected"><a>All</a></div>
+                <div className="LocalLabbooks__nav-item"><a>My LabBooks</a></div>
+                <div className="LocalLabbooks__nav-item"><a>Shared With Me</a></div>
+              </nav>
             </div>
             <div className='LocalLabbooks__labbooks'>
               <div className="LocalLabbooks__sizer">
               <div
                 key={'addLabbook'}
                 onClick={()=> this.refs.wizardModal._showModal()}
-                className="LocalLabbooks__panel LocalLabbooks__panel--add flex flex--row justify--center">
+                className="LocalLabbooks__panel LocalLabbooks__panel--add">
                 <div
                   // onClick={()=> this._openImport()}
                   className="LocalLabbooks__labbook-icon">
                     <div className="LocalLabbooks__title-add"></div>
+                </div>
+                <div
+                  // onClick={()=> this._openImport()}
+                  className="LocalLabbooks__add-text">
+                    <h4>Create LabBook</h4>
+                    <p>Or drag lbk file here to import.</p>
                 </div>
               </div>
 

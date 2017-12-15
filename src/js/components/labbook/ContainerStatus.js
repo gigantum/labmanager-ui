@@ -43,7 +43,7 @@ export default class ContainerStatus extends Component {
       'containerStatus': props.containerStatus,
       'imageStatus': props.imageStatus,
       'pluginsMenu': false,
-      'contanerMenuOpen': false
+      'containerMenuOpen': false
     }
     tempStatus = "Closed";
 
@@ -51,6 +51,7 @@ export default class ContainerStatus extends Component {
     this._checkJupyterStatus = this._checkJupyterStatus.bind(this)
     this._getContainerStatusText = this._getContainerStatusText.bind(this)
     this._openCloseContainer = this._openCloseContainer.bind(this)
+    this._closePopupMenus = this._closePopupMenus.bind(this)
   }
   /**
   *  @param {}
@@ -87,7 +88,34 @@ export default class ContainerStatus extends Component {
       }
     }
     this.interval = setInterval(this._tick, 2000);
+
+    window.addEventListener("click", this._closePopupMenus)
   }
+  /**
+   *  @param {event} evt
+   *  closes menu box when menu is open and the menu has not been clicked on
+   *
+  */
+  _closePopupMenus(evt){
+
+    let containerMenuClicked = (evt.target.className.indexOf('ContainerStatus__container-state') > -1) ||
+    (evt.target.className.indexOf('ContainerStatus__button-menu') > -1)
+
+    if(!containerMenuClicked &&
+    this.state.containerMenuOpen){
+      this.setState({
+        containerMenuOpen: false
+      })
+    }
+
+    let pluginsMenuClicked = (evt.target.className.indexOf('ContainerStatus__plugins') > -1)
+    if(!pluginsMenuClicked && this.state.pluginsMenu){
+      this.setState({
+        pluginsMenu: false
+      })
+    }
+  }
+
   /**
   *  @param {string} nextProps
   *  update container state before rendering new props
@@ -124,6 +152,7 @@ export default class ContainerStatus extends Component {
   componentWillUnmount() {
     //memory clean up
     clearInterval(this.interval);
+    window.removeEventListener("click", this._closePopupMenus)
   }
 
   /**
@@ -189,10 +218,11 @@ export default class ContainerStatus extends Component {
       username,
       'clientMutationId',
       (error) =>{
+
         if(error){
           console.log(error)
         }else{
-          console.log('stopped container')
+          console.log('started container')
         }
       }
     )
@@ -206,12 +236,18 @@ export default class ContainerStatus extends Component {
 
       if(status === 'Open'){
 
-        this.setState({status: 'Stopping'});
+        this.setState({
+          status: 'Stopping',
+          contanerMenuOpen: false
+        });
         this._stopContainerMutation(this.props.labbookName)
 
       }else if(status === 'Closed'){
 
-        this.setState({status: 'Starting'})
+        this.setState({
+          status: 'Starting',
+          contanerMenuOpen: false
+        })
         this._startContainerMutation(this.props.labbookName)
 
       }else{
@@ -260,8 +296,16 @@ export default class ContainerStatus extends Component {
     })
   }
 
+  _showMenu(){
+    this.setState({
+      containerMenuOpen: !this.state.containerMenuOpen
+    })
+  }
+
   _containerStatus(status, key){
     let jupyterLink = (window.location.hostname.indexOf('localhost') > -1) ? window.location.protocol + '//' + window.location.hostname + ':8888' : 'http://jupyter.gigantum.io'
+
+    let containerStatusCss = this.state.containerMenuOpen ? "ContainerStatus__container-state--menu-open " : "ContainerStatus__container-state ";
     return(
       <div className="ContainerStatus flex flex--row">
         { (status === 'Open') &&
@@ -275,7 +319,7 @@ export default class ContainerStatus extends Component {
                   className={this.state.pluginsMenu ? 'ContainerStatus__plugins-menu': 'ContainerStatus__plugins-menu hidden'}>
                   <div className="ContainerStatus__plugins-title">Launch</div>
                   <ul className="ContainerStatus__plugins-list">
-                    <li>
+                    <li className="ContainerStatus__plugins-list-item">
                       <a
                         className="ContainerStatus__plugins-item jupyter-icon"
                         href={jupyterLink}
@@ -289,14 +333,28 @@ export default class ContainerStatus extends Component {
             </div>
         }
         <div
-          onClick={(evt) => this._openCloseContainer(evt, status)}
+          onClick={(evt) => this._showMenu()}
           key={key}
-          className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
+          className={containerStatusCss + ((this.props.isBuilding) ? 'Building' : status)}>
           {this.props.isBuilding ? 'Building' : status}
         </div>
         {
-          this.state.contanerMenuOpen &&
-          <div></div>
+          this.state.containerMenuOpen &&
+          <div className="ContainerStatus__menu-pointer"></div>
+        }
+        {
+          this.state.containerMenuOpen &&
+          <div className="ContainerStatus__button-menu">
+              {
+                (status === "Open") &&
+                <button onClick={(evt) => this._openCloseContainer(evt, status)}>Stop Container</button>
+              }
+
+              {
+                (status === "Closed") &&
+                <button onClick={(evt) => this._openCloseContainer(evt, status)}>Start Container</button>
+              }
+          </div>
         }
       </div>)
   }

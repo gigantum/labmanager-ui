@@ -88,7 +88,7 @@
 
 .BranchMenu__item:hover{
   color: $turquise;
-  a{color: $turquise};
+  .BranchMenu__item--new-branch{color: $turquise};
 }
 .BranchMenu__item--new-branch{
   @extend .BranchMenu__item;
@@ -99,16 +99,19 @@
   @extend .BranchMenu__item;
   background: url('./../images/icons/merge.svg') no-repeat left center;
   background-size: 16px;
+  opacity: .3;
 }
 .BranchMenu__item--deadend{
   @extend .BranchMenu__item;
   background: url('./../images/icons/deadend.svg') no-repeat left center;
   background-size: 16px;
+  opacity: .3;
 }
 .BranchMenu__item--favorite{
   @extend .BranchMenu__item;
   background: url('./../images/icons/favestar.svg') no-repeat left center;
   background-size: 16px;
+  opacity: .3;
 }
 
 .BranchMenu__sync{

@@ -1,7 +1,7 @@
 .AddEnvironmentPackage{
   padding: 20px;
   color: $font-grey;
-  height: 410px;
+  height: 330px;
 }
 
 .AddEnvironmentPackage__select{
@@ -9,7 +9,7 @@
 }
 
 .AddEnvironmentPackage__inner-container{
-  height: 380px;
+  height: 300px;
   overflow: auto;
 }
 
@@ -34,7 +34,11 @@
 
 .Environment__modal{
   .AddEnvironmentPackage__inner-container{
-    height: 500px;
+    height: 250px;
+  }
+  .AddEnvironmentPackage__progress-buttons{
+    display: flex;
+    justify-content: center;
   }
   .AddEnvironmentPackage__progress-button{
     display: flex;

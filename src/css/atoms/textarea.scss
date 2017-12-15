@@ -1,0 +1,10 @@
+textarea{
+//  height: 20px !important;
+  line-height: 20px;
+  margin: 5px;
+  border: 1px solid $romanSilver !important;
+}
+textarea:focus{
+  border: 1px solid $turquise !important;
+  box-shadow: none !important;
+}

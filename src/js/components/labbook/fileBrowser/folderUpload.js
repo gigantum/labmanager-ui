@@ -136,7 +136,9 @@ chunkLoader) =>{
     let arrayBuffer = evt.target.result;
     let blob = new Blob([new Uint8Array(arrayBuffer)]);
     let filePath = (prefix !== '/') ? prefix + file.entry.fullPath : file.entry.fullPath;
-
+    if(filePath.indexOf('/') === 0){
+      filePath = filePath.replace('/', '')
+    }
     let data = {
         file: file.file,
         filepath: filePath,
@@ -217,10 +219,12 @@ const FolderUpload = {
                 section)
 
             directoryAll.push(directoryPromise)
+          }else{
+            existingPaths.push(path)
           }
         })
 
-        if(directoryAll.length > 1){
+        if(directoryAll.length < 1){
 
           addFiles(filePaths,
           connectionKey,
@@ -231,8 +235,11 @@ const FolderUpload = {
           section,
           prefix,
           chunkLoader)
+
+          filePaths = [];//must empty file list for nested files
         }
         else{
+
           Promise.all(directoryAll).then((result) =>{
             addFiles(filePaths,
             connectionKey,
@@ -243,12 +250,14 @@ const FolderUpload = {
             section,
             prefix,
             chunkLoader)
-
+            filePaths = [];//must empty file list for nested files
           })
         }
 
         if(index < files.length){
+
           fileCheck(files[index])
+
         }
       })
     }
