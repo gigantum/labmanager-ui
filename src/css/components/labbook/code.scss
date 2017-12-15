@@ -38,7 +38,7 @@
 .Code__import-file{
   cursor: pointer;
 
-  color: $font-grey;
+  color: $romanSilver;
 }
 
 .Code__import-text{
@@ -75,7 +75,7 @@
 
   text-align: left;
 
-  color: $font-grey;
+  color: $romanSilver;
 
   font-weight: 100;
 }
@@ -93,34 +93,34 @@
       height: 50px;
       margin-right: 20px;
 
-      border-color: $grey-background;
+      border-color: $lightGrey;
       border-radius: 15px !important;
     }
 
     input[type='search']:focus{
-      border-color: $activity;
-      border-bottom: 1px solid $activity;
-      box-shadow: 0 1px 0 0 $activity;
+      border-color: $turquise;
+      border-bottom: 1px solid $turquise;
+      box-shadow: 0 1px 0 0 $turquise;
     }
 
     .btn{
       padding: 0 10px;
 
-      color: $charcoal;
+      color: $jet;
       background-color: initial;
       box-shadow: none;
     }
     .btn:hover{
-      color: $font-grey;
+      color: $romanSilver;
     }
   }
 
   .files{
     .file.selected, .folder.selected{
-      background: $grey-background;
+      background: $lightGrey;
     }
     th{
-      color: $charcoal;
+      color: $jet;
     }
   }
 
@@ -130,7 +130,7 @@
     padding: 10px;
 
     border-radius: 15px;
-    background-color: $grey-background;
+    background-color: $lightGrey;
 
     li{
       margin: 10px 0 !important;
