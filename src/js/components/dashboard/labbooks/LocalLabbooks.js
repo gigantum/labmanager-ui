@@ -189,7 +189,7 @@ class LocalLabbooks extends Component {
               <nav className="LocalLabbooks__nav">
                 <div className="LocalLabbooks__nav-item selected"><a>All</a></div>
                 <div className="LocalLabbooks__nav-item"><a>My LabBooks</a></div>
-                <div className="LocalLabbooks__nav-item"><a>Shared With ME</a></div>
+                <div className="LocalLabbooks__nav-item"><a>Shared With Me</a></div>
               </nav>
             </div>
             <div className='LocalLabbooks__labbooks'>
