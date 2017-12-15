@@ -419,7 +419,7 @@ export default class UserNote extends Component {
             { this.state.addedRemoteThisSession &&
               <div className="BranchMenu__sync">
                 <button
-                  className="BranchMenu__button"
+                  className="BranchMenu__sync-button"
                   onClick={() => this._sync()}
                   >
                   Sync Branch
