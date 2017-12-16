@@ -127,7 +127,7 @@ section,
 prefix,
 chunkLoader) =>{
 
-  files.forEach((file, index) =>{
+  files.forEach((file, count) =>{
 
   let fileReader = new FileReader();
 
@@ -150,11 +150,42 @@ chunkLoader) =>{
         section: section
       }
 
-      chunkLoader(filePath, file, data, true, files, index)
+      chunkLoader(filePath, file, data, true, files, count)
     }
 
     fileReader.readAsArrayBuffer(file.file);
   });
+}
+/**
+*  @param {array} folderNames
+*  gets every possible folder combinations for a filepath
+*  input [root,folder,subfolder] => root/folder/subfolder/
+*  output [root, root/folder, root/folder/subfolder]
+*  @return {array}
+*/
+const getFolderPaths = (folderNames, prefix) =>{
+  let folderPaths = []
+
+  folderNames.forEach((folderName, index)=>{
+      if(index > 0){
+        let folderPath = folderPaths[index - 1] + '/' + folderName;
+        if(folderPaths.indexOf(folderPath) <  0){
+          folderPaths.push(folderPaths[index - 1] + '/' + folderName)
+        }
+      }else{
+        let folderPath = ((folderName + '/') === prefix) ? folderName : prefix + folderName
+        if(folderPaths.indexOf(folderPath) < 0 ){
+          folderPaths.push(folderPath)
+        }
+      }
+  })
+
+  return folderPaths
+
+}
+
+const getMakeDirectoryPromises = () =>{
+  
 }
 
 const FolderUpload = {
@@ -166,33 +197,19 @@ const FolderUpload = {
   *  @return {boolean}
   */
   uploadFiles: (files, prefix, labbookName, section, connectionKey, sectionId, chunkLoader) =>{
-    let index = 0;
+    let count = 0;//
     let existingPaths = []
     let filePaths = []
 
     function fileCheck(fileItem){
-      index++
+      count++
       let filePath = fileItem.entry.fullPath.replace('/' + fileItem.file.name, '')
       const path = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
       const folderNames = path.split('/')
 
       filePaths.push(fileItem)
 
-      let folderPaths = []
-
-      folderNames.forEach((folderName, index)=>{
-          if(index > 0){
-            let folderPath = folderPaths[index - 1] + '/' + folderName;
-            if(folderPaths.indexOf(folderPath) <  0){
-              folderPaths.push(folderPaths[index - 1] + '/' + folderName)
-            }
-          }else{
-            let folderPath = ((folderName + '/') === prefix) ? folderName : prefix + folderName
-            if(folderPaths.indexOf(folderPath) < 0 ){
-              folderPaths.push(folderPath)
-            }
-          }
-      })
+      let folderPaths = getFolderPaths(folderNames, prefix);
 
 
       let all = []
@@ -254,15 +271,15 @@ const FolderUpload = {
           })
         }
 
-        if(index < files.length){
+        if(count < files.length){
 
-          fileCheck(files[index])
+          fileCheck(files[count])
 
         }
       })
     }
 
-    fileCheck(files[index])
+    fileCheck(files[count])
 
 
   }
