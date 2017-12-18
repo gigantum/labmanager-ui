@@ -25,7 +25,8 @@ export default class UserNote extends Component {
       'isValid': true,
       'createBranchVisible': false,
       'addRemoteVisible': false,
-      'addedRemoteThisSession': !(this.props.defaultRemote === null)
+      'addedRemoteThisSession': !(this.props.defaultRemote === null),
+      'showCollaborators': false
     }
 
     this._openMenu = this._openMenu.bind(this)
@@ -340,11 +341,62 @@ export default class UserNote extends Component {
       }
     )
   }
+  /**
+  *  @param {}
+  *  sets state of Collaborators
+  *  @return {}
+  */
+  _toggleCollaborators(){
+    if(!this.state.showCollaborators){
+      document.getElementById('modal__cover').classList.remove('hidden')
+    }else{
+      document.getElementById('modal__cover').classList.add('hidden')
+    }
+    this.setState({showCollaborators: !this.state.showCollaborators})
+  }
+  /**
+  *  @param {event} evt
+  *  sets state of Collaborators
+  *  @return {}
+  */
+  _addCollaborator(evt){
+    let collaborator = evt.target.value;
+
+    if(evt.key === "ENTER"){
+      //waiting for backend updates
+    }
+  }
+
+
   render(){
     const {tags} = this.state;
 
     return(
       <div className="BranchMenu flex flex--column">
+
+        <div className={this.state.showCollaborators ? 'BranchModal--collaborators': 'hidden'}>
+          <div
+            onClick={()=>{this._toggleCollaborators()}}
+            className="BranchModal--close"></div>
+          <h4
+            className="BranchModal__header">Collaborators</h4>
+          <hr />
+          <div className="BranchMenu__add">
+            <input
+              onChange={()=>this._addCollaborator()}
+              className="BranchMenu__add-collaborators"
+              type="text"
+              placeholder="Add Collaborators" />
+            <button
+              className="BranchMenu__add-button">Add</button>
+          </div>
+
+          <ul>
+            {
+
+            }
+          </ul>
+        </div>
           <div
 
             className={ this.state.createBranchVisible ? 'BranchModal' : 'hidden'}>
@@ -356,7 +408,7 @@ export default class UserNote extends Component {
             <hr />
             <input
               className="BranchCard__name-input"
-              onKeyUp={(evt)=>{this._setNewBranchName(evt)}}
+              onKeyUp={(evt)=>{ this._setNewBranchName(evt) }}
               type="text"
               placeholder="Branch name"
             />
@@ -394,16 +446,23 @@ export default class UserNote extends Component {
           <button onClick={()=>{this._openMenu()}} className="BranchMenu__button"></button>
           <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
           <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
+
             <ul className="BranchMenu__list">
+              <li className="BranchMenu__item--collaborators">
+                <p
+                  onClick={()=> this._toggleCollaborators()}
+                  className='BranchMenu__item--collaborators-button'>Collaborators</p>
+
+              <hr />
+              </li>
               <li className="BranchMenu__item--new-branch">
-                <a className="BranchMenu__list-button"
-                  onClick={()=>{this._toggleModal('createBranchVisible')}}>New Branch</a>
+                New Branch
               </li>
               <li className="BranchMenu__item--merge">Merge</li>
               <li className="BranchMenu__item--deadend">Dead-end</li>
               <li className="BranchMenu__item--favorite">Favorite</li>
             </ul>
-            <hr calssName="BranchMenu__line"/>
+            <hr className="BranchMenu__line"/>
             {/* <button>Publish</button> */}
             {!this.state.addedRemoteThisSession &&
               <div className="BranchMenu__publish">

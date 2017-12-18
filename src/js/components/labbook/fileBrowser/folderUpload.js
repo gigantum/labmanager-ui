@@ -184,8 +184,51 @@ const getFolderPaths = (folderNames, prefix) =>{
 
 }
 
-const getMakeDirectoryPromises = () =>{
-  
+/**
+* @param {array,string,string,string} folderPaths,labbookName,path,section
+* created a promise that checks it folder exists
+* pushes promise into an array all
+*/
+const getFolderExistsQueryPromises = (folderPaths, labbookName, path, section) =>{
+  let all = []
+  folderPaths.forEach((folderPath)=>{
+    const variables = {labbookName: labbookName, path: path, owner: localStorage.getItem('username')};
+
+    let promise = checkIfFolderExists(variables, section)
+
+    all.push(promise)
+
+  })
+
+  return all
+}
+
+/**
+* @param {array,string,string,string} folderPaths,labbookName,path,section
+* created a promise that checks it folder exists
+* pushes promise into an array all
+*/
+const getMakeDirectoryPromises = (labbooks, labbookName, path, section, connectionKey, sectionId, existingPaths) =>{
+  let directoryAll = []
+
+  labbooks.forEach((response)=>{
+
+    if(response.labbook[section].files === null){
+      let directoryPromise = makeDirectory(
+          connectionKey,
+          localStorage.getItem('username'),
+          labbookName,
+          sectionId,
+          path,
+          section)
+
+      directoryAll.push(directoryPromise)
+    }else{
+      existingPaths.push(path)
+    }
+  })
+
+  return directoryAll
 }
 
 const FolderUpload = {
@@ -201,28 +244,25 @@ const FolderUpload = {
     let existingPaths = []
     let filePaths = []
 
+    /**
+    *  @param {object} fileItem
+    *  recursive function that loops through a object that replicates a folders structure
+    *  pushes fileItems into an array to make a flat keyed structure - similar to s3
+    *  @return {boolean}
+    */
     function fileCheck(fileItem){
+      filePaths.push(fileItem)
       count++
+
       let filePath = fileItem.entry.fullPath.replace('/' + fileItem.file.name, '')
       const path = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
       const folderNames = path.split('/')
 
-      filePaths.push(fileItem)
-
       let folderPaths = getFolderPaths(folderNames, prefix);
 
+      let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, path, section)
 
-      let all = []
-      folderPaths.forEach((folderPath)=>{
-        const variables = {labbookName: labbookName, path: path, owner: localStorage.getItem('username')};
-
-        let promise = checkIfFolderExists(variables, section)
-
-        all.push(promise)
-
-      })
-
-      Promise.all(all).then((labbooks)=>{
+      Promise.all(directoryExistsAll).then((labbooks)=>{
         let directoryAll = []
         labbooks.forEach((response)=>{
 
