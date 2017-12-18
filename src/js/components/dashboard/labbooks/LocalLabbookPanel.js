@@ -99,6 +99,8 @@ export default class LocalLabbookPanel extends Component {
   }
 
   }
+
+  
   render(){
     let edge = this.props.edge;
     let status = this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)

@@ -122,7 +122,7 @@ const dispatchUploadFinished = () => {
   })
 
   setTimeout(()=>{
-    
+
     document.getElementById('footerProgressBar').style.width = "0%";
     store.dispatch({
       type: 'RESET_FOOTER_STORE',
@@ -388,6 +388,10 @@ export default class FileBrowserWrapper extends Component {
             return edge && (oldKey === edge.node.key)
           })[0]
 
+          let edgesToDelete = this.props.files.edges.filter((edge) => {
+            return edge && (edge.node.key.indefOf(oldKey) > -1)
+          })[0]
+
           DeleteLabbookFileMutation(
             this.props.connection,
             localStorage.getItem('username'),
@@ -396,6 +400,7 @@ export default class FileBrowserWrapper extends Component {
             edgeToDelete.node.id,
             oldKey,
             this.props.section,
+            edgesToDelete,
             (response, error) => {
               if(error){
                 console.error(error)
@@ -454,6 +459,10 @@ export default class FileBrowserWrapper extends Component {
       return edge && (folderKey === edge.node.key)
     })[0]
 
+    let edgesToDelete = this.props.files.edges.filter((edge) => {
+      return edge && (edge.node.key.indexOf(folderKey) > -1)
+    })
+
     DeleteLabbookFileMutation(
       this.props.connection,
       localStorage.getItem('username'),
@@ -462,6 +471,7 @@ export default class FileBrowserWrapper extends Component {
       edgeToDelete.node.id,
       folderKey,
       this.props.section,
+      edgesToDelete,
       (response, error) => {
         if(error){
           console.error(error)
@@ -489,6 +499,7 @@ export default class FileBrowserWrapper extends Component {
       edgeToDelete.node.id,
       fileKey,
       this.props.section,
+      [],
       (response, error) => {
         if(error){
           console.error(error)

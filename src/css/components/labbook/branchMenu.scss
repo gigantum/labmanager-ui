@@ -14,8 +14,14 @@
   position: relative;
   padding: 15px;
   @include flex(space-between, column);
-  @include modal(300px, 500px);
+  @include modal(500px, 500px);
 }
+
+.BranchModal--collaborators{
+  @extend .BranchModal;
+  justify-content: flex-start;
+}
+
 .BranchModal__header{
   padding: 5px 0 5px 0px;
   color: $azure;
@@ -27,6 +33,7 @@
   @extend .BranchModal__header;
   background: url('./../images/icons/new-branch.svg') no-repeat left 5px;
   background-size: 40px;
+
 }
 
 .BranchModal--close{
@@ -66,6 +73,7 @@
   hr{
     background-color: $lightGrey;
     border-color: $lightGrey;
+    border-width: 1px;
   }
 }
 
@@ -94,6 +102,7 @@
   @extend .BranchMenu__item;
   background: url('./../images/icons/new-branch.svg') no-repeat left center;
   background-size: 16px;
+  opacity: .3;
 }
 .BranchMenu__item--merge{
   @extend .BranchMenu__item;
@@ -114,6 +123,72 @@
   opacity: .3;
 }
 
+.BranchMenu__item--collaborators{
+  @extend .BranchMenu__item;
+  background: url('./../images/icons/user.svg') no-repeat left 7px;
+  background-size: 16px;
+  @extend .BranchMenu__item;
+  a{
+    color: $romanSilver;
+    cursor: pointer;
+  }
+  p{
+    padding: 0px;
+  }
+}
+
+.BranchMenu__add-collaborators{
+  width: 300px !important;
+}
+
+.BranchMenu__add-button{
+  width: 100px;
+  height: 30px;
+  align-self: center;
+  padding: 0;
+}
+
 .BranchMenu__sync{
   width: 100%
+}
+
+.BranchMenu__item--collaborators-button{
+  background-size: 16px;
+  width: 100%;
+  cursor: pointer;
+  padding: 2px 0 2px 20px;
+  margin: 0 0 5px 0;
+}
+
+.BranchMenu__collaborators-modal{
+  @include modal(400px, 500px);
+  padding: 15px;
+
+}
+
+.BranchMenu__close-button{
+  @include close();
+}
+
+.BranchMenu__collaborators-modal--hidden{
+  display: hidden;
+}
+
+.BranchMenu__add{
+  @include flex(space-between, row);
+}
+
+
+
+
+.BranchMenu__item--collaborators-menu{
+  height: auto;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.BranchMenu__item--collaborators-menu--collapsed{
+  height: 0;
+  max-height: 0;
+  overflow: hidden
 }

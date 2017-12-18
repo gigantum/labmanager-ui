@@ -26,7 +26,8 @@ class LocalLabbooks extends Component {
       oldLabbookName: '',
       newLabbookName:'',
       renameError: '',
-      showNamingError: false
+      showNamingError: false,
+      filter: 'all'
     }
 
     this._goToLabbook = this._goToLabbook.bind(this)
@@ -139,11 +140,45 @@ class LocalLabbooks extends Component {
     )
   }
 
+  /**
+   * @param {string} filter
+   sets state updates filter
+  */
+  _setFilter(filter){
+      this.setState({filter: filter})
+  }
+
+
+  /**
+   * @param {array, string} localLabbooks.edges,filter
+
+    @return {array} filteredLabbooks
+  */
+
+  _filterLabbooks(labbooks, filter){
+    let filteredLabbooks = [];
+    let username = localStorage.getItem('username')
+    if(filter === 'users'){
+      filteredLabbooks = labbooks.filter((labbook)=>{
+          return labbook.node.owner.username === username
+      })
+
+    }else if(filter === "others"){
+      filteredLabbooks = labbooks.filter((labbook)=>{
+          return labbook.node.owner.username !== username
+      })
+    }else{
+      filteredLabbooks = labbooks;
+    }
+
+    return filteredLabbooks
+  }
+
   render(){
       let {props} = this;
 
       if(props.feed.localLabbooks){
-
+        let labbooks = this._filterLabbooks(props.feed.localLabbooks.edges, this.state.filter)
         return(
           <div className="LocalLabbooks">
             { this.state.labbookModalVisible &&
@@ -187,9 +222,9 @@ class LocalLabbooks extends Component {
             </div>
             <div className="LocalLabbooks__menu">
               <nav className="LocalLabbooks__nav">
-                <div className="LocalLabbooks__nav-item selected"><a>All</a></div>
-                <div className="LocalLabbooks__nav-item"><a>My LabBooks</a></div>
-                <div className="LocalLabbooks__nav-item"><a>Shared With Me</a></div>
+                <div className={this.state.filter === 'all' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('all')}>All</a></div>
+                <div className={this.state.filter === 'users' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('users')}>My LabBooks</a></div>
+                <div className={this.state.filter === 'others' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('others')}>Shared With Me</a></div>
               </nav>
             </div>
             <div className='LocalLabbooks__labbooks'>
@@ -199,15 +234,12 @@ class LocalLabbooks extends Component {
                 onClick={()=> this.refs.wizardModal._showModal()}
                 className="LocalLabbooks__panel LocalLabbooks__panel--add">
                 <div
-                  // onClick={()=> this._openImport()}
                   className="LocalLabbooks__labbook-icon">
                     <div className="LocalLabbooks__title-add"></div>
                 </div>
                 <div
-                  // onClick={()=> this._openImport()}
                   className="LocalLabbooks__add-text">
                     <h4>Create LabBook</h4>
-                    <p>Or drag lbk file here to import.</p>
                 </div>
               </div>
 
@@ -218,7 +250,7 @@ class LocalLabbooks extends Component {
 
               {
 
-                this.props.feed.localLabbooks.edges.map((edge) => {
+                labbooks.map((edge) => {
 
                   return (
                     <LocalLabbookPanel
