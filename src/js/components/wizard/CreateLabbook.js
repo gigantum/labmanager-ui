@@ -45,7 +45,7 @@ export default class CreateLabbook extends React.Component {
     if(this.state.remoteURL.length > 0){
       const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
       const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
-      let remote = this.state.remoteUR + '.git'
+      let remote = this.state.remoteURL + '.git'
 
       store.dispatch(
         {
@@ -57,6 +57,9 @@ export default class CreateLabbook extends React.Component {
             uploadMessage: 'Importing LabBook please wait'
           }
         })
+        console.log(owner,
+          labbookName,
+          remote)
       ImportRemoteLabbookMutation(
         owner,
         labbookName,

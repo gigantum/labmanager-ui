@@ -203,6 +203,17 @@
   @include flex(space-between, row);
 }
 
+.BranchMenu__collaborator--item{
+  @include flex(space-between, row);
+  border-bottom: 1px solid $lightGrey;
+  padding: 10px 0;
+}
+
+.BranchMenu__collaborators-list{
+  height: 340px;
+  overflow: auto;
+}
+
 
 
 

@@ -329,8 +329,8 @@ export default class UserNote extends Component {
   */
   _removeCollaborator(collaborator){
     DeleteCollaboratorMutation(
-      localStorage.getItem('username'),
       this.props.labbookName,
+      localStorage.getItem('username'),
       collaborator,
       (error)=>{
         if(error){
@@ -351,7 +351,7 @@ export default class UserNote extends Component {
 
   render(){
     const {tags} = this.state;
-
+    console.log(this.props.collaborators)
     return(
       <div className="BranchMenu flex flex--column">
 
@@ -374,16 +374,20 @@ export default class UserNote extends Component {
               className="BranchMenu__add-button">Add</button>
           </div>
 
-          <ul className="BranchMenu__collaborators">
+
             { this.props.collaborators &&
-              this.props.collaborators.map((collaborator) => {
-                <li className="BranchMenu__collaborator">
-                  <div>{collaborator}</div>
-                  <button onClick={()=> this._removeCollaborator(collaborator)}>Remove</button>
-                </li>
-              })
+              <ul className="BranchMenu__collaborators-list">
+                {
+                  this.props.collaborators.map((collaborator) => {
+                    return (<li className="BranchMenu__collaborator--item">
+                      <div>{collaborator}</div>
+                      <button onClick={()=> this._removeCollaborator(collaborator)}>Remove</button>
+                    </li>)
+                  })
+                }
+              </ul>
             }
-          </ul>
+
         </div>
           <div
 
