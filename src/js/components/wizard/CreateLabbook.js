@@ -57,9 +57,7 @@ export default class CreateLabbook extends React.Component {
             uploadMessage: 'Importing LabBook please wait'
           }
         })
-        console.log(owner,
-          labbookName,
-          remote)
+  
       ImportRemoteLabbookMutation(
         owner,
         labbookName,
@@ -94,7 +92,7 @@ export default class CreateLabbook extends React.Component {
               })
             BuildImageMutation(
             labbookName,
-            localStorage.getItem('username'),
+            owner,
             (error)=>{
               if(error){
                 console.error(error)

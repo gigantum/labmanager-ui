@@ -26,7 +26,7 @@ let unsubscribe;
 class Labbook extends Component {
   constructor(props){
   	super(props);
-
+    console.log(props)
     store.dispatch({
       type: 'INITIALIZE',
       payload:{
