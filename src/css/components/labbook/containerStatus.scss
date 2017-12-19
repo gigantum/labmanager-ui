@@ -56,11 +56,13 @@
 .ContainerStatus__container-state.Starting{
   border: 1px solid $turquise;
   opacity: 0.75;
+  background: none;
 }
 
 .ContainerStatus__container-state.Stopping{
   border: 1px solid $jet;
   opacity: 0.75;
+  background: none;
 }
 
 .ContainerStatus__plugins{

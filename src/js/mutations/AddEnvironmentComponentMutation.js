@@ -8,6 +8,14 @@ import environment from 'JS/createRelayEnvironment'
 const mutation = graphql`
   mutation AddEnvironmentComponentMutation($input: AddEnvironmentComponentInput!){
     addEnvironmentComponent(input: $input){
+      environmentComponent{
+        id
+        repository
+        namespace
+        name
+        version
+        componentClass
+      }
       clientMutationId
     }
   }
@@ -63,7 +71,7 @@ export default function AddEnvironmentComponentMutation(
 
       },
       updater: (store, response) => {
-      
+
       }
     },
   )

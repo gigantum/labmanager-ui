@@ -34,7 +34,7 @@
   border-bottom: 1px solid $lightGrey;
   position: relative;
   box-shadow: none;
-  height: 34px;
+  height: 31px;
   background-color: inherit;
   line-height: normal;
   white-space: nowrap;
@@ -48,6 +48,7 @@
     cursor: pointer;
     bottom: -2px;
   }
+
   .Labbook__navigation-item--overview{
     padding: 5px 5px;
   }
@@ -355,10 +356,10 @@
 }
 
 .LocalLabbooks__containerStatus--state{
-  border-radius: 12px;
-  padding: 2px 5px;
-  height: 24px;
-  line-height: 16px;
+  border-radius: 15px;
+  padding: 0px 10px;
+  height: 30px;
+  line-height: 24px;
   color: $jet;
 }
 
