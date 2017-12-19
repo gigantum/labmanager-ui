@@ -46,7 +46,7 @@ export default class UserNote extends Component {
   componentDidMount(){
     window.addEventListener('click', this._closeMenu)
     let username = localStorage.getItem('username')
-    if((this.props.owner === username) && !this.props.canManageCollaborators){
+    if((this.props.owner === username) && this.props.defaultRemote && !this.props.canManageCollaborators){
       store.dispatch({
         type: 'UPLOAD_MESSAGE',
         payload: {
@@ -242,7 +242,7 @@ export default class UserNote extends Component {
       }
     })
     SyncLabbookMutation(
-      localStorage.getItem('username'),
+      localStorage.getItem('owner'),
       this.props.labbookName,
       (error)=>{
         if(error){

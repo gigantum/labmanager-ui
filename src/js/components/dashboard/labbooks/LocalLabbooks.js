@@ -59,7 +59,7 @@ class LocalLabbooks extends Component {
   *  routes to that labbook
   */
   _goToLabbook = (labbookName, owner) => {
-    this.setState({'labbookName': labbookName, owner: owner})
+    this.setState({'labbookName': labbookName, 'owner': owner})
 
     this.props.history.replace(`/labbooks/${owner}/${labbookName}`)
   }

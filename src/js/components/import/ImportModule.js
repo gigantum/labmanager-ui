@@ -70,7 +70,7 @@ const dispatchFinishedStatus = (filepath) =>{
      type: 'IMPORT_SUCCESS',
      payload: {
        uploadMessage: `${route} LabBook is Ready`,
-       labbookName: route, //route is labbookName
+       labbookName: localStorage.getItem("username") + "/" + route, //route is labbookName
        success: true,
        open: true
      }
