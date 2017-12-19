@@ -209,7 +209,6 @@ storeDidUpdate = (labbook) => {
   render(){
 
     const {labbookName} = this.props;
-    const username = localStorage.getItem('username');
 
     if(this.props.labbook){
       return(
@@ -220,7 +219,7 @@ storeDidUpdate = (labbook) => {
              <div className="Labbook__component-container flex flex--column">
                <div className="Labbook__header-conatiner">
                  <div className="Labbook__name-title">
-                   {username + '/' + labbookName}
+                   {this.props.labbook.owner.username + '/' + labbookName}
                  </div>
                  <BranchMenu
                   collaborators={this.props.labbook.collaborators}
@@ -228,6 +227,7 @@ storeDidUpdate = (labbook) => {
                   defaultRemote={this.props.labbook.defaultRemote}
                   labbookName={labbookName}
                   labbookId={this.props.labbook.id}
+                  owner={this.props.labbook.owner.username}
                   />
               </div>
                <div className="Labbook__header flex flex--row justify--space-between">
@@ -392,6 +392,9 @@ export default createFragmentContainer(
           updatesAvailableCount
           isRepoClean
           defaultRemote
+          owner{
+            username
+          }
           activeBranch{
             id
             name
