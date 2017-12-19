@@ -223,6 +223,8 @@ storeDidUpdate = (labbook) => {
                    {username + '/' + labbookName}
                  </div>
                  <BranchMenu
+                  collaborators={this.props.labbook.collaborators}
+                  canManageCollaborators={this.props.labbook.canManageCollaborators}
                   defaultRemote={this.props.labbook.defaultRemote}
                   labbookName={labbookName}
                   labbookId={this.props.labbook.id}
@@ -405,6 +407,9 @@ export default createFragmentContainer(
             containerStatus
             imageStatus
           }
+
+          collaborators
+          canManageCollaborators
 
           ...Environment_labbook
           ...Overview_labbook

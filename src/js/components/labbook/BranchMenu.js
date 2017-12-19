@@ -7,7 +7,9 @@ import validation from 'JS/utils/Validation'
 import CreateBranchMutation from 'Mutations/branches/CreateBranchMutation'
 import AddLabbookRemoteMutation from 'Mutations/branches/AddLabbookRemoteMutation'
 import PushActiveBranchToRemoteMutation from 'Mutations/branches/PushActiveBranchToRemoteMutation'
-import PullActiveBranchFromRemoteMutation from 'Mutations/branches/PullActiveBranchFromRemoteMutation'
+import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
+import AddCollaboratorMutation from 'Mutations/AddCollaboratorMutation'
+import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
 //store
 import store from 'JS/redux/store'
 
@@ -26,7 +28,8 @@ export default class UserNote extends Component {
       'createBranchVisible': false,
       'addRemoteVisible': false,
       'addedRemoteThisSession': !(this.props.defaultRemote === null),
-      'showCollaborators': false
+      'showCollaborators': false,
+      'newCollaborator': ''
     }
 
     this._openMenu = this._openMenu.bind(this)
@@ -153,8 +156,8 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _addRemote(){
-
-    let remote = 'ssh://git@repo.gigantum.io:9922/root/' + this.props.labbookName + '.git'
+    let username = localStorage.getItem('username')
+    let remote = `ssh://git@repo.gigantum.io:9922/${username}/${this.props.labbookName}.git`
     let self = this;
     this.setState({menuOpen: false})
     store.dispatch({
@@ -250,25 +253,21 @@ export default class UserNote extends Component {
     store.dispatch({
       type: 'UPLOAD_MESSAGE',
       payload: {
-        uploadMessage: 'Pulling from remote ...',
+        uploadMessage: 'Syncing with remote ...',
         error: false,
         open: true,
         success: false
       }
     })
-    PullActiveBranchFromRemoteMutation(
+    SyncLabbookMutation(
       localStorage.getItem('username'),
       this.props.labbookName,
-      'origin',
-      this.props.labbookId,
       (error)=>{
         if(error){
-          console.log(error)
-
           store.dispatch({
             type: 'UPLOAD_MESSAGE',
             payload: {
-              uploadMessage: 'Could not pull from remote',
+              uploadMessage: `Could not sync ${this.props.labbookName}`,
               error: true,
               open: true,
               success: false
@@ -278,45 +277,12 @@ export default class UserNote extends Component {
           store.dispatch({
             type: 'UPLOAD_MESSAGE',
             payload: {
-              uploadMessage: 'Pushing to remote ...',
+              uploadMessage: `Successfully synched ${this.props.labbookName}`,
               error: false,
               open: true,
               success: false
             }
-
           })
-
-          PushActiveBranchToRemoteMutation(
-            localStorage.getItem('username'),
-            this.props.labbookName,
-            'origin',
-            this.props.labbookId,
-            (error)=>{
-              console.log(error)
-              if(error){
-                console.log(error)
-                store.dispatch({
-                  type: 'UPLOAD_MESSAGE',
-                  payload: {
-                    uploadMessage: 'Could not push to remote',
-                    error: false,
-                    open: true,
-                    success: false
-                  }
-                })
-              }
-
-              store.dispatch({
-                type: 'UPLOAD_MESSAGE',
-                payload: {
-                  uploadMessage: 'Sync Complete',
-                  error: false,
-                  open: true,
-                  success: false
-                }
-              })
-            }
-          )
         }
       }
     )
@@ -352,7 +318,8 @@ export default class UserNote extends Component {
     }else{
       document.getElementById('modal__cover').classList.add('hidden')
     }
-    this.setState({showCollaborators: !this.state.showCollaborators})
+    this.setState({showCollaborators: !this.state.showCollaborators, newCollaborator: ''})
+    this.inputTitle.value =''
   }
   /**
   *  @param {event} evt
@@ -360,11 +327,59 @@ export default class UserNote extends Component {
   *  @return {}
   */
   _addCollaborator(evt){
-    let collaborator = evt.target.value;
 
-    if(evt.key === "ENTER"){
+    console.log(evt.type)
+    if((evt.type === 'click') || (evt.key === "ENTER")){
       //waiting for backend updates
+      AddCollaboratorMutation(
+        this.props.labbookName,
+        localStorage.getItem('username'),
+        this.state.newCollaborator,
+        (error)=>{
+          this.setState({newCollaborator: ''})
+          if(error){
+            console.log(error)
+            store.dispatch({
+              type: 'UPLOAD_MESSAGE',
+              payload: {
+                uploadMessage: `Could not add collaborator`,
+                error: false,
+                open: true,
+                success: false
+              }
+            })
+          }
+        }
+
+      )
+    }else{
+      this.setState({newCollaborator: evt.target.value})
     }
+  }
+  /**
+  *  @param {string} collaborator
+  *  sets state of Collaborators
+  *  @return {}
+  */
+  _removeCollaborator(collaborator){
+    DeleteCollaboratorMutation(
+      localStorage.getItem('username'),
+      this.props.labbookName,
+      collaborator,
+      (error)=>{
+        if(error){
+          store.dispatch({
+            type: 'UPLOAD_MESSAGE',
+            payload: {
+              uploadMessage: `Could not remove collaborator`,
+              error: false,
+              open: true,
+              success: false
+            }
+          })
+        }
+      }
+    )
   }
 
 
@@ -383,17 +398,24 @@ export default class UserNote extends Component {
           <hr />
           <div className="BranchMenu__add">
             <input
-              onChange={()=>this._addCollaborator()}
+              ref={el => this.inputTitle = el}
+              onChange={(evt)=>this._addCollaborator(evt)}
               className="BranchMenu__add-collaborators"
               type="text"
               placeholder="Add Collaborators" />
             <button
+              onClick={(evt)=>this._addCollaborator(evt)}
               className="BranchMenu__add-button">Add</button>
           </div>
 
-          <ul>
-            {
-
+          <ul className="BranchMenu__collaborators">
+            { this.props.collaborators &&
+              this.props.collaborators.map((collaborator) => {
+                <li className="BranchMenu__collaborator">
+                  <div>{collaborator}</div>
+                  <button onClick={()=> this._removeCollaborator(collaborator)}>Remove</button>
+                </li>
+              })
             }
           </ul>
         </div>
@@ -449,9 +471,10 @@ export default class UserNote extends Component {
 
             <ul className="BranchMenu__list">
               <li className="BranchMenu__item--collaborators">
-                <p
+                <button
+                  disabled={this.props.canManageCollaborators}
                   onClick={()=> this._toggleCollaborators()}
-                  className='BranchMenu__item--collaborators-button'>Collaborators</p>
+                  className='BranchMenu__item--collaborators-button'>Collaborators</button>
 
               <hr />
               </li>

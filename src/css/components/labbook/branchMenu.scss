@@ -156,8 +156,33 @@
   background-size: 16px;
   width: 100%;
   cursor: pointer;
-  padding: 2px 0 2px 20px;
   margin: 0 0 5px 0;
+  background-color: $white;
+  border: 0px solid $white;
+  text-align: left;
+  padding: 0px;
+  color: $romanSilver;
+}
+.BranchMenu__item--collaborators-button:hover,
+.BranchMenu__item--collaborators-button:focus{
+  background-size: 16px;
+  color: $turquise;
+  width: 100%;
+  cursor: pointer;
+
+  margin: 0 0 5px 0;
+  background-color: $white;
+  border: 0px solid $white;
+}
+
+.BranchMenu__item--collaborators-button:disabled,
+.BranchMenu__item--collaborators-button:disabled:hover{
+  background-size: 16px;
+  width: 100%;
+  cursor: pointer;
+  margin: 0 0 5px 0;
+  background-color: $white;
+  border: 0px solid $white;
 }
 
 .BranchMenu__collaborators-modal{

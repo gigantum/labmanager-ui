@@ -326,11 +326,11 @@ export default class ImportModule extends Component {
 
            }
          }).catch((error)=>{
-
+           console.log(error)
            store.dispatch({
              type: 'UPLOAD_MESSAGE',
              payload: {
-               uploadMessage: 'Computation Error',
+               uploadMessage: 'Import failed',
                error: true
              }
            })

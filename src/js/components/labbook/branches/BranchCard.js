@@ -58,7 +58,7 @@ export default class BranchCard extends Component {
         <div className="BranchCard__button">
           <button
             onClick={()=>{this._checkoutBranch()}}
-            disabled={isCurrentBranch}
+            disabled={true}
             >
             Switch To Branch
           </button>

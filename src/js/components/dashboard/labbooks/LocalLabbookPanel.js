@@ -61,6 +61,7 @@ export default class LocalLabbookPanel extends Component {
       })
 
       ExportLabbookMutation(username, edge.node.name, (response, error)=>{
+
         if(response.exportLabbook){
           JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
 
@@ -79,6 +80,18 @@ export default class LocalLabbookPanel extends Component {
 
               exportClassList.remove('LocalLabbooks__export--downloading')
           }).catch((error)=>{
+
+              if(error){
+                store.dispatch({
+                  type: 'UPLOAD_MESSAGE',
+                  payload: {
+                    uploadMessage: `Export failed`,
+                    open: true,
+                    success: false,
+                    error: true
+                  }
+                })
+              }
               exportClassList.remove('LocalLabbooks__export--downloading')
           })
       }else{
@@ -100,7 +113,7 @@ export default class LocalLabbookPanel extends Component {
 
   }
 
-  
+
   render(){
     let edge = this.props.edge;
     let status = this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
