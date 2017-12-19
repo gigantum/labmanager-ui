@@ -5,7 +5,7 @@ import {createPaginationContainer, graphql} from 'react-relay'
 import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
 
 let outputRootFolder = 'output'
-
+let owner
 class OutputDataBrowser extends Component {
   constructor(props){
   	super(props);
@@ -15,6 +15,7 @@ class OutputDataBrowser extends Component {
       'message': '',
       'files': []
     }
+    owner = this.props.owner
     this.setRootFolder = this.setRootFolder.bind(this)
   }
 
@@ -74,6 +75,7 @@ class OutputDataBrowser extends Component {
           parentId={this.props.outputId}
           favoriteConnection="OutputFavorites_favorites"
           connection="OutputDataBrowser_allFiles"
+          owner={this.props.owner}
           {...this.props}
         />
       )
@@ -124,12 +126,12 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-      const username = localStorage.getItem('username')
+
 
       return {
         first: count,
         cursor,
-        owner: username,
+        owner: owner,
         name: props.labbookName
       };
     },

@@ -58,10 +58,10 @@ class LocalLabbooks extends Component {
   *  @param {string} labbookName - inputs a labbook name
   *  routes to that labbook
   */
-  _goToLabbook = (labbookName) => {
-    this.setState({'labbookName': labbookName})
+  _goToLabbook = (labbookName, owner) => {
+    this.setState({'labbookName': labbookName, owner: owner})
 
-    this.props.history.replace(`/labbooks/${labbookName}`)
+    this.props.history.replace(`/labbooks/${owner}/${labbookName}`)
   }
 
   /**
@@ -160,12 +160,12 @@ class LocalLabbooks extends Component {
     let username = localStorage.getItem('username')
     if(filter === 'users'){
       filteredLabbooks = labbooks.filter((labbook)=>{
-          return labbook.node.owner.username === username
+          return (labbook.node.owner.username === username)
       })
 
     }else if(filter === "others"){
       filteredLabbooks = labbooks.filter((labbook)=>{
-          return labbook.node.owner.username !== username
+          return (labbook.node.owner.username !== username)
       })
     }else{
       filteredLabbooks = labbooks;

@@ -137,7 +137,7 @@ export default class LocalLabbookPanel extends Component {
           <div className="LocalLabbooks__title-row">
             <h4
               className="LocalLabbooks__panel-title"
-              onClick={() => this.props.goToLabbook(edge.node.name)}>
+              onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner.username)}>
               {edge.node.name}
             </h4>
             <div className="LocalLabbooks__edit-button" onClick={() => this.props.renameLabbookModal(edge.node.name)}>
@@ -145,7 +145,7 @@ export default class LocalLabbookPanel extends Component {
           </div>
           <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner.username}</p>
           <p
-            onClick={() => this.props.goToLabbook(edge.node.name)} className="LocalLabbooks__description">
+            onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner.username)} className="LocalLabbooks__description">
             {edge.node.description}
           </p>
         </div>

@@ -260,7 +260,7 @@ export default class ContainerStatus extends Component {
     return(
       <QueryRenderer
         variables={{
-          'owner': username,
+          'owner': this.props.owner,
           'name': this.props.labbookName,
           'first': Math.floor(Math.random() * 10000)
           }

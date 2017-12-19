@@ -8,6 +8,8 @@ import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrappe
 let codeRootFolder = ''
 let totalCount = 2
 
+let owner;
+
 class CodeBrowser extends Component {
   constructor(props){
   	super(props);
@@ -15,6 +17,7 @@ class CodeBrowser extends Component {
     this.state = {
       rootFolder: ''
     }
+    owner = this.props.owner
     this.setRootFolder = this.setRootFolder.bind(this)
   }
 
@@ -78,6 +81,7 @@ class CodeBrowser extends Component {
             parentId={this.props.codeId}
             connection="CodeBrowser_allFiles"
             favoriteConnection="CodeFavorites_favorites"
+            owner={this.props.owner}
             {...this.props}
           />
       )
@@ -128,12 +132,12 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-      const username = localStorage.getItem('username')
+
       totalCount += count
       return {
         first: totalCount,
         cursor: cursor,
-        owner: username,
+        owner: owner,
         name: props.labbookName
       };
     },

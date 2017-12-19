@@ -28,14 +28,14 @@ export default class FavoriteCard extends Component {
     hides editMode
   */
   _updateDescription(evt, favorite){
-    const username = localStorage.getItem('username')
+
     let filepath = favorite.key.replace(this.props.section + '/', '')
 
     if(evt.keyCode === 13){
         UpdateFavoriteMutation(
           this.props.connection,
           this.props.parentId,
-          username,
+          this.props.owner,
           this.props.labbookName,
           favorite.id,
           filepath,
@@ -61,11 +61,10 @@ export default class FavoriteCard extends Component {
   */
   _removeFavorite(node){
 
-    const username = localStorage.getItem('username')
     RemoveFavoriteMutation(
       this.props.connection,
       this.props.parentId,
-      username,
+      this.props.owner,
       this.props.labbookName,
       this.props.section,
       node.index,

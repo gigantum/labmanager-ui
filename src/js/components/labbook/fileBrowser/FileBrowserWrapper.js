@@ -173,7 +173,7 @@ export default class FileBrowserWrapper extends Component {
 
     MakeLabbookDirectoryMutation(
       this.props.connection,
-      localStorage.getItem('username'),
+      self.props.owner,
       this.props.labbookName,
       this.props.parentId,
       key,
@@ -282,7 +282,7 @@ export default class FileBrowserWrapper extends Component {
             let data = {
               file: file,
               filepath: filepath,
-              username: localStorage.getItem('username'),
+              username: self.props.owner,
               accessToken: localStorage.getItem('access_token'),
               connectionKey: self.props.connection,
               labbookName: self.props.labbookName,
@@ -338,7 +338,7 @@ export default class FileBrowserWrapper extends Component {
 
     MakeLabbookDirectoryMutation(
       this.props.connection,
-      localStorage.getItem('username'),
+      self.props.owner,
       this.props.labbookName,
       this.props.parentId,
       newKey,
@@ -354,7 +354,7 @@ export default class FileBrowserWrapper extends Component {
 
                 MoveLabbookFileMutation(
                   this.props.connection,
-                  localStorage.getItem('username'),
+                  self.props.owner,
                   this.props.labbookName,
                   this.props.parentId,
                   edge,
@@ -394,7 +394,7 @@ export default class FileBrowserWrapper extends Component {
 
           DeleteLabbookFileMutation(
             this.props.connection,
-            localStorage.getItem('username'),
+            self.props.owner,
             this.props.labbookName,
             this.props.parentId,
             edgeToDelete.node.id,
@@ -431,7 +431,7 @@ export default class FileBrowserWrapper extends Component {
     if(edgeToMove){
       MoveLabbookFileMutation(
         this.props.connection,
-        localStorage.getItem('username'),
+        this.props.owner,
         this.props.labbookName,
         this.props.parentId,
         edgeToMove,
@@ -465,7 +465,7 @@ export default class FileBrowserWrapper extends Component {
 
     DeleteLabbookFileMutation(
       this.props.connection,
-      localStorage.getItem('username'),
+      this.props.owner,
       this.props.labbookName,
       this.props.parentId,
       edgeToDelete.node.id,
@@ -493,7 +493,7 @@ export default class FileBrowserWrapper extends Component {
 
     DeleteLabbookFileMutation(
       this.props.connection,
-      localStorage.getItem('username'),
+      this.props.owner,
       this.props.labbookName,
       this.props.parentId,
       edgeToDelete.node.id,
@@ -514,10 +514,10 @@ export default class FileBrowserWrapper extends Component {
   *  redirect user to jupyter in callback
   */
   _openJupyter(){
-    let username = localStorage.getItem('username')
+    let username = this.props.owner
     StartContainerMutation(
       this.props.labbookName,
-      username,
+      this.props.owner,
       'clientMutationId',
       (error) =>{
         if(error){
@@ -563,7 +563,7 @@ export default class FileBrowserWrapper extends Component {
   *  triggers file favorite mutation
   */
   handleFileFavoriting(key){
-    const username = localStorage.getItem('username')
+    const owner = this.props.owner
     let fileItem = this.props.files.edges.filter((edge)=>{
 
         if(edge && (edge.node.key === key)){
@@ -573,7 +573,7 @@ export default class FileBrowserWrapper extends Component {
     AddFavoriteMutation(
       this.props.favoriteConnection,
       this.props.parentId,
-      username,
+      owner,
       this.props.labbookName,
       key,
       '',
@@ -641,11 +641,13 @@ export default class FileBrowserWrapper extends Component {
             onDeleteFolder={this.handleDeleteFolder}
             onDeleteFile={this.handleDeleteFile}
             onFileFavoriting={this.handleFileFavoriting}
+            owner={this.props.owner}
           />
 
 
           <DetailPanel
             {...this.state.selectedFile}
+            owner={this.props.owner}
           />
 
 

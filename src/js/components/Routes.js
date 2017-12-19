@@ -94,7 +94,7 @@ export default class Routes extends Component {
                 />
 
                 <Route
-                  path="/labbooks/:labbookName"
+                  path="/labbooks/:owner/:labbookName"
                   render={(parentProps) =>{
                       const username = localStorage.getItem('username')
                       return (<QueryRenderer
@@ -103,7 +103,7 @@ export default class Routes extends Component {
                         variables={
                           {
                             name: parentProps.match.params.labbookName,
-                            owner: username,
+                            owner: parentProps.match.params.owner,
                             first: 2
                           }
                         }
@@ -123,6 +123,7 @@ export default class Routes extends Component {
                                 labbookName={parentProps.match.params.labbookName}
                                 query={props.query}
                                 labbook={props.labbook}
+                                owner={parentProps.match.params.owner}
                                 {...parentProps}
                               />)
                             }

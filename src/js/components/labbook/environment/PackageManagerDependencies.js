@@ -5,12 +5,14 @@ import {createPaginationContainer, graphql} from 'react-relay'
 import AddEnvironmentPackage from 'Components/wizard/AddEnvironmentPackage'
 import Loader from 'Components/shared/Loader'
 let totalCount = 2
+let owner
 class PackageManagerDependencies extends Component {
   constructor(props){
     super(props);
     this.state = {
       'modal_visible': false
     };
+    owner = this.props.owner
 
     this._openModal = this._openModal.bind(this)
     this._hideModal = this._hideModal.bind(this)
@@ -202,12 +204,12 @@ export default createPaginationContainer(
      };
    },
    getVariables(props, {count}, fragmentVariables) {
-    const username = localStorage.getItem('username')
+
     totalCount += count
     let first = totalCount;
     let length = props.environment.packageManagerDependencies.edges.length
     let name = props.labbookName;
-    let owner = username;
+
     let cursor = props.environment.packageManagerDependencies.edges[length-1].cursor
 
      return {

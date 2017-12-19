@@ -4,11 +4,11 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import OutputDataBrowser from './OutputDataBrowser'
 import OutputFavorites from './OutputFavorites'
-
+let owner
 class OutputData extends Component {
   constructor(props){
   	super(props);
-
+    owner = this.props.owner
   }
 
   render(){
@@ -31,6 +31,7 @@ class OutputData extends Component {
               labbookId={this.props.labbookId}
               output={this.props.labbook.output}
               labbookName={this.props.labbookName}
+              owner={this.props.owner}
             />
           </div>
           <div className="Code__header">
@@ -50,6 +51,7 @@ class OutputData extends Component {
               labbook={this.props.labbook}
               output={this.props.labbook.output}
               labbookName={this.props.labbookName}
+              owner={this.props.owner}
             />
           </div>
         </div>

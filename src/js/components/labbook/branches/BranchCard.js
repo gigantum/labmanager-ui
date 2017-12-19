@@ -16,7 +16,7 @@ export default class BranchCard extends Component {
   _checkoutBranch(){
     const branchName = this.props.edge.node.name
     CheckoutBranchMutation(
-    localStorage.getItem('username'),
+    this.props,
     this.props.labbookName,
     branchName,
     this.props.labbookId,

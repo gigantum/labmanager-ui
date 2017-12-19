@@ -78,6 +78,7 @@ export default class ActivityCard extends Component {
                     labbookName={this.props.labbookName}
                     key={node.id + '_activity-details'}
                     node={node}
+                    owner={this.props.owner}
                   />
                 }
               </div>

@@ -74,7 +74,7 @@ export default class ActivityDefaultList extends Component {
     let variables = {
       name: this.props.labbookName,
       keys: this.props.categorizedDetails.detailKeys[this.props.itemKey],
-      owner: localStorage.getItem('username')
+      owner: this.props.owner
     }
 
     let type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase()

@@ -6,12 +6,15 @@ import FavoriteCard from './../fileBrowser/FavoriteCard'
 //mutations
 //
 let counter = 10;
+let owner;
 class CodeFavorites extends Component {
   constructor(props){
   	super(props);
     this.state = {
       loading: false
     }
+
+    owner=this.props.owner
   }
 
   /**
@@ -80,6 +83,7 @@ class CodeFavorites extends Component {
                           section={'code'}
                           connection={"CodeFavorites_favorites"}
                           favorite={edge.node}
+                          owner={this.props.owner}
                         />
                       </div>)
                 })
@@ -146,12 +150,11 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-      const username = localStorage.getItem('username')
 
       return {
         first: count,
         cursor,
-        owner: username,
+        owner: owner,
         name: props.labbookName
       };
     },

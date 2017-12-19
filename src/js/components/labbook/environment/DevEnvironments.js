@@ -4,7 +4,7 @@ import {createPaginationContainer, graphql} from 'react-relay'
 //components
 import SelectDevelopmentEnvironment from 'Components/wizard/SelectDevelopmentEnvironment'
 import Loader from 'Components/shared/Loader'
-
+let owner;
 class DevEnvironments extends Component {
   constructor(props){
   	super(props);
@@ -12,7 +12,7 @@ class DevEnvironments extends Component {
     this.state = {
       'modal_visible': false
     };
-
+    owner= this.props.owner
     this._openModal = this._openModal.bind(this)
     this._hideModal = this._hideModal.bind(this)
     this._setComponent = this._setComponent.bind(this)
@@ -193,11 +193,10 @@ export default createPaginationContainer(
        first: first,
      };
    },
-   getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-    const username = localStorage.getItem('username')
+   getVariables(props, {first, cursor, name}, fragmentVariables) {
     first = 10;
     name = props.labbookName;
-    owner = username;
+
      return {
        first,
        cursor,

@@ -12,7 +12,7 @@ import store from 'JS/redux/store'
 
 
 let unsubscribe;
-
+let owner;
 class Branches extends Component {
   constructor(props){
     super(props)
@@ -22,6 +22,7 @@ class Branches extends Component {
       listPosition: 0,
       width: 0,
     }
+    owner = props.owner
 
   }
   /**
@@ -90,7 +91,7 @@ class Branches extends Component {
       if(activeBranch){
         branches.unshift(activeBranch);
       }
-      
+
       return(
         <div className={this.props.branchesOpen ? 'Branches': 'Branches--closed' }>
 
@@ -114,6 +115,7 @@ class Branches extends Component {
                         edge={edge}
                         labbookName={this.props.labbookName}
                         labbookId={this.props.labbookId}
+                        owner={this.props.owner}
                       />
                   </div>)
               })
@@ -188,12 +190,12 @@ export default createPaginationContainer(
        first: first,
      };
    },
-   getVariables(props, {count, cursor, name, owner}, fragmentVariables) {
-    const username = localStorage.getItem('username')
+   getVariables(props, {count, cursor, name}, fragmentVariables) {
+
     cursor = props.labbook.branches.edges[props.labbook.branches.edges.length - 1].cursor
     let first = count;
     name = props.labbookName;
-    owner = username;
+
      return {
        first,
        cursor,

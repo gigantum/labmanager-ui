@@ -142,7 +142,7 @@ chunkLoader) =>{
     let data = {
         file: file.file,
         filepath: filePath,
-        username: localStorage.getItem('username'),
+        username: localStorage.getItem('owner'),
         accessToken: localStorage.getItem('access_token'),
         connectionKey: connectionKey,
         labbookName: labbookName,
@@ -192,7 +192,7 @@ const getFolderPaths = (folderNames, prefix) =>{
 const getFolderExistsQueryPromises = (folderPaths, labbookName, path, section) =>{
   let all = []
   folderPaths.forEach((folderPath)=>{
-    const variables = {labbookName: labbookName, path: path, owner: localStorage.getItem('username')};
+    const variables = {labbookName: labbookName, path: path, owner: localStorage.getItem('owner')};
 
     let promise = checkIfFolderExists(variables, section)
 
@@ -216,7 +216,7 @@ const getMakeDirectoryPromises = (labbooks, labbookName, path, section, connecti
     if(response.labbook[section].files === null){
       let directoryPromise = makeDirectory(
           connectionKey,
-          localStorage.getItem('username'),
+          localStorage.getItem('owner'),
           labbookName,
           sectionId,
           path,
@@ -269,7 +269,7 @@ const FolderUpload = {
           if(response.labbook[section].files === null){
             let directoryPromise = makeDirectory(
                 connectionKey,
-                localStorage.getItem('username'),
+                localStorage.getItem('owner'),
                 labbookName,
                 sectionId,
                 path,
@@ -285,7 +285,7 @@ const FolderUpload = {
 
           addFiles(filePaths,
           connectionKey,
-          localStorage.getItem('username'),
+          localStorage.getItem('owner'),
           labbookName,
           sectionId,
           path,
@@ -300,7 +300,7 @@ const FolderUpload = {
           Promise.all(directoryAll).then((result) =>{
             addFiles(filePaths,
             connectionKey,
-            localStorage.getItem('username'),
+            localStorage.getItem('owner'),
             labbookName,
             sectionId,
             path,

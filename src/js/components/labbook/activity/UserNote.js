@@ -39,12 +39,12 @@ export default class UserNote extends Component {
   _addNote = () => {
     const tags = this.state.tags.map(tag => {return (tag.text)});
     const {labbookName, labbookId} = this.props;
-    const username = localStorage.getItem('username')
+    const owner = this.props.owner
     CreateUserNoteMutation(
       labbookName,
       this.state.userSummaryText,
       simple.value(),
-      username,
+      owner,
       [],
       tags,
       labbookId,

@@ -29,6 +29,7 @@ class Code extends Component {
               codeId={this.props.labbook.code.id}
               code={this.props.labbook.code}
               labbookName={this.props.labbookName}
+              owner={this.props.owner}
             />
           </div>
           <div className="Code__header">
@@ -47,6 +48,7 @@ class Code extends Component {
               codeId={this.props.labbook.code.id}
               code={this.props.labbook.code}
               labbookName={this.props.labbookName}
+              owner={this.props.owner}
             />
           </div>
         </div>

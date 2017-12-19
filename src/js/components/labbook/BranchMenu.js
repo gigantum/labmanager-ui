@@ -46,11 +46,11 @@ export default class UserNote extends Component {
   componentDidMount(){
     window.addEventListener('click', this._closeMenu)
     let username = localStorage.getItem('username')
-    if((this.props.ownner === username) && !this.props.canManageCollaborators){
+    if((this.props.owner === username) && !this.props.canManageCollaborators){
       store.dispatch({
         type: 'UPLOAD_MESSAGE',
         payload: {
-          uploadMessage: `${username} needs to log out and log back in to validate for remote operations`,
+          uploadMessage: `${username} needs to log out and then log back in to validate for remote operations`,
           error: false,
           open: true,
           success: false
@@ -367,7 +367,7 @@ export default class UserNote extends Component {
 
   render(){
     const {tags} = this.state;
-    console.log(this.props.collaborators)
+
     return(
       <div className="BranchMenu flex flex--column">
 

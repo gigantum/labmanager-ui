@@ -6,7 +6,7 @@ import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrappe
 
 
 let inputRootFolder = ''
-
+let owner;
 class InputDataBrowser extends Component {
   constructor(props){
   	super(props);
@@ -16,7 +16,7 @@ class InputDataBrowser extends Component {
       'message': '',
       'files': []
     }
-
+    owner = this.props.owner
     this.setRootFolder = this.setRootFolder.bind(this)
   }
 
@@ -78,6 +78,7 @@ class InputDataBrowser extends Component {
           connection="InputDataBrowser_allFiles"
           parentId={this.props.inputId}
           favoriteConnection="InputFavorites_favorites"
+          owner={this.props.owner}
           {...this.props}
         />
       )
@@ -129,12 +130,12 @@ export default createPaginationContainer(
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
 
-      const username = localStorage.getItem('username')
+
 
       return {
         first: count,
         cursor,
-        owner: username,
+        owner: owner,
         name: props.labbookName
       };
     },

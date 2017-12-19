@@ -4,10 +4,11 @@ import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
 import FavoriteCard from './../fileBrowser/FavoriteCard'
 //mutations
-//
+let owner
 class OutputFavorites extends Component {
   constructor(props){
   	super(props);
+    this.props.owner
   }
 
   /*
@@ -64,6 +65,7 @@ class OutputFavorites extends Component {
                           section={'output'}
                           connection={"OutputFavorites_favorites"}
                           favorite={edge.node}
+                          owner={this.props.owner}
                         />
                       </div>)
                 })

@@ -4,10 +4,12 @@ import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
 import FavoriteCard from './../fileBrowser/FavoriteCard'
 //mutations
-//
+let owner;
 class InputFavorites extends Component {
   constructor(props){
   	super(props);
+
+    owner = this.props.owner
   }
 
   /*
@@ -65,6 +67,7 @@ class InputFavorites extends Component {
                           section={'input'}
                           connection={"InputFavorites_favorites"}
                           favorite={edge.node}
+                          owner={this.props.owner}
                         />
                       </div>)
                 })
@@ -131,14 +134,14 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-      const username = localStorage.getItem('username')
+
       let root = ""
 
       return {
         first: count,
         cursor,
         root,
-        owner: username,
+        owner: owner,
         name: props.labbookName
       };
     },

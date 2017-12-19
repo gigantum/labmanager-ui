@@ -17,14 +17,16 @@ let pagination = false;
 let isLoadingMore = false;
 
 let counter = 5;
-
+let owner;
 class Activity extends Component {
   constructor(props){
   	super(props);
   	this.state = {
       'modalVisible': false,
-      'isPaginting': false
+      'isPaginting': false,
+
     };
+    owner = this.props.owner
     this._loadMore = this._loadMore.bind(this)
     this._toggleActivity = this._toggleActivity.bind(this)
     this._hideAddActivity = this._hideAddActivity.bind(this)
@@ -198,7 +200,8 @@ class Activity extends Component {
                                   labbookId={this.props.labbook.id}
                                   {...this.props}
                                   labbookName={this.props.labbookName}
-                                  hideLabbookModal={this._hideAddActivity}/>
+                                  hideLabbookModal={this._hideAddActivity}
+                                  owner={this.props.owner}/>
                               }
                             </div>
                         </div>
@@ -213,6 +216,7 @@ class Activity extends Component {
                               labbookName={this.props.labbookName}
                               key={obj.edge.node.id}
                               edge={obj.edge}
+                              owner={this.props.owner}
                             />)
 
                           })
@@ -307,13 +311,12 @@ export default createPaginationContainer(
        first: first,
      };
    },
-   getVariables(props, {count, cursor, name, owner}, fragmentVariables) {
+   getVariables(props, {count, cursor, name}, fragmentVariables) {
 
-    const username = localStorage.getItem('username')
+    // const owner = props.owner
     cursor = pagination ? props.labbook.activityRecords.edges[props.labbook.activityRecords.edges.length - 1].cursor : null
     let first = counter;
     name = props.labbookName;
-    owner = username;
      return {
        first,
        cursor,

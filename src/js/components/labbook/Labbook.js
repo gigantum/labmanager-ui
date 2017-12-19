@@ -26,7 +26,7 @@ let unsubscribe;
 class Labbook extends Component {
   constructor(props){
   	super(props);
-    console.log(props)
+
     store.dispatch({
       type: 'INITIALIZE',
       payload:{
@@ -37,6 +37,8 @@ class Labbook extends Component {
       }
 
     })
+
+    localStorage.setItem('owner', this.props.owner)
     this.state = store.getState()
 
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
@@ -98,7 +100,7 @@ storeDidUpdate = (labbook) => {
         }
       })
 
-      this.props.history.replace(`../../labbooks/${this.props.match.params.labbookName}/${componentName}`)
+      this.props.history.replace(`../../../labbooks/${this.props.owner}/${this.props.match.params.labbookName}/${componentName}`)
     }
 
 
@@ -247,6 +249,7 @@ storeDidUpdate = (labbook) => {
                    labbookId={this.props.labbook.id}
                    setBuildingState={this._setBuildingState}
                    isBuilding={this.state.isBuilding}
+                   owner={this.props.owner}
                  />
               </div>
               <div className={(this.state.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
@@ -259,6 +262,7 @@ storeDidUpdate = (labbook) => {
                   labbook={this.props.labbook}
                   labbookId={this.props.labbook.id}
                   activeBranch={this.props.labbook.activeBranch}
+                  owner={this.props.owner}
                 />
                   <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
               </div>
@@ -288,6 +292,7 @@ storeDidUpdate = (labbook) => {
                           labbookName={labbookName}
                           labbookId={this.props.labbook.id}
                           setBuildingState={this._setBuildingState}
+                          owner={this.props.owner}
                         />)
                       }}
                     />
@@ -302,6 +307,7 @@ storeDidUpdate = (labbook) => {
                               labbook={this.props.labbook}
                               description={this.props.labbook.description}
                               labbookName={labbookName}
+                              owner={this.props.owner}
 
                             />)
                           }}
@@ -318,6 +324,7 @@ storeDidUpdate = (labbook) => {
                               labbookName={labbookName}
                               labbookId={this.props.labbook.id}
                               {...this.props}
+                              owner={this.props.owner}
                             />)
                         }} />
 
@@ -333,6 +340,7 @@ storeDidUpdate = (labbook) => {
                                 labbookName={labbookName}
                                 containerStatus={this.refs.ContainerStatus}
                                 {...this.props}
+                                owner={this.props.owner}
                               />)
                           }}
                         />
@@ -344,6 +352,7 @@ storeDidUpdate = (labbook) => {
                               labbookName={labbookName}
                               labbookId={this.props.labbook.id}
                               setContainerState={this._setContainerState}
+                              owner={this.props.owner}
                             />)
                         }} />
 
@@ -353,6 +362,7 @@ storeDidUpdate = (labbook) => {
                               labbook={this.props.labbook}
                               labbookName={labbookName}
                               labbookId={this.props.labbook.id}
+                              owner={this.props.owner}
                             />)
                         }} />
 
@@ -362,6 +372,7 @@ storeDidUpdate = (labbook) => {
                               labbook={this.props.labbook}
                               labbookId={this.props.labbook.id}
                               labbookName={labbookName}
+                              owner={this.props.owner}
                             />)
                         }} />
                       </Switch>

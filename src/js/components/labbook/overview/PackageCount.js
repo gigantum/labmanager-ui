@@ -43,12 +43,12 @@ let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: Strin
 export default class PackageCount extends Component {
 
   render(){
-    const username = localStorage.getItem('username')
+
     return(
     <QueryRenderer
       variables={{
         name: this.props.labbookName,
-        owner: username,
+        owner: this.props.owner,
         first: 100
       }}
       query={packageQuery}

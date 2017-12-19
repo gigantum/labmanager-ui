@@ -4,7 +4,7 @@ import {createPaginationContainer, graphql} from 'react-relay'
 //components
 import AddCustomDependencies from 'Components/wizard/AddCustomDependencies'
 import Loader from 'Components/shared/Loader'
-
+let owner;
 
 class CustomDependencies extends Component {
   constructor(props){
@@ -12,12 +12,12 @@ class CustomDependencies extends Component {
     this.state = {
       'modal_visible': false
     };
-
+    owner = this.props.owner
     this._openModal = this._openModal.bind(this)
     this._hideModal = this._hideModal.bind(this)
     this._setComponent = this._setComponent.bind(this)
   }
-  
+
   /**
   *  @param {none}
   *  open modal window
@@ -220,10 +220,9 @@ export default createPaginationContainer(
      };
    },
    getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-    const username = localStorage.getItem('username')
+
     first = 10;
     name = props.labbookName;
-    owner = username;
      return {
        first,
        cursor,

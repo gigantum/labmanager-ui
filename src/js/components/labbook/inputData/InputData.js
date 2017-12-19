@@ -31,6 +31,7 @@ class InputData extends Component {
               labbookId={this.props.labbookId}
               input={this.props.labbook.input}
               labbookName={this.props.labbookName}
+              owner={this.props.owner}
             />
           </div>
           <div className="Code__header">
@@ -49,6 +50,7 @@ class InputData extends Component {
               labbookId={this.props.labbookId}
               input={this.props.labbook.input}
               labbookName={this.props.labbookName}
+              owner={this.props.owner}
             />
           </div>
         </div>

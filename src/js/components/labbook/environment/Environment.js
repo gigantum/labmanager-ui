@@ -32,7 +32,7 @@ class Environment extends Component {
   *  callback that triggers buildImage mutation
   */
   _buildCallback = () => {
-    const username = localStorage.getItem('username')
+    const owner= this.props.owner
     const {labbookName} = this.props
     this.props.setBuildingState(true)
 
@@ -40,13 +40,13 @@ class Environment extends Component {
 
       StopContainerMutation(
         labbookName,
-        username,
+        owner,
         'clientMutationId',
         (error) =>{
 
             BuildImageMutation(
             labbookName,
-              username,
+              owner,
               (error) => {
 
                 let showAlert = ((error !== null) && (error !== undefined))
@@ -65,7 +65,7 @@ class Environment extends Component {
 
       BuildImageMutation(
         labbookName,
-        username,
+        owner,
         (error) => {
 
           let showAlert = ((error !== null) && (error !== undefined))
@@ -110,6 +110,7 @@ class Environment extends Component {
               buildCallback={this._buildCallback}
               blockClass="Environment"
               baseImage={baseImage}
+              owner={this.props.owner}
 
              />
 
@@ -122,6 +123,7 @@ class Environment extends Component {
               editVisible={true}
               buildCallback={this._buildCallback}
               blockClass="Environment"
+              owner={this.props.owner}
             />
 
             <PackageManagerDependencies
@@ -135,6 +137,7 @@ class Environment extends Component {
               buildCallback={this._buildCallback}
               baseImage={baseImage}
               blockClass="Environment"
+              owner={this.props.owner}
             />
 
             <CustomDependencies
@@ -146,6 +149,7 @@ class Environment extends Component {
               labbookName={this.props.labbookName}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
+              owner={this.props.owner}
             />
 
             <SweetAlert
