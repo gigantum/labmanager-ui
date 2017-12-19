@@ -59,8 +59,8 @@ export default function AddCollaboratorMutation(
       },
       onError: err => console.error(err),
 
-      updater: (store) => {
-
+      updater: (store, response) => {
+        console.log(store, response)
 
       },
     },

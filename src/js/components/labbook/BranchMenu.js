@@ -192,56 +192,13 @@ export default class UserNote extends Component {
             store.dispatch({
               type: 'UPLOAD_MESSAGE',
               payload: {
-                uploadMessage: `Added remote repo.gigantum.io/${username}/${this.props.labbookName}`,
+                uploadMessage: `Added remote https://repo.gigantum.io/${username}/${this.props.labbookName}`,
                 error: false,
                 open: true,
                 success: false
               }
             })
-
-
-            // self.setState({'addedRemoteThisSession': true})
-            // store.dispatch({
-            //   type: 'UPLOAD_MESSAGE',
-            //   payload: {
-            //     uploadMessage: 'Pushing to remote ...',
-            //     error: false,
-            //     open: true,
-            //     success: false
-            //   }
-            // })
-            // let labbookName = self.props.labbookName;
-            // let username = localStorage.getItem('username')
-            // PushActiveBranchToRemoteMutation(
-            //   localStorage.getItem('username'),
-            //   self.props.labbookName,
-            //   'origin',
-            //   self.props.labbookId,
-            //   (error)=>{
-            //     if(error){
-            //       console.log(error)
-            //       store.dispatch({
-            //         type: 'UPLOAD_MESSAGE',
-            //         payload: {
-            //           uploadMessage: 'Could not push code to server, remote was added succesfully',
-            //           error: false,
-            //           open: true,
-            //           success: false
-            //         }
-            //       })
-            //     }else{
-            //       store.dispatch({
-            //         type: 'UPLOAD_MESSAGE',
-            //         payload: {
-            //           uploadMessage: `Added remote repo.gigantum.io/${username}/${labbookName}`,
-            //           error: false,
-            //           open: true,
-            //           success: false
-            //         }
-            //       })
-            //     }
-            //   }
-            // )
+            this.setState({addedRemoteThisSession: true})
           }
         }
       )
@@ -337,7 +294,7 @@ export default class UserNote extends Component {
   */
   _addCollaborator(evt){
 
-    console.log(evt.type)
+
     if((evt.type === 'click') || (evt.key === "ENTER")){
       //waiting for backend updates
       AddCollaboratorMutation(
