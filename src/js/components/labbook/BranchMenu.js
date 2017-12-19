@@ -29,7 +29,8 @@ export default class UserNote extends Component {
       'addRemoteVisible': false,
       'addedRemoteThisSession': !(this.props.defaultRemote === null),
       'showCollaborators': false,
-      'newCollaborator': ''
+      'newCollaborator': '',
+      'canManageCollaborators': this.props.canManageCollaborators
     }
 
     this._openMenu = this._openMenu.bind(this)
@@ -198,7 +199,10 @@ export default class UserNote extends Component {
                 success: false
               }
             })
-            this.setState({addedRemoteThisSession: true})
+            this.setState({
+              addedRemoteThisSession: true,
+              canManageCollaborators: true
+            })
           }
         }
       )
@@ -381,7 +385,7 @@ export default class UserNote extends Component {
                   this.props.collaborators.map((collaborator) => {
                     return (<li className="BranchMenu__collaborator--item">
                       <div>{collaborator}</div>
-                      <button onClick={()=> this._removeCollaborator(collaborator)}>Remove</button>
+                      <button disabled={collaborator === localStorage.getItem('username')} onClick={()=> this._removeCollaborator(collaborator)}>Remove</button>
                     </li>)
                   })
                 }
@@ -442,7 +446,7 @@ export default class UserNote extends Component {
             <ul className="BranchMenu__list">
               <li className="BranchMenu__item--collaborators">
                 <button
-                  disabled={!this.props.canManageCollaborators}
+                  disabled={!this.state.canManageCollaborators}
                   onClick={()=> this._toggleCollaborators()}
                   className='BranchMenu__item--collaborators-button'>Collaborators</button>
 
