@@ -181,8 +181,8 @@ export default class UserNote extends Component {
             store.dispatch({
               type: 'UPLOAD_MESSAGE',
               payload: {
-                uploadMessage: 'Could not add publish.',
-                error: false,
+                uploadMessage: 'Publish failed',
+                error: true,
                 open: true,
                 success: false
               }
@@ -481,7 +481,7 @@ export default class UserNote extends Component {
             <ul className="BranchMenu__list">
               <li className="BranchMenu__item--collaborators">
                 <button
-                  disabled={this.props.canManageCollaborators}
+                  disabled={!this.props.canManageCollaborators}
                   onClick={()=> this._toggleCollaborators()}
                   className='BranchMenu__item--collaborators-button'>Collaborators</button>
 
