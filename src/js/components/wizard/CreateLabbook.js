@@ -44,7 +44,8 @@ export default class CreateLabbook extends React.Component {
     let self = this;
     if(this.state.remoteURL.length > 0){
       const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
-      let remote = `ssh://git@repo.gigantum.io:9922/root/${labbookName}.git`
+      const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
+      let remote = this.state.remoteUR + '.git'
 
       store.dispatch(
         {
@@ -57,7 +58,7 @@ export default class CreateLabbook extends React.Component {
           }
         })
       ImportRemoteLabbookMutation(
-        localStorage.getItem('username'),
+        owner,
         labbookName,
         remote,
         (response, error) => {
