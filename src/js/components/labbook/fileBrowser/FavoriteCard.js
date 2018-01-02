@@ -4,13 +4,19 @@ import React, { Component } from 'react'
 import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
 import RemoveFavoriteMutation from 'Mutations/fileBrowser/RemoveFavoriteMutation'
 import UpdateFavoriteMutation from 'Mutations/fileBrowser/UpdateFavoriteMutation'
+//store
+import store from 'JS/redux/store'
 
 export default class FavoriteCard extends Component {
   constructor(props){
   	super(props);
 
+    const {owner, labbookName} = store.getState().routes
+
     this.state = {
-      editMode: false
+      editMode: false,
+      owner,
+      labbookName
     }
   }
 
@@ -35,8 +41,8 @@ export default class FavoriteCard extends Component {
         UpdateFavoriteMutation(
           this.props.connection,
           this.props.parentId,
-          this.props.owner,
-          this.props.labbookName,
+          this.state.owner,
+          this.state.labbookName,
           favorite.id,
           filepath,
           evt.target.value,
@@ -64,8 +70,8 @@ export default class FavoriteCard extends Component {
     RemoveFavoriteMutation(
       this.props.connection,
       this.props.parentId,
-      this.props.owner,
-      this.props.labbookName,
+      this.state.owner,
+      this.state.labbookName,
       this.props.section,
       node.index,
       node.id,

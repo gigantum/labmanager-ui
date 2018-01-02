@@ -8,7 +8,7 @@ export const IS_BUILDING = 'IS_BUILDING'
 export const MODAL_VISIBLE = 'MODAL_VISIBLE'
 export const SELECTED_COMPONENT = 'SELECTED_COMPONENT'
 export const UPDATE_BRANCHES_VIEW = 'UPDATE_BRANCHES_VIEW'
-
+export const UPDATE_ALL = 'UPDATE_ALL'
 
 export default (
  state = {
@@ -75,6 +75,13 @@ export default (
      'modalVisible': '',
      'detailMode': false,
      'previousDetailMode': false
+   };
+ }else if(action.type === UPDATE_ALL){
+    console.log(action)
+   return {
+     ...state,
+     labbookName: action.payload.labbookName,
+     owner: action.payload.owner
    };
  }
 

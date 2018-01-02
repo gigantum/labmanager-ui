@@ -1,8 +1,11 @@
+//vendor
 import React, { Component } from 'react'
 import {QueryRenderer, graphql} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
-
 import ReactMarkdown from 'react-markdown'
+//environment
+import environment from 'JS/createRelayEnvironment'
+//store
+import store from 'JS/redux/store'
 
 let DetailRecordsQuery = graphql`
 query DetailRecordsQuery($name: String!, $owner: String!, $keys: [String]){
@@ -25,17 +28,13 @@ query DetailRecordsQuery($name: String!, $owner: String!, $keys: [String]){
 export default class UserNote extends Component {
   constructor(props){
   	super(props);
+
+    const {owner, labbookName} = store.getState().routes
+
     this.state = {
+      owner: owner,
+      labbookName: labbookName
     }
-
-
-  }
-  /**
-    @param {}
-    after component mounts
-  */
-  componentDidMount() {
-
   }
 
   _renderDetail(item){
@@ -59,11 +58,16 @@ export default class UserNote extends Component {
 
 
   render(){
+    let variables ={
+      keys: this.props.keys,
+      owner: this.state.owner,
+      name: this.state.labbookName
+    }
     return(
       <QueryRenderer
         environment={environment}
         query={DetailRecordsQuery}
-        variables={this.props.variables}
+        variables={variables}
         render={({props, error})=>{
 
             if(props){

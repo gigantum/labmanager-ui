@@ -20,6 +20,7 @@ let simple;
 export default class UserNote extends Component {
   constructor(props){
   	super(props);
+    const {owner, labbookName} = store.getState().routes
     this.state = {
       'addNoteEnabled': false,
       'remoteURL': '',
@@ -30,7 +31,9 @@ export default class UserNote extends Component {
       'addedRemoteThisSession': !(this.props.defaultRemote === null),
       'showCollaborators': false,
       'newCollaborator': '',
-      'canManageCollaborators': this.props.canManageCollaborators
+      'canManageCollaborators': this.props.canManageCollaborators,
+      owner,
+      labbookName
     }
 
     this._openMenu = this._openMenu.bind(this)
@@ -83,11 +86,11 @@ export default class UserNote extends Component {
       newBranchName: '',
       isValid: true,
     })
-    let username = localStorage.getItem('username')
+
 
     CreateBranchMutation(
-      username,
-      this.props.labbookName,
+      this.state.owner,
+      this.state.labbookName,
       branchName,
       this.props.labbookId,
       (error, response)=>{
@@ -169,8 +172,7 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _addRemote(){
-    let username = localStorage.getItem('username')
-    let remote = `ssh://git@repo.gigantum.io:9922/${username}/${this.props.labbookName}.git`
+    let remote = `ssh://git@repo.gigantum.io:9922/${this.state.owner}/${this.state.labbookName}.git`
     let self = this;
     this.setState({menuOpen: false})
     store.dispatch({
@@ -185,8 +187,8 @@ export default class UserNote extends Component {
 
     if(this.state.remoteURL.length > -1){
       PublishLabbookMutation(
-        localStorage.getItem('username'),
-        this.props.labbookName,
+        this.state.owner,
+        this.state.labbookName,
         this.props.labbookId,
         (error)=>{
           if(error){
@@ -205,7 +207,7 @@ export default class UserNote extends Component {
             store.dispatch({
               type: 'UPLOAD_MESSAGE',
               payload: {
-                uploadMessage: `Added remote https://repo.gigantum.io/${username}/${this.props.labbookName}`,
+                uploadMessage: `Added remote https://repo.gigantum.io/${this.state.owner}/${this.state.labbookName}`,
                 error: false,
                 open: true,
                 success: false
@@ -242,14 +244,14 @@ export default class UserNote extends Component {
       }
     })
     SyncLabbookMutation(
-      localStorage.getItem('owner'),
-      this.props.labbookName,
+      this.state.owner,
+      this.state.labbookName,
       (error)=>{
         if(error){
           store.dispatch({
             type: 'UPLOAD_MESSAGE',
             payload: {
-              uploadMessage: `Could not sync ${this.props.labbookName}`,
+              uploadMessage: `Could not sync ${this.state.labbookName}`,
               error: true,
               open: true,
               success: false
@@ -259,7 +261,7 @@ export default class UserNote extends Component {
           store.dispatch({
             type: 'UPLOAD_MESSAGE',
             payload: {
-              uploadMessage: `Successfully synched ${this.props.labbookName}`,
+              uploadMessage: `Successfully synched ${this.state.labbookName}`,
               error: false,
               open: true,
               success: false
@@ -278,8 +280,8 @@ export default class UserNote extends Component {
   */
   _pullFromRemote(){
     PushActiveBranchToRemoteMutation(
-      localStorage.getItem('username'),
-      this.props.labbookName,
+      this.state.owner,
+      this.state.labbookName,
       'origin',
       this.props.labbookId,
       (error)=>{
@@ -314,8 +316,8 @@ export default class UserNote extends Component {
     if((evt.type === 'click') || (evt.key === "ENTER")){
       //waiting for backend updates
       AddCollaboratorMutation(
-        this.props.labbookName,
-        localStorage.getItem('username'),
+        this.state.labbookName,
+        this.state.owner,
         this.state.newCollaborator,
         (error)=>{
           this.setState({newCollaborator: ''})
@@ -345,8 +347,8 @@ export default class UserNote extends Component {
   */
   _removeCollaborator(collaborator){
     DeleteCollaboratorMutation(
-      this.props.labbookName,
-      localStorage.getItem('username'),
+      this.state.labbookName,
+      this.state.owner,
       collaborator,
       (error)=>{
         if(error){

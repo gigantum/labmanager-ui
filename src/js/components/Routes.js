@@ -12,6 +12,8 @@ import SideBar from 'Components/shared/SideBar';
 import Footer from 'Components/shared/Footer';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
+//
+import store from 'JS/redux/store'
 
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
@@ -23,9 +25,6 @@ export const LabbookQuery =  graphql`
     }
   }`
 
-
-//import Breadcrumbs from 'react-breadcrumbs'
-
 const auth = new Auth();
 
 const handleAuthentication = (nextState, replace) => {
@@ -34,7 +33,7 @@ const handleAuthentication = (nextState, replace) => {
   }
 }
 
-//import CreatePage from './components/CreatePage';
+
 export default class Routes extends Component {
 
   constructor(props){
@@ -42,18 +41,43 @@ export default class Routes extends Component {
     this.state = {
       history: history
     }
+
+    this.setRouteStore = this.setRouteStore.bind(this)
+
   }
 
+  /**
+    @param{string, string} owner,labbookName
+    sets owner and labbookName in store for use in labbook queriesß
+  */
+  setRouteStore(owner, labbookName){
+    store.dispatch({
+      type: 'UPDATE_ALL',
+      payload:{
+        'owner': owner,
+        labbookName: labbookName
+      }
+    })
+  }
+  /**
+    @param{}
+    logs user out in using auth0
+  */
   login() {
-    this.props.auth.login();
+    this.props.auth.login()
   }
-
+  /**
+    @param{}
+    logs user out using auth0
+  */
   logout() {
-    this.props.auth.logout();
+    this.props.auth.logout()
   }
 
   render(){
 
+    let self = this
+    console.log(this)
     return(
 
         <Router history={history}>
@@ -96,7 +120,13 @@ export default class Routes extends Component {
                 <Route
                   path="/labbooks/:owner/:labbookName"
                   render={(parentProps) =>{
+
                       const username = localStorage.getItem('username')
+                      let labbookName = parentProps.match.params.labbookName;
+                      let owner = parentProps.match.params.owner;
+
+                      self.setRouteStore(owner, labbookName)
+
                       return (<QueryRenderer
                         environment={environment}
                         query={LabbookQuery}
@@ -117,13 +147,15 @@ export default class Routes extends Component {
                             if(props.errors){
                               return(<div>{props.errors[0].message}</div>)
                             }else{
+
+
                               return (<Labbook
-                                key={parentProps.match.params.labbookName}
+                                key={labbookName}
                                 auth={auth}
-                                labbookName={parentProps.match.params.labbookName}
+                                labbookName={labbookName}
                                 query={props.query}
                                 labbook={props.labbook}
-                                owner={parentProps.match.params.owner}
+                                owner={owner}
                                 {...parentProps}
                               />)
                             }
@@ -150,6 +182,7 @@ export default class Routes extends Component {
                     )
                   }}
                 />
+
                 <Footer
                   ref="footer"
                   history={history}

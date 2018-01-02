@@ -4,16 +4,21 @@ import {createPaginationContainer, graphql} from 'react-relay'
 //components
 import AddEnvironmentPackage from 'Components/wizard/AddEnvironmentPackage'
 import Loader from 'Components/shared/Loader'
+//store
+import store from 'JS/redux/store'
 let totalCount = 2
 let owner
 class PackageManagerDependencies extends Component {
   constructor(props){
     super(props);
+    const {labbookName} = store.getState().routes
+    owner = store.getState().routes.owner //TODO clean this up when fixing dev environments
     this.state = {
-      'modal_visible': false
+      'modal_visible': false,
+      owner,
+      labbookName
     };
-    owner = this.props.owner
-
+    //bind functions here
     this._openModal = this._openModal.bind(this)
     this._hideModal = this._hideModal.bind(this)
     this._setBaseImage = this._setBaseImage.bind(this)

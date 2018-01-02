@@ -4,11 +4,18 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import InputDataBrowser from './InputDataBrowser'
 import InputFavorites from './InputFavorites'
+//store
+import store from 'JS/redux/store'
 
 class InputData extends Component {
   constructor(props){
   	super(props);
+    const {owner, labbookName} = store.getState().routes
 
+    this.state = {
+      owner,
+      labbookName
+    }
   }
 
   render(){
@@ -30,8 +37,6 @@ class InputData extends Component {
               inputId={this.props.labbook.input.id}
               labbookId={this.props.labbookId}
               input={this.props.labbook.input}
-              labbookName={this.props.labbookName}
-              owner={this.props.owner}
             />
           </div>
           <div className="Code__header">
@@ -49,8 +54,6 @@ class InputData extends Component {
               inputId={this.props.labbook.input.id}
               labbookId={this.props.labbookId}
               input={this.props.labbook.input}
-              labbookName={this.props.labbookName}
-              owner={this.props.owner}
             />
           </div>
         </div>

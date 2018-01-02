@@ -1,9 +1,8 @@
 //vendor
 import React, { Component } from 'react'
-import dateformat from 'dateformat'
-import ReactMarkdown from 'react-markdown'
-import SimpleMDE from 'simplemde'
+//images
 import userSVG from 'Images/icons/user.svg'
+//components
 import ActivityDetails from 'Components/labbook/activity/ActivityDetails'
 
 export default class ActivityCard extends Component {
@@ -75,10 +74,8 @@ export default class ActivityCard extends Component {
                   <ActivityDetails
                     edge={this.props.edge}
                     show={this.state.showExtraInfo}
-                    labbookName={this.props.labbookName}
                     key={node.id + '_activity-details'}
                     node={node}
-                    owner={this.props.owner}
                   />
                 }
               </div>

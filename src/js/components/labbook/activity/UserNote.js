@@ -1,8 +1,11 @@
+//vendor
 import React, { Component } from 'react'
 import SimpleMDE from 'simplemde'
 import { WithContext as ReactTags } from 'react-tag-input';
+//mutations
 import CreateUserNoteMutation from 'Mutations/CreateUserNoteMutation'
-
+//store
+import store from 'JS/redux/store'
 let simple;
 
 export default class UserNote extends Component {
@@ -38,8 +41,8 @@ export default class UserNote extends Component {
   */
   _addNote = () => {
     const tags = this.state.tags.map(tag => {return (tag.text)});
-    const {labbookName, labbookId} = this.props;
-    const owner = this.props.owner
+    const {labbookName, owner} = store.getState().routes;
+    const {labbookId} = this.props
     CreateUserNoteMutation(
       labbookName,
       this.state.userSummaryText,
@@ -140,6 +143,7 @@ export default class UserNote extends Component {
               handleDelete={(index) => {this._handleDelete(index)}}
               handleAddition={(tag) => {this._handleAddition(tag)}}
               handleDrag={(tag, currPos, newPos) => {this._handleDrag(tag, currPos, newPos)}} />
+              
         <button className="UserNote__add-note" disabled={!this.state.addNoteEnabled} onClick={() => {this._addNote()}}>Add Note</button>
       </div>
     )

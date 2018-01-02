@@ -13,7 +13,7 @@ import Loader from 'Components/shared/Loader'
 import store from 'JS/redux/store'
 
 let unsubscribe;
-let owner
+
 class Overview extends Component {
   constructor(props){
     super(props)
@@ -68,7 +68,6 @@ class Overview extends Component {
                     environment={this.props.labbook.environment}
                     editVisible={false}
                     blockClass="Overview"
-                    owner={this.props.owner}
                   />
                 </li>
                 <li>
@@ -79,7 +78,6 @@ class Overview extends Component {
                       environment={this.props.labbook.environment}
                       editVisible={false}
                       blockClass="Overview"
-                      owner={this.props.owner}
                     />
                     {
 
@@ -100,8 +98,6 @@ class Overview extends Component {
             <div>
               <PackageCount
                 ref="packageCount"
-                labbookName={this.props.labbookName}
-                owner={this.props.owner}
               />
             </div>
 

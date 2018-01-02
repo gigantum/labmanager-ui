@@ -140,21 +140,23 @@ const dispatchUploadFinished = () => {
 export default class FileBrowserWrapper extends Component {
   constructor(props){
   	super(props);
-
+    const {owner, labbookName} = store.getState().routes
     this.state = {
       'show': false,
-      selectedFile: null,
+      'selectedFile': null,
       'message': '',
-      'files': this._formatFileJson(props.files)
+      'files': this._formatFileJson(props.files),
+      'labbookName': labbookName,
+      'owner': owner
     }
 
+    //bind functions here
     this.handleCreateFolder = this.handleCreateFolder.bind(this)
     this.handleCreateFiles = this.handleCreateFiles.bind(this)
     this.handleRenameFolder = this.handleRenameFolder.bind(this)
     this.handleRenameFile = this.handleRenameFile.bind(this)
     this.handleDeleteFolder = this.handleDeleteFolder.bind(this)
     this.handleDeleteFile = this.handleDeleteFile.bind(this)
-    this.toggleFolder = this.toggleFolder.bind(this)
     this._openJupyter = this._openJupyter.bind(this)
     this.openDetailPanel = this.openDetailPanel.bind(this)
     this.handleFileFavoriting = this.handleFileFavoriting.bind(this)
@@ -173,8 +175,8 @@ export default class FileBrowserWrapper extends Component {
 
     MakeLabbookDirectoryMutation(
       this.props.connection,
-      self.props.owner,
-      this.props.labbookName,
+      self.state.owner,
+      this.state.labbookName,
       this.props.parentId,
       key,
       this.props.section,
@@ -282,10 +284,10 @@ export default class FileBrowserWrapper extends Component {
             let data = {
               file: file,
               filepath: filepath,
-              username: self.props.owner,
+              username: self.state.owner,
               accessToken: localStorage.getItem('access_token'),
               connectionKey: self.props.connection,
-              labbookName: self.props.labbookName,
+              labbookName: self.state.labbookName,
               parentId: self.props.parentId,
               section: self.props.section
             }
@@ -316,7 +318,16 @@ export default class FileBrowserWrapper extends Component {
           return (fileItem.file.name !== '.DS_Store')
       })
 
-      FolderUpload.uploadFiles(filterFiles, prefix, self.props.labbookName, self.props.section, this.props.connection, this.props.parentId, self._chunkLoader)
+      FolderUpload.uploadFiles(
+        filterFiles,
+        prefix,
+        self.state.labbookName,
+        self.state.owner,
+        self.props.section,
+        this.props.connection,
+        this.props.parentId,
+        self._chunkLoader
+      )
 
     }
 
@@ -338,8 +349,8 @@ export default class FileBrowserWrapper extends Component {
 
     MakeLabbookDirectoryMutation(
       this.props.connection,
-      self.props.owner,
-      this.props.labbookName,
+      self.state.owner,
+      this.state.labbookName,
       this.props.parentId,
       newKey,
       this.props.section,
@@ -354,8 +365,8 @@ export default class FileBrowserWrapper extends Component {
 
                 MoveLabbookFileMutation(
                   this.props.connection,
-                  self.props.owner,
-                  this.props.labbookName,
+                  self.state.owner,
+                  this.state.labbookName,
                   this.props.parentId,
                   edge,
                   edge.node.key,
@@ -394,8 +405,8 @@ export default class FileBrowserWrapper extends Component {
 
           DeleteLabbookFileMutation(
             this.props.connection,
-            self.props.owner,
-            this.props.labbookName,
+            self.state.owner,
+            this.state.labbookName,
             this.props.parentId,
             edgeToDelete.node.id,
             oldKey,
@@ -431,8 +442,8 @@ export default class FileBrowserWrapper extends Component {
     if(edgeToMove){
       MoveLabbookFileMutation(
         this.props.connection,
-        this.props.owner,
-        this.props.labbookName,
+        this.state.owner,
+        this.state.labbookName,
         this.props.parentId,
         edgeToMove,
         oldKey,
@@ -465,8 +476,8 @@ export default class FileBrowserWrapper extends Component {
 
     DeleteLabbookFileMutation(
       this.props.connection,
-      this.props.owner,
-      this.props.labbookName,
+      this.state.owner,
+      this.state.labbookName,
       this.props.parentId,
       edgeToDelete.node.id,
       folderKey,
@@ -493,8 +504,8 @@ export default class FileBrowserWrapper extends Component {
 
     DeleteLabbookFileMutation(
       this.props.connection,
-      this.props.owner,
-      this.props.labbookName,
+      this.state.owner,
+      this.state.labbookName,
       this.props.parentId,
       edgeToDelete.node.id,
       fileKey,
@@ -514,10 +525,9 @@ export default class FileBrowserWrapper extends Component {
   *  redirect user to jupyter in callback
   */
   _openJupyter(){
-    let username = this.props.owner
     StartContainerMutation(
-      this.props.labbookName,
-      this.props.owner,
+      this.state.labbookName,
+      this.state.owner,
       'clientMutationId',
       (error) =>{
         if(error){
@@ -563,18 +573,18 @@ export default class FileBrowserWrapper extends Component {
   *  triggers file favorite mutation
   */
   handleFileFavoriting(key){
-    const owner = this.props.owner
     let fileItem = this.props.files.edges.filter((edge)=>{
 
         if(edge && (edge.node.key === key)){
           return edge.node
         }
     })[0]
+
     AddFavoriteMutation(
       this.props.favoriteConnection,
       this.props.parentId,
-      owner,
-      this.props.labbookName,
+      this.state.owner,
+      this.state.labbookName,
       key,
       '',
       false,
@@ -587,14 +597,6 @@ export default class FileBrowserWrapper extends Component {
         }
       }
     )
-  }
-
-  /*
-  *  @param {string} key
-  *  opens detail panel with information about file with corresponding key
-  */
-  toggleFolder(key){
-    this.props.setRootFolder(key)
   }
   /*
     @param {object} file
@@ -641,13 +643,12 @@ export default class FileBrowserWrapper extends Component {
             onDeleteFolder={this.handleDeleteFolder}
             onDeleteFile={this.handleDeleteFile}
             onFileFavoriting={this.handleFileFavoriting}
-            owner={this.props.owner}
+            owner={this.state.owner}
           />
 
 
           <DetailPanel
             {...this.state.selectedFile}
-            owner={this.props.owner}
           />
 
 

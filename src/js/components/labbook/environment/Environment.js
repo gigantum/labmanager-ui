@@ -11,16 +11,21 @@ import CustomDependencies from './CustomDependencies'
 //mutations
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
+//store
+import store from 'JS/redux/store'
 
 class Environment extends Component {
   constructor(props){
   	super(props);
+    const {owner, labbookName} = store.getState().routes
 
     this.state ={
       'modal_visible': false,
       'readyToBuild': false,
       'show': false,
-      'message': ''
+      'message': '',
+      owner,
+      labbookName
     }
 
     this._buildCallback = this._buildCallback.bind(this)
@@ -32,8 +37,7 @@ class Environment extends Component {
   *  callback that triggers buildImage mutation
   */
   _buildCallback = () => {
-    const owner= this.props.owner
-    const {labbookName} = this.props
+    const {labbookName, owner} = this.state
     this.props.setBuildingState(true)
 
     if(this.props.labbook.environment.containerStatus === "RUNNING"){
@@ -100,7 +104,6 @@ class Environment extends Component {
 
             <BaseImage
               ref="baseImage"
-              labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               editVisible={true}
@@ -110,25 +113,21 @@ class Environment extends Component {
               buildCallback={this._buildCallback}
               blockClass="Environment"
               baseImage={baseImage}
-              owner={this.props.owner}
 
              />
 
             <DevEnvironments
               ref="devEnvironments"
-              labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
               editVisible={true}
               buildCallback={this._buildCallback}
               blockClass="Environment"
-              owner={this.props.owner}
             />
 
             <PackageManagerDependencies
               ref="packageManagerDependencies"
-              labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
@@ -137,7 +136,6 @@ class Environment extends Component {
               buildCallback={this._buildCallback}
               baseImage={baseImage}
               blockClass="Environment"
-              owner={this.props.owner}
             />
 
             <CustomDependencies
@@ -146,10 +144,8 @@ class Environment extends Component {
               blockClass="Environment"
               buildCallback={this._buildCallback}
               editVisible={true}
-              labbookName={this.props.labbookName}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
-              owner={this.props.owner}
             />
 
             <SweetAlert

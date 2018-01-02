@@ -3,20 +3,23 @@ import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //Config
 import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
+//store
+import store from 'JS/redux/store'
 
 let outputRootFolder = 'output'
-let owner
+
 class OutputDataBrowser extends Component {
   constructor(props){
   	super(props);
-
+    const {owner, labbookName} = store.getState().routes
     this.state = {
       'show': false,
       'message': '',
-      'files': []
+      'files': [],
+      owner,
+      labbookName
     }
-    owner = this.props.owner
-    this.setRootFolder = this.setRootFolder.bind(this)
+
   }
 
   /*
@@ -68,8 +71,7 @@ class OutputDataBrowser extends Component {
 
       return(
         <FileBrowserWrapper
-          ref="outPutBrowser"
-          setRootFolder={this.setRootFolder}
+          ref="OutputBrowser"
           files={outputFiles}
           section="output"
           parentId={this.props.outputId}
@@ -127,12 +129,13 @@ export default createPaginationContainer(
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
 
+      const {owner, labbookName} = store.getState().routes
 
       return {
         first: count,
         cursor,
         owner: owner,
-        name: props.labbookName
+        name: labbookName
       };
     },
     query: graphql`

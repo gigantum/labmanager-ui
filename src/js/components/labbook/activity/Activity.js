@@ -8,25 +8,29 @@ import {
 import ActivityCard from './ActivityCard'
 import Loader from 'Components/shared/Loader'
 import UserNote from './UserNote'
+import PaginationLoader from './ActivityLoaders/PaginationLoader'
 
 //utilities
 import Config from 'JS/config'
+
+import store from 'JS/redux/store'
 
 //lacoal variables
 let pagination = false;
 let isLoadingMore = false;
 
 let counter = 5;
-let owner;
+
 class Activity extends Component {
   constructor(props){
+
   	super(props);
   	this.state = {
       'modalVisible': false,
-      'isPaginting': false,
-
+      'isPaginating': false,
     };
-    owner = this.props.owner
+
+    //bind functions here
     this._loadMore = this._loadMore.bind(this)
     this._toggleActivity = this._toggleActivity.bind(this)
     this._hideAddActivity = this._hideAddActivity.bind(this)
@@ -35,7 +39,7 @@ class Activity extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      'isPaginting': false
+      'isPaginating': false
     })
   }
 
@@ -47,40 +51,40 @@ class Activity extends Component {
   componentDidMount() {
 
     let activityRecords = this.props.labbook.activityRecords
-    let self = this;
-    window.addEventListener('scroll', this._handleScroll);
+
+    window.addEventListener('scroll', this._handleScroll)
 
     if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
       this._loadMore()
     }
 
-    let relay = this.props.relay;
+    let relay = this.props.relay
 
     if(activityRecords.edges && activityRecords.edges.length){
 
-      let cursor =  activityRecords.edges[ activityRecords.edges.length - 1].node.cursor;
+      let cursor =  activityRecords.edges[ activityRecords.edges.length - 1].node.cursor
 
-      pagination = false;
+      pagination = false
 
       setInterval(function(){
         relay.refetchConnection(
           counter,
           (response) =>{
             if(!activityRecords.pageInfo.hasNextPage){
-              isLoadingMore = false;
+              isLoadingMore = false
             }
           },
           {
             cursor: cursor
           }
         )
-      }, 3000);
+      }, 3000)
     }
   }
 
   componentWillUnmount() {
 
-    window.removeEventListener('scroll', this._handleScroll);
+    window.removeEventListener('scroll', this._handleScroll)
   }
   /**
   *  @param {}
@@ -89,9 +93,9 @@ class Activity extends Component {
   _loadMore() {
     pagination = true
     isLoadingMore = true
-    pagination = true;
+    pagination = true
     this.setState({
-      'isPaginting': true
+      'isPaginating': true
     })
 
     this.props.relay.loadMore(
@@ -100,14 +104,14 @@ class Activity extends Component {
        if(error){
          console.error(error)
        }
-       isLoadingMore = false;
+       isLoadingMore = false
        this.setState({
-         'isPaginting': false
+         'isPaginating': false
        })
      },{
        name: 'labbook'
      }
-   );
+   )
    counter += 5
   }
   /**
@@ -116,11 +120,11 @@ class Activity extends Component {
   *
   */
   _handleScroll(evt){
-    let activityRecords = this.props.labbook.activityRecords
-    let root = document.getElementById('root')
-
-    let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
+    let activityRecords = this.props.labbook.activityRecords,
+        root = document.getElementById('root'),
+        distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
         expandOn = root.scrollHeight;
+
     if ((distanceY > expandOn) && !isLoadingMore && activityRecords.pageInfo.hasNextPage) {
         this._loadMore(evt);
 
@@ -134,6 +138,7 @@ class Activity extends Component {
   _transformActivity(activityRecords){
 
     let activityTime = {}
+
     activityRecords.edges.forEach((edge) => {
 
       let date = (edge.node && edge.node.timestamp) ? new Date(edge.node.timestamp) : new Date()
@@ -159,9 +164,11 @@ class Activity extends Component {
 
   render(){
     let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
+
     if(!this.props.labbook.activityRecords.pageInfo.hasNextPage){
       isLoadingMore = false;
     }
+
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='Activity'>
@@ -198,10 +205,9 @@ class Activity extends Component {
                                 (this.state.modalVisible) &&
                                 <UserNote
                                   labbookId={this.props.labbook.id}
-                                  {...this.props}
-                                  labbookName={this.props.labbookName}
                                   hideLabbookModal={this._hideAddActivity}
-                                  owner={this.props.owner}/>
+                                  {...this.props}
+                                />
                               }
                             </div>
                         </div>
@@ -213,10 +219,8 @@ class Activity extends Component {
                         {
                           activityRecordsTime[k].map((obj) => {
                           return(<ActivityCard
-                              labbookName={this.props.labbookName}
                               key={obj.edge.node.id}
-                              edge={obj.edge}
-                              owner={this.props.owner}
+                              edge={obj.edge}  
                             />)
 
                           })
@@ -227,24 +231,20 @@ class Activity extends Component {
                   </div>)
                 })
               }
-              <div
-                key="Activity-loader-card-1"
-                className={isLoadingMore ? 'ActivityCard ActivityCard__loader ActivityCard__loader--1 card': 'ActivityCard ActivityCard__loader-hidden'}>
-              </div>
-              <div
-                key="Activity-loader-card-2"
-                className={isLoadingMore ? 'ActivityCard ActivityCard__loader ActivityCard__loader--2 card': 'ActivityCard ActivityCard__loader-hidden'}>
-              </div>
-              <div
-                key="Activity-loader-card-3" className={isLoadingMore ? 'ActivityCard ActivityCard__loader ActivityCard__loader--3 card': 'ActivityCard ActivityCard__loader-hidden'}>
-              </div>
-              <div
-                key="Activity-loader-card-4"
-                 className={isLoadingMore ? 'ActivityCard ActivityCard__loader ActivityCard__loader--4 card': 'ActivityCard ActivityCard__loader-hidden'}>
-              </div>
-              <div
-                key="Activity-loader-card-5" className={isLoadingMore ? 'ActivityCard ActivityCard__loader ActivityCard__loader--5 card': 'ActivityCard ActivityCard__loader-hidden'}>
-              </div>
+
+
+              {
+                Array(5).fill(1).map((value, index) => {
+
+                    return (
+                      <PaginationLoader
+                        key={'Actvity_paginationLoader' + index}
+                        index={index}
+                        isLoadingMore={isLoadingMore}
+                      />
+                  )
+                })
+              }
             </div>
           </div>
 
@@ -311,12 +311,15 @@ export default createPaginationContainer(
        first: first,
      };
    },
-   getVariables(props, {count, cursor, name}, fragmentVariables) {
+   getVariables(props, {count, cursor}, fragmentVariables) {
 
-    // const owner = props.owner
+    const {owner} = props.match.params;
+    const name = props.match.params.labbookName
+    const first = counter;
+
     cursor = pagination ? props.labbook.activityRecords.edges[props.labbook.activityRecords.edges.length - 1].cursor : null
-    let first = counter;
-    name = props.labbookName;
+
+    ;
      return {
        first,
        cursor,

@@ -12,6 +12,7 @@ import store from 'JS/redux/store'
 
 export default class CreateLabbook extends React.Component {
   constructor(props){
+
   	super(props);
 
   	this.state = {
@@ -24,7 +25,6 @@ export default class CreateLabbook extends React.Component {
       'errorType': '',
       'remoteURL': ''
     };
-
 
     this.continueSave = this.continueSave.bind(this)
     this._updateTextState = this._updateTextState.bind(this)
@@ -42,6 +42,7 @@ export default class CreateLabbook extends React.Component {
     let viewerId = 'localLabbooks';//Todo: figure out what to do with viewerId in the mutation context
     let name = this.state.name;
     let self = this;
+
     if(this.state.remoteURL.length > 0){
       const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
       const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
@@ -57,7 +58,7 @@ export default class CreateLabbook extends React.Component {
             uploadMessage: 'Importing LabBook please wait'
           }
         })
-  
+
       ImportRemoteLabbookMutation(
         owner,
         labbookName,
@@ -111,7 +112,13 @@ export default class CreateLabbook extends React.Component {
             document.getElementById('modal__cover').classList.add('hidden')
             this.props.history.replace(`/labbooks/${labbookName}`)
           }else{
-
+            store.dispatch({
+              type: 'UPDATE_ALL',
+              payload:{
+                labbookName: labbookName,
+                owner: localStorage.getItem('username')
+              }
+            })
             BuildImageMutation(
             labbookName,
             localStorage.getItem('username'),

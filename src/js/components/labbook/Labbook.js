@@ -33,14 +33,14 @@ class Labbook extends Component {
         'selectedComponent': (props.location.pathname.split('/').length > 3) ? props.location.pathname.split('/')[3] : 'overview' ,
         'containerState': props.labbook.environment.containerStatus,
         'imageStatus': props.labbook.environment.imageStatus,
-        'branchesOpen': false
+        'branchesOpen': false,
       }
 
     })
 
     localStorage.setItem('owner', this.props.owner)
     this.state = store.getState()
-
+    //
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
     this._setBuildingState = this._setBuildingState.bind(this)
     this._showLabbookModal = this._showLabbookModal.bind(this)
@@ -100,7 +100,7 @@ storeDidUpdate = (labbook) => {
         }
       })
 
-      this.props.history.replace(`../../../labbooks/${this.props.owner}/${this.props.match.params.labbookName}/${componentName}`)
+      this.props.history.replace(`../../../labbooks/${this.state.owner}/${this.props.match.params.labbookName}/${componentName}`)
     }
 
 
@@ -137,7 +137,7 @@ storeDidUpdate = (labbook) => {
         onClick={()=> this._setSelectedComponent(item.id)}
         >
         <Link
-          to={`../../labbooks/${this.props.match.params.labbookName}/${item.id}`} replace={true}>
+          to={`../../../labbooks/${this.state.owner}/${this.props.match.params.labbookName}/${item.id}`} replace={true}>
           {item.name}
         </Link>
       </div>
@@ -224,12 +224,10 @@ storeDidUpdate = (labbook) => {
                    {this.props.labbook.owner.username + '/' + labbookName}
                  </div>
                  <BranchMenu
-                  collaborators={this.props.labbook.collaborators}
-                  canManageCollaborators={this.props.labbook.canManageCollaborators}
-                  defaultRemote={this.props.labbook.defaultRemote}
-                  labbookName={labbookName}
-                  labbookId={this.props.labbook.id}
-                  owner={this.props.labbook.owner.username}
+                    collaborators={this.props.labbook.collaborators}
+                    canManageCollaborators={this.props.labbook.canManageCollaborators}
+                    defaultRemote={this.props.labbook.defaultRemote}
+                    labbookId={this.props.labbook.id}
                   />
               </div>
                <div className="Labbook__header flex flex--row justify--space-between">
@@ -245,11 +243,9 @@ storeDidUpdate = (labbook) => {
                    ref="ContainerStatus"
                    containerStatus={this.props.labbook.environment.containerStatus}
                    imageStatus={this.props.labbook.environment.imageStatus}
-                   labbookName={labbookName}
                    labbookId={this.props.labbook.id}
                    setBuildingState={this._setBuildingState}
                    isBuilding={this.state.isBuilding}
-                   owner={this.props.owner}
                  />
               </div>
               <div className={(this.state.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
@@ -257,12 +253,10 @@ storeDidUpdate = (labbook) => {
 
                 <Branches
                   defaultRemote={this.props.labbook.defaultRemote}
-                  labbookName={labbookName}
                   branchesOpen={this.state.branchesOpen}
                   labbook={this.props.labbook}
                   labbookId={this.props.labbook.id}
                   activeBranch={this.props.labbook.activeBranch}
-                  owner={this.props.owner}
                 />
                   <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
               </div>
@@ -286,13 +280,11 @@ storeDidUpdate = (labbook) => {
                       render={() => {
 
                         return (<Overview
-                          key={this.props.labbookName + '_overview'}
+                          key={this.state.labbookName + '_overview'}
                           labbook={this.props.labbook}
                           description={this.props.labbook.description}
-                          labbookName={labbookName}
                           labbookId={this.props.labbook.id}
                           setBuildingState={this._setBuildingState}
-                          owner={this.props.owner}
                         />)
                       }}
                     />
@@ -303,12 +295,9 @@ storeDidUpdate = (labbook) => {
                           path={`${this.props.match.path}/overview`}
                           render={() => {
                             return (<Overview
-                              key={this.props.labbookName + '_overview'}
+                              key={this.state.labbookName + '_overview'}
                               labbook={this.props.labbook}
                               description={this.props.labbook.description}
-                              labbookName={labbookName}
-                              owner={this.props.owner}
-
                             />)
                           }}
                         />
@@ -318,13 +307,12 @@ storeDidUpdate = (labbook) => {
                           render={() => {
                           return (
                             <Activity
-                              key={this.props.labbookName + '_activity'}
+                              key={this.state.labbookName + '_activity'}
                               labbook={this.props.labbook}
                               activityRecords={this.props.activityRecords}
-                              labbookName={labbookName}
                               labbookId={this.props.labbook.id}
                               {...this.props}
-                              owner={this.props.owner}
+
                             />)
                         }} />
 
@@ -333,14 +321,12 @@ storeDidUpdate = (labbook) => {
                           render={() => {
                             return (
                               <Environment
-                                key={labbookName + '_environment'}
+                                key={this.state.labbookName + '_environment'}
                                 labbook={this.props.labbook}
                                 labbookId={this.props.labbook.id}
                                 setBuildingState={this._setBuildingState}
-                                labbookName={labbookName}
                                 containerStatus={this.refs.ContainerStatus}
                                 {...this.props}
-                                owner={this.props.owner}
                               />)
                           }}
                         />
@@ -349,10 +335,8 @@ storeDidUpdate = (labbook) => {
                           return (
                             <Code
                               labbook={this.props.labbook}
-                              labbookName={labbookName}
                               labbookId={this.props.labbook.id}
                               setContainerState={this._setContainerState}
-                              owner={this.props.owner}
                             />)
                         }} />
 
@@ -360,9 +344,7 @@ storeDidUpdate = (labbook) => {
                           return (
                             <InputData
                               labbook={this.props.labbook}
-                              labbookName={labbookName}
                               labbookId={this.props.labbook.id}
-                              owner={this.props.owner}
                             />)
                         }} />
 
@@ -371,8 +353,6 @@ storeDidUpdate = (labbook) => {
                             <OutputData
                               labbook={this.props.labbook}
                               labbookId={this.props.labbook.id}
-                              labbookName={labbookName}
-                              owner={this.props.owner}
                             />)
                         }} />
                       </Switch>
