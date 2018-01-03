@@ -213,14 +213,14 @@ export default createPaginationContainer(
     totalCount += count
     let first = totalCount;
     let length = props.environment.packageManagerDependencies.edges.length
-    let name = props.labbookName;
+    const {labbookName} = store.getState().routes
 
     let cursor = props.environment.packageManagerDependencies.edges[length-1].cursor
 
      return {
        first,
        cursor,
-       name,
+       name: labbookName,
        owner
        // in most cases, for variables other than connection filters like
        // `first`, `after`, etc. you may want to use the previous values.

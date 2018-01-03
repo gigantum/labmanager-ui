@@ -47,6 +47,7 @@
 }
 .ContainerStatus__container-state.Building{
   border: 3px solid $goldenLemon;
+  background-size: 20px;
 }
 .ContainerStatus__container-state.Closed{
   border: 3px solid $crimson;

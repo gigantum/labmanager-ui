@@ -13,6 +13,7 @@ class CustomDependencies extends Component {
 
     const {labbookName} = store.getState().routes
     owner = store.getState().routes.owner //TODO clean this up when fixing custom dependencies
+    
     this.state = {
       'modal_visible': false,
       owner,

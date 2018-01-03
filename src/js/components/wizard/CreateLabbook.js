@@ -112,13 +112,7 @@ export default class CreateLabbook extends React.Component {
             document.getElementById('modal__cover').classList.add('hidden')
             this.props.history.replace(`/labbooks/${labbookName}`)
           }else{
-            store.dispatch({
-              type: 'UPDATE_ALL',
-              payload:{
-                labbookName: labbookName,
-                owner: localStorage.getItem('username')
-              }
-            })
+
             BuildImageMutation(
             labbookName,
             localStorage.getItem('username'),
@@ -150,6 +144,14 @@ export default class CreateLabbook extends React.Component {
           name,
           viewerId,
           (error) => {
+
+            store.dispatch({
+              type: 'UPDATE_ALL',
+              payload:{
+                labbookName: name,
+                owner: localStorage.getItem('username')
+              }
+            })
 
             let showAlert = (error !== null)
 

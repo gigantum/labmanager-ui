@@ -5,9 +5,8 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
-
+//store
 import store from "JS/redux/store"
-
 //components
 import Activity from './activity/Activity'
 import Code from './code/Code'
@@ -38,7 +37,7 @@ class Labbook extends Component {
 
     })
 
-    localStorage.setItem('owner', this.props.owner)
+    localStorage.setItem('owner', store.getState().routes.owner)
     this.state = store.getState()
     //
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
@@ -81,7 +80,7 @@ storeDidUpdate = (labbook) => {
     updates history prop
   */
   _setSelectedComponent = (componentName) =>{
-
+    const {owner} = store.getState().routes
     if(componentName !== this.state.selectedComponent){
       if(store.getState().detailView.selectedComponent === true){
         store.dispatch({
@@ -100,7 +99,7 @@ storeDidUpdate = (labbook) => {
         }
       })
 
-      this.props.history.replace(`../../../labbooks/${this.state.owner}/${this.props.match.params.labbookName}/${componentName}`)
+      this.props.history.replace(`../../../labbooks/${owner}/${this.props.match.params.labbookName}/${componentName}`)
     }
 
 

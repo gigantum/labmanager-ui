@@ -77,7 +77,7 @@ export default (
      'previousDetailMode': false
    };
  }else if(action.type === UPDATE_ALL){
-    console.log(action)
+
    return {
      ...state,
      labbookName: action.payload.labbookName,
