@@ -4,17 +4,16 @@ import uuidv4 from 'uuid/v4'
 import JobStatus from './JobStatus'
 //mutations
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
-import AddLabbookFileMutation from 'Mutations/AddLabbookFileMutation'
+import AddLabbookFileMutation from 'Mutations/fileBrowser/AddLabbookFileMutation'
 
 
 /*
 
 */
-const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
+const uploadLabbookChunk = (file, chunk, accessToken, getChunkCallback) => {
 
+  ImportLabbookMutation(chunk.blob, chunk, accessToken, (result, error)=>{
 
-  ImportLabbookMutation(username, username, chunk.blob, chunk, accessToken, (result, error)=>{
-     
       if(result && (error === undefined)){
         getChunkCallback(file, result)
       }else{
@@ -25,17 +24,17 @@ const uploadLabbookChunk = (file, chunk, accessToken, username, filepath, getChu
 
 }
 
-const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepath, getChunkCallback, componentCallback) => {
+const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepath, section, getChunkCallback, componentCallback) => {
 
   AddLabbookFileMutation(
     data.connectionKey,
     username,
-    username,
     data.labbookName,
-    data.labbookId,
+    data.parentId,
     filepath,
     chunk,
     accessToken,
+    section,
     (result, error)=>{
 
       if(result && (error === undefined)){
@@ -57,6 +56,7 @@ const ChunkUploader = {
     let file = data.file,
       filepath = data.filepath,
       username = data.username,
+      section = data.section,
       componentCallback = (response) => { //callback to trigger postMessage from initializer
         postMessage(response);
       }
@@ -64,7 +64,7 @@ const ChunkUploader = {
     const id = uuidv4(),
           chunkSize = 1000 * 1000 * 48,
           fileSize = file.size,
-          fileSizeKb = Math.round(fileSize/1000);
+          fileSizeKb = Math.round(fileSize/1000, 10);
 
     let fileLoadedSize = 0,
         chunkIndex = 0,
@@ -90,7 +90,7 @@ const ChunkUploader = {
 
         let chunkData =   {
             blob: blob,
-            fileSizeKb: Math.round(fileSizeKb/1000, 10) ,
+            fileSizeKb: fileSizeKb,
             chunkSize: chunkSize,
             totalChunks: totalChunks,
             chunkIndex: chunkIndex - 1,
@@ -106,10 +106,7 @@ const ChunkUploader = {
               file,
               chunkData,
               data.accessToken,
-              username,
-              filepath,
-              getChunk,
-              componentCallback
+              getChunk
             )
 
 
@@ -124,6 +121,7 @@ const ChunkUploader = {
               data.accessToken,
               username,
               filepath,
+              section,
               getChunk,
               componentCallback
             )

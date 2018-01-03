@@ -8,7 +8,7 @@ import {
 import StopContainerMutation from 'Mutations/StopContainerMutation'
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import environment from 'JS/createRelayEnvironment'
-
+//store
 import reduxStore from 'JS/redux/store'
 
 const containerStatusQuery = graphql`
@@ -20,7 +20,7 @@ const containerStatusQuery = graphql`
       containerStatus
       imageStatus
     }
-    notes(first: $first){
+    activityRecords(first: $first){
       edges{
         node{
           id
@@ -36,12 +36,17 @@ let tempStatus;
 export default class ContainerStatus extends Component {
   constructor(props){
   	super(props);
+    const {owner, labbookName} = reduxStore.getState().routes
     this.state = {
       'status': "",
-      'building': this.props.isBuilding ? true : false,
+      'building': this.props.isBuilding,
       'secondsElapsed': 0,
       'containerStatus': props.containerStatus,
-      'imageStatus': props.imageStatus
+      'imageStatus': props.imageStatus,
+      'pluginsMenu': false,
+      'containerMenuOpen': false,
+      owner,
+      labbookName
     }
     tempStatus = "Closed";
 
@@ -49,6 +54,7 @@ export default class ContainerStatus extends Component {
     this._checkJupyterStatus = this._checkJupyterStatus.bind(this)
     this._getContainerStatusText = this._getContainerStatusText.bind(this)
     this._openCloseContainer = this._openCloseContainer.bind(this)
+    this._closePopupMenus = this._closePopupMenus.bind(this)
   }
   /**
   *  @param {}
@@ -69,16 +75,50 @@ export default class ContainerStatus extends Component {
       {
       containerStatus:this.props.containerStatus, imageStatus: this.props.imageStatus
       })
+    const hasLabbookId = reduxStore.getState().overview.containerStates[this.props.labbookId]
 
-    reduxStore.dispatch({
-      type: 'UPDATE_CONTAINER_STATE',
-      payload:{
-        labbookId: this.props.labbookId,
-        containerState: status
+    if(hasLabbookId){
+      const storeStatus = reduxStore.getState().overview.containerStates[this.props.labbookId]
+
+      if(storeStatus !== status){
+        reduxStore.dispatch({
+          type: 'UPDATE_CONTAINER_STATE',
+          payload:{
+            labbookId: this.props.labbookId,
+            containerState: status
+          }
+        })
       }
-    })
+    }
     this.interval = setInterval(this._tick, 2000);
+
+    window.addEventListener("click", this._closePopupMenus)
   }
+  /**
+   *  @param {event} evt
+   *  closes menu box when menu is open and the menu has not been clicked on
+   *
+  */
+  _closePopupMenus(evt){
+
+    let containerMenuClicked = (evt.target.className.indexOf('ContainerStatus__container-state') > -1) ||
+    (evt.target.className.indexOf('ContainerStatus__button-menu') > -1)
+
+    if(!containerMenuClicked &&
+    this.state.containerMenuOpen){
+      this.setState({
+        containerMenuOpen: false
+      })
+    }
+
+    let pluginsMenuClicked = (evt.target.className.indexOf('ContainerStatus__plugins') > -1)
+    if(!pluginsMenuClicked && this.state.pluginsMenu){
+      this.setState({
+        pluginsMenu: false
+      })
+    }
+  }
+
   /**
   *  @param {string} nextProps
   *  update container state before rendering new props
@@ -86,14 +126,22 @@ export default class ContainerStatus extends Component {
   componentWillReceiveProps(nextProps) {
 
     let status = this._getContainerStatusText(nextProps.containerStatus, nextProps.imageStatus)
+    const hasLabbookId = reduxStore.getState().overview.containerStates[this.props.labbookId]
 
-    reduxStore.dispatch({
-      type: 'UPDATE_CONTAINER_STATE',
-      payload:{
-        labbookId: this.props.labbookId,
-        containerState: this._getContainerStatusText({containerStatus:nextProps.containerStatus, image:nextProps.imageStatus})
+    if(hasLabbookId){
+      const storeStatus = reduxStore.getState().overview.containerStates[this.props.labbookId]
+
+      if(storeStatus !== status){
+        reduxStore.dispatch({
+          type: 'UPDATE_CONTAINER_STATE',
+          payload:{
+            labbookId: this.props.labbookId,
+            containerState: this._getContainerStatusText({containerStatus:nextProps.containerStatus, image:nextProps.imageStatus})
+          }
+        })
       }
-    })
+
+    }
 
     this.setState({
       'containerStatus': nextProps.containerStatus,
@@ -107,6 +155,7 @@ export default class ContainerStatus extends Component {
   componentWillUnmount() {
     //memory clean up
     clearInterval(this.interval);
+    window.removeEventListener("click", this._closePopupMenus)
   }
 
   /**
@@ -137,18 +186,17 @@ export default class ContainerStatus extends Component {
 
     tempStatus = status
 
-
     return status;
   }
   /**
-    @param {string} labbookName -
+    @param {}
     triggers stop container mutation
   */
-  _stopContainerMutation(labbookName){
-    const username = localStorage.getItem('username')
+  _stopContainerMutation(){
+
     StopContainerMutation(
-      labbookName,
-      username,
+      this.state.labbookName,
+      this.state.owner,
       'clientMutationId',
       (error) =>{
         if(error){
@@ -163,20 +211,21 @@ export default class ContainerStatus extends Component {
   }
 
   /**
-    @param {string} labbookName -
+    @param {}
     triggers start container mutation
   */
-  _startContainerMutation(labbookName){
-    const username = localStorage.getItem('username')
+  _startContainerMutation(){
+
     StartContainerMutation(
-      labbookName,
-      username,
+      this.state.labbookName,
+      this.state.owner,
       'clientMutationId',
       (error) =>{
+
         if(error){
           console.log(error)
         }else{
-          console.log('stopped container')
+          console.log('started container')
         }
       }
     )
@@ -190,13 +239,19 @@ export default class ContainerStatus extends Component {
 
       if(status === 'Open'){
 
-        this.setState({status: 'Stopping'});
-        this._stopContainerMutation(this.props.labbookName)
+        this.setState({
+          status: 'Stopping',
+          contanerMenuOpen: false
+        });
+        this._stopContainerMutation()
 
       }else if(status === 'Closed'){
 
-        this.setState({status: 'Starting'})
-        this._startContainerMutation(this.props.labbookName)
+        this.setState({
+          status: 'Starting',
+          contanerMenuOpen: false
+        })
+        this._startContainerMutation()
 
       }else{
         console.log('container is mutating')
@@ -208,8 +263,8 @@ export default class ContainerStatus extends Component {
     return(
       <QueryRenderer
         variables={{
-          'owner': username,
-          'name': this.props.labbookName,
+          'owner': this.state.owner,
+          'name': this.state.labbookName,
           'first': Math.floor(Math.random() * 10000)
           }
         }
@@ -238,15 +293,72 @@ export default class ContainerStatus extends Component {
     )
   }
 
+  _openPluginMenu(){
+    this.setState({
+      pluginsMenu: !this.state.pluginsMenu
+    })
+  }
+
+  _showMenu(){
+    this.setState({
+      containerMenuOpen: !this.state.containerMenuOpen
+    })
+  }
+
   _containerStatus(status, key){
+    let jupyterLink = (window.location.hostname.indexOf('localhost') > -1) ? window.location.protocol + '//' + window.location.hostname + ':8888' : 'http://jupyter.gigantum.io'
+
+    let containerStatusCss = this.state.containerMenuOpen ? "ContainerStatus__container-state--menu-open " : "ContainerStatus__container-state ";
     return(
-      <div className="ContainerStatus flex flex--column">
+      <div className="ContainerStatus flex flex--row">
+        { (status === 'Open') &&
+            <div className="ContainerStatus__plugins">
+                <div
+                  className="fa ContainerStatus__plugins-button"
+                  onClick={()=>{this._openPluginMenu()}}>
+                </div>
+                <div className={this.state.pluginsMenu ? 'ContainerStatus__plugins-menu-arrow': 'ContainerStatus__plugins-menu-arrow hidden'} ></div>
+                <div
+                  className={this.state.pluginsMenu ? 'ContainerStatus__plugins-menu': 'ContainerStatus__plugins-menu hidden'}>
+                  <div className="ContainerStatus__plugins-title">Launch</div>
+                  <ul className="ContainerStatus__plugins-list">
+                    <li className="ContainerStatus__plugins-list-item">
+                      <a
+                        className="ContainerStatus__plugins-item jupyter-icon"
+                        href={jupyterLink}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                          Jupyter
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+            </div>
+        }
         <div
-          onClick={(evt) => this._openCloseContainer(evt, status)}
+          onClick={(evt) => this._showMenu()}
           key={key}
-          className={'ContainerStatus__container-state ' + ((this.props.isBuilding) ? 'Building' : status)}>
+          className={containerStatusCss + ((this.props.isBuilding) ? 'Building' : status)}>
           {this.props.isBuilding ? 'Building' : status}
         </div>
+        {
+          this.state.containerMenuOpen &&
+          <div className="ContainerStatus__menu-pointer"></div>
+        }
+        {
+          this.state.containerMenuOpen &&
+          <div className="ContainerStatus__button-menu">
+              {
+                (status === "Open") &&
+                <button onClick={(evt) => this._openCloseContainer(evt, status)}>Stop Container</button>
+              }
+
+              {
+                (status === "Closed") &&
+                <button onClick={(evt) => this._openCloseContainer(evt, status)}>Start Container</button>
+              }
+          </div>
+        }
       </div>)
   }
 

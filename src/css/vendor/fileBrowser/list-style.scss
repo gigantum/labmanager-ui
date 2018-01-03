@@ -127,6 +127,9 @@ div.rendered-react-keyed-file-browser div.files table {
     cursor: pointer; }
     div.rendered-react-keyed-file-browser div.files table tr.selected td {
       font-weight: bold; }
+      input[type="text"]{
+        height: 30px;
+      }
       div.rendered-react-keyed-file-browser div.files table tr.selected td.name {
         position: relative; }
         div.rendered-react-keyed-file-browser div.files table tr.selected td.name:after {

@@ -5,6 +5,9 @@ import SweetAlert from 'sweetalert-react'
 import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
+//store
+import store from 'JS/redux/store'
+
 /**
 *  labbook panel is to only render the edge passed to it
 */
@@ -46,37 +49,71 @@ export default class LocalLabbookPanel extends Component {
 
       exportClassList.add('LocalLabbooks__export--downloading')
       let username = localStorage.getItem('username')
-      ExportLabbookMutation(username, username, edge.node.name, (response, error)=>{
+
+      store.dispatch({
+        type: 'UPLOAD_MESSAGE',
+        payload: {
+          uploadMessage: 'Exporting LabBook',
+          open: true,
+          success: false,
+          error: false
+        }
+      })
+
+      ExportLabbookMutation(username, edge.node.name, (response, error)=>{
+
         if(response.exportLabbook){
           JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
 
-              this.setState({
-                'exportPath': data.jobStatus.result ? data.jobStatus.result : '',
-                'show': true,
-                'message': `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-                'type': 'success',
-                'title': 'Export Successful'
-              })
+
+              if(data.jobStatus.result){
+                store.dispatch({
+                  type: 'UPLOAD_MESSAGE',
+                  payload: {
+                    uploadMessage: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
+                    open: true,
+                    success: false,
+                    error: false
+                  }
+                })
+              }
 
               exportClassList.remove('LocalLabbooks__export--downloading')
           }).catch((error)=>{
+
+              if(error){
+                store.dispatch({
+                  type: 'UPLOAD_MESSAGE',
+                  payload: {
+                    uploadMessage: `Export failed`,
+                    open: true,
+                    success: false,
+                    error: true
+                  }
+                })
+              }
               exportClassList.remove('LocalLabbooks__export--downloading')
           })
       }else{
 
-        this.setState({
-
-          'message': error[0].message,
-          'show': true,
-          'type': 'error',
-          'title': 'Export Failed'
+        store.dispatch({
+          type: 'UPLOAD_MESSAGE',
+          payload: {
+            uploadMessage: 'Export Failed: ' + error[0].message,
+            open: true,
+            success: false,
+            error: true
+          }
         })
+
         exportClassList.remove('LocalLabbooks__export--downloading')
       }
     })
   }
 
   }
+
+
   render(){
     let edge = this.props.edge;
     let status = this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
@@ -88,8 +125,8 @@ export default class LocalLabbookPanel extends Component {
         className='LocalLabbooks__panel flex flex--column justify--space-between'>
 
         <div className="LocalLabbooks__icon-row">
-          <div onClick={() => this.props.goToLabbook(edge.node.name)} className="LocalLabbooks__labbook-icon"></div>
-          <div className="LocalLabbooks__containerStatus flex justify--space-between flex--column">
+
+          <div className="LocalLabbooks__containerStatus">
             <div className={'LocalLabbooks__containerStatus--state ' + status}>
               {status}
             </div>
@@ -100,22 +137,21 @@ export default class LocalLabbookPanel extends Component {
           <div className="LocalLabbooks__title-row">
             <h4
               className="LocalLabbooks__panel-title"
-              onClick={() => this.props.goToLabbook(edge.node.name)}>
+              onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner.username)}>
               {edge.node.name}
             </h4>
             <div className="LocalLabbooks__edit-button" onClick={() => this.props.renameLabbookModal(edge.node.name)}>
             </div>
           </div>
+          <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner.username}</p>
           <p
-            onClick={() => this.props.goToLabbook(edge.node.name)} className="LocalLabbooks__description">
+            onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner.username)} className="LocalLabbooks__description">
             {edge.node.description}
           </p>
         </div>
 
         <div className="LocalLabbooks__info-row flex flex--row justify--space-between">
           <div className="LocalLabbooks__owner flex flex--row">
-              <div>Owner</div>
-              <div className="LocalLabbooks__owner-icon"></div>
               {/* <div> {owner.username}</div> */}
 
           </div>

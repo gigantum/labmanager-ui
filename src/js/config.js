@@ -2,9 +2,9 @@ const CONFIG = {
   'api': process.env.NODE_ENV,
   'navigation_items': [
     {id:'overview', name: 'Overview'},
-    {id:'notes', name: 'Activity', 'fragment': '...Notes_labbook'},
+    {id:'activity', name: 'Activity', 'fragment': '...Activity_labbook'},
     {id:'environment', name: 'Environment', 'fragment': '...Environment_labbook'},
-    {id:'code', name: 'Code'},
+    {id:'code', name: 'Code File'},
     {id:'inputData', name: 'Input Data'},
     {id:'outputData', name: 'Output Data'}
   ],

@@ -4,18 +4,56 @@ import {createPaginationContainer, graphql} from 'react-relay'
 //components
 import AddEnvironmentPackage from 'Components/wizard/AddEnvironmentPackage'
 import Loader from 'Components/shared/Loader'
-
+//store
+import store from 'JS/redux/store'
+let totalCount = 2
+let owner
 class PackageManagerDependencies extends Component {
   constructor(props){
     super(props);
+    const {labbookName} = store.getState().routes
+    owner = store.getState().routes.owner //TODO clean this up when fixing dev environments
     this.state = {
-      'modal_visible': false
+      'modal_visible': false,
+      owner,
+      labbookName
     };
-
+    //bind functions here
     this._openModal = this._openModal.bind(this)
     this._hideModal = this._hideModal.bind(this)
     this._setBaseImage = this._setBaseImage.bind(this)
     this._setComponent = this._setComponent.bind(this)
+    this._loadMore = this._loadMore.bind(this)
+  }
+  /*
+    handle state and addd listeners when component mounts
+  */
+  componentDidMount() {
+    this._loadMore() //routes query only loads 2, call loadMore
+  }
+  /*
+    @param
+    triggers relay pagination function loadMore
+    increments by 10
+    logs callback
+  */
+  _loadMore() {
+
+    let self = this;
+    this.props.relay.loadMore(
+     100, // Fetch the next 100 feed items
+     (response, error) => {
+       if(error){
+         console.error(error)
+       }
+
+       if(self.props.environment.packageManagerDependencies &&
+         self.props.environment.packageManagerDependencies.pageInfo.hasNextPage) {
+
+         self._loadMore()
+       }
+     }
+   );
   }
   /**
   *  @param {None}
@@ -72,7 +110,6 @@ class PackageManagerDependencies extends Component {
             id="packageManagerEditClose"
             className="Environment__modal-close"
             onClick={() => this._hideModal()}>
-            X
           </div>
           <AddEnvironmentPackage
             {...this.props}
@@ -140,7 +177,7 @@ export default createPaginationContainer(
   PackageManagerDependencies,
   {
     environment: graphql`fragment PackageManagerDependencies_environment on Environment {
-    packageManagerDependencies(first: $first, after: $cursor) @connection(key: "PackageManagerDependencies_packageManagerDependencies" filters: ["first"]){
+    packageManagerDependencies(first: $first, after: $cursor) @connection(key: "PackageManagerDependencies_packageManagerDependencies" filters: []){
         edges{
           node{
             id
@@ -162,7 +199,8 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-        return props.labbook && props.labbook.environment;
+
+        return props.environment && props.environment.packageManagerDependencies;
     },
     getFragmentVariables(prevVars, first) {
       return {
@@ -170,15 +208,19 @@ export default createPaginationContainer(
        first: first,
      };
    },
-   getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-    const username = localStorage.getItem('username')
-    first = 10;
-    name = props.labbookName;
-    owner = username;
+   getVariables(props, {count}, fragmentVariables) {
+
+    totalCount += count
+    let first = totalCount;
+    let length = props.environment.packageManagerDependencies.edges.length
+    const {labbookName} = store.getState().routes
+
+    let cursor = props.environment.packageManagerDependencies.edges[length-1].cursor
+
      return {
        first,
        cursor,
-       name,
+       name: labbookName,
        owner
        // in most cases, for variables other than connection filters like
        // `first`, `after`, etc. you may want to use the previous values.
@@ -186,8 +228,8 @@ export default createPaginationContainer(
      };
    },
    query: graphql`
-    query PackageManagerDependenciesPaginationQuery($first: Int!, $cursor: String!){
-     labbook{
+    query PackageManagerDependenciesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+     labbook(name: $name, owner: $owner){
        environment{
          ...PackageManagerDependencies_environment
        }

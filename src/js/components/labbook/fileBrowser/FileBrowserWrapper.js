@@ -6,11 +6,18 @@ import SweetAlert from 'sweetalert-react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
 import Moment from 'moment'
 import Environment, {relayStore} from 'JS/createRelayEnvironment'
+//components
+import DetailPanel from './../detail/DetailPanel'
+import DragAndDrop from './DragDrop'
 //mutations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
-import DeleteLabbookFileMutation from 'Mutations/DeleteLabbookFileMutation'
-import MakeLabbookDirectoryMutation from 'Mutations/MakeLabbookDirectoryMutation'
-import MoveLabbookFileMutation from 'Mutations/MoveLabbookFileMutation'
+import DeleteLabbookFileMutation from 'Mutations/fileBrowser/DeleteLabbookFileMutation'
+import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
+import MoveLabbookFileMutation from 'Mutations/fileBrowser/MoveLabbookFileMutation'
+import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
+//helpers
+import FolderUpload from './folderUpload'
+
 //utilities
 import ChunkUploader from 'JS/utils/ChunkUploader'
 //store
@@ -19,9 +26,11 @@ import store from 'JS/redux/store'
  @param {object} workerData
  uses redux to dispatch file upload to the footer
 */
+let fileCompleteCounter = 0
+
 const dispatchLoadingProgress = (workerData) =>{
   let bytesUploaded = (workerData.chunkSize * (workerData.chunkIndex + 1))/1000
-  let totalBytes = workerData.fileSizeKb * 1000
+  let totalBytes = workerData.fileSizeKb
 
   store.dispatch({
     type: 'LOADING_PROGRESS',
@@ -29,7 +38,7 @@ const dispatchLoadingProgress = (workerData) =>{
       bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
       totalBytes: totalBytes,
       percentage: Math.floor((bytesUploaded/totalBytes) * 100) > 100 ? 100 : Math.floor((bytesUploaded/totalBytes) * 100),
-      loadingState: true,
+      open: true,
       uploadMessage: '',
       labbookName: '',
       error: false,
@@ -38,6 +47,24 @@ const dispatchLoadingProgress = (workerData) =>{
   })
 
   document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
+}
+/*
+ @param {array, number} files,index
+ dispatches batch loading progess to the store
+*/
+const dispatchBatchLoadingProgress = (files, index) =>{
+
+
+  store.dispatch({
+    type: 'BATCH_LOADING_PROGRESS',
+    payload: {
+      index: index,
+      totalFiles: files.length,
+      open: true
+    }
+  })
+
+  document.getElementById('footerProgressBar').style.width = Math.floor((index/files.length) * 100) + '%'
 }
 
 /*
@@ -74,11 +101,38 @@ const dispatchFinishedStatus = (filepath) =>{
    store.dispatch({
      type: 'IMPORT_SUCCESS',
      payload: {
-       uploadMessage: `${route} Lab Book is Ready`,
+       uploadMessage: `${route} LabBook is Ready`,
        labbookName: route, //route is labbookName
        success: true
      }
    })
+}
+
+/*
+
+*/
+const dispatchUploadFinished = () => {
+  document.getElementById('footerProgressBar').style.opacity = 0;
+
+  store.dispatch({
+    type: 'UPLOAD_MESSAGE',
+    payload: {
+      uploadMessage: 'Upload Succesfull',
+    }
+  })
+
+  setTimeout(()=>{
+
+    document.getElementById('footerProgressBar').style.width = "0%";
+    store.dispatch({
+      type: 'RESET_FOOTER_STORE',
+      payload: {}
+    })
+
+    setTimeout(() =>{
+      document.getElementById('footerProgressBar').style.opacity = 1;
+    }, 1000)
+  }, 1000)
 }
 
 
@@ -86,13 +140,17 @@ const dispatchFinishedStatus = (filepath) =>{
 export default class FileBrowserWrapper extends Component {
   constructor(props){
   	super(props);
-
+    const {owner, labbookName} = store.getState().routes
     this.state = {
       'show': false,
+      'selectedFile': null,
       'message': '',
-      'files': this._formatFileJson(props.labbook.files)
+      'files': this._formatFileJson(props.files),
+      'labbookName': labbookName,
+      'owner': owner
     }
 
+    //bind functions here
     this.handleCreateFolder = this.handleCreateFolder.bind(this)
     this.handleCreateFiles = this.handleCreateFiles.bind(this)
     this.handleRenameFolder = this.handleRenameFolder.bind(this)
@@ -100,21 +158,12 @@ export default class FileBrowserWrapper extends Component {
     this.handleDeleteFolder = this.handleDeleteFolder.bind(this)
     this.handleDeleteFile = this.handleDeleteFile.bind(this)
     this._openJupyter = this._openJupyter.bind(this)
+    this.openDetailPanel = this.openDetailPanel.bind(this)
+    this.handleFileFavoriting = this.handleFileFavoriting.bind(this)
 
   }
-  /**
-  *  @param {none}
-  *  uses dom to show mask on file directory
-  */
-  showMask(){
-    document.getElementById('filebrowser-mask').classList.remove('hidden')
-  }
-  /**
-  *  @param {none}
-  *  uses dom to hide mask on file directory
-  */
-  hideMask(){
-    document.getElementById('filebrowser-mask').classList.add('hidden')
+  componentDidMount() {
+    //DragAndDrop.dragAndDrop()
   }
   /**
   *  @param {string} key - file key
@@ -122,65 +171,79 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFolder(key) {
     let self = this;
-    this.showMask()
+
 
     MakeLabbookDirectoryMutation(
       this.props.connection,
-      localStorage.getItem('username'),
-      localStorage.getItem('username'),
-      this.props.labbookName,
-      this.props.labbookId,
+      self.state.owner,
+      this.state.labbookName,
+      this.props.parentId,
       key,
-      (response) => {
-        self.hideMask()
+      this.props.section,
+      (response, error) => {
 
+        if(error){
+          console.error(error)
+        }
       }
     )
   }
 
-  _chunkLoader(filepath, file, data){
-    let self = this
+  _chunkLoader(filepath, file, data, batchUpload, files, index){
 
-    store.dispatch({
-      type: 'LOADING_PROGRESS',
-      payload:{
-        bytesUploaded: 0,
-        percentage: 0,
-        totalBytes:  file.size/1000,
-        loadingState: true
+    let self = this
+    if(!batchUpload){
+      store.dispatch({
+        type: 'LOADING_PROGRESS',
+        payload:{
+          bytesUploaded: 0,
+          percentage: 0,
+          totalBytes:  file.size/1000,
+          open: true
+        }
+      })
+    }else{
+      if(index === 0){
+        store.dispatch({
+          type: 'BATCH_LOADING_PROGRESS',
+          payload:{
+            index: 0,
+            totalFiles:  files.length,
+            open: true
+          }
+        })
       }
-    })
+    }
 
 
     const postMessage = (workerData) => {
 
      if(workerData.addLabbookFile){
+        if(!batchUpload){
 
+          dispatchUploadFinished()
+        }else if(batchUpload && ((files.length - 1) === fileCompleteCounter)){
 
-        document.getElementById('footerProgressBar').style.opacity = 0;
+          fileCompleteCounter++
 
-        store.dispatch({
-          type: 'UPLOAD_MESSAGE',
-          payload: {uploadMessage: `Upload Succesfull`}
-        })
-        self.hideMask()
-        setTimeout(()=>{
-          document.getElementById('footerProgressBar').style.width = "0%";
-          store.dispatch({
-            type: 'RESET_STORE',
-            payload: {}
-          })
+          dispatchBatchLoadingProgress(files, fileCompleteCounter)
 
-          setTimeout(() =>{
-            document.getElementById('footerProgressBar').style.opacity = 1;
-          }, 1000)
-        }, 1000)
+          setTimeout(() => {
+            dispatchUploadFinished()
+            fileCompleteCounter=0;
+          }, 500)
+
+        }else{
+          fileCompleteCounter++
+          dispatchBatchLoadingProgress(files, fileCompleteCounter)
+        }
 
 
       }else if(workerData.chunkSize){
 
-        dispatchLoadingProgress(workerData)
-
+        if(!batchUpload){
+          dispatchLoadingProgress(workerData)
+        }
      } else{
 
        //self._clearState()
@@ -196,9 +259,11 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFiles(files, prefix) {
     let self = this;
-    this.showMask()
-    this.setState(state => {
-      let newFiles = files.map((file) => {
+
+    if(files[0].name){
+      const batchUpload = (files.length > 1)
+
+      let newFiles = files.map((file, index) => {
         let newKey = prefix;
         if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
           newKey += '/';
@@ -208,6 +273,7 @@ export default class FileBrowserWrapper extends Component {
         let fileReader = new FileReader();
 
         fileReader.onloadend = function (evt) {
+
           let arrayBuffer = evt.target.result;
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
           //complete the progress bar
@@ -218,26 +284,53 @@ export default class FileBrowserWrapper extends Component {
             let data = {
               file: file,
               filepath: filepath,
-              username: localStorage.getItem('username'),
+              username: self.state.owner,
               accessToken: localStorage.getItem('access_token'),
               connectionKey: self.props.connection,
-              labbookName: self.props.labbookName,
-              labbookId: self.props.labbookId
+              labbookName: self.state.labbookName,
+              parentId: self.props.parentId,
+              section: self.props.section
             }
 
-
-            self._chunkLoader(filepath, file, data)
+            self._chunkLoader(filepath, file, data, batchUpload, files, index)
           }
 
 
-        fileReader.readAsArrayBuffer(file);
-        return {
-          key: newKey,
-          size: file.size,
-          modified: + Moment(),
-        };
+          fileReader.readAsArrayBuffer(file);
       });
-    })
+    }else{
+      let flattenedFiles = []
+      function flattenFiles(filesArray){
+
+          if(filesArray.entry){
+            flattenedFiles.push(filesArray)
+          }else{
+            if(filesArray.map){
+              filesArray.map(filesSubArray=>{
+                flattenFiles(filesSubArray)
+              })
+            }
+          }
+      }
+
+      flattenFiles(files)
+      let filterFiles = flattenedFiles.filter((fileItem) => {
+          return (fileItem.file.name !== '.DS_Store')
+      })
+
+      FolderUpload.uploadFiles(
+        filterFiles,
+        prefix,
+        self.state.labbookName,
+        self.state.owner,
+        self.props.section,
+        this.props.connection,
+        this.props.parentId,
+        self._chunkLoader
+      )
+
+    }
+
   }
   /**
   *  @param {string, string} oldKey,newKey  file key, prefix is root folder -
@@ -246,7 +339,6 @@ export default class FileBrowserWrapper extends Component {
 
   handleRenameFolder(oldKey, newKey) {
     let self = this;
-    this.showMask()
     let edgesToMove = this.props.files.edges.filter((edge) => {
       return edge && (edge.node.key.indexOf(oldKey) > -1)
     })
@@ -257,11 +349,11 @@ export default class FileBrowserWrapper extends Component {
 
     MakeLabbookDirectoryMutation(
       this.props.connection,
-      localStorage.getItem('username'),
-      localStorage.getItem('username'),
-      this.props.labbookName,
-      this.props.labbookId,
+      self.state.owner,
+      this.state.labbookName,
+      this.props.parentId,
       newKey,
+      this.props.section,
       (response) => {
 
         let all = []
@@ -269,17 +361,17 @@ export default class FileBrowserWrapper extends Component {
         edgesToMove.forEach((edge) => {
           if(edge.node.key.indexOf('.') > -1 ){
             all.push(new Promise((resolve, reject)=>{
-              let newKeyComputed = edge.node.key.replace(oldKey, newKey)
+                let newKeyComputed = edge.node.key.replace(oldKey, newKey)
 
                 MoveLabbookFileMutation(
                   this.props.connection,
-                  localStorage.getItem('username'),
-                  localStorage.getItem('username'),
-                  this.props.labbookName,
-                  this.props.labbookId,
+                  self.state.owner,
+                  this.state.labbookName,
+                  this.props.parentId,
                   edge,
                   edge.node.key,
                   newKeyComputed,
+                  this.props.section,
                   (response) => {
 
                     if(response.moveLabbookFile){
@@ -289,7 +381,8 @@ export default class FileBrowserWrapper extends Component {
                         resolve(response.moveLabbookFile)
                       },1050)
                     }else{
-                        reject(response[0].message)
+
+                        reject(response)
                     }
                   }
                 )
@@ -306,21 +399,28 @@ export default class FileBrowserWrapper extends Component {
             return edge && (oldKey === edge.node.key)
           })[0]
 
+          let edgesToDelete = this.props.files.edges.filter((edge) => {
+            return edge && (edge.node.key.indefOf(oldKey) > -1)
+          })[0]
+
           DeleteLabbookFileMutation(
             this.props.connection,
-            localStorage.getItem('username'),
-            localStorage.getItem('username'),
-            this.props.labbookName,
-            this.props.labbookId,
+            self.state.owner,
+            this.state.labbookName,
+            this.props.parentId,
             edgeToDelete.node.id,
             oldKey,
-            (response) => {
+            this.props.section,
+            edgesToDelete,
+            (response, error) => {
+              if(error){
+                console.error(error)
+              }
 
-              self.hideMask()
             }
           )
-        }).catch(reason =>{
-          console.log(reason[0].message)
+        }).catch(error =>{
+          console.error(error)
         })
       }
     )
@@ -333,24 +433,27 @@ export default class FileBrowserWrapper extends Component {
   */
   handleRenameFile(oldKey, newKey) {
     let that = this;
-    this.showMask()
     let edgeToMove = this.props.files.edges.filter((edge) => {
-      return edge && (oldKey === edge.node.key)
+      if(edge && edge.node){
+        return edge && (oldKey === edge.node.key)
+      }
     })[0]
 
     if(edgeToMove){
       MoveLabbookFileMutation(
         this.props.connection,
-        localStorage.getItem('username'),
-        localStorage.getItem('username'),
-        this.props.labbookName,
-        this.props.labbookId,
+        this.state.owner,
+        this.state.labbookName,
+        this.props.parentId,
         edgeToMove,
         oldKey,
         newKey,
-        (response) => {
+        this.props.section,
+        (response, error) => {
+          if(error){
+            console.error(error)
+          }
 
-          that.hideMask()
         }
       )
     }
@@ -362,22 +465,28 @@ export default class FileBrowserWrapper extends Component {
   */
   handleDeleteFolder(folderKey) {
     let self = this
-    this.showMask()
 
     let edgeToDelete = this.props.files.edges.filter((edge) => {
       return edge && (folderKey === edge.node.key)
     })[0]
 
+    let edgesToDelete = this.props.files.edges.filter((edge) => {
+      return edge && (edge.node.key.indexOf(folderKey) > -1)
+    })
+
     DeleteLabbookFileMutation(
       this.props.connection,
-      localStorage.getItem('username'),
-      localStorage.getItem('username'),
-      this.props.labbookName,
-      this.props.labbookId,
+      this.state.owner,
+      this.state.labbookName,
+      this.props.parentId,
       edgeToDelete.node.id,
       folderKey,
-      (response) => {
-        self.hideMask()
+      this.props.section,
+      edgesToDelete,
+      (response, error) => {
+        if(error){
+          console.error(error)
+        }
       }
     )
   }
@@ -388,7 +497,6 @@ export default class FileBrowserWrapper extends Component {
   handleDeleteFile(fileKey) {
 
     let self = this
-    this.showMask()
 
     let edgeToDelete = this.props.files.edges.filter((edge) => {
       return edge && (fileKey === edge.node.key)
@@ -396,14 +504,17 @@ export default class FileBrowserWrapper extends Component {
 
     DeleteLabbookFileMutation(
       this.props.connection,
-      localStorage.getItem('username'),
-      localStorage.getItem('username'),
-      this.props.labbookName,
-      this.props.labbookId,
+      this.state.owner,
+      this.state.labbookName,
+      this.props.parentId,
       edgeToDelete.node.id,
       fileKey,
-      (response) => {
-        self.hideMask()
+      this.props.section,
+      [],
+      (response, error) => {
+        if(error){
+          console.error(error)
+        }
       }
     )
   }
@@ -414,10 +525,9 @@ export default class FileBrowserWrapper extends Component {
   *  redirect user to jupyter in callback
   */
   _openJupyter(){
-    let username = localStorage.getItem('username')
     StartContainerMutation(
-      this.props.labbookName,
-      username,
+      this.state.labbookName,
+      this.state.owner,
       'clientMutationId',
       (error) =>{
         if(error){
@@ -443,11 +553,14 @@ export default class FileBrowserWrapper extends Component {
       let formatedArray = []
       if(files){
         files.edges.forEach((edge) => {
-          if(edge){
+          if(edge && edge.node){
+
             formatedArray.push({
               key: edge.node.key,
               modified: edge.node.modifiedAt,
-              size: edge.node.size
+              size: edge.node.size,
+              isFavorite: edge.node.isFavorite,
+              id: edge.node.id
             })
           }
         })
@@ -455,22 +568,72 @@ export default class FileBrowserWrapper extends Component {
 
       return formatedArray
   }
+  /**
+  *  @param {string} key
+  *  triggers file favorite mutation
+  */
+  handleFileFavoriting(key){
+    let fileItem = this.props.files.edges.filter((edge)=>{
+
+        if(edge && (edge.node.key === key)){
+          return edge.node
+        }
+    })[0]
+
+    AddFavoriteMutation(
+      this.props.favoriteConnection,
+      this.props.parentId,
+      this.state.owner,
+      this.state.labbookName,
+      key,
+      '',
+      false,
+      0,
+      fileItem,
+      this.props.section,
+      (response, error)=>{
+        if(error){
+          console.error(error)
+        }
+      }
+    )
+  }
+  /*
+    @param {object} file
+    gets a file objext with name, extension, key, url properties
+    sets as selected item
+  */
+  openDetailPanel(file){
+
+    this.setState({
+      "selectedFile": file
+    })
+
+    store.dispatch({
+      type: 'UPDATE_DETAIL_VIEW',
+      payload: {
+        detailMode: true
+      }
+    })
+  }
+
+
   render(){
 
     let files = this._formatFileJson(this.props.files)
 
     return(
         <div id="code" className="Code flex flex-row justify-center">
-          {/* <button className="Code__open-jupyter" onClick={() => this._openJupyter()}
-          target="_blank">
-            Open Jupyter
-          </button> */}
+
           <FileBrowser
             ref={this.props.connection}
             key={this.props.connection}
             keyPrefix={this.props.connection}
+            connectionKey={this.props.connection}
             files={files}
-            rootFolder={this.props.rootFolder}
+            toggleFolder={this.toggleFolder}
+            openDetailPanel={this.openDetailPanel}
+            rootFolder={this.props.section}
             onCreateFolder={this.handleCreateFolder}
             onCreateFiles={this.handleCreateFiles}
             onMoveFolder={this.handleRenameFolder}
@@ -479,7 +642,15 @@ export default class FileBrowserWrapper extends Component {
             onRenameFile={this.handleRenameFile}
             onDeleteFolder={this.handleDeleteFolder}
             onDeleteFile={this.handleDeleteFile}
+            onFileFavoriting={this.handleFileFavoriting}
+            owner={this.state.owner}
           />
+
+
+          <DetailPanel
+            {...this.state.selectedFile}
+          />
+
 
           <SweetAlert
             className="sa-error-container"

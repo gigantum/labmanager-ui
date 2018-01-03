@@ -3,6 +3,8 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
+//redux store
+import reduxStore from 'JS/redux/store'
 
 
 const mutation = graphql`
@@ -33,8 +35,19 @@ export default function BuildImageMutation(
       mutation,
       variables,
       onCompleted: (response, error) => {
+        console.log(error)
         if(error){
           console.log(error)
+          reduxStore.dispatch({
+            type: 'UPLOAD_MESSAGE',
+            payload:{
+              error: true,
+              uploadMessage: 'LabBook failed to build',
+              showProgressBar: false,
+              open: true,
+              success: false
+            }
+          })
         }
         callback(error)
       },

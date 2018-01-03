@@ -1,0 +1,10 @@
+.DetailsRecords__list{
+  margin: 0;
+}
+
+.DetailsRecords__item{
+  border-bottom: 1px solid $lightGrey;
+  padding: 15px 15px 15px 66px;
+
+  @include flex(flex-start, column);
+}

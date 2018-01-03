@@ -3,11 +3,16 @@ import React from 'react'
 import SweetAlert from 'sweetalert-react';
 //mutations
 import AddEnvironmentPackageMutation from 'Mutations/AddEnvironmentPackageMutation'
-
+//store
+import store from 'JS/redux/store'
 
 export default class AddEnvironmentPackage extends React.Component {
   constructor(props){
-  	super(props);
+
+    super(props);
+
+    const {owner, labbookName} = store.getState().routes
+
   	this.state = {
       'modal_visible': false,
       'name': '',
@@ -16,7 +21,9 @@ export default class AddEnvironmentPackage extends React.Component {
         {state: 'Add', 'packageManager': (this.props.availablePackageManagers) ? this.props.availablePackageManagers[0] : ['pip3'] , dependencyName: null}
       ],
       'show': false,
-      'message': ''
+      'message': '',
+      owner,
+      labbookName
     };
 
     this.props.toggleDisabledContinue(false);
@@ -42,7 +49,6 @@ export default class AddEnvironmentPackage extends React.Component {
     if(!isSkip){
       let all = [],
       {environmentPackages} = this.state;
-      const username = localStorage.getItem('username')
 
       this.props.setComponent(this.props.nextWindow)
 
@@ -51,8 +57,8 @@ export default class AddEnvironmentPackage extends React.Component {
           let promise = new Promise((resolve, reject) => {
 
             AddEnvironmentPackageMutation(
-              this.props.labbookName,
-              username,
+              this.state.labbookName,
+              this.state.owner,
               packageManager,
               dependencyName,
               this.props.environmentId,
@@ -145,11 +151,12 @@ export default class AddEnvironmentPackage extends React.Component {
 
     return(
       <div className="AddEnvironmentPackage">
+
+          <p className="AddEnvironmentPackage__title">Install dependencies via Package Manager</p>
+
           <div className="AddEnvironmentPackage__inner-container">
-            <p>Install dependencies via Package Manager</p>
 
-
-            {
+          {
               this.state.environmentPackages.map((pack, index) => {
                 return(
                   <div key={index} className="AddEnvironmentPackage__row flex flex--row justify--space-between">
@@ -193,6 +200,7 @@ export default class AddEnvironmentPackage extends React.Component {
               )
               })
             }
+            
             <SweetAlert
               className="sa-error-container"
               show={this.state.show}
@@ -202,12 +210,14 @@ export default class AddEnvironmentPackage extends React.Component {
               onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
 
           </div>
-          {
-            this._environmentView() && (<div className="AddEnvironmentPackage__progress-buttons flex flex--row justify--space-between">
 
-            <button onClick={() => this.continueSave()}>Save</button>
-          </div>)
-        }
+          {
+            this._environmentView() && (
+              <div className="AddEnvironmentPackage__progress-buttons flex flex--row justify--space-between">
+                <button onClick={() => this.continueSave()}>Save</button>
+              </div>
+            )
+          }
 
       </div>
       )

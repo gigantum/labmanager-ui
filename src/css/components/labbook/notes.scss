@@ -11,11 +11,34 @@
 .NotesCard{
   margin: 15px 15px;
   padding: 0 10px;
-  //border: 1px solid $font-grey;
-  color: $charcoal;
+  //border: 1px solid $romanSilver;
+  color: $romanSilver;
   z-index: 200;
   position: relative;
   background: white;
+
+
+
+  border-bottom: 10px solid $azure;
+
+}
+
+.NotesCard__stack{
+  @include flex(flex-start, column)
+}
+
+.NotesCard__user{
+  height: 20px;
+  width: 20px;
+  align-self: center;
+}
+
+.NotesCard__time{
+  align-self: center;
+  max-width: 120px;
+  margin: 2px 0;
+  color: $romanSilver;
+  font-size: 12px;
 
 }
 
@@ -33,9 +56,9 @@
   display: block;
   position: absolute;
   z-index: 1;
-  top: 100%;
+  top: calc(100% + 10px);
   left: 25px;
-  border: 4px solid $font-grey;
+  border: 4px solid $romanSilver;
   border-width: 0 0 0 4px;
   width: 1px;
   height: 15px;
@@ -64,7 +87,7 @@
 
   p{
     padding: 5px 15px;
-    border-left: 1px solid $font-grey;
+    border-left: 1px solid $romanSilver;
     flex: 1 1 auto;
     word-wrap: break-word;
     word-break: break-all;
@@ -91,13 +114,13 @@
   background: none;
   width: 200px;
   border: none;
-  color: $font-grey;
+  color: $romanSilver;
 }
 
 .NotesCard__toggle-button:focus{
   background: none;
   border: none;
-  color: $font-grey;
+  color: $romanSilver;
 }
 
 .NotesCard__toggle-icon{
@@ -119,7 +142,7 @@
 
 .NotesCard__expanded-view{
   overflow: hidden;
-  border-top: 2px solid $activity;
+  border-top: 2px solid $azure;
   min-height: 0px;
   //max-height: 540px;
 
@@ -132,15 +155,14 @@
   // overflow: hidden;
   // visibility: hidden;
 }
-.NotesCard__time{
-  max-width: 120px;
-}
+
 
 .NotesCard__commit-message{
+  width: calc(100% - 240px);
   align-self: center;
   flex: 1 0 auto;
   font-size: 16px;
-  margin: 0 15px;
+  margin: 18px 15px;
 }
 
 .NotesCard__tags-list{
@@ -171,7 +193,7 @@
     width: 80px;
     height: 80px;
 
-    border: 4px solid $activity;
+    border: 4px solid $azure;
     border-radius: 40px;
     background: $grey-light;
 
@@ -183,7 +205,7 @@
 
   height: 30px;
 
-  color: $font-grey;
+  color: $romanSilver;
 
   font-size: 20px;
 }
@@ -193,13 +215,13 @@
 
   height: 26px;
 
-  color: $font-grey;
+  color: $romanSilver;
 
   font-size: 26px;
 }
 
 .Notes__user-note{
-  color: $activity;
+  color: $azure;
   position: relative;
   font-size: 14px;
   cursor: pointer;
@@ -211,7 +233,7 @@
 
 .Notes__user-note--remove,
 .Notes__user-note--add{
-  background: $activity;
+  background: $azure;
   background-size: 10px;
   height: 20px;
   width: 20px;
@@ -229,7 +251,7 @@
   z-index: 1;
   top: calc(100% - 4px);
   left: 39px;
-  border: 4px solid $font-grey;
+  border: 4px solid $romanSilver;
   border-width: 0 0 0 4px;
   width: 1px;
   height: 40px;
@@ -237,12 +259,12 @@
 }
 
 .Notes__user-note--remove{
-  background: $activity url('../images/icons/remove.svg') no-repeat center center;
+  background: $azure url('../images/icons/remove.svg') no-repeat center center;
   background-size: 14px;
 }
 
 .Notes__user-note--add{
-  background: $activity url('../images/icons/add.svg') no-repeat center center;
+  background: $azure url('../images/icons/add.svg') no-repeat center center;
   background-size: 14px;
 }
 
@@ -255,4 +277,31 @@
     left: 29px;
     background-size: 18px;
   }
+}
+
+.NotesCard.NotesCard__loader-hidden{
+  display: block;
+  opacity: 0;
+  height: 0;
+}
+
+.NotesCard.NotesCard__loader{
+  opacity: 1;
+}
+
+.NotesCard.NotesCard__loader--1{
+  transition: opacity 0.8s;
+}
+
+.NotesCard.NotesCard__loader--2{
+  transition: opacity 1.2s;
+}
+.NotesCard.NotesCard__loader--3{
+  transition: opacity 2s;
+}
+.NotesCard.NotesCard__loader--4{
+  transition: opacity 2.8s;
+}
+.NotesCard.NotesCard__loader--5{
+  transition: opacity 3.6s;
 }

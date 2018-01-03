@@ -28,16 +28,17 @@ const JobStatus = {
       let fetchData = function(){
 
         fetchQuery(jobStatusQuery(), variables).then((response) => {
-
         //debugger;
           if(response.data.jobStatus.status === 'started'){
             setTimeout(()=>{
               fetchData()
             }, 250)
 
-          }else{
+          }else if(response.data.jobStatus.status === 'finished'){
 
             resolve(response.data)
+          }else{
+            reject(response.data)
           }
         }).catch((error) =>{
           console.log(error)

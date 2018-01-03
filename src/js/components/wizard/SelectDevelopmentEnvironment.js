@@ -8,6 +8,8 @@ import Loader from 'Components/shared/Loader'
 import environment from 'JS/createRelayEnvironment'
 //mutations
 import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
+//store
+import store from 'JS/redux/store'
 
 const BaseImageQuery = graphql`query SelectDevelopmentEnvironmentQuery($first: Int!, $cursor: String){
   availableDevEnvs(first: $first, after: $cursor){
@@ -58,15 +60,21 @@ const BaseImageQuery = graphql`query SelectDevelopmentEnvironmentQuery($first: I
 
 export default class SelectDevelopmentEnvironment extends React.Component {
   constructor(props){
+
   	super(props);
-  	this.state = {
+
+    const {owner, labbookName} = store.getState().routes
+
+    this.state = {
       'modal_visible': false,
       'name': '',
       'description': '',
       'selectedDevelopmentEnvironment': null,
       'selectedDevelopmentEnvironmentId': false,
       'show': false,
-      'message': ''
+      'message': '',
+      owner,
+      labbookName
     };
     this.continueSave = this.continueSave.bind(this);
   }
@@ -90,10 +98,10 @@ export default class SelectDevelopmentEnvironment extends React.Component {
 
     let component = this.state.selectedDevelopmentEnvironment.node.component;
     this.props.toggleDisabledContinue(true);
-    const username = localStorage.getItem('username')
+
     AddEnvironmentComponentMutation(
-      this.props.labbookName,
-      username,
+      this.state.labbookName,
+      this.state.owner,
       component.repository,
       component.namespace,
       component.name,
@@ -125,7 +133,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
     return(
       <div className="SelectDevelopmentEnvironment">
 
-        <p> Dev Environment</p>
+        <p className="SelectDevelopmentEnvironment__title">Dev Environment</p>
         <QueryRenderer
           variables={{
             first: 20
@@ -146,7 +154,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
                           {
                             (this.state.selectedDevelopmentEnvironment !== null) && (
                               <div className="SelectDevelopmentEnvironment__selected-image">
-                                <img alt="" src={this.state.selectedDevelopmentEnvironment.node.info.icon} height="50" width="50" />
+                                <img alt="" src={this.state.selectedDevelopmentEnvironment.node.info.icon} height="36" width="auto" />
                                 <p>{this.state.selectedDevelopmentEnvironment.node.info.humanName}</p>
                               </div>
                             )
@@ -158,7 +166,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
 
                             return(
                               <div className={(this.state.selectedDevelopmentEnvironmentId === edge.node.id) ? 'SelectDevelopmentEnvironment__image--selected': 'SelectDevelopmentEnvironment__image'} onClick={()=> this._selectDevelopmentEnvironment(edge)} key={edge.node.id}>
-                                <img alt="" src={edge.node.info.icon} height="50" width="50" />
+                                <img alt="" src={edge.node.info.icon} height="36" width="auto" />
                                 <p>{edge.node.info.humanName}</p>
                               </div>
                             )

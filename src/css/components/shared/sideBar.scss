@@ -1,0 +1,123 @@
+.SideBar{
+  position: fixed;
+  z-index: 60;
+  top: 10px;
+
+  height: 100%;
+  border-top: 1px solid $white;
+  background: $jet;
+  background: linear-gradient($jet, $azure);
+  width: 120px;
+}
+
+.SideBar__logo{
+  max-width: 80%;
+  height: auto;
+  margin: 10px auto;
+}
+
+.SideBar__inner-container{
+  width: 100%;
+  height: 100%;
+  @include flex(flex-start, column)
+}
+
+.SideBar__title{
+  color: $cream;
+}
+
+.SideBar__list-item{
+  width: 100%;
+}
+
+.SideBar__list-item--selected{
+  @extend .SideBar__list-item;
+}
+
+.SideBar__list-item--selected:after{
+}
+
+.SideBar__nav{
+  @include flex(flex-start, column)
+  align-items: center;
+  height: 50%;
+}
+
+.SideBar__nav-item{
+  align-content: center;
+
+  width: 80px;
+  height: 120px;
+  color: $white;
+  margin: 0 auto;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+
+  @include flex(center, column)
+}
+
+.SideBar__nav-item--selected{
+  color: $turquise;
+}
+
+.SideBar__nav-item--datasets{
+  align-items: center;
+  opacity: 0.3;
+}
+
+.SideBar__nav-item--labbooks{
+  align-items: center;
+}
+
+.SideBar__icon{
+  height: 55px;
+  width: 60px;
+  margin: 0 2px;
+  align-items: center;
+
+}
+
+.SideBar__icon--datasets{
+  background: url('../images/icons/datasets.svg') no-repeat center center;
+  background-size: 40px;
+}
+
+
+.SideBar__icon--datasets-selected{
+  background: url('../images/icons/datasets-selected.svg') no-repeat center center;
+  background-size: 40px;
+}
+
+.SideBar__icon--labbooks{
+  transform: scale(2.5);
+  background: url('../images/icons/labbooks.svg') no-repeat center center;
+  background-size: 40px;
+}
+
+.SideBar__icon--labbooks-selected{
+  transform: scale(2.5);
+  background: url('../images/icons/labbooks-selected.svg') no-repeat center center;
+  background-size: 40px;
+}
+
+.SideBar__button{
+  background-color: $orange;
+  border: 1px solid $cream;
+  color: $cream;
+}
+
+.SideBar__button:hover{
+  background-color: $cream;
+  border: 1px solid $cream;
+  border-width: 0px;
+  color: $orange;
+}
+
+.SideBar__button--logout{
+  position: absolute;
+  top: 20px;
+}

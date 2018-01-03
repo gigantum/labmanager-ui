@@ -1,5 +1,67 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Tue Nov 07 2017 13:03:55 GMT-0500 (EST)
+# timestamp: Tue Dec 19 2017 08:42:04 GMT+0000 (GMT)
+
+type ActivityConnection {
+  pageInfo: PageInfo!
+  edges: [ActivityEdge]!
+}
+
+# Container for Activity Detail Records
+type ActivityDetailObject implements Node {
+  # The ID of the object.
+  id: ID!
+  key: String
+  data: [[String]]
+  type: ActivityDetailType
+  show: Boolean
+  importance: Int
+  tags: [String]
+}
+
+enum ActivityDetailType {
+  NOTE
+  LABBOOK
+  INPUT_DATA
+  CODE
+  CODE_EXECUTED
+  RESULT
+  OUTPUT_DATA
+  ENVIRONMENT
+}
+
+type ActivityEdge {
+  # The item at the end of the edge
+  node: ActivityRecordObject
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# Container for Activity Records
+type ActivityRecordObject implements Node {
+  # The ID of the object.
+  id: ID!
+  commit: String
+  linkedCommit: String
+  message: String
+  detailObjects: [ActivityDetailObject]
+  type: ActivityType
+  show: Boolean
+  importance: Int
+  tags: [String]
+  timestamp: DateTime
+}
+
+enum ActivityType {
+  NOTE
+  ENVIRONMENT
+  CODE
+  INPUT_DATA
+  OUTPUT_DATA
+  MILESTONE
+  BRANCH
+  LABBOOK
+}
 
 input AddEnvironmentComponentInput {
   labbookName: String!
@@ -33,13 +95,25 @@ type AddEnvironmentPackagePayload {
   clientMutationId: String
 }
 
+input AddLabbookCollaboratorInput {
+  owner: String!
+  labbookName: String!
+  username: String!
+  clientMutationId: String
+}
+
+type AddLabbookCollaboratorPayload {
+  updatedLabbook: Labbook
+  clientMutationId: String
+}
+
 input AddLabbookFavoriteInput {
   owner: String!
   labbookName: String!
-  subdir: String!
+  section: String!
   key: String!
   description: String
-  isDir: String
+  isDir: Boolean
   index: Int
   clientMutationId: String
 }
@@ -50,18 +124,31 @@ type AddLabbookFavoritePayload {
 }
 
 input AddLabbookFileInput {
-  user: String!
   owner: String!
   labbookName: String!
+  section: String!
   filePath: String!
   chunkUploadParams: ChunkUploadInput!
   clientMutationId: String
 }
 
 # Mutation to add a file to a labbook. File should be sent in the `uploadFile` key as a multi-part/form upload.
-# file_path is the relative path from the labbook root.
+# file_path is the relative path from the labbook section specified.
 type AddLabbookFilePayload {
   newLabbookFileEdge: LabbookFileEdge
+  clientMutationId: String
+}
+
+input AddLabbookRemoteInput {
+  owner: String!
+  labbookName: String!
+  remoteName: String!
+  remoteUrl: String!
+  clientMutationId: String
+}
+
+type AddLabbookRemotePayload {
+  success: Boolean
   clientMutationId: String
 }
 
@@ -164,39 +251,20 @@ type CreateLabbookPayload {
   clientMutationId: String
 }
 
-input CreateNoteInput {
-  labbookName: String!
-  owner: String
-  level: NoteLogLevel!
-  message: String!
-  linkedCommit: String!
-  tags: [String]
-  freeText: String
-  objects: [NoteObjectInput]
-  clientMutationId: String
-}
-
-# Mutation to create a new note entry
-type CreateNotePayload {
-  note: Note
-  clientMutationId: String
-}
-
 input CreateUserNoteInput {
-  labbookName: String!
   owner: String
-  message: String!
-  freeText: String
+  labbookName: String!
+  title: String!
+  body: String
   tags: [String]
-  objects: [NoteObjectInput]
   clientMutationId: String
 }
 
 # Mutation to create a new user note entry in the activity feed of lab book
 #
-# The log level is set to USER_NOTE automatically and the `linked_commit` is an empty string
+# The `linked_commit` is an empty string since there is no linked commit
 type CreateUserNotePayload {
-  note: Note
+  newActivityRecordEdge: ActivityEdge
   clientMutationId: String
 }
 
@@ -229,10 +297,22 @@ type CustomDependencyEdge {
 # [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 scalar DateTime
 
-input DeleteLabbookFileInput {
-  user: String!
+input DeleteLabbookCollaboratorInput {
   owner: String!
   labbookName: String!
+  username: String!
+  clientMutationId: String
+}
+
+type DeleteLabbookCollaboratorPayload {
+  updatedLabbook: Labbook
+  clientMutationId: String
+}
+
+input DeleteLabbookFileInput {
+  owner: String!
+  labbookName: String!
+  section: String!
   filePath: String!
   isDirectory: Boolean
   clientMutationId: String
@@ -330,7 +410,6 @@ type EnvironmentInfo implements Node {
 }
 
 input ExportLabbookInput {
-  user: String!
   owner: String!
   labbookName: String!
   clientMutationId: String
@@ -371,8 +450,6 @@ enum ImageStatus {
 }
 
 input ImportLabbookInput {
-  owner: String!
-  user: String!
   chunkUploadParams: ChunkUploadInput!
   clientMutationId: String
 }
@@ -380,6 +457,18 @@ input ImportLabbookInput {
 type ImportLabbookPayload {
   importJobKey: String
   buildImageJobKey: String
+  clientMutationId: String
+}
+
+input ImportRemoteLabbookInput {
+  owner: String!
+  labbookName: String!
+  remoteUrl: String!
+  clientMutationId: String
+}
+
+type ImportRemoteLabbookPayload {
+  activeBranch: String
   clientMutationId: String
 }
 
@@ -417,14 +506,19 @@ type Labbook implements Node, GitRepository {
   description: String
   owner: Owner
   activeBranch: LabbookRef
+  defaultRemote: String
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
+  collaborators: [String]
+  canManageCollaborators: Boolean
+  updatesAvailableCount: Int
+  isRepoClean: Boolean
   environment: Environment
-  files(baseDir: String, before: String, after: String, first: Int, last: Int): LabbookFileConnection
-  codeFiles(baseDir: String = "code/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
-  inputFiles(baseDir: String = "input/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
-  outputFiles(baseDir: String = "output/", before: String, after: String, first: Int, last: Int): LabbookFileConnection
-  favorites(subdir: String, before: String, after: String, first: Int, last: Int): LabbookFavoriteConnection
-  notes(before: String, after: String, first: Int, last: Int): NoteConnection
+  code: LabbookSection
+  input: LabbookSection
+  output: LabbookSection
+  activityRecords(before: String, after: String, first: Int, last: Int): ActivityConnection
+  detailRecord(key: String): ActivityDetailObject
+  detailRecords(keys: [String]): [ActivityDetailObject]
 }
 
 # An object representing a commit to a LabBook
@@ -478,6 +572,7 @@ type LabbookFile implements Node {
   # The ID of the object.
   id: ID!
   isDir: Boolean
+  isFavorite: Boolean
   modifiedAt: Int
   key: String
   size: Int
@@ -518,11 +613,21 @@ type LabbookRefEdge {
   cursor: String!
 }
 
+# A type representing a section within a LabBook (i.e., code, input, output
+#     
+type LabbookSection implements Node {
+  # The ID of the object.
+  id: ID!
+  files(root: String, before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  allFiles(before: String, after: String, first: Int, last: Int): LabbookFileConnection
+  favorites(before: String, after: String, first: Int, last: Int): LabbookFavoriteConnection
+}
+
 input MakeLabbookDirectoryInput {
-  user: String!
   owner: String!
   labbookName: String!
-  dirName: String!
+  section: String!
+  directory: String!
   clientMutationId: String
 }
 
@@ -532,9 +637,9 @@ type MakeLabbookDirectoryPayload {
 }
 
 input MoveLabbookFileInput {
-  user: String!
   owner: String!
   labbookName: String!
+  section: String!
   srcPath: String!
   dstPath: String!
   clientMutationId: String
@@ -549,15 +654,20 @@ type MoveLabbookFilePayload {
 
 type Mutation {
   importLabbook(input: ImportLabbookInput!): ImportLabbookPayload
+  importRemoteLabbook(input: ImportRemoteLabbookInput!): ImportRemoteLabbookPayload
   exportLabbook(input: ExportLabbookInput!): ExportLabbookPayload
   createLabbook(input: CreateLabbookInput!): CreateLabbookPayload
   renameLabbook(input: RenameLabbookInput!): RenameLabbookPayload
+  publishLabbook(input: PublishLabbookInput!): PublishLabbookPayload
+  syncLabbook(input: SyncLabbookInput!): SyncLabbookPayload
   createBranch(input: CreateBranchInput!): CreateBranchPayload
   checkoutBranch(input: CheckoutBranchInput!): CheckoutBranchPayload
+  pullActiveBranchFromRemote(input: PullActiveBranchFromRemoteInput!): PullActiveBranchFromRemotePayload
+  pushActiveBranchToRemote(input: PushActiveBranchToRemoteInput!): PushActiveBranchToRemotePayload
+  addLabbookRemote(input: AddLabbookRemoteInput!): AddLabbookRemotePayload
   buildImage(input: BuildImageInput!): BuildImagePayload
   startContainer(input: StartContainerInput!): StartContainerPayload
   stopContainer(input: StopContainerInput!): StopContainerPayload
-  createNote(input: CreateNoteInput!): CreateNotePayload
   createUserNote(input: CreateUserNoteInput!): CreateUserNotePayload
   addEnvironmentComponent(input: AddEnvironmentComponentInput!): AddEnvironmentComponentPayload
   addEnvironmentPackage(input: AddEnvironmentPackageInput!): AddEnvironmentPackagePayload
@@ -567,78 +677,16 @@ type Mutation {
   makeLabbookDirectory(input: MakeLabbookDirectoryInput!): MakeLabbookDirectoryPayload
   removeUserIdentity(input: RemoveUserIdentityInput!): RemoveUserIdentityPayload
   addFavorite(input: AddLabbookFavoriteInput!): AddLabbookFavoritePayload
+  updateFavorite(input: UpdateLabbookFavoriteInput!): UpdateLabbookFavoritePayload
   removeFavorite(input: RemoveLabbookFavoriteInput!): RemoveLabbookFavoritePayload
+  addCollaborator(input: AddLabbookCollaboratorInput!): AddLabbookCollaboratorPayload
+  deleteCollaborator(input: DeleteLabbookCollaboratorInput!): DeleteLabbookCollaboratorPayload
 }
 
 # An object with an ID
 interface Node {
   # The ID of the object.
   id: ID!
-}
-
-# A type representing a single note entry in a labbook
-type Note implements Node {
-  # The ID of the object.
-  id: ID!
-  commit: ID
-  linkedCommit: ID
-  message: String
-  author: String
-  level: NoteLogLevel
-  tags: [String]
-  timestamp: DateTime
-  freeText: String
-  objects(before: String, after: String, first: Int, last: Int): NoteObjectConnection
-}
-
-type NoteConnection {
-  pageInfo: PageInfo!
-  edges: [NoteEdge]!
-}
-
-type NoteEdge {
-  # The item at the end of the edge
-  node: Note
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-enum NoteLogLevel {
-  USER_NOTE
-  USER_MAJOR
-  USER_MINOR
-  AUTO_MAJOR
-  AUTO_MINOR
-  AUTO_DETAIL
-}
-
-# Container for arbitrary objects stored within a note
-type NoteObject implements Node {
-  # The ID of the object.
-  id: ID!
-  key: String
-  type: String
-  value: String
-}
-
-type NoteObjectConnection {
-  pageInfo: PageInfo!
-  edges: [NoteObjectEdge]!
-}
-
-type NoteObjectEdge {
-  # The item at the end of the edge
-  node: NoteObject
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-input NoteObjectInput {
-  key: String
-  type: String
-  value: String
 }
 
 # A type representing the owner of a LabBook or Dataset
@@ -687,6 +735,41 @@ type PageInfo {
   endCursor: String
 }
 
+input PublishLabbookInput {
+  owner: String!
+  labbookName: String!
+  clientMutationId: String
+}
+
+type PublishLabbookPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+input PullActiveBranchFromRemoteInput {
+  owner: String!
+  labbookName: String!
+  remoteName: String
+  clientMutationId: String
+}
+
+type PullActiveBranchFromRemotePayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+input PushActiveBranchToRemoteInput {
+  owner: String!
+  labbookName: String!
+  remoteName: String
+  clientMutationId: String
+}
+
+type PushActiveBranchToRemotePayload {
+  success: Boolean
+  clientMutationId: String
+}
+
 type Query {
   # The ID of the object
   node(id: ID!): Node
@@ -706,7 +789,7 @@ type Query {
 input RemoveLabbookFavoriteInput {
   owner: String!
   labbookName: String!
-  subdir: String!
+  section: String!
   index: Int!
   clientMutationId: String
 }
@@ -727,7 +810,6 @@ type RemoveUserIdentityPayload {
 }
 
 input RenameLabbookInput {
-  user: String!
   owner: String!
   originalLabbookName: String!
   newLabbookName: String!
@@ -763,6 +845,33 @@ input StopContainerInput {
 type StopContainerPayload {
   environment: Environment
   backgroundJobKey: String
+  clientMutationId: String
+}
+
+input SyncLabbookInput {
+  owner: String!
+  labbookName: String!
+  clientMutationId: String
+}
+
+type SyncLabbookPayload {
+  updateCount: Int
+  clientMutationId: String
+}
+
+input UpdateLabbookFavoriteInput {
+  owner: String!
+  labbookName: String!
+  section: String!
+  index: Int!
+  updatedIndex: Int
+  updatedKey: String
+  updatedDescription: String
+  clientMutationId: String
+}
+
+type UpdateLabbookFavoritePayload {
+  updatedFavoriteEdge: LabbookFavoriteEdge
   clientMutationId: String
 }
 

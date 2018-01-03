@@ -14,9 +14,6 @@ import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
 //utils
 import Validation from 'JS/utils/Validation'
 
-
-
-
 let isLoadingMore = false;
 
 class LocalLabbooks extends Component {
@@ -29,7 +26,8 @@ class LocalLabbooks extends Component {
       oldLabbookName: '',
       newLabbookName:'',
       renameError: '',
-      showNamingError: false
+      showNamingError: false,
+      filter: 'all'
     }
 
     this._goToLabbook = this._goToLabbook.bind(this)
@@ -60,10 +58,10 @@ class LocalLabbooks extends Component {
   *  @param {string} labbookName - inputs a labbook name
   *  routes to that labbook
   */
-  _goToLabbook = (labbookName) => {
-    this.setState({'labbookName': labbookName})
+  _goToLabbook = (labbookName, owner) => {
+    this.setState({'labbookName': labbookName, 'owner': owner})
 
-    this.props.history.replace(`/labbooks/${labbookName}`)
+    this.props.history.replace(`/labbooks/${owner}/${labbookName}`)
   }
 
   /**
@@ -125,11 +123,10 @@ class LocalLabbooks extends Component {
     let self = this;
     RenameLabbookMutation(
       username,
-      username,
       this.state.oldLabbookName,
       this.state.newLabbookName,
       (response, error) =>{
-        console.log(response, error)
+
         if(error){
           self.setState({renameError: error[0].message})
         }
@@ -143,11 +140,45 @@ class LocalLabbooks extends Component {
     )
   }
 
+  /**
+   * @param {string} filter
+   sets state updates filter
+  */
+  _setFilter(filter){
+      this.setState({filter: filter})
+  }
+
+
+  /**
+   * @param {array, string} localLabbooks.edges,filter
+
+    @return {array} filteredLabbooks
+  */
+
+  _filterLabbooks(labbooks, filter){
+    let filteredLabbooks = [];
+    let username = localStorage.getItem('username')
+    if(filter === 'users'){
+      filteredLabbooks = labbooks.filter((labbook)=>{
+          return (labbook.node.owner.username === username)
+      })
+
+    }else if(filter === "others"){
+      filteredLabbooks = labbooks.filter((labbook)=>{
+          return (labbook.node.owner.username !== username)
+      })
+    }else{
+      filteredLabbooks = labbooks;
+    }
+
+    return filteredLabbooks
+  }
+
   render(){
       let {props} = this;
 
       if(props.feed.localLabbooks){
-
+        let labbooks = this._filterLabbooks(props.feed.localLabbooks.edges, this.state.filter)
         return(
           <div className="LocalLabbooks">
             { this.state.labbookModalVisible &&
@@ -155,8 +186,8 @@ class LocalLabbooks extends Component {
                 <div
                   onClick={()=> this._closeLabbook()}
                   className="LocalLabbooks__rename-close">
-                  X
                 </div>
+                <h4 className="LocalLabbooks__modal-title">Rename Labbook</h4>
                 <input
                   onKeyUp={(evt)=> this._setLabbookTitle(evt)}
                   className="LocalLabbooks__rename-input"
@@ -168,7 +199,7 @@ class LocalLabbooks extends Component {
                   disabled={(this.state.newLabbookName.length === 0) && !this.state.showNamingError}
                   className="LocalLabbooks__rename-submit"
                   onClick={()=> this._renameMutation()}>
-                  Rename Lab Book
+                  Rename LabBook
                 </button>
 
               </div>
@@ -182,23 +213,33 @@ class LocalLabbooks extends Component {
               {...props}
             />
 
-            <div className="LocalLabbooks__title-bar flex flex--row justify--space-between">
-              <h4 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
-                Lab Books
-                <div className="LocalLabbooks__title-add"></div>
-              </h4>
+            <div className="LocalLabbooks__title-bar">
+              <h6 className="LocalLabbooks__username">{localStorage.getItem('username')}</h6>
+              <h2 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
+                LabBooks
+              </h2>
 
+            </div>
+            <div className="LocalLabbooks__menu">
+              <nav className="LocalLabbooks__nav">
+                <div className={this.state.filter === 'all' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('all')}>All</a></div>
+                <div className={this.state.filter === 'users' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('users')}>My LabBooks</a></div>
+                <div className={this.state.filter === 'others' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('others')}>Shared With Me</a></div>
+              </nav>
             </div>
             <div className='LocalLabbooks__labbooks'>
               <div className="LocalLabbooks__sizer">
               <div
                 key={'addLabbook'}
                 onClick={()=> this.refs.wizardModal._showModal()}
-                className="LocalLabbooks__panel LocalLabbooks__panel--add flex flex--row justify--center">
+                className="LocalLabbooks__panel LocalLabbooks__panel--add">
                 <div
-                  // onClick={()=> this._openImport()}
                   className="LocalLabbooks__labbook-icon">
                     <div className="LocalLabbooks__title-add"></div>
+                </div>
+                <div
+                  className="LocalLabbooks__add-text">
+                    <h4>Create LabBook</h4>
                 </div>
               </div>
 
@@ -209,7 +250,7 @@ class LocalLabbooks extends Component {
 
               {
 
-                this.props.feed.localLabbooks.edges.map((edge) => {
+                labbooks.map((edge) => {
 
                   return (
                     <LocalLabbookPanel

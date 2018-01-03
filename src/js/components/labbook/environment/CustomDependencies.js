@@ -4,19 +4,27 @@ import {createPaginationContainer, graphql} from 'react-relay'
 //components
 import AddCustomDependencies from 'Components/wizard/AddCustomDependencies'
 import Loader from 'Components/shared/Loader'
-
-
+//store
+import store from 'JS/redux/store'
+let owner
 class CustomDependencies extends Component {
   constructor(props){
     super(props);
+
+    const {labbookName} = store.getState().routes
+    owner = store.getState().routes.owner //TODO clean this up when fixing custom dependencies
+    
     this.state = {
-      'modal_visible': false
+      'modal_visible': false,
+      owner,
+      labbookName
     };
 
     this._openModal = this._openModal.bind(this)
     this._hideModal = this._hideModal.bind(this)
     this._setComponent = this._setComponent.bind(this)
   }
+
   /**
   *  @param {none}
   *  open modal window
@@ -60,7 +68,6 @@ class CustomDependencies extends Component {
                 id="customDependenciesEditClose"
                 className="Environment__modal-close"
                 onClick={() => this._hideModal()}>
-                X
               </div>
               <AddCustomDependencies
                 {...this.props}
@@ -219,11 +226,10 @@ export default createPaginationContainer(
        first: first,
      };
    },
-   getVariables(props, {first, cursor, name, owner}, fragmentVariables) {
-    const username = localStorage.getItem('username')
+   getVariables(props, {first, cursor}, fragmentVariables) {
     first = 10;
-    name = props.labbookName;
-    owner = username;
+    const name = props.labbookName;
+
      return {
        first,
        cursor,

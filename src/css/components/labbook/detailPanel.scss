@@ -1,0 +1,25 @@
+.DetailPanel{
+  position: fixed;
+  z-index: 500;
+  top: 10px;
+  right: 0px;
+  bottom: 0px;
+
+  width: 0px;
+
+  transition: width 0.25s;
+
+  background-color: $white;
+  box-shadow: 3px 3px white, -0.4em 0 0.4em rgba(0,0,0,0.2);
+
+}
+
+.DetailPanel--open{
+  width: 400px;
+
+}
+
+.DetailPanel--close{
+  cursor: pointer;
+
+}

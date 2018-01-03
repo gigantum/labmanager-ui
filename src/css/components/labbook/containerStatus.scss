@@ -1,42 +1,127 @@
+.ContainerStatus{
+  align-self: center;
+  position: relative;
+}
+.ContainerStatus__button-menu{
+  top: 42px;
+  right: 0px;
+  position: absolute;
+  background: $white;
+  z-index: 400;
+  padding: 15px;
+  border-radius: 8px;
+  @extend .box-shadow;
+  width: 200px;
+}
+
+.ContainerStatus__menu-pointer{
+  top: 30px;
+  right: 75px;
+  position: absolute;
+  z-index: 401;
+  @include triangle('up', 14px, $white);
+}
+
 .ContainerStatus__container-state{
   width: 120px;
   text-align: center;
   height: 30px;
   border-radius: 15px;
-  color: $white;
-  line-height: 30px;
+  color: $romanSilver;
+  line-height: 26px;
   cursor: pointer;
-
+  border: 2px solid rgba(0,0,0,0);
+  z-index: 100;
+  padding-right: 10px;
+  background: $background-color url('./../images/icons/down-arrow-silver.svg') no-repeat 90% center;
 }
 
-.ContainerStatus__container-state{
-  border: 2px solid rgba(0,0,0,0);
+.ContainerStatus__container-state--menu-open{
+  @extend .ContainerStatus__container-state;
+  background: $background-color url('./../images/icons/up-arrow-silver.svg') no-repeat 90% center;
 }
 
 .ContainerStatus__container-state.Open{
-  background: $activity url('./../images/icons/on.svg') no-repeat 5px 50%;
+  border: 3px solid $turquise;
   background-size: 20px;
 }
 .ContainerStatus__container-state.Building{
-  background: $datasets;
+  border: 3px solid $goldenLemon;
+  background-size: 20px;
 }
 .ContainerStatus__container-state.Closed{
-  background: $labbooks url('./../images/icons/on.svg') no-repeat 5px 50%;
+  border: 3px solid $crimson;
   background-size: 20px;
 }
 
 .ContainerStatus__container-state.Starting{
-  background: $activity url('./../images/icons/on.svg') no-repeat 5px 50%;
-  background-size: 20px;
+  border: 1px solid $turquise;
   opacity: 0.75;
+  background: none;
 }
 
 .ContainerStatus__container-state.Stopping{
-  background: $labbooks url('./../images/icons/on.svg') no-repeat 5px 50%;
-  background-size: 20px;
+  border: 1px solid $jet;
   opacity: 0.75;
+  background: none;
 }
 
-.ContainerStatus__container-state:hover{
-  border: 2px solid white;
+.ContainerStatus__plugins{
+  position: relative;
+  overflow: visible;
+}
+
+.ContainerStatus__plugins-button{
+  height: 24px;
+  width: 30px;
+  background-color: #aaa;
+  border-radius: 12px 0 0 12px;
+  position: absolute;
+  top: 3px;
+  left: -25px;
+  color: white;
+  text-align: center;
+  line-height: 25px;
+  cursor: pointer;
+  background: #aaa url('./../images/icons/rocket.svg') no-repeat center -3px;
+  background-size: 30px;
+}
+
+.ContainerStatus__plugins-title{
+  text-align: center;
+  width: 100%;
+  border-bottom: 1px solid $romanSilver;
+}
+
+.ContainerStatus__plugins-list{
+  .jupyter-icon:before{
+    padding: 0 6px 0 0;
+    font-size: 17px;
+  }
+}
+
+.ContainerStatus__plugins-item:hover{
+  color: $turquise;
+}
+
+.ContainerStatus__plugins-menu{
+  position: absolute;
+  top: 42px;
+  right: -100px;
+  width: 200px;
+  background: $white;
+  color: $romanSilver;
+  height: auto;
+  border-radius: 8px;
+  @extend .box-shadow;
+  z-index: 200;
+  padding: 15px;
+}
+
+.ContainerStatus__plugins-menu-arrow{
+  z-index: 203;
+  position: absolute;
+  top: 29px;
+  right: -3px;
+  @include triangle('up', 14px, $white);
 }

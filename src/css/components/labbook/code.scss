@@ -1,21 +1,27 @@
 .Code{
   width: 100%;
+
   text-align: center;
+  .fa{
+    font-family: FontAwesome !important;
+  }
 }
 
 .Code__favorites{
-  padding: 0px 15px;
+
   width: 100%;
 }
 
 .Code__header{
-  @include flex(space-between, row);
   line-height: 20px;
+
+  @include flex(space-between, row);
 }
 
 .Code__toolbar{
   align-self: center;
   flex: 0 1 auto;
+
   @include flex(space-between, row);
 }
 
@@ -30,8 +36,9 @@
 .Code__filter,
 .Code__import-text,
 .Code__import-file{
-  color: $font-grey;
   cursor: pointer;
+
+  color: $romanSilver;
 }
 
 .Code__import-text{
@@ -40,32 +47,37 @@
 
 .Code__import-file{
   padding-right: 3px;
+
   text-decoration: underline;
 }
 
 .Code__filter:hover,
 .Code__import-file:hover{
-  color: $charcoal;
+  color: $jet;
 }
 
 .Code__filter--selected{
-  color: $charcoal;
+  color: $jet;
 }
 
 .Code__favorites-card{
 }
 
 .Code__file-browser{
-  background-color: $white;
   padding: 10px 15px;
+
+  background-color: $white;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
 
 .Code__subtitle{
-  text-align: left;
-  font-weight: 100;
-  color: $font-grey;
   margin: 0;
+
+  text-align: left;
+
+  color: $romanSilver;
+
+  font-weight: 100;
 }
 
 .Code{
@@ -78,44 +90,47 @@
 
 
     input[type='search']{
-      border-color: $grey-background;
-      border-radius: 15px !important;
-      margin-right: 20px;
       height: 50px;
+      margin-right: 20px;
+
+      border-color: $lightGrey;
+      border-radius: 15px !important;
     }
 
     input[type='search']:focus{
-      border-color: $activity;
-      border-bottom: 1px solid $activity;
-      box-shadow: 0 1px 0 0 $activity;
+      border-color: $turquise;
+      border-bottom: 1px solid $turquise;
+      box-shadow: 0 1px 0 0 $turquise;
     }
 
     .btn{
-      background-color: initial;
-      color: $charcoal;
-      box-shadow: none;
       padding: 0 10px;
+
+      color: $jet;
+      background-color: initial;
+      box-shadow: none;
     }
     .btn:hover{
-      color: $font-grey;
+      color: $romanSilver;
     }
   }
 
   .files{
     .file.selected, .folder.selected{
-      background: $grey-background;
+      background: $lightGrey;
     }
     th{
-      color: $charcoal;
+      color: $jet;
     }
   }
 
   .item-actions{
-    padding: 10px;
-    height: 60px;
-    background-color: $grey-background;
-    border-radius: 15px;
+    min-height: 60px;
     margin-left: 25px;
+    padding: 10px;
+
+    border-radius: 15px;
+    background-color: $lightGrey;
 
     li{
       margin: 10px 0 !important;

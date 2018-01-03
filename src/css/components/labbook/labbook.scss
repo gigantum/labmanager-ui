@@ -1,15 +1,96 @@
 .Labbook{
   margin-bottom: 100px;
-  margin-top: 50px;
   min-height: calc(100% - 230px);
   height: auto;
+  width: 100%;
+  transition: width 0.25s;
 }
 
+.Labbook__branch-title{
+  h2{
+      margin: 2px 0;
+      padding: 0 0 10px 0;
+      cursor: pointer;
+      font-weight: 100;
+  }
+  h2:hover{
+    color: $turquise;
+  }
+  height: 65px;
+
+  @include flex(flex-start, row)
+}
+
+.Labbook__branch-toggle{
+  height: 24px;
+  width: 24px;
+  border: 2px solid $romanSilver;
+  border-radius: 12px;
+  margin: 0 15px;
+  cursor: pointer;
+  align-self: center;
+}
+
+.Labbook__branches-shadow{
+  position: absolute;
+  width: 100%;
+  height: 5px;
+}
+
+.Labbook__branches-shadow--upper{
+  top: 0px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 6px 2px;
+}
+
+.Labbook__branches-shadow--lower{
+  bottom: 0px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px -5px 6px 2px;
+}
+
+.Labbook__branch-title--open{
+  .Labbook__branch-toggle{
+    background: $white url('./../images/icons/up-arrow-silver.svg') no-repeat center center;
+    background-size: 16px;
+  }
+}
+
+.Labbook__branch-title--closed{
+  .Labbook__branch-toggle{
+    background: $white url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
+    background-size: 16px;
+  }
+
+}
+
+.Labbook__header-conatiner{
+  min-height: 30px;
+
+  @include flex(space-between, row);
+}
+
+.Labbook__name-title{
+  width: 50%;
+  margin: 0;
+}
+
+.Labbook--detail-mode{
+  width: calc(100% - 350px);
+
+  .Labbook__navigation div {
+    transition: padding 0.25s;
+    padding: 5px 10px;
+    white-space: nowrap;
+  }
+}
+
+
 .Labbook__header{
-  padding: 20px 0px;
   min-height: 80px;
+  height: auto;
   .Labbook__name-title{
     padding: 0px;
+    color: $romanSilver;
+    font-size: 16px;
   }
 }
 
@@ -19,43 +100,58 @@
 }
 
 .Labbook__inner-container{
-  //height: calc(100% - 160px);
+  max-width: calc(100% - 80px);
   margin: 20px 40px;
   padding: 0 40px;
   min-height: 100%;
   height: auto;
   //background: $grey-light;
 }
+.Labbook__branches-container{
+  max-width: calc(100% + 160px);
+  padding: 20px 0;
+  margin: 0px -80px;
+  height: 310px;
+  position: relative;
+  transition: height 0.6s;
+}
 
-
+.Labbook__branches-container--collapsed{
+  height: 0px;
+  transition: height 0.6s;
+  padding: 0px;
+}
 .Labbook__navigation{
-  border-bottom: 1px solid $font-grey;
+  border-bottom: 1px solid $lightGrey;
   position: relative;
   box-shadow: none;
   height: 34px;
   background-color: inherit;
   line-height: normal;
+  white-space: nowrap;
   div{
     a{
-      color: $font-grey;
+      color: $romanSilver;
       font-size: 16px;
     }
-    padding: 5px 30px;
+    padding: 5px 5px;
+    margin: 0 25px;
     cursor: pointer;
+    bottom: -2px;
   }
   .Labbook__navigation-item--overview{
-    padding: 5px 30px 5px 0;
+    padding: 5px 5px;
   }
   div:hover a{
-    color: $labbooks;
+    color: $turquise;
   }
 
   div.selected{
-    background: url('./../images/icons/navigate-up-arrow.svg') no-repeat center 24px;
-    background-size: 11px;
+    border-bottom: 3px solid $turquise;
     z-index: 100;
     position: relative;
-    bottom: -1px;
+    bottom: -2px;
+    line-height: 15px;
 
   }
 }
@@ -78,7 +174,7 @@
 }
 
 .Labbook__user-note{
-  color: $activity;
+  color: $azure;
   position: relative;
   font-size: 14px;
   cursor: pointer;
@@ -90,7 +186,7 @@
 
 .Labbook__user-note--add{
 
-  background: $activity url('../images/icons/add.svg') no-repeat center center;
+  background: $azure url('../images/icons/add.svg') no-repeat center center;
   background-size: 10px;
   height: 16px;
   width: 16px;
@@ -113,13 +209,13 @@
 
 
 .Labbook__container-state.Open{
-  background: $activity;
+  background: $turquise;
 }
 .Labbook__container-state.Building{
-  background: $datasets;
+  background: $azure;
 }
 .Labbook__container-state.Closed{
-  background: $labbooks;
+  background: $jet;
 }
 
 .Labbook__component-container{
@@ -134,8 +230,8 @@
 .Labbook__info-card{
   width: 200px;
   height: 300px;
-  border: 1px solid $font-grey;
-  color: $font-grey;
+  border: 1px solid $romanSilver;
+  color: $romanSilver;
   margin: 20px auto;
   padding: 20px;
 }

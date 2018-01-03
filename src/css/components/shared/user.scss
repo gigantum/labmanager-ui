@@ -1,68 +1,67 @@
 .User{
-  height: 100%;
-  width: 200px;
-  position: absolute;
-  right: 20px;
-  @include flex(space-around, row);
+  height: 200px;
+  width: 120px;
+  position: relative;
+  border-top: 5px solid $jet;
+  @include flex(flex-start, column);
+  padding: 20px 0
+}
+
+.User__image{
+  height: 60px;
+  width: 60px;
+  align-self: center;
 }
 
 .User__name{
-  height: 100%;
-  line-height: 70px;
-  flex: 1;
+  height: 30px;
+  line-height: 20px;
+  font-size: 14px;
+  text-align: center;
   align-self: center;
+  padding: 5px 20px 5px 0;
   color: $white;
-  border: 1px solid $charcoal;
-  padding: 5px 45px 5px 10px;
-  background: url('./../images/icons/user.svg') no-repeat 150px center;
-  background-size: 30px;
+  background: url('./../images/icons/down-arrow-white.svg') no-repeat center right;
+  background-size: 16px;
   cursor: pointer;
+
 }
 
 .User__name--active{
   @extend .User__name;
-  background: #555555 url('./../images/icons/user.svg') no-repeat 150px center;
-    background-size: 30px;
+  background: url('./../images/icons/up-arrow-white.svg') no-repeat center right;
+    background-size: 16px;
 }
 
 .User__dropdown{
-  position: absolute;
-  top: 90px;
-  right: 0px;
-  width: 200px;
-  background: $white;
+  width: 120px;
   padding: 5px;
-  border: 1px solid $charcoal;
-  box-shadow: 10px 10px 5px #888888;
 
 }
 
-.User__dropdown--arrow{
-  position: absolute;
-  top: 81px;
-  right: 5px;
-  @include triangle('up', 10px, $charcoal)
-}
+// .User__dropdown--arrow{
+//   position: absolute;
+//   top: 81px;
+//   right: 5px;
+//   @include triangle('up', 10px, $jet)
+// }
 
 
 .User__button{
   width: 100%;
   align-self: center;
-  background-color: $charcoal;
-  border: 1px solid $white;
+  background-color: $jet;
+  border-top: 1px solid $turquise;
+  border-bottom: 1px solid $turquise;
+  border-left: 0px solid $turquise;
+  border-right: 0px solid $turquise;
   color: $white;
-  padding: 5px 25px;
   border-radius: 0px;
-
-  background: $charcoal url('./../images/icons/logout.svg') no-repeat 5px center;
-  background-size: 20px;
+  padding: 5px;
 
 }
 
 .User__button:hover{
-
-  border: 1px solid $charcoal;
-  color: $charcoal;
-  background: $white url('./../images/icons/logout-hover.svg') no-repeat 5px center;
-  background-size: 20px;
+  color: $turquise;
+  background: $jet;
 }

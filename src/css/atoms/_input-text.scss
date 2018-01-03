@@ -2,5 +2,9 @@ input[type="text"]{
 //  height: 20px !important;
   line-height: 20px;
   margin: 5px;
-  border-bottom: 2px solid rgb(168, 207, 72);
+  border-bottom: 1px solid $romanSilver !important;
+}
+input[type="text"]:focus{
+  border-bottom: 1px solid $turquise !important;
+  box-shadow: 0 1px 0 0 $turquise !important;
 }

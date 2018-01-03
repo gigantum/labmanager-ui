@@ -23,14 +23,14 @@
     overflow: hidden;
 
     width: calc(100% - 30px);
-    height: 260px;
+    height: 220px;
     margin: 0 15px 15px;
 
     transition: 0.25s width;
     text-align: center;
     word-break: break-all;
 
-    border: 1px dashed $datasets;
+    border: 1px dashed $jet;
 
     @include flex(center, row);
 
@@ -41,7 +41,7 @@
 }
 
 .ImportModule__instructions--error{
-    color: red;
+    color: $crimson;
 }
 
 
@@ -73,8 +73,8 @@
   line-height: 20px;
   text-align: center;
 
-  color: $labbooks;
-  border: 1px solid $labbooks;
+  color: $azure;
+  border: 1px solid $azure;
   background: url('../images/icons/import.svg') no-repeat 15px center;
   background-size: 18px;
 
@@ -107,7 +107,7 @@
 
   color: white;
   border: 0px;
-  background: $labbooks url('../images/icons/import-hover.svg') no-repeat 15px center;
+  background: $azure url('../images/icons/import-hover.svg') no-repeat 15px center;
   background-size: 18px;
 
   font-size: 20px;

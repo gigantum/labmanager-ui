@@ -34,7 +34,7 @@ export default class Header extends Component {
                 to={{pathname: '/labbooks'}}
               >
                 <div className="Header__labbook-icon"></div>
-                Lab Books
+                LabBooks
               </Link>
             </li>
 

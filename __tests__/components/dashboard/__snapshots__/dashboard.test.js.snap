@@ -7,147 +7,164 @@ exports[`Test Dashboard Labbooks 1`] = `
   <div
     className="Dashboard__view flex-1-0-auto"
   >
-    <div>
-      <div
-        className="WizardModal"
+    <div
+      className="Loader"
+    >
+      <svg
+        id="circle-middle"
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
       >
-        <div
-          className="WizardModal__modal hidden"
-        >
-          <div
-            className="WizardModal__progress"
-          >
-            <ul
-              className="WizardModal__progress-bar"
-            >
-              <li
-                className="WizardModal__progress-item selected"
-              >
-                Title & Description
-              </li>
-              <li
-                className="WizardModal__progress-item"
-              >
-                
-              </li>
-              <li
-                className="WizardModal__progress-item"
-              >
-                
-              </li>
-              <li
-                className="WizardModal__progress-item"
-              >
-                
-              </li>
-              <li
-                className="WizardModal__progress-item"
-              >
-                
-              </li>
-              <li
-                className="WizardModal__progress-item"
-              >
-                
-              </li>
-            </ul>
-          </div>
-          <h4
-            className="WizardModal__title"
-          >
-            Create a Lab Book
-          </h4>
-          <div
-            className="WizardModal__modal-close"
-            onClick={[Function]}
-          >
-            X
-          </div>
-          <div
-            className="CreateLabbook"
-          >
-            <div
-              className="CreateLabbook__modal-inner-container flex flex--column justify--space-between"
-            >
-              <div>
-                <label>
-                  Title
-                </label>
-                <input
-                  className=""
-                  onChange={[Function]}
-                  placeholder="Enter a unique, descriptive title"
-                  type="text"
-                />
-                <span
-                  className="hidden"
-                >
-                  Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)
-                </span>
-              </div>
-              <div>
-                <label>
-                  Description
-                </label>
-                <textarea
-                  className="CreateLabbook__description-input"
-                  onChange={[Function]}
-                  placeholder="Briefly describe this lab book, its purpose and any other key details. "
-                  type="text"
-                />
-              </div>
-              <div
-                className="CreateLabbook__text-divider-container"
-              >
-                <span
-                  className="CreateLabbook__text-divider"
-                >
-                  or
-                </span>
-              </div>
-              <div>
-                <label>
-                  Add public Lab Books
-                </label>
-                <input
-                  placeholder="Enter URL Location"
-                  type="text"
-                />
-              </div>
-            </div>
-          </div>
-          <div
-            className="flex flex--row justify--center"
-          >
-            <button
-              className="WizardModal__progress-button flat--button"
-              disabled={true}
-              onClick={[Function]}
-            >
-              Previous
-            </button>
-            <button
-              className="WizardModal__progress-button flat--button"
-              onClick={[Function]}
-            >
-              Cancel
-            </button>
-            <button
-              className="WizardModal__progress-button flat--button"
-              disabled={true}
-              onClick={[Function]}
-            >
-              skip
-            </button>
-            <button
-              disabled={true}
-              onClick={[Function]}
-            >
-              Save and Continue Setup
-            </button>
-          </div>
-        </div>
-      </div>
+        <circle
+          cx="50"
+          cy="50"
+          fill="#EDEDED"
+          r="6"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="#26A6D1"
+          r="4.5"
+        />
+      </svg>
     </div>
   </div>
 </div>

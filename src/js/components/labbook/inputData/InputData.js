@@ -1,113 +1,62 @@
 // vendor
 import React, { Component } from 'react'
-import {createPaginationContainer, graphql} from 'react-relay'
-//mutations
-import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
+import {createFragmentContainer, graphql} from 'react-relay'
+//components
+import InputDataBrowser from './InputDataBrowser'
+import InputFavorites from './InputFavorites'
+//store
+import store from 'JS/redux/store'
+
 class InputData extends Component {
   constructor(props){
   	super(props);
+    const {owner, labbookName} = store.getState().routes
 
     this.state = {
-      'show': false,
-      'message': '',
-      'files': []
+      owner,
+      labbookName
     }
-
-    this._handleScroll = this._handleScroll.bind(this)
-  }
-
-  /*
-    handle state and addd listeners when component mounts
-  */
-  componentDidMount() {
-    this._loadMore()
-
-    window.addEventListener('scroll', this._handleScroll);
-  }
-
-  /*
-    handle state and remove listeners when component unmounts
-  */
-  componentWillUnmount() {
-
-    window.removeEventListener('scroll', this._handleScroll);
-  }
-
-  /*
-    @param {event} evt
-  */
-  _handleScroll(evt){
-    let root = document.getElementById('root')
-
-    let distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
-    expandOn = root.scrollHeight;
-
-    if ((distanceY > expandOn) &&
-      this.props.labbook.inputFiles &&
-      this.props.labbook.inputFiles.pageInfo.hasNextPage) {
-
-        this._loadMore(evt);
-
-    }
-  }
-
-  /*
-    @param
-    triggers relay pagination function loadMore
-    increments by 10
-    logs callback
-  */
-
-  _loadMore() {
-
-    this.props.relay.loadMore(
-     10, // Fetch the next 10 feed items
-     (r, e) => {
-       console.log(r,e)
-     }
-   );
   }
 
   render(){
 
-    if(this.props.labbook && this.props.labbook.inputFiles){
-      let inputFiles = this.props.labbook.inputFiles
-      if(this.props.labbook.inputFiles.edges.length === 0){
-        inputFiles = {
-          edges: [{
-            node:{
-              modified: new Date(),
-              key: 'input/',
-              isDir: true,
-              size: 0,
-              id: 'input_temp'
-            }
-          }],
-          pageInfo: this.props.labbook.inputFiles.pageInfo
-        }
-      }
+    if(this.props.labbook){
       return(
-      <div className="Code">
-        <div className="Code__header">
-          <h5 className="Code__subtitle">Input Browser</h5>
-          <div className="Code__toolbar">
-            <p className="Code__import-text">
-              <a className="Code__import-file">Import File</a>
-              or Drag and Drop File Below
-            </p>
 
+        <div className="Code">
+          <div className="Code__header">
+            <h5 className="Code__subtitle">Input Files</h5>
+            <div className="Code__toolbar">
+              <a className="Code__filter">Favorites</a>
+              <a className="Code__filter">Most Used</a>
+              <a className="Code__filter">Most Recent</a>
+            </div>
+          </div>
+          <div className="Code__favorites">
+            <InputFavorites
+              inputId={this.props.labbook.input.id}
+              labbookId={this.props.labbookId}
+              input={this.props.labbook.input}
+            />
+          </div>
+          <div className="Code__header">
+            <h5 className="Code__subtitle">Input Browser</h5>
+            <div className="Code__toolbar">
+              <p className="Code__import-text">
+                <a className="Code__import-file">Import File</a>
+                or Drag and Drop File Below
+              </p>
+
+            </div>
+          </div>
+          <div className="Code__file-browser">
+            <InputDataBrowser
+              inputId={this.props.labbook.input.id}
+              labbookId={this.props.labbookId}
+              input={this.props.labbook.input}
+            />
           </div>
         </div>
-        <div className="Code__file-browser">
-          <FileBrowserWrapper
-            ref='inputBrowser'
-            rootFoler="input"
-            files={inputFiles}
-            connection="InputData_inputFiles"
-            {...this.props}
-          />
-        </div>
-      </div>
       )
     }else{
       return(<div>No Files Found</div>)
@@ -116,68 +65,16 @@ class InputData extends Component {
 }
 
 
-export default createPaginationContainer(
+
+export default createFragmentContainer(
   InputData,
-  {
-
-    labbook: graphql`
-      fragment InputData_labbook on Labbook{
-        inputFiles(after: $cursor, first: $first, baseDir: "input")@connection(key: "InputData_inputFiles", filters: []){
-          edges{
-            node{
-              id
-              isDir
-              modifiedAt
-              key
-              size
-            }
-            cursor
-          }
-          pageInfo{
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-          }
-        }
-
-      }`
-  },
-  {
-    direction: 'forward',
-    getConnectionFromProps(props) {
-      return props.labbook && props.labbook.inputFiles
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      };
-    },
-    getVariables(props, {count, cursor}, fragmentVariables) {
-      let baseDir = "input"
-      const username = localStorage.getItem('username')
-
-      return {
-        first: count,
-        cursor,
-        baseDir,
-        owner: username,
-        name: props.labbookName
-      };
-    },
-    query: graphql`
-      query InputDataPaginationQuery(
-        $first: Int
-        $cursor: String
-        $owner: String!
-        $name: String!
-      ) {
-        labbook(name: $name, owner: $owner){
-          # You could reference the fragment defined previously.
-          ...InputData_labbook
-        }
+  graphql`
+    fragment InputData_labbook on Labbook {
+      input{
+        id
+        ...InputDataBrowser_input
+        ...InputFavorites_input
       }
-    `
-  }
-)
+    }
+  `,
+);

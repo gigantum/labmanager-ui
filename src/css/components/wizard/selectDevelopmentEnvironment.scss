@@ -1,6 +1,9 @@
 .SelectDevelopmentEnvironment{
   padding: 20px;
-  height: 410px;
+  height: 330px;
+  p{
+    margin: 0px;
+  }
 }
 .SelectDevelopmentEnvironment__images{
   padding: 10px;
@@ -20,10 +23,14 @@
   border: 4px solid $activity;
   border-radius: 5px;
 
-  img,
+  img{
+    align-self: center;
+    height: 36;
+  }
   p{
     align-self: center;
     height: 50px;
+    margin: 0 4px;
   }
 }
 .SelectDevelopmentEnvironment__image{
@@ -40,10 +47,14 @@
   border: 1px solid $grey-light;
   border-radius: 5px;
 
-  img,
+  img{
+    align-self: center;
+    height: 36px;
+  }
   p{
     align-self: center;
     height: 50px;
+    margin: 0 4px;
   }
 }
 .SelectDevelopmentEnvironment__image:hover{
@@ -64,17 +75,28 @@
 
   border: 1px dashed $grey;
 
-  img,
+  img{
+    align-self: center;
+    height: 36px;
+  }
+
   p{
     align-self: center;
     height: 50px;
+    margin: 0 4px;
   }
 }
 
 .Environment__modal{
   .SelectDevelopmentEnvironment__inner-container{
-    height: 500px;
+    height: 400px;
+    margin: 20px 0;
   }
+  .SelectBaseImage__progress-buttons{
+    display: flex;
+    justify-content: center;
+  }
+
   .SelectDevelopmentEnvironment__progress-button{
     display: flex;
     justify-content: space-around;
