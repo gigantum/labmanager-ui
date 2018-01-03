@@ -172,9 +172,9 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _addRemote(){
-    let remote = `ssh://git@repo.gigantum.io:9922/${this.state.owner}/${this.state.labbookName}.git`
-    let self = this;
+
     this.setState({menuOpen: false})
+    
     store.dispatch({
       type: 'UPLOAD_MESSAGE',
       payload: {
