@@ -3,8 +3,9 @@ import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
 import FavoriteCard from './../fileBrowser/FavoriteCard'
-//mutations
-//
+//store
+import store from 'JS/redux/store'
+
 class OutputFavorites extends Component {
   constructor(props){
   	super(props);
@@ -59,7 +60,6 @@ class OutputFavorites extends Component {
                         className="Favorite__card-wrapper">
 
                         <FavoriteCard
-                          labbookName={this.props.labbookName}
                           parentId={this.props.outputId}
                           section={'output'}
                           connection={"OutputFavorites_favorites"}
@@ -130,15 +130,15 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-      const username = localStorage.getItem('username')
+      const {owner, labbookName} = store.getState().routes
       let root = ""
 
       return {
         first: count,
         cursor,
         root,
-        owner: username,
-        name: props.labbookName
+        owner: owner,
+        name: labbookName
       };
     },
     query: graphql`

@@ -12,6 +12,7 @@ import store from 'JS/redux/store'
 
 export default class CreateLabbook extends React.Component {
   constructor(props){
+
   	super(props);
 
   	this.state = {
@@ -24,7 +25,6 @@ export default class CreateLabbook extends React.Component {
       'errorType': '',
       'remoteURL': ''
     };
-
 
     this.continueSave = this.continueSave.bind(this)
     this._updateTextState = this._updateTextState.bind(this)
@@ -42,9 +42,11 @@ export default class CreateLabbook extends React.Component {
     let viewerId = 'localLabbooks';//Todo: figure out what to do with viewerId in the mutation context
     let name = this.state.name;
     let self = this;
+
     if(this.state.remoteURL.length > 0){
       const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
-      let remote = `ssh://git@repo.gigantum.io:9922/root/${labbookName}.git`
+      const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
+      let remote = this.state.remoteURL + '.git'
 
       store.dispatch(
         {
@@ -56,8 +58,9 @@ export default class CreateLabbook extends React.Component {
             uploadMessage: 'Importing LabBook please wait'
           }
         })
+
       ImportRemoteLabbookMutation(
-        localStorage.getItem('username'),
+        owner,
         labbookName,
         remote,
         (response, error) => {
@@ -90,7 +93,7 @@ export default class CreateLabbook extends React.Component {
               })
             BuildImageMutation(
             labbookName,
-            localStorage.getItem('username'),
+            owner,
             (error)=>{
               if(error){
                 console.error(error)
@@ -141,6 +144,14 @@ export default class CreateLabbook extends React.Component {
           name,
           viewerId,
           (error) => {
+
+            store.dispatch({
+              type: 'UPDATE_ALL',
+              payload:{
+                labbookName: name,
+                owner: localStorage.getItem('username')
+              }
+            })
 
             let showAlert = (error !== null)
 

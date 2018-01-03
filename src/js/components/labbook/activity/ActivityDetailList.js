@@ -71,13 +71,10 @@ export default class ActivityDefaultList extends Component {
   }
 
   render(){
-    let variables = {
-      name: this.props.labbookName,
-      keys: this.props.categorizedDetails.detailKeys[this.props.itemKey],
-      owner: localStorage.getItem('username')
-    }
 
-    let type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase()
+    let keys = this.props.categorizedDetails.detailKeys[this.props.itemKey],
+        type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase();
+
     return(
 
         <div className="ActivityDetail__details">
@@ -99,7 +96,7 @@ export default class ActivityDefaultList extends Component {
           }
           {this.state.show &&
             <div className="ActivtyDetail_list">
-                <DetailRecords variables={variables}/>
+                <DetailRecords keys={keys}/>
             </div>
           }
 

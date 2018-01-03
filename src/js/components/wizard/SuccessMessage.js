@@ -13,7 +13,7 @@ export default class SuccessMessage extends React.Component {
   continueSave(){
     let labbookName = this.props.labbookName;
     document.getElementById('modal__cover').classList.add('hidden')
-    this.props.history.push(`../labbooks/${labbookName}`)
+    this.props.history.push(`../labbooks/${localStorage.getItem('username')}/${labbookName}`)
   }
   render(){
 

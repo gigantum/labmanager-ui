@@ -9,6 +9,12 @@ export default class BranchCard extends Component {
   constructor(props){
 
   	super(props);
+    const {owner, labbookName} = store.getState().routes
+
+    this.state = {
+      owner: owner,
+      labbookName: labbookName
+    }
   }
   /**
 
@@ -16,31 +22,31 @@ export default class BranchCard extends Component {
   _checkoutBranch(){
     const branchName = this.props.edge.node.name
     CheckoutBranchMutation(
-    localStorage.getItem('username'),
-    this.props.labbookName,
-    branchName,
-    this.props.labbookId,
-    (error)=>{
-      if(error){
-        console.error(error);
-        store.dispatch({
-          type: 'UPLOAD_MESSAGE',
-          payload:{
-            uploadMessage: error[0].message,
-            error: true,
-            open: true,
-            success: false
-          }
-        })
-      }else{
-        store.dispatch({
-          type: 'UPDATE_BRANCHES_VIEW',
-          payload:{
-            branchesOpen: false
-          }
-        })
-      }
-    })
+      this.state.owner,
+      this.state.labbookName,
+      branchName,
+      this.props.labbookId,
+      (error)=>{
+        if(error){
+          console.error(error);
+          store.dispatch({
+            type: 'UPLOAD_MESSAGE',
+            payload:{
+              uploadMessage: error[0].message,
+              error: true,
+              open: true,
+              success: false
+            }
+          })
+        }else{
+          store.dispatch({
+            type: 'UPDATE_BRANCHES_VIEW',
+            payload:{
+              branchesOpen: false
+            }
+          })
+        }
+      })
   }
   render(){
 
@@ -58,7 +64,7 @@ export default class BranchCard extends Component {
         <div className="BranchCard__button">
           <button
             onClick={()=>{this._checkoutBranch()}}
-            disabled={isCurrentBranch}
+            disabled={true}
             >
             Switch To Branch
           </button>

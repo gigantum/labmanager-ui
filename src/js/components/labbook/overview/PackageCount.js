@@ -8,6 +8,8 @@ import {
 import Loader from 'Components/shared/Loader'
 //utilites
 import environment from 'JS/createRelayEnvironment'
+//store
+import store from 'JS/redux/store'
 
 let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: String!, $first: Int!){
   labbook(name: $name, owner: $owner){
@@ -43,12 +45,12 @@ let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: Strin
 export default class PackageCount extends Component {
 
   render(){
-    const username = localStorage.getItem('username')
+    const {owner, labbookName} = store.getState().routes
     return(
     <QueryRenderer
       variables={{
-        name: this.props.labbookName,
-        owner: username,
+        name: labbookName,
+        owner: owner,
         first: 100
       }}
       query={packageQuery}

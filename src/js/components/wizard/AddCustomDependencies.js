@@ -9,6 +9,8 @@ import environment from 'JS/createRelayEnvironment'
 //mutations
 import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
+//store
+import store from 'JS/redux/store'
 
 const AddCustomDependenciesQuery = graphql`query AddCustomDependenciesQuery($first: Int!, $cursor: String){
   availableCustomDependencies(first: $first, after: $cursor){
@@ -57,14 +59,20 @@ const AddCustomDependenciesQuery = graphql`query AddCustomDependenciesQuery($fir
 export default class AddCustomDependencies extends React.Component {
   constructor(props){
   	super(props);
-  	this.state = {
+
+    const {owner, labbookName} = store.getState().routes
+
+    this.state = {
       'modal_visible': false,
       'selectedCustomDependencies': [],
       'selectedCustomDependenciesIds': [],
       'show': false,
       'message': '',
-      'isLoading': false
+      'isLoading': false,
+      owner,
+      labbookName
     };
+
     this.continueSave = this.continueSave.bind(this)
     this._buildLabbook = this._buildLabbook.bind(this)
     this._selectCustomDependency = this._selectCustomDependency.bind(this)
@@ -98,10 +106,10 @@ export default class AddCustomDependencies extends React.Component {
     sends user to next window
   */
   _buildLabbook = () => {
-    const username = localStorage.getItem('username')
+
     BuildImageMutation(
-      this.props.labbookName,
-      username,
+      this.state.labbookName,
+      this.state.owner,
       (response, error) => {
 
         let showAlert = ((error !== undefined) && (error !== null))
@@ -141,10 +149,10 @@ export default class AddCustomDependencies extends React.Component {
       const {component} = edge.node;
 
       let promise = new Promise((resolve, reject) => {
-        const username = localStorage.getItem('username')
+
         AddEnvironmentComponentMutation(
-          this.props.labbookName,
-          username,
+          this.state.labbookName,
+          this.state.owner,
           component.repository,
           component.namespace,
           component.name,

@@ -61,6 +61,7 @@ export default class LocalLabbookPanel extends Component {
       })
 
       ExportLabbookMutation(username, edge.node.name, (response, error)=>{
+
         if(response.exportLabbook){
           JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
 
@@ -79,6 +80,18 @@ export default class LocalLabbookPanel extends Component {
 
               exportClassList.remove('LocalLabbooks__export--downloading')
           }).catch((error)=>{
+
+              if(error){
+                store.dispatch({
+                  type: 'UPLOAD_MESSAGE',
+                  payload: {
+                    uploadMessage: `Export failed`,
+                    open: true,
+                    success: false,
+                    error: true
+                  }
+                })
+              }
               exportClassList.remove('LocalLabbooks__export--downloading')
           })
       }else{
@@ -100,7 +113,7 @@ export default class LocalLabbookPanel extends Component {
 
   }
 
-  
+
   render(){
     let edge = this.props.edge;
     let status = this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
@@ -124,7 +137,7 @@ export default class LocalLabbookPanel extends Component {
           <div className="LocalLabbooks__title-row">
             <h4
               className="LocalLabbooks__panel-title"
-              onClick={() => this.props.goToLabbook(edge.node.name)}>
+              onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner.username)}>
               {edge.node.name}
             </h4>
             <div className="LocalLabbooks__edit-button" onClick={() => this.props.renameLabbookModal(edge.node.name)}>
@@ -132,7 +145,7 @@ export default class LocalLabbookPanel extends Component {
           </div>
           <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner.username}</p>
           <p
-            onClick={() => this.props.goToLabbook(edge.node.name)} className="LocalLabbooks__description">
+            onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner.username)} className="LocalLabbooks__description">
             {edge.node.description}
           </p>
         </div>

@@ -4,14 +4,21 @@ import {createPaginationContainer, graphql} from 'react-relay'
 //components
 import AddEnvironmentPackage from 'Components/wizard/AddEnvironmentPackage'
 import Loader from 'Components/shared/Loader'
+//store
+import store from 'JS/redux/store'
 let totalCount = 2
+let owner
 class PackageManagerDependencies extends Component {
   constructor(props){
     super(props);
+    const {labbookName} = store.getState().routes
+    owner = store.getState().routes.owner //TODO clean this up when fixing dev environments
     this.state = {
-      'modal_visible': false
+      'modal_visible': false,
+      owner,
+      labbookName
     };
-
+    //bind functions here
     this._openModal = this._openModal.bind(this)
     this._hideModal = this._hideModal.bind(this)
     this._setBaseImage = this._setBaseImage.bind(this)
@@ -202,18 +209,18 @@ export default createPaginationContainer(
      };
    },
    getVariables(props, {count}, fragmentVariables) {
-    const username = localStorage.getItem('username')
+
     totalCount += count
     let first = totalCount;
     let length = props.environment.packageManagerDependencies.edges.length
-    let name = props.labbookName;
-    let owner = username;
+    const {labbookName} = store.getState().routes
+
     let cursor = props.environment.packageManagerDependencies.edges[length-1].cursor
 
      return {
        first,
        cursor,
-       name,
+       name: labbookName,
        owner
        // in most cases, for variables other than connection filters like
        // `first`, `after`, etc. you may want to use the previous values.

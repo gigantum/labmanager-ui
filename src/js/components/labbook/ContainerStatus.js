@@ -8,7 +8,7 @@ import {
 import StopContainerMutation from 'Mutations/StopContainerMutation'
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import environment from 'JS/createRelayEnvironment'
-
+//store
 import reduxStore from 'JS/redux/store'
 
 const containerStatusQuery = graphql`
@@ -36,6 +36,7 @@ let tempStatus;
 export default class ContainerStatus extends Component {
   constructor(props){
   	super(props);
+    const {owner, labbookName} = reduxStore.getState().routes
     this.state = {
       'status': "",
       'building': this.props.isBuilding,
@@ -43,7 +44,9 @@ export default class ContainerStatus extends Component {
       'containerStatus': props.containerStatus,
       'imageStatus': props.imageStatus,
       'pluginsMenu': false,
-      'containerMenuOpen': false
+      'containerMenuOpen': false,
+      owner,
+      labbookName
     }
     tempStatus = "Closed";
 
@@ -186,14 +189,14 @@ export default class ContainerStatus extends Component {
     return status;
   }
   /**
-    @param {string} labbookName -
+    @param {}
     triggers stop container mutation
   */
-  _stopContainerMutation(labbookName){
-    const username = localStorage.getItem('username')
+  _stopContainerMutation(){
+
     StopContainerMutation(
-      labbookName,
-      username,
+      this.state.labbookName,
+      this.state.owner,
       'clientMutationId',
       (error) =>{
         if(error){
@@ -208,14 +211,14 @@ export default class ContainerStatus extends Component {
   }
 
   /**
-    @param {string} labbookName -
+    @param {}
     triggers start container mutation
   */
-  _startContainerMutation(labbookName){
-    const username = localStorage.getItem('username')
+  _startContainerMutation(){
+
     StartContainerMutation(
-      labbookName,
-      username,
+      this.state.labbookName,
+      this.state.owner,
       'clientMutationId',
       (error) =>{
 
@@ -240,7 +243,7 @@ export default class ContainerStatus extends Component {
           status: 'Stopping',
           contanerMenuOpen: false
         });
-        this._stopContainerMutation(this.props.labbookName)
+        this._stopContainerMutation()
 
       }else if(status === 'Closed'){
 
@@ -248,7 +251,7 @@ export default class ContainerStatus extends Component {
           status: 'Starting',
           contanerMenuOpen: false
         })
-        this._startContainerMutation(this.props.labbookName)
+        this._startContainerMutation()
 
       }else{
         console.log('container is mutating')
@@ -260,8 +263,8 @@ export default class ContainerStatus extends Component {
     return(
       <QueryRenderer
         variables={{
-          'owner': username,
-          'name': this.props.labbookName,
+          'owner': this.state.owner,
+          'name': this.state.labbookName,
           'first': Math.floor(Math.random() * 10000)
           }
         }

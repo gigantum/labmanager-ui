@@ -2,11 +2,12 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //mutations
-
 import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
+//store
+import store from 'JS/redux/store'
 
-let codeRootFolder = ''
 let totalCount = 2
+let codeRootFolder;
 
 class CodeBrowser extends Component {
   constructor(props){
@@ -15,6 +16,7 @@ class CodeBrowser extends Component {
     this.state = {
       rootFolder: ''
     }
+
     this.setRootFolder = this.setRootFolder.bind(this)
   }
 
@@ -128,13 +130,13 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-      const username = localStorage.getItem('username')
+      const {owner, labbookName} = store.getState().routes
       totalCount += count
       return {
         first: totalCount,
         cursor: cursor,
-        owner: username,
-        name: props.labbookName
+        owner: owner,
+        name: labbookName
       };
     },
     query: graphql`

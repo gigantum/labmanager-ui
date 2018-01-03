@@ -142,7 +142,7 @@ chunkLoader) =>{
     let data = {
         file: file.file,
         filepath: filePath,
-        username: localStorage.getItem('username'),
+        username: owner,
         accessToken: localStorage.getItem('access_token'),
         connectionKey: connectionKey,
         labbookName: labbookName,
@@ -185,14 +185,14 @@ const getFolderPaths = (folderNames, prefix) =>{
 }
 
 /**
-* @param {array,string,string,string} folderPaths,labbookName,path,section
+* @param {array, string, string, string, string} folderPaths,labbookName,owner,path,section
 * created a promise that checks it folder exists
 * pushes promise into an array all
 */
-const getFolderExistsQueryPromises = (folderPaths, labbookName, path, section) =>{
+const getFolderExistsQueryPromises = (folderPaths, labbookName, owner, path, section) =>{
   let all = []
   folderPaths.forEach((folderPath)=>{
-    const variables = {labbookName: labbookName, path: path, owner: localStorage.getItem('username')};
+    const variables = {labbookName: labbookName, path: path, owner: owner};
 
     let promise = checkIfFolderExists(variables, section)
 
@@ -204,11 +204,11 @@ const getFolderExistsQueryPromises = (folderPaths, labbookName, path, section) =
 }
 
 /**
-* @param {array,string,string,string} folderPaths,labbookName,path,section
+* @param {array,string,string,string,string} folderPaths,labbookName,owner,path,section
 * created a promise that checks it folder exists
 * pushes promise into an array all
 */
-const getMakeDirectoryPromises = (labbooks, labbookName, path, section, connectionKey, sectionId, existingPaths) =>{
+const getMakeDirectoryPromises = (labbooks, labbookName, owner, path, section, connectionKey, sectionId, existingPaths) =>{
   let directoryAll = []
 
   labbooks.forEach((response)=>{
@@ -216,7 +216,7 @@ const getMakeDirectoryPromises = (labbooks, labbookName, path, section, connecti
     if(response.labbook[section].files === null){
       let directoryPromise = makeDirectory(
           connectionKey,
-          localStorage.getItem('username'),
+          owner,
           labbookName,
           sectionId,
           path,
@@ -239,7 +239,7 @@ const FolderUpload = {
   *  uploads file and folder if checks pass
   *  @return {boolean}
   */
-  uploadFiles: (files, prefix, labbookName, section, connectionKey, sectionId, chunkLoader) =>{
+  uploadFiles: (files, prefix, labbookName, owner, section, connectionKey, sectionId, chunkLoader) =>{
     let count = 0;//
     let existingPaths = []
     let filePaths = []
@@ -260,7 +260,7 @@ const FolderUpload = {
 
       let folderPaths = getFolderPaths(folderNames, prefix);
 
-      let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, path, section)
+      let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, path, section)
 
       Promise.all(directoryExistsAll).then((labbooks)=>{
         let directoryAll = []
@@ -269,7 +269,7 @@ const FolderUpload = {
           if(response.labbook[section].files === null){
             let directoryPromise = makeDirectory(
                 connectionKey,
-                localStorage.getItem('username'),
+                owner,
                 labbookName,
                 sectionId,
                 path,
@@ -284,14 +284,14 @@ const FolderUpload = {
         if(directoryAll.length < 1){
 
           addFiles(filePaths,
-          connectionKey,
-          localStorage.getItem('username'),
-          labbookName,
-          sectionId,
-          path,
-          section,
-          prefix,
-          chunkLoader)
+            connectionKey,
+            owner,
+            labbookName,
+            sectionId,
+            path,
+            section,
+            prefix,
+            chunkLoader)
 
           filePaths = [];//must empty file list for nested files
         }
@@ -300,7 +300,7 @@ const FolderUpload = {
           Promise.all(directoryAll).then((result) =>{
             addFiles(filePaths,
             connectionKey,
-            localStorage.getItem('username'),
+            owner,
             labbookName,
             sectionId,
             path,

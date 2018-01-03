@@ -17,7 +17,6 @@ const mutation = graphql`
 let tempID = 0;
 
 export default function ImportLabbookMutation(
-  owner,
   blob,
   chunk,
   accessToken,
@@ -27,7 +26,6 @@ export default function ImportLabbookMutation(
 
   const variables = {
     input: {
-      owner,
       chunkUploadParams: {
         fileSizeKb: chunk.fileSizeKb,
         chunkSize: chunk.chunkSize,
@@ -47,7 +45,7 @@ export default function ImportLabbookMutation(
       variables,
       uploadables,
       onCompleted: (response, error ) => {
-    
+
         if(error){
           console.log(error)
         }

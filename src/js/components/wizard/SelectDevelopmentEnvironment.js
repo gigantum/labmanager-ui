@@ -8,6 +8,8 @@ import Loader from 'Components/shared/Loader'
 import environment from 'JS/createRelayEnvironment'
 //mutations
 import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
+//store
+import store from 'JS/redux/store'
 
 const BaseImageQuery = graphql`query SelectDevelopmentEnvironmentQuery($first: Int!, $cursor: String){
   availableDevEnvs(first: $first, after: $cursor){
@@ -58,15 +60,21 @@ const BaseImageQuery = graphql`query SelectDevelopmentEnvironmentQuery($first: I
 
 export default class SelectDevelopmentEnvironment extends React.Component {
   constructor(props){
+
   	super(props);
-  	this.state = {
+
+    const {owner, labbookName} = store.getState().routes
+
+    this.state = {
       'modal_visible': false,
       'name': '',
       'description': '',
       'selectedDevelopmentEnvironment': null,
       'selectedDevelopmentEnvironmentId': false,
       'show': false,
-      'message': ''
+      'message': '',
+      owner,
+      labbookName
     };
     this.continueSave = this.continueSave.bind(this);
   }
@@ -90,10 +98,10 @@ export default class SelectDevelopmentEnvironment extends React.Component {
 
     let component = this.state.selectedDevelopmentEnvironment.node.component;
     this.props.toggleDisabledContinue(true);
-    const username = localStorage.getItem('username')
+
     AddEnvironmentComponentMutation(
-      this.props.labbookName,
-      username,
+      this.state.labbookName,
+      this.state.owner,
       component.repository,
       component.namespace,
       component.name,

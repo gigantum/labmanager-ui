@@ -8,8 +8,8 @@ import CodeFavorites from './CodeFavorites'
 class Code extends Component {
   constructor(props){
   	super(props);
-
   }
+
   render(){
 
     if(this.props.labbook){
@@ -28,7 +28,6 @@ class Code extends Component {
             <CodeFavorites
               codeId={this.props.labbook.code.id}
               code={this.props.labbook.code}
-              labbookName={this.props.labbookName}
             />
           </div>
           <div className="Code__header">
@@ -46,7 +45,6 @@ class Code extends Component {
               labbookId={this.props.labbookId}
               codeId={this.props.labbook.code.id}
               code={this.props.labbook.code}
-              labbookName={this.props.labbookName}
             />
           </div>
         </div>

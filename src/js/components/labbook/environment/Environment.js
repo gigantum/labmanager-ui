@@ -11,16 +11,21 @@ import CustomDependencies from './CustomDependencies'
 //mutations
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
+//store
+import store from 'JS/redux/store'
 
 class Environment extends Component {
   constructor(props){
   	super(props);
+    const {owner, labbookName} = store.getState().routes
 
     this.state ={
       'modal_visible': false,
       'readyToBuild': false,
       'show': false,
-      'message': ''
+      'message': '',
+      owner,
+      labbookName
     }
 
     this._buildCallback = this._buildCallback.bind(this)
@@ -32,21 +37,20 @@ class Environment extends Component {
   *  callback that triggers buildImage mutation
   */
   _buildCallback = () => {
-    const username = localStorage.getItem('username')
-    const {labbookName} = this.props
+    const {labbookName, owner} = this.state
     this.props.setBuildingState(true)
 
     if(this.props.labbook.environment.containerStatus === "RUNNING"){
 
       StopContainerMutation(
         labbookName,
-        username,
+        owner,
         'clientMutationId',
         (error) =>{
 
             BuildImageMutation(
             labbookName,
-              username,
+              owner,
               (error) => {
 
                 let showAlert = ((error !== null) && (error !== undefined))
@@ -65,7 +69,7 @@ class Environment extends Component {
 
       BuildImageMutation(
         labbookName,
-        username,
+        owner,
         (error) => {
 
           let showAlert = ((error !== null) && (error !== undefined))
@@ -100,7 +104,6 @@ class Environment extends Component {
 
             <BaseImage
               ref="baseImage"
-              labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               editVisible={true}
@@ -115,7 +118,6 @@ class Environment extends Component {
 
             <DevEnvironments
               ref="devEnvironments"
-              labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
@@ -126,7 +128,6 @@ class Environment extends Component {
 
             <PackageManagerDependencies
               ref="packageManagerDependencies"
-              labbookName={this.props.labbookName}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
@@ -143,7 +144,6 @@ class Environment extends Component {
               blockClass="Environment"
               buildCallback={this._buildCallback}
               editVisible={true}
-              labbookName={this.props.labbookName}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
             />

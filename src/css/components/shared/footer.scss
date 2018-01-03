@@ -10,7 +10,7 @@
   max-height: 200px;
   transition: height 0.5s;
   z-index: 300;
-  color: $turquise;
+  color: $white;
   font-weight: 100;
 }
 
@@ -33,7 +33,7 @@
   left: 0;
   top: 0;
   background-color: $turquise;
-  color: $jet !important;
+  color: $white !important;
   z-index: 50;
   position: absolute;
   transition: width 1s, opacity 1s;
@@ -76,7 +76,7 @@
 .Footer__message{
     flex: 1;
     margin: 0 10px;
-    color: $azure;
+    color: $white;
 }
 
 .Footer__close{

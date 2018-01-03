@@ -11,8 +11,6 @@ import BranchCard from './BranchCard'
 import store from 'JS/redux/store'
 
 
-let unsubscribe;
-
 class Branches extends Component {
   constructor(props){
     super(props)
@@ -90,7 +88,7 @@ class Branches extends Component {
       if(activeBranch){
         branches.unshift(activeBranch);
       }
-      
+
       return(
         <div className={this.props.branchesOpen ? 'Branches': 'Branches--closed' }>
 
@@ -112,7 +110,6 @@ class Branches extends Component {
                       <BranchCard
                         activeBranch={this.props.activeBranch}
                         edge={edge}
-                        labbookName={this.props.labbookName}
                         labbookId={this.props.labbookId}
                       />
                   </div>)
@@ -188,12 +185,12 @@ export default createPaginationContainer(
        first: first,
      };
    },
-   getVariables(props, {count, cursor, name, owner}, fragmentVariables) {
-    const username = localStorage.getItem('username')
-    cursor = props.labbook.branches.edges[props.labbook.branches.edges.length - 1].cursor
-    let first = count;
-    name = props.labbookName;
-    owner = username;
+   getVariables(props, {count, cursor}, fragmentVariables) {
+     const {owner, labbookName} = store.getState().routes
+     const name = labbookName
+     let first = count
+     cursor = props.labbook.branches.edges[props.labbook.branches.edges.length - 1].cursor
+
      return {
        first,
        cursor,

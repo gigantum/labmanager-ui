@@ -70,7 +70,7 @@ const dispatchFinishedStatus = (filepath) =>{
      type: 'IMPORT_SUCCESS',
      payload: {
        uploadMessage: `${route} LabBook is Ready`,
-       labbookName: route, //route is labbookName
+       labbookName: localStorage.getItem("username") + "/" + route, //route is labbookName
        success: true,
        open: true
      }
@@ -326,11 +326,11 @@ export default class ImportModule extends Component {
 
            }
          }).catch((error)=>{
-
+           console.log(error)
            store.dispatch({
              type: 'UPLOAD_MESSAGE',
              payload: {
-               uploadMessage: 'Computation Error',
+               uploadMessage: 'Import failed',
                error: true
              }
            })

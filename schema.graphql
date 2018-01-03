@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Wed Dec 06 2017 17:01:59 GMT-0500 (EST)
+# timestamp: Tue Dec 19 2017 08:42:04 GMT+0000 (GMT)
 
 type ActivityConnection {
   pageInfo: PageInfo!
@@ -92,6 +92,18 @@ input AddEnvironmentPackageInput {
 # Mutation to add a new package to labbook. 
 type AddEnvironmentPackagePayload {
   environmentPackage: PackageManager
+  clientMutationId: String
+}
+
+input AddLabbookCollaboratorInput {
+  owner: String!
+  labbookName: String!
+  username: String!
+  clientMutationId: String
+}
+
+type AddLabbookCollaboratorPayload {
+  updatedLabbook: Labbook
   clientMutationId: String
 }
 
@@ -285,6 +297,18 @@ type CustomDependencyEdge {
 # [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 scalar DateTime
 
+input DeleteLabbookCollaboratorInput {
+  owner: String!
+  labbookName: String!
+  username: String!
+  clientMutationId: String
+}
+
+type DeleteLabbookCollaboratorPayload {
+  updatedLabbook: Labbook
+  clientMutationId: String
+}
+
 input DeleteLabbookFileInput {
   owner: String!
   labbookName: String!
@@ -426,7 +450,6 @@ enum ImageStatus {
 }
 
 input ImportLabbookInput {
-  owner: String!
   chunkUploadParams: ChunkUploadInput!
   clientMutationId: String
 }
@@ -485,6 +508,8 @@ type Labbook implements Node, GitRepository {
   activeBranch: LabbookRef
   defaultRemote: String
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
+  collaborators: [String]
+  canManageCollaborators: Boolean
   updatesAvailableCount: Int
   isRepoClean: Boolean
   environment: Environment
@@ -633,6 +658,8 @@ type Mutation {
   exportLabbook(input: ExportLabbookInput!): ExportLabbookPayload
   createLabbook(input: CreateLabbookInput!): CreateLabbookPayload
   renameLabbook(input: RenameLabbookInput!): RenameLabbookPayload
+  publishLabbook(input: PublishLabbookInput!): PublishLabbookPayload
+  syncLabbook(input: SyncLabbookInput!): SyncLabbookPayload
   createBranch(input: CreateBranchInput!): CreateBranchPayload
   checkoutBranch(input: CheckoutBranchInput!): CheckoutBranchPayload
   pullActiveBranchFromRemote(input: PullActiveBranchFromRemoteInput!): PullActiveBranchFromRemotePayload
@@ -652,6 +679,8 @@ type Mutation {
   addFavorite(input: AddLabbookFavoriteInput!): AddLabbookFavoritePayload
   updateFavorite(input: UpdateLabbookFavoriteInput!): UpdateLabbookFavoritePayload
   removeFavorite(input: RemoveLabbookFavoriteInput!): RemoveLabbookFavoritePayload
+  addCollaborator(input: AddLabbookCollaboratorInput!): AddLabbookCollaboratorPayload
+  deleteCollaborator(input: DeleteLabbookCollaboratorInput!): DeleteLabbookCollaboratorPayload
 }
 
 # An object with an ID
@@ -704,6 +733,17 @@ type PageInfo {
 
   # When paginating forwards, the cursor to continue.
   endCursor: String
+}
+
+input PublishLabbookInput {
+  owner: String!
+  labbookName: String!
+  clientMutationId: String
+}
+
+type PublishLabbookPayload {
+  success: Boolean
+  clientMutationId: String
 }
 
 input PullActiveBranchFromRemoteInput {
@@ -805,6 +845,17 @@ input StopContainerInput {
 type StopContainerPayload {
   environment: Environment
   backgroundJobKey: String
+  clientMutationId: String
+}
+
+input SyncLabbookInput {
+  owner: String!
+  labbookName: String!
+  clientMutationId: String
+}
+
+type SyncLabbookPayload {
+  updateCount: Int
   clientMutationId: String
 }
 

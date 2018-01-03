@@ -8,7 +8,6 @@ import OutputFavorites from './OutputFavorites'
 class OutputData extends Component {
   constructor(props){
   	super(props);
-
   }
 
   render(){
@@ -30,7 +29,6 @@ class OutputData extends Component {
               outputId={this.props.labbook.output.id}
               labbookId={this.props.labbookId}
               output={this.props.labbook.output}
-              labbookName={this.props.labbookName}
             />
           </div>
           <div className="Code__header">
@@ -49,7 +47,6 @@ class OutputData extends Component {
               labbookId={this.props.labbookId}
               labbook={this.props.labbook}
               output={this.props.labbook.output}
-              labbookName={this.props.labbookName}
             />
           </div>
         </div>

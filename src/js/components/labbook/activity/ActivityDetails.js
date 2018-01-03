@@ -74,7 +74,6 @@ export default class ActivityCard extends Component {
               <ActivityDetailList
                 hideElipsis={this._hideElipsis}
                 edge={this.props.edge}
-                labbookName={this.props.labbookName}
                 categorizedDetails={categorizedDetails}
                 itemKey={key}
                 key={key + index}

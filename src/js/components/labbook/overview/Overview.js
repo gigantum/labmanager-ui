@@ -98,7 +98,6 @@ class Overview extends Component {
             <div>
               <PackageCount
                 ref="packageCount"
-                labbookName={this.props.labbookName}
               />
             </div>
 

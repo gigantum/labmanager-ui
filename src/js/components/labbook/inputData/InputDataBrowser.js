@@ -3,33 +3,28 @@ import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //mutations
 import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
-
-
-let inputRootFolder = ''
+//store
+import store from 'JS/redux/store'
 
 class InputDataBrowser extends Component {
   constructor(props){
   	super(props);
 
+    const {owner, labbookName} = store.getState().routes
+
     this.state = {
       'show': false,
       'message': '',
-      'files': []
+      'files': [],
+      owner,
+      labbookName
     }
-
-    this.setRootFolder = this.setRootFolder.bind(this)
   }
 
   /*
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore()
-  }
-
-  setRootFolder(key){
-    this.setState({rootFolder: key})
-    inputRootFolder = key
     this._loadMore()
   }
 
@@ -73,11 +68,11 @@ class InputDataBrowser extends Component {
         <FileBrowserWrapper
           ref='inputBrowser'
           section="input"
-          setRootFolder={this.setRootFolder}
           files={inputFiles}
           connection="InputDataBrowser_allFiles"
           parentId={this.props.inputId}
           favoriteConnection="InputFavorites_favorites"
+          owner={this.state.owner}
           {...this.props}
         />
       )
@@ -128,14 +123,13 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-
-      const username = localStorage.getItem('username')
+      const {owner, labbookName} = store.getState().routes
 
       return {
         first: count,
         cursor,
-        owner: username,
-        name: props.labbookName
+        owner: owner,
+        name: labbookName
       };
     },
     query: graphql`
