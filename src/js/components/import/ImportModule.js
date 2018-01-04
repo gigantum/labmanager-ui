@@ -1,6 +1,5 @@
 // vendor
 import React, { Component } from 'react'
-import SweetAlert from 'sweetalert-react'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
 import ChunkUploader from 'JS/utils/ChunkUploader'
@@ -359,10 +358,13 @@ export default class ImportModule extends Component {
     shows error message
   **/
   _showError(message){
-    this.setState({
-      'show': true,
-      'message': message,
-      'type': 'error'
+
+    store.dispatch({
+      type: 'UPLOAD_MESSAGE',
+      payload: {
+        uploadMessage: message,
+        error: true
+      }
     })
   }
   /**
@@ -446,15 +448,6 @@ export default class ImportModule extends Component {
 
           <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
 
-          <SweetAlert
-            className="sa-error-container"
-            show={this.state.show}
-            type={this.state.type}
-            title={this.state.message}
-            onConfirm={() => {
-              this.setState({ show: false})
-            }}
-            />
 
       </div>
       )

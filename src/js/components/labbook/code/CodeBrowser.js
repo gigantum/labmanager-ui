@@ -61,7 +61,7 @@ class CodeBrowser extends Component {
   }
 
   render(){
-
+    console.log(this.props.code)
     if(this.props.code && this.props.code.allFiles){
 
       let codeFiles = this.props.code.allFiles

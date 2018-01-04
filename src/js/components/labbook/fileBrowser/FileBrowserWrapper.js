@@ -1,16 +1,9 @@
 // vendor
 import React, { Component } from 'react'
-import RelayRuntime from 'relay-runtime'
-import {createFragmentContainer, graphql} from 'react-relay'
-import SweetAlert from 'sweetalert-react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
-import Moment from 'moment'
-import Environment, {relayStore} from 'JS/createRelayEnvironment'
 //components
 import DetailPanel from './../detail/DetailPanel'
-import DragAndDrop from './DragDrop'
 //mutations
-import StartContainerMutation from 'Mutations/StartContainerMutation'
 import DeleteLabbookFileMutation from 'Mutations/fileBrowser/DeleteLabbookFileMutation'
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
 import MoveLabbookFileMutation from 'Mutations/fileBrowser/MoveLabbookFileMutation'
@@ -157,7 +150,6 @@ export default class FileBrowserWrapper extends Component {
     this.handleRenameFile = this.handleRenameFile.bind(this)
     this.handleDeleteFolder = this.handleDeleteFolder.bind(this)
     this.handleDeleteFile = this.handleDeleteFile.bind(this)
-    this._openJupyter = this._openJupyter.bind(this)
     this.openDetailPanel = this.openDetailPanel.bind(this)
     this.handleFileFavoriting = this.handleFileFavoriting.bind(this)
 
@@ -264,6 +256,7 @@ export default class FileBrowserWrapper extends Component {
       const batchUpload = (files.length > 1)
 
       let newFiles = files.map((file, index) => {
+        console.log(files, index)
         let newKey = prefix;
         if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
           newKey += '/';
@@ -387,7 +380,6 @@ export default class FileBrowserWrapper extends Component {
                   }
                 )
 
-
             }))
           }
 
@@ -400,7 +392,7 @@ export default class FileBrowserWrapper extends Component {
           })[0]
 
           let edgesToDelete = this.props.files.edges.filter((edge) => {
-            return edge && (edge.node.key.indefOf(oldKey) > -1)
+            return edge && (edge.node.key.indexOf(oldKey) > -1)
           })[0]
 
           DeleteLabbookFileMutation(
@@ -416,7 +408,6 @@ export default class FileBrowserWrapper extends Component {
               if(error){
                 console.error(error)
               }
-
             }
           )
         }).catch(error =>{
@@ -432,7 +423,6 @@ export default class FileBrowserWrapper extends Component {
   *  moves file from old folder to a new folder
   */
   handleRenameFile(oldKey, newKey) {
-    let that = this;
     let edgeToMove = this.props.files.edges.filter((edge) => {
       if(edge && edge.node){
         return edge && (oldKey === edge.node.key)
@@ -460,11 +450,10 @@ export default class FileBrowserWrapper extends Component {
   }
 
   /**
-  *  @param {string} folderKey
+  *  @param {string} folderKeyå
   *  deletes foler with a specified key
   */
   handleDeleteFolder(folderKey) {
-    let self = this
 
     let edgeToDelete = this.props.files.edges.filter((edge) => {
       return edge && (folderKey === edge.node.key)
@@ -496,8 +485,6 @@ export default class FileBrowserWrapper extends Component {
   */
   handleDeleteFile(fileKey) {
 
-    let self = this
-
     let edgeToDelete = this.props.files.edges.filter((edge) => {
       return edge && (fileKey === edge.node.key)
     })[0]
@@ -514,31 +501,6 @@ export default class FileBrowserWrapper extends Component {
       (response, error) => {
         if(error){
           console.error(error)
-        }
-      }
-    )
-  }
-
-  /**
-  *  @param {}
-  *  start contianer muations
-  *  redirect user to jupyter in callback
-  */
-  _openJupyter(){
-    StartContainerMutation(
-      this.state.labbookName,
-      this.state.owner,
-      'clientMutationId',
-      (error) =>{
-        if(error){
-          this.setState({
-            'show': true,
-            'message': error[0].message,
-          })
-        }else{
-          setTimeout(function(){
-            window.open('http://localhost:8888/', '_blank')
-          }, 3000)
         }
       }
     )
@@ -573,7 +535,7 @@ export default class FileBrowserWrapper extends Component {
   *  triggers file favorite mutation
   */
   handleFileFavoriting(key){
-    let fileItem = this.props.files.edges.filter((edge)=>{
+    let fileItem = this.props.files.edges.filter((edge) => {
 
         if(edge && (edge.node.key === key)){
           return edge.node
@@ -598,10 +560,10 @@ export default class FileBrowserWrapper extends Component {
       }
     )
   }
-  /*
-    @param {object} file
-    gets a file objext with name, extension, key, url properties
-    sets as selected item
+  /**
+  *  @param {object} file
+  *  gets a file objext with name, extension, key, url properties
+  *  sets as selected item
   */
   openDetailPanel(file){
 
@@ -616,7 +578,6 @@ export default class FileBrowserWrapper extends Component {
       }
     })
   }
-
 
   render(){
 
@@ -646,22 +607,10 @@ export default class FileBrowserWrapper extends Component {
             owner={this.state.owner}
           />
 
-
           <DetailPanel
             {...this.state.selectedFile}
           />
 
-
-          <SweetAlert
-            className="sa-error-container"
-            show={this.state.show}
-            type="error"
-            title="Error"
-            text={this.state.message}
-            onConfirm={() => {
-              this.setState({ show: false, message: ''})
-            }}
-            />
         </div>
       )
   }

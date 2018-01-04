@@ -1,6 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import SweetAlert from 'sweetalert-react';
 import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import Loader from 'Components/shared/Loader'
@@ -55,10 +54,16 @@ class Environment extends Component {
 
                 let showAlert = ((error !== null) && (error !== undefined))
                 let message = showAlert ? error[0].message : '';
-                this.setState({
-                  'show': showAlert,
-                  'message': message
-                })
+
+                if(showAlert){
+                  store.dispatch({
+                    type: 'UPLOAD_MESSAGE',
+                    payload:{
+                      error: true,
+                      message: error[0].message
+                    }
+                  })
+                }
                 this.props.setBuildingState(false)
                 return "finished"
               }
@@ -74,10 +79,17 @@ class Environment extends Component {
 
           let showAlert = ((error !== null) && (error !== undefined))
           let message = showAlert ? error[0].message : '';
-          this.setState({
-            'show': showAlert,
-            'message': message
-          })
+
+          if(showAlert){
+            store.dispatch({
+              type: 'UPLOAD_MESSAGE',
+              payload:{
+                error: true,
+                message: error[0].message
+              }
+            })
+          }
+
           this.props.setBuildingState(false)
           return "finished"
         }
@@ -147,14 +159,6 @@ class Environment extends Component {
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
             />
-
-            <SweetAlert
-              className="sa-error-container"
-              show={this.state.show}
-              type="error"
-              title="Error"
-              text={this.state.message}
-              onConfirm={() => this.setState({ show: false })} />
           </div>
       )
     }else{

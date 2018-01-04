@@ -1,6 +1,5 @@
 //vendor
 import React from 'react'
-import SweetAlert from 'sweetalert-react'
 import { QueryRenderer, graphql } from 'react-relay'
 //components
 import Loader from 'Components/shared/Loader'
@@ -66,13 +65,8 @@ export default class SelectDevelopmentEnvironment extends React.Component {
     const {owner, labbookName} = store.getState().routes
 
     this.state = {
-      'modal_visible': false,
-      'name': '',
-      'description': '',
       'selectedDevelopmentEnvironment': null,
       'selectedDevelopmentEnvironmentId': false,
-      'show': false,
-      'message': '',
       owner,
       labbookName
     };
@@ -117,8 +111,6 @@ export default class SelectDevelopmentEnvironment extends React.Component {
         }
       }
     )
-
-
   }
   /**
     @param {}
@@ -182,13 +174,7 @@ export default class SelectDevelopmentEnvironment extends React.Component {
                         </div>
                       )
                     }
-                  <SweetAlert
-                      className="sa-error-container"
-                      show={this.state.show}
-                      type="error"
-                      title="Error"
-                      text={this.state.message}
-                      onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
+
                 </div>
 
                 )

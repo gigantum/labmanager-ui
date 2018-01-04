@@ -1,6 +1,5 @@
 //vendor
 import React from 'react'
-import SweetAlert from 'sweetalert-react';
 //utilities
 import validation from 'JS/utils/Validation'
 //mutations
@@ -16,12 +15,9 @@ export default class CreateLabbook extends React.Component {
   	super(props);
 
   	this.state = {
-      'modal_visible': false,
       'name': '',
       'description': '',
       'showError': false,
-      'show': false,
-      'message': '',
       'errorType': '',
       'remoteURL': ''
     };
@@ -157,9 +153,12 @@ export default class CreateLabbook extends React.Component {
 
             if(!showAlert){
               let message = showAlert ? error[0].message : '';
-              this.setState({
-                'show': showAlert,
-                'message': message,
+              store.dispatch({
+                type: 'UPLOAD_MESSAGE',
+                payload:{
+                  message: message,
+                  error: true
+                }
               })
             }
 
@@ -268,13 +267,6 @@ export default class CreateLabbook extends React.Component {
               />
             </div>
 
-            <SweetAlert
-              className="sa-error-container"
-              show={this.state.show}
-              type="error"
-              title="Error"
-              text={this.state.message}
-              onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
           </div>
         </div>
       )

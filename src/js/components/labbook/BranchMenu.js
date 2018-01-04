@@ -1,3 +1,4 @@
+//vendor
 import React, { Component } from 'react'
 import SimpleMDE from 'simplemde'
 import { WithContext as ReactTags } from 'react-tag-input';
@@ -174,7 +175,7 @@ export default class UserNote extends Component {
   _addRemote(){
 
     this.setState({menuOpen: false})
-    
+
     store.dispatch({
       type: 'UPLOAD_MESSAGE',
       payload: {

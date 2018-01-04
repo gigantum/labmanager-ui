@@ -1,6 +1,5 @@
 //vendor
 import React from 'react'
-import SweetAlert from 'sweetalert-react';
 import { QueryRenderer, graphql } from 'react-relay'
 //components
 import Loader from 'Components/shared/Loader'
@@ -63,11 +62,8 @@ export default class AddCustomDependencies extends React.Component {
     const {owner, labbookName} = store.getState().routes
 
     this.state = {
-      'modal_visible': false,
       'selectedCustomDependencies': [],
       'selectedCustomDependenciesIds': [],
-      'show': false,
-      'message': '',
       'isLoading': false,
       owner,
       labbookName
@@ -115,10 +111,13 @@ export default class AddCustomDependencies extends React.Component {
         let showAlert = ((error !== undefined) && (error !== null))
         if(showAlert){
           let message = showAlert ? error[0].message : '';
-          this.setState({
-            'isLoading': false,
-            'show': showAlert,
-            'message': message
+
+          store.dispatch({
+            type: 'UPLOAD_MESSAGE',
+            payload: {
+              message: message,
+              error: error
+            }
           })
         }
         if(this.props.buildCallback){
@@ -167,11 +166,13 @@ export default class AddCustomDependencies extends React.Component {
 
             if(showAlert){
               let message = showAlert ? error[0].message : '';
-              this.setState({
-                'show': showAlert,
-                'message': message,
-                'reject': reject
 
+              store.dispatch({
+                type: 'UPLOAD_MESSAGE',
+                payload: {
+                  message: message,
+                  error: error
+                }
               })
 
             }else{
@@ -303,16 +304,6 @@ export default class AddCustomDependencies extends React.Component {
         <Loader />
       </div>
 
-      <SweetAlert
-        className="sa-error-container"
-        show={this.state.show}
-        type="error"
-        title="Error"
-        text={this.state.message}
-        onConfirm={() => {
-          this.state.reject(); this.setState({ show: false, message: ''})
-        }}
-        />
     </div>
     )
   }

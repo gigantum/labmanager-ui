@@ -1,6 +1,5 @@
 //vendor
 import React from 'react'
-import SweetAlert from 'sweetalert-react';
 //mutations
 import AddEnvironmentPackageMutation from 'Mutations/AddEnvironmentPackageMutation'
 //store
@@ -14,7 +13,6 @@ export default class AddEnvironmentPackage extends React.Component {
     const {owner, labbookName} = store.getState().routes
 
   	this.state = {
-      'modal_visible': false,
       'name': '',
       'description': '',
       'environmentPackages': [
@@ -67,17 +65,19 @@ export default class AddEnvironmentPackage extends React.Component {
                 let showAlert = ((error !== null) && (error !== undefined))
                 let message = showAlert ? error[0].message : '';
 
-                this.setState({
-                  'show': showAlert,
-                  'message': message,
-                })
-
                 if(!showAlert){
+
                   resolve()
                 }else{
-                  this.setState({
-                    'reject': reject
+
+                  store.dispatch({
+                    type: 'UPLOAD_MESSAGE',
+                    payload: {
+                      'message': message,
+                      'error': true
+                    }
                   })
+
                 }
 
               }
@@ -200,14 +200,6 @@ export default class AddEnvironmentPackage extends React.Component {
               )
               })
             }
-            
-            <SweetAlert
-              className="sa-error-container"
-              show={this.state.show}
-              type="error"
-              title="Error"
-              text={this.state.message}
-              onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
 
           </div>
 

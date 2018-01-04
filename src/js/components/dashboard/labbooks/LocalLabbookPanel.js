@@ -1,6 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import SweetAlert from 'sweetalert-react'
 //mutations
 import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
 //utilities
@@ -19,10 +18,6 @@ export default class LocalLabbookPanel extends Component {
 
     this.state = {
       'exportPath': '',
-      'show': false,
-      'message': '',
-      'title': 'Export Successful',
-      'type': 'success'
     }
 
     this._exportLabbook = this._exportLabbook.bind(this)
@@ -117,8 +112,7 @@ export default class LocalLabbookPanel extends Component {
   render(){
     let edge = this.props.edge;
     let status = this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
-    let exportFile = this.state.exportPath.split('/')[this.state.exportPath.split('/').length - 1]
-
+    
     return (
       <div
         key={edge.node.name}
@@ -162,16 +156,6 @@ export default class LocalLabbookPanel extends Component {
               onMouseDown={(evt) => this._exportLabbook(evt, edge)} className="LocalLabbooks__export">
               Export
             </div>
-            <SweetAlert
-              className="sa-error-container"
-              show={this.state.show}
-              type={this.state.type}
-              title={this.state.title}
-              text={ this.state.message }
-              onConfirm={() => {
-                this.setState({ show: false})
-              }}
-              />
 
           </div>
 
