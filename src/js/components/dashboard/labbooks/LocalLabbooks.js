@@ -4,6 +4,7 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
+
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
@@ -73,12 +74,14 @@ class LocalLabbooks extends Component {
     if(e){
       e.preventDefault();
     }
-    this.props.relay.loadMore(
-      10, // Fetch the next 10 feed items
-      (ev) => {
-        isLoadingMore = false;
-      }
-    );
+    if(this.props.feed.localLabbooks.pageInfo.hasNextPage){
+      this.props.relay.loadMore(
+        10, // Fetch the next 10 feed items
+        (ev) => {
+          isLoadingMore = false;
+        }
+      );
+    }
   }
 
   _renameLabbookModal(labbookName){

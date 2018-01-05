@@ -86,7 +86,7 @@
     "react-router-dom": "^4.1.1",
     "react-scroll": "^1.5.4",
     "react-tag-input": "^4.7.2",
-    "react-transition-group": "^2.2.1",
+    "react-transition-group": "^1.2.1",
     "redux": "^3.7.2",
     "redux-observable": "^0.17.0",
     "rxjs": "^5.5.2",

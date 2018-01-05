@@ -24,7 +24,10 @@ class CodeBrowser extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore() //routes query only loads 2, call loadMore
+    if(this.props.code.allFiles &&
+      this.props.code.allFiles.pageInfo.hasNextPage) {
+        this._loadMore() //routes query only loads 2, call loadMore
+    }
   }
   /*
     @param
@@ -61,7 +64,6 @@ class CodeBrowser extends Component {
   }
 
   render(){
-    console.log(this.props.code)
     if(this.props.code && this.props.code.allFiles){
 
       let codeFiles = this.props.code.allFiles

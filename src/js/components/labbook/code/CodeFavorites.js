@@ -3,9 +3,7 @@ import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
 import FavoriteCard from './../fileBrowser/FavoriteCard'
-//mutations
-//
-let counter = 10;
+
 let owner;
 class CodeFavorites extends Component {
   constructor(props){
@@ -14,7 +12,7 @@ class CodeFavorites extends Component {
       loading: false
     }
 
-    owner=this.props.owner
+    owner = this.props.owner
   }
 
   /**
@@ -23,13 +21,15 @@ class CodeFavorites extends Component {
   componentDidMount() {
     //this._loadMore() //routes query only loads 2, call loadMore
 
-    this.props.relay.loadMore(
-     1, // Fetch the next 10 feed items
-     (response, error) => {
-       if(error){
-         console.error(error)
-      }
-    })
+    if(this.props.code && this.props.code.favorites && this.props.code.favorites.pageInfo.hasNextPage){
+      this.props.relay.loadMore(
+       1, // Fetch the next 10 feed items
+       (response, error) => {
+         if(error){
+           console.error(error)
+        }
+      })
+    }
   }
 
   /**

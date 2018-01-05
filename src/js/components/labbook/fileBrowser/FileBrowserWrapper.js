@@ -256,7 +256,7 @@ export default class FileBrowserWrapper extends Component {
       const batchUpload = (files.length > 1)
 
       let newFiles = files.map((file, index) => {
-        console.log(files, index)
+
         let newKey = prefix;
         if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
           newKey += '/';

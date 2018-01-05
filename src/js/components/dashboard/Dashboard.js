@@ -4,7 +4,6 @@ import {graphql, QueryRenderer} from 'react-relay'
 import DatasetSets from './datasets/DatasetSets';
 import LocalLabbooks from './labbooks/LocalLabbooks';
 import environment from 'JS/createRelayEnvironment'
-import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
 
 

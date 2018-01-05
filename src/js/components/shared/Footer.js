@@ -11,9 +11,9 @@ export default class Footer extends Component {
   constructor(props){
     super(props)
 
-    this.state = store.getState()
-    this._clearState = this._clearState.bind(this)
+    this.state = store.getState().footer
 
+    this._clearState = this._clearState.bind(this)
   }
   /**
     subscribe to store to update state
@@ -31,9 +31,13 @@ export default class Footer extends Component {
   componentWillUnmount() {
     unsubscribe()
   }
-
+  /**
+    @param {object} footer
+    unsubscribe from redux store
+  */
   storeDidUpdate = (footer) => {
-    if(this.state !== footer){
+
+    if(footer !== this.state){
       this.setState(footer);//triggers re-render when store updates
     }
   }
@@ -116,29 +120,33 @@ export default class Footer extends Component {
     let footerClass = (this.state.open) ? 'Footer Footer--expand' : 'Footer'
     footerClass = (this.state.error ? ' Footer Footer--expand Footer--error' : footerClass);
 
+    let message = this._getMessage()
+
     return (
       <div id="footer" className={footerClass}>
 
         <div
           className={this.state.open ? 'Footer__status' : 'hidden'}>
-            <div className="Footer__message">{this._getMessage()}</div>
+            <div className="Footer__message">
+              {message}
+            </div>
             <div
-              onClick={()=>{this._closeFooter()}}
+              onClick={() =>{ this._closeFooter() }}
               className="Footer__close"></div>
         </div>
 
+        <div
+          id="footerProgressBar"
+          className={(this.state.showProgressBar) ? 'Footer__progress-bar' : 'hidden' }>
+        </div>
 
-          <div
-            id="footerProgressBar" className={(this.state.showProgressBar) ? 'Footer__progress-bar' : 'hidden' }>
-          </div>
-
-
-        {this.state.success &&
-          <button
-            className="Footer__button"
-            onClick={()=> this._openLabbook()}>
-            Open LabBook
-          </button>
+        {
+          this.state.success &&
+            <button
+              className="Footer__button"
+              onClick={() => this._openLabbook()}>
+              Open LabBook
+            </button>
         }
 
       </div>
