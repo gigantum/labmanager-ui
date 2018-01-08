@@ -4,7 +4,6 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
-
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
@@ -23,12 +22,12 @@ class LocalLabbooks extends Component {
   	super(props);
 
     this.state = {
-      labbookModalVisible: false,
-      oldLabbookName: '',
-      newLabbookName:'',
-      renameError: '',
-      showNamingError: false,
-      filter: 'all'
+      'labbookModalVisible': false,
+      'oldLabbookName': '',
+      'newLabbookName':'',
+      'renameError': '',
+      'showNamingError': false,
+      'filter': 'all'
     }
 
     this._goToLabbook = this._goToLabbook.bind(this)
@@ -83,7 +82,10 @@ class LocalLabbooks extends Component {
       );
     }
   }
-
+  /**
+  *  @param {string} labbookName
+  *  opens rename labbook modal and stores the old labbookName
+  */
   _renameLabbookModal(labbookName){
     this.setState({
       labbookModalVisible: true,
@@ -94,7 +96,10 @@ class LocalLabbooks extends Component {
       document.getElementById('modal__cover').classList.remove('hidden')
     }
   }
-
+  /**
+  *  @param {string} labbookName
+  *  closes labbook modal and resets state to initial state
+  */
   _closeLabbook(labbookName){
     this.setState({
       labbookModalVisible: false,
@@ -107,7 +112,10 @@ class LocalLabbooks extends Component {
       document.getElementById('modal__cover').classList.add('hidden')
     }
   }
-
+  /**
+  *  @param {event} evt
+  *  sets new labbook title to state
+  */
   _setLabbookTitle(evt){
 
     let isValid = Validation.labbookName(evt.target.value)
@@ -120,7 +128,10 @@ class LocalLabbooks extends Component {
       this.setState({showNamingError: true})
     }
   }
-
+  /**
+  *  @param {}
+  *  triggers rename mutation
+  **/
   _renameMutation(){
     const username = localStorage.getItem('username')
     let self = this;
@@ -142,7 +153,6 @@ class LocalLabbooks extends Component {
       }
     )
   }
-
   /**
    * @param {string} filter
    sets state updates filter
@@ -150,14 +160,11 @@ class LocalLabbooks extends Component {
   _setFilter(filter){
       this.setState({filter: filter})
   }
-
-
   /**
    * @param {array, string} localLabbooks.edges,filter
 
     @return {array} filteredLabbooks
   */
-
   _filterLabbooks(labbooks, filter){
     let filteredLabbooks = [];
     let username = localStorage.getItem('username')

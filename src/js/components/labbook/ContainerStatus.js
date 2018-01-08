@@ -31,8 +31,6 @@ const containerStatusQuery = graphql`
 }
 `
 
-let tempStatus;
-
 export default class ContainerStatus extends Component {
   constructor(props){
   	super(props);
@@ -48,7 +46,6 @@ export default class ContainerStatus extends Component {
       owner,
       labbookName
     }
-    tempStatus = "Closed";
 
     this._tick = this._tick.bind(this)
     this._checkJupyterStatus = this._checkJupyterStatus.bind(this)
@@ -184,8 +181,6 @@ export default class ContainerStatus extends Component {
     status = ((status === 'Closed') && (this.state.status === "Starting")) ? "Starting" : status;
     status = ((status === 'Open') && (this.state.status === "Stopping")) ? "Stopping" : status;
 
-    tempStatus = status
-
     return status;
   }
   /**
@@ -199,8 +194,8 @@ export default class ContainerStatus extends Component {
       this.state.owner,
       'clientMutationId',
       (error) =>{
-        if(error){
 
+        if(error){
           console.log(error)
         }else{
           console.log('stopped container')
@@ -259,7 +254,7 @@ export default class ContainerStatus extends Component {
   }
 
   render(){
-    const username = localStorage.getItem('username')
+
     return(
       <QueryRenderer
         variables={{

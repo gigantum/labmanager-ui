@@ -154,9 +154,6 @@ export default class FileBrowserWrapper extends Component {
     this.handleFileFavoriting = this.handleFileFavoriting.bind(this)
 
   }
-  componentDidMount() {
-    //DragAndDrop.dragAndDrop()
-  }
   /**
   *  @param {string} key - file key
   *  creates a directory using MakeLabbookDirectoryMutation
@@ -183,7 +180,6 @@ export default class FileBrowserWrapper extends Component {
 
   _chunkLoader(filepath, file, data, batchUpload, files, index){
 
-    let self = this
     if(!batchUpload){
       store.dispatch({
         type: 'LOADING_PROGRESS',
@@ -255,7 +251,7 @@ export default class FileBrowserWrapper extends Component {
     if(files[0].name){
       const batchUpload = (files.length > 1)
 
-      let newFiles = files.map((file, index) => {
+      files.forEach((file, index) => {
 
         let newKey = prefix;
         if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
@@ -266,12 +262,6 @@ export default class FileBrowserWrapper extends Component {
         let fileReader = new FileReader();
 
         fileReader.onloadend = function (evt) {
-
-          let arrayBuffer = evt.target.result;
-          let blob = new Blob([new Uint8Array(arrayBuffer)]);
-          //complete the progress bar
-
-            //this._importingState();
             let filepath = newKey
 
             let data = {
@@ -298,8 +288,8 @@ export default class FileBrowserWrapper extends Component {
           if(filesArray.entry){
             flattenedFiles.push(filesArray)
           }else{
-            if(filesArray.map){
-              filesArray.map(filesSubArray=>{
+            if(filesArray.forEach){
+              filesArray.forEach(filesSubArray => {
                 flattenFiles(filesSubArray)
               })
             }
@@ -335,10 +325,6 @@ export default class FileBrowserWrapper extends Component {
     let edgesToMove = this.props.files.edges.filter((edge) => {
       return edge && (edge.node.key.indexOf(oldKey) > -1)
     })
-
-    let folderToMove = edgesToMove.filter((edge) => {
-      return edge.node.key.indexOf('.') < 0
-    })[0]
 
     MakeLabbookDirectoryMutation(
       this.props.connection,
@@ -424,9 +410,7 @@ export default class FileBrowserWrapper extends Component {
   */
   handleRenameFile(oldKey, newKey) {
     let edgeToMove = this.props.files.edges.filter((edge) => {
-      if(edge && edge.node){
-        return edge && (oldKey === edge.node.key)
-      }
+      return edge && edge.node && (oldKey === edge.node.key)
     })[0]
 
     if(edgeToMove){
@@ -486,7 +470,7 @@ export default class FileBrowserWrapper extends Component {
   handleDeleteFile(fileKey) {
 
     let edgeToDelete = this.props.files.edges.filter((edge) => {
-      return edge && (fileKey === edge.node.key)
+      return edge && edge.node && (fileKey === edge.node.key)
     })[0]
 
     DeleteLabbookFileMutation(
@@ -544,6 +528,7 @@ export default class FileBrowserWrapper extends Component {
 
     AddFavoriteMutation(
       this.props.favoriteConnection,
+      this.props.connection,
       this.props.parentId,
       this.state.owner,
       this.state.labbookName,

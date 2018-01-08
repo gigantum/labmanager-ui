@@ -7,8 +7,7 @@ import Loader from 'Components/shared/Loader'
 import environment from 'JS/createRelayEnvironment'
 //mutations
 import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
-//store
-import store from 'JS/redux/store'
+
 
 
 const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor: String){

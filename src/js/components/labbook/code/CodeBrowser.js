@@ -7,7 +7,6 @@ import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrappe
 import store from 'JS/redux/store'
 
 let totalCount = 2
-let codeRootFolder;
 
 class CodeBrowser extends Component {
   constructor(props){
@@ -60,7 +59,6 @@ class CodeBrowser extends Component {
   */
   setRootFolder(key){
     this.setState({rootFolder: key})
-    codeRootFolder = key.replace('code/', '')
   }
 
   render(){

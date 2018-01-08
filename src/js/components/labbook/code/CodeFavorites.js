@@ -3,8 +3,10 @@ import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
 import FavoriteCard from './../fileBrowser/FavoriteCard'
-
+//store
+import store from 'JS/redux/store'
 let owner;
+
 class CodeFavorites extends Component {
   constructor(props){
   	super(props);
@@ -50,6 +52,7 @@ class CodeFavorites extends Component {
        self.setState({loading: false})
 
        if(error){
+         console.log(error)
          console.error(error)
        }
 
@@ -66,7 +69,9 @@ class CodeFavorites extends Component {
       loadingClass = (this.state.loading) ? 'Favorite__action-bar--loading' : loadingClass
 
       if(this.props.code.favorites.edges.length > 0){
-        let favorites = this.props.code.favorites.edges.filter((edge)=>{if(edge){return (edge.node !== undefined)}})
+        let favorites = this.props.code.favorites.edges.filter((edge)=>{
+          return edge && (edge.node !== undefined)
+        })
         return(
           <div className="Favorite">
             <div className="Favorite__list">
@@ -150,12 +155,12 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-
+      const {owner, labbookName} = store.getState().routes
       return {
         first: count,
         cursor,
         owner: owner,
-        name: props.labbookName
+        name: labbookName
       };
     },
     query: graphql`

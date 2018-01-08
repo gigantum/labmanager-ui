@@ -53,6 +53,8 @@ export default class UserNote extends Component {
         return(<img src={item[1]} />)
       case 'text/markdown':
         return(<ReactMarkdown source={item[1]} />)
+      default:
+        return(<b>{item[1]}</b>)
     }
   }
 
@@ -91,7 +93,13 @@ export default class UserNote extends Component {
                   </div>
                 )
             }else{
-                return(<div>Loading...</div>)
+                return(
+                  <div className="DetailsRecords__loader-group">
+                    <div className="DetailsRecords__loader"></div>
+                    <div className="DetailsRecords__loader"></div>
+                    <div className="DetailsRecords__loader"></div>
+                  </div>
+                )
             }
 
         }}

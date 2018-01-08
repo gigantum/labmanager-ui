@@ -5,7 +5,6 @@ import {
 } from "redux"
 
 import reducers from "./combinedReducers"
-import { createEpicMiddleware } from 'redux-observable'
 import { persistPreferences }   from '../utils/localStorage'
 
 import { getPreferences } from './preferences/preferences';

@@ -37,7 +37,10 @@ export default class Footer extends Component {
   */
   storeDidUpdate = (footer) => {
 
-    if(footer !== this.state){
+    let footerString = JSON.stringify(footer)
+    let stateString = JSON.stringify(this.state)
+
+    if(footerString !== stateString){
       this.setState(footer);//triggers re-render when store updates
     }
   }

@@ -50,16 +50,17 @@ function sharedUpdater(store, parentId, connectionKey, node, tempId) {
       );
     }
 
-    RelayRuntime.ConnectionHandler.insertEdgeAfter(
-      conn,
-      newEdge
-    );
+      RelayRuntime.ConnectionHandler.insertEdgeAfter(
+        conn,
+        newEdge
+      );
 
   }
 }
 
 
 export default function AddFavoriteMutation(
+  favoriteKey,
   connectionKey,
   parentId,
   owner,
@@ -104,19 +105,16 @@ export default function AddFavoriteMutation(
 
         const node = store.create(tempId, 'Favorite')
 
-        const fileNode = store.get(fileItem.node.id)
-        if(fileNode){
-          fileNode.setValue(true, 'isFavorite')
-        }
-
         node.setValue(tempId, "id")
         node.setValue(false, 'isDir')
         node.setValue(key, 'key')
         node.setValue(description, 'description')
 
-        sharedUpdater(store, parentId, connectionKey, node)
+        sharedUpdater(store, parentId, favoriteKey, node)
+
 
       },
+      
       updater: (store, response) => {
 
         if(response.addFavorite && response.addFavorite.newFavoriteEdge){
@@ -127,7 +125,14 @@ export default function AddFavoriteMutation(
           node.setValue(response.addFavorite.newFavoriteEdge.node.description, 'description')
           node.setValue(response.addFavorite.newFavoriteEdge.node.index, 'index')
 
-          sharedUpdater(store, parentId, connectionKey, node, tempId)
+          sharedUpdater(store, parentId, favoriteKey, node, tempId)
+
+        }
+
+        const fileNode = store.get(fileItem.node.id)
+        if(fileNode){
+          fileNode.setValue(true, 'isFavorite')
+          console.log(fileNode)
         }
 
       }
