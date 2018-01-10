@@ -73,7 +73,7 @@ export default class AddEnvironmentPackage extends React.Component {
                   store.dispatch({
                     type: 'UPLOAD_MESSAGE',
                     payload: {
-                      'message': message,
+                      'uploadMessage': message,
                       'error': true
                     }
                   })

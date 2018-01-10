@@ -92,7 +92,8 @@ export default class ImportModule extends Component {
       'files': [],
       'type': 'info',
       'error': false,
-      'isImporting': false
+      'isImporting': false,
+      'stopPropagation': false
     }
 
 
@@ -107,7 +108,7 @@ export default class ImportModule extends Component {
 
 
 
-    const dropzoneIds = ['dropZone', 'dropZone__helper', 'dropZone__filename'];
+    const dropzoneIds = ['dropZone', 'dropZone__subtext', 'dropZone__title', 'dropZone__create'];
 
     //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
     window.addEventListener('dragenter', function(evt) { //use evt, event is a reserved word in chrome
@@ -143,6 +144,7 @@ export default class ImportModule extends Component {
     });
 
     window.addEventListener('drop', function(evt) { //use evt, event is a reserved word in chrome
+      console.log(evt)
       if(document.getElementById('dropZone')){
         document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
       }
@@ -154,12 +156,22 @@ export default class ImportModule extends Component {
       }
     });
   }
+  componentDidMount() {
+    let fileInput = document.getElementById('file__input')
+    let evt = new MouseEvent("click", {"bubbles":false, "cancelable":true});
+
+    fileInput.onclick = (evt) =>{
+      evt.cancelBubble = true;
+      //stopPropagation(evt)
+      evt.stopPropagation(evt)
+    }
+  }
   /**
   *  @param {object} dataTransfer
   *  preventDefault on dragOver event
   */
   _getBlob = (dataTransfer) => {
-    let that = this;
+    let self = this;
     for (let i=0; i < dataTransfer.files.length; i++) {
 
       let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
@@ -168,7 +180,7 @@ export default class ImportModule extends Component {
         this.setState({error: true})
 
         setTimeout(function(){
-          that.setState({error: false})
+          self.setState({error: false})
         }, 5000)
 
       }else{
@@ -181,7 +193,7 @@ export default class ImportModule extends Component {
 
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
 
-          that.setState(
+          self.setState(
             {files: [
               {
                 blob: blob,
@@ -191,6 +203,7 @@ export default class ImportModule extends Component {
               ]
             }
           )
+          self._fileUpload()
 
         };
         fileReader.readAsArrayBuffer(file);
@@ -213,6 +226,7 @@ export default class ImportModule extends Component {
   *  handle file drop and get file data
   */
   _dropHandler = (evt) => {
+    console.log(evt)
       //use evt, event is a reserved word in chrome
     let dataTransfer = evt.dataTransfer
     evt.preventDefault();
@@ -222,11 +236,14 @@ export default class ImportModule extends Component {
     // If dropped items aren't files, reject them;
     if (dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
+        console.log(dataTransfer)
         this._getBlob(dataTransfer)
     } else {
       // Use DataTransfer interface to access the file(s)
       for (let i=0; i < dataTransfer.files.length; i++) {
+        console.log(dataTransfer)
         this.setState({files:[dataTransfer.files[i].name]})
+        this._fileUpload()
       }
     }
 
@@ -261,13 +278,15 @@ export default class ImportModule extends Component {
   *  opens file system for user to select file
   */
   _fileSelected = (evt) => {
-     this._getBlob(document.getElementById('file__input'))
+
+    this._getBlob(document.getElementById('file__input'))
+    this.setState({'stopPropagation': false})
   }
   /**
   *  @param {Object}
   *   trigger file upload
   */
-  _fileUpload = (evt) => {//this code is going to be moved to the footer to complete the progress bar
+  _fileUpload = () => {//this code is going to be moved to the footer to complete the progress bar
     let self = this;
 
     this._importingState();
@@ -373,7 +392,7 @@ export default class ImportModule extends Component {
   *  @return {}
   */
   _importingState = () => {
-    document.getElementById('dropZone__filename').classList.add('ImportModule__animation')
+    //document.getElementById('dropZone__filename').classList.add('ImportModule__animation')
     this.setState({
       isImporting: true
     })
@@ -402,54 +421,56 @@ export default class ImportModule extends Component {
   _getImportDescriptionText(){
     return this.state.error ? 'File must be .lbk' : 'Drag & Drop .lbk file, or click to select.'
   }
+
+  _showModal(evt){
+    if(evt.target.id !== 'file__input-label'){
+      this.props.showModal()
+    }
+  }
+
   render(){
 
     return(
-      <div className="ImportModule LocalLabbooks__panel LocalLabbooks__panel--import">
-        <label htmlFor="file__input">
-
-            <button
-              id="file__upload"
-              className={'ImportModule__upload-button'}
-              onClick={(evt)=>{this._fileUpload(evt)}}
-              disabled={(this.state.files.length < 1)}
-            >
-              Import LabBook
-            </button>
+      <div
+        id="dropZone"
+        type="file"
+        className="ImportModule LocalLabbooks__panel LocalLabbooks__panel--add LocalLabbooks__panel--import"
+        ref={(div)=> this.dropZone = div}
+        onClick={(evt)=>{this._showModal(evt)}}
+        onDragEnd={(evt)=> this._dragendHandler(evt)}
+        onDrop={(evt) => this._dropHandler(evt)}
+        onDragOver={(evt)=> this._dragoverHandler(evt)}
+        key={'addLabbook'}>
             <div
-              id="dropZone"
-              type="file"
-              className="ImportModule__drop-area flex justify-center"
-              ref={(div)=> this.dropZone = div}
-              onDragEnd={(evt)=> this._dragendHandler(evt)}
-              onDrop={(evt) => this._dropHandler(evt)}
-              onDragOver={(evt)=> this._dragoverHandler(evt)}>
-                {
-                (this.state.files.length < 1) &&
-                  <h6 className={this.state.error ? 'ImportModule__instructions--error' : 'ImportModule__instructions'}
-                      id="dropZone__helper">
-                      {this._getImportDescriptionText()}
-                  </h6>
-                }
-                {
-                  (this.state.files.length > 0) &&
-
-                    <h6 id="dropZone__filename">{this.state.files[0].filename}</h6>
-                }
+              id="dropZone__title"
+              className="LocalLabbooks__labbook-icon">
+                <div className="LocalLabbooks__title-add"></div>
             </div>
-          </label>
+            <div
+              id="dropZone__create"
+              className="LocalLabbooks__add-text">
+                <h4>Create LabBook</h4>
+            </div>
 
-          <input
-            id="file__input"
-            className='hidden'
-            type="file"
-            onChange={(evt)=>{this._fileSelected(evt.files)}}
-          />
+            <p id="dropZone__subtext">
+              Or drag and drop .lbk or
+              <label
+                className="LocalLabbooks__file-system"
+                id="file__input-label"
+                htmlFor="file__input">
+                click here
+              </label>
+            </p>
+            <input
+              id="file__input"
+              className='hidden'
+              type="file"
+              onChange={(evt)=>{this._fileSelected(evt.files)}}
+            />
 
-          <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
+            <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
 
-
-      </div>
+        </div>
       )
   }
 }

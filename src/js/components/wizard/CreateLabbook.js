@@ -156,7 +156,7 @@ export default class CreateLabbook extends React.Component {
               store.dispatch({
                 type: 'UPLOAD_MESSAGE',
                 payload:{
-                  message: message,
+                  uploadMessage: message,
                   error: true
                 }
               })

@@ -118,6 +118,18 @@ export default class Routes extends Component {
                 />
 
                 <Route
+                  exact
+                  path="/:id/:labbookFilter"
+                  render={(props) =>
+                    <Home
+                      history={history}
+                      auth={auth}
+                      {...props}
+                    />
+                  }
+                />
+
+                <Route
                   path="/labbooks/:owner/:labbookName"
                   render={(parentProps) =>{
 

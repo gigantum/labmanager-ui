@@ -13,6 +13,8 @@ import ImportModule from 'Components/import/ImportModule'
 import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
 //utils
 import Validation from 'JS/utils/Validation'
+//store
+import store from 'JS/redux/store'
 
 let isLoadingMore = false;
 
@@ -33,7 +35,26 @@ class LocalLabbooks extends Component {
     this._goToLabbook = this._goToLabbook.bind(this)
     this._loadMore = this._loadMore.bind(this)
     this._renameLabbookModal = this._renameLabbookModal.bind(this)
+    this._showModal = this._showModal.bind(this)
+  }
 
+  componentWillMount() {
+    console.log(this)
+    let paths = this.props.history.location.pathname.split('/')
+    let filterRoute = paths.length > 2 ?  paths[2] : 'all'
+
+    this.setState({'filter': filterRoute})
+
+    document.title =  `Gigantum`
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(this)
+    let paths = nextProps.history.location.pathname.split('/')
+    let filterRoute = paths.length > 2 ?  paths[2] : 'all'
+
+    this.setState({'filter': filterRoute})
   }
 
   /**
@@ -148,7 +169,7 @@ class LocalLabbooks extends Component {
           if(document.getElementById('modal__cover')){
             document.getElementById('modal__cover').classList.add('hidden')
           }
-          self.props.history.replace(`labbooks/${self.state.newLabbookName}`)
+          self.props.history.replace(`labbooks/${username}/${self.state.newLabbookName}`)
         }
       }
     )
@@ -158,7 +179,8 @@ class LocalLabbooks extends Component {
    sets state updates filter
   */
   _setFilter(filter){
-      this.setState({filter: filter})
+      //this.setState({filter: filter})
+       this.props.history.replace(`../labbooks/${filter}`)
   }
   /**
    * @param {array, string} localLabbooks.edges,filter
@@ -168,7 +190,7 @@ class LocalLabbooks extends Component {
   _filterLabbooks(labbooks, filter){
     let filteredLabbooks = [];
     let username = localStorage.getItem('username')
-    if(filter === 'users'){
+    if(filter === username){
       filteredLabbooks = labbooks.filter((labbook)=>{
           return (labbook.node.owner.username === username)
       })
@@ -184,12 +206,20 @@ class LocalLabbooks extends Component {
     return filteredLabbooks
   }
 
+  _showModal(){
+    this.refs.wizardModal._showModal()
+  }
+
   render(){
       let {props} = this;
+      let owner = localStorage.getItem('username')
 
       if(props.feed.localLabbooks){
+
         let labbooks = this._filterLabbooks(props.feed.localLabbooks.edges, this.state.filter)
+
         return(
+
           <div className="LocalLabbooks">
             { this.state.labbookModalVisible &&
               <div className="LocalLabbooks__rename-modal">
@@ -232,47 +262,42 @@ class LocalLabbooks extends Component {
             </div>
             <div className="LocalLabbooks__menu">
               <nav className="LocalLabbooks__nav">
-                <div className={this.state.filter === 'all' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('all')}>All</a></div>
-                <div className={this.state.filter === 'users' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('users')}>My LabBooks</a></div>
-                <div className={this.state.filter === 'others' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('others')}>Shared With Me</a></div>
+                <div className={this.state.filter === 'all' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }>
+                  <a onClick={()=> this._setFilter('all')}>All</a>
+                </div>
+                <div className={this.state.filter === owner ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }>
+                  <a onClick={()=> this._setFilter(owner)}>My LabBooks</a>
+                </div>
+                <div className={this.state.filter === 'others' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }>
+                  <a onClick={()=> this._setFilter('others')}>Shared With Me</a>
+                </div>
               </nav>
             </div>
             <div className='LocalLabbooks__labbooks'>
               <div className="LocalLabbooks__sizer">
-              <div
-                key={'addLabbook'}
-                onClick={()=> this.refs.wizardModal._showModal()}
-                className="LocalLabbooks__panel LocalLabbooks__panel--add">
-                <div
-                  className="LocalLabbooks__labbook-icon">
-                    <div className="LocalLabbooks__title-add"></div>
-                </div>
-                <div
-                  className="LocalLabbooks__add-text">
-                    <h4>Create LabBook</h4>
-                </div>
-              </div>
 
-              <ImportModule
-                  ref="ImportModule_localLabooks"
-                  {...props}
-                  className="LocalLabbooks__panel LocalLabbooks__panel--import" />
+                <ImportModule
+                    ref="ImportModule_localLabooks"
+                    {...props}
+                    showModal={this._showModal}
+                    className="LocalLabbooks__panel LocalLabbooks__panel--import"
+                />
 
-              {
+                {
 
-                labbooks.map((edge) => {
+                  labbooks.map((edge) => {
 
-                  return (
-                    <LocalLabbookPanel
-                      key={edge.node.name}
-                      ref={'LocalLabbookPanel' + edge.node.name}
-                      className="LocalLabbooks__panel"
-                      edge={edge}
-                      renameLabbookModal={this._renameLabbookModal}
-                      goToLabbook={this._goToLabbook}/>
-                  )
-                })
-              }
+                    return (
+                      <LocalLabbookPanel
+                        key={edge.node.name}
+                        ref={'LocalLabbookPanel' + edge.node.name}
+                        className="LocalLabbooks__panel"
+                        edge={edge}
+                        renameLabbookModal={this._renameLabbookModal}
+                        goToLabbook={this._goToLabbook}/>
+                    )
+                  })
+                }
             </div>
 
           </div>

@@ -60,7 +60,7 @@ class Environment extends Component {
                     type: 'UPLOAD_MESSAGE',
                     payload:{
                       error: true,
-                      message: error[0].message
+                      uploadMessage: error[0].message
                     }
                   })
                 }
@@ -85,7 +85,7 @@ class Environment extends Component {
               type: 'UPLOAD_MESSAGE',
               payload:{
                 error: true,
-                message: error[0].message
+                uploadMessage: error[0].message
               }
             })
           }

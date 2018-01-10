@@ -39,15 +39,8 @@ class Labbook extends Component {
 }
 
 componentWillMount() {
-  // store.dispatch({
-  //   type: 'INITIALIZE',
-  //   payload:{
-  //     'containerState': this.props.labbook.environment.containerStatus,
-  //     'imageStatus': this.props.labbook.environment.imageStatus,
-  //     'branchesOpen': false,
-  //   }
-  //
-  // })
+  const {labbookName, owner} = store.getState().routes
+  document.title =  `${owner}/${labbookName}`
 }
 /**
   @param {}

@@ -111,6 +111,7 @@ const dispatchUploadFinished = () => {
     type: 'UPLOAD_MESSAGE',
     payload: {
       uploadMessage: 'Upload Succesfull',
+      error: false
     }
   })
 
@@ -247,6 +248,14 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFiles(files, prefix) {
     let self = this;
+
+    store.dispatch({
+      type: 'UPLOAD_MESSAGE',
+      payload:{
+        uploadMessage: 'Prepparing Upload',
+        error: false
+      }
+    })
 
     if(files[0].name){
       const batchUpload = (files.length > 1)

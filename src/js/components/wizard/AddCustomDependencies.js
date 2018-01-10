@@ -115,7 +115,7 @@ export default class AddCustomDependencies extends React.Component {
           store.dispatch({
             type: 'UPLOAD_MESSAGE',
             payload: {
-              message: message,
+              uploadMessage: message,
               error: error
             }
           })
@@ -170,7 +170,7 @@ export default class AddCustomDependencies extends React.Component {
               store.dispatch({
                 type: 'UPLOAD_MESSAGE',
                 payload: {
-                  message: message,
+                  uploadMessage: message,
                   error: error
                 }
               })

@@ -1,7 +1,6 @@
 .ImportModule{
   padding: 5px ;
 
-  @include flex(space-between, column);
   h6{
     align-self: center;
 
