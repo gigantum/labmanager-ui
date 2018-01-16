@@ -145,10 +145,9 @@ const getTotalFileLength = (files) => {
           filesRecursionCount(nestedFile)
         })
       }else{
-        console.log(config)
+
         if(config.fileBrowser.excludedFiles.indexOf(file.file.name) < 0){
-        fileCount++
-          console.log(file.file.name, fileCount)
+          fileCount++
         }
       }
   }
