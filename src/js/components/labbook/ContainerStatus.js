@@ -87,7 +87,7 @@ export default class ContainerStatus extends Component {
         })
       }
     }
-    this.interval = setInterval(this._tick, 2000);
+    this.interval = setInterval(this._tick, 200000);
 
     window.addEventListener("click", this._closePopupMenus)
   }
@@ -197,6 +197,13 @@ export default class ContainerStatus extends Component {
 
         if(error){
           console.log(error)
+          reduxStore.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload:{
+              message: `There was a problem stopping ${this.state.labbookName} container`,
+              messagesList: error
+            }
+          })
         }else{
           console.log('stopped container')
         }
@@ -218,7 +225,13 @@ export default class ContainerStatus extends Component {
       (error) =>{
 
         if(error){
-          console.log(error)
+          reduxStore.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload:{
+              message: `There was a problem starting ${this.state.labbookName} container`,
+              messagesList: error
+            }
+          })
         }else{
           console.log('started container')
         }

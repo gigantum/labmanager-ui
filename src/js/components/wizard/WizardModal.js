@@ -145,10 +145,6 @@ export default class WizardModal extends React.Component {
     return(
         <div className="WizardModal">
           { this.state.modal_visible &&
-          <CSSTransitionGroup
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={500}
-            transitionName="WizardModal__modalWrap">
 
               <div className={'WizardModal__modal'}>
 
@@ -184,7 +180,6 @@ export default class WizardModal extends React.Component {
 
 
             </div>
-          </CSSTransitionGroup>
           }
         </div>
       )

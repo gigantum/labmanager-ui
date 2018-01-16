@@ -46,12 +46,9 @@ export default class LocalLabbookPanel extends Component {
       let username = localStorage.getItem('username')
 
       store.dispatch({
-        type: 'UPLOAD_MESSAGE',
+        type: 'INFO_MESSAGE',
         payload: {
-          uploadMessage: 'Exporting LabBook',
-          open: true,
-          success: false,
-          error: false
+          message: 'Exporting LabBook',
         }
       })
 
@@ -63,12 +60,9 @@ export default class LocalLabbookPanel extends Component {
 
               if(data.jobStatus.result){
                 store.dispatch({
-                  type: 'UPLOAD_MESSAGE',
+                  type: 'INFO_MESSAGE',
                   payload: {
-                    uploadMessage: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-                    open: true,
-                    success: false,
-                    error: false
+                    message: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
                   }
                 })
               }
@@ -78,12 +72,9 @@ export default class LocalLabbookPanel extends Component {
 
               if(error){
                 store.dispatch({
-                  type: 'UPLOAD_MESSAGE',
+                  type: 'INFO_MESSAGE',
                   payload: {
-                    uploadMessage: `Export failed`,
-                    open: true,
-                    success: false,
-                    error: true
+                    message: `Export failed`,
                   }
                 })
               }
@@ -92,12 +83,9 @@ export default class LocalLabbookPanel extends Component {
       }else{
 
         store.dispatch({
-          type: 'UPLOAD_MESSAGE',
+          type: 'INFO_MESSAGE',
           payload: {
-            uploadMessage: 'Export Failed: ' + error[0].message,
-            open: true,
-            success: false,
-            error: true
+            message: 'Export Failed: ' + error[0].message,
           }
         })
 
@@ -112,7 +100,7 @@ export default class LocalLabbookPanel extends Component {
   render(){
     let edge = this.props.edge;
     let status = this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
-    
+
     return (
       <div
         key={edge.node.name}

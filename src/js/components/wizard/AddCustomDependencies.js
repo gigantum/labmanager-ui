@@ -102,9 +102,9 @@ export default class AddCustomDependencies extends React.Component {
     sends user to next window
   */
   _buildLabbook = () => {
-
+    const labbookName = this.state
     BuildImageMutation(
-      this.state.labbookName,
+      labbookName,
       this.state.owner,
       (response, error) => {
 
@@ -113,10 +113,10 @@ export default class AddCustomDependencies extends React.Component {
           let message = showAlert ? error[0].message : '';
 
           store.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'ERROR_MESSAGE',
             payload: {
-              uploadMessage: message,
-              error: error
+              message: `${labbookName} failed to build`,
+              messagesList: error
             }
           })
         }
@@ -162,16 +162,13 @@ export default class AddCustomDependencies extends React.Component {
           component.componentClass,
           (error) => {
             console.log(error)
-            let showAlert = (error)
-
-            if(showAlert){
-              let message = showAlert ? error[0].message : '';
+            if(error){
 
               store.dispatch({
-                type: 'UPLOAD_MESSAGE',
+                type: 'ERROR_MESSAGE',
                 payload: {
-                  uploadMessage: message,
-                  error: error
+                  message: `Error: Could not add ${component.name}`,
+                  messagesList: error
                 }
               })
 

@@ -46,21 +46,27 @@ class Environment extends Component {
         owner,
         'clientMutationId',
         (error) =>{
-
+          if(error){
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload:{
+                message: `Problem stopping ${labbookName}`,
+                messagesList: error
+              }
+            })
+          }else{
             BuildImageMutation(
             labbookName,
               owner,
               (error) => {
 
-                let showAlert = ((error !== null) && (error !== undefined))
-                let message = showAlert ? error[0].message : '';
 
-                if(showAlert){
+                if(error){
                   store.dispatch({
-                    type: 'UPLOAD_MESSAGE',
+                    type: 'ERROR_MESSAGE',
                     payload:{
-                      error: true,
-                      uploadMessage: error[0].message
+                      message: `${labbookName} failed to build`,
+                      messagesList: error
                     }
                   })
                 }
@@ -69,6 +75,7 @@ class Environment extends Component {
               }
             )
           }
+        }
       )
     }else {
 
@@ -76,16 +83,12 @@ class Environment extends Component {
         labbookName,
         owner,
         (error) => {
-
-          let showAlert = ((error !== null) && (error !== undefined))
-          let message = showAlert ? error[0].message : '';
-
-          if(showAlert){
+          if(error){
             store.dispatch({
-              type: 'UPLOAD_MESSAGE',
+              type: 'ERROR_MESSAGE',
               payload:{
-                error: true,
-                uploadMessage: error[0].message
+                message: `${labbookName} failed to build`,
+                messagesList: error
               }
             })
           }

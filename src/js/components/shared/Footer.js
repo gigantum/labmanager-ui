@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import classNames from 'classnames'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
 //store
 import store from "JS/redux/store"
+
 
 let unsubscribe
 
@@ -24,6 +26,7 @@ export default class Footer extends Component {
 
       this.storeDidUpdate(store.getState().footer)
     })
+
   }
   /**
     unsubscribe from redux store
@@ -41,6 +44,7 @@ export default class Footer extends Component {
     let stateString = JSON.stringify(this.state)
 
     if(footerString !== stateString){
+      console.log(footer)
       this.setState(footer);//triggers re-render when store updates
     }
   }
@@ -98,40 +102,55 @@ export default class Footer extends Component {
    store.dispatch({type:'RESET_FOOTER_STORE', payload:{}})
  }
  /**
-  @param {}
+  @param {object} messageItem
   gets upload message which tracks progess
  */
- _getMessage(){
-   let message = ''
-
-   if(this.state.totalFiles === 0){
-     const uploadProgress = this._humanFileSize(this.state.bytesUploaded)
-
-     const total = this._humanFileSize(this.state.totalBytes)
-
-     message = this.state.uploadMessage ? this.state.uploadMessage : uploadProgress + ' of ' + total + ' uploaded (' + this.state.percentage + '%)'
-   }else if(this.state.totalFiles){
-      message = `uploaded ${this.state.index} of ${this.state.totalFiles} files`
-   }else{
-     message = this.state.uploadMessage
-   }
-
-   return message
+ _removeMessage(messageItem){
+    store.dispatch({
+      type: 'REMOVE_MESSAGE',
+      payload:{
+        id: messageItem.id
+      }
+    })
  }
 
- render() {
-    let footerClass = (this.state.open) ? 'Footer Footer--expand' : 'Footer'
-    footerClass = (this.state.error ? ' Footer Footer--expand Footer--error' : footerClass);
 
-    let message = this._getMessage()
+ render() {
+     let footerClass = classNames({
+       'Footer': true,
+       'Footer--expand': (this.state.open || this.state.uploadOpen),
+       'Footer--expand-extra': (this.state.open && this.state.uploadOpen)
+      });
+
+    let footerStatusClass = classNames({
+        'Footer': !this.state.open,
+        'Footer__status': this.state.open
+    });
+
+    let footerUploadClass = classNames({
+        'hidden': !this.state.uploadOpen,
+        'Footer__upload-status': this.state.uploadOpen
+    });
 
     return (
       <div id="footer" className={footerClass}>
 
         <div
-          className={this.state.open ? 'Footer__status' : 'hidden'}>
+          className={footerStatusClass}>
             <div className="Footer__message">
-              {message}
+              <ul className="Footer__message-list">
+              {this.state.messageStack.map((messageItem)=>{
+                  return(<li
+                    key={messageItem.id}
+                    className={messageItem.className}>
+                    {messageItem.message}
+                    <i
+                      onClick={()=>{this._removeMessage(messageItem)}}
+                      className="Footer__message-dismiss fa">
+                    </i>
+                  </li>)
+              })}
+              </ul>
             </div>
             <div
               onClick={() =>{ this._closeFooter() }}
@@ -139,12 +158,21 @@ export default class Footer extends Component {
         </div>
 
         <div
-          id="footerProgressBar"
-          className={(this.state.showProgressBar) ? 'Footer__progress-bar' : 'hidden' }>
+          className={footerUploadClass}>
+            <div className="Footer__messages">
+              {this.state.uploadMessage}
+            </div>
+
+            <div
+              id="footerProgressBar"
+              style={{width: this.state.progessBarPercentage + '%'}}
+              className={'Footer__progress-bar'}>
+            </div>
         </div>
 
+
         {
-          this.state.success &&
+          this.state.labbookSuccess &&
             <button
               className="Footer__button"
               onClick={() => this._openLabbook()}>

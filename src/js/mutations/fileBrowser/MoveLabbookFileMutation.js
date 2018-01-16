@@ -112,13 +112,10 @@ export default function MoveLabbookFileMutation(
         if(error){
           console.log(error)
           reduxStore.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'ERROR_MESSAGE',
             payload:{
-              error: true,
-              uploadMessage: error[0].message,
-              showProgressBar: false,
-              open: true,
-              success: false
+              message: `Could not Move labbook file ${srcPath}`,
+              messagesList: error,
             }
           })
 

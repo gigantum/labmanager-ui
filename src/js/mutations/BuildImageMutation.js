@@ -37,15 +37,11 @@ export default function BuildImageMutation(
       onCompleted: (response, error) => {
         console.log(error)
         if(error){
-          console.log(error)
           reduxStore.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'ERROR_MESSAGE',
             payload:{
-              error: true,
-              uploadMessage: 'LabBook failed to build',
-              showProgressBar: false,
-              open: true,
-              success: false
+              message: 'LabBook failed to build',
+              messagesList: error
             }
           })
         }

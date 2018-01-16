@@ -46,12 +46,9 @@ export default class CreateLabbook extends React.Component {
 
       store.dispatch(
         {
-          type: "UPLOAD_MESSAGE",
+          type: "INFO_MESSAGE",
           payload: {
-            error: false,
-            open: true,
-            success: false,
-            uploadMessage: 'Importing LabBook please wait'
+            message: 'Importing LabBook please wait'
           }
         })
 
@@ -66,12 +63,10 @@ export default class CreateLabbook extends React.Component {
             console.error(error)
             store.dispatch(
               {
-                type:"UPLOAD_MESSAGE",
+                type: 'ERROR_MESSAGE',
                 payload: {
-                error: true,
-                open: true,
-                success: false,
-                uploadMessage: 'Could not import remote LabBook'
+                  message: 'ERRROR: Could not import remote LabBook',
+                  messagesList: error
               }
             })
 
@@ -79,12 +74,9 @@ export default class CreateLabbook extends React.Component {
 
             store.dispatch(
               {
-                type: "UPLOAD_MESSAGE",
+                type: 'INFO_MESSAGE',
                 payload: {
-                  error: false,
-                  open: true,
-                  success: false,
-                  uploadMessage: 'Successfully imported remote LabBook'
+                  message: `Successfully imported remote LabBook ${labbookName}`
                 }
               })
             BuildImageMutation(
@@ -95,12 +87,10 @@ export default class CreateLabbook extends React.Component {
                 console.error(error)
                 store.dispatch(
                   {
-                    type:"UPLOAD_MESSAGE",
+                    type: 'ERROR_MESSAGE',
                     payload: {
-                    error: true,
-                    open: true,
-                    success: false,
-                    uploadMessage: 'Build failed'
+                      message: `ERROR: Failed to build ${labbookName}`,
+                      messsagesList: error
                   }
                 })
               }
@@ -117,12 +107,10 @@ export default class CreateLabbook extends React.Component {
                 console.error(error)
                 store.dispatch(
                   {
-                    type:"UPLOAD_MESSAGE",
+                    type: 'ERROR_MESSAGE',
                     payload: {
-                    error: true,
-                    open: true,
-                    success: false,
-                    uploadMessage: 'Build failed'
+                      message: `ERROR: Failed to build ${labbookName}`,
+                      messsagesList: error
                   }
                 })
               }
@@ -149,15 +137,14 @@ export default class CreateLabbook extends React.Component {
               }
             })
 
-            let showAlert = (error !== null)
 
-            if(!showAlert){
-              let message = showAlert ? error[0].message : '';
+
+            if(error){
               store.dispatch({
-                type: 'UPLOAD_MESSAGE',
+                type: 'ERROR_MESSAGE',
                 payload:{
-                  uploadMessage: message,
-                  error: true
+                  message: `ERROR: could not create labbook ${name}`,
+                  messagesList: error
                 }
               })
             }

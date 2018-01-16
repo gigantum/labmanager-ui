@@ -62,19 +62,17 @@ export default class AddEnvironmentPackage extends React.Component {
               this.props.environmentId,
               (error) => {
                 console.log(error)
-                let showAlert = ((error !== null) && (error !== undefined))
-                let message = showAlert ? error[0].message : '';
 
-                if(!showAlert){
+                if(!error){
 
                   resolve()
                 }else{
 
                   store.dispatch({
-                    type: 'UPLOAD_MESSAGE',
+                    type: 'ERROR_MESSAGE',
                     payload: {
-                      'uploadMessage': message,
-                      'error': true
+                      message: `Error: Could not add ${dependencyName} via ${packageManager}`,
+                      messagesList: error
                     }
                   })
 

@@ -6,13 +6,15 @@ import {
 import {fetchQuery} from 'JS/createRelayEnvironment';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation';
 import ChunkUploader from 'JS/utils/ChunkUploader'
+//store
+import store from 'JS/redux/store'
 
 const fileExistenceQuery = graphql`
   query folderUploadQuery($labbookName: String!, $owner: String!, $path: String!){
     labbook(name: $labbookName, owner: $owner){
       id
       code{
-        files(root: $path, first: 1){
+        files(root: $path, first:1){
           edges{
             node{
               isDir,
@@ -90,7 +92,7 @@ const makeDirectory = (
   section) => {
 
   let promise = new Promise((resolve, reject) =>{
-
+    console.log('saddasdasads')
       MakeLabbookDirectoryMutation(
         connectionKey,
         owner,
@@ -101,6 +103,13 @@ const makeDirectory = (
         (response, error)=>{
           if(error){
             console.error(error)
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `ERROR: could not make ${path}`,
+                messagesList: error
+              }
+            })
             reject(error)
           }else{
             resolve(response)
@@ -192,7 +201,7 @@ const getFolderPaths = (folderNames, prefix) =>{
 const getFolderExistsQueryPromises = (folderPaths, labbookName, owner, path, section) =>{
   let all = []
   folderPaths.forEach((folderPath)=>{
-    const variables = {labbookName: labbookName, path: path, owner: owner};
+    const variables = {labbookName: labbookName, path: path, owner: owner, section: section};
 
     let promise = checkIfFolderExists(variables, section)
 
@@ -259,13 +268,14 @@ const FolderUpload = {
       const folderNames = path.split('/')
 
       let folderPaths = getFolderPaths(folderNames, prefix);
-
+      console.log(folderPaths)
       let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, path, section)
 
       Promise.all(directoryExistsAll).then((labbooks)=>{
         let directoryAll = []
+        console.log(labbooks)
         labbooks.forEach((response)=>{
-
+          console.log(response)
           if(response.labbook[section].files === null){
             let directoryPromise = makeDirectory(
                 connectionKey,
@@ -294,6 +304,10 @@ const FolderUpload = {
             chunkLoader)
 
           filePaths = [];//must empty file list for nested files
+
+          if(count < files.length){
+            fileCheck(files[count])
+          }
         }
         else{
 
@@ -308,14 +322,16 @@ const FolderUpload = {
             prefix,
             chunkLoader)
             filePaths = [];//must empty file list for nested files
+
+            if(count < files.length){
+
+              fileCheck(files[count])
+
+            }
           })
         }
 
-        if(count < files.length){
 
-          fileCheck(files[count])
-
-        }
       })
     }
 

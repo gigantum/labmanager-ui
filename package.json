@@ -70,6 +70,7 @@
     "auth0-js": "^8.8.0",
     "bourbon": "^4.3.4",
     "bourbon-neat": "^1.9.0",
+    "classnames": "^2.2.5",
     "dateformat": "^2.0.0",
     "file-icons-js": "github:websemantics/file-icons-js",
     "fine-uploader-wrappers": "^1.0.1",

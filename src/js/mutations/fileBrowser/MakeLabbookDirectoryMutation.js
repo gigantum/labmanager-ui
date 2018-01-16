@@ -111,7 +111,7 @@ export default function MakeLabbookDirectoryMutation(
         }
         callback(response, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback({}, err),
       optimisticUpdater: (store)=>{
 
         const node = store.create(optimisticId, 'CodeFile')

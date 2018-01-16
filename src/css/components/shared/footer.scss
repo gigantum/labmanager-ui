@@ -12,6 +12,7 @@
   z-index: 300;
   color: $white;
   font-weight: 100;
+  @include flex(space-between, column);
 }
 
 .Footer--open {
@@ -21,6 +22,21 @@
 .Footer--expand {
     height: 40px;
 }
+
+.Footer--expand-extra {
+    height: 120px !important;
+}
+
+.Footer__messages{
+  z-index: 300;
+  height: 100%;
+  line-height: 100%;
+  text-align: center;
+  width: 100%;
+  padding: 10px;
+}
+
+
 
 .Footer--error{
   color: $white;
@@ -46,11 +62,33 @@
   @include flex(space-between, row);
   flex-wrap: nowrap;
   width: 100%;
-  height: 100%;
+  height: 80px;
   text-align: center;
   z-index: 60;
-  position: absolute;
-  line-height: 30px;
+  position: relative;
+  line-height: 25px;
+  overflow: hidden;
+  ul{
+    margin: 0px;
+  }
+  .Footer_error-message{
+      background-color: $crimson;
+
+  }
+  .Footer__message-dismiss{
+    @extend .fa-trash;
+    padding-left: 30px;
+    cursor: pointer;
+  }
+  .Footer__message-dismiss:hover{
+    color: $turquise;
+  }
+}
+
+.Footer__upload-status{
+  height: 40px;
+  width: 100%;
+  position: relative;
 }
 
 .Footer__button{

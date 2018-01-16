@@ -52,12 +52,9 @@ export default class UserNote extends Component {
     let username = localStorage.getItem('username')
     if((this.props.owner === username) && this.props.defaultRemote && !this.props.canManageCollaborators){
       store.dispatch({
-        type: 'UPLOAD_MESSAGE',
+        type: 'INFO_MESSAGE',
         payload: {
-          uploadMessage: `${username} needs to log out and then log back in to validate for remote operations`,
-          error: false,
-          open: true,
-          success: false
+          message: `${username} needs to log out and then log back in to validate for remote operations`
         }
       })
     }
@@ -98,12 +95,10 @@ export default class UserNote extends Component {
         self._toggleModal('createBranchVisible')
         if(error){
           store.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'ERROR_MESSAGE',
             payload: {
-              uploadMessage: error[0].message,
-              error: true,
-              open: true,
-              success: false
+              message: "Problem Creating new branch, make sure you have a valid session and internet connection",
+              messagesList: error
             }
           })
 
@@ -177,12 +172,9 @@ export default class UserNote extends Component {
     this.setState({menuOpen: false})
 
     store.dispatch({
-      type: 'UPLOAD_MESSAGE',
+      type: 'INFO_MESSAGE',
       payload: {
-        uploadMessage: 'Adding remote server ..',
-        error: false,
-        open: true,
-        success: false
+        message: 'Adding remote server ..'
       }
     })
 
@@ -195,23 +187,17 @@ export default class UserNote extends Component {
           if(error){
 
             store.dispatch({
-              type: 'UPLOAD_MESSAGE',
+              type: 'INFO_MESSAGE',
               payload: {
-                uploadMessage: 'Publish failed',
-                error: true,
-                open: true,
-                success: false
+                message: 'Publish failed'
               }
             })
           }else{
 
             store.dispatch({
-              type: 'UPLOAD_MESSAGE',
+              type: 'INFOR_MESSAGE',
               payload: {
-                uploadMessage: `Added remote https://repo.gigantum.io/${this.state.owner}/${this.state.labbookName}`,
-                error: false,
-                open: true,
-                success: false
+                message: `Added remote https://repo.gigantum.io/${this.state.owner}/${this.state.labbookName}`
               }
             })
             this.setState({
@@ -236,12 +222,9 @@ export default class UserNote extends Component {
   _sync(){
 
     store.dispatch({
-      type: 'UPLOAD_MESSAGE',
+      type: 'INFO_MESSAGE',
       payload: {
-        uploadMessage: 'Syncing with remote ...',
-        error: false,
-        open: true,
-        success: false
+        message: 'Syncing with remote ...'
       }
     })
     SyncLabbookMutation(
@@ -250,22 +233,17 @@ export default class UserNote extends Component {
       (error)=>{
         if(error){
           store.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'ERROR_MESSAGE',
             payload: {
-              uploadMessage: `Could not sync ${this.state.labbookName}`,
-              error: true,
-              open: true,
-              success: false
+              message: `Could not sync ${this.state.labbookName}`,
+              messagesList: error
             }
           })
         }else{
           store.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'INFO_MESSAGE',
             payload: {
-              uploadMessage: `Successfully synched ${this.state.labbookName}`,
-              error: false,
-              open: true,
-              success: false
+              message: `Successfully synched ${this.state.labbookName}`
             }
           })
         }
@@ -325,14 +303,14 @@ export default class UserNote extends Component {
           if(error){
             console.log(error)
             store.dispatch({
-              type: 'UPLOAD_MESSAGE',
+              type: 'ERROR_MESSAGE',
               payload: {
-                uploadMessage: `Could not add collaborator`,
-                error: false,
-                open: true,
-                success: false
+                message: `Could not add collaborator`,
+                messagesList: error
               }
             })
+          }else{
+
           }
         }
 
@@ -354,12 +332,10 @@ export default class UserNote extends Component {
       (error)=>{
         if(error){
           store.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'ERROR_MESSAGE',
             payload: {
-              uploadMessage: `Could not remove collaborator`,
-              error: false,
-              open: true,
-              success: false
+              message: `Could not remove collaborator`,
+              messagesList: error
             }
           })
         }
