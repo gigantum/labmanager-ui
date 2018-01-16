@@ -29,7 +29,10 @@ const CONFIG = {
     'Oct',
     'Nov',
     'Dec'
-  ]
+  ],
+  'fileBrowser':{
+    'excludedFiles': ['.DS_Store']
+  }
 }
 
 export default CONFIG

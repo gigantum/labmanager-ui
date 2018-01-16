@@ -10,6 +10,8 @@ import MoveLabbookFileMutation from 'Mutations/fileBrowser/MoveLabbookFileMutati
 import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
 //helpers
 import FolderUpload from './folderUpload'
+//Config
+import config from 'JS/config'
 
 //utilities
 import ChunkUploader from 'JS/utils/ChunkUploader'
@@ -129,7 +131,34 @@ const dispatchUploadFinished = () => {
   }, 1000)
 }
 
+/**
+* @param {array} files
+*
+* @return {number} totalFiles
+*/
+const getTotalFileLength = (files) => {
+  let fileCount = 0;
 
+  function filesRecursionCount(file){
+      if(Array.isArray(file)){
+        file.forEach((nestedFile)=>{
+          filesRecursionCount(nestedFile)
+        })
+      }else{
+        console.log(config)
+        if(config.fileBrowser.excludedFiles.indexOf(file.file.name) < 0){
+        fileCount++
+          console.log(file.file.name, fileCount)
+        }
+      }
+  }
+
+
+  filesRecursionCount(files)
+
+  console.log(fileCount)
+  return fileCount;
+}
 
 export default class FileBrowserWrapper extends Component {
   constructor(props){
@@ -250,19 +279,23 @@ export default class FileBrowserWrapper extends Component {
    ChunkUploader.chunkFile(data, postMessage)
  }
 
+
+
   /**
   *  @param {string, string} key,prefix  file key, prefix is root folder -
   *  creates a file using AddLabbookFileMutation by passing a blob
   */
   handleCreateFiles(files, prefix) {
     let self = this;
+    console.log(files)
+    let totalFiles = getTotalFileLength(files)
 
     store.dispatch({
       type: 'UPLOAD_MESSAGE_SETTER',
       payload:{
-        uploadMessage: `Preparing Upload for ${files.length} files`,
-        id: files[0][0] ? files[0][0].file.name + files.length : files[0].name + files.length,
-        totalFiles: files.length
+        uploadMessage: `Preparing Upload for ${totalFiles} files`,
+        id: files[0][0] ? files[0][0].file.name + totalFiles : files[0].name + totalFiles,
+        totalFiles: totalFiles
       }
     })
 

@@ -61,18 +61,19 @@ const checkIfFolderExists = (variables, section) => {
       fetchQuery(fileExistenceQuery(), variables).then((response) => {
 
         if(response.data){
-
           resolve({labbook: response.data.labbook, variables: variables})
         }else{
           reject(response.error)
         }
+
       }).catch((error) =>{
+
         console.log(error)
         reject(error)
       })
     }
-    fetchData()
 
+    fetchData()
   })
 
   return promise
@@ -92,7 +93,7 @@ const makeDirectory = (
   section) => {
 
   let promise = new Promise((resolve, reject) =>{
-    
+
       MakeLabbookDirectoryMutation(
         connectionKey,
         owner,
