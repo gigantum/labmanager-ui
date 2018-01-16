@@ -44,7 +44,7 @@ export default class Footer extends Component {
     let stateString = JSON.stringify(this.state)
 
     if(footerString !== stateString){
-      console.log(footer)
+
       this.setState(footer);//triggers re-render when store updates
     }
   }
@@ -99,7 +99,14 @@ export default class Footer extends Component {
   gets upload message which tracks progess
  */
  _closeFooter(){
-   store.dispatch({type:'RESET_FOOTER_STORE', payload:{}})
+   store.dispatch({type:'UPLOAD_MESSAGE_REMOVE',
+   payload:
+   {
+     uploadMessage: '',
+     id: '',
+     progressBarPercentage: 0
+   }
+  })
  }
  /**
   @param {object} messageItem
@@ -129,7 +136,8 @@ export default class Footer extends Component {
 
     let footerUploadClass = classNames({
         'hidden': !this.state.uploadOpen,
-        'Footer__upload-status': this.state.uploadOpen
+        'Footer__upload-status': this.state.uploadOpen,
+        'Footer__upload-error': this.state.uploadError
     });
 
     return (
@@ -151,10 +159,10 @@ export default class Footer extends Component {
                   </li>)
               })}
               </ul>
+
+
             </div>
-            <div
-              onClick={() =>{ this._closeFooter() }}
-              className="Footer__close"></div>
+
         </div>
 
         <div
@@ -166,8 +174,15 @@ export default class Footer extends Component {
             <div
               id="footerProgressBar"
               style={{width: this.state.progessBarPercentage + '%'}}
-              className={'Footer__progress-bar'}>
+              className="Footer__progress-bar">
             </div>
+            {
+              this.state.uploadError &&
+                <div
+                  onClick={() =>{ this._closeFooter() }}
+                  className="Footer__close">
+                </div>
+            }
         </div>
 
 

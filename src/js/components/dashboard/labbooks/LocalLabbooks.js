@@ -39,7 +39,7 @@ class LocalLabbooks extends Component {
   }
 
   componentWillMount() {
-    console.log(this)
+
     let paths = this.props.history.location.pathname.split('/')
     let filterRoute = paths.length > 2 ?  paths[2] : 'all'
 
@@ -50,7 +50,7 @@ class LocalLabbooks extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(this)
+
     let paths = nextProps.history.location.pathname.split('/')
     let filterRoute = paths.length > 2 ?  paths[2] : 'all'
 

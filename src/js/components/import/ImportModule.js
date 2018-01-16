@@ -144,7 +144,7 @@ export default class ImportModule extends Component {
     });
 
     window.addEventListener('drop', function(evt) { //use evt, event is a reserved word in chrome
-      console.log(evt)
+
       if(document.getElementById('dropZone')){
         document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
       }
@@ -226,7 +226,7 @@ export default class ImportModule extends Component {
   *  handle file drop and get file data
   */
   _dropHandler = (evt) => {
-    console.log(evt)
+
       //use evt, event is a reserved word in chrome
     let dataTransfer = evt.dataTransfer
     evt.preventDefault();
@@ -236,12 +236,11 @@ export default class ImportModule extends Component {
     // If dropped items aren't files, reject them;
     if (dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
-        console.log(dataTransfer)
         this._getBlob(dataTransfer)
     } else {
       // Use DataTransfer interface to access the file(s)
       for (let i=0; i < dataTransfer.files.length; i++) {
-        console.log(dataTransfer)
+
         this.setState({files:[dataTransfer.files[i].name]})
         this._fileUpload()
       }

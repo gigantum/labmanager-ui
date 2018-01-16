@@ -92,7 +92,7 @@ const makeDirectory = (
   section) => {
 
   let promise = new Promise((resolve, reject) =>{
-    console.log('saddasdasads')
+    
       MakeLabbookDirectoryMutation(
         connectionKey,
         owner,
@@ -103,6 +103,16 @@ const makeDirectory = (
         (response, error)=>{
           if(error){
             console.error(error)
+
+            store.dispatch({
+              type: 'UPLOAD_MESSAGE_UPDATE',
+              payload: {
+                uploadMessage: `ERROR: cannot upload`,
+                uploadError: true,
+                id: labbookName + path
+
+              }
+            })
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
@@ -198,10 +208,10 @@ const getFolderPaths = (folderNames, prefix) =>{
 * created a promise that checks it folder exists
 * pushes promise into an array all
 */
-const getFolderExistsQueryPromises = (folderPaths, labbookName, owner, path, section) =>{
+const getFolderExistsQueryPromises = (folderPaths, labbookName, owner, section) =>{
   let all = []
   folderPaths.forEach((folderPath)=>{
-    const variables = {labbookName: labbookName, path: path, owner: owner, section: section};
+    const variables = {labbookName: labbookName, path: folderPath, owner: owner, section: section};
 
     let promise = checkIfFolderExists(variables, section)
 
@@ -268,14 +278,14 @@ const FolderUpload = {
       const folderNames = path.split('/')
 
       let folderPaths = getFolderPaths(folderNames, prefix);
-      console.log(folderPaths)
-      let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, path, section)
+
+      let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, section)
 
       Promise.all(directoryExistsAll).then((labbooks)=>{
         let directoryAll = []
-        console.log(labbooks)
+
         labbooks.forEach((response)=>{
-          console.log(response)
+
           if(response.labbook[section].files === null){
             let directoryPromise = makeDirectory(
                 connectionKey,

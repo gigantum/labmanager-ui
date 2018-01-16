@@ -23,7 +23,7 @@ import store from 'JS/redux/store'
 let fileCompleteCounter = 0
 
 const dispatchLoadingProgress = (workerData) =>{
-  console.trace(workerData)
+
   let bytesUploaded = (workerData.chunkSize * (workerData.chunkIndex + 1))/1000
   let totalBytes = workerData.fileSizeKb
 
@@ -256,7 +256,7 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFiles(files, prefix) {
     let self = this;
-    console.log(files)
+
     store.dispatch({
       type: 'UPLOAD_MESSAGE_SETTER',
       payload:{
@@ -270,7 +270,6 @@ export default class FileBrowserWrapper extends Component {
     files.forEach((file, index) => {
       if(file.name){
         const batchUpload = (files.length > 1)
-        console.log(file)
         //files.forEach((file, index) => {
 
           let newKey = prefix;
@@ -495,13 +494,11 @@ export default class FileBrowserWrapper extends Component {
   *  deletes foler with a specified key
   */
   handleDeleteFolder(folderKey) {
-    console.log(folderKey)
+
     let edgeToDelete = this.props.files.edges.filter((edge) => {
-      console.log(edge)
+
       return edge && edge.node && (folderKey === edge.node.key)
     })[0]
-
-    console.log(edgeToDelete)
 
     let edgesToDelete = this.props.files.edges.filter((edge) => {
       return edge && (edge.node.key.indexOf(folderKey) > -1)
@@ -538,7 +535,6 @@ export default class FileBrowserWrapper extends Component {
   handleDeleteFile(fileKey) {
 
     let edgeToDelete = this.props.files.edges.filter((edge) => {
-      console.log(fileKey, edge)
       return edge && edge.node && (fileKey === edge.node.key)
     })[0]
 

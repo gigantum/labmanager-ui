@@ -23,7 +23,7 @@ export default (
    uploadMessage: '',
    currentId: '',
    currentUploadId: '',
-   error: false,
+   uploadError: false,
    success: false,
    labbookname: '',
    messageStack: [],
@@ -37,17 +37,16 @@ export default (
  if (action.type === ERROR_MESSAGE) {
    let id = ERROR_MESSAGE + tempId++
    let messageStack = state.messageStack
-   console.log(ERROR_MESSAGE, action)
+
    messageStack.push({
      message: action.payload.message,
      id: id,
      className: 'Footer_error-message',
      messageBody: action.payload.messagesList
    })
-   console.log(messageStack)
+
    return {
      ...state,
-    error: true,
     messageStack: messageStack,
     currentId: id,
     showProgressBar: false,
@@ -72,7 +71,6 @@ export default (
     messageStack: messageStack,
     open: true,
     success: true,
-    error: false,
     showProgressBar: false
   };
 } else if (action.type === REMOVE_MESSAGE) { //this is for only updating a single message
@@ -85,15 +83,14 @@ export default (
     })
 
     let lastIndex = messageStack.length - 1;
-    console.log(messageStack)
+
  return {
    ...state,
    currentMessage: messageStack[lastIndex],
    currentId:  messageStack[lastIndex],
    messageStack: messageStack,
    open: messageStack.length > 0,
-   success: true, 
-   error: false,
+   success: true,
    showProgressBar: false
  };
 }else if (action.type === UPLOAD_MESSAGE_SETTER) {
@@ -113,7 +110,7 @@ export default (
     currentUploadId: message.id,
     uploadOpen: true,
     success: false,
-    error: false,
+    uploadError: false,
     fileCount: 0,
     totalFiles: action.payload.totalFiles
   };
@@ -121,9 +118,9 @@ export default (
   let message = {
     message: action.payload.uploadMessage,
     id: action.payload.id,
-    progessBarPercentage:  action.payload.percentage
+    progessBarPercentage:  action.payload.percentage,
   }
-  console.log(state)
+
   let uploadStack = state.uploadStack.map((messageItem)=>{
       if(message.id === messageItem.id){
         return message
@@ -131,15 +128,17 @@ export default (
         return messageItem
       }
   })
-
+  const uploadError = action.payload.uploadError ? action.payload.uploadError : false;
+  const uploadMessage = action.payload.uploadError ? "Error Uploading" : action.payload.uploadMessage;
   return {
     ...state,
-    uploadMessage: action.payload.uploadMessage,
+    uploadMessage: uploadMessage,
     currentUploadId: action.payload.id,
     progessBarPercentage: action.payload.progessBarPercentage,
     fileCount: action.payload.fileCount,
     uploadStack: uploadStack,
     uploadOpen: true,
+    uploadError: uploadError,
     success: false
   };
 } else if (action.type === UPLOAD_MESSAGE_REMOVE) {
@@ -176,7 +175,7 @@ export default (
      showProgressBar: true,
      currentMessage: '',
      currentId: '',
-     error: false,
+     uploadError: false,
      success: false,
      labbookname: '',
      messageStack: []
