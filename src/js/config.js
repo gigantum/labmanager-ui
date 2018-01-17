@@ -31,7 +31,12 @@ const CONFIG = {
     'Dec'
   ],
   'fileBrowser':{
-    'excludedFiles': ['.DS_Store']
+    'excludedFiles': [
+      'DS_Store',
+      'lbk',
+      'pyc',
+      'gitkeep'
+    ]
   }
 }
 

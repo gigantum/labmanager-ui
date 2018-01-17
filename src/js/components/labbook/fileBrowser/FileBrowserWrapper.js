@@ -145,8 +145,9 @@ const getTotalFileLength = (files) => {
           filesRecursionCount(nestedFile)
         })
       }else{
+        let extension =  file.file.name.replace(/.*\./, '');
 
-        if(config.fileBrowser.excludedFiles.indexOf(file.file.name) < 0){
+        if(config.fileBrowser.excludedFiles.indexOf(extension) < 0){
           fileCount++
         }
       }
@@ -155,7 +156,6 @@ const getTotalFileLength = (files) => {
 
   filesRecursionCount(files)
 
-  console.log(fileCount)
   return fileCount;
 }
 
@@ -286,7 +286,7 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFiles(files, prefix) {
     let self = this;
-    console.log(files)
+
     let totalFiles = getTotalFileLength(files)
 
     store.dispatch({
@@ -359,7 +359,9 @@ export default class FileBrowserWrapper extends Component {
       flattenFiles(folderFiles)
 
       let filterFiles = flattenedFiles.filter((fileItem) => {
-          return (fileItem.file.name !== '.DS_Store')
+        let extension =  fileItem.file.name.replace(/.*\./, '');
+
+        return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
       })
 
       FolderUpload.uploadFiles(

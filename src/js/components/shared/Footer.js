@@ -146,20 +146,27 @@ export default class Footer extends Component {
         <div
           className={footerStatusClass}>
             <div className="Footer__message">
+
+              { (this.state.messageStack.length > 3) &&
+                <button className="Footer__bumper--up"></button>
+              }
               <ul className="Footer__message-list">
-              {this.state.messageStack.map((messageItem)=>{
-                  return(<li
-                    key={messageItem.id}
-                    className={messageItem.className}>
-                    {messageItem.message}
-                    <i
-                      onClick={()=>{this._removeMessage(messageItem)}}
-                      className="Footer__message-dismiss fa">
-                    </i>
-                  </li>)
-              })}
+                {this.state.messageStack.map((messageItem)=>{
+                    return(<li
+                      key={messageItem.id}
+                      className={messageItem.className}>
+                      {messageItem.message}
+                      <i
+                        onClick={()=>{this._removeMessage(messageItem)}}
+                        className="Footer__message-dismiss fa">
+                      </i>
+                    </li>)
+                })}
               </ul>
 
+              { (this.state.messageStack.length > 3) &&
+                <button className="Footer__bumper--down"></button>
+              }
 
             </div>
 

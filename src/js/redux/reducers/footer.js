@@ -56,6 +56,7 @@ export default (
  } else if (action.type === INFO_MESSAGE) { //this is for only updating a single message
   let id = INFO_MESSAGE + tempId++
   let messageStack = state.messageStack
+
   messageStack.push(
     {
       message: action.payload.currentMessage,
@@ -63,7 +64,7 @@ export default (
       className: 'Footer_message',
       messageBody: action.payload.messagesList ? action.payload.messagesList : []
   })
-
+  console.log(messageStack)
   return {
     ...state,
     currentMessage: action.payload.currentMessage,
