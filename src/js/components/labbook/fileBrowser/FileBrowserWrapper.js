@@ -145,7 +145,7 @@ const getTotalFileLength = (files) => {
           filesRecursionCount(nestedFile)
         })
       }else{
-        let extension =  file.file.name.replace(/.*\./, '');
+        let extension =  file.name ? file.name.replace(/.*\./, '') : file.file.name.replace(/.*\./, '');
 
         if(config.fileBrowser.excludedFiles.indexOf(extension) < 0){
           fileCount++
@@ -288,15 +288,25 @@ export default class FileBrowserWrapper extends Component {
     let self = this;
 
     let totalFiles = getTotalFileLength(files)
-
-    store.dispatch({
-      type: 'UPLOAD_MESSAGE_SETTER',
-      payload:{
-        uploadMessage: `Preparing Upload for ${totalFiles} files`,
-        id: files[0][0] ? files[0][0].file.name + totalFiles : files[0].name + totalFiles,
-        totalFiles: totalFiles
-      }
-    })
+    if(totalFiles > 0){
+      store.dispatch({
+        type: 'UPLOAD_MESSAGE_SETTER',
+        payload:{
+          uploadMessage: `Preparing Upload for ${totalFiles} files`,
+          id: files[0][0] ? files[0][0].file.name + totalFiles : files[0].name + totalFiles,
+          totalFiles: totalFiles
+        }
+      })
+    }else{
+      store.dispatch({
+        type: 'UPLOAD_MESSAGE_SETTER',
+        payload:{
+          uploadMessage: `Cannot upload these file types`,
+          id: `nofiles`,
+          totalFiles: totalFiles
+        }
+      })
+    }
 
     let folderFiles = []
     files.forEach((file, index) => {

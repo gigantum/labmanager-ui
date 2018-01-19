@@ -6,6 +6,28 @@ import ChunkUploader from 'JS/utils/ChunkUploader'
 
 import store from 'JS/redux/store'
 
+
+/**
+  @param {number} bytes
+  converts bytes into suitable units
+*/
+const _humanFileSize = (bytes)=>{
+
+  let thresh = 1000;
+
+  if(Math.abs(bytes) < thresh) {
+      return bytes + ' kB';
+  }
+
+  let units = ['MB','GB','TB','PB','EB','ZB','YB']
+
+  let u = -1;
+  do {
+      bytes /= thresh;
+      ++u;
+  } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+  return bytes.toFixed(1)+' '+units[u];
+}
 /*
  @param {object} workerData
  uses redux to dispatch file upload to the footer
@@ -13,19 +35,18 @@ import store from 'JS/redux/store'
 const dispatchLoadingProgress = (wokerData) =>{
 
   let bytesUploaded = (wokerData.chunkSize * (wokerData.chunkIndex + 1))/1000
-  let totalBytes = wokerData.fileSizeKb * 1000
+  let totalBytes = wokerData.fileSizeKb
+  bytesUploaded =  bytesUploaded < totalBytes ? bytesUploaded : totalBytes;
+  let totalBytesString = _humanFileSize(totalBytes)
+  let bytesUploadedString = _humanFileSize(bytesUploaded)
 
   store.dispatch({
-    type: 'LOADING_PROGRESS',
+    type: 'UPLOAD_MESSAGE_UPDATE',
     payload: {
-      bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
+      id: '',
+      uploadMessage: `${bytesUploadedString} of ${totalBytesString} uploaded`,
       totalBytes: totalBytes,
       percentage: (Math.floor((bytesUploaded/totalBytes) * 100) <= 100) ? Math.floor((bytesUploaded/totalBytes) * 100) : 100,
-      open: true,
-      uploadMessage: '',
-      labbookName: '',
-      error: false,
-      success: false
     }
   })
 
@@ -34,16 +55,20 @@ const dispatchLoadingProgress = (wokerData) =>{
   }
 }
 
+
+
 /*
  @param {}
  uses redux to dispatch file upload failed status to the footer
 */
 const dispatchFailedStatus = () => {
   store.dispatch({
-    type: 'UPLOAD_MESSAGE',
+    type: 'UPLOAD_MESSAGE_UPDATE',
     payload: {
       uploadMessage: 'Import failed',
-      error: true
+      id: '',
+      percentage: 0,
+      uploadError: true
     }
   })
 }
@@ -66,18 +91,17 @@ const dispatchFinishedStatus = (filepath) =>{
   let route = getRoute(filepath)
 
    store.dispatch({
-     type: 'IMPORT_SUCCESS',
+     type: 'IMPORT_MESSAGE_SUCCESS',
      payload: {
        uploadMessage: `${route} LabBook is Ready`,
-       labbookName: localStorage.getItem("username") + "/" + route, //route is labbookName
-       success: true,
-       open: true
+       id: '',
+       labbookName: localStorage.getItem("username") + "/" + route //route is labbookName
      }
    })
 
-   if(document.getElementById('footerProgressBar')){
-     document.getElementById('footerProgressBar').style.width = '0%'
-   }
+   // if(document.getElementById('footerProgressBar')){
+   //   document.getElementById('footerProgressBar').style.width = '0%'
+   // }
 }
 
 
@@ -301,12 +325,12 @@ export default class ImportModule extends Component {
 
     //dispatch loading progress
     store.dispatch({
-      type: 'LOADING_PROGRESS',
+      type: 'UPLOAD_MESSAGE_SETTER',
       payload:{
-        bytesUploaded: 0,
+        uploadMessage: 'Prepparing Import ...',
+        totalBytes: this.state.files[0].file.size/1000,
         percentage: 0,
-        totalBytes:  this.state.files[0].file.size/1000,
-        open: true
+        id: ''
       }
     })
 
@@ -316,8 +340,12 @@ export default class ImportModule extends Component {
      if(wokerData.importLabbook){
 
         store.dispatch({
-          type: 'UPLOAD_MESSAGE',
-          payload: {uploadMessage: 'Upload Complete'}
+          type: 'UPLOAD_MESSAGE_UPDATE',
+          payload: {
+            uploadMessage: 'Upload Complete',
+            percentage: 100,
+            id: ''
+          }
         })
 
 
@@ -325,8 +353,12 @@ export default class ImportModule extends Component {
          JobStatus.getJobStatus(importLabbook.importJobKey).then((response)=>{
 
            store.dispatch({
-             type: 'UPLOAD_MESSAGE',
-             payload: {uploadMessage: 'Unzipping labbook'}
+             type: 'UPLOAD_MESSAGE_UPDATE',
+             payload: {
+               uploadMessage: 'Unzipping labbook',
+               percentage: 100,
+               id: ''
+             }
            })
 
            if(response.jobStatus.status === 'finished'){
@@ -345,10 +377,12 @@ export default class ImportModule extends Component {
          }).catch((error)=>{
            console.log(error)
            store.dispatch({
-             type: 'UPLOAD_MESSAGE',
+             type: 'UPLOAD_MESSAGE_UPDATE',
              payload: {
                uploadMessage: 'Import failed',
-               error: true
+               uploadError: true,
+               id: '',
+               percentage: 0,
              }
            })
            self._clearState()
@@ -359,10 +393,12 @@ export default class ImportModule extends Component {
 
      } else{
        store.dispatch({
-         type: 'UPLOAD_MESSAGE',
+         type: 'UPLOAD_MESSAGE_UPDATE',
          payload: {
            uploadMessage: wokerData[0].message,
-           error: true
+           uploadError: true,
+           id: '',
+           percentage: 0
          }
        })
        self._clearState()
@@ -378,10 +414,12 @@ export default class ImportModule extends Component {
   _showError(message){
 
     store.dispatch({
-      type: 'UPLOAD_MESSAGE',
+      type: 'UPLOAD_MESSAGE_UPDATE',
       payload: {
         uploadMessage: message,
-        error: true
+        uploadError: true,
+        id: '',
+        percentage: 0
       }
     })
   }

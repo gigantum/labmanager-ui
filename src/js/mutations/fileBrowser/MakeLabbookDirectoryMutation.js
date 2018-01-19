@@ -82,7 +82,7 @@ export default function MakeLabbookDirectoryMutation(
 
   const variables = {
     input: {
-      //owner,
+      owner,
       labbookName,
       directory,
       section,

@@ -34,6 +34,7 @@ export default class Footer extends Component {
   componentWillUnmount() {
     unsubscribe()
   }
+
   /**
     @param {object} footer
     unsubscribe from redux store
@@ -42,11 +43,19 @@ export default class Footer extends Component {
 
     let footerString = JSON.stringify(footer)
     let stateString = JSON.stringify(this.state)
-
     if(footerString !== stateString){
 
       this.setState(footer);//triggers re-render when store updates
     }
+
+    footer.messageStack.forEach((messageItem)=>{
+      const oneMinute = 60 * 1000
+      if(!messageItem.error){
+        setTimeout(()=>{
+          this._removeMessage(messageItem)
+        }, oneMinute)
+      }
+    })
   }
 
   _openLabbook(){
@@ -72,27 +81,7 @@ export default class Footer extends Component {
     },1000)
   }
 
-  /**
-    @param {number} bytes
-    converts bytes into suitable units
-  */
- _humanFileSize(bytes){
 
-    let thresh = 1000;
-
-    if(Math.abs(bytes) < thresh) {
-        return bytes + ' kB';
-    }
-
-    let units = ['MB','GB','TB','PB','EB','ZB','YB']
-
-    let u = -1;
-    do {
-        bytes /= thresh;
-        ++u;
-    } while(Math.abs(bytes) >= thresh && u < units.length - 1);
-    return bytes.toFixed(1)+' '+units[u];
- }
 
  /**
   @param {}
@@ -120,6 +109,20 @@ export default class Footer extends Component {
       }
     })
  }
+ /**
+  @param {boolean} value
+  toggles messages list to collapsed or expanded
+  @return {}
+ */
+
+ _toggleMessagesList(value){
+   store.dispatch({
+     type: 'TOGGLE_MESSAGE_LIST',
+     payload:{
+       messageListOpen: value
+     }
+   })
+ }
 
 
  render() {
@@ -140,33 +143,80 @@ export default class Footer extends Component {
         'Footer__upload-error': this.state.uploadError
     });
 
+    let footerMessageListClass = classNames({
+        'Footer__message-list': true,
+        'Footer__message-list--collapsed': !this.state.messageListOpen
+      })
+    let footerCollapseButton = classNames({
+      'Footer__collapse-message-list': this.state.messageListOpen,
+      'hidden': !this.state.messageListOpen
+    })
+
+
+    let mostRecentMessage = this.state.messageStack[this.state.messageStack.length - 1]
+    let messageList = this.state.messageStack.filter((messageItem)=>{
+      return (mostRecentMessage.id !== messageItem.id)
+    })
+
+    let otherMessages = this.state.messageStack.length - 1
     return (
       <div id="footer" className={footerClass}>
 
         <div
           className={footerStatusClass}>
-            <div className="Footer__message">
 
-              { (this.state.messageStack.length > 3) &&
-                <button className="Footer__bumper--up"></button>
-              }
-              <ul className="Footer__message-list">
-                {this.state.messageStack.map((messageItem)=>{
-                    return(<li
-                      key={messageItem.id}
-                      className={messageItem.className}>
-                      {messageItem.message}
-                      <i
-                        onClick={()=>{this._removeMessage(messageItem)}}
-                        className="Footer__message-dismiss fa">
-                      </i>
-                    </li>)
-                })}
-              </ul>
+            <div className="Footer__messages-section">
+              <div className={footerMessageListClass}>
+                <div
+                  className={footerCollapseButton}
+                  onClick={()=>{this._toggleMessagesList(false)}}>
+                </div>
+                <ul>
+                  {messageList.map((messageItem)=>{
 
-              { (this.state.messageStack.length > 3) &&
-                <button className="Footer__bumper--down"></button>
+                      return(<li
+                        key={messageItem.id}
+                        className={messageItem.className}>
+                        {messageItem.message}
+
+                        {messageItem.error &&
+                          <i
+                            onClick={()=>{this._removeMessage(messageItem)}}
+                            className="Footer__message-dismiss fa">
+                          </i>
+                        }
+
+                      </li>)
+                  })}
+                  </ul>
+              </div>
+
+              { mostRecentMessage &&
+                <div
+                  key={mostRecentMessage.id}
+                  className={mostRecentMessage.className}>
+                  {mostRecentMessage.message}
+
+                  {mostRecentMessage.error &&
+                    <i
+                      onClick={()=>{this._removeMessage(mostRecentMessage)}}
+                      className="Footer__message-dismiss fa">
+                    </i>
+                  }
+
+                  {
+                    (otherMessages > 0) &&
+                    <span
+                      className="Footer__expand-messages-button"
+                      onClick={()=>{this._toggleMessagesList(true)}}>
+                      {` and ${otherMessages} other message(s)`}
+                    </span>
+                  }
+
+                </div>
               }
+
+
 
             </div>
 
@@ -174,7 +224,7 @@ export default class Footer extends Component {
 
         <div
           className={footerUploadClass}>
-            <div className="Footer__messages">
+            <div className="Footer__upload-message">
               {this.state.uploadMessage}
             </div>
 
@@ -190,17 +240,15 @@ export default class Footer extends Component {
                   className="Footer__close">
                 </div>
             }
+            {
+              this.state.labbookSuccess &&
+                <button
+                  className="Footer__button"
+                  onClick={() => this._openLabbook()}>
+                  Open LabBook
+                </button>
+            }
         </div>
-
-
-        {
-          this.state.labbookSuccess &&
-            <button
-              className="Footer__button"
-              onClick={() => this._openLabbook()}>
-              Open LabBook
-            </button>
-        }
 
       </div>
     )

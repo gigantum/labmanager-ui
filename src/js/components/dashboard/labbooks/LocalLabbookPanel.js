@@ -72,9 +72,10 @@ export default class LocalLabbookPanel extends Component {
 
               if(error){
                 store.dispatch({
-                  type: 'INFO_MESSAGE',
+                  type: 'ERROR_MESSAGE',
                   payload: {
                     message: `Export failed`,
+                    messageList: error
                   }
                 })
               }
@@ -83,9 +84,10 @@ export default class LocalLabbookPanel extends Component {
       }else{
 
         store.dispatch({
-          type: 'INFO_MESSAGE',
+          type: 'ERROR_MESSAGE',
           payload: {
             message: 'Export Failed: ' + error[0].message,
+            messageList: error
           }
         })
 

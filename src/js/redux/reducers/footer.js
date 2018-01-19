@@ -10,8 +10,10 @@ export const REMOVE_MESSAGE = 'REMOVE_MESSAGE'
 export const UPLOAD_MESSAGE_SETTER = 'UPLOAD_MESSAGE_SETTER';
 export const UPLOAD_MESSAGE_UPDATE = 'UPLOAD_MESSAGE_UPDATE';
 export const UPLOAD_MESSAGE_REMOVE = 'UPLOAD_MESSAGE_REMOVE';
+export const IMPORT_MESSAGE_SUCCESS = 'IMPORT_MESSAGE_SUCCESS';
 //
 export const RESET_FOOTER_STORE = "RESET_FOOTER_STORE"
+export const TOGGLE_MESSAGE_LIST = 'TOGGLE_MESSAGE_LIST'
 
 let tempId = 0
 
@@ -25,12 +27,14 @@ export default (
    currentUploadId: '',
    uploadError: false,
    success: false,
-   labbookname: '',
+   labbookName: '',
    messageStack: [],
    uploadStack: [],
    fileCount: 0,
    totalFiles: 0,
+   totalBytes: 0,
    labbookSuccess: false,
+   messageListOpen: false
  },
  action
 ) => {
@@ -41,7 +45,8 @@ export default (
    messageStack.push({
      message: action.payload.message,
      id: id,
-     className: 'Footer_error-message',
+     error: true,
+     className: 'Footer__message--error',
      messageBody: action.payload.messagesList
    })
 
@@ -59,15 +64,16 @@ export default (
 
   messageStack.push(
     {
-      message: action.payload.currentMessage,
+      message: action.payload.message,
       id: id,
-      className: 'Footer_message',
+      error: false,
+      className: 'Footer__message',
       messageBody: action.payload.messagesList ? action.payload.messagesList : []
   })
-  console.log(messageStack)
+
   return {
     ...state,
-    currentMessage: action.payload.currentMessage,
+    currentMessage: action.payload.message,
     currentId: id,
     messageStack: messageStack,
     open: true,
@@ -113,7 +119,8 @@ export default (
     success: false,
     uploadError: false,
     fileCount: 0,
-    totalFiles: action.payload.totalFiles
+    totalBytes: action.payload.totalBytes ? action.payload.totalBytes : 0,
+    totalFiles: action.payload.totalFiles ? action.payload.totalFiles : 0
   };
 }else if (action.type === UPLOAD_MESSAGE_UPDATE) {
   let message = {
@@ -166,9 +173,43 @@ export default (
     fileCount: 0,
     totalFiles: 0,
     uploadOpen: false,
-    success: true
+    success: true,
+    labbookName: '',
+    labbookSuccess: false
   };
-  }else if(action.type === RESET_FOOTER_STORE){
+} else if (action.type === IMPORT_MESSAGE_SUCCESS) {
+
+  let message = {
+    message: action.payload.uploadMessage,
+    id: action.payload.id,
+    progessBarPercentage: 100
+  }
+
+  let uploadStack = []
+
+  state.uploadStack.forEach((messageItem)=>{
+      if(message.id !== messageItem.id){
+        uploadStack.push(messageItem)
+      }
+  })
+
+  return {
+    ...state,
+    uploadMessage: action.payload.uploadMessage,
+    labbookName: action.payload.labbookName,
+    currentUploadId: message.id,
+    uploadStack: uploadStack,
+    progessBarPercentage: 100,
+    uploadOpen: true,
+    success: true,
+    labbookSuccess: true
+  };
+}else if(action.type === TOGGLE_MESSAGE_LIST){
+   return {
+     ...state,
+     messageListOpen: action.payload.messageListOpen
+   }
+ }else if(action.type === RESET_FOOTER_STORE){
    return {
      ...state,
      open: false,
@@ -178,8 +219,8 @@ export default (
      currentId: '',
      uploadError: false,
      success: false,
-     labbookname: '',
-     messageStack: []
+     labbookName: '',
+     messageListOpen: false
    }
  }
 

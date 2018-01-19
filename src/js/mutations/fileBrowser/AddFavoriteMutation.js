@@ -114,7 +114,7 @@ export default function AddFavoriteMutation(
 
 
       },
-      
+
       updater: (store, response) => {
 
         if(response.addFavorite && response.addFavorite.newFavoriteEdge){
@@ -132,7 +132,7 @@ export default function AddFavoriteMutation(
         const fileNode = store.get(fileItem.node.id)
         if(fileNode){
           fileNode.setValue(true, 'isFavorite')
-          console.log(fileNode)
+
         }
 
       }
