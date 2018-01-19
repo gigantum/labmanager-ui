@@ -102,7 +102,8 @@ export default class AddCustomDependencies extends React.Component {
     sends user to next window
   */
   _buildLabbook = () => {
-    const labbookName = this.state
+    const {labbookName} = this.state
+
     BuildImageMutation(
       labbookName,
       this.state.owner,
