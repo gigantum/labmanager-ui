@@ -29,7 +29,15 @@ const CONFIG = {
     'Oct',
     'Nov',
     'Dec'
-  ]
+  ],
+  'fileBrowser':{
+    'excludedFiles': [
+      'DS_Store',
+      'lbk',
+      'pyc',
+      'gitkeep'
+    ]
+  }
 }
 
 export default CONFIG

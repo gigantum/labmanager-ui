@@ -1,25 +1,70 @@
 .Footer{
+  position: fixed;
+  z-index: 50;
+  z-index: 300;
+  right: 0;
+  bottom: 0;
+  left: 120px;
+
+  height: 0px;
+  max-height: 200px;
+
+  transition: height 0.5s;
+
+  color: $white;
   background-color: $slateBlue;
 
-  left: 120px;
-  right: 0;
-  position: fixed;
-  bottom: 0;
-  height: 0px;
-  z-index: 50;
-  max-height: 200px;
-  transition: height 0.5s;
-  z-index: 300;
-  color: $white;
   font-weight: 100;
+
+  @include flex(space-between, column);
 }
 
 .Footer--open {
-    height: 90px;
+    max-height: 90px;
 }
 
 .Footer--expand {
-    height: 40px;
+    height: auto;
+}
+
+.Footer--expand-extra {
+    max-height: 180px !important;
+}
+
+.Footer__messages-section{
+  z-index: 300;
+
+  width: 100%;
+
+  text-align: center;
+}
+
+.Footer__upload-message{
+  z-index: 400;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+
+}
+
+.Footer__message-list{
+  height: auto;
+  max-height: 120px;
+  transition: height 0.5s, max-height 0.5s, opacity 1s;
+  opacity: 1;
+  overflow: auto;
+}
+
+.Footer__message-list--collapsed{
+  //height: 0px !important;
+  max-height: 0px !important;
+  opacity: 0 !important;
+  overflow: hidden;
+}
+
+.Footer__expand-messages-button{
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .Footer--error{
@@ -28,63 +73,131 @@
 }
 
 .Footer__progress-bar{
+  position: absolute;
+  z-index: 50;
+  top: 0;
+  left: 0;
+
   width: 0%;
   height: 100%;
-  left: 0;
-  top: 0;
-  background-color: $turquise;
-  color: $white !important;
-  z-index: 50;
-  position: absolute;
+
   transition: width 1s, opacity 1s;
+
+  color: $white !important;
+  background-color: $turquise;
 }
 
 .Footer__progress-bar__error{
   background-color: $crimson;
 }
+
+.Footer__upload-error{
+  background-color: $crimson;
+  .Footer__progress-bar{
+    @extend .hidden;
+  }
+}
+
+.Footer__collapse-message-list{
+    @include close();
+    background: url('./../images/icons/close-white.svg') no-repeat center center;
+    background-size: 18px;
+    right: 20px;
+}
+
 .Footer__status{
-  @include flex(space-between, row);
-  flex-wrap: nowrap;
-  width: 100%;
-  height: 100%;
-  text-align: center;
+
+  position: relative;
   z-index: 60;
-  position: absolute;
-  line-height: 30px;
+
+  overflow: hidden;
+  flex-wrap: nowrap;
+
+  width: 100%;
+  height: auto;
+  min-height: 40px;
+  text-align: center;
+
+  line-height: 25px;
+
+  @include flex(space-between, row);
+
+  ul{
+    margin: 0px;
+  }
+
+  .Footer__message{
+    height: 40px;
+    vertical-align: center;
+  }
+
+  .Footer__message--error{
+    @extend .Footer__message;
+    background-color: $crimson;
+  }
+
+  .Footer__message-dismiss{
+    padding-left: 30px;
+
+    cursor: pointer;
+
+    @extend .fa-trash;
+  }
+
+  .Footer__message-dismiss:hover{
+    color: $turquise;
+  }
+}
+
+.Footer__upload-status{
+  position: relative;
+
+  text-align: center;
+  height: 40px;
+
+  width: 100%;
 }
 
 .Footer__button{
+
+  position: absolute;
+  z-index: 60;
+  top: 5px;
+  right: 10px;
+
+  height: 30px;
+
+  color: $white;
   border: 1px solid $white;
   border-radius: 20px;
-  position: absolute;
-  right: 10px;
-  top: 5px;
-  z-index: 60;
-  height: 30px;
-  line-height: 10px;
-
-
   background-color: $azure !important;
-  color: $white;
+
+  line-height: 10px;
 }
 
 .Footer__button:hover{
-  background-color: $white !important;
   color: $charcoal ;
+  background-color: $white !important;
 }
 
 .Footer__message{
     flex: 1;
-    margin: 0 10px;
+
     color: $white;
 }
 
 .Footer__close{
+  position: absolute;
+  right: 10px;
+  bottom: 0px;
+
+  width: 40px;
+  height: 40px;
+
+  cursor: pointer;
+
   background: url('../images/icons/close-white.svg') no-repeat center center;
   background-size: 16px;
-  height: 40px;
-  width: 40px;
-  cursor: pointer;
 }
 
 .Footer__close:hover{

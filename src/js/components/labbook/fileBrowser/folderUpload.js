@@ -6,13 +6,15 @@ import {
 import {fetchQuery} from 'JS/createRelayEnvironment';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation';
 import ChunkUploader from 'JS/utils/ChunkUploader'
+//store
+import store from 'JS/redux/store'
 
 const fileExistenceQuery = graphql`
   query folderUploadQuery($labbookName: String!, $owner: String!, $path: String!){
     labbook(name: $labbookName, owner: $owner){
       id
       code{
-        files(root: $path, first: 1){
+        files(root: $path, first:1){
           edges{
             node{
               isDir,
@@ -59,18 +61,19 @@ const checkIfFolderExists = (variables, section) => {
       fetchQuery(fileExistenceQuery(), variables).then((response) => {
 
         if(response.data){
-
           resolve({labbook: response.data.labbook, variables: variables})
         }else{
           reject(response.error)
         }
+
       }).catch((error) =>{
+
         console.log(error)
         reject(error)
       })
     }
-    fetchData()
 
+    fetchData()
   })
 
   return promise
@@ -101,6 +104,23 @@ const makeDirectory = (
         (response, error)=>{
           if(error){
             console.error(error)
+
+            store.dispatch({
+              type: 'UPLOAD_MESSAGE_UPDATE',
+              payload: {
+                uploadMessage: `ERROR: cannot upload`,
+                uploadError: true,
+                id: labbookName + path
+
+              }
+            })
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `ERROR: could not make ${path}`,
+                messagesList: error
+              }
+            })
             reject(error)
           }else{
             resolve(response)
@@ -133,8 +153,6 @@ chunkLoader) =>{
 
   fileReader.onloadend = function (evt) {
 
-    let arrayBuffer = evt.target.result;
-    let blob = new Blob([new Uint8Array(arrayBuffer)]);
     let filePath = (prefix !== '/') ? prefix + file.entry.fullPath : file.entry.fullPath;
     if(filePath.indexOf('/') === 0){
       filePath = filePath.replace('/', '')
@@ -189,10 +207,10 @@ const getFolderPaths = (folderNames, prefix) =>{
 * created a promise that checks it folder exists
 * pushes promise into an array all
 */
-const getFolderExistsQueryPromises = (folderPaths, labbookName, owner, path, section) =>{
+const getFolderExistsQueryPromises = (folderPaths, labbookName, owner, section) =>{
   let all = []
   folderPaths.forEach((folderPath)=>{
-    const variables = {labbookName: labbookName, path: path, owner: owner};
+    const variables = {labbookName: labbookName, path: folderPath, owner: owner, section: section};
 
     let promise = checkIfFolderExists(variables, section)
 
@@ -243,7 +261,6 @@ const FolderUpload = {
     let count = 0;//
     let existingPaths = []
     let filePaths = []
-
     /**
     *  @param {object} fileItem
     *  recursive function that loops through a object that replicates a folders structure
@@ -260,10 +277,11 @@ const FolderUpload = {
 
       let folderPaths = getFolderPaths(folderNames, prefix);
 
-      let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, path, section)
+      let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, section)
 
       Promise.all(directoryExistsAll).then((labbooks)=>{
         let directoryAll = []
+
         labbooks.forEach((response)=>{
 
           if(response.labbook[section].files === null){
@@ -294,6 +312,10 @@ const FolderUpload = {
             chunkLoader)
 
           filePaths = [];//must empty file list for nested files
+
+          if(count < files.length){
+            fileCheck(files[count])
+          }
         }
         else{
 
@@ -308,14 +330,16 @@ const FolderUpload = {
             prefix,
             chunkLoader)
             filePaths = [];//must empty file list for nested files
+
+            if(count < files.length){
+
+              fileCheck(files[count])
+
+            }
           })
         }
 
-        if(count < files.length){
 
-          fileCheck(files[count])
-
-        }
       })
     }
 

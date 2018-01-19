@@ -118,12 +118,23 @@ export default class Routes extends Component {
                 />
 
                 <Route
+                  exact
+                  path="/:id/:labbookFilter"
+                  render={(props) =>
+                    <Home
+                      history={history}
+                      auth={auth}
+                      {...props}
+                    />
+                  }
+                />
+
+                <Route
                   path="/labbooks/:owner/:labbookName"
                   render={(parentProps) =>{
 
-                      const username = localStorage.getItem('username')
-                      let labbookName = parentProps.match.params.labbookName;
-                      let owner = parentProps.match.params.owner;
+                      const labbookName = parentProps.match.params.labbookName;
+                      const owner = parentProps.match.params.owner;
 
                       self.setRouteStore(owner, labbookName)
 

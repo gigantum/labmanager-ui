@@ -3,10 +3,10 @@ import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
 import FavoriteCard from './../fileBrowser/FavoriteCard'
-//mutations
-//
-let counter = 10;
+//store
+import store from 'JS/redux/store'
 let owner;
+
 class CodeFavorites extends Component {
   constructor(props){
   	super(props);
@@ -14,7 +14,7 @@ class CodeFavorites extends Component {
       loading: false
     }
 
-    owner=this.props.owner
+    owner = this.props.owner
   }
 
   /**
@@ -23,13 +23,15 @@ class CodeFavorites extends Component {
   componentDidMount() {
     //this._loadMore() //routes query only loads 2, call loadMore
 
-    this.props.relay.loadMore(
-     1, // Fetch the next 10 feed items
-     (response, error) => {
-       if(error){
-         console.error(error)
-      }
-    })
+    if(this.props.code && this.props.code.favorites && this.props.code.favorites.pageInfo.hasNextPage){
+      this.props.relay.loadMore(
+       1, // Fetch the next 10 feed items
+       (response, error) => {
+         if(error){
+           console.error(error)
+        }
+      })
+    }
   }
 
   /**
@@ -66,7 +68,9 @@ class CodeFavorites extends Component {
       loadingClass = (this.state.loading) ? 'Favorite__action-bar--loading' : loadingClass
 
       if(this.props.code.favorites.edges.length > 0){
-        let favorites = this.props.code.favorites.edges.filter((edge)=>{if(edge){return (edge.node !== undefined)}})
+        let favorites = this.props.code.favorites.edges.filter((edge)=>{
+          return edge && (edge.node !== undefined)
+        })
         return(
           <div className="Favorite">
             <div className="Favorite__list">
@@ -150,12 +154,12 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-
+      const {owner, labbookName} = store.getState().routes
       return {
         first: count,
         cursor,
         owner: owner,
-        name: props.labbookName
+        name: labbookName
       };
     },
     query: graphql`

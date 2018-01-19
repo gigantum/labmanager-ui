@@ -1,12 +1,33 @@
 // vendor
 import React, { Component } from 'react'
-import SweetAlert from 'sweetalert-react'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
 import ChunkUploader from 'JS/utils/ChunkUploader'
 
 import store from 'JS/redux/store'
 
+
+/**
+  @param {number} bytes
+  converts bytes into suitable units
+*/
+const _humanFileSize = (bytes)=>{
+
+  let thresh = 1000;
+
+  if(Math.abs(bytes) < thresh) {
+      return bytes + ' kB';
+  }
+
+  let units = ['MB','GB','TB','PB','EB','ZB','YB']
+
+  let u = -1;
+  do {
+      bytes /= thresh;
+      ++u;
+  } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+  return bytes.toFixed(1)+' '+units[u];
+}
 /*
  @param {object} workerData
  uses redux to dispatch file upload to the footer
@@ -14,19 +35,18 @@ import store from 'JS/redux/store'
 const dispatchLoadingProgress = (wokerData) =>{
 
   let bytesUploaded = (wokerData.chunkSize * (wokerData.chunkIndex + 1))/1000
-  let totalBytes = wokerData.fileSizeKb * 1000
+  let totalBytes = wokerData.fileSizeKb
+  bytesUploaded =  bytesUploaded < totalBytes ? bytesUploaded : totalBytes;
+  let totalBytesString = _humanFileSize(totalBytes)
+  let bytesUploadedString = _humanFileSize(bytesUploaded)
 
   store.dispatch({
-    type: 'LOADING_PROGRESS',
+    type: 'UPLOAD_MESSAGE_UPDATE',
     payload: {
-      bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
+      id: '',
+      uploadMessage: `${bytesUploadedString} of ${totalBytesString} uploaded`,
       totalBytes: totalBytes,
       percentage: (Math.floor((bytesUploaded/totalBytes) * 100) <= 100) ? Math.floor((bytesUploaded/totalBytes) * 100) : 100,
-      open: true,
-      uploadMessage: '',
-      labbookName: '',
-      error: false,
-      success: false
     }
   })
 
@@ -35,16 +55,20 @@ const dispatchLoadingProgress = (wokerData) =>{
   }
 }
 
+
+
 /*
  @param {}
  uses redux to dispatch file upload failed status to the footer
 */
 const dispatchFailedStatus = () => {
   store.dispatch({
-    type: 'UPLOAD_MESSAGE',
+    type: 'UPLOAD_MESSAGE_UPDATE',
     payload: {
       uploadMessage: 'Import failed',
-      error: true
+      id: '',
+      percentage: 0,
+      uploadError: true
     }
   })
 }
@@ -67,18 +91,17 @@ const dispatchFinishedStatus = (filepath) =>{
   let route = getRoute(filepath)
 
    store.dispatch({
-     type: 'IMPORT_SUCCESS',
+     type: 'IMPORT_MESSAGE_SUCCESS',
      payload: {
        uploadMessage: `${route} LabBook is Ready`,
-       labbookName: localStorage.getItem("username") + "/" + route, //route is labbookName
-       success: true,
-       open: true
+       id: '',
+       labbookName: localStorage.getItem("username") + "/" + route //route is labbookName
      }
    })
 
-   if(document.getElementById('footerProgressBar')){
-     document.getElementById('footerProgressBar').style.width = '0%'
-   }
+   // if(document.getElementById('footerProgressBar')){
+   //   document.getElementById('footerProgressBar').style.width = '0%'
+   // }
 }
 
 
@@ -93,7 +116,8 @@ export default class ImportModule extends Component {
       'files': [],
       'type': 'info',
       'error': false,
-      'isImporting': false
+      'isImporting': false,
+      'stopPropagation': false
     }
 
 
@@ -108,7 +132,7 @@ export default class ImportModule extends Component {
 
 
 
-    const dropzoneIds = ['dropZone', 'dropZone__helper', 'dropZone__filename'];
+    const dropzoneIds = ['dropZone', 'dropZone__subtext', 'dropZone__title', 'dropZone__create'];
 
     //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
     window.addEventListener('dragenter', function(evt) { //use evt, event is a reserved word in chrome
@@ -144,6 +168,7 @@ export default class ImportModule extends Component {
     });
 
     window.addEventListener('drop', function(evt) { //use evt, event is a reserved word in chrome
+
       if(document.getElementById('dropZone')){
         document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
       }
@@ -155,12 +180,22 @@ export default class ImportModule extends Component {
       }
     });
   }
+  componentDidMount() {
+    let fileInput = document.getElementById('file__input')
+    let evt = new MouseEvent("click", {"bubbles":false, "cancelable":true});
+
+    fileInput.onclick = (evt) =>{
+      evt.cancelBubble = true;
+      //stopPropagation(evt)
+      evt.stopPropagation(evt)
+    }
+  }
   /**
   *  @param {object} dataTransfer
   *  preventDefault on dragOver event
   */
   _getBlob = (dataTransfer) => {
-    let that = this;
+    let self = this;
     for (let i=0; i < dataTransfer.files.length; i++) {
 
       let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
@@ -169,7 +204,7 @@ export default class ImportModule extends Component {
         this.setState({error: true})
 
         setTimeout(function(){
-          that.setState({error: false})
+          self.setState({error: false})
         }, 5000)
 
       }else{
@@ -182,7 +217,7 @@ export default class ImportModule extends Component {
 
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
 
-          that.setState(
+          self.setState(
             {files: [
               {
                 blob: blob,
@@ -192,6 +227,7 @@ export default class ImportModule extends Component {
               ]
             }
           )
+          self._fileUpload()
 
         };
         fileReader.readAsArrayBuffer(file);
@@ -214,6 +250,7 @@ export default class ImportModule extends Component {
   *  handle file drop and get file data
   */
   _dropHandler = (evt) => {
+
       //use evt, event is a reserved word in chrome
     let dataTransfer = evt.dataTransfer
     evt.preventDefault();
@@ -227,7 +264,9 @@ export default class ImportModule extends Component {
     } else {
       // Use DataTransfer interface to access the file(s)
       for (let i=0; i < dataTransfer.files.length; i++) {
+
         this.setState({files:[dataTransfer.files[i].name]})
+        this._fileUpload()
       }
     }
 
@@ -262,13 +301,15 @@ export default class ImportModule extends Component {
   *  opens file system for user to select file
   */
   _fileSelected = (evt) => {
-     this._getBlob(document.getElementById('file__input'))
+
+    this._getBlob(document.getElementById('file__input'))
+    this.setState({'stopPropagation': false})
   }
   /**
   *  @param {Object}
   *   trigger file upload
   */
-  _fileUpload = (evt) => {//this code is going to be moved to the footer to complete the progress bar
+  _fileUpload = () => {//this code is going to be moved to the footer to complete the progress bar
     let self = this;
 
     this._importingState();
@@ -284,12 +325,12 @@ export default class ImportModule extends Component {
 
     //dispatch loading progress
     store.dispatch({
-      type: 'LOADING_PROGRESS',
+      type: 'UPLOAD_MESSAGE_SETTER',
       payload:{
-        bytesUploaded: 0,
+        uploadMessage: 'Prepparing Import ...',
+        totalBytes: this.state.files[0].file.size/1000,
         percentage: 0,
-        totalBytes:  this.state.files[0].file.size/1000,
-        open: true
+        id: ''
       }
     })
 
@@ -299,8 +340,12 @@ export default class ImportModule extends Component {
      if(wokerData.importLabbook){
 
         store.dispatch({
-          type: 'UPLOAD_MESSAGE',
-          payload: {uploadMessage: 'Upload Complete'}
+          type: 'UPLOAD_MESSAGE_UPDATE',
+          payload: {
+            uploadMessage: 'Upload Complete',
+            percentage: 100,
+            id: ''
+          }
         })
 
 
@@ -308,8 +353,12 @@ export default class ImportModule extends Component {
          JobStatus.getJobStatus(importLabbook.importJobKey).then((response)=>{
 
            store.dispatch({
-             type: 'UPLOAD_MESSAGE',
-             payload: {uploadMessage: 'Unzipping labbook'}
+             type: 'UPLOAD_MESSAGE_UPDATE',
+             payload: {
+               uploadMessage: 'Unzipping labbook',
+               percentage: 100,
+               id: ''
+             }
            })
 
            if(response.jobStatus.status === 'finished'){
@@ -328,10 +377,12 @@ export default class ImportModule extends Component {
          }).catch((error)=>{
            console.log(error)
            store.dispatch({
-             type: 'UPLOAD_MESSAGE',
+             type: 'UPLOAD_MESSAGE_UPDATE',
              payload: {
                uploadMessage: 'Import failed',
-               error: true
+               uploadError: true,
+               id: '',
+               percentage: 0,
              }
            })
            self._clearState()
@@ -342,10 +393,12 @@ export default class ImportModule extends Component {
 
      } else{
        store.dispatch({
-         type: 'UPLOAD_MESSAGE',
+         type: 'UPLOAD_MESSAGE_UPDATE',
          payload: {
            uploadMessage: wokerData[0].message,
-           error: true
+           uploadError: true,
+           id: '',
+           percentage: 0
          }
        })
        self._clearState()
@@ -359,10 +412,15 @@ export default class ImportModule extends Component {
     shows error message
   **/
   _showError(message){
-    this.setState({
-      'show': true,
-      'message': message,
-      'type': 'error'
+
+    store.dispatch({
+      type: 'UPLOAD_MESSAGE_UPDATE',
+      payload: {
+        uploadMessage: message,
+        uploadError: true,
+        id: '',
+        percentage: 0
+      }
     })
   }
   /**
@@ -371,7 +429,7 @@ export default class ImportModule extends Component {
   *  @return {}
   */
   _importingState = () => {
-    document.getElementById('dropZone__filename').classList.add('ImportModule__animation')
+    //document.getElementById('dropZone__filename').classList.add('ImportModule__animation')
     this.setState({
       isImporting: true
     })
@@ -400,63 +458,56 @@ export default class ImportModule extends Component {
   _getImportDescriptionText(){
     return this.state.error ? 'File must be .lbk' : 'Drag & Drop .lbk file, or click to select.'
   }
+
+  _showModal(evt){
+    if(evt.target.id !== 'file__input-label'){
+      this.props.showModal()
+    }
+  }
+
   render(){
 
     return(
-      <div className="ImportModule LocalLabbooks__panel LocalLabbooks__panel--import">
-        <label htmlFor="file__input">
-
-            <button
-              id="file__upload"
-              className={'ImportModule__upload-button'}
-              onClick={(evt)=>{this._fileUpload(evt)}}
-              disabled={(this.state.files.length < 1)}
-            >
-              Import LabBook
-            </button>
+      <div
+        id="dropZone"
+        type="file"
+        className="ImportModule LocalLabbooks__panel LocalLabbooks__panel--add LocalLabbooks__panel--import"
+        ref={(div)=> this.dropZone = div}
+        onClick={(evt)=>{this._showModal(evt)}}
+        onDragEnd={(evt)=> this._dragendHandler(evt)}
+        onDrop={(evt) => this._dropHandler(evt)}
+        onDragOver={(evt)=> this._dragoverHandler(evt)}
+        key={'addLabbook'}>
             <div
-              id="dropZone"
-              type="file"
-              className="ImportModule__drop-area flex justify-center"
-              ref={(div)=> this.dropZone = div}
-              onDragEnd={(evt)=> this._dragendHandler(evt)}
-              onDrop={(evt) => this._dropHandler(evt)}
-              onDragOver={(evt)=> this._dragoverHandler(evt)}>
-                {
-                (this.state.files.length < 1) &&
-                  <h6 className={this.state.error ? 'ImportModule__instructions--error' : 'ImportModule__instructions'}
-                      id="dropZone__helper">
-                      {this._getImportDescriptionText()}
-                  </h6>
-                }
-                {
-                  (this.state.files.length > 0) &&
-
-                    <h6 id="dropZone__filename">{this.state.files[0].filename}</h6>
-                }
+              id="dropZone__title"
+              className="LocalLabbooks__labbook-icon">
+                <div className="LocalLabbooks__title-add"></div>
             </div>
-          </label>
+            <div
+              id="dropZone__create"
+              className="LocalLabbooks__add-text">
+                <h4>Create LabBook</h4>
+            </div>
 
-          <input
-            id="file__input"
-            className='hidden'
-            type="file"
-            onChange={(evt)=>{this._fileSelected(evt.files)}}
-          />
-
-          <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
-
-          <SweetAlert
-            className="sa-error-container"
-            show={this.state.show}
-            type={this.state.type}
-            title={this.state.message}
-            onConfirm={() => {
-              this.setState({ show: false})
-            }}
+            <p id="dropZone__subtext">
+              Or drag and drop .lbk or
+              <label
+                className="LocalLabbooks__file-system"
+                id="file__input-label"
+                htmlFor="file__input">
+                click here
+              </label>
+            </p>
+            <input
+              id="file__input"
+              className='hidden'
+              type="file"
+              onChange={(evt)=>{this._fileSelected(evt.files)}}
             />
 
-      </div>
+            <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
+
+        </div>
       )
   }
 }

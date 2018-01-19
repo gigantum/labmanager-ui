@@ -30,12 +30,10 @@ export default class BranchCard extends Component {
         if(error){
           console.error(error);
           store.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'ERROR_MESSAGE',
             payload:{
-              uploadMessage: error[0].message,
-              error: true,
-              open: true,
-              success: false
+              message: "Problem Checking out Branch, check you have a valid session and connection",
+              uploadMessage: error,
             }
           })
         }else{

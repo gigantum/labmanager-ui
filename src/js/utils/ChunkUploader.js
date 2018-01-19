@@ -5,7 +5,7 @@ import JobStatus from './JobStatus'
 //mutations
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 import AddLabbookFileMutation from 'Mutations/fileBrowser/AddLabbookFileMutation'
-
+import store from 'JS/redux/store'
 
 /*
 
@@ -39,6 +39,34 @@ const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepa
 
       if(result && (error === undefined)){
         getChunkCallback(file, result)
+        let fileCount = store.getState().footer.fileCount + 1
+        let totalFiles = store.getState().footer.totalFiles
+
+        store.dispatch({
+          type: 'UPLOAD_MESSAGE_UPDATE',
+          payload:{
+            uploadMessage: `Uploaded ${fileCount} of ${totalFiles} files`,
+            fileCount: (store.getState().footer.fileCount + 1),
+            progessBarPercentage: ((fileCount/totalFiles) * 100),
+            error: false,
+            open: true
+          }
+        })
+
+        if(fileCount === totalFiles){
+          setTimeout(()=>{
+            store.dispatch({
+              type: 'UPLOAD_MESSAGE_REMOVE',
+              payload:{
+                uploadMessage: `Uploaded ${fileCount} of ${totalFiles} files`,
+                fileCount: (store.getState().footer.fileCount + 1),
+                progessBarPercentage: ((fileCount/totalFiles) * 100),
+                error: false,
+                open: false
+              }
+            })
+          }, 2000)
+        }
       }else{
         getChunkCallback(error)
       }

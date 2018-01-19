@@ -35,6 +35,7 @@ class Activity extends Component {
     this._toggleActivity = this._toggleActivity.bind(this)
     this._hideAddActivity = this._hideAddActivity.bind(this)
     this._handleScroll = this._handleScroll.bind(this)
+    this._refetch = this._refetch.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,33 +59,41 @@ class Activity extends Component {
       this._loadMore()
     }
 
-    let relay = this.props.relay
-
     if(activityRecords.edges && activityRecords.edges.length){
 
-      let cursor =  activityRecords.edges[ activityRecords.edges.length - 1].node.cursor
-
-      pagination = false
-
-      setInterval(function(){
-        relay.refetchConnection(
-          counter,
-          (response) =>{
-            if(!activityRecords.pageInfo.hasNextPage){
-              isLoadingMore = false
-            }
-          },
-          {
-            cursor: cursor
-          }
-        )
-      }, 3000)
+      this.interval = setInterval(this._refetch, 3000)
     }
   }
 
   componentWillUnmount() {
-
+    clearInterval(this.interval);
     window.removeEventListener('scroll', this._handleScroll)
+  }
+
+  /**
+   * @param {}
+   * refetches component looking for new edges to insert at the top of the activity feed
+   *
+   */
+  _refetch(){
+    let relay = this.props.relay
+    let activityRecords = this.props.labbook.activityRecords
+
+
+    let cursor =  activityRecords.edges[ activityRecords.edges.length - 1].node.cursor
+
+    relay.refetchConnection(
+      counter,
+      (response) =>{
+        if(!activityRecords.pageInfo.hasNextPage){
+          isLoadingMore = false
+        }
+      },
+      {
+        cursor: cursor
+      }
+    )
+
   }
   /**
   *  @param {}
@@ -220,7 +229,7 @@ class Activity extends Component {
                           activityRecordsTime[k].map((obj) => {
                           return(<ActivityCard
                               key={obj.edge.node.id}
-                              edge={obj.edge}  
+                              edge={obj.edge}
                             />)
 
                           })

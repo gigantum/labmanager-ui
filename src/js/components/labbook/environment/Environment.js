@@ -1,6 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import SweetAlert from 'sweetalert-react';
 import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import Loader from 'Components/shared/Loader'
@@ -47,23 +46,36 @@ class Environment extends Component {
         owner,
         'clientMutationId',
         (error) =>{
-
+          if(error){
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload:{
+                message: `Problem stopping ${labbookName}`,
+                messagesList: error
+              }
+            })
+          }else{
             BuildImageMutation(
             labbookName,
               owner,
               (error) => {
 
-                let showAlert = ((error !== null) && (error !== undefined))
-                let message = showAlert ? error[0].message : '';
-                this.setState({
-                  'show': showAlert,
-                  'message': message
-                })
+
+                if(error){
+                  store.dispatch({
+                    type: 'ERROR_MESSAGE',
+                    payload:{
+                      message: `${labbookName} failed to build`,
+                      messagesList: error
+                    }
+                  })
+                }
                 this.props.setBuildingState(false)
                 return "finished"
               }
             )
           }
+        }
       )
     }else {
 
@@ -71,13 +83,16 @@ class Environment extends Component {
         labbookName,
         owner,
         (error) => {
+          if(error){
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload:{
+                message: `${labbookName} failed to build`,
+                messagesList: error
+              }
+            })
+          }
 
-          let showAlert = ((error !== null) && (error !== undefined))
-          let message = showAlert ? error[0].message : '';
-          this.setState({
-            'show': showAlert,
-            'message': message
-          })
           this.props.setBuildingState(false)
           return "finished"
         }
@@ -147,14 +162,6 @@ class Environment extends Component {
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
             />
-
-            <SweetAlert
-              className="sa-error-container"
-              show={this.state.show}
-              type="error"
-              title="Error"
-              text={this.state.message}
-              onConfirm={() => this.setState({ show: false })} />
           </div>
       )
     }else{

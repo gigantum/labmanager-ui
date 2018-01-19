@@ -84,10 +84,13 @@ export default function DeleteLabbookFileMutation(
 
       updater: (store) => {
         sharedUpdater(store, labbookId, deleteLabbookFileId, connectionKey);
-
-        edgesToDelete.map((edge)=>{
-          sharedUpdater(store, labbookId, edge.node.id, connectionKey);
-        })
+        if(Array.isArray(edgesToDelete)){
+          edgesToDelete.forEach((edge) => {
+            if(edge){
+              sharedUpdater(store, labbookId, edge.node.id, connectionKey);
+            }
+          })
+        }
       },
       optimisticUpdater: (store) => {
         sharedUpdater(store, labbookId, deleteLabbookFileId, connectionKey);

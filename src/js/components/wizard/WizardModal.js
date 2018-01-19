@@ -1,5 +1,6 @@
 //vendor
 import React from 'react'
+import { CSSTransitionGroup } from 'react-transition-group'
 //components
 import CreateLabbook from './CreateLabbook'
 import SelectBaseImage from './SelectBaseImage'
@@ -143,41 +144,43 @@ export default class WizardModal extends React.Component {
 
     return(
         <div className="WizardModal">
-            <div className={!this.state.modal_visible ? 'WizardModal__modal hidden' : 'WizardModal__modal'}>
+          { this.state.modal_visible &&
 
-              <div className="WizardModal__progress">
-                <ul className="WizardModal__progress-bar">
-                  {
-                    Config.modalNav.map((navItem) => {
-                      return (
-                        this._modalNavItem(navItem)
-                      )
-                    })
-                  }
-                </ul>
-              </div>
+              <div className={'WizardModal__modal'}>
 
-              <h4 className="WizardModal__title">Create a LabBook</h4>
+                <div className="WizardModal__progress">
+                  <ul className="WizardModal__progress-bar">
+                    {
+                      Config.modalNav.map((navItem) => {
+                        return (
+                          this._modalNavItem(navItem)
+                        )
+                      })
+                    }
+                  </ul>
+                </div>
 
-              <div
-                className="WizardModal__modal-close"
-                onClick={() => this._hideModal()}>
-              </div>
+                <h4 className="WizardModal__title">Create a LabBook</h4>
 
-              {this._currentComponent()}
+                <div
+                  className="WizardModal__modal-close"
+                  onClick={() => this._hideModal()}>
+                </div>
 
-              <ModalNav
-                state={this.state}
-                getSelectedComponentId={this._getSelectedComponentId}
-                setComponent={this._setComponent}
-                hideModal={this._hideModal}
-                getButtonText={this._getButtonText}
-                continueSave={this._continueSave}
-              />
+                {this._currentComponent()}
+
+                <ModalNav
+                  state={this.state}
+                  getSelectedComponentId={this._getSelectedComponentId}
+                  setComponent={this._setComponent}
+                  hideModal={this._hideModal}
+                  getButtonText={this._getButtonText}
+                  continueSave={this._continueSave}
+                />
 
 
-          </div>
-
+            </div>
+          }
         </div>
       )
   }

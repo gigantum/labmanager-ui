@@ -1,6 +1,5 @@
 //vendor
 import React from 'react'
-import SweetAlert from 'sweetalert-react';
 //utilities
 import validation from 'JS/utils/Validation'
 //mutations
@@ -16,12 +15,9 @@ export default class CreateLabbook extends React.Component {
   	super(props);
 
   	this.state = {
-      'modal_visible': false,
       'name': '',
       'description': '',
       'showError': false,
-      'show': false,
-      'message': '',
       'errorType': '',
       'remoteURL': ''
     };
@@ -50,12 +46,9 @@ export default class CreateLabbook extends React.Component {
 
       store.dispatch(
         {
-          type: "UPLOAD_MESSAGE",
+          type: "INFO_MESSAGE",
           payload: {
-            error: false,
-            open: true,
-            success: false,
-            uploadMessage: 'Importing LabBook please wait'
+            message: 'Importing LabBook please wait'
           }
         })
 
@@ -70,12 +63,10 @@ export default class CreateLabbook extends React.Component {
             console.error(error)
             store.dispatch(
               {
-                type:"UPLOAD_MESSAGE",
+                type: 'ERROR_MESSAGE',
                 payload: {
-                error: true,
-                open: true,
-                success: false,
-                uploadMessage: 'Could not import remote LabBook'
+                  message: 'ERRROR: Could not import remote LabBook',
+                  messagesList: error
               }
             })
 
@@ -83,12 +74,9 @@ export default class CreateLabbook extends React.Component {
 
             store.dispatch(
               {
-                type: "UPLOAD_MESSAGE",
+                type: 'INFO_MESSAGE',
                 payload: {
-                  error: false,
-                  open: true,
-                  success: false,
-                  uploadMessage: 'Successfully imported remote LabBook'
+                  message: `Successfully imported remote LabBook ${labbookName}`
                 }
               })
             BuildImageMutation(
@@ -99,12 +87,10 @@ export default class CreateLabbook extends React.Component {
                 console.error(error)
                 store.dispatch(
                   {
-                    type:"UPLOAD_MESSAGE",
+                    type: 'ERROR_MESSAGE',
                     payload: {
-                    error: true,
-                    open: true,
-                    success: false,
-                    uploadMessage: 'Build failed'
+                      message: `ERROR: Failed to build ${labbookName}`,
+                      messsagesList: error
                   }
                 })
               }
@@ -121,12 +107,10 @@ export default class CreateLabbook extends React.Component {
                 console.error(error)
                 store.dispatch(
                   {
-                    type:"UPLOAD_MESSAGE",
+                    type: 'ERROR_MESSAGE',
                     payload: {
-                    error: true,
-                    open: true,
-                    success: false,
-                    uploadMessage: 'Build failed'
+                      message: `ERROR: Failed to build ${labbookName}`,
+                      messsagesList: error
                   }
                 })
               }
@@ -153,13 +137,15 @@ export default class CreateLabbook extends React.Component {
               }
             })
 
-            let showAlert = (error !== null)
 
-            if(!showAlert){
-              let message = showAlert ? error[0].message : '';
-              this.setState({
-                'show': showAlert,
-                'message': message,
+
+            if(error){
+              store.dispatch({
+                type: 'ERROR_MESSAGE',
+                payload:{
+                  message: `ERROR: could not create labbook ${name}`,
+                  messagesList: error
+                }
               })
             }
 
@@ -268,13 +254,6 @@ export default class CreateLabbook extends React.Component {
               />
             </div>
 
-            <SweetAlert
-              className="sa-error-container"
-              show={this.state.show}
-              type="error"
-              title="Error"
-              text={this.state.message}
-              onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
           </div>
         </div>
       )

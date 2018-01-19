@@ -7,7 +7,6 @@ import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrappe
 import store from 'JS/redux/store'
 
 let totalCount = 2
-let codeRootFolder;
 
 class CodeBrowser extends Component {
   constructor(props){
@@ -24,7 +23,10 @@ class CodeBrowser extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore() //routes query only loads 2, call loadMore
+    if(this.props.code.allFiles &&
+      this.props.code.allFiles.pageInfo.hasNextPage) {
+        this._loadMore() //routes query only loads 2, call loadMore
+    }
   }
   /*
     @param
@@ -57,11 +59,9 @@ class CodeBrowser extends Component {
   */
   setRootFolder(key){
     this.setState({rootFolder: key})
-    codeRootFolder = key.replace('code/', '')
   }
 
   render(){
-
     if(this.props.code && this.props.code.allFiles){
 
       let codeFiles = this.props.code.allFiles

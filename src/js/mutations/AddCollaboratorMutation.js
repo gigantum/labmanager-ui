@@ -45,13 +45,10 @@ export default function AddCollaboratorMutation(
         if(error){
           console.log(error)
           reduxStore.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'ERROR_MESSAGE',
             payload:{
-              error: true,
-              uploadMessage: `Could not add Collaborator ${username}`,
-              showProgressBar: false,
-              open: true,
-              success: false
+              message: `ERROR: Could not add Collaborator ${username}`,
+              messagesList: error
             }
           })
         }

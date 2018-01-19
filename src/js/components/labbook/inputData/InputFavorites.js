@@ -15,15 +15,15 @@ class InputFavorites extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore() //routes query only loads 2, call loadMore
-
-    this.props.relay.loadMore(
-     1, // Fetch the next 10 feed items
-     (response, error) => {
-       if(error){
-         console.error(error)
-      }
-    })
+    if(this.props.input && this.props.input.favorites && this.props.input.favorites.pageInfo.hasNextPage){
+      this.props.relay.loadMore(
+       1, // Fetch the next 10 feed items
+       (response, error) => {
+         if(error){
+           console.error(error)
+        }
+      })
+    }
   }
 
   /*

@@ -1,141 +1,51 @@
 // vendor
 import React, { Component } from 'react'
-import RelayRuntime from 'relay-runtime'
-import {createFragmentContainer, graphql} from 'react-relay'
-import SweetAlert from 'sweetalert-react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
-import Moment from 'moment'
-import Environment, {relayStore} from 'JS/createRelayEnvironment'
 //components
 import DetailPanel from './../detail/DetailPanel'
-import DragAndDrop from './DragDrop'
 //mutations
-import StartContainerMutation from 'Mutations/StartContainerMutation'
 import DeleteLabbookFileMutation from 'Mutations/fileBrowser/DeleteLabbookFileMutation'
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
 import MoveLabbookFileMutation from 'Mutations/fileBrowser/MoveLabbookFileMutation'
 import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
 //helpers
 import FolderUpload from './folderUpload'
+//Config
+import config from 'JS/config'
 
 //utilities
 import ChunkUploader from 'JS/utils/ChunkUploader'
 //store
 import store from 'JS/redux/store'
-/*
- @param {object} workerData
- uses redux to dispatch file upload to the footer
+
+
+/**
+* @param {array} files
+*
+* @return {number} totalFiles
 */
-let fileCompleteCounter = 0
+const getTotalFileLength = (files) => {
+  let fileCount = 0;
 
-const dispatchLoadingProgress = (workerData) =>{
-  let bytesUploaded = (workerData.chunkSize * (workerData.chunkIndex + 1))/1000
-  let totalBytes = workerData.fileSizeKb
+  function filesRecursionCount(file){
+      if(Array.isArray(file)){
+        file.forEach((nestedFile)=>{
+          filesRecursionCount(nestedFile)
+        })
+      }else{
+        let extension =  file.name ? file.name.replace(/.*\./, '') : file.file.name.replace(/.*\./, '');
 
-  store.dispatch({
-    type: 'LOADING_PROGRESS',
-    payload: {
-      bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
-      totalBytes: totalBytes,
-      percentage: Math.floor((bytesUploaded/totalBytes) * 100) > 100 ? 100 : Math.floor((bytesUploaded/totalBytes) * 100),
-      open: true,
-      uploadMessage: '',
-      labbookName: '',
-      error: false,
-      success: false
-    }
-  })
+        if(config.fileBrowser.excludedFiles.indexOf(extension) < 0){
+          fileCount++
+        }
+      }
+  }
 
-  document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
+
+  filesRecursionCount(files)
+
+  return fileCount;
 }
-/*
- @param {array, number} files,index
- dispatches batch loading progess to the store
-*/
-const dispatchBatchLoadingProgress = (files, index) =>{
-
-
-  store.dispatch({
-    type: 'BATCH_LOADING_PROGRESS',
-    payload: {
-      index: index,
-      totalFiles: files.length,
-      open: true
-    }
-  })
-
-  document.getElementById('footerProgressBar').style.width = Math.floor((index/files.length) * 100) + '%'
-}
-
-/*
- @param {}
- uses redux to dispatch file upload failed status to the footer
-*/
-const dispatchFailedStatus = () => {
-  store.dispatch({
-    type: 'UPLOAD_MESSAGE',
-    payload: {
-      uploadMessage: 'Import failed',
-      error: true
-    }
-  })
-}
-
-/*
- @param {string} filePath
-  gets new labbook name and url route
- @return
-*/
-const getRoute = (filepath) => {
-  let filename = filepath.split('/')[filepath.split('/').length -1]
-  return filename.split('_')[0]
-
-}
-/*
- @param {string} filePath
- dispatched upload success message and passes labbookName/route to the footer
-*/
-const dispatchFinishedStatus = (filepath) =>{
-  let route = getRoute(filepath)
-
-   store.dispatch({
-     type: 'IMPORT_SUCCESS',
-     payload: {
-       uploadMessage: `${route} LabBook is Ready`,
-       labbookName: route, //route is labbookName
-       success: true
-     }
-   })
-}
-
-/*
-
-*/
-const dispatchUploadFinished = () => {
-  document.getElementById('footerProgressBar').style.opacity = 0;
-
-  store.dispatch({
-    type: 'UPLOAD_MESSAGE',
-    payload: {
-      uploadMessage: 'Upload Succesfull',
-    }
-  })
-
-  setTimeout(()=>{
-
-    document.getElementById('footerProgressBar').style.width = "0%";
-    store.dispatch({
-      type: 'RESET_FOOTER_STORE',
-      payload: {}
-    })
-
-    setTimeout(() =>{
-      document.getElementById('footerProgressBar').style.opacity = 1;
-    }, 1000)
-  }, 1000)
-}
-
-
 
 export default class FileBrowserWrapper extends Component {
   constructor(props){
@@ -157,13 +67,9 @@ export default class FileBrowserWrapper extends Component {
     this.handleRenameFile = this.handleRenameFile.bind(this)
     this.handleDeleteFolder = this.handleDeleteFolder.bind(this)
     this.handleDeleteFile = this.handleDeleteFile.bind(this)
-    this._openJupyter = this._openJupyter.bind(this)
     this.openDetailPanel = this.openDetailPanel.bind(this)
     this.handleFileFavoriting = this.handleFileFavoriting.bind(this)
 
-  }
-  componentDidMount() {
-    //DragAndDrop.dragAndDrop()
   }
   /**
   *  @param {string} key - file key
@@ -184,6 +90,14 @@ export default class FileBrowserWrapper extends Component {
 
         if(error){
           console.error(error)
+
+          store.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload: {
+              message: `ERROR: could not create ${key}`,
+              messagesList: error
+            }
+          })
         }
       }
     )
@@ -191,67 +105,16 @@ export default class FileBrowserWrapper extends Component {
 
   _chunkLoader(filepath, file, data, batchUpload, files, index){
 
-    let self = this
-    if(!batchUpload){
-      store.dispatch({
-        type: 'LOADING_PROGRESS',
-        payload:{
-          bytesUploaded: 0,
-          percentage: 0,
-          totalBytes:  file.size/1000,
-          open: true
-        }
-      })
-    }else{
-      if(index === 0){
-        store.dispatch({
-          type: 'BATCH_LOADING_PROGRESS',
-          payload:{
-            index: 0,
-            totalFiles:  files.length,
-            open: true
-          }
-        })
-      }
-    }
-
 
     const postMessage = (workerData) => {
 
-     if(workerData.addLabbookFile){
-        if(!batchUpload){
-
-          dispatchUploadFinished()
-        }else if(batchUpload && ((files.length - 1) === fileCompleteCounter)){
-
-          fileCompleteCounter++
-
-          dispatchBatchLoadingProgress(files, fileCompleteCounter)
-
-          setTimeout(() => {
-            dispatchUploadFinished()
-            fileCompleteCounter=0;
-          }, 500)
-
-        }else{
-          fileCompleteCounter++
-          dispatchBatchLoadingProgress(files, fileCompleteCounter)
-        }
-
-
-      }else if(workerData.chunkSize){
-
-        if(!batchUpload){
-          dispatchLoadingProgress(workerData)
-        }
-     } else{
-
-       //self._clearState()
-     }
-   }
+      //TODO handle single large file upload in footer
+    }
 
    ChunkUploader.chunkFile(data, postMessage)
  }
+
+
 
   /**
   *  @param {string, string} key,prefix  file key, prefix is root folder -
@@ -260,62 +123,93 @@ export default class FileBrowserWrapper extends Component {
   handleCreateFiles(files, prefix) {
     let self = this;
 
-    if(files[0].name){
-      const batchUpload = (files.length > 1)
-
-      let newFiles = files.map((file, index) => {
-        let newKey = prefix;
-        if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
-          newKey += '/';
+    let totalFiles = getTotalFileLength(files)
+    if(totalFiles > 0){
+      store.dispatch({
+        type: 'UPLOAD_MESSAGE_SETTER',
+        payload:{
+          uploadMessage: `Preparing Upload for ${totalFiles} files`,
+          id: files[0][0] ? files[0][0].file.name + totalFiles : files[0].name + totalFiles,
+          totalFiles: totalFiles
         }
-        newKey += file.name;
+      })
+    }else{
+      store.dispatch({
+        type: 'UPLOAD_MESSAGE_SETTER',
+        payload:{
+          uploadMessage: `Cannot upload these file types`,
+          id: `nofiles`,
+          totalFiles: totalFiles
+        }
+      })
+    }
 
-        let fileReader = new FileReader();
+    let folderFiles = []
 
-        fileReader.onloadend = function (evt) {
+    files.forEach((file, index) => {
 
-          let arrayBuffer = evt.target.result;
-          let blob = new Blob([new Uint8Array(arrayBuffer)]);
-          //complete the progress bar
+      if(file.name){
+        const batchUpload = (files.length > 1)
+        //files.forEach((file, index) => {
 
-            //this._importingState();
-            let filepath = newKey
+          let newKey = prefix;
+          if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
+            newKey += '/';
+          }
+          newKey += file.name;
 
-            let data = {
-              file: file,
-              filepath: filepath,
-              username: self.state.owner,
-              accessToken: localStorage.getItem('access_token'),
-              connectionKey: self.props.connection,
-              labbookName: self.state.labbookName,
-              parentId: self.props.parentId,
-              section: self.props.section
+          let fileReader = new FileReader();
+
+          fileReader.onloadend = function (evt) {
+              let filepath = newKey
+
+              let data = {
+                file: file,
+                filepath: filepath,
+                username: self.state.owner,
+                accessToken: localStorage.getItem('access_token'),
+                connectionKey: self.props.connection,
+                labbookName: self.state.labbookName,
+                parentId: self.props.parentId,
+                section: self.props.section
+              }
+
+              self._chunkLoader(filepath, file, data, batchUpload, files, index)
             }
 
-            self._chunkLoader(filepath, file, data, batchUpload, files, index)
-          }
+
+            fileReader.readAsArrayBuffer(file);
+        //});
+      }else{
+        folderFiles.push(file)
+
+      }
 
 
-          fileReader.readAsArrayBuffer(file);
-      });
-    }else{
+
+
+    })
+    if(folderFiles.length > 0){
       let flattenedFiles = []
       function flattenFiles(filesArray){
 
           if(filesArray.entry){
             flattenedFiles.push(filesArray)
           }else{
-            if(filesArray.map){
-              filesArray.map(filesSubArray=>{
+            if(filesArray.forEach){
+              filesArray.forEach(filesSubArray => {
                 flattenFiles(filesSubArray)
               })
             }
           }
       }
 
-      flattenFiles(files)
+      flattenFiles(folderFiles)
+
       let filterFiles = flattenedFiles.filter((fileItem) => {
-          return (fileItem.file.name !== '.DS_Store')
+        let extension =  fileItem.file.name.replace(/.*\./, '');
+
+        return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
       })
 
       FolderUpload.uploadFiles(
@@ -330,7 +224,6 @@ export default class FileBrowserWrapper extends Component {
       )
 
     }
-
   }
   /**
   *  @param {string, string} oldKey,newKey  file key, prefix is root folder -
@@ -343,10 +236,6 @@ export default class FileBrowserWrapper extends Component {
       return edge && (edge.node.key.indexOf(oldKey) > -1)
     })
 
-    let folderToMove = edgesToMove.filter((edge) => {
-      return edge.node.key.indexOf('.') < 0
-    })[0]
-
     MakeLabbookDirectoryMutation(
       this.props.connection,
       self.state.owner,
@@ -354,8 +243,16 @@ export default class FileBrowserWrapper extends Component {
       this.props.parentId,
       newKey,
       this.props.section,
-      (response) => {
-
+      (response, error) => {
+        if(error){
+          store.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload: {
+              message: `ERROR: could not make ${newKey}`,
+              messagesList: error
+            }
+          })
+        }
         let all = []
 
         edgesToMove.forEach((edge) => {
@@ -372,7 +269,7 @@ export default class FileBrowserWrapper extends Component {
                   edge.node.key,
                   newKeyComputed,
                   this.props.section,
-                  (response) => {
+                  (response, error) => {
 
                     if(response.moveLabbookFile){
 
@@ -381,12 +278,17 @@ export default class FileBrowserWrapper extends Component {
                         resolve(response.moveLabbookFile)
                       },1050)
                     }else{
-
+                        store.dispatch({
+                          type: 'ERROR_MESSAGE',
+                          payload: {
+                            message: `ERROR: could not move ${edge.node.key}`,
+                            messagesList: error
+                          }
+                        })
                         reject(response)
                     }
                   }
                 )
-
 
             }))
           }
@@ -400,7 +302,7 @@ export default class FileBrowserWrapper extends Component {
           })[0]
 
           let edgesToDelete = this.props.files.edges.filter((edge) => {
-            return edge && (edge.node.key.indefOf(oldKey) > -1)
+            return edge && (edge.node.key.indexOf(oldKey) > -1)
           })[0]
 
           DeleteLabbookFileMutation(
@@ -415,8 +317,14 @@ export default class FileBrowserWrapper extends Component {
             (response, error) => {
               if(error){
                 console.error(error)
+                store.dispatch({
+                  type: 'ERROR_MESSAGE',
+                  payload: {
+                    message: `ERROR: could node delete file ${oldKey}`,
+                    messagesList: error
+                  }
+                })
               }
-
             }
           )
         }).catch(error =>{
@@ -432,11 +340,8 @@ export default class FileBrowserWrapper extends Component {
   *  moves file from old folder to a new folder
   */
   handleRenameFile(oldKey, newKey) {
-    let that = this;
     let edgeToMove = this.props.files.edges.filter((edge) => {
-      if(edge && edge.node){
-        return edge && (oldKey === edge.node.key)
-      }
+      return edge && edge.node && (oldKey === edge.node.key)
     })[0]
 
     if(edgeToMove){
@@ -452,6 +357,13 @@ export default class FileBrowserWrapper extends Component {
         (response, error) => {
           if(error){
             console.error(error)
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `ERROR: could not move file ${oldKey}`,
+                messagesList: error
+              }
+            })
           }
 
         }
@@ -464,31 +376,39 @@ export default class FileBrowserWrapper extends Component {
   *  deletes foler with a specified key
   */
   handleDeleteFolder(folderKey) {
-    let self = this
 
     let edgeToDelete = this.props.files.edges.filter((edge) => {
-      return edge && (folderKey === edge.node.key)
+
+      return edge && edge.node && (folderKey === edge.node.key)
     })[0]
 
     let edgesToDelete = this.props.files.edges.filter((edge) => {
       return edge && (edge.node.key.indexOf(folderKey) > -1)
     })
-
-    DeleteLabbookFileMutation(
-      this.props.connection,
-      this.state.owner,
-      this.state.labbookName,
-      this.props.parentId,
-      edgeToDelete.node.id,
-      folderKey,
-      this.props.section,
-      edgesToDelete,
-      (response, error) => {
-        if(error){
-          console.error(error)
+    if(edgeToDelete){
+      DeleteLabbookFileMutation(
+        this.props.connection,
+        this.state.owner,
+        this.state.labbookName,
+        this.props.parentId,
+        edgeToDelete.node.id,
+        folderKey,
+        this.props.section,
+        edgesToDelete,
+        (response, error) => {
+          if(error){
+            console.error(error)
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `ERROR: could not delete folder ${folderKey}`,
+                messagesList: error
+              }
+            })
+          }
         }
-      }
-    )
+      )
+    }
   }
   /**
   *  @param {string} fileKey
@@ -496,10 +416,8 @@ export default class FileBrowserWrapper extends Component {
   */
   handleDeleteFile(fileKey) {
 
-    let self = this
-
     let edgeToDelete = this.props.files.edges.filter((edge) => {
-      return edge && (fileKey === edge.node.key)
+      return edge && edge.node && (fileKey === edge.node.key)
     })[0]
 
     DeleteLabbookFileMutation(
@@ -514,31 +432,13 @@ export default class FileBrowserWrapper extends Component {
       (response, error) => {
         if(error){
           console.error(error)
-        }
-      }
-    )
-  }
-
-  /**
-  *  @param {}
-  *  start contianer muations
-  *  redirect user to jupyter in callback
-  */
-  _openJupyter(){
-    StartContainerMutation(
-      this.state.labbookName,
-      this.state.owner,
-      'clientMutationId',
-      (error) =>{
-        if(error){
-          this.setState({
-            'show': true,
-            'message': error[0].message,
+          store.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload: {
+              message: `ERROR: could not delete file ${fileKey}`,
+              messagesList: error
+            }
           })
-        }else{
-          setTimeout(function(){
-            window.open('http://localhost:8888/', '_blank')
-          }, 3000)
         }
       }
     )
@@ -573,7 +473,7 @@ export default class FileBrowserWrapper extends Component {
   *  triggers file favorite mutation
   */
   handleFileFavoriting(key){
-    let fileItem = this.props.files.edges.filter((edge)=>{
+    let fileItem = this.props.files.edges.filter((edge) => {
 
         if(edge && (edge.node.key === key)){
           return edge.node
@@ -582,6 +482,7 @@ export default class FileBrowserWrapper extends Component {
 
     AddFavoriteMutation(
       this.props.favoriteConnection,
+      this.props.connection,
       this.props.parentId,
       this.state.owner,
       this.state.labbookName,
@@ -594,14 +495,21 @@ export default class FileBrowserWrapper extends Component {
       (response, error)=>{
         if(error){
           console.error(error)
+          store.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload: {
+              message: `ERROR: could not add favorite ${key}`,
+              messagesList: error
+            }
+          })
         }
       }
     )
   }
-  /*
-    @param {object} file
-    gets a file objext with name, extension, key, url properties
-    sets as selected item
+  /**
+  *  @param {object} file
+  *  gets a file objext with name, extension, key, url properties
+  *  sets as selected item
   */
   openDetailPanel(file){
 
@@ -616,7 +524,6 @@ export default class FileBrowserWrapper extends Component {
       }
     })
   }
-
 
   render(){
 
@@ -646,22 +553,10 @@ export default class FileBrowserWrapper extends Component {
             owner={this.state.owner}
           />
 
-
           <DetailPanel
             {...this.state.selectedFile}
           />
 
-
-          <SweetAlert
-            className="sa-error-container"
-            show={this.state.show}
-            type="error"
-            title="Error"
-            text={this.state.message}
-            onConfirm={() => {
-              this.setState({ show: false, message: ''})
-            }}
-            />
         </div>
       )
   }

@@ -1,6 +1,5 @@
 //vendor
 import React from 'react'
-import SweetAlert from 'sweetalert-react';
 import { QueryRenderer, graphql } from 'react-relay'
 //components
 import Loader from 'Components/shared/Loader'
@@ -8,6 +7,8 @@ import Loader from 'Components/shared/Loader'
 import environment from 'JS/createRelayEnvironment'
 //mutations
 import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
+
+
 
 const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor: String){
   availableBaseImages(first: $first, after: $cursor)@connection(key: "SelectBaseImage_availableBaseImages"){
@@ -61,13 +62,10 @@ export default class SelectBaseImage extends React.Component {
   constructor(props){
   	super(props);
   	this.state = {
-      'modal_visible': false,
       'name': '',
       'description': '',
       'selectedBaseImage': null,
       'selectedBaseImageId': false,
-      'show': false,
-      'message': ''
     };
   }
   /**
@@ -183,20 +181,14 @@ export default class SelectBaseImage extends React.Component {
                       }
 
                     </div>
+
                     {
                       this._environmentView() && (
                         <div className="SelectBaseImage__progress-buttons flex flex--row justify--space-between">
                           <button onClick={() => this.continueSave()}>Save</button>
                         </div>
                       )
-                    }
-                    <SweetAlert
-                      className="sa-error-container"
-                      show={this.state.show}
-                      type="error"
-                      title="Error"
-                      text={this.state.message}
-                      onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
+                      }
 
                   </div>
                 )

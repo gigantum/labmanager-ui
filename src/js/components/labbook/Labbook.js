@@ -22,24 +22,14 @@ import BranchMenu from './BranchMenu'
 import Config from 'JS/config'
 
 let unsubscribe;
+
 class Labbook extends Component {
   constructor(props){
   	super(props);
 
-    store.dispatch({
-      type: 'INITIALIZE',
-      payload:{
-        'selectedComponent': (props.location.pathname.split('/').length > 3) ? props.location.pathname.split('/')[3] : 'overview' ,
-        'containerState': props.labbook.environment.containerStatus,
-        'imageStatus': props.labbook.environment.imageStatus,
-        'branchesOpen': false,
-      }
-
-    })
-
     localStorage.setItem('owner', store.getState().routes.owner)
-    this.state = store.getState()
-    //
+    this.state = store.getState().labbook
+    //bind functions here
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
     this._setBuildingState = this._setBuildingState.bind(this)
     this._showLabbookModal = this._showLabbookModal.bind(this)
@@ -47,17 +37,23 @@ class Labbook extends Component {
     this._toggleBranchesView = this._toggleBranchesView.bind(this)
 
 }
-/*
+
+componentWillMount() {
+  const {labbookName, owner} = store.getState().routes
+  document.title =  `${owner}/${labbookName}`
+}
+/**
+  @param {}
   subscribe to store to update state
   set unsubcribe for store
 */
 componentDidMount() {
   unsubscribe = store.subscribe(() =>{
-
-    this.storeDidUpdate(store.getState().labbook)
+      this.storeDidUpdate(store.getState().labbook)
   })
 }
-/*
+/**
+  @param {}
   unsubscribe from redux store
 */
 componentWillUnmount() {
@@ -69,8 +65,10 @@ componentWillUnmount() {
   updates history prop
 */
 storeDidUpdate = (labbook) => {
+  let stateString = JSON.stringify(this.state)
+  let labbookString = JSON.stringify(labbook)
+  if(stateString !== labbookString){
 
-  if(this.state !== labbook){
     this.setState(labbook);//triggers re-render when store updates
   }
 }
@@ -91,18 +89,7 @@ storeDidUpdate = (labbook) => {
         })
 
       }
-
-      store.dispatch(
-        {type: 'SELECTED_COMPONENT',
-        payload:{
-          'selectedComponent': componentName
-        }
-      })
-
-      this.props.history.replace(`../../../labbooks/${owner}/${this.props.match.params.labbookName}/${componentName}`)
     }
-
-
   }
   /**
     @param {boolean} isBuilding
@@ -128,11 +115,13 @@ storeDidUpdate = (labbook) => {
     returns nav jsx
   */
   _getNavItem(item){
+    let pathArray = this.props.location.pathname.split('/')
+    let selectedPath = (pathArray.length > 4 ) ? pathArray[pathArray.length - 1] : 'overview' // sets avtive nav item to overview if there is no menu item in the url
     return (
       <div
         id={item.id}
         key={item.id}
-        className={(this.state.selectedComponent === item.id) ? 'selected' : 'Labbook__navigation-item--' + item.id}
+        className={(selectedPath === item.id) ? 'selected' : 'Labbook__navigation-item--' + item.id}
         onClick={()=> this._setSelectedComponent(item.id)}
         >
         <Link

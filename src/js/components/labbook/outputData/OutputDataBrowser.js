@@ -26,7 +26,10 @@ class OutputDataBrowser extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore()
+    if(this.props.output.allFiles &&
+      this.props.output.allFiles.pageInfo.hasNextPage) {
+        this._loadMore()
+    }
   }
 
   /*

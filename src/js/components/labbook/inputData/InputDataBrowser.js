@@ -25,7 +25,10 @@ class InputDataBrowser extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore()
+    if(this.props.input.allFiles &&
+      this.props.input.allFiles.pageInfo.hasNextPage) {
+        this._loadMore()
+    }
   }
 
   /*

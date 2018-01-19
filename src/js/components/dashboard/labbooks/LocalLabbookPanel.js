@@ -1,6 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import SweetAlert from 'sweetalert-react'
 //mutations
 import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
 //utilities
@@ -19,10 +18,6 @@ export default class LocalLabbookPanel extends Component {
 
     this.state = {
       'exportPath': '',
-      'show': false,
-      'message': '',
-      'title': 'Export Successful',
-      'type': 'success'
     }
 
     this._exportLabbook = this._exportLabbook.bind(this)
@@ -51,12 +46,9 @@ export default class LocalLabbookPanel extends Component {
       let username = localStorage.getItem('username')
 
       store.dispatch({
-        type: 'UPLOAD_MESSAGE',
+        type: 'INFO_MESSAGE',
         payload: {
-          uploadMessage: 'Exporting LabBook',
-          open: true,
-          success: false,
-          error: false
+          message: 'Exporting LabBook',
         }
       })
 
@@ -68,12 +60,9 @@ export default class LocalLabbookPanel extends Component {
 
               if(data.jobStatus.result){
                 store.dispatch({
-                  type: 'UPLOAD_MESSAGE',
+                  type: 'INFO_MESSAGE',
                   payload: {
-                    uploadMessage: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-                    open: true,
-                    success: false,
-                    error: false
+                    message: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
                   }
                 })
               }
@@ -83,12 +72,10 @@ export default class LocalLabbookPanel extends Component {
 
               if(error){
                 store.dispatch({
-                  type: 'UPLOAD_MESSAGE',
+                  type: 'ERROR_MESSAGE',
                   payload: {
-                    uploadMessage: `Export failed`,
-                    open: true,
-                    success: false,
-                    error: true
+                    message: `Export failed`,
+                    messageList: error
                   }
                 })
               }
@@ -97,12 +84,10 @@ export default class LocalLabbookPanel extends Component {
       }else{
 
         store.dispatch({
-          type: 'UPLOAD_MESSAGE',
+          type: 'ERROR_MESSAGE',
           payload: {
-            uploadMessage: 'Export Failed: ' + error[0].message,
-            open: true,
-            success: false,
-            error: true
+            message: 'Export Failed: ' + error[0].message,
+            messageList: error
           }
         })
 
@@ -117,7 +102,6 @@ export default class LocalLabbookPanel extends Component {
   render(){
     let edge = this.props.edge;
     let status = this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
-    let exportFile = this.state.exportPath.split('/')[this.state.exportPath.split('/').length - 1]
 
     return (
       <div
@@ -162,16 +146,6 @@ export default class LocalLabbookPanel extends Component {
               onMouseDown={(evt) => this._exportLabbook(evt, edge)} className="LocalLabbooks__export">
               Export
             </div>
-            <SweetAlert
-              className="sa-error-container"
-              show={this.state.show}
-              type={this.state.type}
-              title={this.state.title}
-              text={ this.state.message }
-              onConfirm={() => {
-                this.setState({ show: false})
-              }}
-              />
 
           </div>
 
