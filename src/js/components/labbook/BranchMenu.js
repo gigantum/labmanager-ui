@@ -1,6 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import { WithContext as ReactTags } from 'react-tag-input';
 //utilities
 import validation from 'JS/utils/Validation'
 //mutations
@@ -223,6 +222,7 @@ export default class UserNote extends Component {
         message: 'Syncing with remote ...'
       }
     })
+
     SyncLabbookMutation(
       this.state.owner,
       this.state.labbookName,
@@ -341,7 +341,6 @@ export default class UserNote extends Component {
 
 
   render(){
-    const {tags} = this.state;
 
     return(
       <div className="BranchMenu flex flex--column">

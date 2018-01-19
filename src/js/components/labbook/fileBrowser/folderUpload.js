@@ -153,8 +153,6 @@ chunkLoader) =>{
 
   fileReader.onloadend = function (evt) {
 
-    let arrayBuffer = evt.target.result;
-    let blob = new Blob([new Uint8Array(arrayBuffer)]);
     let filePath = (prefix !== '/') ? prefix + file.entry.fullPath : file.entry.fullPath;
     if(filePath.indexOf('/') === 0){
       filePath = filePath.replace('/', '')
