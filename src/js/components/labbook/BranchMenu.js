@@ -1,6 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import SimpleMDE from 'simplemde'
 import { WithContext as ReactTags } from 'react-tag-input';
 //utilities
 import validation from 'JS/utils/Validation'
@@ -14,9 +13,6 @@ import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
 //store
 import store from 'JS/redux/store'
 
-
-
-let simple;
 
 export default class UserNote extends Component {
   constructor(props){
@@ -243,7 +239,7 @@ export default class UserNote extends Component {
           store.dispatch({
             type: 'INFO_MESSAGE',
             payload: {
-              message: `Successfully synched ${this.state.labbookName}`
+              message: `Successfully synced ${this.state.labbookName}`
             }
           })
         }

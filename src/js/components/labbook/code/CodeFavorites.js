@@ -52,7 +52,6 @@ class CodeFavorites extends Component {
        self.setState({loading: false})
 
        if(error){
-         console.log(error)
          console.error(error)
        }
 

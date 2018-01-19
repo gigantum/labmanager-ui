@@ -263,7 +263,6 @@ const FolderUpload = {
     let count = 0;//
     let existingPaths = []
     let filePaths = []
-
     /**
     *  @param {object} fileItem
     *  recursive function that loops through a object that replicates a folders structure

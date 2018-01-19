@@ -18,118 +18,6 @@ import ChunkUploader from 'JS/utils/ChunkUploader'
 //store
 import store from 'JS/redux/store'
 
-/*
- @param {object} workerData
- uses redux to dispatch file upload to the footer
-*/
-let fileCompleteCounter = 0
-
-const dispatchLoadingProgress = (workerData) =>{
-
-  let bytesUploaded = (workerData.chunkSize * (workerData.chunkIndex + 1))/1000
-  let totalBytes = workerData.fileSizeKb
-
-  store.dispatch({
-    type: 'LOADING_PROGRESS',
-    payload: {
-      bytesUploaded: bytesUploaded < totalBytes ? bytesUploaded : totalBytes,
-      totalBytes: totalBytes,
-      percentage: Math.floor((bytesUploaded/totalBytes) * 100) > 100 ? 100 : Math.floor((bytesUploaded/totalBytes) * 100),
-      open: true,
-      uploadMessage: '',
-      labbookName: '',
-      error: false,
-      success: false
-    }
-  })
-
-  document.getElementById('footerProgressBar').style.width = Math.floor((bytesUploaded/totalBytes) * 100) + '%'
-}
-/*
- @param {array, number} files,index
- dispatches batch loading progess to the store
-*/
-const dispatchBatchLoadingProgress = (files, index) =>{
-
-  store.dispatch({
-    type: 'BATCH_LOADING_PROGRESS',
-    payload: {
-      index: index,
-      totalFiles: files.length,
-      open: true
-    }
-  })
-
-  document.getElementById('footerProgressBar').style.width = Math.floor((index/files.length) * 100) + '%'
-}
-
-/*
- @param {}
- uses redux to dispatch file upload failed status to the footer
-*/
-const dispatchFailedStatus = () => {
-  store.dispatch({
-    type: 'ERROR_MESSAGE',
-    payload: {
-      message: 'Import failed',
-      messagesList: []
-    }
-  })
-}
-
-/*
- @param {string} filePath
-  gets new labbook name and url route
- @return
-*/
-const getRoute = (filepath) => {
-  let filename = filepath.split('/')[filepath.split('/').length -1]
-  return filename.split('_')[0]
-
-}
-/*
- @param {string} filePath
- dispatched upload success message and passes labbookName/route to the footer
-*/
-const dispatchFinishedStatus = (filepath) =>{
-  let route = getRoute(filepath)
-
-   store.dispatch({
-     type: 'IMPORT_SUCCESS',
-     payload: {
-       uploadMessage: `${route} LabBook is Ready`,
-       labbookName: route, //route is labbookName
-       success: true
-     }
-   })
-}
-
-/*
-
-*/
-const dispatchUploadFinished = () => {
-  document.getElementById('footerProgressBar').style.opacity = 0;
-
-  store.dispatch({
-    type: 'INFO_MESSAGE',
-    payload: {
-      message: 'Upload Succesfull'
-    }
-  })
-
-  setTimeout(()=>{
-
-    document.getElementById('footerProgressBar').style.width = "0%";
-    store.dispatch({
-      type: 'RESET_FOOTER_STORE',
-      payload: {}
-    })
-
-    setTimeout(() =>{
-      document.getElementById('footerProgressBar').style.opacity = 1;
-    }, 1000)
-  }, 1000)
-}
 
 /**
 * @param {array} files
@@ -217,63 +105,11 @@ export default class FileBrowserWrapper extends Component {
 
   _chunkLoader(filepath, file, data, batchUpload, files, index){
 
-    if(!batchUpload){
-      // store.dispatch({
-      //   type: 'LOADING_PROGRESS',
-      //   payload:{
-      //     bytesUploaded: 0,
-      //     percentage: 0,
-      //     totalBytes:  file.size/1000,
-      //     open: true
-      //   }
-      // })
-    }else{
-      if(index === 0){
-        // store.dispatch({
-        //   type: 'BATCH_LOADING_PROGRESS',
-        //   payload:{
-        //     index: 0,
-        //     totalFiles:  files.length,
-        //     open: true
-        //   }
-        // })
-      }
-    }
-
 
     const postMessage = (workerData) => {
 
-     if(workerData.addLabbookFile){
-        if(!batchUpload){
-
-          //dispatchUploadFinished()
-        }else if(batchUpload && ((files.length - 1) === fileCompleteCounter)){
-
-          fileCompleteCounter++
-
-          //dispatchBatchLoadingProgress(files, fileCompleteCounter)
-
-          setTimeout(() => {
-            //dispatchUploadFinished()
-            fileCompleteCounter=0;
-          }, 500)
-
-        }else{
-          fileCompleteCounter++
-          //dispatchBatchLoadingProgress(files, fileCompleteCounter)
-        }
-
-
-      }else if(workerData.chunkSize){
-
-        if(!batchUpload){
-          //dispatchLoadingProgress(workerData)
-        }
-     } else{
-
-       //self._clearState()
-     }
-   }
+      //TODO handle single large file upload in footer
+    }
 
    ChunkUploader.chunkFile(data, postMessage)
  }
@@ -309,7 +145,9 @@ export default class FileBrowserWrapper extends Component {
     }
 
     let folderFiles = []
+
     files.forEach((file, index) => {
+
       if(file.name){
         const batchUpload = (files.length > 1)
         //files.forEach((file, index) => {
@@ -534,7 +372,7 @@ export default class FileBrowserWrapper extends Component {
   }
 
   /**
-  *  @param {string} folderKeyå
+  *  @param {string} folderKey
   *  deletes foler with a specified key
   */
   handleDeleteFolder(folderKey) {
@@ -660,7 +498,7 @@ export default class FileBrowserWrapper extends Component {
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload: {
-              message: `ERROR: could delete add favorite ${key}`,
+              message: `ERROR: could not add favorite ${key}`,
               messagesList: error
             }
           })

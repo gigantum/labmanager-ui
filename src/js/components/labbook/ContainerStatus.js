@@ -87,7 +87,9 @@ export default class ContainerStatus extends Component {
         })
       }
     }
-    this.interval = setInterval(this._tick, 200000);
+
+    let intervalInSeconds = 2 * 1000
+    this.interval = setInterval(this._tick, intervalInSeconds);
 
     window.addEventListener("click", this._closePopupMenus)
   }

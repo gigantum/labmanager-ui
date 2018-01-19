@@ -106,6 +106,7 @@ export default function MakeLabbookDirectoryMutation(
         edgeName: 'newLabbookFileEdge'
       }],
       onCompleted: (response, error ) => {
+
         if(error){
           console.log(error)
         }
