@@ -129,7 +129,7 @@ export default class FileBrowserWrapper extends Component {
         type: 'UPLOAD_MESSAGE_SETTER',
         payload:{
           uploadMessage: `Preparing Upload for ${totalFiles} files`,
-          id: files[0][0] ? files[0][0].file.name + totalFiles : files[0].name + totalFiles,
+          id: Math.random() * 10000,
           totalFiles: totalFiles
         }
       })
