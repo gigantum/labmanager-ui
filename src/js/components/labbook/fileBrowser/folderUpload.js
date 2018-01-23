@@ -271,76 +271,125 @@ const FolderUpload = {
       filePaths.push(fileItem)
       count++
 
-      let filePath = fileItem.entry.fullPath.replace('/' + fileItem.file.name, '')
-      const path = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
-      const folderNames = path.split('/')
+      if(fileItem && fileItem.entry){
+        let filePath = fileItem.entry.fullPath.replace('/' + fileItem.file.name, '')
+        const path = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
+        const folderNames = path.split('/')
 
-      let folderPaths = getFolderPaths(folderNames, prefix);
+        let folderPaths = getFolderPaths(folderNames, prefix);
 
-      let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, section)
+        let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, section)
 
-      Promise.all(directoryExistsAll).then((labbooks)=>{
-        let directoryAll = []
+        Promise.all(directoryExistsAll).then((labbooks)=>{
+          let directoryAll = []
 
-        labbooks.forEach((response)=>{
+          labbooks.forEach((response)=>{
 
-          if(response.labbook[section].files === null){
-            let directoryPromise = makeDirectory(
-                connectionKey,
-                owner,
-                labbookName,
-                sectionId,
-                path,
-                section)
+            if(response.labbook[section].files === null){
+              let directoryPromise = makeDirectory(
+                  connectionKey,
+                  owner,
+                  labbookName,
+                  sectionId,
+                  path,
+                  section)
 
-            directoryAll.push(directoryPromise)
-          }else{
-            existingPaths.push(path)
-          }
-        })
+              directoryAll.push(directoryPromise)
+            }else{
+              existingPaths.push(path)
+            }
+          })
 
-        if(directoryAll.length < 1){
+          if(directoryAll.length < 1){
 
-          addFiles(filePaths,
-            connectionKey,
-            owner,
-            labbookName,
-            sectionId,
-            path,
-            section,
-            prefix,
-            chunkLoader)
-
-          filePaths = [];//must empty file list for nested files
-
-          if(count < files.length){
-            fileCheck(files[count])
-          }
-        }
-        else{
-
-          Promise.all(directoryAll).then((result) =>{
             addFiles(filePaths,
-            connectionKey,
-            owner,
-            labbookName,
-            sectionId,
-            path,
-            section,
-            prefix,
-            chunkLoader)
+              connectionKey,
+              owner,
+              labbookName,
+              sectionId,
+              path,
+              section,
+              prefix,
+              chunkLoader)
+
             filePaths = [];//must empty file list for nested files
 
             if(count < files.length){
-
               fileCheck(files[count])
-
             }
+          }
+          else{
+
+            Promise.all(directoryAll).then((result) =>{
+              addFiles(filePaths,
+              connectionKey,
+              owner,
+              labbookName,
+              sectionId,
+              path,
+              section,
+              prefix,
+              chunkLoader)
+              filePaths = [];//must empty file list for nested files
+
+              if(count < files.length){
+
+                fileCheck(files[count])
+
+              }
+            })
+          }
+
+
+        })
+      }else{
+        if(fileItem){
+          let filePath = fileItem.fullPath;
+          const path = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
+          const folderNames = path.split('/')
+
+          let folderPaths = getFolderPaths(folderNames, prefix);
+
+          let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, section)
+
+          Promise.all(directoryExistsAll).then((labbooks)=>{
+            let index = 0;
+            function iterate(response){
+              if(response.labbook[section].files === null){
+                makeDirectory(
+                    connectionKey,
+                    owner,
+                    labbookName,
+                    sectionId,
+                    response.variables.path,
+                    section)
+                    .then((result)=>{
+                      index++
+
+                      if(labbooks[index]){
+                        iterate(labbooks[index])
+                      }else{
+                        fileCheck(files[count])
+                      }
+
+                      existingPaths.push(response.variables.path)
+                  })
+
+              }else{
+                index++;
+                if(index > labbooks.length){
+                  fileCheck(files[count])
+                }else{
+                  iterate(labbooks[index])
+                }
+                existingPaths.push(response.variables.path)
+              }
+            }
+
+            iterate(labbooks[index])
           })
         }
-
-
-      })
+      }
     }
 
     fileCheck(files[count])

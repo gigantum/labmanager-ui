@@ -53,6 +53,23 @@
   transition: height 0.5s, max-height 0.5s, opacity 1s;
   opacity: 1;
   overflow: auto;
+  width: calc(100% - 40px);
+}
+// .Footer__message-list::-webkit-scrollbar-track
+// {
+//
+// 	background-color: rgba(255,255,255, 0.7);
+// }
+
+.Footer__message-list::-webkit-scrollbar
+{
+	width: 8px;
+	background-color: rgba(255,255,255,0.5);
+}
+
+.Footer__message-list::-webkit-scrollbar-thumb
+{
+	background-color: #fff;
 }
 
 .Footer__message-list--collapsed{
@@ -115,38 +132,79 @@
 
   width: 100%;
   height: auto;
+  padding: 0 40px;
   min-height: 40px;
-  text-align: center;
+  text-align: left;
 
   line-height: 25px;
 
-  @include flex(space-between, row);
+  @include flex(space-between, column);
 
   ul{
     margin: 0px;
+    text-align: left;
+    @include flex(space-between, column);
+
+    li{
+      border-bottom: 1px solid white;
+      margin: 0 30px 0 0;
+    }
   }
 
   .Footer__message{
     height: 40px;
-    vertical-align: center;
+    vertical-align: middle;
+    line-height: 40px;
+
+
   }
 
   .Footer__message--error{
     @extend .Footer__message;
-    background-color: $crimson;
+    @extend .fa;
+    @extend .fa-exclamation-circle;
+    @include flex(flex-start, row);
+    .Footer__message-paragraph{
+      flex: 1 0 auto;
+    }
+    // i:before{
+    //   align-self: flex-end;
+    //   align-content: flex-end;
+    //   flex-grow: 1;
+    // }
+  }
+
+  .Footer__message--error:before{
+    margin: 10px;
   }
 
   .Footer__message-dismiss{
-    padding-left: 30px;
+    margin-left: 30px;
+
+    border: 1px solid white;
+    height: 20px;
+    width: 20px;
+
+    text-align: center;
+    line-height: 18px;
+
+    border-radius: 15px;
 
     cursor: pointer;
 
-    @extend .fa-trash;
+    @extend .fa-times;
   }
 
   .Footer__message-dismiss:hover{
     color: $turquise;
   }
+}
+
+.Footer__status--error{
+  background-color: $crimson;
+}
+.Footer__status--warning{
+  background-color: $goldenLemon;
 }
 
 .Footer__upload-status{
@@ -184,6 +242,8 @@
     flex: 1;
 
     color: $white;
+
+
 }
 
 .Footer__close{

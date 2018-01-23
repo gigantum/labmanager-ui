@@ -132,125 +132,166 @@ export default class Footer extends Component {
        'Footer--expand-extra': (this.state.open && this.state.uploadOpen)
       });
 
+    let mostRecentMessage = this.state.messageStack[this.state.messageStack.length - 1]
+
+    let statusClassType = '';
+
+    this.state.messageStack.forEach((messageItem)=>{
+      if(messageItem.className === "Footer__message--error"){
+          statusClassType = "error"
+      }else if((messageItem.className === "Footer__message--error") && (statusClassType === '')){
+          statusClassType = "warning"
+      }
+    })
+
     let footerStatusClass = classNames({
         'Footer': !this.state.open,
-        'Footer__status': this.state.open
+        'Footer__status': this.state.open,
+        'Footer__status--error': (statusClassType === 'error'),
+        'Footer__status--warning': (statusClassType === 'warning')
     });
 
-    let footerUploadClass = classNames({
-        'hidden': !this.state.uploadOpen,
-        'Footer__upload-status': this.state.uploadOpen,
-        'Footer__upload-error': this.state.uploadError
-    });
-
-    let footerMessageListClass = classNames({
-        'Footer__message-list': true,
-        'Footer__message-list--collapsed': !this.state.messageListOpen
-      })
-    let footerCollapseButton = classNames({
-      'Footer__collapse-message-list': this.state.messageListOpen,
-      'hidden': !this.state.messageListOpen
-    })
 
 
-    let mostRecentMessage = this.state.messageStack[this.state.messageStack.length - 1]
-    let messageList = this.state.messageStack.filter((messageItem)=>{
-      return (mostRecentMessage.id !== messageItem.id)
-    })
-
-    let otherMessages = this.state.messageStack.length - 1
     return (
       <div id="footer" className={footerClass}>
 
         <div
           className={footerStatusClass}>
+          { mostRecentMessage &&
 
-            <div className="Footer__messages-section">
-              <div className={footerMessageListClass}>
-                <div
-                  className={footerCollapseButton}
-                  onClick={()=>{this._toggleMessagesList(false)}}>
-                </div>
-                <ul>
-                  {messageList.map((messageItem)=>{
+            <MainStatusMessage
+              mostRecentMessage={mostRecentMessage}
+              self={this}
+            />
+          }
 
-                      return(<li
-                        key={messageItem.id}
-                        className={messageItem.className}>
-                        {messageItem.message}
-
-                        {messageItem.error &&
-                          <i
-                            onClick={()=>{this._removeMessage(messageItem)}}
-                            className="Footer__message-dismiss fa">
-                          </i>
-                        }
-
-                      </li>)
-                  })}
-                  </ul>
-              </div>
-
-              { mostRecentMessage &&
-                <div
-                  key={mostRecentMessage.id}
-                  className={mostRecentMessage.className}>
-                  {mostRecentMessage.message}
-
-                  {mostRecentMessage.error &&
-                    <i
-                      onClick={()=>{this._removeMessage(mostRecentMessage)}}
-                      className="Footer__message-dismiss fa">
-                    </i>
-                  }
-
-                  {
-                    (otherMessages > 0) &&
-                    <span
-                      className="Footer__expand-messages-button"
-                      onClick={()=>{this._toggleMessagesList(true)}}>
-                      {` and ${otherMessages} other message(s)`}
-                    </span>
-                  }
-
-                </div>
-              }
-
-
-
-            </div>
+          <ListStatusMessages
+            self={this}
+          />
 
         </div>
 
-        <div
-          className={footerUploadClass}>
-            <div className="Footer__upload-message">
-              {this.state.uploadMessage}
-            </div>
-
-            <div
-              id="footerProgressBar"
-              style={{width: this.state.progessBarPercentage + '%'}}
-              className="Footer__progress-bar">
-            </div>
-            {
-              this.state.uploadError &&
-                <div
-                  onClick={() =>{ this._closeFooter() }}
-                  className="Footer__close">
-                </div>
-            }
-            {
-              this.state.labbookSuccess &&
-                <button
-                  className="Footer__button"
-                  onClick={() => this._openLabbook()}>
-                  Open LabBook
-                </button>
-            }
-        </div>
+        <FooterUpload
+          self={this}
+        />
 
       </div>
     )
   }
+}
+
+
+const MainStatusMessage = ({mostRecentMessage, self}) =>{
+  let otherMessages = self.state.messageStack.length - 1;
+  return (
+    <div
+      key={mostRecentMessage.id}
+      className={mostRecentMessage.className}>
+      {mostRecentMessage.message}
+
+
+
+      {
+        (otherMessages > 0) &&
+        <span
+          className="Footer__expand-messages-button"
+          onClick={()=>{self._toggleMessagesList(true)}}>
+          {` (and ${otherMessages} other notifications)`}
+        </span>
+      }
+
+      {mostRecentMessage.error &&
+        <i
+          onClick={()=>{self._removeMessage(mostRecentMessage)}}
+          className="Footer__message-dismiss fa">
+        </i>
+      }
+
+    </div>
+  )
+}
+
+let ListStatusMessages = ({self}) =>{
+
+  let footerMessageListClass = classNames({
+      'Footer__message-list': true,
+      'Footer__message-list--collapsed': !self.state.messageListOpen
+    })
+  let footerCollapseButton = classNames({
+    'Footer__collapse-message-list': self.state.messageListOpen,
+    'hidden': !self.state.messageListOpen
+  })
+
+  let mostRecentMessage = self.state.messageStack[self.state.messageStack.length - 1]
+  let messageList = self.state.messageStack.filter((messageItem)=>{
+    return (mostRecentMessage.id !== messageItem.id)
+  })
+  return (
+    <div className="Footer__messages-section">
+      <div className={footerMessageListClass}>
+        <div
+          className={footerCollapseButton}
+          onClick={()=>{self._toggleMessagesList(false)}}>
+        </div>
+        <ul>
+          {messageList.map((messageItem)=>{
+
+              return(<li
+                key={messageItem.id}
+                className={messageItem.className}>
+                <p className="Footer__message-paragraph">{messageItem.message}</p>
+
+                {messageItem.error &&
+                  <i
+                    onClick={()=>{self._removeMessage(messageItem)}}
+                    className="Footer__message-dismiss fa">
+                  </i>
+                }
+
+              </li>)
+          })}
+          </ul>
+      </div>
+
+    </div>
+  )
+}
+
+const FooterUpload = ({self}) => {
+
+  let footerUploadClass = classNames({
+      'hidden': !self.state.uploadOpen,
+      'Footer__upload-status': self.state.uploadOpen,
+      'Footer__upload-error': self.state.uploadError
+  });
+  return(
+    <div
+      className={footerUploadClass}>
+        <div className="Footer__upload-message">
+          {self.state.uploadMessage}
+        </div>
+
+        <div
+          id="footerProgressBar"
+          style={{width: self.state.progessBarPercentage + '%'}}
+          className="Footer__progress-bar">
+        </div>
+        {
+          self.state.uploadError &&
+            <div
+              onClick={() =>{ self._closeFooter() }}
+              className="Footer__close">
+            </div>
+        }
+        {
+          self.state.labbookSuccess &&
+            <button
+              className="Footer__button"
+              onClick={() => self._openLabbook()}>
+              Open LabBook
+            </button>
+        }
+    </div>
+  )
 }
