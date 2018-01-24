@@ -16,6 +16,7 @@ export default class Footer extends Component {
     this.state = store.getState().footer
 
     this._clearState = this._clearState.bind(this)
+    this._toggleMessagesList = this._toggleMessagesList.bind(this)
   }
   /**
     subscribe to store to update state
@@ -115,11 +116,11 @@ export default class Footer extends Component {
   @return {}
  */
 
- _toggleMessagesList(value){
+ _toggleMessagesList(){
    store.dispatch({
      type: 'TOGGLE_MESSAGE_LIST',
      payload:{
-       messageListOpen: value
+       messageListOpen: !this.state.messageListOpen
      }
    })
  }
@@ -184,21 +185,24 @@ export default class Footer extends Component {
 
 const MainStatusMessage = ({mostRecentMessage, self}) =>{
   let otherMessages = self.state.messageStack.length - 1;
+  let footerExpandMessages = classNames({
+    'Footer__expand-messages-button': true,
+    'Footer__expand-messages-button--expanded': self.state.messageListOpen
+  })
   return (
     <div
       key={mostRecentMessage.id}
-      className={mostRecentMessage.className}>
-      {mostRecentMessage.message}
-
-
-
+      className="Footer__main-message">
+      <div className="Footer__main-message-text">
+        {mostRecentMessage.message}
+      </div>
       {
         (otherMessages > 0) &&
-        <span
-          className="Footer__expand-messages-button"
-          onClick={()=>{self._toggleMessagesList(true)}}>
+        <div
+          className={footerExpandMessages}
+          onClick={()=>{self._toggleMessagesList()}}>
           {` (and ${otherMessages} other notifications)`}
-        </span>
+        </div>
       }
 
       {mostRecentMessage.error &&
@@ -218,10 +222,6 @@ let ListStatusMessages = ({self}) =>{
       'Footer__message-list': true,
       'Footer__message-list--collapsed': !self.state.messageListOpen
     })
-  let footerCollapseButton = classNames({
-    'Footer__collapse-message-list': self.state.messageListOpen,
-    'hidden': !self.state.messageListOpen
-  })
 
   let mostRecentMessage = self.state.messageStack[self.state.messageStack.length - 1]
   let messageList = self.state.messageStack.filter((messageItem)=>{
@@ -230,17 +230,14 @@ let ListStatusMessages = ({self}) =>{
   return (
     <div className="Footer__messages-section">
       <div className={footerMessageListClass}>
-        <div
-          className={footerCollapseButton}
-          onClick={()=>{self._toggleMessagesList(false)}}>
-        </div>
+
         <ul>
           {messageList.map((messageItem)=>{
 
               return(<li
                 key={messageItem.id}
                 className={messageItem.className}>
-                <p className="Footer__message-paragraph">{messageItem.message}</p>
+                <p className="Footer__message-title">{messageItem.message}</p>
 
                 {messageItem.error &&
                   <i

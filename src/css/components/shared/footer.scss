@@ -18,6 +18,9 @@
 
   @include flex(space-between, column);
 }
+.Footer *{
+  font-weight: 400;
+}
 
 .Footer--open {
     max-height: 90px;
@@ -30,7 +33,9 @@
 .Footer--expand-extra {
     max-height: 180px !important;
 }
-
+.Footer__main-message{
+  @include flex(flex-start, row);
+}
 .Footer__messages-section{
   z-index: 300;
 
@@ -80,8 +85,19 @@
 }
 
 .Footer__expand-messages-button{
+  width: 200px;
+  margin: 0 0 0 3px;
   text-decoration: underline;
   cursor: pointer;
+  background: url('../images/icons/down-arrow-white.svg') no-repeat 100% 50%;
+  background-size: 18px;
+}
+
+.Footer__expand-messages-button--expanded{
+  width: 200px;
+  margin: 0 0 0 3px;
+  background: url('../images/icons/up-arrow-white.svg') no-repeat 100% 50% !important;
+  background-size: 18px !important;
 }
 
 .Footer--error{
@@ -164,14 +180,18 @@
     @extend .fa;
     @extend .fa-exclamation-circle;
     @include flex(flex-start, row);
-    .Footer__message-paragraph{
-      flex: 1 0 auto;
-    }
+
+    align-items: center;
+
     // i:before{
     //   align-self: flex-end;
     //   align-content: flex-end;
     //   flex-grow: 1;
     // }
+  }
+  .Footer__message-title{
+    flex: 1 0 auto;
+    margin: 0;
   }
 
   .Footer__message--error:before{
