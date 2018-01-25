@@ -101,7 +101,7 @@
     "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "node scripts/start.js NODE_ENV='development'",
     "build": "node scripts/build.js",
     "test": "jest",
     "relay": "relay-compiler --src ./src --schema ./schema.graphql",

@@ -44,11 +44,11 @@ export default class LocalLabbookPanel extends Component {
 
       exportClassList.add('LocalLabbooks__export--downloading')
       let username = localStorage.getItem('username')
-
+      let labbookName = edge.node.name
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload: {
-          message: 'Exporting LabBook',
+          message: `Exporting ${labbookName} LabBook`,
         }
       })
 
@@ -74,7 +74,7 @@ export default class LocalLabbookPanel extends Component {
                 store.dispatch({
                   type: 'ERROR_MESSAGE',
                   payload: {
-                    message: `Export failed`,
+                    message: `${labbookName} failed to export `,
                     messageList: error
                   }
                 })
