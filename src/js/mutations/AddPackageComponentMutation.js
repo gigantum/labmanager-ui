@@ -6,22 +6,25 @@ import environment from 'JS/createRelayEnvironment'
 //import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
-  mutation AddEnvironmentComponentMutation($input: AddEnvironmentComponentInput!){
-    addEnvironmentComponent(input: $input){
-      environmentComponent{
-        id
-        repository
-        namespace
-        name
-        version
-        componentClass
+  mutation AddPackageComponentMutation($input: AddPackageComponentInput!){
+    addPackageComponent(input: $input){
+      newPackageComponentEdge{
+        node{
+          id
+          schema
+          manager
+          package
+          version
+          latestVersion
+          fromBase
+        }
       }
       clientMutationId
     }
   }
 `;
 
-export default function AddEnvironmentComponentMutation(
+export default function AddPackageComponentMutation(
   labbookName,
   owner,
   repository,

@@ -6,8 +6,8 @@ import environment from 'JS/createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
-  mutation AddEnvironmentPackageMutation($input: AddEnvironmentPackageInput!){
-    addEnvironmentPackage(input: $input){
+  mutation AddCustomComponentMutation($input: AddCustomComponentInput!){
+    addCustomComponent(input: $input){
       clientMutationId
     }
   }

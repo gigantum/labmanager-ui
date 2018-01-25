@@ -3,11 +3,9 @@ import React from 'react'
 import { CSSTransitionGroup } from 'react-transition-group'
 //components
 import CreateLabbook from './CreateLabbook'
-import SelectBaseImage from './SelectBaseImage'
-import SelectDevelopmentEnvironment from './SelectDevelopmentEnvironment'
 import SuccessMessage from './SuccessMessage'
 import AddEnvironmentPackage from './AddEnvironmentPackage'
-import AddCustomDependencies from './AddCustomDependencies'
+import CustomDependencies from './CustomDependencies'
 
 import Config from 'JS/config'
 
@@ -208,25 +206,6 @@ export default class WizardModal extends React.Component {
             nextWindow={'selectBaseImage'}
             history={this.props.history}
           />)
-        case 'selectBaseImage':
-          return(
-            <SelectBaseImage
-                ref="selectBaseImage"
-                toggleDisabledContinue={this._toggleDisabledContinue}
-                labbookName={this.state.labbookName}
-                setBaseImage={this._setBaseImage}
-                setComponent={this._setComponent}
-                nextWindow={'selectDevelopmentEnvironment'}
-            />)
-        case 'selectDevelopmentEnvironment':
-          return(
-            <SelectDevelopmentEnvironment
-              ref="selectDevelopmentEnvironment"
-              toggleDisabledContinue={this._toggleDisabledContinue}
-              labbookName={this.state.labbookName}
-              setComponent={this._setComponent}
-              nextWindow={'addEnvironmentPackage'}
-            />)
 
         case 'addEnvironmentPackage':
           return(
@@ -240,7 +219,7 @@ export default class WizardModal extends React.Component {
             />)
         case 'addCustomDependencies':
           return(
-            <AddCustomDependencies
+            <CustomDependencies
               ref="addCustomDependencies"
               toggleDisabledContinue={this._toggleDisabledContinue}
               setComponent={this._setComponent}

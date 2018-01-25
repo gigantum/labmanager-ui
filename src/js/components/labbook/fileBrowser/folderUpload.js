@@ -14,7 +14,7 @@ const fileExistenceQuery = graphql`
     labbook(name: $labbookName, owner: $owner){
       id
       code{
-        files(root: $path, first:1){
+        files(rootDir: $path, first:1){
           edges{
             node{
               isDir,
@@ -24,7 +24,7 @@ const fileExistenceQuery = graphql`
         }
       }
       input{
-      	files(root: $path, first: 1){
+      	files(rootDir: $path, first: 1){
           edges{
             node{
               isDir,
@@ -34,7 +34,7 @@ const fileExistenceQuery = graphql`
         }
       }
       output{
-        files(root: $path, first: 1){
+        files(rootDir: $path, first: 1){
           edges{
             node{
               isDir,

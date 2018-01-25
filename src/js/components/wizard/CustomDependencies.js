@@ -6,43 +6,28 @@ import Loader from 'Components/shared/Loader'
 //utilites
 import environment from 'JS/createRelayEnvironment'
 //mutations
-import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
+import AddCustomComponentMutation from 'Mutations/AddCustomComponentMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
 
-const AddCustomDependenciesQuery = graphql`query AddCustomDependenciesQuery($first: Int!, $cursor: String){
+const AddCustomDependenciesQuery = graphql`query CustomDependenciesQuery($first: Int!, $cursor: String){
   availableCustomDependencies(first: $first, after: $cursor){
     edges{
       node{
         id
-        component{
-          id
-          repository
-          namespace
-          name
-          version
-          componentClass
-        }
-        author{
-          id
-          name
-          email
-          username
-          organization
-        }
-        info{
-          id
-          name
-          humanName
-          description
-          versionMajor
-          versionMinor
-          tags
-          icon
-        }
+        schema
+        repository
+        componentId
+        revision
+        name
+        description
+        tags
+        license
         osBaseClass
-        docker
+        url
+        requiredPackageManagers
+        dockerSnippet
       }
       cursor
     }
@@ -150,7 +135,7 @@ export default class AddCustomDependencies extends React.Component {
 
       let promise = new Promise((resolve, reject) => {
 
-        AddEnvironmentComponentMutation(
+        AddCustomComponentMutation(
           this.state.labbookName,
           this.state.owner,
           component.repository,

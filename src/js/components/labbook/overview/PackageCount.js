@@ -14,11 +14,16 @@ import store from 'JS/redux/store'
 let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: String!, $first: Int!){
   labbook(name: $name, owner: $owner){
     environment{
-      packageManagerDependencies(first: $first){
+      packageDependencies(first: $first){
         edges{
           node{
-            packageManager
-            packageName
+            id
+            schema
+            manager
+            package
+            version
+            latestVersion
+            fromBase
           }
         }
       }
@@ -26,14 +31,18 @@ let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: Strin
         edges{
           node{
             id
-            component{
-              id
-              repository
-              namespace
-              name
-              version
-              componentClass
-            }
+            schema
+            repository
+            componentId
+            revision
+            name
+            description
+            tags
+            license
+            osBaseClass
+            url
+            requiredPackageManagers
+            dockerSnippet
           }
         }
       }

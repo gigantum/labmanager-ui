@@ -314,16 +314,13 @@ class LocalLabbooks extends Component {
 export default createPaginationContainer(
   LocalLabbooks,
   {feed: graphql`
-      fragment LocalLabbooks_feed on Query{
+      fragment LocalLabbooks_feed on LabbookQuery{
         localLabbooks(first: $first, after:$cursor)@connection(key: "LocalLabbooks_localLabbooks"){
           edges {
             node {
               name
               description
-              owner{
-                id
-                username
-              }
+              owner
               environment{
                 id
                 imageStatus

@@ -2,10 +2,9 @@
 import React, { Component } from 'react'
 import {createFragmentContainer, graphql} from 'react-relay'
 //components
-import SelectBaseImage from 'Components/wizard/SelectBaseImage'
 import Loader from 'Components/shared/Loader'
 
-class BaseImage extends Component {
+class Base extends Component {
 
   constructor(props){
     super(props);
@@ -53,41 +52,22 @@ class BaseImage extends Component {
   }
 
   render(){
-    const {baseImage} = this.props.environment;
+    const {base} = this.props.environment;
     const {blockClass} = this.props;
 
     let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
 
-    if (baseImage) {
+    if (base) {
       return(
         <div className={blockClass + '__base-image'}>
-            <div id='modal' className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
-                <div
-                  id="baseImageEditClose"
-                  className="Environment__modal-close"
-                  onClick={() => this._hideModal()}>
-                </div>
 
-                <SelectBaseImage
-                  ref="selectBaseImage"
-                  labbookName={this.props.labbookName}
-                  setBaseImage={this.props.setBaseImage}
-                  setComponent={this._setComponent}
-                  environmentView={true}
-                  nextWindow={'selectDevelopmentEnvironment'}
-                  buildCallback={this.props.buildCallback}
-                  nextComponent={"continue"}
-                  connection={'BaseImage_environment'}
-                  toggleDisabledContinue={() => function(){}}/>
-
-            </div>
             <div className={blockClass + '__header-container' }>
               <h4 className={blockClass + '__header'}>Base Image</h4>
               {
                 this._editVisible() &&
                 <div className={blockClass + '__edit-container'}>
                     <button
-                      id="baseImageEdit"
+                      id="baseEdit"
                       onClick={() => this._openModal()}
                       className={blockClass + '__edit-button'}
                       disabled={editDisabled}
@@ -100,12 +80,12 @@ class BaseImage extends Component {
 
               <div className={ blockClass + '__card flex justify--space-around'}>
                 <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
-                  <img height="50" width="50" src={baseImage.info.icon} alt={baseImage.info.humanName} />
+                  <img height="50" width="50" src={base.info.icon} alt={base.info.humanName} />
                 </div>
 
                 <div className={blockClass + '__card-text flex-1-0-auto'}>
-                  <p className={blockClass + '__human-name'}>{baseImage.info.humanName}</p>
-                  <p>{baseImage.info.description}</p>
+                  <p className={blockClass + '__human-name'}>{base.info.humanName}</p>
+                  <p>{base.info.description}</p>
                 </div>
               </div>
 
@@ -122,42 +102,30 @@ class BaseImage extends Component {
 }
 
 export default createFragmentContainer(
-  BaseImage,
-  {environment: graphql`fragment BaseImage_environment on Environment @connection(key:"BaseImage_environment"){
-    baseImage {
+  Base,
+  {environment: graphql`fragment Base_environment on Environment @connection(key:"Base_environment"){
+    base{
       id
-      component{
-        id
-        repository
-        namespace
-        name
-        version
-        componentClass
-      }
-      author{
-        id
-        name
-        email
-        username
-        organization
-      }
-      info{
-        id
-        name
-        humanName
-        description
-        versionMajor
-        versionMinor
-        tags
-        icon
-      }
+      schema
+      repository
+      componentId
+      revision
+      name
+      description
+      readme
+      tags
+      icon
       osClass
       osRelease
-      server
-      namespace
-      repository
-      tag
-      availablePackageManagers
+      license
+      url
+      languages
+      developmentTools
+      packageManagers
+      dockerImageServer
+      dockerImageNamespace
+      dockerImageRepository
+      dockerImageTag
     }
   }`
 }

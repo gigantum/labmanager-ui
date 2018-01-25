@@ -1,7 +1,7 @@
 //vendor
 import React from 'react'
 //mutations
-import AddEnvironmentPackageMutation from 'Mutations/AddEnvironmentPackageMutation'
+import AddPackageComponentMutation from 'Mutations/AddPackageComponentMutation'
 //store
 import store from 'JS/redux/store'
 
@@ -54,7 +54,7 @@ export default class AddEnvironmentPackage extends React.Component {
         if(dependencyName){
           let promise = new Promise((resolve, reject) => {
 
-            AddEnvironmentPackageMutation(
+            AddPackageComponentMutation(
               this.state.labbookName,
               this.state.owner,
               packageManager,

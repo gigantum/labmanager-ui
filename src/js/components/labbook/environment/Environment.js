@@ -3,9 +3,9 @@ import React, { Component } from 'react'
 import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import Loader from 'Components/shared/Loader'
-import BaseImage from './BaseImage'
+import Base from './Base'
 import DevEnvironments from './DevEnvironments'
-import PackageManagerDependencies from './PackageManagerDependencies'
+import PackageDependencies from './PackageDependencies'
 import CustomDependencies from './CustomDependencies'
 //mutations
 import BuildImageMutation from 'Mutations/BuildImageMutation'
@@ -28,7 +28,7 @@ class Environment extends Component {
     }
 
     this._buildCallback = this._buildCallback.bind(this)
-    this._setBaseImage = this._setBaseImage.bind(this)
+    this._setBase = this._setBase.bind(this)
   }
 
   /**
@@ -105,29 +105,29 @@ class Environment extends Component {
   *  @param {Obect}
   *  sets readyToBuild state to true
   */
-  _setBaseImage(baseImage){
+  _setBase(base){
       this.setState({"readyToBuild": true})
   }
 
   render(){
     if(this.props.labbook){
       const env = this.props.labbook.environment;
-      const {baseImage} = env;
+      const {base} = env;
 
       return(
         <div className="Environment">
 
-            <BaseImage
-              ref="baseImage"
+            <Base
+              ref="base"
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               editVisible={true}
               containerStatus={this.props.containerStatus}
               setComponent={this._setComponent}
-              setBaseImage={this._setBaseImage}
+              setBase={this._setBase}
               buildCallback={this._buildCallback}
               blockClass="Environment"
-              baseImage={baseImage}
+              base={base}
 
              />
 
@@ -141,15 +141,15 @@ class Environment extends Component {
               blockClass="Environment"
             />
 
-            <PackageManagerDependencies
-              ref="packageManagerDependencies"
+            <PackageDependencies
+              ref="packageDependencies"
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
-              setBaseImage={this._setBaseImage}
+              setBase={this._setBase}
               setComponent={this._setComponent}
               buildCallback={this._buildCallback}
-              baseImage={baseImage}
+              base={base}
               blockClass="Environment"
             />
 
@@ -179,13 +179,12 @@ export default createFragmentContainer(
       id
       imageStatus
       containerStatus
-      baseImage{
-        availablePackageManagers
+      base{
+        packageManagers
       }
 
-      ...BaseImage_environment
-      ...DevEnvironments_environment
-      ...PackageManagerDependencies_environment
+      ...Base_environment
+      ...PackageDependencies_environment
       ...CustomDependencies_environment
     }
   }`

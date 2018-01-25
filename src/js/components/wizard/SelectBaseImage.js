@@ -11,41 +11,30 @@ import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMu
 
 
 const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor: String){
-  availableBaseImages(first: $first, after: $cursor)@connection(key: "SelectBaseImage_availableBaseImages"){
+  availableBases(first: $first, after: $cursor)@connection(key: "SelectBaseImage_availableBases"){
     edges{
       node{
         id
-        component{
-          id
-          repository
-          namespace
-          name
-          version
-          componentClass
-        }
-        author{
-          id
-          name
-          email
-          username
-          organization
-        }
-        info{
-          id
-          name
-          humanName
-          description
-          versionMajor
-          versionMinor
-          tags
-          icon
-        }
+        schema
+        repository
+        componentId
+        revision
+        name
+        description
+        readme
+        tags
+        icon
         osClass
         osRelease
-        server
-        namespace
-        tag
-        availablePackageManagers
+        license
+        url
+        languages
+        developmentTools
+        packageManagers
+        dockerImageServer
+        dockerImageNamespace
+        dockerImageRepository
+        dockerImageTag
       }
       cursor
     }
