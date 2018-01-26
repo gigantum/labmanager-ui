@@ -4,9 +4,8 @@ import { CSSTransitionGroup } from 'react-transition-group'
 //components
 import CreateLabbook from './CreateLabbook'
 import SelectBaseImage from './SelectBaseImage'
-import SuccessMessage from './SuccessMessage'
-import AddEnvironmentPackage from './AddEnvironmentPackage'
-import CustomDependencies from './CustomDependencies'
+//mutations
+import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 
 import Config from 'JS/config'
 
@@ -16,16 +15,21 @@ export default class WizardModal extends React.Component {
   	super(props);
 
   	this.state = {
+      'name': '',
+      'description': '',
+      'repository': '',
+      'componentId': '',
+      'revision': '',
       'selectedComponentId': 'createLabook',
       'nextComponentId': 'selectBaseImage',
       'previousComponentId': null,
-      'name': '',
-      'labbookName': '',
-      'baseImage': null,
-      'description': '',
       'continueDisabled': true,
+
     };
 
+    this._creatLabbookCallback = this._creatLabbookCallback.bind(this)
+    this._selectBaseImageCallback = this._selectBaseImageCallback.bind(this)
+    this._selectBaseImageCallback = this._selectBaseImageCallback.bind(this)
     this._continueSave = this._continueSave.bind(this)
     this._setComponent = this._setComponent.bind(this)
     this._showModal = this._showModal.bind(this)
@@ -138,6 +142,50 @@ export default class WizardModal extends React.Component {
 
     this.refs[this._getSelectedComponentId()].continueSave(isSkip)
   }
+  /**
+    @param {string ,string} name,description
+    sets name and description to state for create labbook mutation
+  */
+  _creatLabbookCallback(name, description){
+    this.setState({
+      name,
+      description
+    })
+  }
+  /**
+    @param {string, string ,Int} repository, componentId revision
+    sets (repository, componentId and revision to state for create labbook mutation
+  */
+  _selectBaseImageCallback(repository, componentId, revision){
+    this.setState({
+      repository,
+      revision
+    })
+  }
+  /**
+      @param {}
+      sets name and description to state for create labbook mutation
+  */
+  _creatLabbookMutation(){
+    const {
+      name,
+      description,
+      repository,
+      componentId,
+      revision
+    } = this.state
+
+    CreateLabbookMutation(
+      name,
+      description,
+      repository,
+      componentId,
+      revision,
+      ({response, error}) => {
+        console.log(response, error)
+      }
+    )
+  }
 
   render(){
 
@@ -186,32 +234,14 @@ export default class WizardModal extends React.Component {
         case 'createLabook':
           return(
             <CreateLabbook
-
-            toggleDisabledContinue={this._toggleDisabledContinue}
-            setComponent={this._setComponent}
-            setLabbookName={this._setLabbookName}
-            nextWindow={'selectBaseImage'}
-            history={this.props.history}
-          />)
+              creatLabbookCallback={this._creatLabbookCallback}
+            />)
 
         case 'addEnvironmentPackage':
           return(
-            <AddEnvironmentPackage
-
-              baseImage={this.state.baseImage}
-              toggleDisabledContinue={this._toggleDisabledContinue}
-              availablePackageManagers={this.state.baseImage.node.availablePackageManagers}  labbookName={this.state.labbookName}
-              setComponent={this._setComponent}
-              nextWindow={'addCustomDependencies'}
+            <SelectBaseImage
+              selectBaseImageCallback={this._selectBaseImageCallback}
             />)
-        case 'successMessage':
-          return(
-            <SuccessMessage
-              toggleDisabledContinue={this._toggleDisabledContinue}
-              labbookName={this.state.labbookName}
-              history={this.props.history}
-            />)
-
         default:
           return(
             <CreateLabbook
@@ -256,18 +286,12 @@ function ModalNav({state, getSelectedComponentId, setComponent, hideModal, getBu
         disabled={(state.previousComponentId === null)}
         onClick={() => {setComponent(state.previousComponentId)}}
         className={(state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
-        Previous
+        Back
       </button>
       <button
         onClick={() => {hideModal()}}
         className={(state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
         Cancel
-      </button>
-      <button
-        disabled={disabled}
-        onClick={() => {continueSave(true)}}
-        className={(state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
-        skip
       </button>
       <button
         onClick={() => {continueSave(false)}}

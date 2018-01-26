@@ -26,15 +26,21 @@ const configs = [{
 let tempID = 0;
 
 export default function CreateLabbookMutation(
-  description,
   name,
+  description,
+  repository,
+  componentId,
+  revision,
   viewerId,
   callback
 ) {
   const variables = {
     input: {
-      description,
       name,
+      description,
+      repository,
+      componentId,
+      revision,
       clientMutationId: tempID++
     }
   }
