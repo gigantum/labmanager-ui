@@ -192,12 +192,12 @@ class LocalLabbooks extends Component {
     let username = localStorage.getItem('username')
     if(filter === username){
       filteredLabbooks = labbooks.filter((labbook)=>{
-          return (labbook.node.owner.username === username)
+          return (labbook.node.owner === username)
       })
 
     }else if(filter === "others"){
       filteredLabbooks = labbooks.filter((labbook)=>{
-          return (labbook.node.owner.username !== username)
+          return (labbook.node.owner !== username)
       })
     }else{
       filteredLabbooks = labbooks;
@@ -314,16 +314,13 @@ class LocalLabbooks extends Component {
 export default createPaginationContainer(
   LocalLabbooks,
   {feed: graphql`
-      fragment LocalLabbooks_feed on Query{
+      fragment LocalLabbooks_feed on LabbookQuery{
         localLabbooks(first: $first, after:$cursor)@connection(key: "LocalLabbooks_localLabbooks"){
           edges {
             node {
               name
               description
-              owner{
-                id
-                username
-              }
+              owner
               environment{
                 id
                 imageStatus

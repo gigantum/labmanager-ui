@@ -6,43 +6,28 @@ import Loader from 'Components/shared/Loader'
 //utilites
 import environment from 'JS/createRelayEnvironment'
 //mutations
-import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
+import AddCustomComponentMutation from 'Mutations/AddCustomComponentMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
 
-const AddCustomDependenciesQuery = graphql`query AddCustomDependenciesQuery($first: Int!, $cursor: String){
+const AddCustomDependenciesQuery = graphql`query CustomDependenciesQuery($first: Int!, $cursor: String){
   availableCustomDependencies(first: $first, after: $cursor){
     edges{
       node{
         id
-        component{
-          id
-          repository
-          namespace
-          name
-          version
-          componentClass
-        }
-        author{
-          id
-          name
-          email
-          username
-          organization
-        }
-        info{
-          id
-          name
-          humanName
-          description
-          versionMajor
-          versionMinor
-          tags
-          icon
-        }
+        schema
+        repository
+        componentId
+        revision
+        name
+        description
+        tags
+        license
         osBaseClass
-        docker
+        url
+        requiredPackageManagers
+        dockerSnippet
       }
       cursor
     }
@@ -150,7 +135,7 @@ export default class AddCustomDependencies extends React.Component {
 
       let promise = new Promise((resolve, reject) => {
 
-        AddEnvironmentComponentMutation(
+        AddCustomComponentMutation(
           this.state.labbookName,
           this.state.owner,
           component.repository,
@@ -250,6 +235,7 @@ export default class AddCustomDependencies extends React.Component {
 
 
   _renderQueryResults(props){
+
     return(
       <div className="AddCustomDependencies__inner-container flex flex--column justify--space-between">
         <div className="AddCustomDependencies__selected-image-container">
@@ -271,19 +257,12 @@ export default class AddCustomDependencies extends React.Component {
         <div className="AddCustomDependencies__images flex flex--row flex--wrap justify--space-around">
         {
           props.availableCustomDependencies.edges.map((edge) => {
-
+              //TODO rewrite customdepeny display
               let disabled = (this.state.selectedCustomDependenciesIds.indexOf(edge.node.id) > -1)
 
               return(
-                <div
-                  disabled={disabled}
-                  className={disabled ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'}
-                  onClick={()=> this._selectCustomDependency(edge)}
-                  key={edge.node.id}>
-
-                  <img alt="" src={edge.node.info.icon} height="50" width="50" />
-                  <p>{edge.node.info.humanName}</p>
-
+                <div key={edge.node.id}>
+                  TODO
                 </div>
               )
           })

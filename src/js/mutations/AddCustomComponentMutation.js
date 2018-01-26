@@ -6,8 +6,8 @@ import environment from 'JS/createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
-  mutation AddEnvironmentPackageMutation($input: AddEnvironmentPackageInput!){
-    addEnvironmentPackage(input: $input){
+  mutation AddCustomComponentMutation($input: AddCustomComponentInput!){
+    addCustomComponent(input: $input){
       clientMutationId
     }
   }
@@ -24,7 +24,7 @@ function sharedUpdater(store, id, newEdge) {
   const userProxy = store.get(id);
   const conn = RelayRuntime.ConnectionHandler.getConnection(
     userProxy,
-    'PackageManagerDependencies_packageManagerDependencies'
+    'PackageManagerDependencies_packageDependencies'
   );
   if(conn){
     RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
@@ -36,7 +36,7 @@ function sharedUpdater(store, id, newEdge) {
 export default function AddEnvironmentPackageMutation(
   labbookName,
   owner,
-  packageManager,
+  manager,
   packageName,
   clientMutationId,
   callback
@@ -45,7 +45,7 @@ export default function AddEnvironmentPackageMutation(
     input: {
       labbookName,
       owner,
-      packageManager,
+      manager,
       packageName,
       clientMutationId:  tempID++
     }
@@ -68,7 +68,7 @@ export default function AddEnvironmentPackageMutation(
           //TODO use edge from linked record
           const id = 'client:PackageManagerDependencies:' + tempID++;
           const node = store.create(id, 'package');
-          node.setValue(packageManager, 'packageManager')
+          node.setValue(manager, 'manager')
           node.setValue(packageName, 'packageName')
           node.setValue(labbookName, 'labbookName')
           node.setValue(owner, 'owner')
@@ -90,7 +90,7 @@ export default function AddEnvironmentPackageMutation(
           const id = 'client:newPackageManager:' + tempID++;
           const node = store.create(id, 'PackageManager');
 
-          node.setValue(packageManager, 'packageManager')
+          node.setValue(manager, 'manager')
           node.setValue(packageName, 'packageName')
           node.setValue(labbookName, 'labbookName')
           node.setValue(owner, 'owner')

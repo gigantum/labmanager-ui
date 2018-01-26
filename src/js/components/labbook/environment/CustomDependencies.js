@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //components
-import AddCustomDependencies from 'Components/wizard/AddCustomDependencies'
+import AddCustomDependencies from 'Components/wizard/CustomDependencies'
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
@@ -13,7 +13,7 @@ class CustomDependencies extends Component {
 
     const {labbookName} = store.getState().routes
     owner = store.getState().routes.owner //TODO clean this up when fixing custom dependencies
-    
+
     this.state = {
       'modal_visible': false,
       owner,
@@ -174,33 +174,18 @@ export default createPaginationContainer(
         edges{
           node{
             id
-            component{
-              id
-              repository
-              namespace
-              name
-              version
-              componentClass
-            }
-            author{
-              id
-              name
-              email
-              username
-              organization
-            }
-            info{
-              id
-              name
-              humanName
-              description
-              versionMajor
-              versionMinor
-              tags
-              icon
-            }
+            schema
+            repository
+            componentId
+            revision
+            name
+            description
+            tags
+            license
             osBaseClass
-            docker
+            url
+            requiredPackageManagers
+            dockerSnippet
           }
           cursor
         }

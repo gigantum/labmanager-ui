@@ -44,11 +44,11 @@ export default class LocalLabbookPanel extends Component {
 
       exportClassList.add('LocalLabbooks__export--downloading')
       let username = localStorage.getItem('username')
-
+      let labbookName = edge.node.name
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload: {
-          message: 'Exporting LabBook',
+          message: `Exporting ${labbookName} LabBook`,
         }
       })
 
@@ -74,7 +74,7 @@ export default class LocalLabbookPanel extends Component {
                 store.dispatch({
                   type: 'ERROR_MESSAGE',
                   payload: {
-                    message: `Export failed`,
+                    message: `${labbookName} failed to export `,
                     messageList: error
                   }
                 })
@@ -121,22 +121,21 @@ export default class LocalLabbookPanel extends Component {
           <div className="LocalLabbooks__title-row">
             <h4
               className="LocalLabbooks__panel-title"
-              onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner.username)}>
+              onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}>
               {edge.node.name}
             </h4>
             <div className="LocalLabbooks__edit-button" onClick={() => this.props.renameLabbookModal(edge.node.name)}>
             </div>
           </div>
-          <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner.username}</p>
+          <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner}</p>
           <p
-            onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner.username)} className="LocalLabbooks__description">
+            onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)} className="LocalLabbooks__description">
             {edge.node.description}
           </p>
         </div>
 
         <div className="LocalLabbooks__info-row flex flex--row justify--space-between">
           <div className="LocalLabbooks__owner flex flex--row">
-              {/* <div> {owner.username}</div> */}
 
           </div>
           <div className="LocalLabbooks__status">

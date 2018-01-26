@@ -5,8 +5,7 @@ import {
   graphql
 } from 'react-relay'
 //components
-import BaseImage from 'Components/labbook/environment/BaseImage'
-import DevEnvironments from 'Components/labbook/environment/DevEnvironments'
+import Base from 'Components/labbook/environment/Base'
 import PackageCount from './PackageCount'
 import Loader from 'Components/shared/Loader'
 //store
@@ -63,8 +62,8 @@ class Overview extends Component {
             <div className="Overview__environment">
               <ul className="Overview__environment-list flex flex--row">
                 <li>
-                  <BaseImage
-                    ref="baseImage"
+                  <Base
+                    ref="base"
                     environment={this.props.labbook.environment}
                     editVisible={false}
                     blockClass="Overview"
@@ -72,13 +71,7 @@ class Overview extends Component {
                 </li>
                 <li>
                   <div className="flex flex--row">
-                    <DevEnvironments
-                      ref="devEnvironments"
-                      labbookName={this.props.labbookName}
-                      environment={this.props.labbook.environment}
-                      editVisible={false}
-                      blockClass="Overview"
-                    />
+
                     {
 
                       (this.state.containerStates[this.props.labbookId] === 'Open') &&
@@ -117,8 +110,7 @@ export default createFragmentContainer(
       id
       imageStatus
       containerStatus
-      ...BaseImage_environment
-      ...DevEnvironments_environment
+      ...Base_environment
       ...CustomDependencies_environment
     }
   }`

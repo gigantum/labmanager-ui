@@ -96,7 +96,7 @@ const ChunkUploader = {
 
     let fileLoadedSize = 0,
         chunkIndex = 0,
-        totalChunks = Math.ceil(file.size/chunkSize);
+        totalChunks = (file.size === 0) ? 1 : Math.ceil(file.size/chunkSize);
 
     /*
       @param{object, object} response result

@@ -47,8 +47,8 @@ class PackageManagerDependencies extends Component {
          console.error(error)
        }
 
-       if(self.props.environment.packageManagerDependencies &&
-         self.props.environment.packageManagerDependencies.pageInfo.hasNextPage) {
+       if(self.props.environment.packageDependencies &&
+         self.props.environment.packageDependencies.pageInfo.hasNextPage) {
 
          self._loadMore()
        }
@@ -96,13 +96,13 @@ class PackageManagerDependencies extends Component {
 
   render(){
 
-    const {packageManagerDependencies} = this.props.environment;
+    const {packageDependencies} = this.props.environment;
     const {blockClass} = this.props;
 
     let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
 
 
-    if (packageManagerDependencies) {
+    if (packageDependencies) {
       return(
       <div className="Environment_package-manager-dependencies">
         <div className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
@@ -137,7 +137,7 @@ class PackageManagerDependencies extends Component {
         <div className="Environment__info flex flex--row justify--left">
           <ul className="flex flex--row justify--left flex--wrap">
           {
-            packageManagerDependencies.edges.map((edge, index) => {
+            packageDependencies.edges.map((edge, index) => {
               return(
                 this._packageListItem(edge, index)
               )
@@ -176,14 +176,17 @@ class PackageManagerDependencies extends Component {
 export default createPaginationContainer(
   PackageManagerDependencies,
   {
-    environment: graphql`fragment PackageManagerDependencies_environment on Environment {
-    packageManagerDependencies(first: $first, after: $cursor) @connection(key: "PackageManagerDependencies_packageManagerDependencies" filters: []){
+    environment: graphql`fragment PackageDependencies_environment on Environment {
+    packageDependencies(first: $first, after: $cursor) @connection(key: "PackageDependencies_packageDependencies" filters: []){
         edges{
           node{
             id
-            packageManager
-            packageName
-            packageVersion
+            schema
+            manager
+            package
+            version
+            latestVersion
+            fromBase
           }
           cursor
         }
@@ -200,7 +203,7 @@ export default createPaginationContainer(
     direction: 'forward',
     getConnectionFromProps(props) {
 
-        return props.environment && props.environment.packageManagerDependencies;
+        return props.environment && props.environment.packageDependencies;
     },
     getFragmentVariables(prevVars, first) {
       return {
@@ -212,10 +215,10 @@ export default createPaginationContainer(
 
     totalCount += count
     let first = totalCount;
-    let length = props.environment.packageManagerDependencies.edges.length
+    let length = props.environment.packageDependencies.edges.length
     const {labbookName} = store.getState().routes
 
-    let cursor = props.environment.packageManagerDependencies.edges[length-1].cursor
+    let cursor = props.environment.packageDependencies.edges[length-1].cursor
 
      return {
        first,
@@ -228,10 +231,10 @@ export default createPaginationContainer(
      };
    },
    query: graphql`
-    query PackageManagerDependenciesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+    query PackageDependenciesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
      labbook(name: $name, owner: $owner){
        environment{
-         ...PackageManagerDependencies_environment
+         ...PackageDependencies_environment
        }
      }
    }`

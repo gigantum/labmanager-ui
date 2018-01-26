@@ -371,9 +371,7 @@ export default createFragmentContainer(
           updatesAvailableCount
           isRepoClean
           defaultRemote
-          owner{
-            username
-          }
+          owner
           activeBranch{
             id
             name

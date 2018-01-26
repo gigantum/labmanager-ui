@@ -5,47 +5,35 @@ import { QueryRenderer, graphql } from 'react-relay'
 import Loader from 'Components/shared/Loader'
 //utilites
 import environment from 'JS/createRelayEnvironment'
-//mutations
-import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
+
 
 
 
 const BaseImageQuery = graphql`query SelectBaseImageQuery($first: Int!, $cursor: String){
-  availableBaseImages(first: $first, after: $cursor)@connection(key: "SelectBaseImage_availableBaseImages"){
+  availableBases(first: $first, after: $cursor)@connection(key: "SelectBaseImage_availableBases"){
     edges{
       node{
         id
-        component{
-          id
-          repository
-          namespace
-          name
-          version
-          componentClass
-        }
-        author{
-          id
-          name
-          email
-          username
-          organization
-        }
-        info{
-          id
-          name
-          humanName
-          description
-          versionMajor
-          versionMinor
-          tags
-          icon
-        }
+        schema
+        repository
+        componentId
+        revision
+        name
+        description
+        readme
+        tags
+        icon
         osClass
         osRelease
-        server
-        namespace
-        tag
-        availablePackageManagers
+        license
+        url
+        languages
+        developmentTools
+        packageManagers
+        dockerImageServer
+        dockerImageNamespace
+        dockerImageRepository
+        dockerImageTag
       }
       cursor
     }
@@ -88,27 +76,7 @@ export default class SelectBaseImage extends React.Component {
     const username = localStorage.getItem('username')
     let component = this.state.selectedBaseImage.node.component;
     this.props.toggleDisabledContinue(true);
-    AddEnvironmentComponentMutation(
-      this.props.labbookName,
-      username,
-      component.repository,
-      component.namespace,
-      component.name,
-      component.version,
-      "clientMutationId",
-      this.props.environmentId,
-      this.props.connection,
-      component.componentClass,
-      (error) => {
-        this.props.setBaseImage(this.state.selectedBaseImage)
-        if(this._environmentView()){
-          this.props.buildCallback()
-        }
-        if(this.props.setComponent){
-          this.props.setComponent(this.props.nextWindow)
-        }
-      }
-    )
+
   }
   /**
     @param {}

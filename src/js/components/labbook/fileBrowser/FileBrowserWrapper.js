@@ -78,7 +78,6 @@ export default class FileBrowserWrapper extends Component {
   handleCreateFolder(key) {
     let self = this;
 
-
     MakeLabbookDirectoryMutation(
       this.props.connection,
       self.state.owner,
@@ -147,53 +146,53 @@ export default class FileBrowserWrapper extends Component {
     let folderFiles = []
 
     files.forEach((file, index) => {
-
-      if(file.name){
+      if(file.isDirectory){
+        folderFiles.push(file)
+      }else if(file.name){
         const batchUpload = (files.length > 1)
-        //files.forEach((file, index) => {
 
-          let newKey = prefix;
-          if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
-            newKey += '/';
-          }
-          newKey += file.name;
+        let newKey = prefix;
 
-          let fileReader = new FileReader();
+        if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
+          newKey += '/';
+        }
 
-          fileReader.onloadend = function (evt) {
-              let filepath = newKey
+        newKey += file.name;
 
-              let data = {
-                file: file,
-                filepath: filepath,
-                username: self.state.owner,
-                accessToken: localStorage.getItem('access_token'),
-                connectionKey: self.props.connection,
-                labbookName: self.state.labbookName,
-                parentId: self.props.parentId,
-                section: self.props.section
-              }
 
-              self._chunkLoader(filepath, file, data, batchUpload, files, index)
+        let fileReader = new FileReader();
+
+        fileReader.onloadend = function (evt) {
+            let filepath = newKey
+
+            let data = {
+              file: file,
+              filepath: filepath,
+              username: self.state.owner,
+              accessToken: localStorage.getItem('access_token'),
+              connectionKey: self.props.connection,
+              labbookName: self.state.labbookName,
+              parentId: self.props.parentId,
+              section: self.props.section
             }
 
+            self._chunkLoader(filepath, file, data, batchUpload, files, index)
+          }
 
-            fileReader.readAsArrayBuffer(file);
-        //});
+          fileReader.readAsArrayBuffer(file);
       }else{
         folderFiles.push(file)
-
       }
 
-
-
-
     })
+
     if(folderFiles.length > 0){
       let flattenedFiles = []
       function flattenFiles(filesArray){
 
           if(filesArray.entry){
+            flattenedFiles.push(filesArray)
+          }else if(filesArray.isDirectory){
             flattenedFiles.push(filesArray)
           }else{
             if(filesArray.forEach){
@@ -207,11 +206,11 @@ export default class FileBrowserWrapper extends Component {
       flattenFiles(folderFiles)
 
       let filterFiles = flattenedFiles.filter((fileItem) => {
-        let extension =  fileItem.file.name.replace(/.*\./, '');
+        let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.file.name.replace(/.*\./, '');
 
         return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
       })
-
+    
       FolderUpload.uploadFiles(
         filterFiles,
         prefix,
