@@ -235,6 +235,7 @@ export default class AddCustomDependencies extends React.Component {
 
 
   _renderQueryResults(props){
+
     return(
       <div className="AddCustomDependencies__inner-container flex flex--column justify--space-between">
         <div className="AddCustomDependencies__selected-image-container">
@@ -256,19 +257,12 @@ export default class AddCustomDependencies extends React.Component {
         <div className="AddCustomDependencies__images flex flex--row flex--wrap justify--space-around">
         {
           props.availableCustomDependencies.edges.map((edge) => {
-
+              //TODO rewrite customdepeny display
               let disabled = (this.state.selectedCustomDependenciesIds.indexOf(edge.node.id) > -1)
 
               return(
-                <div
-                  disabled={disabled}
-                  className={disabled ? 'AddCustomDependencies__image--selected': 'AddCustomDependencies__image'}
-                  onClick={()=> this._selectCustomDependency(edge)}
-                  key={edge.node.id}>
-
-                  <img alt="" src={edge.node.info.icon} height="50" width="50" />
-                  <p>{edge.node.info.humanName}</p>
-
+                <div key={edge.node.id}>
+                  TODO
                 </div>
               )
           })

@@ -54,7 +54,7 @@ class Base extends Component {
   render(){
     const {base} = this.props.environment;
     const {blockClass} = this.props;
-
+    
     let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
 
     if (base) {

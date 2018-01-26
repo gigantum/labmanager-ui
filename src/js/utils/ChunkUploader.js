@@ -36,7 +36,7 @@ const uploadFileBrowserChunk = (data, file, chunk, accessToken, username, filepa
     accessToken,
     section,
     (result, error)=>{
-      console.log(result, error)
+
       if(result && (error === undefined)){
         getChunkCallback(file, result)
         let fileCount = store.getState().footer.fileCount + 1
@@ -125,7 +125,7 @@ const ChunkUploader = {
             filename: file.name,
             uploadId: id
           }
-        console.log(chunkData)
+
         if(chunkIndex <= totalChunks){ //if  there is still chunks to process do next chunk
           //select type of mutation
           if(file.name.indexOf('.lbk') > -1){

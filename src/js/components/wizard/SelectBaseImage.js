@@ -5,8 +5,7 @@ import { QueryRenderer, graphql } from 'react-relay'
 import Loader from 'Components/shared/Loader'
 //utilites
 import environment from 'JS/createRelayEnvironment'
-//mutations
-import AddEnvironmentComponentMutation from 'Mutations/AddEnvironmentComponentMutation'
+
 
 
 
@@ -77,27 +76,7 @@ export default class SelectBaseImage extends React.Component {
     const username = localStorage.getItem('username')
     let component = this.state.selectedBaseImage.node.component;
     this.props.toggleDisabledContinue(true);
-    AddEnvironmentComponentMutation(
-      this.props.labbookName,
-      username,
-      component.repository,
-      component.namespace,
-      component.name,
-      component.version,
-      "clientMutationId",
-      this.props.environmentId,
-      this.props.connection,
-      component.componentClass,
-      (error) => {
-        this.props.setBaseImage(this.state.selectedBaseImage)
-        if(this._environmentView()){
-          this.props.buildCallback()
-        }
-        if(this.props.setComponent){
-          this.props.setComponent(this.props.nextWindow)
-        }
-      }
-    )
+
   }
   /**
     @param {}

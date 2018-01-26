@@ -3,6 +3,7 @@ import React from 'react'
 import { CSSTransitionGroup } from 'react-transition-group'
 //components
 import CreateLabbook from './CreateLabbook'
+import SelectBaseImage from './SelectBaseImage'
 import SuccessMessage from './SuccessMessage'
 import AddEnvironmentPackage from './AddEnvironmentPackage'
 import CustomDependencies from './CustomDependencies'
@@ -146,20 +147,6 @@ export default class WizardModal extends React.Component {
 
               <div className={'WizardModal__modal'}>
 
-                <div className="WizardModal__progress">
-                  <ul className="WizardModal__progress-bar">
-                    {
-                      Config.modalNav.map((navItem) => {
-                        return (
-                          this._modalNavItem(navItem)
-                        )
-                      })
-                    }
-                  </ul>
-                </div>
-
-                <h4 className="WizardModal__title">Create a LabBook</h4>
-
                 <div
                   className="WizardModal__modal-close"
                   onClick={() => this._hideModal()}>
@@ -199,7 +186,7 @@ export default class WizardModal extends React.Component {
         case 'createLabook':
           return(
             <CreateLabbook
-            ref="createLabook"
+
             toggleDisabledContinue={this._toggleDisabledContinue}
             setComponent={this._setComponent}
             setLabbookName={this._setLabbookName}
@@ -210,26 +197,16 @@ export default class WizardModal extends React.Component {
         case 'addEnvironmentPackage':
           return(
             <AddEnvironmentPackage
-              ref="addEnvironmentPackage"
+
               baseImage={this.state.baseImage}
               toggleDisabledContinue={this._toggleDisabledContinue}
               availablePackageManagers={this.state.baseImage.node.availablePackageManagers}  labbookName={this.state.labbookName}
               setComponent={this._setComponent}
               nextWindow={'addCustomDependencies'}
             />)
-        case 'addCustomDependencies':
-          return(
-            <CustomDependencies
-              ref="addCustomDependencies"
-              toggleDisabledContinue={this._toggleDisabledContinue}
-              setComponent={this._setComponent}
-              nextWindow={'successMessage'}
-              labbookName={this.state.labbookName}
-            />)
         case 'successMessage':
           return(
             <SuccessMessage
-              ref="successMessage"
               toggleDisabledContinue={this._toggleDisabledContinue}
               labbookName={this.state.labbookName}
               history={this.props.history}
@@ -238,7 +215,6 @@ export default class WizardModal extends React.Component {
         default:
           return(
             <CreateLabbook
-              ref="createLabook"
               toggleDisabledContinue={this._toggleDisabledContinue}
               setComponent={this._setComponent}
               setLabbookName={this._setLabbookName}

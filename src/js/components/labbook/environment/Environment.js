@@ -4,7 +4,7 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import Loader from 'Components/shared/Loader'
 import Base from './Base'
-import DevEnvironments from './DevEnvironments'
+
 import PackageDependencies from './PackageDependencies'
 import CustomDependencies from './CustomDependencies'
 //mutations
@@ -113,7 +113,6 @@ class Environment extends Component {
     if(this.props.labbook){
       const env = this.props.labbook.environment;
       const {base} = env;
-
       return(
         <div className="Environment">
 
@@ -130,16 +129,6 @@ class Environment extends Component {
               base={base}
 
              />
-
-            <DevEnvironments
-              ref="devEnvironments"
-              environment={this.props.labbook.environment}
-              environmentId={this.props.labbook.environment.id}
-              containerStatus={this.props.containerStatus}
-              editVisible={true}
-              buildCallback={this._buildCallback}
-              blockClass="Environment"
-            />
 
             <PackageDependencies
               ref="packageDependencies"

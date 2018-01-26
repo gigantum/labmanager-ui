@@ -6,7 +6,6 @@ import {
 } from 'react-relay'
 //components
 import Base from 'Components/labbook/environment/Base'
-import DevEnvironments from 'Components/labbook/environment/DevEnvironments'
 import PackageCount from './PackageCount'
 import Loader from 'Components/shared/Loader'
 //store
@@ -72,13 +71,7 @@ class Overview extends Component {
                 </li>
                 <li>
                   <div className="flex flex--row">
-                    <DevEnvironments
-                      ref="devEnvironments"
-                      labbookName={this.props.labbookName}
-                      environment={this.props.labbook.environment}
-                      editVisible={false}
-                      blockClass="Overview"
-                    />
+
                     {
 
                       (this.state.containerStates[this.props.labbookId] === 'Open') &&

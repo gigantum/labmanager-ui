@@ -51,6 +51,7 @@ export default class Routes extends Component {
     sets owner and labbookName in store for use in labbook queriesß
   */
   setRouteStore(owner, labbookName){
+
     store.dispatch({
       type: 'UPDATE_ALL',
       payload:{
