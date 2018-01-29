@@ -138,9 +138,11 @@ class PackageManagerDependencies extends Component {
           <ul className="flex flex--row justify--left flex--wrap">
           {
             packageDependencies.edges.map((edge, index) => {
-              return(
-                this._packageListItem(edge, index)
-              )
+              if(edge.node){
+                return(
+                  this._packageListItem(edge, index)
+                )
+              }
             })
           }
         </ul>
@@ -158,14 +160,15 @@ class PackageManagerDependencies extends Component {
   }
 
   _packageListItem(edge, index){
+    console.log(edge)
     return(
-      <li key={edge.packageName + edge.node.packageManager + index}>
+      <li key={edge.node.package + edge.node.manager + index}>
 
           <div className="Environment__package-dependencies">
 
               <div className="Environment__card-text flex flex--row justify--space-around flex-1-0-auto">
-                <p>{edge.node.packageManager}</p>
-                <p>{edge.node.packageName}</p>
+                <p>{edge.node.manager}</p>
+                <p>{edge.node.package}</p>
               </div>
           </div>
 

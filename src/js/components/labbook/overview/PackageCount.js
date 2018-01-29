@@ -69,11 +69,13 @@ export default class PackageCount extends Component {
         if(props){
           let packages = {}
           props.labbook.environment.packageDependencies.edges.forEach((edge) => {
-            if(packages[edge.node.manager]){
+            if(edge.node){
+              if(packages[edge.node.manager]){
 
-              packages[edge.node.manager]++
-            }else{
-              packages[edge.node.manager] = 1
+                packages[edge.node.manager]++
+              }else{
+                packages[edge.node.manager] = 1
+              }
             }
           })
 

@@ -1,15 +1,15 @@
 .CreateLabbook{
   padding: 20px;
-  height: 330px;
+  height: 460px;
   input[type=text].invalid,
   input[type=text].invalid:focus,
   input[type=text].invalid:hover{
-    color: $labbooks;
-    border-color: $labbooks;
+    color: $crimson;
+    border-color: $crimson;
   }
 
   .error{
-    color: $labbooks;
+    color: $crimson;
   }
 
 }

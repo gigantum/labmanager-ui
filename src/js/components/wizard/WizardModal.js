@@ -3,7 +3,7 @@ import React from 'react'
 import { CSSTransitionGroup } from 'react-transition-group'
 //components
 import CreateLabbook from './CreateLabbook'
-import SelectBaseImage from './SelectBaseImage'
+import SelectBase from './SelectBase'
 //mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 
@@ -20,23 +20,22 @@ export default class WizardModal extends React.Component {
       'repository': '',
       'componentId': '',
       'revision': '',
-      'selectedComponentId': 'createLabook',
-      'nextComponentId': 'selectBaseImage',
+      'selectedComponentId': 'selectBase',
+      'nextComponentId': 'selectBase',
       'previousComponentId': null,
       'continueDisabled': true,
 
     };
 
-    this._creatLabbookCallback = this._creatLabbookCallback.bind(this)
-    this._selectBaseImageCallback = this._selectBaseImageCallback.bind(this)
-    this._selectBaseImageCallback = this._selectBaseImageCallback.bind(this)
+    this._createLabbookCallback = this._createLabbookCallback.bind(this)
+    this._createLabbookMutation = this._createLabbookMutation.bind(this)
+    this._selectBaseCallback = this._selectBaseCallback.bind(this)
     this._continueSave = this._continueSave.bind(this)
     this._setComponent = this._setComponent.bind(this)
     this._showModal = this._showModal.bind(this)
     this._hideModal = this._hideModal.bind(this)
     this._updateTextState = this._updateTextState.bind(this)
     this._setLabbookName = this._setLabbookName.bind(this)
-    this._setBaseImage = this._setBaseImage.bind(this)
     this._getSelectedComponentId = this._getSelectedComponentId.bind(this)
     this._toggleDisabledContinue = this._toggleDisabledContinue.bind(this)
   }
@@ -57,8 +56,8 @@ export default class WizardModal extends React.Component {
   _showModal = () => {
     this.setState({
       'modal_visible': true,
-      'selectedComponentId': 'createLabook',
-      'nextComponentId': 'selectBaseImage',
+      'selectedComponentId': 'selectBase',
+      'nextComponentId': 'selectBase',
       'previousComponent': null
     })
     if(document.getElementById('modal__cover')){
@@ -76,27 +75,12 @@ export default class WizardModal extends React.Component {
     }
   }
   /**
-    @param {string} id
+    @param {string} componentId
     sets view for child components using and id
   */
-  _setComponent = (navItemId) => {
-    let index = 0;
-    let navItem = Config.modalNav.filter((nav, i) => {
-      index = (nav.id === navItemId) ? i : index;
-      return (nav.id === navItemId)
-    })[0]
+  _setComponent = (componentId) => {
 
-    if(navItem){
-      this.setState({"selectedComponentId": navItem.id})
-
-      if((index + 1) < Config.modalNav.length){
-        this.setState({"nextComponentId": Config.modalNav[index + 1].id})
-      }
-
-      if(index > 0){
-        this.setState({"previousComponentId": Config.modalNav[index - 1].id})
-      }
-    }
+    this.setState({'selectedComponentId': componentId})
 
   }
   /**
@@ -108,11 +92,11 @@ export default class WizardModal extends React.Component {
   }
 
   /**
-    @param {Object} baseImage
+    @param {Object} base
     sets baseimage object for mini session
   */
-  _setBaseImage = (baseImage) => {
-    this.setState({'baseImage': baseImage})
+  _setBase = (base) => {
+    this.setState({'base': base})
   }
 
   /**
@@ -141,32 +125,43 @@ export default class WizardModal extends React.Component {
   _continueSave = (isSkip) =>{
 
     this.refs[this._getSelectedComponentId()].continueSave(isSkip)
+
+    this.setState({'continueDisabled': true})
   }
   /**
     @param {string ,string} name,description
     sets name and description to state for create labbook mutation
   */
-  _creatLabbookCallback(name, description){
+  _createLabbookCallback(name, description){
     this.setState({
       name,
       description
     })
+
+    this._setComponent('selectBase')
   }
   /**
     @param {string, string ,Int} repository, componentId revision
     sets (repository, componentId and revision to state for create labbook mutation
   */
-  _selectBaseImageCallback(repository, componentId, revision){
+  _selectBaseCallback(node){
+    console.log(node)
+    const {repository, componentId, revision} = node
+    console.log(repository, componentId, revision)
     this.setState({
-      repository,
-      revision
+      repository: repository,
+      componentId: componentId,
+      revision: revision
     })
+    console.log(this.state)
+    //this._creatLabbookMutation();
   }
   /**
       @param {}
       sets name and description to state for create labbook mutation
   */
-  _creatLabbookMutation(){
+  _createLabbookMutation(){
+    let self = this;
     const {
       name,
       description,
@@ -181,8 +176,14 @@ export default class WizardModal extends React.Component {
       repository,
       componentId,
       revision,
-      ({response, error}) => {
-        console.log(response, error)
+      (response, error) => {
+        console.log(response, error);
+        if(error){
+
+        }else{
+          const {owner, name} = response.createLabbook.labbook
+          self.props.history.push(`../labbooks/${owner}/${name}`)
+        }
       }
     )
   }
@@ -209,6 +210,7 @@ export default class WizardModal extends React.Component {
                   hideModal={this._hideModal}
                   getButtonText={this._getButtonText}
                   continueSave={this._continueSave}
+                  createLabbookCallback={this._createLabbookCallback}
                 />
 
 
@@ -218,29 +220,24 @@ export default class WizardModal extends React.Component {
       )
   }
 
-  _modalNavItem(navItem){
-    return(
-      <li
-        key={navItem.id}
-        className={(navItem.id === this.state.selectedComponentId) ? 'WizardModal__progress-item selected' : 'WizardModal__progress-item' }>
-        {
-          (navItem.id === this.state.selectedComponentId) ? navItem.description : ''}
-      </li>)
-  }
-
   _currentComponent(){
-
+    console.log(this._getSelectedComponentId())
     switch(this._getSelectedComponentId()){
         case 'createLabook':
           return(
             <CreateLabbook
-              creatLabbookCallback={this._creatLabbookCallback}
+              ref="createLabook"
+              createLabbookCallback={this._createLabbookCallback}
+              toggleDisabledContinue={this._toggleDisabledContinue}
             />)
 
-        case 'addEnvironmentPackage':
+        case 'selectBase':
           return(
-            <SelectBaseImage
-              selectBaseImageCallback={this._selectBaseImageCallback}
+            <SelectBase
+              ref="selectBase"
+              selectBaseCallback={this._selectBaseCallback}
+              toggleDisabledContinue={this._toggleDisabledContinue}
+              createLabbookMutation={this._createLabbookMutation}
             />)
         default:
           return(
@@ -248,11 +245,11 @@ export default class WizardModal extends React.Component {
               toggleDisabledContinue={this._toggleDisabledContinue}
               setComponent={this._setComponent}
               setLabbookName={this._setLabbookName}
-              nextWindow={'selectBaseImage'}
+              nextWindow={'selectBase'}
             />)
 
-    }
-  }
+        }
+      }
 
 }
 
@@ -276,7 +273,7 @@ function _getButtonText(state){
 */
 function ModalNav({state, getSelectedComponentId, setComponent, hideModal, getButtonText, continueSave}){
 
-  const continueSaveDisabled = ['createLabook', 'selectDevelopmentEnvironment', 'selectBaseImage']
+  const continueSaveDisabled = ['createLabook', 'selectDevelopmentEnvironment', 'selectBase']
 
   let disabled = continueSaveDisabled.indexOf(state.selectedComponentId) > -1
 

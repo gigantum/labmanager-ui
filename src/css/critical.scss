@@ -10,6 +10,7 @@
 @import 'vendor/fileBrowser/table-style.scss';
 @import 'vendor/fileIcons/fileIcons.scss';
 @import 'vendor/font-awesome/fontawesome.scss';
+@import 'vendor/carousel.scss';
 
 //generic
 @import '_variables';
@@ -55,7 +56,7 @@
 @import 'components/labbook/branchMenu.scss';
 //wizard components
 @import  'components/wizard/wizardModal';
-@import  'components/wizard/selectBaseImage';
+@import  'components/wizard/selectBase';
 @import  'components/wizard/createLabbook';
 @import  'components/wizard/addEnvironmentPackages';
 @import  'components/wizard/addCustomDependencies';
