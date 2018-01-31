@@ -2,7 +2,7 @@
 import React from 'react'
 import { QueryRenderer, graphql } from 'react-relay'
 import Slider from 'react-slick';
-import classNames from 'classNames'
+import classNames from 'classnames'
 //components
 import Loader from 'Components/shared/Loader'
 import BaseDetails from './BaseDetails'
