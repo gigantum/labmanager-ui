@@ -1,6 +1,7 @@
 //vendor
 import React from 'react'
 import { CSSTransitionGroup } from 'react-transition-group'
+import classNames from 'classnames'
 //components
 import CreateLabbook from './CreateLabbook'
 import SelectBase from './SelectBase'
@@ -20,7 +21,7 @@ export default class WizardModal extends React.Component {
       'repository': '',
       'componentId': '',
       'revision': '',
-      'selectedComponentId': 'selectBase',
+      'selectedComponentId': 'createLabbook',
       'nextComponentId': 'selectBase',
       'previousComponentId': null,
       'continueDisabled': true,
@@ -56,7 +57,7 @@ export default class WizardModal extends React.Component {
   _showModal = () => {
     this.setState({
       'modal_visible': true,
-      'selectedComponentId': 'selectBase',
+      'selectedComponentId': 'createLabbook',
       'nextComponentId': 'selectBase',
       'previousComponent': null
     })
@@ -123,7 +124,7 @@ export default class WizardModal extends React.Component {
     gets selected id and triggers continueSave function using refs
   */
   _continueSave = (isSkip) =>{
-
+    console.log(this, this._getSelectedComponentId())
     this.refs[this._getSelectedComponentId()].continueSave(isSkip)
 
     this.setState({'continueDisabled': true})
@@ -145,7 +146,7 @@ export default class WizardModal extends React.Component {
     sets (repository, componentId and revision to state for create labbook mutation
   */
   _selectBaseCallback(node){
-    console.log(node)
+
     const {repository, componentId, revision} = node
     console.log(repository, componentId, revision)
     this.setState({
@@ -221,12 +222,11 @@ export default class WizardModal extends React.Component {
   }
 
   _currentComponent(){
-    console.log(this._getSelectedComponentId())
     switch(this._getSelectedComponentId()){
-        case 'createLabook':
+        case 'createLabbook':
           return(
             <CreateLabbook
-              ref="createLabook"
+              ref="createLabbook"
               createLabbookCallback={this._createLabbookCallback}
               toggleDisabledContinue={this._toggleDisabledContinue}
             />)
@@ -242,6 +242,7 @@ export default class WizardModal extends React.Component {
         default:
           return(
             <CreateLabbook
+              ref="createLabbook"
               toggleDisabledContinue={this._toggleDisabledContinue}
               setComponent={this._setComponent}
               setLabbookName={this._setLabbookName}
@@ -259,10 +260,9 @@ export default class WizardModal extends React.Component {
   @return {string} text
 */
 function _getButtonText(state){
-  let text = (state.selectedComponentId === 'successMessage') ? 'Done' : 'Save and Continue Setup'
-  text = (state.selectedComponentId === 'importCode') ? 'Complete' : text;
+  let text = (state.selectedComponentId === 'selectBase') ? 'Create Labbook' : 'Continue'
 
-  return text;
+  return text
 }
 
 
@@ -273,21 +273,26 @@ function _getButtonText(state){
 */
 function ModalNav({state, getSelectedComponentId, setComponent, hideModal, getButtonText, continueSave}){
 
-  const continueSaveDisabled = ['createLabook', 'selectDevelopmentEnvironment', 'selectBase']
+  const continueSaveDisabled = ['createLabbook', 'selectBase']
 
-  let disabled = continueSaveDisabled.indexOf(state.selectedComponentId) > -1
+  let disabled = (continueSaveDisabled.indexOf(state.selectedComponentId) > -1)
+
+  let backButton = classNames({
+    'WizardModal__progress-button': true,
+    'flat--button': true,
+    'hidden': (state.selectedComponentId === 'createLabbook')
+  })
 
   return(
     <div className="flex flex--row justify--center">
       <button
-        disabled={(state.previousComponentId === null)}
-        onClick={() => {setComponent(state.previousComponentId)}}
-        className={(state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
+        onClick={() => {setComponent('createLabbook')}}
+        className={backButton}>
         Back
       </button>
       <button
         onClick={() => {hideModal()}}
-        className={(state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
+        className="WizardModal__progress-button flat--button">
         Cancel
       </button>
       <button

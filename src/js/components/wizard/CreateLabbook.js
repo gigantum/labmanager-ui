@@ -174,7 +174,7 @@ export default class CreateLabbook extends React.Component {
   render(){
     return(
       <div className="CreateLabbook">
-          <h4 className="CreateLabbook__title">Create LabBook</h4>
+          <h4 className="CreateLabbook__header">Create LabBook</h4>
           <div className='CreateLabbook__modal-inner-container flex flex--column justify--space-between'>
 
             <div>

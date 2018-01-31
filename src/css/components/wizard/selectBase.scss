@@ -19,7 +19,28 @@
 }
 
 .SelectBase__inner-container{
-  padding: 0 40px
+  position: relative;
+  padding: 0 40px;
+  @include flex(flex-start, row);
+  flex-wrap: nowrap;
+  transition: right 0.5s;
+  right: 0%;
+}
+
+.SelectBase__inner-container--viewer{
+    right: calc(100% + 160px);
+}
+
+.SelectBase__select-container{
+
+  min-width: 100%;
+  flex-wrap: nowrap;
+  margin: 0 0 80px;
+}
+
+.SelectBase__viewer-container{
+  min-width: 100%;
+  margin: 0 240px;
 }
 
 .SelectBase__tabs-container{
@@ -70,7 +91,11 @@
 
 .SelectBase__image-wrapper{
   height: 300px;
+  width: 100%;
 }
+
+
+
 
 .SelectBase__image{
 
