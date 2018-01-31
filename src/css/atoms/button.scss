@@ -1,11 +1,14 @@
 button{
-  padding: 5px 25px;
+  height: 26px;
+  line-height: 22px;
+  padding: 0px 20px;
   border: 2px solid $azure;
-  border-radius: 20px;
+  border-radius: 10px;
   color: $white;
   background: $azure;
   cursor: pointer;
   font-weight: 100;
+
 }
 
 button:hover{
@@ -28,19 +31,22 @@ button:disabled{
 }
 
 .flat--button{
-  padding: 10px 25px;
+  padding: 0px 20px;
   border: 0px solid $azure;
   border-radius: 0px;
   color: $font-grey;
   background: none;
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .flat--button:hover{
-  color: $azure;
+  color: $turquise;
   background: none;
+  border: 0px solid $turquise;
 }
 .flat--button:focus{
   color: $azure;
   background: none;
+  border: 0px solid $azure;
 }

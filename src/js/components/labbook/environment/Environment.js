@@ -4,7 +4,6 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import Loader from 'Components/shared/Loader'
 import Base from './Base'
-
 import PackageDependencies from './PackageDependencies'
 import CustomDependencies from './CustomDependencies'
 //mutations

@@ -1,0 +1,50 @@
+.BaseDetails{
+  height: 460px;
+
+  h6{
+    font-weight: 400;
+    padding: 2px 0;
+  }
+}
+
+.BaseDetails__button{
+
+}
+
+.BaseDetails__base{
+  @include flex(space-around, row);
+
+  border: 1px solid $romanSilver;
+  margin: 10px 0 0 0;
+  padding: 15px;
+  height: 400px;
+  overflow: auto;
+}
+
+.Base__image-details{
+  @include flex(flex-start, row);
+  min-width: 200px;
+  max-width: 200px;
+  img{
+    min-width: 50px;
+    height: 50px;
+    margin: 10px;
+  }
+}
+
+.Base__image-text{
+  padding: 0 15px;
+
+  flex: 1;
+}
+
+.Base__image-info{
+  @include flex(flex-start, row);
+
+  .Base__image-languages,
+  .Base__image-tools{
+    width: calc(50% - 10px);
+    margin: 5px 5px;
+  }
+
+}

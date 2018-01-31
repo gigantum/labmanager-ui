@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //components
-import AddEnvironmentPackage from 'Components/wizard/AddEnvironmentPackage'
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
@@ -105,21 +104,6 @@ class PackageManagerDependencies extends Component {
     if (packageDependencies) {
       return(
       <div className="Environment_package-manager-dependencies">
-        <div className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
-          <div
-            id="packageManagerEditClose"
-            className="Environment__modal-close"
-            onClick={() => this._hideModal()}>
-          </div>
-          <AddEnvironmentPackage
-            {...this.props}
-            availablePackageManagers={(this.props.baseImage) ? this.props.baseImage.availablePackageManagers : null}
-            setComponent={this._setComponent}
-            nextComponent={"continue"}
-            environmentView={true}
-            toggleDisabledContinue={() => function(){}}
-          />
-        </div>
 
         <div className={blockClass + '__header-container'}>
           <h4 className="Environment__header">Package Dependencies</h4>
@@ -138,9 +122,11 @@ class PackageManagerDependencies extends Component {
           <ul className="flex flex--row justify--left flex--wrap">
           {
             packageDependencies.edges.map((edge, index) => {
-              return(
-                this._packageListItem(edge, index)
-              )
+              if(edge.node){
+                return(
+                  this._packageListItem(edge, index)
+                )
+              }
             })
           }
         </ul>
@@ -159,13 +145,13 @@ class PackageManagerDependencies extends Component {
 
   _packageListItem(edge, index){
     return(
-      <li key={edge.packageName + edge.node.packageManager + index}>
+      <li key={edge.node.package + edge.node.manager + index}>
 
           <div className="Environment__package-dependencies">
 
               <div className="Environment__card-text flex flex--row justify--space-around flex-1-0-auto">
-                <p>{edge.node.packageManager}</p>
-                <p>{edge.node.packageName}</p>
+                <p>{edge.node.manager}</p>
+                <p>{edge.node.package}</p>
               </div>
           </div>
 

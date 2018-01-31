@@ -1,7 +1,15 @@
 .WizardModal__modal{
-  @include modal(540px, 800px);
+  @include modal(600px, 960px);
+  overflow: hidden;
+  padding: 20px 60px;
+}
 
-  padding: 15px 15px;
+.WizardModal__nav{
+  @include flex(space-between, row);
+}
+
+.WizardModal__nav-group{
+    @include flex(flex-end, row);
 }
 
 .WizardModal__modalWrap-enter {

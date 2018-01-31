@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //components
-import AddCustomDependencies from 'Components/wizard/CustomDependencies'
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
@@ -62,22 +61,6 @@ class CustomDependencies extends Component {
     if (customDependencies) {
       return(
         <div className={blockClass + '__dependencies'}>
-
-            <div className={!this.state.modal_visible ? 'Environment__modal hidden' : 'Environment__modal'}>
-              <div
-                id="customDependenciesEditClose"
-                className="Environment__modal-close"
-                onClick={() => this._hideModal()}>
-              </div>
-              <AddCustomDependencies
-                {...this.props}
-                setComponent={this._setComponent}
-                nextComponent={"continue"}
-                environmentView={true}
-                connection={'CustomDependencies_customDependencies'}
-                toggleDisabledContinue={() => function(){}}
-              />
-            </div>
 
             <div className={blockClass + '__header-container'}>
 

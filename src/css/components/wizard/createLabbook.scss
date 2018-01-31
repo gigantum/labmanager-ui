@@ -1,17 +1,26 @@
 .CreateLabbook{
   padding: 20px;
-  height: 330px;
+  height: 500px;
   input[type=text].invalid,
   input[type=text].invalid:focus,
   input[type=text].invalid:hover{
-    color: $labbooks;
-    border-color: $labbooks;
+    color: $crimson;
+    border-color: $crimson;
   }
 
   .error{
-    color: $labbooks;
+    color: $crimson;
   }
 
+}
+
+.CreateLabbook__header{
+    margin: 0 0 20px 0;
+    padding: 0 0 20px 0;
+    color: $azure;
+    text-align: center;
+    font-weight: 400;
+    border-bottom: 1px solid $azure;
 }
 
 .CreateLabbook__modal-close{
@@ -19,6 +28,10 @@
   top: 5px;
   right: 5px;
   cursor: pointer;
+}
+
+.CreateLabbook__modal-inner-container{
+  height: 360px;
 }
 
 .CreateLabbook__button--margin {

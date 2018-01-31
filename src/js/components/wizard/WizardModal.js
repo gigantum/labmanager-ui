@@ -1,12 +1,12 @@
 //vendor
 import React from 'react'
 import { CSSTransitionGroup } from 'react-transition-group'
+import classNames from 'classnames'
 //components
 import CreateLabbook from './CreateLabbook'
-import SelectBaseImage from './SelectBaseImage'
-import SuccessMessage from './SuccessMessage'
-import AddEnvironmentPackage from './AddEnvironmentPackage'
-import CustomDependencies from './CustomDependencies'
+import SelectBase from './SelectBase'
+//mutations
+import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 
 import Config from 'JS/config'
 
@@ -16,25 +16,29 @@ export default class WizardModal extends React.Component {
   	super(props);
 
   	this.state = {
-      'selectedComponentId': 'createLabook',
-      'nextComponentId': 'selectBaseImage',
-      'previousComponentId': null,
       'name': '',
-      'labbookName': '',
-      'baseImage': null,
       'description': '',
+      'repository': '',
+      'componentId': '',
+      'revision': '',
+      'selectedComponentId': 'createLabbook',
+      'nextComponentId': 'selectBase',
+      'previousComponentId': null,
       'continueDisabled': true,
+      'menuVisibility': true
     };
 
+    this._createLabbookCallback = this._createLabbookCallback.bind(this)
+    this._createLabbookMutation = this._createLabbookMutation.bind(this)
+    this._selectBaseCallback = this._selectBaseCallback.bind(this)
     this._continueSave = this._continueSave.bind(this)
     this._setComponent = this._setComponent.bind(this)
-    this._showModal = this._showModal.bind(this)
     this._hideModal = this._hideModal.bind(this)
     this._updateTextState = this._updateTextState.bind(this)
     this._setLabbookName = this._setLabbookName.bind(this)
-    this._setBaseImage = this._setBaseImage.bind(this)
     this._getSelectedComponentId = this._getSelectedComponentId.bind(this)
     this._toggleDisabledContinue = this._toggleDisabledContinue.bind(this)
+    this._toggleMenuVisibility = this._toggleMenuVisibility.bind(this)
   }
   /**
     @param {Object, string} evt,field
@@ -45,6 +49,13 @@ export default class WizardModal extends React.Component {
     state[field] = evt.target.value;
     this.setState(state)
   }
+  /**
+    @param {bool} menuVisibility
+    shows hides navigation menu
+  */
+  _toggleMenuVisibility(menuVisibility){
+    this.setState({menuVisibility: menuVisibility})
+  }
 
   /**
     @param {}
@@ -53,8 +64,8 @@ export default class WizardModal extends React.Component {
   _showModal = () => {
     this.setState({
       'modal_visible': true,
-      'selectedComponentId': 'createLabook',
-      'nextComponentId': 'selectBaseImage',
+      'selectedComponentId': 'createLabbook',
+      'nextComponentId': 'selectBase',
       'previousComponent': null
     })
     if(document.getElementById('modal__cover')){
@@ -72,27 +83,12 @@ export default class WizardModal extends React.Component {
     }
   }
   /**
-    @param {string} id
+    @param {string} componentId
     sets view for child components using and id
   */
-  _setComponent = (navItemId) => {
-    let index = 0;
-    let navItem = Config.modalNav.filter((nav, i) => {
-      index = (nav.id === navItemId) ? i : index;
-      return (nav.id === navItemId)
-    })[0]
+  _setComponent = (componentId) => {
 
-    if(navItem){
-      this.setState({"selectedComponentId": navItem.id})
-
-      if((index + 1) < Config.modalNav.length){
-        this.setState({"nextComponentId": Config.modalNav[index + 1].id})
-      }
-
-      if(index > 0){
-        this.setState({"previousComponentId": Config.modalNav[index - 1].id})
-      }
-    }
+    this.setState({'selectedComponentId': componentId})
 
   }
   /**
@@ -104,11 +100,11 @@ export default class WizardModal extends React.Component {
   }
 
   /**
-    @param {Object} baseImage
+    @param {Object} base
     sets baseimage object for mini session
   */
-  _setBaseImage = (baseImage) => {
-    this.setState({'baseImage': baseImage})
+  _setBase = (base) => {
+    this.setState({'base': base})
   }
 
   /**
@@ -135,8 +131,69 @@ export default class WizardModal extends React.Component {
     gets selected id and triggers continueSave function using refs
   */
   _continueSave = (isSkip) =>{
-
     this.refs[this._getSelectedComponentId()].continueSave(isSkip)
+
+    this.setState({'continueDisabled': true})
+  }
+  /**
+    @param {string ,string} name,description
+    sets name and description to state for create labbook mutation
+  */
+  _createLabbookCallback(name, description){
+    this.setState({
+      name,
+      description
+    })
+
+    this._setComponent('selectBase')
+  }
+  /**
+    @param {string, string ,Int} repository, componentId revision
+    sets (repository, componentId and revision to state for create labbook mutation
+  */
+  _selectBaseCallback(node){
+
+    const {repository, componentId, revision} = node
+    this.setState({
+      repository: repository,
+      componentId: componentId,
+      revision: revision
+    })
+    //this._creatLabbookMutation();
+  }
+  /**
+      @param {}
+      sets name and description to state for create labbook mutation
+  */
+  _createLabbookMutation(){
+    let self = this;
+    const {
+      name,
+      description,
+      repository,
+      componentId,
+      revision
+    } = this.state
+
+    CreateLabbookMutation(
+      name,
+      description,
+      repository,
+      componentId,
+      revision,
+      (response, error) => {
+        if(error){
+
+        }else{
+          const {owner, name} = response.createLabbook.labbook
+          self.props.history.push(`../labbooks/${owner}/${name}`)
+
+          if(document.getElementById('modal__cover')){
+            document.getElementById('modal__cover').classList.add('hidden')
+          }
+        }
+      }
+    )
   }
 
   render(){
@@ -161,6 +218,7 @@ export default class WizardModal extends React.Component {
                   hideModal={this._hideModal}
                   getButtonText={this._getButtonText}
                   continueSave={this._continueSave}
+                  createLabbookCallback={this._createLabbookCallback}
                 />
 
 
@@ -170,59 +228,37 @@ export default class WizardModal extends React.Component {
       )
   }
 
-  _modalNavItem(navItem){
-    return(
-      <li
-        key={navItem.id}
-        className={(navItem.id === this.state.selectedComponentId) ? 'WizardModal__progress-item selected' : 'WizardModal__progress-item' }>
-        {
-          (navItem.id === this.state.selectedComponentId) ? navItem.description : ''}
-      </li>)
-  }
-
   _currentComponent(){
-
     switch(this._getSelectedComponentId()){
-        case 'createLabook':
+        case 'createLabbook':
           return(
             <CreateLabbook
-
-            toggleDisabledContinue={this._toggleDisabledContinue}
-            setComponent={this._setComponent}
-            setLabbookName={this._setLabbookName}
-            nextWindow={'selectBaseImage'}
-            history={this.props.history}
-          />)
-
-        case 'addEnvironmentPackage':
-          return(
-            <AddEnvironmentPackage
-
-              baseImage={this.state.baseImage}
+              ref="createLabbook"
+              createLabbookCallback={this._createLabbookCallback}
               toggleDisabledContinue={this._toggleDisabledContinue}
-              availablePackageManagers={this.state.baseImage.node.availablePackageManagers}  labbookName={this.state.labbookName}
-              setComponent={this._setComponent}
-              nextWindow={'addCustomDependencies'}
-            />)
-        case 'successMessage':
-          return(
-            <SuccessMessage
-              toggleDisabledContinue={this._toggleDisabledContinue}
-              labbookName={this.state.labbookName}
-              history={this.props.history}
             />)
 
+        case 'selectBase':
+          return(
+            <SelectBase
+              ref="selectBase"
+              selectBaseCallback={this._selectBaseCallback}
+              toggleDisabledContinue={this._toggleDisabledContinue}
+              createLabbookMutation={this._createLabbookMutation}
+              toggleMenuVisibility={this._toggleMenuVisibility}
+            />)
         default:
           return(
             <CreateLabbook
+              ref="createLabbook"
               toggleDisabledContinue={this._toggleDisabledContinue}
               setComponent={this._setComponent}
               setLabbookName={this._setLabbookName}
-              nextWindow={'selectBaseImage'}
+              nextWindow={'selectBase'}
             />)
 
-    }
-  }
+        }
+      }
 
 }
 
@@ -232,10 +268,9 @@ export default class WizardModal extends React.Component {
   @return {string} text
 */
 function _getButtonText(state){
-  let text = (state.selectedComponentId === 'successMessage') ? 'Done' : 'Save and Continue Setup'
-  text = (state.selectedComponentId === 'importCode') ? 'Complete' : text;
+  let text = (state.selectedComponentId === 'selectBase') ? 'Create Labbook' : 'Continue'
 
-  return text;
+  return text
 }
 
 
@@ -246,36 +281,44 @@ function _getButtonText(state){
 */
 function ModalNav({state, getSelectedComponentId, setComponent, hideModal, getButtonText, continueSave}){
 
-  const continueSaveDisabled = ['createLabook', 'selectDevelopmentEnvironment', 'selectBaseImage']
+  const continueSaveDisabled = ['createLabbook', 'selectBase']
 
-  let disabled = continueSaveDisabled.indexOf(state.selectedComponentId) > -1
+  let disabled = (continueSaveDisabled.indexOf(state.selectedComponentId) > -1)
+
+  let backButton = classNames({
+    'WizardModal__progress-button': true,
+    'flat--button': true,
+    'hidden': (state.selectedComponentId === 'createLabbook')
+  })
+
+  let wizardModalNav = classNames({
+    'WizardModal__nav': true,
+    'hidden': !state.menuVisibility
+  })
 
   return(
-    <div className="flex flex--row justify--center">
-      <button
-        disabled={(state.previousComponentId === null)}
-        onClick={() => {setComponent(state.previousComponentId)}}
-        className={(state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
-        Previous
-      </button>
-      <button
-        onClick={() => {hideModal()}}
-        className={(state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
-        Cancel
-      </button>
-      <button
-        disabled={disabled}
-        onClick={() => {continueSave(true)}}
-        className={(state.selectedComponentId === 'successMessage') ? 'hidden' : 'WizardModal__progress-button flat--button'}>
-        skip
-      </button>
-      <button
-        onClick={() => {continueSave(false)}}
-        disabled={(state.continueDisabled)}
-        >
-          {
-            _getButtonText(state)
-          }
-      </button>
+    <div className={wizardModalNav}>
+      <div>
+        <button
+          onClick={() => {setComponent('createLabbook')}}
+          className={backButton}>
+          Back
+        </button>
+      </div>
+      <div className="WizardModal__nav-group">
+        <button
+          onClick={() => {hideModal()}}
+          className="WizardModal__progress-button flat--button">
+          Cancel
+        </button>
+        <button
+          onClick={() => {continueSave(false)}}
+          disabled={(state.continueDisabled)}
+          >
+            {
+              _getButtonText(state)
+            }
+        </button>
+      </div>
     </div>)
 }
