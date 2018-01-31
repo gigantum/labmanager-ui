@@ -24,6 +24,7 @@
 .Base__image-details{
   @include flex(flex-start, row);
   min-width: 200px;
+  max-width: 200px;
   img{
     min-width: 50px;
     height: 50px;

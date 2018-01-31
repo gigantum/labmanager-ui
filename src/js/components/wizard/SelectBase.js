@@ -61,6 +61,8 @@ export default class SelectBase extends React.Component {
     };
 
     this._backToBaseSelect = this._backToBaseSelect.bind(this)
+    this._viewBase = this._viewBase.bind(this)
+    this._selectBase = this._selectBase.bind(this)
   }
   /**
     @param {object} edge
@@ -81,11 +83,14 @@ export default class SelectBase extends React.Component {
   _viewBase(node){
     this.setState({'viewedBase': node})
     this.setState({'viewingBase': true})
+
+    this.props.toggleMenuVisibility(false);
   }
 
   _backToBaseSelect(){
     this.setState({'viewedBase': null})
     this.setState({'viewingBase': false})
+    this.props.toggleMenuVisibility(true)
   }
   /**
     @param {}
@@ -234,7 +239,7 @@ export default class SelectBase extends React.Component {
 * return {jsx}
 */
 const LanguageTab = ({tab, self}) => {
-  console.log(self, tab)
+
   let tabClass = classNames({
     "SelectBase__tab": true,
     "SelectBase__tab--selected": (tab === self.state.selectedTab)

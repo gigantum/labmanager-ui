@@ -3,18 +3,13 @@ import React from 'react'
 export default class BaseDetails extends React.Component {
   constructor(props){
     super(props)
-    this.back = this.back.bind(this);
-  }
-  /**
-    @param {}
-    gets labbook name from props and sends user to labbook view
-  */
-  back(){
 
   }
+  
   render(){
     const {base} = this.props
     if(base){
+
     return(
       <div className="BaseDetails">
         <div className="BaseDetails__button">

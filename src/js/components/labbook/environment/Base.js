@@ -58,7 +58,7 @@ class Base extends Component {
     let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
 
     if (base) {
-      console.log(base)
+
       return(
         <div className={blockClass + '__base-image'}>
 

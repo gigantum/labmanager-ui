@@ -25,7 +25,7 @@ export default class WizardModal extends React.Component {
       'nextComponentId': 'selectBase',
       'previousComponentId': null,
       'continueDisabled': true,
-
+      'menuVisibility': true
     };
 
     this._createLabbookCallback = this._createLabbookCallback.bind(this)
@@ -33,12 +33,12 @@ export default class WizardModal extends React.Component {
     this._selectBaseCallback = this._selectBaseCallback.bind(this)
     this._continueSave = this._continueSave.bind(this)
     this._setComponent = this._setComponent.bind(this)
-    this._showModal = this._showModal.bind(this)
     this._hideModal = this._hideModal.bind(this)
     this._updateTextState = this._updateTextState.bind(this)
     this._setLabbookName = this._setLabbookName.bind(this)
     this._getSelectedComponentId = this._getSelectedComponentId.bind(this)
     this._toggleDisabledContinue = this._toggleDisabledContinue.bind(this)
+    this._toggleMenuVisibility = this._toggleMenuVisibility.bind(this)
   }
   /**
     @param {Object, string} evt,field
@@ -48,6 +48,13 @@ export default class WizardModal extends React.Component {
     let state = {}
     state[field] = evt.target.value;
     this.setState(state)
+  }
+  /**
+    @param {bool} menuVisibility
+    shows hides navigation menu
+  */
+  _toggleMenuVisibility(menuVisibility){
+    this.setState({menuVisibility: menuVisibility})
   }
 
   /**
@@ -124,7 +131,6 @@ export default class WizardModal extends React.Component {
     gets selected id and triggers continueSave function using refs
   */
   _continueSave = (isSkip) =>{
-    console.log(this, this._getSelectedComponentId())
     this.refs[this._getSelectedComponentId()].continueSave(isSkip)
 
     this.setState({'continueDisabled': true})
@@ -148,13 +154,11 @@ export default class WizardModal extends React.Component {
   _selectBaseCallback(node){
 
     const {repository, componentId, revision} = node
-    console.log(repository, componentId, revision)
     this.setState({
       repository: repository,
       componentId: componentId,
       revision: revision
     })
-    console.log(this.state)
     //this._creatLabbookMutation();
   }
   /**
@@ -178,12 +182,15 @@ export default class WizardModal extends React.Component {
       componentId,
       revision,
       (response, error) => {
-        console.log(response, error);
         if(error){
 
         }else{
           const {owner, name} = response.createLabbook.labbook
           self.props.history.push(`../labbooks/${owner}/${name}`)
+
+          if(document.getElementById('modal__cover')){
+            document.getElementById('modal__cover').classList.add('hidden')
+          }
         }
       }
     )
@@ -238,6 +245,7 @@ export default class WizardModal extends React.Component {
               selectBaseCallback={this._selectBaseCallback}
               toggleDisabledContinue={this._toggleDisabledContinue}
               createLabbookMutation={this._createLabbookMutation}
+              toggleMenuVisibility={this._toggleMenuVisibility}
             />)
         default:
           return(
@@ -283,25 +291,34 @@ function ModalNav({state, getSelectedComponentId, setComponent, hideModal, getBu
     'hidden': (state.selectedComponentId === 'createLabbook')
   })
 
+  let wizardModalNav = classNames({
+    'WizardModal__nav': true,
+    'hidden': !state.menuVisibility
+  })
+
   return(
-    <div className="flex flex--row justify--center">
-      <button
-        onClick={() => {setComponent('createLabbook')}}
-        className={backButton}>
-        Back
-      </button>
-      <button
-        onClick={() => {hideModal()}}
-        className="WizardModal__progress-button flat--button">
-        Cancel
-      </button>
-      <button
-        onClick={() => {continueSave(false)}}
-        disabled={(state.continueDisabled)}
-        >
-          {
-            _getButtonText(state)
-          }
-      </button>
+    <div className={wizardModalNav}>
+      <div>
+        <button
+          onClick={() => {setComponent('createLabbook')}}
+          className={backButton}>
+          Back
+        </button>
+      </div>
+      <div className="WizardModal__nav-group">
+        <button
+          onClick={() => {hideModal()}}
+          className="WizardModal__progress-button flat--button">
+          Cancel
+        </button>
+        <button
+          onClick={() => {continueSave(false)}}
+          disabled={(state.continueDisabled)}
+          >
+            {
+              _getButtonText(state)
+            }
+        </button>
+      </div>
     </div>)
 }

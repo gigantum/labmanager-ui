@@ -4,6 +4,14 @@
   padding: 20px 60px;
 }
 
+.WizardModal__nav{
+  @include flex(space-between, row);
+}
+
+.WizardModal__nav-group{
+    @include flex(flex-end, row);
+}
+
 .WizardModal__modalWrap-enter {
   opacity: 0.01;
 }
