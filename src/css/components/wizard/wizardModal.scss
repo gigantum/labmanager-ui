@@ -1,6 +1,6 @@
 .WizardModal__modal{
   @include modal(600px, 960px);
-
+  overflow: hidden;
   padding: 20px 60px;
 }
 
