@@ -55,39 +55,55 @@ class Base extends Component {
     const {base} = this.props.environment;
     const {blockClass} = this.props;
 
-    let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
-
     if (base) {
-
+      console.log(base)
       return(
-        <div className={blockClass + '__base-image'}>
+        <div className="Environment__base-image">
 
-            <div className={blockClass + '__header-container' }>
-              <h4 className={blockClass + '__header'}>Base Image</h4>
-              {
-                this._editVisible() &&
-                <div className={blockClass + '__edit-container'}>
-                    <button
-                      id="baseEdit"
-                      onClick={() => this._openModal()}
-                      className={blockClass + '__edit-button'}
-                      disabled={editDisabled}
-                    >
-                    </button>
-                </div>
-              }
+            <div className="Environment__header-container">
+              <h4 className="Environment__header">Environment</h4>
             </div>
-            <div className={blockClass + '__info flex justify--left'}>
+            <div className="Environment__info">
 
-              <div className={ blockClass + '__card flex justify--space-around'}>
-                <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
-                  <img height="50" width="50" src={base.icon} alt={base.name} />
+              <div className="Environment__card">
+                <div className="Environment__image-container">
+                  <img height="70" width="70" src={base.icon} alt={base.name} />
+                  <div className="Environment__title">
+                    <h6 className="Environment__name">{base.name}</h6>
+                    <p>{base.osClass + ' ' + base.osRelease}</p>
+                  </div>
                 </div>
 
-                <div className={blockClass + '__card-text flex-1-0-auto'}>
-                  <p className={blockClass + '__human-name'}>{base.name}</p>
-                  <p>{base.description}</p>
+                <div className="Environment__card-text">
+                  <div>
+                    <p>{base.description}</p>
+                  </div>
+
+                  <div className="Environment__categories">
+                    <div className="Environment__categories-languages">
+                      <h6>Languages</h6>
+                      <ul>
+                        {
+                          base.languages.map((language)=>{
+                            return(<li>{language}</li>)
+                          })
+                        }
+                      </ul>
+                    </div>
+                    <div className="Environment__categories-tools">
+                      <h6>Tools</h6>
+                      <ul>
+                        {
+                          base.developmentTools.map((tool)=>{
+                            return(<li>{tool}</li>)
+                          })
+                        }
+                      </ul>
+                    </div>
+                  </div>
                 </div>
+
+
               </div>
 
 
