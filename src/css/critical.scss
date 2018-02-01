@@ -44,7 +44,6 @@
 @import  'components/labbook/labbook.scss';
 @import  'components/labbook/activity.scss';
 @import  'components/labbook/detail.scss';
-@import  'components/labbook/environment.scss';
 @import  'components/labbook/overview.scss';
 @import  'components/labbook/userNote.scss';
 @import  'components/labbook/code.scss';
@@ -54,6 +53,10 @@
 @import 'components/labbook/favorite.scss';
 @import 'components/labbook/branches.scss';
 @import 'components/labbook/branchMenu.scss';
+//environment
+@import  'components/labbook/environment/environment.scss';
+@import  'components/labbook/environment/packageDependencies.scss';
+
 //wizard components
 @import  'components/wizard/wizardModal';
 @import  'components/wizard/selectBase';

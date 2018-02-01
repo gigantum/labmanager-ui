@@ -15,7 +15,8 @@ class PackageManagerDependencies extends Component {
     this.state = {
       'modal_visible': false,
       owner,
-      labbookName
+      labbookName,
+      'selectedTab': ''
     };
     //bind functions here
     this._openModal = this._openModal.bind(this)
@@ -23,12 +24,16 @@ class PackageManagerDependencies extends Component {
     this._setBaseImage = this._setBaseImage.bind(this)
     this._setComponent = this._setComponent.bind(this)
     this._loadMore = this._loadMore.bind(this)
+    this._setSelectedTab = this._setSelectedTab.bind(this)
   }
   /*
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
     this._loadMore() //routes query only loads 2, call loadMore
+    if(this.state.selectedTab === ''){
+      this.setState({selectedTab: this.props.base.packageManagers[0]})
+    }
   }
   /*
     @param
@@ -92,46 +97,78 @@ class PackageManagerDependencies extends Component {
     // this.setState({"readyToBuild": true})
     this._hideModal();
   }
-
+  /**
+  *  @param {Object}
+  *  hides packagemanager modal
+  */
+  _setSelectedTab(tab){
+    this.setState({'selectedTab': tab})
+  }
+  /**
+  *  @param {Object}
+  *  hides packagemanager modal
+  */
+  _filterPackageDependencies(packageDependencies){
+    let packages = packageDependencies.edges.filter((edge)=>{
+      console.log(edge, (edge.node && (edge.node.manager === this.state.selectedTab)))
+      return edge.node && (edge.node.manager === this.state.selectedTab)
+    })
+    console.log(packages)
+    return packages
+  }
   render(){
 
     const {packageDependencies} = this.props.environment;
-    const {blockClass} = this.props;
-
-    let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
+    const {blockClass, base} = this.props;
 
 
-    if (packageDependencies) {
+
+    if(packageDependencies) {
+
+      let filteredPackageDependencies = this._filterPackageDependencies(packageDependencies)
+      console.log(filteredPackageDependencies)
       return(
-      <div className="Environment_package-manager-dependencies">
+      <div className="PackageDependencies">
 
         <div className={blockClass + '__header-container'}>
-          <h4 className="Environment__header">Package Dependencies</h4>
-          <div className="Environment__edit-container">
-            <button
-              id="packageManagerEdit"
-              className="Environment__edit-button"
-              onClick={() => this._openModal()}
-              disabled={editDisabled}
-            >
-            </button>
-          </div>
+          <h4 className="PackageDependencies__header">Package Dependencies</h4>
         </div>
 
-        <div className="Environment__info flex flex--row justify--left">
-          <ul className="flex flex--row justify--left flex--wrap">
-          {
-            packageDependencies.edges.map((edge, index) => {
-              if(edge.node){
-                return(
-                  this._packageListItem(edge, index)
-                )
+
+        <div className="PackageDependencies__card">
+          <div className="PackageDependencies__tabs">
+            <ul>
+            {
+              base.packageManagers.map((tab) => {
+                return(<li onClick={() => this._setSelectedTab(tab)}>{tab}</li>)
+              })
+            }
+          </ul>
+
+          </div>
+          <div>
+            <table className="flex flex--row justify--left flex--wrap">
+              <thead>
+                <tr>
+                  <th>Dependency Name</th>
+                  <th>Current</th>
+                  <th>Latesr</th>
+                  <th>Installed By</th>
+                </tr>
+              </thead>
+              <tbody>
+              {
+                filteredPackageDependencies.map((edge, index) => {
+                  if(edge.node){
+                    return(
+                      this._packageRow(edge, index)
+                    )
+                  }
+                })
               }
-            })
-          }
-        </ul>
-
-
+              </tbody>
+            </table>
+        </div>
       </div>
     </div>
 
@@ -143,19 +180,17 @@ class PackageManagerDependencies extends Component {
     }
   }
 
-  _packageListItem(edge, index){
+  _packageRow(edge, index){
     return(
-      <li key={edge.node.package + edge.node.manager + index}>
+      <tr key={edge.node.package + edge.node.manager + index}>
 
-          <div className="Environment__package-dependencies">
+        <td>{edge.node.package}</td>
+        <td>{edge.node.package}</td>
+        <td>{edge.node.manager}</td>
+        <td>{edge.node.package}</td>
 
-              <div className="Environment__card-text flex flex--row justify--space-around flex-1-0-auto">
-                <p>{edge.node.manager}</p>
-                <p>{edge.node.package}</p>
-              </div>
-          </div>
 
-      </li>)
+      </tr>)
   }
 }
 

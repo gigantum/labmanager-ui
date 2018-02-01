@@ -109,6 +109,7 @@ class Environment extends Component {
   }
 
   render(){
+    console.log(this.props)
     if(this.props.labbook){
       const env = this.props.labbook.environment;
       const {base} = env;
@@ -171,7 +172,7 @@ export default createFragmentContainer(
         packageManagers
       }
 
-      ...Base_environment
+      ...Base_environment @relay(mask: false)
       ...PackageDependencies_environment
       ...CustomDependencies_environment
     }
