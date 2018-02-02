@@ -29,42 +29,23 @@
 }
 
 .Environment__card{
-  @include flex(space-between, row);
-  margin: 10px 0px;
   background-color: $white;
   padding: 10px;
   color: $charcoal;
-  width: 100%;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-}
-
-.Environment__card-text{
-  flex: 1;
-  //background-color: $grey-light;
-  padding: 10px;
-  width: 200px;
 }
 
 
 .Environment__image-container{
-  max-width: 250px;
-  min-width: 250px;
-  @include flex(space-between, row);
-  .Environment__title{
-    padding: 5px 10px;
-  }
-
-  img{
-    min-width: 70px;
-
-  }
+  align-items: center;
+  align-content: center;
+  align-self: center;
 }
 
-.Environment__categories{
-  @include flex(flex-start, row);
-  div{
-    width: 50%;
-  }
+.Environment__card-text{
+  //background-color: $grey-light;
+  padding: 10px;
+  width: 200px;
 }
 
 .Environment__edit-container{

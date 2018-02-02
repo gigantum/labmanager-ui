@@ -26,6 +26,8 @@ function sharedUpdater(store, id, newEdge) {
     userProxy,
     'PackageManagerDependencies_packageDependencies'
   );
+  console.log(store, id, newEdge);
+  console.log(conn)
   if(conn){
     RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
   }
@@ -64,6 +66,7 @@ export default function AddEnvironmentPackageMutation(
       onError: err => console.error(err),
 
       updater: (store) => {
+        console.log(store)
         if(clientMutationId){
           //TODO use edge from linked record
           const id = 'client:PackageManagerDependencies:' + tempID++;
@@ -72,7 +75,7 @@ export default function AddEnvironmentPackageMutation(
           node.setValue(packageName, 'packageName')
           node.setValue(labbookName, 'labbookName')
           node.setValue(owner, 'owner')
-
+          console.log(node)
           const newEdge = store.create(
             'client:newEdge:' + tempID,
             'PackageManagerEdge',
@@ -84,7 +87,7 @@ export default function AddEnvironmentPackageMutation(
         }
       },
       optimisticUpdater: (store) => {
-
+        console.log(store)
         if(clientMutationId){
 
           const id = 'client:newPackageManager:' + tempID++;

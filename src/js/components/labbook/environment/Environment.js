@@ -109,7 +109,6 @@ class Environment extends Component {
   }
 
   render(){
-    console.log(this.props)
     if(this.props.labbook){
       const env = this.props.labbook.environment;
       const {base} = env;

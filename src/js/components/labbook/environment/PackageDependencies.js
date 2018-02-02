@@ -1,10 +1,14 @@
 //vendor
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
+import classNames from 'classnames'
 //components
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
+//Mutations
+import AddPackageComponentMutation from 'Mutations/AddPackageComponentMutation'
+
 let totalCount = 2
 let owner
 class PackageManagerDependencies extends Component {
@@ -16,7 +20,11 @@ class PackageManagerDependencies extends Component {
       'modal_visible': false,
       owner,
       labbookName,
-      'selectedTab': ''
+      'selectedTab': '',
+      'pacakageMenuVisible': false,
+      'packageName': '',
+      'version': '',
+      'packages': []
     };
     //bind functions here
     this._openModal = this._openModal.bind(this)
@@ -110,23 +118,147 @@ class PackageManagerDependencies extends Component {
   */
   _filterPackageDependencies(packageDependencies){
     let packages = packageDependencies.edges.filter((edge)=>{
-      console.log(edge, (edge.node && (edge.node.manager === this.state.selectedTab)))
       return edge.node && (edge.node.manager === this.state.selectedTab)
     })
-    console.log(packages)
     return packages
   }
+  /**
+  *  @param {object} node
+  *  triggers remove package mutation
+  */
+  _removePackage(node){
+    console.log(node)
+  }
+  /**
+  *  @param {object} node
+  *  triggers remove package mutation
+  */
+  _toggleAddPackageMenu(){
+    this.setState({'pacakageMenuVisible': !this.state.pacakageMenuVisible})
+  }
+  /**
+  *  @param {evt}
+  *  updates package name in components state
+  */
+  _updatePackageName(evt){
+    this.setState({packageName: evt.target.value})
+    if(evt.key === 'Enter'){
+      this._addStatePackage(evt)
+
+    }
+  }
+  /**
+  *  @param {evt}
+  *  updates package version in components state
+  */
+  _updateVersion(evt){
+    this.setState({version: evt.target.value})
+    if(evt.key === 'Enter'){
+      this._addStatePackage(evt)
+    }
+  }
+  /**
+  *  @param {}
+  *  updates packages in state
+  */
+  _addStatePackage(){
+    let packages = this.state.packages
+    const {packageName, version} = this.state
+    const manager = this.state.selectedTab
+    packages.push({
+      packageName,
+      version,
+      manager
+    })
+
+    this.setState({
+      packages,
+      packageName: '',
+      version: ''
+    })
+    this.inputPackageName.value = ""
+    this.inputVersion.value = ""
+  }
+  /**
+  *  @param {}
+  *  updates packages in state
+  */
+  _removeStatePackages(node, index){
+    let packages = this.state.packages
+    packages.splice(index, 1)
+    this.setState({
+      packages
+    })
+
+  }
+  /**
+  *  @param {}
+  *  triggers add package mutation
+  */
+  _addPackageComponentMutation(){
+    const {packages} = this.state
+    const {labbookName, owner} = store.getState().routes
+    const {environmentId} = this.props
+    let self = this,
+        index = 0
+
+    function addPackage(packageItem){
+      const messageVersion = (packageItem.version === '') ? 'latest' : packageItem.version
+      const version = (packageItem.version === '') ? null : packageItem.version
+      store.dispatch({
+        type: 'INFO_MESSAGE',
+        payload: {
+          message: `Installing ${packageItem.packageName} at ${messageVersion} with ${packageItem.manager}`,
+        }
+      })
+
+      AddPackageComponentMutation(
+        labbookName,
+        owner,
+        packageItem.manager,
+        packageItem.packageName,
+        version,
+        index+1,
+        environmentId,
+        'PackageDependencies_packageDependencies',
+        (response, error) => {
+          self._removeStatePackages(packageItem, index)
+          if(error){
+            console.log(error)
+            error.forEach((err, index)=>{
+              store.dispatch({
+                type: 'ERROR_MESSAGE',
+                payload: {
+                  message: err.message,
+                }
+              })
+            })
+
+          }else{
+            index++;
+            if(packages[index]){
+              addPackage(packages[index])
+            }
+          }
+        }
+      )
+    }
+    addPackage(packages[index])
+  }
+
+
   render(){
 
-    const {packageDependencies} = this.props.environment;
-    const {blockClass, base} = this.props;
-
-
+    const {packageDependencies} = this.props.environment
+    const {blockClass, base} = this.props
 
     if(packageDependencies) {
 
       let filteredPackageDependencies = this._filterPackageDependencies(packageDependencies)
-      console.log(filteredPackageDependencies)
+      let packageMenu = classNames({
+        'PackageDependencies__menu': true,
+        'PackageDependencies__menu--min-height':!this.state.pacakageMenuVisible
+      })
       return(
       <div className="PackageDependencies">
 
@@ -135,61 +267,132 @@ class PackageManagerDependencies extends Component {
         </div>
 
 
+
         <div className="PackageDependencies__card">
           <div className="PackageDependencies__tabs">
-            <ul>
+            <ul className="PackageDependencies__tabs-list">
             {
               base.packageManagers.map((tab) => {
-                return(<li onClick={() => this._setSelectedTab(tab)}>{tab}</li>)
+                let packageTab = classNames({
+                  'PackageDependencies__tab': true,
+                  'PackageDependencies__tab--selected': (this.state.selectedTab === tab)
+                })
+
+                return(<li
+                  className={packageTab}
+                  onClick={() => this._setSelectedTab(tab)}>{tab}
+                </li>)
               })
             }
           </ul>
 
           </div>
-          <div>
-            <table className="flex flex--row justify--left flex--wrap">
-              <thead>
-                <tr>
-                  <th>Dependency Name</th>
-                  <th>Current</th>
-                  <th>Latesr</th>
-                  <th>Installed By</th>
-                </tr>
-              </thead>
-              <tbody>
-              {
-                filteredPackageDependencies.map((edge, index) => {
-                  if(edge.node){
-                    return(
-                      this._packageRow(edge, index)
-                    )
-                  }
-                })
-              }
-              </tbody>
-            </table>
-        </div>
-      </div>
-    </div>
+          <div className="PackageDependencies__add-package">
+            <button
+              onClick={()=> this._toggleAddPackageMenu()}
+              className="PackageDependencies__button PackageDependencies__button--line-18">
+              Add Dependencies
+            </button>
+            <div className={packageMenu}>
+              <div className="PackageDependencies__package-menu">
+                <input
+                  ref={el => this.inputPackageName = el}
+                  className="PackageDependencies__input-text"
+                  placeholder="Enter Dependency Name"
+                  type="text"
+                  onKeyUp={(evt)=>this._updatePackageName(evt)} />
+                <input
+                  ref={el => this.inputVersion = el}
+                  className="PackageDependencies__input-text--version"
+                  placeholder="Version (Optional)"
+                  type="text"
+                  onKeyUp={(evt)=>this._updateVersion(evt)} />
+                <button
+                  disabled={(this.state.packageName.lenght === 0)}
+                  onClick={()=>this._addStatePackage()}
+                  className="PackageDependencies__button--round"></button>
+              </div>
 
-      )
+              <div className="PackageDependencies__table--border">
+                <table>
+                  <tbody>
+                    {
+                      this.state.packages.map((node, index)=>{
+
+                        const version = node.version === '' ? 'latest' : `v${node.version}`
+                        return (
+                          <tr>
+                            <td>{`${node.packageName}`}</td>
+                            <td>{version}</td>
+                            <td className="PackageDependencies__table--no-right-padding" width="30">
+                              <button className="PackageDependencies__button--round"
+                                onClick={()=>this._removeStatePackages(node, index)}>
+                              </button>
+                            </td>
+                          </tr>)
+                      })
+                    }
+                  </tbody>
+                </table>
+                <button
+                  className="PackageDependencies__button--absolute"
+                  onClick={()=> this._addPackageComponentMutation()}
+                  disabled={this.state.packages.length === 0}>
+                  Install Selected Dependencies
+                </button>
+            </div>
+          </div>
+        </div>
+        <div className="PackageDependencies__table-container">
+          <table className="PackageDependencies__table">
+            <thead>
+              <tr>
+                <th>Dependency Name</th>
+                <th>Current</th>
+                <th>Latest</th>
+                <th>Installed By</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+            {
+              filteredPackageDependencies.map((edge, index) => {
+                if(edge.node){
+                  return(
+                    this._packageRow(edge, index)
+                  )
+                }
+              })
+            }
+            </tbody>
+          </table>
+      </div>
+      </div>
+    </div>)
     }else{
-      return(
-          <Loader />
-        )
+      return(<Loader />)
     }
   }
 
   _packageRow(edge, index){
+    const installer = edge.node.fromBase ? 'System' : 'User'
+    const {version, latestVersion} = edge.node
+    const versionText = version ?  `v${version}` : ''
+    const latestVersionText = latestVersion ?  `v${latestVersion}` : ''
+
     return(
       <tr key={edge.node.package + edge.node.manager + index}>
-
         <td>{edge.node.package}</td>
-        <td>{edge.node.package}</td>
-        <td>{edge.node.manager}</td>
-        <td>{edge.node.package}</td>
-
-
+        <td>{versionText}</td>
+        <td>{latestVersionText}</td>
+        <td>{installer}</td>
+        <td width="60">
+          <button
+          className="PackageDependencies__button--round"
+          disabled={edge.node.fromBase}
+          onClick={this._removePackage(edge.node)}>
+          </button>
+        </td>
       </tr>)
   }
 }
