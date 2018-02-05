@@ -30,13 +30,13 @@
 .PackageDependencies__menu{
   transition: min-height 0.5s, height 0.5s;
   min-height: 0px;
-  height: 0px;
+  max-height: auto;
   overflow: hidden;
 };
 
 .PackageDependencies__menu--min-height{
-  min-height: 220px;
-  height: auto;
+  min-height: 0px;
+  height: 0px;
 }
 
 .PackageDependencies__button--line-18{

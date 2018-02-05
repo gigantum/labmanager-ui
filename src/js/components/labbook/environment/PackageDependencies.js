@@ -2,12 +2,14 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 import classNames from 'classnames'
+import uuidv4 from 'uuid/v4'
 //components
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
 //Mutations
 import AddPackageComponentMutation from 'Mutations/AddPackageComponentMutation'
+import RemvoePackageComponentMutation from 'Mutations/RemovePackageComponentMutation'
 
 let totalCount = 2
 let owner
@@ -128,6 +130,23 @@ class PackageManagerDependencies extends Component {
   */
   _removePackage(node){
     console.log(node)
+    const {labbookName, owner} = store.getState().routes
+    const {environmentId} = this.props
+    const clinetMutationId = uuidv4()
+
+    RemvoePackageComponentMutation(
+      labbookName,
+      owner,
+      node.manager,
+      node.package,
+      node.id,
+      clinetMutationId,
+      environmentId,
+      'PackageDependencies_packageDependencies',
+      (response, error) => {
+        console.log(response, error)
+      }
+    )
   }
   /**
   *  @param {object} node
@@ -390,7 +409,7 @@ class PackageManagerDependencies extends Component {
           <button
           className="PackageDependencies__button--round"
           disabled={edge.node.fromBase}
-          onClick={this._removePackage(edge.node)}>
+          onClick={() => this._removePackage(edge.node)}>
           </button>
         </td>
       </tr>)
