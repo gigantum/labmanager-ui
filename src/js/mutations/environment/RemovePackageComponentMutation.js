@@ -68,7 +68,6 @@ export default function RemovePackageComponentMutation(
       },
       onError: err => console.error(err),
       updater: (store, response) => {
-        console.log(store, response)
         sharedUpdater(store, environmentId, nodeID, 'PackageDependencies_packageDependencies')
       },
       optimisticUpdater: (store) => {

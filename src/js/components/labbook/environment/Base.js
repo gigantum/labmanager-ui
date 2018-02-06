@@ -56,7 +56,7 @@ class Base extends Component {
     const {blockClass} = this.props;
 
     if (base) {
-      console.log(base)
+
       return(
         <div className="Base">
 

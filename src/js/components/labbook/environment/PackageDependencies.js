@@ -8,8 +8,8 @@ import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
 //Mutations
-import AddPackageComponentMutation from 'Mutations/AddPackageComponentMutation'
-import RemvoePackageComponentMutation from 'Mutations/RemovePackageComponentMutation'
+import AddPackageComponentMutation from 'Mutations/environment/AddPackageComponentMutation'
+import RemvoePackageComponentMutation from 'Mutations/environment/RemovePackageComponentMutation'
 
 let totalCount = 2
 let owner
@@ -129,7 +129,7 @@ class PackageManagerDependencies extends Component {
   *  triggers remove package mutation
   */
   _removePackage(node){
-    console.log(node)
+
     const {labbookName, owner} = store.getState().routes
     const {environmentId} = this.props
     const clinetMutationId = uuidv4()
@@ -144,7 +144,9 @@ class PackageManagerDependencies extends Component {
       environmentId,
       'PackageDependencies_packageDependencies',
       (response, error) => {
-        console.log(response, error)
+        if(error){
+          console.log(error)
+        }
       }
     )
   }

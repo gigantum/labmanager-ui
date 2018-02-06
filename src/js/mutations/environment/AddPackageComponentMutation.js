@@ -29,14 +29,14 @@ const mutation = graphql`
   gets a connection to the store and insets an edge if connection is Successful
 */
 function sharedUpdater(store, id, newEdge) {
-  console.log(store, id, newEdge)
+
   const userProxy = store.get(id);
   const conn = RelayRuntime.ConnectionHandler.getConnection(
     userProxy,
     'PackageDependencies_packageDependencies',
     []
   );
-  console.log(conn)
+
   if(conn){
     RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
   }
@@ -88,9 +88,8 @@ export default function AddPackageComponentMutation(
       },
       onError: err => console.error(err),
       updater: (store, response) => {
-        console.log(store, clientMutationId)
+
         if(clientMutationId){
-          console.log(response)
 
           const {id,
               schema,

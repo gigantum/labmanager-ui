@@ -91,7 +91,6 @@ export default class CustomDependenciesDropdown extends Component {
   * hides menu by setting state
   */
   _hideMenu(evt){
-    console.log(evt)
     if(evt.target.className.indexOf('CustomDependenciesDropdown') < 0){
       this.setState({'menuVisible': false})
     }
@@ -135,7 +134,7 @@ export default class CustomDependenciesDropdown extends Component {
               return (<div>{error.message}</div>)
             }
             else if(props){
-              console.log(props)
+
 
               let menuCss = classNames({
                 'CustomDependenciesDropdown__menu': true,
@@ -167,7 +166,7 @@ export default class CustomDependenciesDropdown extends Component {
                   </div>
                 </div>)
             }else{
-              return (<div>{"temp"}</div>)
+              return (<div></div>)
             }
           }
         }
