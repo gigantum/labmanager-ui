@@ -1,0 +1,37 @@
+.Base{
+
+}
+
+.Base__card{
+  @extend .card;
+  @include flex(space-between, row);
+
+  img{
+    min-width: 70px;
+    margin: 0 10px 0 0;
+  }
+
+  padding: 20px;
+}
+
+
+.Base__image-container{
+  @include flex(space-between, row);
+  width: 250px;
+}
+
+.Base__card-text{
+  flex: 1;
+}
+
+.Base__categories{
+  @include flex(flex-start, row);
+}
+
+.Base__categories-languages{
+  width: 50%;
+}
+
+.Base__categories-tools{
+  width: 50%;
+}

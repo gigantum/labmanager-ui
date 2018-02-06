@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //components
+import CustomDependenciesDropdown from './CustomDependenciesDropdown'
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
@@ -16,12 +17,14 @@ class CustomDependencies extends Component {
     this.state = {
       'modal_visible': false,
       owner,
-      labbookName
+      labbookName,
+      customDependencies: []
     };
 
     this._openModal = this._openModal.bind(this)
     this._hideModal = this._hideModal.bind(this)
     this._setComponent = this._setComponent.bind(this)
+    this._addDependency = this._addDependency.bind(this)
   }
 
   /**
@@ -52,64 +55,97 @@ class CustomDependencies extends Component {
 
     this._hideModal();
   }
+  /**
+  *  @param {object} customDependencyEdge
+  *  pushes custom dependency to list
+  */
+  _addDependency(customDependencyEdge){
+    let customDependencies = this.state.customDependencies
+
+    customDependencies.push(customDependencyEdge)
+
+    this.setState({'customDependencies': customDependencies})
+  }
+  /**
+  *  @param {object} customDependencyEdge
+  *  remove dependency from list
+  */
+  _removeDependency(customDependencyEdge, index){
+    let customDependencies = this.state.customDependencies
+
+    customDependencies.splice(index, 1)
+
+    this.setState({'customDependencies': customDependencies})
+  }
+
+
   render(){
 
     const {customDependencies} = this.props.environment;
-    const {blockClass} = this.props;
 
     let editDisabled = ((this.props.containerStatus) && (this.props.containerStatus.state.imageStatus === "BUILD_IN_PROGRESS")) ? true : false;
+
+    console.log(customDependencies)
     if (customDependencies) {
       return(
-        <div className={blockClass + '__dependencies'}>
+        <div className="CustomDependencies">
 
-            <div className={blockClass + '__header-container'}>
-
-              <h4 className={blockClass + '__header'}>
+            <div className="CustomDependencies__header-container">
+              <h4 className="CustomDependencies__header">
                 Custom Dependencies
               </h4>
-
-              {
-                  (this.props.editVisible) &&
-
-                  <div className={'Environment__edit-container'}>
-                      <button
-                        id="customDependenciesEdit"
-                        onClick={() => this._openModal()}
-                        className="Environment__edit-button"
-                        disabled={editDisabled}
-                        >
-                      </button>
-                  </div>
-
-              }
             </div>
-            <div className={blockClass + '__info flex justify--left'}>
+            <div className="CustomDependencies__card">
+            <div className="CustomDependencies__add-dependencies">
+              <button className="CustomDependencies__button">Add Dependencies</button>
+              <div className="CustomDependencies__view-container">
+                <CustomDependenciesDropdown
+                  addDependency={this._addDependency}
+                  removeDependency={this._removeDependency}
+                />
+
+                <div className="CustomDependencies__list">
+                  {
+                    this.state.customDependencies.map((edge, index)=>{
+                      return(
+                        <div className="CustomDependencies__item">
+                          <div>{edge.node.name}</div>
+                          <div>
+                            <button
+                              className="CustomDependenciesDropdown__button--round"
+                              onClick={()=> this._removeDependency(edge, index)}></button>
+                          </div>
+                        </div>)
+                    })
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div className="CustomDependencies__info">
               {
                 customDependencies.edges.map((edge, index) => {
                   if(edge.node){
-                    return this._customDependencyItem(edge, index, blockClass)
+                    return this._customDependencyItem(edge, index)
                   }
                 })
               }
             </div>
+            </div>
         </div>
 
       )
-    }else{
-      return(
-          <Loader />
-        )
     }
   }
 
-  _customDependencyItem(edge, index, blockClass){
+  _customDependencyItem(edge, index){
       if(edge.node.info){
         return(
           <div
-            key={this.props.labbookName + edge.node.id + index} className={blockClass + '__dependencies'}>
-            <div className={blockClass + '__card flex justify--space-around'}>
+            key={this.props.labbookName + edge.node.id + index} className="CustomDependencies__dependencies">
+            <div className="CustomDependencies__card">
 
-                <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
+                <div className="CustomDependencies__image-container">
                   <img
                     height="50"
                     width="50"
@@ -117,7 +153,7 @@ class CustomDependencies extends Component {
                     alt={edge.node.info.humanName} />
                 </div>
 
-                <div className={blockClass + '__card-text flex-1-0-auto'}>
+                <div className="CustomDependencies__card-text">
                   <p>{edge.node.info.humanName}</p>
                   <p>{edge.node.info.description}</p>
                 </div>
@@ -127,10 +163,10 @@ class CustomDependencies extends Component {
     }else{
       return(
         <div
-          key={this.props.labbookName + edge.node.id + index} className={blockClass + '__dependencies'}>
-          <div className={blockClass + '__card flex justify--space-around'}>
+          key={this.props.labbookName + edge.node.id + index} className="CustomDependencies__dependencies">
+          <div className="CustomDependencies__card">
 
-              <div className={blockClass + '__image-container flex-1-0-auto flex flex--column justify-center'}>
+              <div className="CustomDependencies__image-container">
                 <img
                   height="50"
                   width="50"
@@ -138,7 +174,7 @@ class CustomDependencies extends Component {
                   alt={'no-package'} />
               </div>
 
-              <div className={blockClass + '__card-text flex-1-0-auto'}>
+              <div className="CustomDependencies__card-text">
                 <p>{'issue with package'}</p>
                 <p>{'this package had trouble rendering metadata'}</p>
               </div>

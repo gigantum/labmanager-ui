@@ -58,29 +58,29 @@ class Base extends Component {
     if (base) {
       console.log(base)
       return(
-        <div className="Environment__base-image">
+        <div className="Base">
 
-            <div className="Environment__header-container">
-              <h4 className="Environment__header">Environment</h4>
+            <div className="Base__header-container">
+              <h4 className="Base__header">Base</h4>
             </div>
-            <div className="Environment__info">
+            <div className="Base__info">
 
-              <div className="Environment__card">
-                <div className="Environment__image-container">
+              <div className="Base__card">
+                <div className="Base__image-container">
                   <img height="70" width="70" src={base.icon} alt={base.name} />
-                  <div className="Environment__title">
-                    <h6 className="Environment__name">{base.name}</h6>
+                  <div className="Base__title">
+                    <h6 className="Base__name">{base.name}</h6>
                     <p>{base.osClass + ' ' + base.osRelease}</p>
                   </div>
                 </div>
 
-                <div className="Environment__card-text">
+                <div className="Base__card-text">
                   <div>
                     <p>{base.description}</p>
                   </div>
 
-                  <div className="Environment__categories">
-                    <div className="Environment__categories-languages">
+                  <div className="Base__categories">
+                    <div className="Base__categories-languages">
                       <h6>Languages</h6>
                       <ul>
                         {
@@ -90,7 +90,7 @@ class Base extends Component {
                         }
                       </ul>
                     </div>
-                    <div className="Environment__categories-tools">
+                    <div className="Base__categories-tools">
                       <h6>Tools</h6>
                       <ul>
                         {

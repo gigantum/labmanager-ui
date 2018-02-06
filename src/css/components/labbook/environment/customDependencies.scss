@@ -1,0 +1,89 @@
+.CustomDependencies{
+  position: relative;
+}
+
+.CustomDependencies__card{
+  @extend .card;
+  padding: 20px;
+}
+
+.CustomDependencies__button,
+.CustomDependencies__button:focus{
+  padding: 5px 0;
+  background-color: $grey-light;
+  border: none;
+  color: $azure;
+  width: 100%;
+}
+
+.CustomDependencies__view-container{
+  padding: 20px;
+}
+
+.CustomDependencies__button:hover{
+  background-color: $grey-light;
+  border: none;
+  color: $turquise;
+  width: 100%;
+}
+
+.CustomDependencies__add-dependencies{
+  background-color: $grey-light;
+  border-radius: 8px;
+
+  height: auto;
+}
+
+input.CustomDependenciesDropdown__input[type="text"]{
+  border: 1px solid $romanSilver;
+  border-radius: 8px;
+  padding: 0 15px;
+  width: calc(100% - 30px);
+}
+
+.CustomDependenciesDropdown__menu{
+
+  @extend .box-shadow;
+  padding: 20px;
+  top: 117px;
+  position: absolute;
+  overflow: hidden;
+  height: 210px;
+  transition: height 0.5s;
+
+  background: $white;
+  width: calc(100% - 78px);
+}
+
+.CustomDependenciesDropdown__menu-row{
+  @include flex(space-between, row);
+  width: 100%;
+  height: 40px;
+  border-bottom: 1px solid $romanSilver;
+}
+
+
+.CustomDependenciesDropdown__menu--no-height{
+  position: absolute;
+  height: 0px;
+  padding: 0px;
+}
+
+.CustomDependenciesDropdown__button--round{
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  padding: 0;
+}
+
+.CustomDependencies__list{
+  padding: 20px 20px 60px;
+  border: 1px solid $romanSilver;
+}
+
+.CustomDependencies__item{
+  height: 40px;
+  @include flex(space-between, row);
+
+  border-bottom: 1px solid $romanSilver;
+}

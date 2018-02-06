@@ -291,13 +291,14 @@ class PackageManagerDependencies extends Component {
           <div className="PackageDependencies__tabs">
             <ul className="PackageDependencies__tabs-list">
             {
-              base.packageManagers.map((tab) => {
+              base.packageManagers.map((tab, index) => {
                 let packageTab = classNames({
                   'PackageDependencies__tab': true,
                   'PackageDependencies__tab--selected': (this.state.selectedTab === tab)
                 })
 
                 return(<li
+                  key={tab + index}
                   className={packageTab}
                   onClick={() => this._setSelectedTab(tab)}>{tab}
                 </li>)
@@ -340,7 +341,7 @@ class PackageManagerDependencies extends Component {
 
                         const version = node.version === '' ? 'latest' : `v${node.version}`
                         return (
-                          <tr>
+                          <tr key={node.id}>
                             <td>{`${node.packageName}`}</td>
                             <td>{version}</td>
                             <td className="PackageDependencies__table--no-right-padding" width="30">
