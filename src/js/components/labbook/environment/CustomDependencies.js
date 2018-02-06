@@ -8,10 +8,12 @@ import Loader from 'Components/shared/Loader'
 //Mutations
 import AddCustomComponentMutation from 'Mutations/environment/AddCustomComponentMutation'
 import RemoveCustomComponentMutation from 'Mutations/environment/RemoveCustomComponentMutation'
-
 //store
 import store from 'JS/redux/store'
+
+
 let owner
+let totalCount = 2;
 class CustomDependencies extends Component {
   constructor(props){
     super(props);
@@ -33,6 +35,40 @@ class CustomDependencies extends Component {
     this._addDependency = this._addDependency.bind(this)
     this._addCustomDepenedenciesMutation = this._addCustomDepenedenciesMutation.bind(this)
     this._removeDependencyMuation = this._removeDependencyMuation.bind(this)
+  }
+
+  /*
+    handle state and addd listeners when component mounts
+  */
+  componentDidMount() {
+    console.log(this.props.environment.customDependencies)
+    if(this.props.environment.customDependencies){
+      this._loadMore() //routes query only loads 2, call loadMore
+    }
+  }
+  /*
+    @param
+    triggers relay pagination function loadMore
+    increments by 10
+    logs callback
+  */
+  _loadMore() {
+
+    let self = this;
+    this.props.relay.loadMore(
+     5, // Fetch the next 100 feed items
+     (response, error) => {
+       if(error){
+         console.error(error)
+       }
+
+       if(self.props.environment.customDependencies &&
+         self.props.environment.customDependencies.pageInfo.hasNextPage) {
+
+         self._loadMore()
+       }
+     }
+   );
   }
 
   /**
@@ -123,14 +159,19 @@ class CustomDependencies extends Component {
         environmentId,
         index,
         (response, error) => {
+          console.log(response, error)
           if(error){
 
           }else{
-            self._removeDependency(customDependencies[index], index)
+
             index++
+            console.log(customDependencies[index])
             if(customDependencies[index]){
               addDependency(customDependencies[index])
+            }else{
+              self.setState({'customDependencies':[]})
             }
+
           }
         }
       )
@@ -309,7 +350,7 @@ export default createPaginationContainer(
     direction: 'forward',
     metadata: {field: 'customDependencies'},
     getConnectionFromProps(props) {
-        return props.labbook && props.labbook.environment;
+        return props.environment && props.environment.customDependencies;
     },
     getFragmentVariables(prevVars, first) {
       return {
@@ -317,14 +358,18 @@ export default createPaginationContainer(
        first: first,
      };
    },
-   getVariables(props, {first, cursor}, fragmentVariables) {
-    first = 10;
-    const name = props.labbookName;
+   getVariables(props, {count}, fragmentVariables) {
+     totalCount += count
+     let first = totalCount;
+     let length = props.environment.customDependencies.edges.length
+     const {labbookName, owner} = store.getState().routes
+
+     let cursor = props.environment.customDependencies.edges[length-1].cursor
 
      return {
        first,
        cursor,
-       name,
+       name: labbookName,
        owner
        // in most cases, for variables other than connection filters like
        // `first`, `after`, etc. you may want to use the previous values.
@@ -332,8 +377,8 @@ export default createPaginationContainer(
      };
    },
    query: graphql`
-    query CustomDependenciesPaginationQuery($first: Int!, $cursor: String!){
-     labbook{
+    query CustomDependenciesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+     labbook(name: $name, owner: $owner){
        environment{
          ...CustomDependencies_environment
        }

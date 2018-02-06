@@ -68,7 +68,6 @@ export default function RemoveCustomComponentMutation(
       },
       onError: err => console.error(err),
       updater: (store, response) => {
-    
         sharedUpdater(store, environmentId, nodeID, connection)
       },
       optimisticUpdater: (store) => {

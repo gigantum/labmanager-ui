@@ -158,6 +158,7 @@ export default class CustomDependenciesDropdown extends Component {
                       availableCustomDependencies.map((edge)=>{
                         return(
                         <CustomDependency
+                          key={edge.node.id}
                           edge={edge}
                           self={this} />
                         )
