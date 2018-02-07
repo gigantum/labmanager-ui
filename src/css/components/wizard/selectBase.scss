@@ -46,23 +46,15 @@
 }
 
 .SelectBase__tabs-list{
-  @include flex(flex-start, row);
-  border-bottom: 1px solid $grey;
+  @extend .tabs-list;
 }
 
 .SelectBase__tab{
-  cursor: pointer;
-  margin: 0 0 -1px 15px;
-  padding: 5px 10px;
-  border: 1px solid $grey;
-  color: $romanSilver;
-  font-size: 20px;
-  height: 40px;
-  width: 100px;
+  @extend .tab;
 }
 
 .SelectBase__tab--selected{
-  border-bottom: 1px solid $white;
+  @extend .tab--selected;
 }
 
 .SelectedBase__header{

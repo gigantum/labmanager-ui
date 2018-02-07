@@ -77,7 +77,7 @@ class Environment extends Component {
         }
       )
     }else {
-
+  
       BuildImageMutation(
         labbookName,
         owner,
@@ -171,7 +171,7 @@ export default createFragmentContainer(
         packageManagers
       }
 
-      ...Base_environment
+      ...Base_environment @relay(mask: false)
       ...PackageDependencies_environment
       ...CustomDependencies_environment
     }

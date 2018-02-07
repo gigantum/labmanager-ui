@@ -24,6 +24,7 @@
 @import 'atoms/download.scss';
 @import 'atoms/_input-text.scss';
 @import 'atoms/textarea.scss';
+@import 'atoms/table.scss';
 
 //shared components
 @import 'components/shared/sideBar';
@@ -31,34 +32,39 @@
 @import 'components/shared/loader';
 @import 'components/shared/user';
 //
-@import  'components/breadCrumbs.scss';
-@import  'components/routes.scss';
-@import  'components/login.scss';
-@import  'components/home.scss';
+@import 'components/breadCrumbs.scss';
+@import 'components/routes.scss';
+@import 'components/login.scss';
+@import 'components/home.scss';
 //dashboard components
-@import  'components/dashboard/dashboard';
-@import  'components/dashboard/localLabBooks.scss';
+@import 'components/dashboard/dashboard';
+@import 'components/dashboard/localLabBooks.scss';
 //import
-@import  'components/import/importModules.scss';
+@import 'components/import/importModules.scss';
 //labbook components
-@import  'components/labbook/labbook.scss';
-@import  'components/labbook/activity.scss';
-@import  'components/labbook/detail.scss';
-@import  'components/labbook/environment.scss';
-@import  'components/labbook/overview.scss';
-@import  'components/labbook/userNote.scss';
-@import  'components/labbook/code.scss';
-@import  'components/labbook/containerStatus.scss';
+@import 'components/labbook/labbook.scss';
+@import 'components/labbook/activity.scss';
+@import 'components/labbook/detail.scss';
+@import 'components/labbook/overview.scss';
+@import 'components/labbook/userNote.scss';
+@import 'components/labbook/code.scss';
+@import 'components/labbook/containerStatus.scss';
 @import 'components/labbook/activity_markdown.scss';
 @import 'components/labbook/detailPanel.scss';
 @import 'components/labbook/favorite.scss';
 @import 'components/labbook/branches.scss';
 @import 'components/labbook/branchMenu.scss';
+//environment
+@import 'components/labbook/environment/environment.scss';
+@import 'components/labbook/environment/packageDependencies.scss';
+@import 'components/labbook/environment/base.scss';
+@import 'components/labbook/environment/customDependencies.scss';
+
 //wizard components
-@import  'components/wizard/wizardModal';
-@import  'components/wizard/selectBase';
-@import  'components/wizard/createLabbook';
-@import  'components/wizard/baseDetails';
+@import 'components/wizard/wizardModal';
+@import 'components/wizard/selectBase';
+@import 'components/wizard/createLabbook';
+@import 'components/wizard/baseDetails';
 
 html, body, .root{
   width: 100%;

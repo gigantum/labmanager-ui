@@ -1,0 +1,96 @@
+.PackageDependencies__card{
+  @extend .card;
+  padding: 20px;
+}
+.PackageDependencies__header{
+  margin: 30px 0 10px 0;
+}
+
+.PackageDependencies__tabs-list{
+  @extend .tabs-list;
+}
+
+.PackageDependencies__tab{
+  @extend .tab;
+}
+.PackageDependencies__tab--selected{
+  @extend .tab--selected;
+}
+
+.PackageDependencies__table--border{
+  position: relative;
+  padding: 20px 20px 35px;
+  border: 1px solid $grey;
+  margin-bottom: 25px;
+}
+
+.PackageDependencies__table--no-right-padding{
+  padding-right: 0px;
+}
+.PackageDependencies__menu{
+  transition: min-height 0.5s, height 0.5s;
+  min-height: 0px;
+  max-height: auto;
+  overflow: hidden;
+};
+
+.PackageDependencies__menu--min-height{
+  min-height: 0px;
+  height: 0px;
+}
+
+.PackageDependencies__button--line-18{
+    line-height: 18px;
+}
+
+.PackageDependencies__button,
+.PackageDependencies__button:focus{
+  padding: 5px 0;
+  background-color: $grey-light;
+  border: none;
+  color: $azure;
+  width: 100%;
+}
+.PackageDependencies__button--absolute{
+  position: absolute;
+  height: 40px;
+  left: 50%;
+  bottom: -20px;
+  margin: 0 0 0 -117px;
+}
+
+.PackageDependencies__button:hover{
+  background-color: $grey-light;
+  color: $turquise;
+  border: none;
+}
+.PackageDependencies__add-package{
+  background-color: $grey-light;
+  margin: 20px 0;
+  padding: 5px 20px;
+  border-radius: 8px;
+}
+.PackageDependencies__package-menu{
+  padding: 20px 0;
+  @include flex(space-around, row);
+  margin: 20px 0;
+  .PackageDependencies__input-text[type="text"]{
+    flex: 2;
+    margin: 0 20px 0 0;
+  }
+  .PackageDependencies__input-text--version[type="text"]{
+    @extend .PackageDependencies__input-text;
+    flex: 1 1;
+  }
+  button{
+    margin: 0 0 0 10px;
+    line-height: 18px;
+  }
+}
+
+.PackageDependencies__button--round{
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  padding: 0;
+}

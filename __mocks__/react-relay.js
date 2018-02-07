@@ -25,7 +25,7 @@ class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
     let type =  props.query().query.selections[0].name;
 
     type = type.charAt(0).toLowerCase() + type.slice(1)
-    console.log(type)
+
     this.state = {
       readyState: {
         props: global.data, //(type !== false) ? global.data[type] : global.data
