@@ -36,7 +36,7 @@ export default function StopContainerMutation(
         if(error){
           console.log(error)
         }
-        callback(error)
+        callback(response, error)
       },
       onError: err => console.error(err),
 

@@ -1,0 +1,96 @@
+.AddCustomDependencies{
+  padding: 20px;
+  height: 330px;
+  p{
+    margin: 0px;
+  }
+}
+.AddCustomDependencies__images{
+
+  border: 1px solid $grey;
+  border-radius: 5px;
+  background: $white;
+  height: auto;
+  height: 140px;
+  @include flex(space-between, row)
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+
+.AddCustomDependencies__image{
+  @extend .card;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  min-width: 140px;
+  height: 100px;
+  margin: 10px;
+  border: 2px solid $white;
+  cursor: pointer;
+  img{
+    height: 40px;
+    width: auto;
+    align-self: center;
+  }
+  p{
+    align-self: center;
+    padding: 5px 10px;
+    color: $jet;
+    text-align: center;
+  }
+}
+
+.AddCustomDependencies__image--selected{
+  @extend .AddCustomDependencies__image;
+
+  border: 2px solid $turquise;
+}
+
+.AddCustomDependencies__image:hover{
+  p{
+    color: $turquise;
+
+  }
+}
+
+.AddCustomDependencies__selected-image-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+
+  width: 100%;
+  height: 140px;
+
+  border: 1px dashed $grey;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.AddCustomDependencies__selected-image{
+  @extend .AddCustomDependencies__image;
+}
+
+
+.AddCustomDependencies__selected-image:hover{
+  p{
+    color: $jet;
+  }
+}
+
+.Environment__modal{
+  .AddCustomDependencies__inner-container{
+    height: 400px;
+  }
+  .AddCustomDependencies__progress-button{
+    display: flex;
+    justify-content: space-around;
+    visibility: hidden;
+  }
+  .AddCustomDependencies__progress-buttons{
+    display: flex;
+    justify-content: center;
+  }
+}
