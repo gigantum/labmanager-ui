@@ -386,6 +386,7 @@ class PackageManagerDependencies extends Component {
           <input
             type="text"
             className="full--border"
+            placeholder="Filter dependencies by keyword"
             onKeyUp={(evt)=> this._setSearchValue(evt)}
           />
           <table className="PackageDependencies__table">

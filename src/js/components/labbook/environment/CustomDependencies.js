@@ -243,7 +243,7 @@ class CustomDependencies extends Component {
         'CustomDependencies__view-container': true,
         'CustomDependencies__view-container--no-height': !this.state.viewContainerVisible
       })
-  
+
       const customDependenciesEdges = this._filterCustomDependencies(customDependencies)
       return(
         <div className="CustomDependencies">
@@ -292,6 +292,7 @@ class CustomDependencies extends Component {
               <input
                 type="text"
                 className="full--border"
+                placeholder="Filter dependencies by keyword"
                 onKeyUp={(evt)=> this._setSearchValue(evt)}
               />
 
