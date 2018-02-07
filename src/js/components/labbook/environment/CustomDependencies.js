@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 import classNames from 'classnames'
+import uuidv4 from 'uuid/v4'
 //components
 import CustomDependenciesDropdown from './CustomDependenciesDropdown'
 import Loader from 'Components/shared/Loader'
@@ -190,6 +191,7 @@ class CustomDependencies extends Component {
     const {repository, componentId} = customDependency.node
     const nodeID = customDependency.node.id
     const {environmentId} = this.props
+    const uid = uuidv4()
     let self = this
 
     RemoveCustomComponentMutation(
@@ -198,7 +200,7 @@ class CustomDependencies extends Component {
       repository,
       componentId,
       nodeID,
-      "tempID",
+      uid,
       environmentId,
       "CustomDependencies_customDependencies",
       (response, error)=>{
@@ -219,7 +221,7 @@ class CustomDependencies extends Component {
 
   /**
   *  @param {object}
-  *  hides packagemanager modal
+  *  filters custom dependencies in table view
   */
   _filterCustomDependencies(customDependencies){
     let searchValue = this.state.searchValue.toLowerCase()

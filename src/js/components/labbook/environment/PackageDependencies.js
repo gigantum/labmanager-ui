@@ -9,7 +9,7 @@ import Loader from 'Components/shared/Loader'
 import store from 'JS/redux/store'
 //Mutations
 import AddPackageComponentMutation from 'Mutations/environment/AddPackageComponentMutation'
-import RemvoePackageComponentMutation from 'Mutations/environment/RemovePackageComponentMutation'
+import RemovePackageComponentMutation from 'Mutations/environment/RemovePackageComponentMutation'
 
 let totalCount = 2
 let owner
@@ -144,7 +144,7 @@ class PackageManagerDependencies extends Component {
     const clinetMutationId = uuidv4()
     let self = this
 
-    RemvoePackageComponentMutation(
+    RemovePackageComponentMutation(
       labbookName,
       owner,
       node.manager,
