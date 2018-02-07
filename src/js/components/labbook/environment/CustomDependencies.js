@@ -15,6 +15,7 @@ import store from 'JS/redux/store'
 
 let owner
 let totalCount = 2;
+
 class CustomDependencies extends Component {
   constructor(props){
     super(props);
@@ -58,7 +59,7 @@ class CustomDependencies extends Component {
 
     let self = this;
     this.props.relay.loadMore(
-     5, // Fetch the next 100 feed items
+     5, // Fetch the next 5 feed items
      (response, error) => {
        if(error){
          console.error(error)
