@@ -84,8 +84,8 @@ class Base extends Component {
                       <h6>Languages</h6>
                       <ul>
                         {
-                          base.languages.map((language)=>{
-                            return(<li>{language}</li>)
+                          base.languages.map((language, index)=>{
+                            return(<li key={language + index}>{language}</li>)
                           })
                         }
                       </ul>
@@ -94,8 +94,8 @@ class Base extends Component {
                       <h6>Tools</h6>
                       <ul>
                         {
-                          base.developmentTools.map((tool)=>{
-                            return(<li>{tool}</li>)
+                          base.developmentTools.map((tool, index)=>{
+                            return(<li key={tool + index}>{tool}</li>)
                           })
                         }
                       </ul>

@@ -25,8 +25,9 @@ class CustomDependencies extends Component {
       'modal_visible': false,
       owner,
       labbookName,
-      customDependencies: [],
-      viewContainerVisible: false
+      'customDependencies': [],
+      'viewContainerVisible': false,
+      'searchValue': ''
     };
 
     this._openModal = this._openModal.bind(this)
@@ -41,7 +42,7 @@ class CustomDependencies extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    console.log(this.props.environment.customDependencies)
+
     if(this.props.environment.customDependencies){
       this._loadMore() //routes query only loads 2, call loadMore
     }
@@ -159,17 +160,18 @@ class CustomDependencies extends Component {
         environmentId,
         index,
         (response, error) => {
-          console.log(response, error)
+
           if(error){
 
           }else{
 
             index++
-            console.log(customDependencies[index])
+
             if(customDependencies[index]){
               addDependency(customDependencies[index])
             }else{
               self.setState({'customDependencies':[]})
+              self.props.buildCallback()
             }
 
           }
@@ -188,6 +190,7 @@ class CustomDependencies extends Component {
     const {repository, componentId} = customDependency.node
     const nodeID = customDependency.node.id
     const {environmentId} = this.props
+    let self = this
 
     RemoveCustomComponentMutation(
       labbookName,
@@ -199,11 +202,34 @@ class CustomDependencies extends Component {
       environmentId,
       "CustomDependencies_customDependencies",
       (response, error)=>{
+        self.props.buildCallback()
         if(error){
 
         }
       }
     )
+  }
+  /**
+  *  @param {evt}
+  *  remove dependency from list
+  */
+  _setSearchValue(evt){
+    this.setState({'searchValue': evt.target.value})
+  }
+
+  /**
+  *  @param {object}
+  *  hides packagemanager modal
+  */
+  _filterCustomDependencies(customDependencies){
+    let searchValue = this.state.searchValue.toLowerCase()
+    let dependencies = customDependencies.edges.filter((edge)=>{
+      let name = edge.node.name.toLowerCase()
+      let searchMatch = ((searchValue === '') || (name.indexOf(searchValue) > -1))
+      return searchMatch
+    })
+
+    return dependencies
   }
 
 
@@ -217,6 +243,8 @@ class CustomDependencies extends Component {
         'CustomDependencies__view-container': true,
         'CustomDependencies__view-container--no-height': !this.state.viewContainerVisible
       })
+  
+      const customDependenciesEdges = this._filterCustomDependencies(customDependencies)
       return(
         <div className="CustomDependencies">
 
@@ -261,6 +289,12 @@ class CustomDependencies extends Component {
             </div>
 
             <div className="CustomDependencies__table--container">
+              <input
+                type="text"
+                className="full--border"
+                onKeyUp={(evt)=> this._setSearchValue(evt)}
+              />
+
               <table className="CustomDependencies__table">
                 <thead>
                   <tr>
@@ -273,9 +307,10 @@ class CustomDependencies extends Component {
                 </thead>
                 <tbody>
                   {
-                    customDependencies.edges.map((edge, index) => {
+                    customDependenciesEdges.map((edge, index) => {
                       if(edge){
                         return (<CustomDependencyItem
+                          key={edge.node.id}
                           edge={edge}
                           index={index}
                           self={this} />)

@@ -26,8 +26,9 @@
 .CustomDependencies__add-dependencies{
   background-color: $grey-light;
   border-radius: 8px;
-
+  padding: 5px 20px;
   height: auto;
+  margin: 20px 0;
 }
 
 input.CustomDependenciesDropdown__input[type="text"]{

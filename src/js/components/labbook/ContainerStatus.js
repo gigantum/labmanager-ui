@@ -88,7 +88,7 @@ export default class ContainerStatus extends Component {
       }
     }
 
-    let intervalInSeconds = 2 * 1000 * 1000
+    let intervalInSeconds = 2 * 1000 
     this.interval = setInterval(this._tick, intervalInSeconds);
 
     window.addEventListener("click", this._closePopupMenus)

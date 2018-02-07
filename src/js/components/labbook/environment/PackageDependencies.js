@@ -26,7 +26,8 @@ class PackageManagerDependencies extends Component {
       'pacakageMenuVisible': false,
       'packageName': '',
       'version': '',
-      'packages': []
+      'packages': [],
+      'searchValue': ''
     };
     //bind functions here
     this._openModal = this._openModal.bind(this)
@@ -119,9 +120,17 @@ class PackageManagerDependencies extends Component {
   *  hides packagemanager modal
   */
   _filterPackageDependencies(packageDependencies){
+    let searchValue = this.state.searchValue.toLowerCase()
     let packages = packageDependencies.edges.filter((edge)=>{
-      return edge.node && (edge.node.manager === this.state.selectedTab)
+
+
+      return edge && edge.node && (edge.node.manager === this.state.selectedTab)
+    }).filter((edge)=>{
+      let name = edge.node.package.toLowerCase()
+      let searchMatch = ((searchValue === '') || (name.indexOf(searchValue) > -1))
+      return searchMatch
     })
+
     return packages
   }
   /**
@@ -133,6 +142,7 @@ class PackageManagerDependencies extends Component {
     const {labbookName, owner} = store.getState().routes
     const {environmentId} = this.props
     const clinetMutationId = uuidv4()
+    let self = this
 
     RemvoePackageComponentMutation(
       labbookName,
@@ -147,6 +157,7 @@ class PackageManagerDependencies extends Component {
         if(error){
           console.log(error)
         }
+        self.props.buildCallback()
       }
     )
   }
@@ -173,7 +184,7 @@ class PackageManagerDependencies extends Component {
   *  updates package version in components state
   */
   _updateVersion(evt){
-    this.setState({version: evt.target.value})
+    this.setState({'version': evt.target.value})
     if(evt.key === 'Enter'){
       this._addStatePackage(evt)
     }
@@ -254,11 +265,12 @@ class PackageManagerDependencies extends Component {
                 }
               })
             })
-
           }else{
             index++;
             if(packages[index]){
               addPackage(packages[index])
+            }else{
+              self.props.buildCallback()
             }
           }
         }
@@ -267,6 +279,13 @@ class PackageManagerDependencies extends Component {
     addPackage(packages[index])
   }
 
+  /**
+  *  @param {evt}
+  *  remove dependency from list
+  */
+  _setSearchValue(evt){
+    this.setState({'searchValue': evt.target.value})
+  }
 
   render(){
 
@@ -286,8 +305,6 @@ class PackageManagerDependencies extends Component {
         <div className={blockClass + '__header-container'}>
           <h4 className="PackageDependencies__header">Package Dependencies</h4>
         </div>
-
-
 
         <div className="PackageDependencies__card">
           <div className="PackageDependencies__tabs">
@@ -366,6 +383,11 @@ class PackageManagerDependencies extends Component {
           </div>
         </div>
         <div className="PackageDependencies__table-container">
+          <input
+            type="text"
+            className="full--border"
+            onKeyUp={(evt)=> this._setSearchValue(evt)}
+          />
           <table className="PackageDependencies__table">
             <thead>
               <tr>

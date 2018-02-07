@@ -77,7 +77,7 @@ class Environment extends Component {
         }
       )
     }else {
-
+  
       BuildImageMutation(
         labbookName,
         owner,
