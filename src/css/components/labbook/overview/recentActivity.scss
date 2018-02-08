@@ -1,0 +1,25 @@
+.RecentActivity__list{
+  @include flex(space-between, row);
+}
+
+.RecentActivity__card{
+  min-height: 150px;
+  padding: 20px;
+  @extend .card;
+  width: calc(33.333% - 20px);
+}
+
+.RecentActivity__card-detail{
+    padding: 10px 0;
+}
+@keyframes fluxuateLoad {
+    0% {opacity: 0.1;}
+    50% {opacity: 0.5;}
+    100% {opacity: 0.1;}
+
+}
+.RecentActivity__card--loading{
+  @extend .RecentActivity__card;
+  opacity: 0.1;
+  animation: fluxuateLoad 3s infinite;
+}

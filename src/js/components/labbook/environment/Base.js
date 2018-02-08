@@ -53,10 +53,9 @@ class Base extends Component {
 
   render(){
     const {base} = this.props.environment;
-    const {blockClass} = this.props;
 
     if (base) {
-
+      let PackageCount = this.props.PackageCount
       return(
         <div className="Base">
           <div className="Base__header-container">
@@ -105,6 +104,10 @@ class Base extends Component {
                       }
                     </ul>
                   </div>
+
+                  {
+                    PackageCount && <PackageCount />
+                  }
 
                 </div>
 

@@ -11,7 +11,6 @@ export default class Overview extends Component {
   };
 
   render(){
-    console.log(this.props)
     let paths = this.props.edge.node.key.split('/')
     let name = paths[paths.length - 1]
     let truncatedName = this._truncate(name, 14)
@@ -19,7 +18,7 @@ export default class Overview extends Component {
     let path = paths.join('/')
     return(
       <div className="FileCard">
-        <div classsName="FileCard__favorite"></div>
+        <div className="FileCard__favorite"></div>
         <h6 title={name} className="FileCard__name">{truncatedName}</h6>
         <p className="FileCard__key">{path}</p>
         <p className="FileCard__description">{this.props.edge.node.description}</p>

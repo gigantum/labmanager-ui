@@ -9,6 +9,7 @@ import ReactMarkdown from 'react-markdown'
 import Base from 'Components/labbook/environment/Base'
 import PackageCount from './PackageCount'
 import FilePreview from './FilePreview'
+import RecentActivity from './RecentActivity'
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
@@ -61,25 +62,25 @@ class Overview extends Component {
             <div className="Overview__description">
               <ReactMarkdown source={this.props.description} />
             </div>
+            <div>
+              <RecentActivity />
+            </div>
             <h5 className="Overview__title">Environment</h5>
             <div className="Overview__environment">
                 <Base
                   ref="base"
                   environment={this.props.labbook.environment}
                   blockClass="Overview"
+                  PackageCount={PackageCount}
                 />
-            </div>
-            <div>
-              <PackageCount
-                ref="packageCount"
-              />
             </div>
 
             <div>
               <FilePreview
-                ref="packageCount"
+                ref="filePreview"
               />
             </div>
+
 
         </div>
       )
