@@ -77,10 +77,9 @@ export default class FilePreview extends Component {
       query={filePreviewQuery}
       environment={environment}
       render={({error, props}) =>{
-        console.log(error, props)
+        
         if(props){
 
-          console.log(props)
           return(
             <div className="FilePreview">
               <div className="FilePreview__section">

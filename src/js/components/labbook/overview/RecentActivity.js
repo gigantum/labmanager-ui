@@ -35,7 +35,6 @@ let RecentActivityQuery = graphql`query RecentActivityQuery($name: String!, $own
 
 export default class RecentActivity extends Component {
   _renderDetail(item){
-    console.log(item[0], item[1])
 
     switch(item[0]){
       case 'text/plain':
@@ -74,10 +73,8 @@ export default class RecentActivity extends Component {
       query={RecentActivityQuery}
       environment={environment}
       render={({error, props}) =>{
-        console.log(error, props)
         if(props){
 
-          console.log(props)
           return(
             <div className="RecentActivity">
               <h5 className="RecentActivity__header">Activity</h5>
