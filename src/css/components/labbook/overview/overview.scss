@@ -1,15 +1,19 @@
 .Overview{
   height: auto;
+  color: $romanSilver;
+  font-weight: 100;
+  .Base__header-container{
+    display: none;
+  }
 }
 
 .Overview__title{
   margin: 10px 0 0 0;
   padding: 0px;
-  font-size: 22px;
 }
 
 .Overview__description{
-  padding: 20px;
+  padding: 20px 0;
 }
 
 .Overview__jupyter-button{
@@ -18,7 +22,6 @@
 
 .Overview__header{
   font-weight: light;
-  font-size: 14px;
 }
 
 .Overview__card{
@@ -45,37 +48,12 @@
 
 }
 
-.Overview__environment-list{
-  li{
-    padding: 10px;
-    width: auto;
-    align-self: center;
-    .Overview__info{
-      padding-right: 15px;
-      border-right: 1px solid $font-grey;
-    }
-  }
-  li:nth-last-child(1){
-    padding: 10px;
-    width: 220px;
-    .Overview__info{
-      padding-right: 15px;
-      border-right: 0px solid $font-grey;
-    }
-  }
-}
-
 .Overview__card-text{
   padding: 0px;
   width: 120px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-
-.Overview__edit-container{
-  align-self: center;
-  margin-left: 20px;
 }
 
 .Overview__modal{

@@ -1,31 +1,52 @@
-.Base{
+.Base *{
+  font-weight: 100;
 
 }
 
 .Base__card{
   @extend .card;
   @include flex(space-between, row);
-
+  color: $romanSilver;
   img{
     min-width: 70px;
     margin: 0 10px 0 0;
   }
 
-  padding: 20px;
+  padding: 30px;
 }
 
 
 .Base__image-container{
   @include flex(space-between, row);
   width: 250px;
+  margin: 0 20px 0 0;
+  p{
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .Base__name{
+    font-weight: 400;
+  }
+  .Base__title{
+    flex: 1;
+    width: 160px;
+  }
 }
 
 .Base__card-text{
   flex: 1;
+  p{
+    margin-top: 0px;
+  }
 }
 
 .Base__categories{
   @include flex(flex-start, row);
+
+  h6{
+    font-size: 16px;
+    font-weight: 400;
+  }
 }
 
 .Base__categories-languages{

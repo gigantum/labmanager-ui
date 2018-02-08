@@ -34,6 +34,8 @@
   z-index: 100;
   padding-right: 10px;
   background: $background-color url('./../images/icons/down-arrow-silver.svg') no-repeat 90% center;
+
+  @extend .box-shadow;
 }
 
 .ContainerStatus__container-state--menu-open{

@@ -45,7 +45,6 @@
 @import 'components/labbook/labbook.scss';
 @import 'components/labbook/activity.scss';
 @import 'components/labbook/detail.scss';
-@import 'components/labbook/overview.scss';
 @import 'components/labbook/userNote.scss';
 @import 'components/labbook/code.scss';
 @import 'components/labbook/containerStatus.scss';
@@ -59,7 +58,9 @@
 @import 'components/labbook/environment/packageDependencies.scss';
 @import 'components/labbook/environment/base.scss';
 @import 'components/labbook/environment/customDependencies.scss';
-
+//overview
+@import 'components/labbook/overview/overview.scss';
+@import 'components/labbook/overview/filePreview.scss';
 //wizard components
 @import 'components/wizard/wizardModal';
 @import 'components/wizard/selectBase';

@@ -56,58 +56,64 @@ class Base extends Component {
     const {blockClass} = this.props;
 
     if (base) {
-      console.log(base)
+
       return(
         <div className="Base">
+          <div className="Base__header-container">
+            <h4 className="Base__header">Base</h4>
+          </div>
 
-            <div className="Base__header-container">
-              <h4 className="Base__header">Base</h4>
-            </div>
-            <div className="Base__info">
+          <div className="Base__info">
+            <div className="Base__card">
 
-              <div className="Base__card">
-                <div className="Base__image-container">
-                  <img height="70" width="70" src={base.icon} alt={base.name} />
-                  <div className="Base__title">
-                    <h6 className="Base__name">{base.name}</h6>
-                    <p>{base.osClass + ' ' + base.osRelease}</p>
-                  </div>
+              <div className="Base__image-container">
+                <img height="70" width="70" src={base.icon} alt={base.name} />
+
+                <div className="Base__title">
+                  <h6 className="Base__name">{base.name}</h6>
+                  <p>{base.osClass + ' ' + base.osRelease}</p>
                 </div>
-
-                <div className="Base__card-text">
-                  <div>
-                    <p>{base.description}</p>
-                  </div>
-
-                  <div className="Base__categories">
-                    <div className="Base__categories-languages">
-                      <h6>Languages</h6>
-                      <ul>
-                        {
-                          base.languages.map((language, index)=>{
-                            return(<li key={language + index}>{language}</li>)
-                          })
-                        }
-                      </ul>
-                    </div>
-                    <div className="Base__categories-tools">
-                      <h6>Tools</h6>
-                      <ul>
-                        {
-                          base.developmentTools.map((tool, index)=>{
-                            return(<li key={tool + index}>{tool}</li>)
-                          })
-                        }
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
 
               </div>
 
+              <div className="Base__card-text">
+
+                <div>
+                  <p>{base.description}</p>
+                </div>
+
+                <div className="Base__categories">
+
+                  <div className="Base__categories-languages">
+                    <h6>Languages</h6>
+                    <ul>
+                      {
+                        base.languages.map((language, index)=>{
+                          return(<li key={language + index}>{language}</li>)
+                        })
+                      }
+                    </ul>
+                  </div>
+
+                  <div className="Base__categories-tools">
+                    <h6>Tools</h6>
+                    <ul>
+                      {
+                        base.developmentTools.map((tool, index)=>{
+                          return(<li key={tool + index}>{tool}</li>)
+                        })
+                      }
+                    </ul>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
 
           </div>
+
         </div>
       )
     }else{

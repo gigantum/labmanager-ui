@@ -4,9 +4,11 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
+import ReactMarkdown from 'react-markdown'
 //components
 import Base from 'Components/labbook/environment/Base'
 import PackageCount from './PackageCount'
+import FilePreview from './FilePreview'
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
@@ -55,41 +57,26 @@ class Overview extends Component {
 
       return(
         <div className="Overview">
+            <h5 className="Overview__title">Overview</h5>
             <div className="Overview__description">
-              <p>{this.props.description}</p>
+              <ReactMarkdown source={this.props.description} />
             </div>
-            <h4 className="Overview__title">Environment</h4>
+            <h5 className="Overview__title">Environment</h5>
             <div className="Overview__environment">
-              <ul className="Overview__environment-list flex flex--row">
-                <li>
-                  <Base
-                    ref="base"
-                    environment={this.props.labbook.environment}
-                    editVisible={false}
-                    blockClass="Overview"
-                  />
-                </li>
-                <li>
-                  <div className="flex flex--row">
-
-                    {
-
-                      (this.state.containerStates[this.props.labbookId] === 'Open') &&
-                      <div className="Overview__open-jupyter-container">
-                        <button
-                          className="Overview__open-jupyter"
-                          onClick={()=> this._openJupyter()}>
-                          Open Jupyter
-                        </button>
-                    </div>
-                    }
-                  </div>
-                </li>
-
-              </ul>
+                <Base
+                  ref="base"
+                  environment={this.props.labbook.environment}
+                  blockClass="Overview"
+                />
             </div>
             <div>
               <PackageCount
+                ref="packageCount"
+              />
+            </div>
+
+            <div>
+              <FilePreview
                 ref="packageCount"
               />
             </div>

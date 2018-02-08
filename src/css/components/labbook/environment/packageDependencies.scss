@@ -12,9 +12,37 @@
 
 .PackageDependencies__tab{
   @extend .tab;
+  width: calc(25% - 20px);
 }
 .PackageDependencies__tab--selected{
   @extend .tab--selected;
+}
+
+@keyframes Gradient {
+	0% {
+		background-position: 0% 100%;
+	}
+	50% {
+		background-position:  100% 100%;
+	}
+	100% {
+		background-position: 0% 100%;
+	}
+}
+
+.PackageDependencies__table-row--valid{
+
+}
+
+.PackageDependencies__table-row--checking{
+  background: linear-gradient(-45deg, $slateBlue, $purple, $turquise, $goldenLemon) no-repeat;
+  background-size: 200% 2px;
+  animation: Gradient 7s ease infinite;
+  border: 0px;
+}
+
+.PackageDependencies__table-row--invalid{
+  color: $crimson;
 }
 
 .PackageDependencies__table--border{

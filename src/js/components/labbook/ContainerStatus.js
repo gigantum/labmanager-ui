@@ -14,8 +14,6 @@ import reduxStore from 'JS/redux/store'
 const containerStatusQuery = graphql`
   query ContainerStatusQuery($name: String!, $owner: String!, $first: Int!){
   labbook(name: $name, owner: $owner){
-    id
-    description
     environment{
       containerStatus
       imageStatus
@@ -88,7 +86,7 @@ export default class ContainerStatus extends Component {
       }
     }
 
-    let intervalInSeconds = 2 * 1000 
+    let intervalInSeconds = 2 * 1000 * 1000
     this.interval = setInterval(this._tick, intervalInSeconds);
 
     window.addEventListener("click", this._closePopupMenus)
