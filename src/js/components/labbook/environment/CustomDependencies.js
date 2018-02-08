@@ -5,7 +5,6 @@ import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
 //components
 import CustomDependenciesDropdown from './CustomDependenciesDropdown'
-import Loader from 'Components/shared/Loader'
 //Mutations
 import AddCustomComponentMutation from 'Mutations/environment/AddCustomComponentMutation'
 import RemoveCustomComponentMutation from 'Mutations/environment/RemoveCustomComponentMutation'

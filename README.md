@@ -4,6 +4,8 @@ This kit includes an app server, a GraphQL server implementing a tiny example sc
 
 ## Installation
 
+Install node v8.9.3 & npm v5.5.5
+
 ```
 npm install
 ```

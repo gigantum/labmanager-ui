@@ -126,7 +126,9 @@ class PackageManagerDependencies extends Component {
 
       return edge && edge.node && (edge.node.manager === this.state.selectedTab)
     }).filter((edge)=>{
-      let name = edge.node.package.toLowerCase()
+      console.log(edge)
+
+      let name = edge && edge.node && edge.node.package ? edge.node.package.toLowerCase() : ''
       let searchMatch = ((searchValue === '') || (name.indexOf(searchValue) > -1))
       return searchMatch
     })
