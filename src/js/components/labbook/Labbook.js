@@ -229,6 +229,7 @@ storeDidUpdate = (labbook) => {
 
                  <ContainerStatus
                    ref="ContainerStatus"
+                   base={this.props.labbook.environment.base}
                    containerStatus={this.props.labbook.environment.containerStatus}
                    imageStatus={this.props.labbook.environment.imageStatus}
                    labbookId={this.props.labbook.id}
@@ -386,6 +387,9 @@ export default createFragmentContainer(
           environment{
             containerStatus
             imageStatus
+            base{
+              developmentTools
+            }
           }
 
           collaborators

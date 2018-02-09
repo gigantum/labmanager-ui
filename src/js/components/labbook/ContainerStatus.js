@@ -7,6 +7,7 @@ import {
 //mutations
 import StopContainerMutation from 'Mutations/StopContainerMutation'
 import StartContainerMutation from 'Mutations/StartContainerMutation'
+import StartDevToolMutation from 'Mutations/Container/StartDevToolMutation'
 import environment from 'JS/createRelayEnvironment'
 //store
 import reduxStore from 'JS/redux/store'
@@ -32,6 +33,7 @@ const containerStatusQuery = graphql`
 export default class ContainerStatus extends Component {
   constructor(props){
   	super(props);
+
     const {owner, labbookName} = reduxStore.getState().routes
     this.state = {
       'status': "",
@@ -50,6 +52,7 @@ export default class ContainerStatus extends Component {
     this._getContainerStatusText = this._getContainerStatusText.bind(this)
     this._openCloseContainer = this._openCloseContainer.bind(this)
     this._closePopupMenus = this._closePopupMenus.bind(this)
+    this._openJupyterMuation = this._openJupyterMuation.bind(this)
   }
   /**
   *  @param {}
@@ -238,6 +241,34 @@ export default class ContainerStatus extends Component {
       }
     )
   }
+  /**
+    @param {}
+    mutation to trigger opening of development tool
+  */
+  _openJupyterMuation(){
+    const {owner, labbookName} = reduxStore.getState().routes
+    StartDevToolMutation(
+      owner,
+      labbookName,
+      this.props.base.developmentTools[0],
+      (response, error)=>{
+          if(response){
+
+            let path = response.startDevTool.path.replace('0.0.0.0', 'localhost')
+            window.open(path, '_blank')
+          }
+          if(error){
+            reduxStore.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: error[0].message
+              }
+            })
+          }
+      }
+
+    )
+  }
 
   /**
     @param {object, string} event,status -
@@ -333,7 +364,7 @@ export default class ContainerStatus extends Component {
                     <li className="ContainerStatus__plugins-list-item">
                       <a
                         className="ContainerStatus__plugins-item jupyter-icon"
-                        href={jupyterLink}
+                        onClick={()=>this._openJupyterMuation()}
                         target="_blank"
                         rel="noopener noreferrer">
                           Jupyter
