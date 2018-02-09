@@ -4,6 +4,7 @@ import {
   QueryRenderer,
   graphql
 } from 'react-relay'
+import {Link} from 'react-router-dom';
 //components
 import Loader from 'Components/shared/Loader'
 import FileCard from './FileCard'
@@ -77,13 +78,16 @@ export default class FilePreview extends Component {
       query={filePreviewQuery}
       environment={environment}
       render={({error, props}) =>{
-        
+
         if(props){
 
           return(
             <div className="FilePreview">
               <div className="FilePreview__section">
-                <h5>Code</h5>
+                <div className="FilePreview__title-container">
+                  <h5>Code</h5>
+                  <Link to={{pathname: `../../../../labbooks/${owner}/${labbookName}/code`}} replace={true}>Code Details ></Link>
+                </div>
                 <p>Recent Files</p>
                 <div className="FilePreview__list">
                   {
@@ -94,7 +98,10 @@ export default class FilePreview extends Component {
                 </div>
               </div>
               <div className="FilePreview__section">
-                <h5>Input Data</h5>
+                <div className="FilePreview__title-container">
+                  <h5>Input Data</h5>
+                  <Link to={{pathname: `../../../../labbooks/${owner}/${labbookName}/inputData`}} replace={true}>Input Data Details ></Link>
+                </div>
                 <p>Recent Files</p>
                 <div className="FilePreview__list">
                   {
@@ -105,7 +112,10 @@ export default class FilePreview extends Component {
                 </div>
               </div>
               <div className="FilePreview__section">
-                <h5>Output Data</h5>
+                <div className="FilePreview__title-container">
+                  <h5>Ouput Data</h5>
+                  <Link to={{pathname: `../../../../labbooks/${owner}/${labbookName}/outputData`}} replace={true}>Output Data Details ></Link>
+                </div>
                 <p>Recent Files</p>
                 <div className="FilePreview__list">
                   {

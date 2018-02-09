@@ -2,6 +2,11 @@
   @include flex(space-between, row);
 }
 
+.RecentActivity__title-container{
+  @include flex(space-between, row);
+  align-items: flex-end;
+}
+
 .RecentActivity__card{
   min-height: 150px;
   padding: 20px;

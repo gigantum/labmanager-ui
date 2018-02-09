@@ -4,6 +4,7 @@ import {
   QueryRenderer,
   graphql
 } from 'react-relay'
+import {Link} from 'react-router-dom';
 import ReactMarkdown from 'react-markdown'
 import Moment from 'moment'
 //components
@@ -74,10 +75,13 @@ export default class RecentActivity extends Component {
       environment={environment}
       render={({error, props}) =>{
         if(props){
-
+          const {owner, labbookName} = store.getState().routes
           return(
             <div className="RecentActivity">
-              <h5 className="RecentActivity__header">Activity</h5>
+              <div className="RecentActivity__title-container">
+                <h5 className="RecentActivity__header">Activity</h5>
+                <Link to={`../../../../labbooks/${owner}/${labbookName}/activity`}>Activity Details ></Link>
+              </div>
               <div className="RecentActivity__list">
                 {
                   props.labbook.activityRecords.edges.map(edge =>{

@@ -4,6 +4,7 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
+import {Link} from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 //components
 import Base from 'Components/labbook/environment/Base'
@@ -55,17 +56,22 @@ class Overview extends Component {
   render(){
 
     if(this.props.labbook){
-
+      const {owner, labbookName} = this.state = store.getState().routes
       return(
         <div className="Overview">
-            <h5 className="Overview__title">Overview</h5>
+            <div className="Overview__title-container">
+              <h5 className="Overview__title">Overview</h5>
+            </div>
             <div className="Overview__description">
               <ReactMarkdown source={this.props.description} />
             </div>
             <div>
               <RecentActivity />
             </div>
-            <h5 className="Overview__title">Environment</h5>
+            <div className="Overview__title-container">
+              <h5 className="Overview__title">Environment</h5>
+              <Link to={{pathname: `../../../../labbooks/${owner}/${labbookName}/environment`}} replace={true}>Environment Details ></Link>
+            </div>
             <div className="Overview__environment">
                 <Base
                   ref="base"
