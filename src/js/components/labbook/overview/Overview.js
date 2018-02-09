@@ -4,9 +4,13 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
+import {Link} from 'react-router-dom'
+import ReactMarkdown from 'react-markdown'
 //components
 import Base from 'Components/labbook/environment/Base'
 import PackageCount from './PackageCount'
+import FilePreview from './FilePreview'
+import RecentActivity from './RecentActivity'
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
@@ -52,47 +56,37 @@ class Overview extends Component {
   render(){
 
     if(this.props.labbook){
-
+      const {owner, labbookName} = this.state = store.getState().routes
       return(
         <div className="Overview">
-            <div className="Overview__description">
-              <p>{this.props.description}</p>
+            <div className="Overview__title-container">
+              <h5 className="Overview__title">Overview</h5>
             </div>
-            <h4 className="Overview__title">Environment</h4>
-            <div className="Overview__environment">
-              <ul className="Overview__environment-list flex flex--row">
-                <li>
-                  <Base
-                    ref="base"
-                    environment={this.props.labbook.environment}
-                    editVisible={false}
-                    blockClass="Overview"
-                  />
-                </li>
-                <li>
-                  <div className="flex flex--row">
-
-                    {
-
-                      (this.state.containerStates[this.props.labbookId] === 'Open') &&
-                      <div className="Overview__open-jupyter-container">
-                        <button
-                          className="Overview__open-jupyter"
-                          onClick={()=> this._openJupyter()}>
-                          Open Jupyter
-                        </button>
-                    </div>
-                    }
-                  </div>
-                </li>
-
-              </ul>
+            <div className="Overview__description">
+              <ReactMarkdown source={this.props.description} />
             </div>
             <div>
-              <PackageCount
-                ref="packageCount"
+              <RecentActivity />
+            </div>
+            <div className="Overview__title-container">
+              <h5 className="Overview__title">Environment</h5>
+              <Link to={{pathname: `../../../../labbooks/${owner}/${labbookName}/environment`}} replace={true}>Environment Details ></Link>
+            </div>
+            <div className="Overview__environment">
+                <Base
+                  ref="base"
+                  environment={this.props.labbook.environment}
+                  blockClass="Overview"
+                  PackageCount={PackageCount}
+                />
+            </div>
+
+            <div>
+              <FilePreview
+                ref="filePreview"
               />
             </div>
+
 
         </div>
       )

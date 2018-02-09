@@ -91,14 +91,14 @@ export default function AddPackageComponentMutation(
 
         if(clientMutationId){
 
-          const {id,
+          const {
               schema,
               version,
               latestVersion,
               fromBase } = response.addPackageComponent.newPackageComponentEdge.node
 
           //TODO use edge from linked record
-
+          const id = 'client:newPackageManager:' + tempID++;
           const node = store.create(id, 'package');
           node.setValue(manager, 'manager')
           node.setValue(packageName, 'package')

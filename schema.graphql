@@ -1,20 +1,20 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Mon Feb 05 2018 13:10:09 GMT-0500 (EST)
+# timestamp: Wed Feb 07 2018 15:24:37 GMT-0500 (EST)
 
 schema {
   query: LabbookQuery
   mutation: LabbookMutations
 }
 
-# A Connection for paging through activity Records
+# A Connection for paging through activity recrods#
 type ActivityConnection {
   pageInfo: PageInfo!
   edges: [ActivityEdge]!
 }
 
-# Container for Activity Detail Records#
+#Container for Activity Detail Records#
 type ActivityDetailObject implements Node, GitRepository {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   owner: String!
   name: String!
@@ -48,7 +48,7 @@ type ActivityEdge {
 
 # Container for Activity Records#
 type ActivityRecordObject implements Node, GitRepository {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   owner: String!
   name: String!
@@ -61,6 +61,8 @@ type ActivityRecordObject implements Node, GitRepository {
   importance: Int
   tags: [String]
   timestamp: DateTime
+  username: String
+  email: String
 }
 
 # Enumeration representing the type of Activity Record#
@@ -127,9 +129,10 @@ input AddLabbookFileInput {
   clientMutationId: String
 }
 
+
 # Mutation to add a file to a labbook. File should be sent in the `uploadFile` key as a multi-part/form upload.
 # file_path is the relative path from the labbook section specified.
-#
+
 type AddLabbookFilePayload {
   newLabbookFileEdge: LabbookFileEdge
   clientMutationId: String
@@ -165,7 +168,7 @@ type AddPackageComponentPayload {
 
 # A type that represents a Base Image Environment Component#
 type BaseComponent implements Node {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   schema: Int
   repository: String!
@@ -206,6 +209,7 @@ type BaseComponentEdge {
 input BuildImageInput {
   owner: String!
   labbookName: String!
+  noCache: Boolean
   clientMutationId: String
 }
 
@@ -229,9 +233,10 @@ type CheckoutBranchPayload {
   clientMutationId: String
 }
 
-# Input Object for params needed for a chunked upload
 
+# Input Object for params needed for a chunked upload
 # To use, add a field `chunk_upload_params` to your mutation input
+
 input ChunkUploadInput {
   fileSizeKb: Int!
   chunkSize: Int!
@@ -286,7 +291,6 @@ input CreateUserNoteInput {
 }
 
 # Mutation to create a new user note entry in the activity feed of lab book
-
 # The `linked_commit` is an empty string since there is no linked commit
 
 type CreateUserNotePayload {
@@ -296,7 +300,7 @@ type CreateUserNotePayload {
 
 # A type that represents a Custom Dependency Environment Component#
 type CustomComponent implements Node {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   schema: Int
   repository: String!
@@ -319,10 +323,10 @@ type CustomComponentConnection {
 }
 
 type CustomComponentEdge {
-  # The item at the end of the edge#
+  #The item at the end of the edge#
   node: CustomComponent
 
-  # A cursor for use in pagination#
+  #A cursor for use in pagination#
   cursor: String!
 }
 
@@ -360,7 +364,7 @@ type DeleteLabbookFilePayload {
 
 # A type that represents the Environment for a LabBook#
 type Environment implements Node, GitRepository {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   owner: String!
   name: String!
@@ -396,7 +400,6 @@ interface GitRef {
 }
 
 # An interface for Objects backended with git repositories (LabBook and Datasets)
-#
 interface GitRepository {
   owner: String!
   name: String!
@@ -435,8 +438,9 @@ type ImportRemoteLabbookPayload {
 }
 
 # A query to get the status of a background task launched with the Dispatcher
+
 type JobStatus implements Node {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   jobKey: String
   status: String
@@ -447,26 +451,25 @@ type JobStatus implements Node {
 }
 
 # A Connection for paging through all background jobs the system is aware of.
-#
+
 type JobStatusConnection {
   pageInfo: PageInfo!
   edges: [JobStatusEdge]!
 }
 
 type JobStatusEdge {
-  # The item at the end of the edge#
+  #The item at the end of the edge#
   node: JobStatus
 
-  # A cursor for use in pagination#
+  #A cursor for use in pagination#
   cursor: String!
 }
 
 # A type representing a LabBook and all of its contents
-
 # LabBooks are uniquely identified by both the "owner" and the "name" of the LabBook
 
 type Labbook implements Node, GitRepository {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   owner: String!
   name: String!
@@ -490,7 +493,7 @@ type Labbook implements Node, GitRepository {
 
 # An object representing a commit to a LabBook#
 type LabbookCommit implements Node, GitRepository, GitCommit {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   owner: String!
   name: String!
@@ -514,9 +517,8 @@ type LabbookEdge {
 }
 
 # A type representing a file or directory that has been favorited in the labbook file system.
-#
 type LabbookFavorite implements Node, GitRepository {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   owner: String!
   name: String!
@@ -542,9 +544,8 @@ type LabbookFavoriteEdge {
 }
 
 # A type representing a file or directory inside the labbook file system.
-#
 type LabbookFile implements Node, GitRepository {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   owner: String!
   name: String!
@@ -587,6 +588,7 @@ type LabbookMutations {
   buildImage(input: BuildImageInput!): BuildImagePayload
   startContainer(input: StartContainerInput!): StartContainerPayload
   stopContainer(input: StopContainerInput!): StopContainerPayload
+  startDevTool(input: StartDevToolInput!): StartDevToolPayload
   createUserNote(input: CreateUserNoteInput!): CreateUserNotePayload
   addCustomComponent(input: AddCustomComponentInput!): AddCustomComponentPayload
   removeCustomComponent(input: RemoveCustomComponentInput!): RemoveCustomComponentPayload
@@ -606,7 +608,7 @@ type LabbookMutations {
 
 # Entry point for all LabBook queryable fields#
 type LabbookQuery {
-  # The ID of the object#
+  #The ID of the object#
   node(id: ID!): Node
   buildInfo: String
   labbook(owner: String, name: String): Labbook
@@ -622,7 +624,7 @@ type LabbookQuery {
 
 # An object representing a git reference in a LabBook repository#
 type LabbookRef implements Node, GitRepository, GitRef {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   owner: String!
   name: String!
@@ -638,18 +640,17 @@ type LabbookRefConnection {
 }
 
 type LabbookRefEdge {
-  # The item at the end of the edge#
+  #The item at the end of the edge#
   node: LabbookRef
 
-  # A cursor for use in pagination#
+  #A cursor for use in pagination#
   cursor: String!
 }
 
 # A type representing a section within a LabBook (i.e., code, input, output)
 
-#
 type LabbookSection implements Node, GitRepository {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   owner: String!
   name: String!
@@ -683,21 +684,21 @@ input MoveLabbookFileInput {
 
 # Method to move/rename a file or directory. If file, both src_path and dst_path should contain the file name.
 # If a directory, be sure to include the trailing slash
-#
+
 type MoveLabbookFilePayload {
   newLabbookFileEdge: LabbookFileEdge
   clientMutationId: String
 }
 
-# An object with an ID#
+#An object with an ID#
 interface Node {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
 }
 
-# A type that represents a Package Manager based Environment Component#
+#A type that represents a Package Manager based Environment Component#
 type PackageComponent implements Node {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   schema: Int
   manager: String!
@@ -707,31 +708,31 @@ type PackageComponent implements Node {
   fromBase: Boolean
 }
 
-# A Connection for paging through Package components#
+#A Connection for paging through Package components#
 type PackageComponentConnection {
   pageInfo: PageInfo!
   edges: [PackageComponentEdge]!
 }
 
 type PackageComponentEdge {
-  # The item at the end of the edge#
+  #The item at the end of the edge#
   node: PackageComponent
 
-  # A cursor for use in pagination#
+  #A cursor for use in pagination#
   cursor: String!
 }
 
 type PageInfo {
-  # When paginating forwards, are there more items?#
+  #When paginating forwards, are there more items?#
   hasNextPage: Boolean!
 
-  # When paginating backwards, are there more items?#
+  #When paginating backwards, are there more items?#
   hasPreviousPage: Boolean!
 
-  # When paginating backwards, the cursor to continue.#
+  #When paginating backwards, the cursor to continue.#
   startCursor: String
 
-  # When paginating forwards, the cursor to continue.#
+  #When paginating forwards, the cursor to continue.#
   endCursor: String
 }
 
@@ -778,7 +779,7 @@ input RemoveCustomComponentInput {
   clientMutationId: String
 }
 
-# Mutation to remove an environment component to a LabBook#
+#Mutation to remove an environment component to a LabBook#
 type RemoveCustomComponentPayload {
   success: Boolean
   clientMutationId: String
@@ -805,7 +806,7 @@ input RemovePackageComponentInput {
   clientMutationId: String
 }
 
-# Mutation to remove a package from labbook#
+#Mutation to remove a package from labbook#
 type RemovePackageComponentPayload {
   success: Boolean
   clientMutationId: String
@@ -815,8 +816,7 @@ input RemoveUserIdentityInput {
   clientMutationId: String
 }
 
-# Mutation to remove a locally stored user identity (no-op if not running in local mode)
-#
+#Mutation to remove a locally stored user identity (no-op if not running in local mode)
 type RemoveUserIdentityPayload {
   userIdentityEdge: UserIdentity
   clientMutationId: String
@@ -829,7 +829,7 @@ input RenameLabbookInput {
   clientMutationId: String
 }
 
-# Rename a labbook#
+#Rename a labbook
 type RenameLabbookPayload {
   success: Boolean
   clientMutationId: String
@@ -841,10 +841,22 @@ input StartContainerInput {
   clientMutationId: String
 }
 
-# Mutator to start a LabBook's Docker Image in a container#
+#Mutator to start a LabBook's Docker Image in a container#
 type StartContainerPayload {
   environment: Environment
-  backgroundJobKey: String
+  clientMutationId: String
+}
+
+input StartDevToolInput {
+  owner: String!
+  labbookName: String!
+  devTool: String!
+  containerOverrideId: String
+  clientMutationId: String
+}
+
+type StartDevToolPayload {
+  path: String
   clientMutationId: String
 }
 
@@ -854,10 +866,9 @@ input StopContainerInput {
   clientMutationId: String
 }
 
-# Mutation to stop a Docker container. #
+#Mutation to stop a Docker container. #
 type StopContainerPayload {
   environment: Environment
-  backgroundJobKey: String
   clientMutationId: String
 }
 
@@ -888,7 +899,7 @@ type UpdateLabbookFavoritePayload {
   clientMutationId: String
 }
 
-# Interface representing a user in the system#
+#Interface representing a user in the system#
 interface User {
   username: String
   email: String
@@ -896,9 +907,9 @@ interface User {
   familyName: String
 }
 
-# A type representing the identity of the logged in user#
+#A type representing the identity of the logged in user#
 type UserIdentity implements Node, User {
-  # The ID of the object.#
+  #The ID of the object.#
   id: ID!
   username: String
   email: String

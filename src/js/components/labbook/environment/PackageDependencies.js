@@ -10,10 +10,13 @@ import store from 'JS/redux/store'
 //Mutations
 import AddPackageComponentMutation from 'Mutations/environment/AddPackageComponentMutation'
 import RemovePackageComponentMutation from 'Mutations/environment/RemovePackageComponentMutation'
+//helpers
+import PackageLookup from './PackageLookup'
+
 
 let totalCount = 2
 let owner
-class PackageManagerDependencies extends Component {
+class PackageDependencies extends Component {
   constructor(props){
     super(props);
     const {labbookName} = store.getState().routes
@@ -122,12 +125,8 @@ class PackageManagerDependencies extends Component {
   _filterPackageDependencies(packageDependencies){
     let searchValue = this.state.searchValue.toLowerCase()
     let packages = packageDependencies.edges.filter((edge)=>{
-
-
       return edge && edge.node && (edge.node.manager === this.state.selectedTab)
     }).filter((edge)=>{
-      console.log(edge)
-
       let name = edge && edge.node && edge.node.package ? edge.node.package.toLowerCase() : ''
       let searchMatch = ((searchValue === '') || (name.indexOf(searchValue) > -1))
       return searchMatch
@@ -199,17 +198,49 @@ class PackageManagerDependencies extends Component {
     let packages = this.state.packages
     const {packageName, version} = this.state
     const manager = this.state.selectedTab
+    let packageIndex = packages.length;
+
     packages.push({
       packageName,
       version,
-      manager
+      manager,
+      validity: 'checking'
     })
 
     this.setState({
       packages,
       packageName: '',
-      version: ''
+      version: '',
+
     })
+
+
+    PackageLookup.query(manager, packageName, version).then((response)=>{
+
+      packages.splice(packageIndex, 1);
+      if(response.errors){
+          store.dispatch({
+            type:"ERROR_MESSAGE",
+            payload: {
+              message: response.errors[0].message
+            }
+          })
+
+      }
+      else{
+        packages.push({
+          packageName,
+          version: response.data.package.version,
+          latestVersion: response.data.package.latestVersion,
+          manager,
+          validity: 'valid'
+        })
+      }
+      this.setState({
+        packages
+      })
+    })
+
     this.inputPackageName.value = ""
     this.inputVersion.value = ""
   }
@@ -301,6 +332,11 @@ class PackageManagerDependencies extends Component {
         'PackageDependencies__menu': true,
         'PackageDependencies__menu--min-height':!this.state.pacakageMenuVisible
       })
+      let packagesProcessing = this.state.packages.filter(packageItem =>{
+        return packageItem.validity === 'checking'
+      })
+
+      let disableInstall = (this.state.packages.length === 0) || (packagesProcessing.length > 0)
       return(
       <div className="PackageDependencies">
 
@@ -362,7 +398,9 @@ class PackageManagerDependencies extends Component {
 
                         const version = node.version === '' ? 'latest' : `v${node.version}`
                         return (
-                          <tr key={node.id}>
+                          <tr
+                            className={`PackageDependencies__table-row--${node.validity}` }
+                            key={node.id}>
                             <td>{`${node.packageName}`}</td>
                             <td>{version}</td>
                             <td className="PackageDependencies__table--no-right-padding" width="30">
@@ -378,7 +416,7 @@ class PackageManagerDependencies extends Component {
                 <button
                   className="PackageDependencies__button--absolute"
                   onClick={()=> this._addPackageComponentMutation()}
-                  disabled={this.state.packages.length === 0}>
+                  disabled={disableInstall}>
                   Install Selected Dependencies
                 </button>
             </div>
@@ -394,7 +432,7 @@ class PackageManagerDependencies extends Component {
           <table className="PackageDependencies__table">
             <thead>
               <tr>
-                <th>Dependency Name</th>
+                <th>Package Name</th>
                 <th>Current</th>
                 <th>Latest</th>
                 <th>Installed By</th>
@@ -445,7 +483,7 @@ class PackageManagerDependencies extends Component {
 }
 
 export default createPaginationContainer(
-  PackageManagerDependencies,
+  PackageDependencies,
   {
     environment: graphql`fragment PackageDependencies_environment on Environment {
     packageDependencies(first: $first, after: $cursor) @connection(key: "PackageDependencies_packageDependencies" filters: []){

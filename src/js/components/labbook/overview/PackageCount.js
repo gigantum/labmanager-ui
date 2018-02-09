@@ -80,9 +80,9 @@ export default class PackageCount extends Component {
           })
 
           return(
-            <div className="PackageCount flex flex--wrap justify--left">
+            <div className="PackageCount">
                 <div className="PackageCount__dependencies">
-                  <h4 className={'Overview__header'}>Dependencies</h4>
+                  <h6 className={'Overview__header'}>Packages</h6>
                   <ul className="flex flex--wrap">
 
                     { (Object.keys(packages).length > 0) && (
@@ -100,7 +100,7 @@ export default class PackageCount extends Component {
                   </ul>
                 </div>
                 <div className="PackageCount__dependencies">
-                  <h4 className={'Overview__header'}>Custom Dependencies</h4>
+                  <h6 className={'Overview__header'}>Custom Dependencies</h6>
                   <ul className="flex flex--wrap">
                     <li className="PackageCount__item">{props.labbook.environment.customDependencies.edges.length +  ' custom package(s)' }</li>
                   </ul>
@@ -111,7 +111,21 @@ export default class PackageCount extends Component {
 
           return(<div>{error.message}</div>)
         }else{
-          return(<Loader />)
+          return(
+            <div className="PackageCount">
+              <div className="PackageCount__dependencies">
+                <h6 className={'Overview__header'}>Packages</h6>
+                <div>
+                  loading..
+                </div>
+              </div>
+              <div className="PackageCount__dependencies">
+                <h6 className={'Overview__header'}>Custom Dependencies</h6>
+                <div>
+                  loading..
+                </div>
+              </div>
+            </div>)
         }
       }}
 

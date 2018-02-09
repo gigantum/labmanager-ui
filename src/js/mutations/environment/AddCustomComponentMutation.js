@@ -62,12 +62,6 @@ export default function AddEnvironmentPackageMutation(
   clientMutationId,
   callback
 ) {
-  console.log(  owner,
-    labbookName,
-    repository,
-    componentId,
-    revision,
-    environmentId,)
   const variables = {
     input: {
       labbookName,
