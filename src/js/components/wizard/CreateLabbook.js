@@ -18,7 +18,9 @@ export default class CreateLabbook extends React.Component {
       'description': '',
       'showError': false,
       'errorType': '',
-      'remoteURL': ''
+      'remoteURL': '',
+      'textWarning': 'hidden',
+      'textLength': 0
     };
 
     this.continueSave = this.continueSave.bind(this)
@@ -142,6 +144,18 @@ export default class CreateLabbook extends React.Component {
       this.props.toggleDisabledContinue((evt.target.value === "") || (isMatch === false));
 
     }
+    let textLength = 1024 - evt.target.value.length
+    if(textLength >= 100){
+      state['textWarning'] = 'CreateLabbook__warning--hidden'
+    }else if((textLength <= 100) && (textLength > 50)){
+      state['textWarning'] = 'CreateLabbook__warning--green'
+    }else if((textLength <= 50) && (textLength > 20)){
+      state['textWarning'] = 'CreateLabbook__warning--yellow'
+    }else{
+      state['textWarning'] = 'CreateLabbook__warning--red'
+    }
+    state['textLength'] = textLength;
+
     this.setState(state)
   }
 
@@ -190,12 +204,15 @@ export default class CreateLabbook extends React.Component {
 
             <div>
               <label>Description</label>
-              <textarea className="CreateLabbook__description-input"
+              <textarea
+                maxlength="1024"
+                className="CreateLabbook__description-input"
                 type="text"
                 onChange={(evt) => this._updateTextState(evt, 'description')}
 
                 placeholder="Briefly describe this LabBook, its purpose and any other key details. "
               />
+              <p className={'CreateLabbook__warning ' + this.state.textWarning}>{`${this.state.textLength} characters remaining`}</p>
             </div>
             <div className="CreateLabbook__text-divider-container">
               <span className="CreateLabbook__text-divider">or</span>
