@@ -247,6 +247,7 @@ export default class ContainerStatus extends Component {
   */
   _openDevToolMuation(developmentTool){
     const {owner, labbookName} = reduxStore.getState().routes
+    console.log(developmentTool)
     StartDevToolMutation(
       owner,
       labbookName,
@@ -361,6 +362,7 @@ export default class ContainerStatus extends Component {
                   <div className="ContainerStatus__plugins-title">Launch</div>
                   <ul className="ContainerStatus__plugins-list">
                     {
+
                       this.props.base.developmentTools.map((developmentTool) =>{
                         return(
                           <li

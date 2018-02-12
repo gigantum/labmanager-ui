@@ -201,6 +201,7 @@ storeDidUpdate = (labbook) => {
     const {labbookName} = this.props;
 
     if(this.props.labbook){
+      console.log(this.props.labbook)
       return(
         <div
           className={this.state.detailMode ? "Labbook Labbook--detail-mode" : "Labbook"}>

@@ -299,7 +299,7 @@ class PackageDependencies extends Component {
               })
             })
           }else{
-            console.log(packages[index])
+        
             index++
             if(packages[index]){
               addPackage(packages[index])
