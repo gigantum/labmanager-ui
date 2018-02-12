@@ -215,7 +215,6 @@ export default class ContainerStatus extends Component {
     status = ((status === 'Closed') && (this.state.status === "Starting")) ? "Starting" : status;
     status = ((status === 'Open') && (this.state.status === "Stopping")) ? "Stopping" : status;
 
-    console.log(this.state.status, store.getState().containerStatus.status)
     if(this.state.status !== status){
       store.dispatch({
         type: 'UPDATE_CONTAINER_STATUS',
