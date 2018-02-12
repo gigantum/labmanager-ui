@@ -13,11 +13,18 @@ import environment from 'JS/createRelayEnvironment'
 import reduxStore from 'JS/redux/store'
 
 const containerStatusQuery = graphql`
-  query ContainerStatusQuery($name: String!, $owner: String!){
+  query ContainerStatusQuery($name: String!, $owner: String!, $first: Int!){
   labbook(name: $name, owner: $owner){
     environment{
       containerStatus
       imageStatus
+    }
+    activityRecords(first: $first){
+      edges{
+        node{
+          id
+        }
+      }
     }
   }
 }
