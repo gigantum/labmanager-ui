@@ -412,7 +412,7 @@ export default class ContainerStatus extends Component {
                               onClick={()=>this._openDevToolMuation(developmentTool)}
                               rel="noopener noreferrer">
                                 {developmentTool}
-                            </button>`
+                            </button>
                           </li>
                         )
                       })
