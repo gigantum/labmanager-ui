@@ -77,7 +77,7 @@ class Environment extends Component {
         }
       )
     }else {
-  
+
       BuildImageMutation(
         labbookName,
         owner,
@@ -111,6 +111,7 @@ class Environment extends Component {
   render(){
     if(this.props.labbook){
       const env = this.props.labbook.environment;
+  
       const {base} = env;
       return(
         <div className="Environment">
@@ -167,9 +168,6 @@ export default createFragmentContainer(
       id
       imageStatus
       containerStatus
-      base{
-        packageManagers
-      }
 
       ...Base_environment @relay(mask: false)
       ...PackageDependencies_environment

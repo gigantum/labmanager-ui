@@ -74,7 +74,6 @@ export default class ActivityDefaultList extends Component {
 
     let keys = this.props.categorizedDetails.detailKeys[this.props.itemKey],
         type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase();
-
     return(
 
         <div className="ActivityDetail__details">

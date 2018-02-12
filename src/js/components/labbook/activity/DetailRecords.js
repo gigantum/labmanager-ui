@@ -79,10 +79,14 @@ export default class UserNote extends Component {
                     <ul className="DetailsRecords__list">
                     {
                       props.labbook.detailRecords.map((detailRecord)=>{
+
                         return(
-                          detailRecord.data.map((item)=>{
+                          detailRecord.data.map((item, index)=>{
+
                             return(
-                              <li className="DetailsRecords__item">
+                              <li
+                                key={detailRecord.id + '_'+ index}
+                                className="DetailsRecords__item">
                                 {this._renderDetail(item)}
                             </li>)
                           })

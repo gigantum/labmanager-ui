@@ -22,6 +22,14 @@
   @include triangle('up', 14px, $white);
 }
 
+.ContainerStatus__plugins-list-item{
+  padding: 5px 0;
+}
+
+.ContainerStatus__button--flat{
+    @extend .flat--button;
+}
+
 .ContainerStatus__container-state{
   width: 120px;
   text-align: center;

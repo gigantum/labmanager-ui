@@ -245,12 +245,12 @@ export default class ContainerStatus extends Component {
     @param {}
     mutation to trigger opening of development tool
   */
-  _openJupyterMuation(){
+  _openJupyterMuation(developmentTool){
     const {owner, labbookName} = reduxStore.getState().routes
     StartDevToolMutation(
       owner,
       labbookName,
-      this.props.base.developmentTools[0],
+      developmentTool,
       (response, error)=>{
           if(response){
 
@@ -361,15 +361,24 @@ export default class ContainerStatus extends Component {
                   className={this.state.pluginsMenu ? 'ContainerStatus__plugins-menu': 'ContainerStatus__plugins-menu hidden'}>
                   <div className="ContainerStatus__plugins-title">Launch</div>
                   <ul className="ContainerStatus__plugins-list">
-                    <li className="ContainerStatus__plugins-list-item">
-                      <a
-                        className="ContainerStatus__plugins-item jupyter-icon"
-                        onClick={()=>this._openJupyterMuation()}
-                        target="_blank"
-                        rel="noopener noreferrer">
-                          Jupyter
-                      </a>
-                    </li>
+                    {
+                      this.props.base.developmentTools.map((developmentTool) =>{
+                        return(
+                          <li
+                            key={developmentTool} 
+                            className="ContainerStatus__plugins-list-item">
+                            <button
+                              className="ContainerStatus__button--flat jupyter-icon"
+                              onClick={()=>this._openJupyterMuation()}
+                              rel="noopener noreferrer">
+                                Jupyter
+                            </button>`
+                          </li>
+                        )
+                      })
+                    }
+
+
                   </ul>
                 </div>
             </div>
