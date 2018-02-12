@@ -13,18 +13,11 @@ import environment from 'JS/createRelayEnvironment'
 import reduxStore from 'JS/redux/store'
 
 const containerStatusQuery = graphql`
-  query ContainerStatusQuery($name: String!, $owner: String!, $first: Int!){
+  query ContainerStatusQuery($name: String!, $owner: String!){
   labbook(name: $name, owner: $owner){
     environment{
       containerStatus
       imageStatus
-    }
-    activityRecords(first: $first){
-      edges{
-        node{
-          id
-        }
-      }
     }
   }
 }
@@ -52,7 +45,7 @@ export default class ContainerStatus extends Component {
     this._getContainerStatusText = this._getContainerStatusText.bind(this)
     this._openCloseContainer = this._openCloseContainer.bind(this)
     this._closePopupMenus = this._closePopupMenus.bind(this)
-    this._openJupyterMuation = this._openJupyterMuation.bind(this)
+    this._openDevToolMuation = this._openDevToolMuation.bind(this)
   }
   /**
   *  @param {}
@@ -225,7 +218,7 @@ export default class ContainerStatus extends Component {
       this.state.labbookName,
       this.state.owner,
       'clientMutationId',
-      (error) =>{
+      (response, error) =>{
 
         if(error){
           reduxStore.dispatch({
@@ -245,7 +238,7 @@ export default class ContainerStatus extends Component {
     @param {}
     mutation to trigger opening of development tool
   */
-  _openJupyterMuation(developmentTool){
+  _openDevToolMuation(developmentTool){
     const {owner, labbookName} = reduxStore.getState().routes
     StartDevToolMutation(
       owner,
@@ -345,7 +338,6 @@ export default class ContainerStatus extends Component {
   }
 
   _containerStatus(status, key){
-    let jupyterLink = (window.location.hostname.indexOf('localhost') > -1) ? window.location.protocol + '//' + window.location.hostname + ':8888' : 'http://jupyter.gigantum.io'
 
     let containerStatusCss = this.state.containerMenuOpen ? "ContainerStatus__container-state--menu-open " : "ContainerStatus__container-state ";
     return(
@@ -369,7 +361,7 @@ export default class ContainerStatus extends Component {
                             className="ContainerStatus__plugins-list-item">
                             <button
                               className="ContainerStatus__button--flat jupyter-icon"
-                              onClick={()=>this._openJupyterMuation()}
+                              onClick={()=>this._openDevToolMuation(developmentTool)}
                               rel="noopener noreferrer">
                                 Jupyter
                             </button>`
@@ -377,8 +369,6 @@ export default class ContainerStatus extends Component {
                         )
                       })
                     }
-
-
                   </ul>
                 </div>
             </div>

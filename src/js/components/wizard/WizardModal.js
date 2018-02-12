@@ -7,7 +7,10 @@ import CreateLabbook from './CreateLabbook'
 import SelectBase from './SelectBase'
 //mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
-
+import BuildImageMutation from 'Mutations/BuildImageMutation'
+//store
+import store from 'JS/redux/store'
+//config
 import Config from 'JS/config'
 
 
@@ -186,6 +189,24 @@ export default class WizardModal extends React.Component {
 
         }else{
           const {owner, name} = response.createLabbook.labbook
+
+
+          BuildImageMutation(
+          name,
+          owner,
+          (error)=>{
+            if(error){
+              console.error(error)
+              store.dispatch(
+                {
+                  type: 'ERROR_MESSAGE',
+                  payload: {
+                    message: `ERROR: Failed to build ${name}`,
+                    messsagesList: error
+                }
+              })
+            }
+          })
           self.props.history.push(`../labbooks/${owner}/${name}`)
 
           if(document.getElementById('modal__cover')){
