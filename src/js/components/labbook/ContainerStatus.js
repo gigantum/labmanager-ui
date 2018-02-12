@@ -10,7 +10,9 @@ import StartContainerMutation from 'Mutations/StartContainerMutation'
 import StartDevToolMutation from 'Mutations/container/StartDevToolMutation'
 import environment from 'JS/createRelayEnvironment'
 //store
-import reduxStore from 'JS/redux/store'
+import store from 'JS/redux/store'
+
+let unsubscribe;
 
 const containerStatusQuery = graphql`
   query ContainerStatusQuery($name: String!, $owner: String!, $first: Int!){
@@ -34,8 +36,9 @@ export default class ContainerStatus extends Component {
   constructor(props){
   	super(props);
 
-    const {owner, labbookName} = reduxStore.getState().routes
-    this.state = {
+    const {owner, labbookName} = store.getState().routes
+
+    let state = {
       'status': "",
       'building': this.props.isBuilding,
       'secondsElapsed': 0,
@@ -47,12 +50,34 @@ export default class ContainerStatus extends Component {
       labbookName
     }
 
+    this.state = state;
+
     this._tick = this._tick.bind(this)
     this._checkJupyterStatus = this._checkJupyterStatus.bind(this)
     this._getContainerStatusText = this._getContainerStatusText.bind(this)
     this._openCloseContainer = this._openCloseContainer.bind(this)
     this._closePopupMenus = this._closePopupMenus.bind(this)
     this._openDevToolMuation = this._openDevToolMuation.bind(this)
+  }
+  /**
+    unsubscribe from redux store
+  */
+  componentWillUnmount() {
+    unsubscribe()
+  }
+
+  /**
+    @param {object} footer
+    unsubscribe from redux store
+  */
+  storeDidUpdate = (conatinerStatus) => {
+
+    let conatinerStatusString = JSON.stringify(conatinerStatus)
+    let stateString = JSON.stringify(this.state)
+    if(conatinerStatusString !== stateString){
+
+      this.setState(conatinerStatus);//triggers re-render when store updates
+    }
   }
   /**
   *  @param {}
@@ -69,17 +94,23 @@ export default class ContainerStatus extends Component {
   */
   componentDidMount(){
 
+
+    unsubscribe = store.subscribe(() =>{
+
+      this.storeDidUpdate(store.getState().containerStatus)
+    })
+
     let status = this._getContainerStatusText(
       {
       containerStatus:this.props.containerStatus, imageStatus: this.props.imageStatus
       })
-    const hasLabbookId = reduxStore.getState().overview.containerStates[this.props.labbookId]
+    const hasLabbookId = store.getState().overview.containerStates[this.props.labbookId]
 
     if(hasLabbookId){
-      const storeStatus = reduxStore.getState().overview.containerStates[this.props.labbookId]
+      const storeStatus = store.getState().overview.containerStates[this.props.labbookId]
 
       if(storeStatus !== status){
-        reduxStore.dispatch({
+        store.dispatch({
           type: 'UPDATE_CONTAINER_STATE',
           payload:{
             labbookId: this.props.labbookId,
@@ -126,13 +157,13 @@ export default class ContainerStatus extends Component {
   componentWillReceiveProps(nextProps) {
 
     let status = this._getContainerStatusText(nextProps.containerStatus, nextProps.imageStatus)
-    const hasLabbookId = reduxStore.getState().overview.containerStates[this.props.labbookId]
+    const hasLabbookId = store.getState().overview.containerStates[this.props.labbookId]
 
     if(hasLabbookId){
-      const storeStatus = reduxStore.getState().overview.containerStates[this.props.labbookId]
+      const storeStatus = store.getState().overview.containerStates[this.props.labbookId]
 
       if(storeStatus !== status){
-        reduxStore.dispatch({
+        store.dispatch({
           type: 'UPDATE_CONTAINER_STATE',
           payload:{
             labbookId: this.props.labbookId,
@@ -184,6 +215,15 @@ export default class ContainerStatus extends Component {
     status = ((status === 'Closed') && (this.state.status === "Starting")) ? "Starting" : status;
     status = ((status === 'Open') && (this.state.status === "Stopping")) ? "Stopping" : status;
 
+    console.log(this.state.status, store.getState().containerStatus.status)
+    if(this.state.status !== status){
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_STATUS',
+        payload: {
+          status: status
+        }
+      })
+    }
     return status;
   }
   /**
@@ -200,7 +240,7 @@ export default class ContainerStatus extends Component {
 
         if(error){
           console.log(error)
-          reduxStore.dispatch({
+          store.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
               message: `There was a problem stopping ${this.state.labbookName} container`,
@@ -228,7 +268,7 @@ export default class ContainerStatus extends Component {
       (response, error) =>{
 
         if(error){
-          reduxStore.dispatch({
+          store.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
               message: `There was a problem starting ${this.state.labbookName} container`,
@@ -246,7 +286,7 @@ export default class ContainerStatus extends Component {
     mutation to trigger opening of development tool
   */
   _openDevToolMuation(developmentTool){
-    const {owner, labbookName} = reduxStore.getState().routes
+    const {owner, labbookName} = store.getState().routes
 
     StartDevToolMutation(
       owner,
@@ -259,7 +299,7 @@ export default class ContainerStatus extends Component {
             window.open(path, '_blank')
           }
           if(error){
-            reduxStore.dispatch({
+            store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
                 message: error[0].message
@@ -372,7 +412,7 @@ export default class ContainerStatus extends Component {
                               className="ContainerStatus__button--flat jupyter-icon"
                               onClick={()=>this._openDevToolMuation(developmentTool)}
                               rel="noopener noreferrer">
-                                Jupyter
+                                {developmentTool}
                             </button>`
                           </li>
                         )
