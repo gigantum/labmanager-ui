@@ -209,7 +209,7 @@ storeDidUpdate = (labbook) => {
              <div className="Labbook__component-container flex flex--column">
                <div className="Labbook__header-conatiner">
                  <div className="Labbook__name-title">
-                   {this.props.labbook.owner.username + '/' + labbookName}
+                   {this.props.labbook.owner + '/' + labbookName}
                  </div>
                  <BranchMenu
                     collaborators={this.props.labbook.collaborators}

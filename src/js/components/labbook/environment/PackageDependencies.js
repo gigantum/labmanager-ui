@@ -287,7 +287,7 @@ class PackageDependencies extends Component {
         environmentId,
         'PackageDependencies_packageDependencies',
         (response, error) => {
-          self._removeStatePackages(packageItem, index)
+
           if(error){
             console.log(error)
             error.forEach((err, index)=>{
@@ -299,10 +299,12 @@ class PackageDependencies extends Component {
               })
             })
           }else{
-            index++;
+            console.log(packages[index])
+            index++
             if(packages[index]){
               addPackage(packages[index])
             }else{
+              self.setState({packages: []})
               self.props.buildCallback()
             }
           }

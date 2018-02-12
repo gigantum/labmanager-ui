@@ -196,7 +196,7 @@ export default class ContainerStatus extends Component {
       this.state.labbookName,
       this.state.owner,
       'clientMutationId',
-      (error) =>{
+      (response, error) =>{
 
         if(error){
           console.log(error)
