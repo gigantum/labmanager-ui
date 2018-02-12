@@ -288,6 +288,7 @@ export default createPaginationContainer(
               tags
               message
               timestamp
+              username
               detailObjects{
                 id
                 key

@@ -12,9 +12,9 @@ export default class UserNote extends Component {
   constructor(props){
   	super(props);
     this.state = {
-      'addNoteEnabled': false,
       'tags': [],
       'userSummaryText': '',
+      'addNoteDisabled': false
     }
 
     this._addNote = this._addNote.bind(this)
@@ -43,6 +43,7 @@ export default class UserNote extends Component {
     const tags = this.state.tags.map(tag => {return (tag.text)});
     const {labbookName, owner} = store.getState().routes;
     const {labbookId} = this.props
+    this.setState({'addNoteDisabled': true})
     CreateUserNoteMutation(
       labbookName,
       this.state.userSummaryText,
@@ -56,7 +57,7 @@ export default class UserNote extends Component {
         this.setState({
           'tags': [],
           'userSummaryText': '',
-          'addNoteEnabled': false
+          'addNoteDisabled': false
         })
 
       }
@@ -143,8 +144,11 @@ export default class UserNote extends Component {
               handleDelete={(index) => {this._handleDelete(index)}}
               handleAddition={(tag) => {this._handleAddition(tag)}}
               handleDrag={(tag, currPos, newPos) => {this._handleDrag(tag, currPos, newPos)}} />
-              
-        <button className="UserNote__add-note" disabled={!this.state.addNoteEnabled} onClick={() => {this._addNote()}}>Add Note</button>
+
+        <button
+          className="UserNote__add-note"
+          disabled={this.state.addNoteDisabled}
+          onClick={() => {this._addNote()}}>Add Note</button>
       </div>
     )
   }
