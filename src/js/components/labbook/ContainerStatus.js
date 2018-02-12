@@ -7,7 +7,7 @@ import {
 //mutations
 import StopContainerMutation from 'Mutations/StopContainerMutation'
 import StartContainerMutation from 'Mutations/StartContainerMutation'
-import StartDevToolMutation from 'Mutations/Container/StartDevToolMutation'
+import StartDevToolMutation from 'Mutations/container/StartDevToolMutation'
 import environment from 'JS/createRelayEnvironment'
 //store
 import reduxStore from 'JS/redux/store'
@@ -365,7 +365,7 @@ export default class ContainerStatus extends Component {
                       this.props.base.developmentTools.map((developmentTool) =>{
                         return(
                           <li
-                            key={developmentTool} 
+                            key={developmentTool}
                             className="ContainerStatus__plugins-list-item">
                             <button
                               className="ContainerStatus__button--flat jupyter-icon"
