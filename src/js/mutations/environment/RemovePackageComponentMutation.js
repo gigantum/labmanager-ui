@@ -21,6 +21,7 @@ function sharedUpdater(store, parentID, deletedId, connectionKey) {
     userProxy,
     connectionKey,
   );
+
   if(conn){
     RelayRuntime.ConnectionHandler.deleteNode(
       conn,

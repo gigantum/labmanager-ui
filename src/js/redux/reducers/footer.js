@@ -4,6 +4,7 @@
  //messages that have a constant state
 export const ERROR_MESSAGE = 'ERROR_MESSAGE';
 export const INFO_MESSAGE = 'INFO_MESSAGE';
+export const WARNING_MESSAGE = 'WARNING_MESSAGE';
 export const REMOVE_MESSAGE = 'REMOVE_MESSAGE'
 //loaders with updating state
 // file updating
@@ -80,6 +81,28 @@ export default (
     success: true,
     showProgressBar: false
   };
+}  else if (action.type === WARNING_MESSAGE) { //this is for only updating a single message
+ let id = INFO_MESSAGE + tempId++
+ let messageStack = state.messageStack
+
+ messageStack.push(
+   {
+     message: action.payload.message,
+     id: id,
+     error: false,
+     className: 'Footer__message--warning',
+     messageBody: action.payload.messagesList ? action.payload.messagesList : []
+ })
+
+ return {
+   ...state,
+   currentMessage: action.payload.message,
+   currentId: id,
+   messageStack: messageStack,
+   open: true,
+   success: true,
+   showProgressBar: false
+ };
 } else if (action.type === REMOVE_MESSAGE) { //this is for only updating a single message
     let messageStack = []
 

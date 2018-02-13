@@ -43,6 +43,22 @@ function sharedUpdater(store, id, newEdge) {
 
 }
 
+function sharedDeleteUpdater(store, parentID, deletedId) {
+  const userProxy = store.get(parentID);
+
+  const conn = RelayRuntime.ConnectionHandler.getConnection(
+    userProxy,
+    'PackageDependencies_packageDependencies',
+  );
+
+  if(conn){
+    RelayRuntime.ConnectionHandler.deleteNode(
+      conn,
+      deletedId,
+    );
+  }
+}
+
 export default function AddPackageComponentMutation(
   labbookName,
   owner,
@@ -90,7 +106,8 @@ export default function AddPackageComponentMutation(
       updater: (store, response) => {
 
         if(clientMutationId){
-
+          let deletedId = 'client:newPackageManager:' + tempID
+          sharedDeleteUpdater(store, environmentId, deletedId)
           const {
               schema,
               version,
@@ -106,6 +123,7 @@ export default function AddPackageComponentMutation(
           node.setValue(schema, 'schema')
           node.setValue(latestVersion, 'latestVersion')
           node.setValue(fromBase, 'fromBase')
+          node.setValue(response.addPackageComponent.newPackageComponentEdge.node.id, 'id')
 
           const newEdge = store.create(
             'client:newEdge:' + tempID,

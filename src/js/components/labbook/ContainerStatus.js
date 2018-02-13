@@ -70,13 +70,14 @@ export default class ContainerStatus extends Component {
     @param {object} footer
     unsubscribe from redux store
   */
-  storeDidUpdate = (conatinerStatus) => {
+  storeDidUpdate = (containerStatusStore) => {
 
-    let conatinerStatusString = JSON.stringify(conatinerStatus)
-    let stateString = JSON.stringify(this.state)
-    if(conatinerStatusString !== stateString){
+    if(this.state.containerMenuOpen !== containerStatusStore.containerMenuOpen){
 
-      this.setState(conatinerStatus);//triggers re-render when store updates
+      if(((containerStatusStore.status === 'Closed') || containerStatusStore.status === 'Open')){
+
+        this.setState({containerMenuOpen: containerStatusStore.containerMenuOpen}); //triggers  re-render when store updates
+      }
     }
   }
   /**
@@ -133,12 +134,17 @@ export default class ContainerStatus extends Component {
   _closePopupMenus(evt){
 
     let containerMenuClicked = (evt.target.className.indexOf('ContainerStatus__container-state') > -1) ||
-    (evt.target.className.indexOf('ContainerStatus__button-menu') > -1)
+      (evt.target.className.indexOf('ContainerStatus__button-menu') > -1) ||
+      (evt.target.className.indexOf('PackageDependencies__button') > -1) ||
+      (evt.target.className.indexOf('CustomDependencies__button') > -1)
 
     if(!containerMenuClicked &&
     this.state.containerMenuOpen){
-      this.setState({
-        containerMenuOpen: false
+      store.dispatch({
+        type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: false
+        }
       })
     }
 
@@ -215,7 +221,7 @@ export default class ContainerStatus extends Component {
     status = ((status === 'Closed') && (this.state.status === "Starting")) ? "Starting" : status;
     status = ((status === 'Open') && (this.state.status === "Stopping")) ? "Stopping" : status;
 
-    if(this.state.status !== status){
+    if(store.getState().containerStatus.status !== status){
       store.dispatch({
         type: 'UPDATE_CONTAINER_STATUS',
         payload: {
@@ -223,6 +229,16 @@ export default class ContainerStatus extends Component {
         }
       })
     }
+
+
+    if(status !== 'Closed'){
+      store.dispatch({
+        type: 'CLOSE_ENVIRONMENT_MENUS',
+        payload:{
+        }
+      })
+    }
+
     return status;
   }
   /**
@@ -230,6 +246,12 @@ export default class ContainerStatus extends Component {
     triggers stop container mutation
   */
   _stopContainerMutation(){
+    store.dispatch({
+      type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+      payload: {
+        containerMenuOpen: false
+      }
+    })
 
     StopContainerMutation(
       this.state.labbookName,
@@ -259,7 +281,17 @@ export default class ContainerStatus extends Component {
     triggers start container mutation
   */
   _startContainerMutation(){
-
+    store.dispatch({
+      type: 'CLOSE_ENVIRONMENT_MENUS',
+      payload:{
+      }
+    })
+    store.dispatch({
+      type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+      payload: {
+        containerMenuOpen: false
+      }
+    })
     StartContainerMutation(
       this.state.labbookName,
       this.state.owner,
@@ -276,6 +308,11 @@ export default class ContainerStatus extends Component {
           })
         }else{
           console.log('started container')
+          store.dispatch({
+            type: 'CLOSE_ENVIRONMENT_MENUS',
+            payload:{
+            }
+          })
         }
       }
     )
@@ -379,8 +416,11 @@ export default class ContainerStatus extends Component {
   }
 
   _showMenu(){
-    this.setState({
-      containerMenuOpen: !this.state.containerMenuOpen
+    store.dispatch({
+      type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+      payload: {
+        containerMenuOpen: !this.state.containerMenuOpen
+      }
     })
   }
 

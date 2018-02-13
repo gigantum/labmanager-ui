@@ -1,10 +1,14 @@
 import { combineReducers } from 'redux';
 import footer from './reducers/footer';
-import overview from './reducers/overview';
-import labbook from './reducers/labbook';
-import detailView from './reducers/detail';
 import routes from './reducers/routes';
-import containerStatus from './reducers/containerStatus';
+//labbook reducers
+import labbook from './reducers/labbook/labbook';
+import detailView from './reducers/labbook/detail';
+import containerStatus from './reducers/labbook/containerStatus';
+//labbooks/overview reducers
+import overview from './reducers/labbook/overview/overview';
+//labbooks/overview reducers
+import environment from './reducers/labbook/environment/environment';
 
 export default combineReducers({
   footer,
@@ -12,5 +16,6 @@ export default combineReducers({
   labbook,
   detailView,
   routes,
-  containerStatus
+  containerStatus,
+  environment
 });
