@@ -35,25 +35,30 @@ let RecentActivityQuery = graphql`query RecentActivityQuery($name: String!, $own
 `
 
 export default class RecentActivity extends Component {
-  _renderDetail(item){
+  _renderDetail(node){
 
-    switch(item[0]){
-      case 'text/plain':
-        return(<b>{item[1]}</b>)
-      case 'image/png':
-        return(<img src={item[1]} />)
-      case 'image/jpg':
-        return(<img src={item[1]} />)
-      case 'image/jpeg':
-        return(<img src={item[1]} />)
-      case 'image/bmp':
-        return(<img src={item[1]} />)
-      case 'image/gif':
-        return(<img src={item[1]} />)
-      case 'text/markdown':
-        return(<ReactMarkdown source={item[1]} />)
-      default:
-        return(<b>{item[1]}</b>)
+    let item = node.detailObjects[0].data[0] ? node.detailObjects[0].data[0] : ['text/markdown', node.message]
+    if(item){
+      switch(item[0]){
+        case 'text/plain':
+          return(<b>{item[1]}</b>)
+        case 'image/png':
+          return(<img src={item[1]} />)
+        case 'image/jpg':
+          return(<img src={item[1]} />)
+        case 'image/jpeg':
+          return(<img src={item[1]} />)
+        case 'image/bmp':
+          return(<img src={item[1]} />)
+        case 'image/gif':
+          return(<img src={item[1]} />)
+        case 'text/markdown':
+          return(<ReactMarkdown source={item[1]} />)
+        default:
+          return(<b>{item[1]}</b>)
+      }
+    }else{
+      return(<div>no result</div>)
     }
   }
 
@@ -74,6 +79,7 @@ export default class RecentActivity extends Component {
       query={RecentActivityQuery}
       environment={environment}
       render={({error, props}) =>{
+
         if(props){
           const {owner, labbookName} = store.getState().routes
           return(
@@ -86,10 +92,14 @@ export default class RecentActivity extends Component {
                 {
                   props.labbook.activityRecords.edges.map(edge =>{
                     return (
-                      <div className="RecentActivity__card">
+                      <div
+                        key={edge.node.id}
+                        className="RecentActivity__card">
                         <div>{this._getDate(edge)}</div>
                         <div className="RecentActivity__card-detail">
-                          {this._renderDetail(edge.node.detailObjects[0].data[0])}
+                          {
+                            this._renderDetail(edge.node)
+                          }
                         </div>
                       </div>
                     )

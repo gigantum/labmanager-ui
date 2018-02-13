@@ -201,6 +201,7 @@ storeDidUpdate = (labbook) => {
     const {labbookName} = this.props;
 
     if(this.props.labbook){
+
       return(
         <div
           className={this.state.detailMode ? "Labbook Labbook--detail-mode" : "Labbook"}>
@@ -209,7 +210,7 @@ storeDidUpdate = (labbook) => {
              <div className="Labbook__component-container flex flex--column">
                <div className="Labbook__header-conatiner">
                  <div className="Labbook__name-title">
-                   {this.props.labbook.owner.username + '/' + labbookName}
+                   {this.props.labbook.owner + '/' + labbookName}
                  </div>
                  <BranchMenu
                     collaborators={this.props.labbook.collaborators}
@@ -229,6 +230,7 @@ storeDidUpdate = (labbook) => {
 
                  <ContainerStatus
                    ref="ContainerStatus"
+                   base={this.props.labbook.environment.base}
                    containerStatus={this.props.labbook.environment.containerStatus}
                    imageStatus={this.props.labbook.environment.imageStatus}
                    labbookId={this.props.labbook.id}
@@ -386,6 +388,9 @@ export default createFragmentContainer(
           environment{
             containerStatus
             imageStatus
+            base{
+              developmentTools
+            }
           }
 
           collaborators

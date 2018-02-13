@@ -59,9 +59,9 @@ export default class ActivityCard extends Component {
                     <p className="ActivityCard__time">
                       {this._getTimeOfDay(this.props.edge.node.timestamp)}
                     </p>
-                    <img src={userSVG} className="ActivityCard__user" />
+                    <img alt='User' src={userSVG} className="ActivityCard__user" />
                   </div>
-                  <h6 className="ActivityCard__commit-message">{this.props.edge.node.message}</h6>
+                  <h6 className="ActivityCard__commit-message">{this.props.edge.node.username + ': ' + this.props.edge.node.message}</h6>
 
                 </div>
 
