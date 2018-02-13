@@ -140,7 +140,7 @@ export default class Footer extends Component {
     this.state.messageStack.forEach((messageItem)=>{
       if(messageItem.className === "Footer__message--error"){
           statusClassType = "error"
-      }else if((messageItem.className === "Footer__message--error") && (statusClassType === '')){
+      }else if((messageItem.className === "Footer__message--warning") && (statusClassType === '')){
           statusClassType = "warning"
       }
     })
