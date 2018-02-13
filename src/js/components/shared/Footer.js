@@ -227,6 +227,8 @@ let ListStatusMessages = ({self}) =>{
   let messageList = self.state.messageStack.filter((messageItem)=>{
     return (mostRecentMessage.id !== messageItem.id)
   })
+
+
   return (
     <div className="Footer__messages-section">
       <div className={footerMessageListClass}>
@@ -237,7 +239,17 @@ let ListStatusMessages = ({self}) =>{
               return(<li
                 key={messageItem.id}
                 className={messageItem.className}>
-                <p className="Footer__message-title">{messageItem.message}</p>
+                <div>
+                  <p className="Footer__message-title">{messageItem.message}</p>
+                  <ul>
+                  {
+                    messageItem.messageBody && messageItem.messageBody.map((error)=> {
+                      return(<li>{error.message}</li>)
+                    })
+                  }
+                  </ul>
+                </div>
+
 
                 {messageItem.error &&
                   <i

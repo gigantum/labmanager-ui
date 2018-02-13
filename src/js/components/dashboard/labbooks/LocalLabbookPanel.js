@@ -75,7 +75,7 @@ export default class LocalLabbookPanel extends Component {
                   type: 'ERROR_MESSAGE',
                   payload: {
                     message: `${labbookName} failed to export `,
-                    messageList: error
+                    messagesList: error
                   }
                 })
               }
@@ -87,7 +87,7 @@ export default class LocalLabbookPanel extends Component {
           type: 'ERROR_MESSAGE',
           payload: {
             message: 'Export Failed: ' + error[0].message,
-            messageList: error
+            messagesList: error
           }
         })
 

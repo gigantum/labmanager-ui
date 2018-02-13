@@ -41,7 +41,7 @@ class CustomDependencies extends Component {
   */
   componentDidMount() {
 
-    if(this.props.environment.customDependencies){
+    if(this.props.environment.customDependencies.pageInfo.hasNextPage){
       this._loadMore() //routes query only loads 2, call loadMore
     }
 

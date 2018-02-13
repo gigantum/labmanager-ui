@@ -85,6 +85,7 @@ export default class CreateLabbook extends React.Component {
             BuildImageMutation(
             labbookName,
             owner,
+            false,
             (error)=>{
               if(error){
                 console.error(error)
@@ -105,6 +106,7 @@ export default class CreateLabbook extends React.Component {
             BuildImageMutation(
             labbookName,
             localStorage.getItem('username'),
+            false,
             (error)=>{
               if(error){
                 console.error(error)
