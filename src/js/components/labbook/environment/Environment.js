@@ -57,6 +57,7 @@ class Environment extends Component {
             BuildImageMutation(
             labbookName,
               owner,
+              false,
               (error) => {
 
 
@@ -81,6 +82,7 @@ class Environment extends Component {
       BuildImageMutation(
         labbookName,
         owner,
+        false,
         (error) => {
           if(error){
             store.dispatch({
@@ -109,9 +111,9 @@ class Environment extends Component {
   }
 
   render(){
+  
     if(this.props.labbook){
       const env = this.props.labbook.environment;
-
       const {base} = env;
       return(
         <div className="Environment">

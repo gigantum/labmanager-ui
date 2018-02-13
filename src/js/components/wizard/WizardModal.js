@@ -194,6 +194,7 @@ export default class WizardModal extends React.Component {
           BuildImageMutation(
           name,
           owner,
+          false,
           (error)=>{
             if(error){
               console.error(error)

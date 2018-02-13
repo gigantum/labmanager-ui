@@ -41,7 +41,10 @@ class PackageDependencies extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore() //routes query only loads 2, call loadMore
+    if(this.props.environment.packageDependencies.pageInfo.hasNextPage){
+
+      this._loadMore() //routes query only loads 2, call loadMore
+    }
 
     if(this.state.selectedTab === ''){
       this.setState({selectedTab: this.props.base.packageManagers[0]})
@@ -80,7 +83,7 @@ class PackageDependencies extends Component {
 
     let self = this;
     this.props.relay.loadMore(
-    100, // Fetch the next 100 feed items
+    5, // Fetch the next 5 feed items
     (response, error) => {
        if(error){
          console.error(error)
@@ -218,7 +221,8 @@ class PackageDependencies extends Component {
             store.dispatch({
               type:"ERROR_MESSAGE",
               payload: {
-                message: response.errors[0].message
+                message: response.errors[0].message,
+                messagesList: response.errors
               }
             })
 
@@ -307,15 +311,15 @@ class PackageDependencies extends Component {
         (response, error) => {
 
           if(error){
-            console.log(error)
-            error.forEach((err, index)=>{
-              store.dispatch({
-                type: 'ERROR_MESSAGE',
-                payload: {
-                  message: err.message,
-                }
-              })
+
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: error[0].message,
+                messagesList: error
+              }
             })
+
           }else{
 
             index++

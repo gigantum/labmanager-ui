@@ -64,6 +64,12 @@
   background-size: 20px;
 }
 
+.ContainerStatus__container-state.Failed{
+  border: 3px solid $crimson;
+  background-size: 20px;
+  color: $crimson;
+}
+
 .ContainerStatus__container-state.Starting{
   border: 1px solid $turquise;
   opacity: 0.75;
