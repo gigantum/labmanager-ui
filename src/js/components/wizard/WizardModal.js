@@ -5,8 +5,10 @@ import classNames from 'classnames'
 //components
 import CreateLabbook from './CreateLabbook'
 import SelectBase from './SelectBase'
+import TrackingToggle from './TrackingToggle'
 //mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
+import SetArtifactsUntrackedMutation from 'Mutations/SetArtifactsUntrackedMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
@@ -28,7 +30,8 @@ export default class WizardModal extends React.Component {
       'nextComponentId': 'selectBase',
       'previousComponentId': null,
       'continueDisabled': true,
-      'menuVisibility': true
+      'menuVisibility': true,
+      'isTrackingOn': true
     };
 
     this._createLabbookCallback = this._createLabbookCallback.bind(this)
@@ -42,6 +45,7 @@ export default class WizardModal extends React.Component {
     this._getSelectedComponentId = this._getSelectedComponentId.bind(this)
     this._toggleDisabledContinue = this._toggleDisabledContinue.bind(this)
     this._toggleMenuVisibility = this._toggleMenuVisibility.bind(this)
+    this._setTracking = this._setTracking.bind(this)
   }
   /**
     @param {Object, string} evt,field
@@ -58,6 +62,12 @@ export default class WizardModal extends React.Component {
   */
   _toggleMenuVisibility(menuVisibility){
     this.setState({menuVisibility: menuVisibility})
+  }
+
+  _setTracking(trackingState){
+    this.setState({
+      isTrackingOn: trackingState
+    })
   }
 
   /**
@@ -189,25 +199,12 @@ export default class WizardModal extends React.Component {
 
         }else{
           const {owner, name} = response.createLabbook.labbook
+          if(self.isTrackingOn){
+            self._buildImage(name, owner)
+          }else{
+            self._setArtifactsUntracked(name, owner)
+          }
 
-
-          BuildImageMutation(
-          name,
-          owner,
-          false,
-          (error)=>{
-            if(error){
-              console.error(error)
-              store.dispatch(
-                {
-                  type: 'ERROR_MESSAGE',
-                  payload: {
-                    message: `ERROR: Failed to build ${name}`,
-                    messsagesList: error
-                }
-              })
-            }
-          })
           self.props.history.push(`../labbooks/${owner}/${name}`)
 
           if(document.getElementById('modal__cover')){
@@ -216,6 +213,54 @@ export default class WizardModal extends React.Component {
         }
       }
     )
+  }
+  /**
+      @param {name, owner}
+      sets labbook to be untracked
+      calls build image function
+  */
+  _setArtifactsUntracked(name, owner){
+    let self = this
+    SetArtifactsUntrackedMutation(
+      name,
+      owner,
+      (response, error) => {
+        if(error){
+          store.dispatch(
+            {
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `ERROR: Failed to untrack ${name}`,
+                messsagesList: error
+            }
+          })
+        }else{
+          self._buildImage(name, owner)
+        }
+    })
+  }
+  /**
+      @param {name, owner}
+      builds docker iamge of labbook
+  */
+  _buildImage(name, owner){
+    BuildImageMutation(
+      name,
+      owner,
+      false,
+      (error)=>{
+        if(error){
+          console.error(error)
+          store.dispatch(
+            {
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `ERROR: Failed to build ${name}`,
+                messsagesList: error
+            }
+          })
+        }
+      })
   }
 
   render(){
@@ -234,6 +279,7 @@ export default class WizardModal extends React.Component {
                 {this._currentComponent()}
 
                 <ModalNav
+                  self={this}
                   state={this.state}
                   getSelectedComponentId={this._getSelectedComponentId}
                   setComponent={this._setComponent}
@@ -259,6 +305,7 @@ export default class WizardModal extends React.Component {
               createLabbookCallback={this._createLabbookCallback}
               toggleDisabledContinue={this._toggleDisabledContinue}
               history={this.props.history}
+
             />)
 
         case 'selectBase':
@@ -302,7 +349,7 @@ function _getButtonText(state){
   gets button text for current componenet
   @return {string} text
 */
-function ModalNav({state, getSelectedComponentId, setComponent, hideModal, getButtonText, continueSave}){
+function ModalNav({self, state, getSelectedComponentId, setComponent, hideModal, getButtonText, continueSave}){
 
   const continueSaveDisabled = ['createLabbook', 'selectBase']
 
@@ -312,6 +359,10 @@ function ModalNav({state, getSelectedComponentId, setComponent, hideModal, getBu
     'WizardModal__progress-button': true,
     'flat--button': true,
     'hidden': (state.selectedComponentId === 'createLabbook')
+  })
+
+  let trackingButton = classNames({
+    'hidden': (state.selectedComponentId !== 'createLabbook')
   })
 
   let wizardModalNav = classNames({
@@ -327,6 +378,11 @@ function ModalNav({state, getSelectedComponentId, setComponent, hideModal, getBu
           className={backButton}>
           Back
         </button>
+        <div className={trackingButton}>
+          <TrackingToggle
+          setTracking={self._setTracking}
+          />
+        </div>
       </div>
       <div className="WizardModal__nav-group">
         <button

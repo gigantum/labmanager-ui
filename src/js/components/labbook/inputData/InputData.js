@@ -24,6 +24,14 @@ class InputData extends Component {
       return(
 
         <div className="Code">
+          {
+            this.props.labbook.input.isUntracked &&
+            <div className="Code__tracked-container">
+              <div className="Code__tracked">
+                Version Tracking Disabled
+              </div>
+            </div>
+          }
           <div className="Code__header">
             <h5 className="Code__subtitle">Input Files</h5>
             <div className="Code__toolbar">
@@ -74,6 +82,7 @@ export default createFragmentContainer(
         id
         ...InputDataBrowser_input
         ...InputFavorites_input
+        isUntracked
       }
     }
   `,

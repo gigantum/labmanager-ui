@@ -139,3 +139,11 @@
 
   }
 }
+.Code__tracked-container{
+  @include flex(flex-end, row);
+}
+.Code__tracked{
+  padding: 3px 5px;
+  background-color: $lightGrey;
+  color: $romanSilver;
+}

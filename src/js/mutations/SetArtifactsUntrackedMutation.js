@@ -9,7 +9,7 @@ import reduxStore from 'JS/redux/store'
 
 const mutation = graphql`
   mutation SetArtifactsUntrackedMutation($input: SetArtifactsUntrackedInput!){
-    buildImage(input: $input){
+    setArtifactsUntracked(input: $input){
       success
       clientMutationId
     }
@@ -21,7 +21,6 @@ let tempID = 0;
 export default function SetArtifactsUntrackedMutation(
   labbookName,
   owner,
-  noCache,
   callback
 ) {
   const variables = {
@@ -48,6 +47,7 @@ export default function SetArtifactsUntrackedMutation(
             }
           })
         }
+
         callback(response, error)
       }
     },
