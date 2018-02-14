@@ -235,7 +235,7 @@ export default class ContainerStatus extends Component {
     }
 
 
-    if(status !== 'Closed'){
+    if((status !== 'Closed') || (status !== 'Failed')){
       store.dispatch({
         type: 'CLOSE_ENVIRONMENT_MENUS',
         payload:{

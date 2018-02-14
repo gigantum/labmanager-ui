@@ -258,6 +258,7 @@ export default class WizardModal extends React.Component {
               ref="createLabbook"
               createLabbookCallback={this._createLabbookCallback}
               toggleDisabledContinue={this._toggleDisabledContinue}
+              history={this.props.history}
             />)
 
         case 'selectBase':
