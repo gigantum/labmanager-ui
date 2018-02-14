@@ -1,8 +1,12 @@
 {
-  "schemaPath": "schema.graphql",
-  "extensions": {
-    "endpoints": {
-      "default": "http://localhost:10001/labbook/"
+  "projects": {
+    "labbook": {
+      "schemaPath": "schema.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": "http://localhost:10001/labbook/"
+        }
+      }
     }
   }
 }

@@ -124,7 +124,7 @@ class CustomDependencies extends Component {
   *  toggle state and view of container
   */
   _toggleViewContainer(){
-    if(store.getState().containerStatus.status === 'Closed'){
+    if((store.getState().containerStatus.status === 'Closed') || (store.getState().containerStatus.status === 'Failed')){
       store.dispatch({
         type: 'TOGGLE_CUSTOM_MENU',
         payload: {
