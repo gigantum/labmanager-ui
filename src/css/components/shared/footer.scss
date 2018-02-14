@@ -1,7 +1,7 @@
 .Footer{
   position: fixed;
   z-index: 50;
-  z-index: 300;
+  z-index: 1200;
   right: 0;
   bottom: 0;
   left: 120px;
@@ -35,7 +35,7 @@
   max-height: 240px !important;
 }
 .Footer__main-message{
-  
+
   @include flex(flex-start, row);
 }
 .Footer__messages-section{

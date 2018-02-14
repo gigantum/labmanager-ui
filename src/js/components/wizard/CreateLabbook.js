@@ -45,7 +45,7 @@ export default class CreateLabbook extends React.Component {
     if(this.state.remoteURL.length > 0){
       const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
       const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
-      const remote = this.state.remoteURL + '.git'
+      const remote = 'https://' + this.state.remoteURL + '.git'
 
       store.dispatch(
         {
@@ -100,7 +100,7 @@ export default class CreateLabbook extends React.Component {
               }
             })
             document.getElementById('modal__cover').classList.add('hidden')
-            this.props.history.replace(`/labbooks/${labbookName}`)
+            self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
           }else{
 
             BuildImageMutation(
@@ -207,7 +207,7 @@ export default class CreateLabbook extends React.Component {
             <div>
               <label>Description</label>
               <textarea
-                maxlength="1024"
+                maxLength="1024"
                 className="CreateLabbook__description-input"
                 type="text"
                 onChange={(evt) => this._updateTextState(evt, 'description')}
