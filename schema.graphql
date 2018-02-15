@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Wed Feb 14 2018 17:23:02 GMT-0500 (EST)
+# timestamp: Thu Feb 15 2018 10:14:06 GMT-0500 (EST)
 
 schema {
   query: LabbookQuery
@@ -129,7 +129,8 @@ input AddLabbookFileInput {
   clientMutationId: String
 }
 
-# Mutation to add a file to a labbook. File should be sent in the #`uploadFile` key as a multi-part/form upload.
+#
+#Mutation to add a file to a labbook. File should be sent in the `uploadFile` key as a multi-part/form upload.
 #file_path is the relative path from the labbook section specified.
 #
 type AddLabbookFilePayload {
@@ -232,10 +233,11 @@ type CheckoutBranchPayload {
   clientMutationId: String
 }
 
-# Input Object for params needed for a chunked upload
+#
+#Input Object for params needed for a chunked upload
 
-# To use, add a field `chunk_upload_params` to your mutation input
-
+#To use, add a field `chunk_upload_params` to your mutation input
+#
 input ChunkUploadInput {
   fileSizeKb: Int!
   chunkSize: Int!
@@ -289,10 +291,10 @@ input CreateUserNoteInput {
   clientMutationId: String
 }
 
-# Mutation to create a new user note entry in the activity feed of lab book
-
-# The `linked_commit` is an empty string since there is no linked commit
-
+#
+#Mutation to create a new user note entry in the activity feed of lab book
+#The `linked_commit` is an empty string since there is no linked commit
+#
 type CreateUserNotePayload {
   newActivityRecordEdge: ActivityEdge
   clientMutationId: String
@@ -330,9 +332,10 @@ type CustomComponentEdge {
   cursor: String!
 }
 
-# The `DateTime` scalar type represents a DateTime
-# value as specified by
-# [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+#
+#The `DateTime` scalar type represents a DateTime
+#value as specified by
+#[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 #
 scalar DateTime
 
@@ -362,7 +365,7 @@ type DeleteLabbookFilePayload {
   clientMutationId: String
 }
 
-# A type that represents the Environment for a LabBook#
+#A type that represents the Environment for a LabBook#
 type Environment implements Node, GitRepository {
   #The ID of the object.#
   id: ID!
@@ -399,7 +402,8 @@ interface GitRef {
   prefix: String
 }
 
-# An interface for Objects backended with git repositories (LabBook and Datasets)
+#
+#An interface for Objects backended with git repositories (LabBook and Datasets)
 #
 interface GitRepository {
   owner: String!
@@ -438,7 +442,8 @@ type ImportRemoteLabbookPayload {
   clientMutationId: String
 }
 
-# A query to get the status of a background task launched with the Dispatcher
+#
+#A query to get the status of a background task launched with the Dispatcher
 #
 type JobStatus implements Node {
   #The ID of the object.#
@@ -451,7 +456,8 @@ type JobStatus implements Node {
   result: String
 }
 
-# A Connection for paging through all background jobs the system is aware of.
+#
+#A Connection for paging through all background jobs the system is aware of.
 #
 type JobStatusConnection {
   pageInfo: PageInfo!
@@ -466,10 +472,11 @@ type JobStatusEdge {
   cursor: String!
 }
 
-# A type representing a LabBook and all of its contents
+#
+#A type representing a LabBook and all of its contents
 
-# LabBooks are uniquely identified by both the "owner" and the "name" of the LabBook
-
+#LabBooks are uniquely identified by both the "owner" and the "name" of the LabBook
+#
 type Labbook implements Node, GitRepository {
   #The ID of the object.#
   id: ID!
@@ -518,7 +525,8 @@ type LabbookEdge {
   cursor: String!
 }
 
-# A type representing a file or directory that has been favorited in the labbook file system.
+#
+#A type representing a file or directory that has been favorited in the labbook file system.
 #
 type LabbookFavorite implements Node, GitRepository {
   #The ID of the object.#
@@ -546,6 +554,7 @@ type LabbookFavoriteEdge {
   cursor: String!
 }
 
+#
 #A type representing a file or directory inside the labbook file system.
 #
 type LabbookFile implements Node, GitRepository {
@@ -652,7 +661,8 @@ type LabbookRefEdge {
   cursor: String!
 }
 
-# A type representing a section within a LabBook (i.e., code, input, output)
+#
+#A type representing a section within a LabBook (i.e., code, input, output)
 
 #
 type LabbookSection implements Node, GitRepository {
@@ -689,8 +699,9 @@ input MoveLabbookFileInput {
   clientMutationId: String
 }
 
-# Method to move/rename a file or directory. If file, both src_path and dst_path should contain the file name.
-# If a directory, be sure to include the trailing slash
+#
+#Method to move/rename a file or directory. If file, both src_path and dst_path should contain the file name.
+#If a directory, be sure to include the trailing slash
 #
 type MoveLabbookFilePayload {
   newLabbookFileEdge: LabbookFileEdge
@@ -823,7 +834,8 @@ input RemoveUserIdentityInput {
   clientMutationId: String
 }
 
-# Mutation to remove a locally stored user identity (no-op if not running in local mode)
+#
+#Mutation to remove a locally stored user identity (no-op if not running in local mode)
 #
 type RemoveUserIdentityPayload {
   userIdentityEdge: UserIdentity
@@ -849,7 +861,8 @@ input SetArtifactsUntrackedInput {
   clientMutationId: String
 }
 
-# Set a labbook to support extra-large files in the input and output directory.
+#
+#Set a labbook to support extra-large files in the input and output directory. 
 #
 type SetArtifactsUntrackedPayload {
   success: Boolean
@@ -936,4 +949,5 @@ type UserIdentity implements Node, User {
   email: String
   givenName: String
   familyName: String
+  isSessionValid: Boolean
 }
