@@ -65,6 +65,7 @@ export default class WizardModal extends React.Component {
   }
 
   _setTracking(trackingState){
+    console.log(trackingState)
     this.setState({
       isTrackingOn: trackingState
     })
@@ -199,7 +200,7 @@ export default class WizardModal extends React.Component {
 
         }else{
           const {owner, name} = response.createLabbook.labbook
-          if(self.isTrackingOn){
+          if(self.state.isTrackingOn){
             self._buildImage(name, owner)
           }else{
             self._setArtifactsUntracked(name, owner)
