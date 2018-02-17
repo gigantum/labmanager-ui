@@ -36,42 +36,42 @@ class Labbook extends Component {
     this._hideLabbookModal = this._hideLabbookModal.bind(this)
     this._toggleBranchesView = this._toggleBranchesView.bind(this)
 
-}
-
-componentWillMount() {
-  const {labbookName, owner} = store.getState().routes
-  document.title =  `${owner}/${labbookName}`
-}
-/**
-  @param {}
-  subscribe to store to update state
-  set unsubcribe for store
-*/
-componentDidMount() {
-  unsubscribe = store.subscribe(() =>{
-      this.storeDidUpdate(store.getState().labbook)
-  })
-}
-/**
-  @param {}
-  unsubscribe from redux store
-*/
-componentWillUnmount() {
-  unsubscribe()
-}
-/**
-  @param {object} labbook
-  updates state of labbook when prompted ot by the store
-  updates history prop
-*/
-storeDidUpdate = (labbook) => {
-  let stateString = JSON.stringify(this.state)
-  let labbookString = JSON.stringify(labbook)
-  if(stateString !== labbookString){
-
-    this.setState(labbook);//triggers re-render when store updates
   }
-}
+
+  componentWillMount() {
+    const {labbookName, owner} = store.getState().routes
+    document.title =  `${owner}/${labbookName}`
+  }
+  /**
+    @param {}
+    subscribe to store to update state
+    set unsubcribe for store
+  */
+  componentDidMount() {
+    unsubscribe = store.subscribe(() =>{
+        this.storeDidUpdate(store.getState().labbook)
+    })
+  }
+  /**
+    @param {}
+    unsubscribe from redux store
+  */
+  componentWillUnmount() {
+    unsubscribe()
+  }
+  /**
+    @param {object} labbook
+    updates state of labbook when prompted ot by the store
+    updates history prop
+  */
+  storeDidUpdate = (labbook) => {
+    let stateString = JSON.stringify(this.state)
+    let labbookString = JSON.stringify(labbook)
+    if(stateString !== labbookString){
+
+      this.setState(labbook);//triggers re-render when store updates
+    }
+  }
   /**
     @param {string} componentName - input string componenetName
     updates state of selectedComponent
@@ -195,7 +195,6 @@ storeDidUpdate = (labbook) => {
     })
   }
 
-
   render(){
 
     const {labbookName} = this.props;
@@ -213,10 +212,11 @@ storeDidUpdate = (labbook) => {
                    {this.props.labbook.owner + '/' + labbookName}
                  </div>
                  <BranchMenu
-                    collaborators={this.props.labbook.collaborators}
-                    canManageCollaborators={this.props.labbook.canManageCollaborators}
-                    defaultRemote={this.props.labbook.defaultRemote}
-                    labbookId={this.props.labbook.id}
+                   history={this.props.history}
+                   collaborators={this.props.labbook.collaborators}
+                   canManageCollaborators={this.props.labbook.canManageCollaborators}
+                   defaultRemote={this.props.labbook.defaultRemote}
+                   labbookId={this.props.labbook.id}
                   />
               </div>
                <div className="Labbook__header flex flex--row justify--space-between">
@@ -356,9 +356,9 @@ storeDidUpdate = (labbook) => {
           </div>
         </div>
       )
-  }else{
-    return (<Loader />)
-  }
+    }else{
+      return (<Loader />)
+    }
   }
 }
 

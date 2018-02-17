@@ -71,6 +71,11 @@
     line-height: 18px;
 }
 
+.PackageDependencies__button:hover{
+  background-color: $grey-light;
+  color: $turquise;
+  border: none;
+}
 .PackageDependencies__button,
 .PackageDependencies__button:focus{
   padding: 5px 0;
@@ -87,11 +92,25 @@
   margin: 0 0 0 -117px;
 }
 
-.PackageDependencies__button:hover{
-  background-color: $grey-light;
-  color: $turquise;
-  border: none;
+.PackageDependencies__button--add{
+  background: $azure url('../images/icons/add.svg') no-repeat 50% 50%;
+  background-size: 16px;
 }
+.PackageDependencies__button--add:hover{
+  background: $turquise url('../images/icons/add.svg') no-repeat 50% 50%;
+  background-size: 16px;
+}
+
+.PackageDependencies__button--remove{
+  background: $azure url('../images/icons/close-white.svg') no-repeat 50% 50%;
+  background-size: 14px;
+}
+.PackageDependencies__button--remove:hover{
+  background: $turquise url('../images/icons/close-white.svg') no-repeat 50% 50%;
+  background-size: 14px;
+}
+
+
 .PackageDependencies__add-package{
   background-color: $grey-light;
   margin: 20px 0;

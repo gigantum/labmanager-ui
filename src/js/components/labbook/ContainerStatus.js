@@ -342,7 +342,7 @@ export default class ContainerStatus extends Component {
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
-                message: error[0].message,
+                message: "Error Starting Dev tool",
                 messagesList: error
               }
             })

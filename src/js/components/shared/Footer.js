@@ -50,11 +50,11 @@ export default class Footer extends Component {
     }
 
     footer.messageStack.forEach((messageItem)=>{
-      const oneMinute = 60 * 1000
+      const timeInSeconds = 15 * 1000
       if(!messageItem.error){
         setTimeout(()=>{
           this._removeMessage(messageItem)
-        }, oneMinute)
+        }, timeInSeconds)
       }
     })
   }
@@ -189,6 +189,7 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
     'Footer__expand-messages-button': true,
     'Footer__expand-messages-button--expanded': self.state.messageListOpen
   })
+  console.log(mostRecentMessage)
   return (
     <div
       key={mostRecentMessage.id}
@@ -206,10 +207,19 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
       }
 
       {mostRecentMessage.error &&
-        <i
-          onClick={()=>{self._removeMessage(mostRecentMessage)}}
-          className="Footer__message-dismiss fa">
-        </i>
+        <div className="Footer__main-detatails">
+          <ul>
+            {
+              mostRecentMessage.messageBody.map((error) => {
+                return(<li key={error.id}>{error.message}</li>)
+              })
+            }
+          </ul>
+          <i
+            onClick={()=>{self._removeMessage(mostRecentMessage)}}
+            className="Footer__message-dismiss fa">
+          </i>
+      </div>
       }
 
     </div>
@@ -239,7 +249,7 @@ let ListStatusMessages = ({self}) =>{
               return(<li
                 key={messageItem.id}
                 className={messageItem.className}>
-                <div>
+                <div className="Foooter__message-body">
                   <p className="Footer__message-title">{messageItem.message}</p>
                   <ul>
                   {
