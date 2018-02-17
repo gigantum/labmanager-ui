@@ -1,5 +1,6 @@
 //vendor
 import React, { Component } from 'react'
+import Auth from 'JS/Auth/Auth';
 //utilities
 import validation from 'JS/utils/Validation'
 //mutations
@@ -9,9 +10,13 @@ import PushActiveBranchToRemoteMutation from 'Mutations/branches/PushActiveBranc
 import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
 import AddCollaboratorMutation from 'Mutations/AddCollaboratorMutation'
 import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
+//queries
+import UserIdentity from 'JS/Auth/UserIdentity'
 //store
 import store from 'JS/redux/store'
 
+
+const auth = new Auth();
 
 export default class UserNote extends Component {
   constructor(props){
@@ -68,6 +73,8 @@ export default class UserNote extends Component {
       this.setState({menuOpen: false})
     }
   }
+
+
   /**
     @param {string} branchName
     creates a new branch
@@ -163,49 +170,59 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _addRemote(){
+    let self = this;
+    this._checkSessionIsValid().then((response) => {
+      if(response.data){
 
-    this.setState({menuOpen: false})
+        if(response.data.userIdentity.isSessionValid){
 
-    store.dispatch({
-      type: 'INFO_MESSAGE',
-      payload: {
-        message: 'Adding remote server ..'
-      }
-    })
+          self.setState({menuOpen: false})
 
-    if(this.state.remoteURL.length > -1){
-      PublishLabbookMutation(
-        this.state.owner,
-        this.state.labbookName,
-        this.props.labbookId,
-        (error)=>{
-          if(error){
+          store.dispatch({
+            type: 'INFO_MESSAGE',
+            payload: {
+              message: 'Adding remote server ..'
+            }
+          })
 
-            store.dispatch({
-              type: 'INFO_MESSAGE',
-              payload: {
-                message: 'Publish failed'
+          if(self.state.remoteURL.length > -1){
+            PublishLabbookMutation(
+              self.state.owner,
+              self.state.labbookName,
+              self.props.labbookId,
+              (error)=>{
+                if(error){
+
+                  store.dispatch({
+                    type: 'INFO_MESSAGE',
+                    payload: {
+                      message: 'Publish failed'
+                    }
+                  })
+                }else{
+
+                  store.dispatch({
+                    type: 'INFOR_MESSAGE',
+                    payload: {
+                      message: `Added remote https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`
+                    }
+                  })
+                  self.setState({
+                    addedRemoteThisSession: true,
+                    canManageCollaborators: true
+                  })
+                }
               }
-            })
-          }else{
-
-            store.dispatch({
-              type: 'INFOR_MESSAGE',
-              payload: {
-                message: `Added remote https://repo.gigantum.io/${this.state.owner}/${this.state.labbookName}`
-              }
-            })
-            this.setState({
-              addedRemoteThisSession: true,
-              canManageCollaborators: true
-            })
+            )
           }
-        }
-      )
-    }
 
-    this.setState({
-      'remoteURL': ''
+          self.setState({
+            'remoteURL': ''
+          })
+        }else{
+          auth.login()
+        }
+      }
     })
   }
 
@@ -338,7 +355,14 @@ export default class UserNote extends Component {
       }
     )
   }
-
+  /**
+  *  @param {}
+  *  resutns UserIdentityQeury promise
+  *  @return {promise}
+  */
+  _checkSessionIsValid(){
+    return (UserIdentity.getUserIdentity())
+  }
 
   render(){
 
@@ -371,7 +395,7 @@ export default class UserNote extends Component {
                   this.props.collaborators.map((collaborator) => {
                     return (
                       <li
-                        key={collaborator} 
+                        key={collaborator}
                         className="BranchMenu__collaborator--item">
                         <div>{collaborator}</div>
                         <button disabled={collaborator === localStorage.getItem('username')} onClick={()=> this._removeCollaborator(collaborator)}>Remove</button>

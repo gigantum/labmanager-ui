@@ -42,7 +42,7 @@ export default function SetArtifactsUntrackedMutation(
           reduxStore.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
-              message: 'LabBook failed to build:',
+              message: 'ERROR: LabBook failed to build:',
               messagesList: error
             }
           })

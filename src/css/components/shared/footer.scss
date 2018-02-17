@@ -35,8 +35,19 @@
   max-height: 240px !important;
 }
 .Footer__main-message{
-
+  min-height: 40px;
+  overflow: hidden;
+  align-items: center;
   @include flex(flex-start, row);
+}
+.Footer__main-detatails{
+  margin: 0 10px;
+  @include flex(space-around, row);
+  flex: 1;
+  align-items: center;
+}
+.Foooter__message-body{
+  flex: 1;
 }
 .Footer__messages-section{
   z-index: 300;
@@ -86,7 +97,7 @@
 
 .Footer__expand-messages-button{
   width: 200px;
-  margin: 0 0 0 3px;
+  margin: 0 15px;
   text-decoration: underline;
   cursor: pointer;
   background: url('../images/icons/down-arrow-white.svg') no-repeat 100% 50%;
@@ -95,7 +106,7 @@
 
 .Footer__expand-messages-button--expanded{
   width: 200px;
-  margin: 0 0 0 3px;
+  margin: 0 15px;
   background: url('../images/icons/up-arrow-white.svg') no-repeat 100% 50% !important;
   background-size: 18px !important;
 }
@@ -165,6 +176,9 @@
       border-bottom: 1px solid white;
       margin: 0 30px 0 0;
     }
+    li:last-child{
+      border-bottom: 0px solid white;
+    }
   }
 
   .Footer__message{
@@ -194,7 +208,8 @@
   }
 
   .Footer__message--error:before{
-    margin: 10px;
+    margin: 0 10px;
+    align-self: flex-start;
   }
 
   .Footer__message-dismiss{
@@ -202,6 +217,7 @@
 
     border: 1px solid white;
     height: 20px;
+    min-width: 20px;
     width: 20px;
 
     text-align: center;
