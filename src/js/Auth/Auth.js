@@ -2,6 +2,9 @@ import history from 'JS/history';
 import auth0 from 'auth0-js';
 import { AUTH_CONFIG } from './auth0-variables';
 import RemoveUserIdentityMutation from 'Mutations/RemoveUserIdentityMutation'
+//store
+import store from 'JS/redux/store'
+
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
@@ -34,7 +37,7 @@ export default class Auth {
 
       } else if (err) {
         console.error(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
+      //  alert(`Error: ${err.error}. Check the console for further details.`);
       }
     });
   }
@@ -52,7 +55,10 @@ export default class Auth {
     localStorage.setItem('username', authResult.idTokenPayload.nickname);
     //redirect to labbooks when user logs in
 
-    history.replace(`/labbooks`)
+    let storrageRoute = sessionStorage.getItem('CALLBACK_ROUTE')
+    let route = storrageRoute !== '' ? storrageRoute : `/labbooks`
+
+    history.replace(route)
   }
 
   logout() {

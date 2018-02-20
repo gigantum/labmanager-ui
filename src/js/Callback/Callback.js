@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import Loader from 'Components/shared/Loader'
+import Routes from 'Components/Routes'
+import store from 'JS/redux/store'
 
 class Callback extends Component {
   render() {
-    //this.props.history.replace(`/labbooks`)
+    let route = sessionStorage.getItem('CALLBACK_ROUTE') ? sessionStorage.getItem('CALLBACK_ROUTE') : '/labbooks';
 
-    return(<Loader />)
+    this.props.history.replace(route)
+
+    return(<Routes />)
   }
 }
 
