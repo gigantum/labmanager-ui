@@ -33,7 +33,7 @@ export default class BranchCard extends Component {
             type: 'ERROR_MESSAGE',
             payload:{
               message: "Problem Checking out Branch, check you have a valid session and connection",
-              uploadMessage: error,
+              messagesList: error,
             }
           })
         }else{

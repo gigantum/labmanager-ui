@@ -369,10 +369,13 @@ export default class UserNote extends Component {
               <ul className="BranchMenu__collaborators-list">
                 {
                   this.props.collaborators.map((collaborator) => {
-                    return (<li className="BranchMenu__collaborator--item">
-                      <div>{collaborator}</div>
-                      <button disabled={collaborator === localStorage.getItem('username')} onClick={()=> this._removeCollaborator(collaborator)}>Remove</button>
-                    </li>)
+                    return (
+                      <li
+                        key={collaborator} 
+                        className="BranchMenu__collaborator--item">
+                        <div>{collaborator}</div>
+                        <button disabled={collaborator === localStorage.getItem('username')} onClick={()=> this._removeCollaborator(collaborator)}>Remove</button>
+                      </li>)
                   })
                 }
               </ul>

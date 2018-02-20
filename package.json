@@ -104,7 +104,7 @@
     "test": "jest",
     "relay": "relay-compiler --src ./src --schema ./schema.graphql",
     "relay-test": "relay-compiler --src ./__tests__ --schema ./schema.graphql",
-    "update-schema": "graphql get-schema",
+    "update-schema": "graphql get-schema -p labbook",
     "update-json-schema": "babel-node ./scripts/updateSchema.js",
     "build-tests": "BABEL_ENV='development' babel-node ./scripts/buildTests.js",
     "mock": "node __mocks__/react-relay.js",

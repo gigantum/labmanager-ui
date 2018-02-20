@@ -15,28 +15,25 @@ import PackageLookup from './PackageLookup'
 
 
 let totalCount = 2
-let owner
+let owner, unsubscribe
 class PackageDependencies extends Component {
   constructor(props){
     super(props);
+
     const {labbookName} = store.getState().routes
     owner = store.getState().routes.owner //TODO clean this up when fixing dev environments
+
     this.state = {
-      'modal_visible': false,
       owner,
       labbookName,
       'selectedTab': '',
-      'pacakageMenuVisible': false,
+      'packageMenuVisible': false,
       'packageName': '',
       'version': '',
       'packages': [],
       'searchValue': ''
     };
     //bind functions here
-    this._openModal = this._openModal.bind(this)
-    this._hideModal = this._hideModal.bind(this)
-    this._setBaseImage = this._setBaseImage.bind(this)
-    this._setComponent = this._setComponent.bind(this)
     this._loadMore = this._loadMore.bind(this)
     this._setSelectedTab = this._setSelectedTab.bind(this)
   }
@@ -44,9 +41,36 @@ class PackageDependencies extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore() //routes query only loads 2, call loadMore
+    if(this.props.environment.packageDependencies.pageInfo.hasNextPage){
+
+      this._loadMore() //routes query only loads 2, call loadMore
+    }
+
     if(this.state.selectedTab === ''){
       this.setState({selectedTab: this.props.base.packageManagers[0]})
+    }
+
+    unsubscribe = store.subscribe(() =>{
+
+      this.storeDidUpdate(store.getState().environment)
+    })
+  }
+
+  /**
+    unsubscribe from redux store
+  */
+  componentWillUnmount() {
+    unsubscribe()
+  }
+
+  /**
+    @param {object} footer
+    unsubscribe from redux store
+  */
+  storeDidUpdate = (environmentStore) => {
+
+    if(this.state.packageMenuVisible !== environmentStore.packageMenuVisible){
+      this.setState({packageMenuVisible: environmentStore.packageMenuVisible});//triggers re-render when store updates
     }
   }
   /*
@@ -59,8 +83,8 @@ class PackageDependencies extends Component {
 
     let self = this;
     this.props.relay.loadMore(
-     100, // Fetch the next 100 feed items
-     (response, error) => {
+    5, // Fetch the next 5 feed items
+    (response, error) => {
        if(error){
          console.error(error)
        }
@@ -72,44 +96,6 @@ class PackageDependencies extends Component {
        }
      }
    );
-  }
-  /**
-  *  @param {None}
-  *  open modal sets state
-  */
-  _openModal = () =>{
-      this.setState({'modal_visible': true})
-      if(document.getElementById('modal__cover')){
-        document.getElementById('modal__cover').classList.remove('hidden')
-      }
-  }
-  /**
-  *  @param {None}
-  *  hides modal
-  */
-  _hideModal = () => {
-      this.setState({'modal_visible': false})
-      if(document.getElementById('modal__cover')){
-        document.getElementById('modal__cover').classList.add('hidden')
-      }
-
-  }
-  /**
-  *  @param {None}
-  *  set readyToBuild state to true
-  */
-  _setBaseImage = (baseImage) => {
-    this.setState({"readyToBuild": true})
-  }
-
-  /**
-  *  @param {Object}
-  *  hides packagemanager modal
-  */
-  _setComponent = (comp) =>{
-    // this.props.setContainerState("Building")
-    // this.setState({"readyToBuild": true})
-    this._hideModal();
   }
   /**
   *  @param {Object}
@@ -140,34 +126,47 @@ class PackageDependencies extends Component {
   */
   _removePackage(node){
 
-    const {labbookName, owner} = store.getState().routes
-    const {environmentId} = this.props
-    const clinetMutationId = uuidv4()
-    let self = this
+    if((store.getState().containerStatus.status === 'Closed') || (store.getState().containerStatus.status === 'Failed')){
+      const {labbookName, owner} = store.getState().routes
+      const {environmentId} = this.props
+      const clinetMutationId = uuidv4()
+      let self = this
 
-    RemovePackageComponentMutation(
-      labbookName,
-      owner,
-      node.manager,
-      node.package,
-      node.id,
-      clinetMutationId,
-      environmentId,
-      'PackageDependencies_packageDependencies',
-      (response, error) => {
-        if(error){
-          console.log(error)
+      RemovePackageComponentMutation(
+        labbookName,
+        owner,
+        node.manager,
+        node.package,
+        node.id,
+        clinetMutationId,
+        environmentId,
+        'PackageDependencies_packageDependencies',
+        (response, error) => {
+          if(error){
+            console.log(error)
+          }
+          self.props.buildCallback()
         }
-        self.props.buildCallback()
-      }
-    )
+      )
+    }else{
+      this._promptUserToCloseContainer()
+    }
   }
   /**
   *  @param {object} node
   *  triggers remove package mutation
   */
   _toggleAddPackageMenu(){
-    this.setState({'pacakageMenuVisible': !this.state.pacakageMenuVisible})
+    if((store.getState().containerStatus.status === 'Closed') || (store.getState().containerStatus.status === 'Failed')){
+      store.dispatch({
+        type: 'TOGGLE_PACKAGE_MENU',
+        payload:{
+          packageMenuVisible: !this.state.packageMenuVisible
+        }
+      })
+    }else{
+      this._promptUserToCloseContainer()
+    }
   }
   /**
   *  @param {evt}
@@ -195,54 +194,77 @@ class PackageDependencies extends Component {
   *  updates packages in state
   */
   _addStatePackage(){
-    let packages = this.state.packages
-    const {packageName, version} = this.state
-    const manager = this.state.selectedTab
-    let packageIndex = packages.length;
+      let packages = this.state.packages
+      const {packageName, version} = this.state
+      const manager = this.state.selectedTab
+      let packageIndex = packages.length;
 
-    packages.push({
-      packageName,
-      version,
-      manager,
-      validity: 'checking'
-    })
-
-    this.setState({
-      packages,
-      packageName: '',
-      version: '',
-
-    })
-
-
-    PackageLookup.query(manager, packageName, version).then((response)=>{
-
-      packages.splice(packageIndex, 1);
-      if(response.errors){
-          store.dispatch({
-            type:"ERROR_MESSAGE",
-            payload: {
-              message: response.errors[0].message
-            }
-          })
-
-      }
-      else{
-        packages.push({
-          packageName,
-          version: response.data.package.version,
-          latestVersion: response.data.package.latestVersion,
-          manager,
-          validity: 'valid'
-        })
-      }
-      this.setState({
-        packages
+      packages.push({
+        packageName,
+        version,
+        manager,
+        validity: 'checking'
       })
+
+      this.setState({
+        packages,
+        packageName: '',
+        version: '',
+
+      })
+
+
+      PackageLookup.query(manager, packageName, version).then((response)=>{
+
+        packages.splice(packageIndex, 1);
+        if(response.errors){
+            store.dispatch({
+              type:"ERROR_MESSAGE",
+              payload: {
+                message: response.errors[0].message,
+                messagesList: response.errors
+              }
+            })
+
+        }
+        else{
+          packages.push({
+            packageName,
+            version: response.data.package.version,
+            latestVersion: response.data.package.latestVersion,
+            manager,
+            validity: 'valid'
+          })
+        }
+        this.setState({
+          packages
+        })
+      })
+
+      this.inputPackageName.value = ""
+      this.inputVersion.value = ""
+
+  }
+
+  /**
+  *  @param {}
+  *  user redux to open stop container button
+  *  sends message to footer
+  */
+  _promptUserToCloseContainer(){
+    store.dispatch({
+      type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+      payload: {
+        containerMenuOpen: true
+      }
     })
 
-    this.inputPackageName.value = ""
-    this.inputVersion.value = ""
+    store.dispatch({
+      type: 'WARNING_MESSAGE',
+      payload: {
+        message: 'Stop container to edit environment, and save any unsaved changes.'
+      }
+    })
   }
   /**
   *  @param {}
@@ -289,17 +311,17 @@ class PackageDependencies extends Component {
         (response, error) => {
 
           if(error){
-            console.log(error)
-            error.forEach((err, index)=>{
-              store.dispatch({
-                type: 'ERROR_MESSAGE',
-                payload: {
-                  message: err.message,
-                }
-              })
+
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: error[0].message,
+                messagesList: error
+              }
             })
+
           }else{
-        
+
             index++
             if(packages[index]){
               addPackage(packages[index])
@@ -332,7 +354,7 @@ class PackageDependencies extends Component {
       let filteredPackageDependencies = this._filterPackageDependencies(packageDependencies)
       let packageMenu = classNames({
         'PackageDependencies__menu': true,
-        'PackageDependencies__menu--min-height':!this.state.pacakageMenuVisible
+        'PackageDependencies__menu--min-height':!this.state.packageMenuVisible
       })
       let packagesProcessing = this.state.packages.filter(packageItem =>{
         return packageItem.validity === 'checking'
@@ -402,7 +424,7 @@ class PackageDependencies extends Component {
                         return (
                           <tr
                             className={`PackageDependencies__table-row--${node.validity}` }
-                            key={node.id}>
+                            key={node.packageName + node.version}>
                             <td>{`${node.packageName}`}</td>
                             <td>{version}</td>
                             <td className="PackageDependencies__table--no-right-padding" width="30">

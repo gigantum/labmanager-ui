@@ -13,9 +13,18 @@ class OutputData extends Component {
   render(){
 
     if(this.props.labbook){
+
       return(
 
         <div className="Code">
+          {
+            this.props.labbook.output.isUntracked &&
+            <div className="Code__tracked-container">
+              <div className="Code__tracked">
+                Version Tracking Disabled
+              </div>
+            </div>
+          }
           <div className="Code__header">
             <h5 className="Code__subtitle">Output Files</h5>
             <div className="Code__toolbar">
@@ -67,6 +76,7 @@ export default createFragmentContainer(
         id
         ...OutputDataBrowser_output
         ...OutputFavorites_output
+        isUntracked
       }
     }
   `,

@@ -14,6 +14,7 @@ import store from 'JS/redux/store'
 
 let owner
 let totalCount = 2;
+let unsubscribe;
 
 class CustomDependencies extends Component {
   constructor(props){
@@ -23,7 +24,6 @@ class CustomDependencies extends Component {
     owner = store.getState().routes.owner //TODO clean this up when fixing custom dependencies
 
     this.state = {
-      'modal_visible': false,
       owner,
       labbookName,
       'customDependencies': [],
@@ -31,9 +31,6 @@ class CustomDependencies extends Component {
       'searchValue': ''
     };
 
-    this._openModal = this._openModal.bind(this)
-    this._hideModal = this._hideModal.bind(this)
-    this._setComponent = this._setComponent.bind(this)
     this._addDependency = this._addDependency.bind(this)
     this._addCustomDepenedenciesMutation = this._addCustomDepenedenciesMutation.bind(this)
     this._removeDependencyMuation = this._removeDependencyMuation.bind(this)
@@ -44,8 +41,32 @@ class CustomDependencies extends Component {
   */
   componentDidMount() {
 
-    if(this.props.environment.customDependencies){
+    if(this.props.environment.customDependencies.pageInfo.hasNextPage){
       this._loadMore() //routes query only loads 2, call loadMore
+    }
+
+    unsubscribe = store.subscribe(() =>{
+
+      this.storeDidUpdate(store.getState().environment)
+    })
+  }
+
+  /**
+    unsubscribe from redux store
+  */
+  componentWillUnmount() {
+    unsubscribe()
+  }
+
+  /**
+    @param {object} footer
+    unsubscribe from redux store
+  */
+  storeDidUpdate = (environmentStore) => {
+
+    if(this.state.viewContainerVisible !== environmentStore.viewContainerVisible){
+
+      this.setState({viewContainerVisible: environmentStore.viewContainerVisible});//triggers re-render when store updates
     }
   }
   /*
@@ -72,35 +93,6 @@ class CustomDependencies extends Component {
      }
    );
   }
-
-  /**
-  *  @param {none}
-  *  open modal window
-  */
-  _openModal = () => {
-      this.setState({'modal_visible': true})
-      if(document.getElementById('modal__cover')){
-        document.getElementById('modal__cover').classList.remove('hidden')
-      }
-  }
-  /**
-  *  @param {none}
-  *   hide modal window
-  */
-  _hideModal = () => {
-      this.setState({'modal_visible': false})
-      if(document.getElementById('modal__cover')){
-        document.getElementById('modal__cover').classList.add('hidden')
-      }
-  }
-  /**
-  *  @param {comp}
-  *   hide modal window
-  */
-  _setComponent = (comp) => {
-
-    this._hideModal();
-  }
   /**
   *  @param {object} customDependencyEdge
   *  pushes custom dependency to list
@@ -115,8 +107,6 @@ class CustomDependencies extends Component {
       customDependencies.push(customDependencyEdge)
       this.setState({'customDependencies': customDependencies})
     }
-
-
   }
   /**
   *  @param {object} customDependencyEdge
@@ -134,7 +124,17 @@ class CustomDependencies extends Component {
   *  toggle state and view of container
   */
   _toggleViewContainer(){
-    this.setState({'viewContainerVisible': !this.state.viewContainerVisible})
+    if((store.getState().containerStatus.status === 'Closed') || (store.getState().containerStatus.status === 'Failed')){
+      store.dispatch({
+        type: 'TOGGLE_CUSTOM_MENU',
+        payload: {
+          viewContainerVisible: !this.state.viewContainerVisible
+        }
+      })
+
+    }else{
+      this._promptUserToCloseContainer()
+    }
   }
 
   /**
@@ -232,6 +232,28 @@ class CustomDependencies extends Component {
     })
 
     return dependencies
+  }
+
+
+  /**
+  *  @param {}
+  *  user redux to open stop container button
+  *  sends message to footer
+  */
+  _promptUserToCloseContainer(){
+    store.dispatch({
+      type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+      payload: {
+        containerMenuOpen: true
+      }
+    })
+
+    store.dispatch({
+      type: 'WARNING_MESSAGE',
+      payload: {
+        message: 'Stop container to edit environment, and save any unsaved changes.'
+      }
+    })
   }
 
 

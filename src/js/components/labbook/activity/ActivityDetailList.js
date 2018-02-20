@@ -8,7 +8,7 @@ export default class ActivityDefaultList extends Component {
 
     let show = true;
 
-    props.edge.node.detailObjects.map((detail)=>{
+    props.edge.node.detailObjects.forEach((detail) => {
       if(detail.show){
         show = false;
       }

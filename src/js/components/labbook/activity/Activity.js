@@ -9,11 +9,8 @@ import ActivityCard from './ActivityCard'
 import Loader from 'Components/shared/Loader'
 import UserNote from './UserNote'
 import PaginationLoader from './ActivityLoaders/PaginationLoader'
-
 //utilities
 import Config from 'JS/config'
-
-import store from 'JS/redux/store'
 
 //lacoal variables
 let pagination = false;
@@ -213,6 +210,7 @@ class Activity extends Component {
                               {
                                 (this.state.modalVisible) &&
                                 <UserNote
+                                  key="UserNote"
                                   labbookId={this.props.labbook.id}
                                   hideLabbookModal={this._hideAddActivity}
                                   {...this.props}

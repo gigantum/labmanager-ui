@@ -1,13 +1,13 @@
 .Footer{
   position: fixed;
   z-index: 50;
-  z-index: 300;
+  z-index: 1200;
   right: 0;
   bottom: 0;
   left: 120px;
 
   height: 0px;
-  max-height: 200px;
+  max-height: 240px;
 
   transition: height 0.5s;
 
@@ -18,22 +18,24 @@
 
   @include flex(space-between, column);
 }
+
 .Footer *{
   font-weight: 400;
 }
 
 .Footer--open {
-    max-height: 90px;
+  max-height: 240px;
 }
 
 .Footer--expand {
-    height: auto;
+  height: auto;
 }
 
 .Footer--expand-extra {
-    max-height: 180px !important;
+  max-height: 240px !important;
 }
 .Footer__main-message{
+
   @include flex(flex-start, row);
 }
 .Footer__messages-section{
@@ -53,8 +55,8 @@
 }
 
 .Footer__message-list{
+  max-height: 200px;
   height: auto;
-  max-height: 120px;
   transition: height 0.5s, max-height 0.5s, opacity 1s;
   opacity: 1;
   overflow: auto;
@@ -66,14 +68,12 @@
 // 	background-color: rgba(255,255,255, 0.7);
 // }
 
-.Footer__message-list::-webkit-scrollbar
-{
+.Footer__message-list::-webkit-scrollbar{
 	width: 8px;
 	background-color: rgba(255,255,255,0.5);
 }
 
-.Footer__message-list::-webkit-scrollbar-thumb
-{
+.Footer__message-list::-webkit-scrollbar-thumb{
 	background-color: #fff;
 }
 
@@ -168,7 +168,6 @@
   }
 
   .Footer__message{
-    height: 40px;
     vertical-align: middle;
     line-height: 40px;
 
@@ -211,8 +210,8 @@
     border-radius: 15px;
 
     cursor: pointer;
-
-    @extend .fa-times;
+    background: url('./../images/icons/close-white.svg') no-repeat center center;
+    background-size: 10px;
   }
 
   .Footer__message-dismiss:hover{

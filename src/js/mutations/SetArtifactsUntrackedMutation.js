@@ -8,8 +8,9 @@ import reduxStore from 'JS/redux/store'
 
 
 const mutation = graphql`
-  mutation BuildImageMutation($input: BuildImageInput!){
-    buildImage(input: $input){
+  mutation SetArtifactsUntrackedMutation($input: SetArtifactsUntrackedInput!){
+    setArtifactsUntracked(input: $input){
+      success
       clientMutationId
     }
   }
@@ -17,17 +18,15 @@ const mutation = graphql`
 
 let tempID = 0;
 
-export default function BuildImageMutation(
+export default function SetArtifactsUntrackedMutation(
   labbookName,
   owner,
-  noCache,
   callback
 ) {
   const variables = {
     input: {
       labbookName,
       owner,
-      noCache,
       clientMutationId: tempID++
     }
   }
@@ -48,14 +47,9 @@ export default function BuildImageMutation(
             }
           })
         }
-        callback(error)
-      },
-      onError: err => console.error(err),
 
-      updater: (store) => {
-
-
-      },
+        callback(response, error)
+      }
     },
   )
 }
