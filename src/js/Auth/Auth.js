@@ -40,6 +40,7 @@ export default class Auth {
   }
 
   setSession(authResult) {
+
     // Set the time that the access token will expire at
     let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
@@ -50,6 +51,7 @@ export default class Auth {
     localStorage.setItem('email', authResult.idTokenPayload.email);
     localStorage.setItem('username', authResult.idTokenPayload.nickname);
     //redirect to labbooks when user logs in
+
     history.replace(`/labbooks`)
   }
 

@@ -4,6 +4,7 @@
 export const UPDATE_LABBOOKNAME = 'UPDATE_LABBOOKNAME';
 export const UPDATE_OWNER = 'UPDATE_OWNER';
 export const UPDATE_ALL = 'UPDATE_ALL';
+export const UPDATE_CALLBACK_ROUTE = 'UPDATE_CALLBACK_ROUTE';
 
 
 
@@ -11,7 +12,8 @@ export default (
  state = {
    'currentRoute': '',
    'owner': '',
-   'labbookName': ''
+   'labbookName': '',
+   'callbackRoute': ''
  },
  action
 ) => {
@@ -24,6 +26,11 @@ export default (
    return {
      ...state,
      labbookName: action.payload.labbookName
+   };
+ }else if(action.type === UPDATE_CALLBACK_ROUTE){
+   return {
+     ...state,
+     callbackRoute: action.payload.callbackRoute
    };
  }
  else if(action.type === UPDATE_ALL){
