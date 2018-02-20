@@ -17,7 +17,7 @@ import Environment from './environment/Environment'
 import ContainerStatus from './ContainerStatus'
 import Loader from 'Components/shared/Loader'
 import Branches from './branches/Branches'
-import BranchMenu from './BranchMenu'
+import BranchMenu from './branchMenu/BranchMenu'
 
 import Config from 'JS/config'
 
@@ -36,11 +36,26 @@ class Labbook extends Component {
     this._hideLabbookModal = this._hideLabbookModal.bind(this)
     this._toggleBranchesView = this._toggleBranchesView.bind(this)
 
+    store.dispatch({
+      type: 'UPDATE_CALLBACK_ROUTE',
+      payload: {
+        'callbackRoute': props.history.location.pathname
+      }
+    })
   }
 
   componentWillMount() {
     const {labbookName, owner} = store.getState().routes
     document.title =  `${owner}/${labbookName}`
+  }
+
+  componentWillReceiveProps(nextProps) {
+    store.dispatch({
+      type: 'UPDATE_CALLBACK_ROUTE',
+      payload: {
+        'callbackRoute': nextProps.history.location.pathname
+      }
+    })
   }
   /**
     @param {}

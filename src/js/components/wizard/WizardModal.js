@@ -65,7 +65,7 @@ export default class WizardModal extends React.Component {
   }
 
   _setTracking(trackingState){
-    console.log(trackingState)
+
     this.setState({
       isTrackingOn: trackingState
     })

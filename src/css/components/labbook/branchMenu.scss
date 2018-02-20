@@ -21,6 +21,16 @@
   @extend .BranchModal;
   justify-content: flex-start;
 }
+.BranchModal--login-prompt{
+  @include flex(space-between, column);
+  @include modal(200px, 400px);
+  justify-content: flex-start;
+  padding: 20px;
+
+  .LoginPrompt__button-container{
+    @include flex(space-around, row);
+  }
+}
 
 .BranchModal__header{
   padding: 5px 0 5px 0px;

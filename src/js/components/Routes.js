@@ -27,6 +27,7 @@ export const LabbookQuery =  graphql`
 
 const auth = new Auth();
 
+
 const handleAuthentication = (nextState, replace) => {
   if (/access_token|id_token|error/.test(nextState.location.hash)) {
     auth.handleAuthentication();

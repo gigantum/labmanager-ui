@@ -1,6 +1,9 @@
 //vendor
 import React, { Component } from 'react'
 import Auth from 'JS/Auth/Auth';
+import classNames from 'classnames'
+//components
+import LoginPrompt from './LoginPrompt'
 //utilities
 import validation from 'JS/utils/Validation'
 //mutations
@@ -33,6 +36,7 @@ export default class UserNote extends Component {
       'showCollaborators': false,
       'newCollaborator': '',
       'canManageCollaborators': this.props.canManageCollaborators,
+      'showLoginPrompt': false,
       owner,
       labbookName
     }
@@ -42,6 +46,7 @@ export default class UserNote extends Component {
     this._toggleModal = this._toggleModal.bind(this)
     this._createNewBranch = this._createNewBranch.bind(this)
     this._sync = this._sync.bind(this)
+    this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
   }
 
   /**
@@ -81,30 +86,44 @@ export default class UserNote extends Component {
   */
   _createNewBranch(branchName){
     let self = this;
-    this.setState({
-      branchesOpen: true,
-      newBranchName: '',
-      isValid: true,
-    })
 
+    this._checkSessionIsValid().then((response) => {
+      if(response.data){
 
-    CreateBranchMutation(
-      this.state.owner,
-      this.state.labbookName,
-      branchName,
-      this.props.labbookId,
-      (error, response)=>{
-        self._toggleModal('createBranchVisible')
-        if(error){
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: "Problem Creating new branch, make sure you have a valid session and internet connection",
-              messagesList: error
-            }
+        if(response.data.userIdentity.isSessionValid){
+          this.setState({
+            branchesOpen: true,
+            newBranchName: '',
+            isValid: true,
           })
 
 
+          CreateBranchMutation(
+            this.state.owner,
+            this.state.labbookName,
+            branchName,
+            this.props.labbookId,
+            (error, response)=>{
+              self._toggleModal('createBranchVisible')
+              if(error){
+                store.dispatch({
+                  type: 'ERROR_MESSAGE',
+                  payload: {
+                    message: "Problem Creating new branch, make sure you have a valid session and internet connection",
+                    messagesList: error
+                  }
+                })
+
+
+              }
+            })
+          }else{
+            document.getElementById('modal__cover').classList.remove('hidden')
+            //auth.login()
+            self.setState({
+              showLoginPrompt: true
+            })
+          }
         }
       })
 
@@ -170,6 +189,7 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _addRemote(){
+
     let self = this;
     this._checkSessionIsValid().then((response) => {
       if(response.data){
@@ -220,7 +240,11 @@ export default class UserNote extends Component {
             'remoteURL': ''
           })
         }else{
-          auth.login()
+          document.getElementById('modal__cover').classList.remove('hidden')
+          //auth.login()
+          self.setState({
+            showLoginPrompt: true
+          })
         }
       }
     })
@@ -232,36 +256,49 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _sync(){
+    let self = this;
+    this._checkSessionIsValid().then((response) => {
+      if(response.data){
 
-    store.dispatch({
-      type: 'INFO_MESSAGE',
-      payload: {
-        message: 'Syncing with remote ...'
-      }
-    })
-
-    SyncLabbookMutation(
-      this.state.owner,
-      this.state.labbookName,
-      (error)=>{
-        if(error){
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `Could not sync ${this.state.labbookName}`,
-              messagesList: error
-            }
-          })
-        }else{
+        if(response.data.userIdentity.isSessionValid){
           store.dispatch({
             type: 'INFO_MESSAGE',
             payload: {
-              message: `Successfully synced ${this.state.labbookName}`
+              message: 'Syncing with remote ...'
             }
+          })
+
+          SyncLabbookMutation(
+            this.state.owner,
+            this.state.labbookName,
+            (error)=>{
+              if(error){
+                store.dispatch({
+                  type: 'ERROR_MESSAGE',
+                  payload: {
+                    message: `Could not sync ${this.state.labbookName}`,
+                    messagesList: error
+                  }
+                })
+              }else{
+                store.dispatch({
+                  type: 'INFO_MESSAGE',
+                  payload: {
+                    message: `Successfully synced ${this.state.labbookName}`
+                  }
+                })
+              }
+            }
+          )
+        }else{
+          document.getElementById('modal__cover').classList.remove('hidden')
+          //auth.login()
+          self.setState({
+            showLoginPrompt: true
           })
         }
       }
-    )
+    })
 
   }
 
@@ -271,17 +308,31 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _pullFromRemote(){
-    PushActiveBranchToRemoteMutation(
-      this.state.owner,
-      this.state.labbookName,
-      'origin',
-      this.props.labbookId,
-      (error)=>{
-        if(error){
-          console.log(error)
+    let self = this;
+    this._checkSessionIsValid().then((response) => {
+      if(response.data){
+
+        if(response.data.userIdentity.isSessionValid){
+          PushActiveBranchToRemoteMutation(
+            this.state.owner,
+            this.state.labbookName,
+            'origin',
+            this.props.labbookId,
+            (error)=>{
+              if(error){
+                console.log(error)
+              }
+            }
+          )
+        }else{
+          document.getElementById('modal__cover').classList.remove('hidden')
+          //auth.login()
+          self.setState({
+            showLoginPrompt: true
+          })
         }
       }
-    )
+    })
   }
   /**
   *  @param {}
@@ -289,13 +340,28 @@ export default class UserNote extends Component {
   *  @return {}
   */
   _toggleCollaborators(){
-    if(!this.state.showCollaborators){
-      document.getElementById('modal__cover').classList.remove('hidden')
-    }else{
-      document.getElementById('modal__cover').classList.add('hidden')
-    }
-    this.setState({showCollaborators: !this.state.showCollaborators, newCollaborator: ''})
-    this.inputTitle.value =''
+    let self = this;
+    this._checkSessionIsValid().then((response) => {
+      if(response.data){
+
+        if(response.data.userIdentity.isSessionValid){
+          if(!this.state.showCollaborators){
+            document.getElementById('modal__cover').classList.remove('hidden')
+          }else{
+            document.getElementById('modal__cover').classList.add('hidden')
+          }
+          this.setState({showCollaborators: !this.state.showCollaborators, newCollaborator: ''})
+          this.inputTitle.value =''
+        }else{
+          document.getElementById('modal__cover').classList.remove('hidden')
+          //auth.login()
+          self.setState({
+            showLoginPrompt: true
+          })
+        }
+      }
+    })
+
   }
   /**
   *  @param {event} evt
@@ -357,19 +423,44 @@ export default class UserNote extends Component {
   }
   /**
   *  @param {}
-  *  resutns UserIdentityQeury promise
+  *  returns UserIdentityQeury promise
   *  @return {promise}
   */
   _checkSessionIsValid(){
     return (UserIdentity.getUserIdentity())
   }
+  /**
+  *  @param {}
+  *  closes login prompt modal
+  *  @return {}
+  */
+  _closeLoginPromptModal(){
+    this.setState({
+      'showLoginPrompt': false
+    })
+    document.getElementById('modal__cover').classList.add('hidden')
+  }
 
   render(){
+    let collaboratorsModalCss = classNames({
+      'BranchModal--collaborators': this.state.showCollaborators,
+      'hidden': !this.state.showCollaborators
+    })
+
+    let loginPromptModalCss = classNames({
+      'BranchModal--login-prompt': this.state.showLoginPrompt,
+      'hidden': !this.state.showLoginPrompt
+    })
 
     return(
       <div className="BranchMenu flex flex--column">
-
-        <div className={this.state.showCollaborators ? 'BranchModal--collaborators': 'hidden'}>
+        <div className={loginPromptModalCss}>
+          <div
+            onClick={()=>{this._closeLoginPromptModal()}}
+            className="BranchModal--close"></div>
+          <LoginPrompt closeModal={this._closeLoginPromptModal}/>
+        </div>
+        <div className={collaboratorsModalCss}>
           <div
             onClick={()=>{this._toggleCollaborators()}}
             className="BranchModal--close"></div>
