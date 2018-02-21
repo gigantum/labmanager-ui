@@ -2,6 +2,9 @@ import history from 'JS/history';
 import auth0 from 'auth0-js';
 import { AUTH_CONFIG } from './auth0-variables';
 import RemoveUserIdentityMutation from 'Mutations/RemoveUserIdentityMutation'
+//store
+import store from 'JS/redux/store'
+
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
@@ -34,12 +37,13 @@ export default class Auth {
 
       } else if (err) {
         console.error(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
+        alert(`Error: ${err.error}. Check the console for further details.`); //TODO make this a modal or redirect to login failure page
       }
     });
   }
 
   setSession(authResult) {
+
     // Set the time that the access token will expire at
     let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
@@ -50,7 +54,11 @@ export default class Auth {
     localStorage.setItem('email', authResult.idTokenPayload.email);
     localStorage.setItem('username', authResult.idTokenPayload.nickname);
     //redirect to labbooks when user logs in
-    history.replace(`/labbooks`)
+
+    let storageRoute = sessionStorage.getItem('CALLBACK_ROUTE')
+    let route = storageRoute !== '' ? storageRoute : `/labbooks`
+
+    history.replace(route)
   }
 
   logout() {

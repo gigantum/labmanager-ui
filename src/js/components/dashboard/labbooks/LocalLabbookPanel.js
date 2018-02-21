@@ -86,7 +86,7 @@ export default class LocalLabbookPanel extends Component {
         store.dispatch({
           type: 'ERROR_MESSAGE',
           payload: {
-            message: 'Export Failed: ' + error[0].message,
+            message: 'Export Failed',
             messagesList: error
           }
         })

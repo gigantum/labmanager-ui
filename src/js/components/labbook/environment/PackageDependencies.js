@@ -128,7 +128,7 @@ class PackageDependencies extends Component {
 
     if((store.getState().containerStatus.status === 'Closed') || (store.getState().containerStatus.status === 'Failed')){
       const {labbookName, owner} = store.getState().routes
-      const {environmentId} = this.props
+      const {environmentId, labbookId} = this.props
       const clinetMutationId = uuidv4()
       let self = this
 
@@ -221,7 +221,7 @@ class PackageDependencies extends Component {
             store.dispatch({
               type:"ERROR_MESSAGE",
               payload: {
-                message: response.errors[0].message,
+                message: `Error occured looking up ${packageName}`,
                 messagesList: response.errors
               }
             })
@@ -253,7 +253,7 @@ class PackageDependencies extends Component {
   */
   _promptUserToCloseContainer(){
     store.dispatch({
-      type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
         containerMenuOpen: true
       }
@@ -315,7 +315,7 @@ class PackageDependencies extends Component {
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
-                message: error[0].message,
+                message: `Error adding ${packageItem.packageName}`,
                 messagesList: error
               }
             })
@@ -411,7 +411,7 @@ class PackageDependencies extends Component {
                 <button
                   disabled={(this.state.packageName.lenght === 0)}
                   onClick={()=>this._addStatePackage()}
-                  className="PackageDependencies__button--round"></button>
+                  className="PackageDependencies__button--round PackageDependencies__button--add"></button>
               </div>
 
               <div className="PackageDependencies__table--border">
@@ -428,7 +428,7 @@ class PackageDependencies extends Component {
                             <td>{`${node.packageName}`}</td>
                             <td>{version}</td>
                             <td className="PackageDependencies__table--no-right-padding" width="30">
-                              <button className="PackageDependencies__button--round"
+                              <button className="PackageDependencies__button--round PackageDependencies__button--remove"
                                 onClick={()=>this._removeStatePackages(node, index)}>
                               </button>
                             </td>
@@ -497,7 +497,7 @@ class PackageDependencies extends Component {
         <td>{installer}</td>
         <td width="60">
           <button
-          className="PackageDependencies__button--round"
+          className="PackageDependencies__button--round PackageDependencies__button--remove"
           disabled={edge.node.fromBase}
           onClick={() => this._removePackage(edge.node)}>
           </button>
@@ -510,7 +510,7 @@ export default createPaginationContainer(
   PackageDependencies,
   {
     environment: graphql`fragment PackageDependencies_environment on Environment {
-    packageDependencies(first: $first, after: $cursor) @connection(key: "PackageDependencies_packageDependencies" filters: []){
+    packageDependencies(first: $first, after: $cursor) @connection(key: "PackageDependencies_packageDependencies", filters: []){
         edges{
           node{
             id

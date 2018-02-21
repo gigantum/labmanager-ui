@@ -1,5 +1,9 @@
 //vendor
 import React, { Component } from 'react'
+import Auth from 'JS/Auth/Auth';
+import classNames from 'classnames'
+//components
+import LoginPrompt from './LoginPrompt'
 //utilities
 import validation from 'JS/utils/Validation'
 //mutations
@@ -9,9 +13,13 @@ import PushActiveBranchToRemoteMutation from 'Mutations/branches/PushActiveBranc
 import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
 import AddCollaboratorMutation from 'Mutations/AddCollaboratorMutation'
 import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
+//queries
+import UserIdentity from 'JS/Auth/UserIdentity'
 //store
 import store from 'JS/redux/store'
 
+
+const auth = new Auth();
 
 export default class UserNote extends Component {
   constructor(props){
@@ -28,6 +36,7 @@ export default class UserNote extends Component {
       'showCollaborators': false,
       'newCollaborator': '',
       'canManageCollaborators': this.props.canManageCollaborators,
+      'showLoginPrompt': false,
       owner,
       labbookName
     }
@@ -37,6 +46,7 @@ export default class UserNote extends Component {
     this._toggleModal = this._toggleModal.bind(this)
     this._createNewBranch = this._createNewBranch.bind(this)
     this._sync = this._sync.bind(this)
+    this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
   }
 
   /**
@@ -68,36 +78,52 @@ export default class UserNote extends Component {
       this.setState({menuOpen: false})
     }
   }
+
+
   /**
     @param {string} branchName
     creates a new branch
   */
   _createNewBranch(branchName){
     let self = this;
-    this.setState({
-      branchesOpen: true,
-      newBranchName: '',
-      isValid: true,
-    })
 
+    this._checkSessionIsValid().then((response) => {
+      if(response.data){
 
-    CreateBranchMutation(
-      this.state.owner,
-      this.state.labbookName,
-      branchName,
-      this.props.labbookId,
-      (error, response)=>{
-        self._toggleModal('createBranchVisible')
-        if(error){
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: "Problem Creating new branch, make sure you have a valid session and internet connection",
-              messagesList: error
-            }
+        if(response.data.userIdentity.isSessionValid){
+          this.setState({
+            branchesOpen: true,
+            newBranchName: '',
+            isValid: true,
           })
 
 
+          CreateBranchMutation(
+            this.state.owner,
+            this.state.labbookName,
+            branchName,
+            this.props.labbookId,
+            (error, response)=>{
+              self._toggleModal('createBranchVisible')
+              if(error){
+                store.dispatch({
+                  type: 'ERROR_MESSAGE',
+                  payload: {
+                    message: "Problem Creating new branch, make sure you have a valid session and internet connection",
+                    messagesList: error
+                  }
+                })
+
+
+              }
+            })
+          }else{
+            document.getElementById('modal__cover').classList.remove('hidden')
+            //auth.login()
+            self.setState({
+              showLoginPrompt: true
+            })
+          }
         }
       })
 
@@ -164,48 +190,63 @@ export default class UserNote extends Component {
   */
   _addRemote(){
 
-    this.setState({menuOpen: false})
+    let self = this;
+    this._checkSessionIsValid().then((response) => {
+      if(response.data){
 
-    store.dispatch({
-      type: 'INFO_MESSAGE',
-      payload: {
-        message: 'Adding remote server ..'
-      }
-    })
+        if(response.data.userIdentity.isSessionValid){
 
-    if(this.state.remoteURL.length > -1){
-      PublishLabbookMutation(
-        this.state.owner,
-        this.state.labbookName,
-        this.props.labbookId,
-        (error)=>{
-          if(error){
+          self.setState({menuOpen: false})
 
-            store.dispatch({
-              type: 'INFO_MESSAGE',
-              payload: {
-                message: 'Publish failed'
+          store.dispatch({
+            type: 'INFO_MESSAGE',
+            payload: {
+              message: 'Adding remote server ..'
+            }
+          })
+
+          if(self.state.remoteURL.length > -1){
+            PublishLabbookMutation(
+              self.state.owner,
+              self.state.labbookName,
+              self.props.labbookId,
+              (error)=>{
+                if(error){
+
+                  store.dispatch({
+                    type: 'INFO_MESSAGE',
+                    payload: {
+                      message: 'Publish failed'
+                    }
+                  })
+                }else{
+
+                  store.dispatch({
+                    type: 'INFO_MESSAGE',
+                    payload: {
+                      message: `Added remote https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`
+                    }
+                  })
+                  self.setState({
+                    addedRemoteThisSession: true,
+                    canManageCollaborators: true
+                  })
+                }
               }
-            })
-          }else{
-
-            store.dispatch({
-              type: 'INFOR_MESSAGE',
-              payload: {
-                message: `Added remote https://repo.gigantum.io/${this.state.owner}/${this.state.labbookName}`
-              }
-            })
-            this.setState({
-              addedRemoteThisSession: true,
-              canManageCollaborators: true
-            })
+            )
           }
-        }
-      )
-    }
 
-    this.setState({
-      'remoteURL': ''
+          self.setState({
+            'remoteURL': ''
+          })
+        }else{
+          document.getElementById('modal__cover').classList.remove('hidden')
+
+          self.setState({
+            showLoginPrompt: true
+          })
+        }
+      }
     })
   }
 
@@ -215,36 +256,49 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _sync(){
+    let self = this;
+    this._checkSessionIsValid().then((response) => {
+      if(response.data){
 
-    store.dispatch({
-      type: 'INFO_MESSAGE',
-      payload: {
-        message: 'Syncing with remote ...'
-      }
-    })
-
-    SyncLabbookMutation(
-      this.state.owner,
-      this.state.labbookName,
-      (error)=>{
-        if(error){
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `Could not sync ${this.state.labbookName}`,
-              messagesList: error
-            }
-          })
-        }else{
+        if(response.data.userIdentity.isSessionValid){
           store.dispatch({
             type: 'INFO_MESSAGE',
             payload: {
-              message: `Successfully synced ${this.state.labbookName}`
+              message: 'Syncing with remote ...'
             }
+          })
+
+          SyncLabbookMutation(
+            this.state.owner,
+            this.state.labbookName,
+            (error)=>{
+              if(error){
+                store.dispatch({
+                  type: 'ERROR_MESSAGE',
+                  payload: {
+                    message: `Could not sync ${this.state.labbookName}`,
+                    messagesList: error
+                  }
+                })
+              }else{
+                store.dispatch({
+                  type: 'INFO_MESSAGE',
+                  payload: {
+                    message: `Successfully synced ${this.state.labbookName}`
+                  }
+                })
+              }
+            }
+          )
+        }else{
+          document.getElementById('modal__cover').classList.remove('hidden')
+
+          self.setState({
+            showLoginPrompt: true
           })
         }
       }
-    )
+    })
 
   }
 
@@ -254,17 +308,31 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _pullFromRemote(){
-    PushActiveBranchToRemoteMutation(
-      this.state.owner,
-      this.state.labbookName,
-      'origin',
-      this.props.labbookId,
-      (error)=>{
-        if(error){
-          console.log(error)
+    let self = this;
+    this._checkSessionIsValid().then((response) => {
+      if(response.data){
+
+        if(response.data.userIdentity.isSessionValid){
+          PushActiveBranchToRemoteMutation(
+            this.state.owner,
+            this.state.labbookName,
+            'origin',
+            this.props.labbookId,
+            (error)=>{
+              if(error){
+                console.log(error)
+              }
+            }
+          )
+        }else{
+          document.getElementById('modal__cover').classList.remove('hidden')
+          //auth.login()
+          self.setState({
+            showLoginPrompt: true
+          })
         }
       }
-    )
+    })
   }
   /**
   *  @param {}
@@ -272,13 +340,28 @@ export default class UserNote extends Component {
   *  @return {}
   */
   _toggleCollaborators(){
-    if(!this.state.showCollaborators){
-      document.getElementById('modal__cover').classList.remove('hidden')
-    }else{
-      document.getElementById('modal__cover').classList.add('hidden')
-    }
-    this.setState({showCollaborators: !this.state.showCollaborators, newCollaborator: ''})
-    this.inputTitle.value =''
+    let self = this;
+    this._checkSessionIsValid().then((response) => {
+      if(response.data){
+
+        if(response.data.userIdentity.isSessionValid){
+          if(!this.state.showCollaborators){
+            document.getElementById('modal__cover').classList.remove('hidden')
+          }else{
+            document.getElementById('modal__cover').classList.add('hidden')
+          }
+          this.setState({showCollaborators: !this.state.showCollaborators, newCollaborator: ''})
+          this.inputTitle.value =''
+        }else{
+          document.getElementById('modal__cover').classList.remove('hidden')
+          //auth.login()
+          self.setState({
+            showLoginPrompt: true
+          })
+        }
+      }
+    })
+
   }
   /**
   *  @param {event} evt
@@ -338,14 +421,46 @@ export default class UserNote extends Component {
       }
     )
   }
-
+  /**
+  *  @param {}
+  *  returns UserIdentityQeury promise
+  *  @return {promise}
+  */
+  _checkSessionIsValid(){
+    return (UserIdentity.getUserIdentity())
+  }
+  /**
+  *  @param {}
+  *  closes login prompt modal
+  *  @return {}
+  */
+  _closeLoginPromptModal(){
+    this.setState({
+      'showLoginPrompt': false
+    })
+    document.getElementById('modal__cover').classList.add('hidden')
+  }
 
   render(){
+    let collaboratorsModalCss = classNames({
+      'BranchModal--collaborators': this.state.showCollaborators,
+      'hidden': !this.state.showCollaborators
+    })
+
+    let loginPromptModalCss = classNames({
+      'BranchModal--login-prompt': this.state.showLoginPrompt,
+      'hidden': !this.state.showLoginPrompt
+    })
 
     return(
       <div className="BranchMenu flex flex--column">
-
-        <div className={this.state.showCollaborators ? 'BranchModal--collaborators': 'hidden'}>
+        <div className={loginPromptModalCss}>
+          <div
+            onClick={()=>{this._closeLoginPromptModal()}}
+            className="BranchModal--close"></div>
+          <LoginPrompt closeModal={this._closeLoginPromptModal}/>
+        </div>
+        <div className={collaboratorsModalCss}>
           <div
             onClick={()=>{this._toggleCollaborators()}}
             className="BranchModal--close"></div>
@@ -371,7 +486,7 @@ export default class UserNote extends Component {
                   this.props.collaborators.map((collaborator) => {
                     return (
                       <li
-                        key={collaborator} 
+                        key={collaborator}
                         className="BranchMenu__collaborator--item">
                         <div>{collaborator}</div>
                         <button disabled={collaborator === localStorage.getItem('username')} onClick={()=> this._removeCollaborator(collaborator)}>Remove</button>

@@ -58,7 +58,7 @@ class Activity extends Component {
 
     if(activityRecords.edges && activityRecords.edges.length){
 
-      this.interval = setInterval(this._refetch, 3000)
+      this.interval = setInterval(this._refetch, 5000)
     }
   }
 

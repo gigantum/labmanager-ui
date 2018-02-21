@@ -111,7 +111,7 @@ class Environment extends Component {
   }
 
   render(){
-  
+
     if(this.props.labbook){
       const env = this.props.labbook.environment;
       const {base} = env;
@@ -136,6 +136,7 @@ class Environment extends Component {
               ref="packageDependencies"
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
+              labbookId={this.props.labbook.id}
               containerStatus={this.props.containerStatus}
               setBase={this._setBase}
               setComponent={this._setComponent}
@@ -150,6 +151,7 @@ class Environment extends Component {
               blockClass="Environment"
               buildCallback={this._buildCallback}
               editVisible={true}
+              labbookId={this.props.labbook.id}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
             />

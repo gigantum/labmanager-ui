@@ -91,8 +91,8 @@ export default function AddPackageComponentMutation(
         type: 'RANGE_ADD',
         parentID: environmentId,
         connectionInfo: [{
-          key: connection,
-          rangeBehavior: 'append',
+          key: 'PackageDependencies_packageDependencies',
+          rangeBehavior: 'prepend',
         }],
         edgeName: 'newPackageComponentEdge',
       }],
@@ -104,7 +104,7 @@ export default function AddPackageComponentMutation(
       },
       onError: err => console.error(err),
       updater: (store, response) => {
-
+    
         if(clientMutationId){
           let deletedId = 'client:newPackageManager:' + tempID
           sharedDeleteUpdater(store, environmentId, deletedId)
@@ -115,7 +115,8 @@ export default function AddPackageComponentMutation(
               fromBase } = response.addPackageComponent.newPackageComponentEdge.node
 
           //TODO use edge from linked record
-          const id = 'client:newPackageManager:' + tempID++;
+          const id = response.addPackageComponent.newPackageComponentEdge.node.id
+          store.delete(id)
           const node = store.create(id, 'package');
           node.setValue(manager, 'manager')
           node.setValue(packageName, 'package')

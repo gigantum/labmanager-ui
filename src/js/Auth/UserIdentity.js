@@ -15,6 +15,7 @@ const userIdentityQuery = graphql`
       email
       givenName
       familyName
+      isSessionValid
     }
   }
 `;
