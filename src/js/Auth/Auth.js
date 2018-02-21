@@ -37,7 +37,7 @@ export default class Auth {
 
       } else if (err) {
         console.error(err);
-      //  alert(`Error: ${err.error}. Check the console for further details.`);
+        alert(`Error: ${err.error}. Check the console for further details.`); //TODO make this a modal or redirect to login failure page
       }
     });
   }
@@ -55,8 +55,8 @@ export default class Auth {
     localStorage.setItem('username', authResult.idTokenPayload.nickname);
     //redirect to labbooks when user logs in
 
-    let storrageRoute = sessionStorage.getItem('CALLBACK_ROUTE')
-    let route = storrageRoute !== '' ? storrageRoute : `/labbooks`
+    let storageRoute = sessionStorage.getItem('CALLBACK_ROUTE')
+    let route = storageRoute !== '' ? storageRoute : `/labbooks`
 
     history.replace(route)
   }

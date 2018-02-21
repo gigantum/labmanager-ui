@@ -222,7 +222,7 @@ export default class UserNote extends Component {
                 }else{
 
                   store.dispatch({
-                    type: 'INFOR_MESSAGE',
+                    type: 'INFO_MESSAGE',
                     payload: {
                       message: `Added remote https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`
                     }
@@ -241,7 +241,7 @@ export default class UserNote extends Component {
           })
         }else{
           document.getElementById('modal__cover').classList.remove('hidden')
-          //auth.login()
+
           self.setState({
             showLoginPrompt: true
           })
@@ -292,7 +292,7 @@ export default class UserNote extends Component {
           )
         }else{
           document.getElementById('modal__cover').classList.remove('hidden')
-          //auth.login()
+
           self.setState({
             showLoginPrompt: true
           })
