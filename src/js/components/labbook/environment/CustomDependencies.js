@@ -242,7 +242,7 @@ class CustomDependencies extends Component {
   */
   _promptUserToCloseContainer(){
     store.dispatch({
-      type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
         containerMenuOpen: true
       }

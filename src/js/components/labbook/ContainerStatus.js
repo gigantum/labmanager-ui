@@ -144,7 +144,7 @@ export default class ContainerStatus extends Component {
     if(!containerMenuClicked &&
     this.state.containerMenuOpen){
       store.dispatch({
-        type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
         payload: {
           containerMenuOpen: false
         }
@@ -251,7 +251,7 @@ export default class ContainerStatus extends Component {
   */
   _stopContainerMutation(){
     store.dispatch({
-      type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
         containerMenuOpen: false
       }
@@ -291,7 +291,7 @@ export default class ContainerStatus extends Component {
       }
     })
     store.dispatch({
-      type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
         containerMenuOpen: false
       }
@@ -416,7 +416,7 @@ export default class ContainerStatus extends Component {
 
   _rebuildContainer(){
     store.dispatch({
-      type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
         containerMenuOpen: false
       }
@@ -442,7 +442,7 @@ export default class ContainerStatus extends Component {
 
   _showMenu(){
     store.dispatch({
-      type: 'UPDATE_CONAINER_MENU_VISIBILITY',
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
         containerMenuOpen: !this.state.containerMenuOpen
       }

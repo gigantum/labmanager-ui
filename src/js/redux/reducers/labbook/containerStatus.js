@@ -3,7 +3,7 @@
  */
 export const UPDATE_CONTAINER_STATUS = 'UPDATE_CONTAINER_STATUS'
 export const RESET_DETAIL_STORE = 'RESET_DETAIL_STORE'
-export const UPDATE_CONAINER_MENU_VISIBILITY = 'UPDATE_CONAINER_MENU_VISIBILITY'
+export const UPDATE_CONTAINER_MENU_VISIBILITY = 'UPDATE_CONTAINER_MENU_VISIBILITY'
 
 
 
@@ -19,7 +19,7 @@ if (action.type === UPDATE_CONTAINER_STATUS) {
      ...state,
      status: action.payload.status
    };
- }else if (action.type === UPDATE_CONAINER_MENU_VISIBILITY) {
+ }else if (action.type === UPDATE_CONTAINER_MENU_VISIBILITY) {
    return {
      ...state,
      containerMenuOpen: action.payload.containerMenuOpen
