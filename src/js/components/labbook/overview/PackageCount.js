@@ -18,12 +18,7 @@ let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: Strin
         edges{
           node{
             id
-            schema
             manager
-            package
-            version
-            latestVersion
-            fromBase
           }
         }
       }
@@ -31,18 +26,6 @@ let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: Strin
         edges{
           node{
             id
-            schema
-            repository
-            componentId
-            revision
-            name
-            description
-            tags
-            license
-            osBaseClass
-            url
-            requiredPackageManagers
-            dockerSnippet
           }
         }
       }

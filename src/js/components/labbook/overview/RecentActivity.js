@@ -10,6 +10,7 @@ import Moment from 'moment'
 //components
 import Loader from 'Components/shared/Loader'
 import FileCard from './FileCard'
+import CodeBlock from 'Components/labbook/renderers/CodeBlock'
 //utilites
 import environment from 'JS/createRelayEnvironment'
 //store
@@ -36,12 +37,12 @@ let RecentActivityQuery = graphql`query RecentActivityQuery($name: String!, $own
 
 export default class RecentActivity extends Component {
   _renderDetail(node){
-
+    console.log(node)
     let item = node.detailObjects[0].data[0] ? node.detailObjects[0].data[0] : ['text/markdown', node.message]
     if(item){
       switch(item[0]){
         case 'text/plain':
-          return(<b>{item[1]}</b>)
+          return(<ReactMarkdown renderers={{code: props => {console.log(props); return(<CodeBlock  {...props }/>)}}} className="ReactMarkdown" source={item[1]} />)
         case 'image/png':
           return(<img src={item[1]} />)
         case 'image/jpg':
@@ -53,7 +54,7 @@ export default class RecentActivity extends Component {
         case 'image/gif':
           return(<img src={item[1]} />)
         case 'text/markdown':
-          return(<ReactMarkdown source={item[1]} />)
+          return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
         default:
           return(<b>{item[1]}</b>)
       }
