@@ -31,7 +31,8 @@ class PackageDependencies extends Component {
       'packageName': '',
       'version': '',
       'packages': [],
-      'searchValue': ''
+      'searchValue': '',
+      'forceRender': false
     };
     //bind functions here
     this._loadMore = this._loadMore.bind(this)
@@ -44,6 +45,9 @@ class PackageDependencies extends Component {
     if(this.props.environment.packageDependencies.pageInfo.hasNextPage){
 
       this._loadMore() //routes query only loads 2, call loadMore
+    }else{
+      console.log('refetch')
+      this._refetch()
     }
 
     if(this.state.selectedTab === ''){
@@ -93,9 +97,33 @@ class PackageDependencies extends Component {
          self.props.environment.packageDependencies.pageInfo.hasNextPage) {
 
          self._loadMore()
+       }else{
+         self._refetch()
        }
      }
    );
+  }
+
+  _refetch(){
+    console.trace('refetch')
+    let self = this;
+    let relay = this.props.relay
+    let packageDependencies = this.props.environment.packageDependencies
+
+
+    let cursor =  packageDependencies.edges[packageDependencies.edges.length - 1].node.cursor
+
+    relay.refetchConnection(
+      totalCount + 5,
+      (response) =>{
+
+        self.setState({forceRender: true})
+      },
+      {
+        hasNext: true,
+        cursor: cursor
+      }
+    )
   }
   /**
   *  @param {Object}
@@ -345,7 +373,7 @@ class PackageDependencies extends Component {
   }
 
   render(){
-
+    console.log(this)
     const {packageDependencies} = this.props.environment
     const {blockClass, base} = this.props
 
@@ -518,7 +546,7 @@ export default createPaginationContainer(
             manager
             package
             version
-            latestVersion
+            latestVersion @include(if: $hasNext)
             fromBase
           }
           cursor
@@ -552,19 +580,23 @@ export default createPaginationContainer(
     const {labbookName} = store.getState().routes
 
     let cursor = props.environment.packageDependencies.edges[length-1].cursor
+    let hasNext = !props.environment.packageDependencies.pageInfo.hasNextPage
 
+    first = hasNext ? first + 1 : first
+    console.log(first, hasNext)
      return {
        first,
        cursor,
        name: labbookName,
-       owner
+       owner,
+       hasNext
        // in most cases, for variables other than connection filters like
        // `first`, `after`, etc. you may want to use the previous values.
        //orderBy: fragmentVariables.orderBy,
      };
    },
    query: graphql`
-    query PackageDependenciesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+    query PackageDependenciesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String, $hasNext: Boolean!){
      labbook(name: $name, owner: $owner){
        environment{
          ...PackageDependencies_environment
