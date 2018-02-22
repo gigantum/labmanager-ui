@@ -62,13 +62,27 @@ export default class ContainerStatus extends Component {
     this._openDevToolMuation = this._openDevToolMuation.bind(this)
     this._rebuildContainer = this._rebuildContainer.bind(this)
   }
+
   /**
-    unsubscribe from redux store
+  *  @param {}
+  *  clear interval to stop polling and clean up garbage
   */
   componentWillUnmount() {
     unsubscribe()
+    //memory clean up
+    window.removeEventListener("click", this._closePopupMenus)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.secondsElapsed !== this.state.secondsElapsed){
+      let self = this
+      let intervalInSeconds = 3 * 1000
+
+      setTimeout(function(){
+        self._tick()
+      }, intervalInSeconds);
+    }
+  }
   /**
     @param {object} footer
     unsubscribe from redux store
@@ -88,8 +102,8 @@ export default class ContainerStatus extends Component {
   *  set containerStatus secondsElapsed state by iterating
   *  @return {string}
   */
-  _tick = () => {
-    this.setState({secondsElapsed: this.state.secondsElapsed + 1});
+  _tick(){
+    this.setState({secondsElapsed: this.state.secondsElapsed + 3});
   }
   /**
   *  @param {}
@@ -97,7 +111,13 @@ export default class ContainerStatus extends Component {
   *  @return {string}
   */
   componentDidMount(){
-
+    let self = this
+    let intervalInSeconds = 3 * 1000
+    setTimeout(function(){
+      self._tick()
+    }, intervalInSeconds);
+    // let intervalInSeconds = 3 * 1000
+    // setTimeout(this._tick, intervalInSeconds);
 
     unsubscribe = store.subscribe(() =>{
 
@@ -123,9 +143,6 @@ export default class ContainerStatus extends Component {
         })
       }
     }
-
-    let intervalInSeconds = 3 * 1000 * 1000
-    this.interval = setInterval(this._tick, intervalInSeconds);
 
     window.addEventListener("click", this._closePopupMenus)
   }
@@ -188,15 +205,7 @@ export default class ContainerStatus extends Component {
       'imageStatus': nextProps.imageStatus
     })
   }
-  /**
-  *  @param {}
-  *  clear interval to stop polling and clean up garbage
-  */
-  componentWillUnmount() {
-    //memory clean up
-    clearInterval(this.interval);
-    window.removeEventListener("click", this._closePopupMenus)
-  }
+
 
   /**
     @param {}
@@ -380,7 +389,7 @@ export default class ContainerStatus extends Component {
   }
 
   render(){
-
+    let self = this
     return(
       <QueryRenderer
         variables={{
@@ -397,7 +406,6 @@ export default class ContainerStatus extends Component {
             console.error(error)
             return(this._errorMessage(error))
           }else if(props){
-
             let status = this._getContainerStatusText(props.labbook.environment)
             return(this._containerStatus(status, 'setStatus')
             )

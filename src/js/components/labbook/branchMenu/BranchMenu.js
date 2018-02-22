@@ -108,8 +108,6 @@ export default class UserNote extends Component {
                     messagesList: error
                   }
                 })
-
-
               }
             })
           }else{

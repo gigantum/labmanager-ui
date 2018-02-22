@@ -214,7 +214,7 @@ class Labbook extends Component {
   render(){
     const { isAuthenticated } = this.props.auth;
     const {labbookName} = this.props;
-    console.log(isAuthenticated(), this.props.labbook, this.props)
+
     if(this.props.labbook){
 
       return(

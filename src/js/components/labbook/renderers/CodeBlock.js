@@ -5,7 +5,7 @@ import CodeBlocks from 'gfm-code-blocks'
 class CodeBlock extends React.PureComponent {
   constructor(props) {
     super(props)
-    console.log(props)
+
     this.setRef = this.setRef.bind(this)
   }
 
@@ -21,13 +21,8 @@ class CodeBlock extends React.PureComponent {
     this.highlightCode()
   }
 
-  highlightCode() {
-    console.log(this)
-
-  }
-
   render() {
-    console.log(this.props)
+
     return (
       <pre>
         <code ref={this.setRef} className={this.props.language}>

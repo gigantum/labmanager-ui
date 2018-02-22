@@ -102,9 +102,12 @@ class PackageDependencies extends Component {
      }
    );
   }
-
+  /*
+    @param
+    refetches package dependencies
+  */
   _refetch(){
-    console.trace('refetch')
+
     let self = this;
     let relay = this.props.relay
     let packageDependencies = this.props.environment.packageDependencies
@@ -374,7 +377,7 @@ class PackageDependencies extends Component {
   }
 
   render(){
-    console.log(this)
+
     const {packageDependencies} = this.props.environment
     const {blockClass, base} = this.props
 
@@ -579,13 +582,12 @@ export default createPaginationContainer(
     let first = totalCount;
     let length = props.environment.packageDependencies.edges.length
     const {labbookName} = store.getState().routes
-    console.log(totalCount)
+
     let cursor = props.environment.packageDependencies.edges[length-1].cursor
     let hasNext = !props.environment.packageDependencies.pageInfo.hasNextPage
 
     first = hasNext ? first + 1 : first
-    console.log(first)
-    console.log(first, hasNext)
+  
      return {
        first,
        cursor,

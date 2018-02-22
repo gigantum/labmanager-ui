@@ -37,12 +37,11 @@ let RecentActivityQuery = graphql`query RecentActivityQuery($name: String!, $own
 
 export default class RecentActivity extends Component {
   _renderDetail(node){
-    console.log(node)
     let item = node.detailObjects[0].data[0] ? node.detailObjects[0].data[0] : ['text/markdown', node.message]
     if(item){
       switch(item[0]){
         case 'text/plain':
-          return(<ReactMarkdown renderers={{code: props => {console.log(props); return(<CodeBlock  {...props }/>)}}} className="ReactMarkdown" source={item[1]} />)
+          return(<ReactMarkdown className="ReactMarkdown" source={item[1]} />)
         case 'image/png':
           return(<img src={item[1]} />)
         case 'image/jpg':
