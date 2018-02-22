@@ -93,13 +93,12 @@
 }
 
 .SideBar__icon--labbooks{
-  transform: scale(2.5);
   background: url('../images/icons/labbooks.svg') no-repeat center center;
   background-size: 40px;
 }
 
 .SideBar__icon--labbooks-selected{
-  transform: scale(2.5);
+
   background: url('../images/icons/labbooks-selected.svg') no-repeat center center;
   background-size: 40px;
 }

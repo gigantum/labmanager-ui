@@ -402,9 +402,24 @@
 .ActivityDetail__badge:before{
   font-size: 20px !important;
 }
+
+.LargeIcon{
+  background-size: 38px;
+}
+
+.SmallIcon{
+  background-size: 22px !important;
+}
+
 .ActivityCard__badge--code,
 .ActivityDetail__badge--code{
-  @extend .code-icon;
+  background: url('./../images/icons/code.svg') no-repeat center center;
+}
+.ActivityCard__badge--code{
+  @extend .LargeIcon;
+}
+.ActivityDetail__badge--code{
+  @extend .SmallIcon;
 }
 .ActivityCard__badge--code_executed,
 .ActivityDetail__badge--code_executed{
@@ -412,36 +427,73 @@
 }
 .ActivityCard__badge--result,
 .ActivityDetail__badge--result{
-  @extend .fa-bar-chart;
+  background: url('./../images/icons/result.svg') no-repeat center center;
+}
+
+.ActivityCard__badge--result{
+  @extend .LargeIcon;
+}
+.ActivityDetail__badge--result{
+  @extend .SmallIcon;
 }
 
 .ActivityCard__badge--note,
 .ActivityDetail__badge--note{
-  @extend .fa-sticky-note;
+  background: url('./../images/icons/note.svg') no-repeat center center;
+}
+
+.ActivityCard__badge--note{
+  @extend .LargeIcon;
+}
+.ActivityDetail__badge--note{
+  @extend .SmallIcon;
 }
 
 .ActivityCard__badge--input_data,
 .ActivityDetail__badge--input_data{
-  @extend .fa-arrow-down;
+  background: url('./../images/icons/data-input.svg') no-repeat center center;
+}
+
+.ActivityCard__badge--input_data{
+  @extend .LargeIcon;
+}
+
+.ActivityDetail__badge--input_data{
+  @extend .SmallIcon;
 }
 
 .ActivityCard__badge--output_data,
 .ActivityDetail__badge--output_data{
-  @extend .fa-arrow-up;
+    background: url('./../images/icons/data-output.svg') no-repeat center center;
+}
+
+.ActivityCard__badge--output_data{
+  @extend .LargeIcon;
+}
+.ActivityDetail__badge--output_data{
+  @extend .SmallIcon;
 }
 
 .ActivityCard__badge--environment,
 .ActivityDetail__badge--environment{
-  @extend .fa-gears;
+  background: url('./../images/icons/environment.svg') no-repeat center center;
+
 }
+.ActivityCard__badge--environment{
+  @extend .LargeIcon;
+}
+.ActivityDetail__badge--environment{
+  @extend .SmallIcon;
+}
+
 .ActivityCard__badge--labbook{
-  background: url('./../images/icons/labbooks-selected.svg') no-repeat center -20px;
-  background-size: 100px;
+  background: url('./../images/icons/labbooks-blue.svg') no-repeat center center;
+  @extend .LargeIcon;
 }
 
 .ActivityDetail__badge--labbook{
-  background: url('./../images/icons/labbooks-selected.svg') no-repeat center 0px;
-  background-size: 40px;
+  background: url('./../images/icons/labbooks-blue.svg') no-repeat center center;
+  @extend .SmallIcon;
 }
 
 .ActivityCard__collapsed-container,
