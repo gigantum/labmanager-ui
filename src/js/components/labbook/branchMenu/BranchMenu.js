@@ -1,6 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import Auth from 'JS/Auth/Auth';
 import classNames from 'classnames'
 //components
 import LoginPrompt from './LoginPrompt'
@@ -19,7 +18,6 @@ import UserIdentity from 'JS/Auth/UserIdentity'
 import store from 'JS/redux/store'
 
 
-const auth = new Auth();
 
 export default class UserNote extends Component {
   constructor(props){
@@ -78,8 +76,6 @@ export default class UserNote extends Component {
       this.setState({menuOpen: false})
     }
   }
-
-
   /**
     @param {string} branchName
     creates a new branch
@@ -96,7 +92,6 @@ export default class UserNote extends Component {
             newBranchName: '',
             isValid: true,
           })
-
 
           CreateBranchMutation(
             this.state.owner,
