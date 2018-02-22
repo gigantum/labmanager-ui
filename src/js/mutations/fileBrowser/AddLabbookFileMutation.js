@@ -140,7 +140,7 @@ export default function AddLabbookFileMutation(
         const id = uuidv4()
         const node = store.create(id, 'LabbookFile')
 
-        if(response.addLabbookFile && response.addLabbookFile.newLabbookFileEdge){
+        if(response.addLabbookFile && response.addLabbookFile.newLabbookFileEdge && response.addLabbookFile.newLabbookFileEdge.node){
           node.setValue(response.addLabbookFile.newLabbookFileEdge.node.id, "id")
           node.setValue(false, 'isDir')
           node.setValue(response.addLabbookFile.newLabbookFileEdge.node.key, 'key')
