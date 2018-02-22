@@ -206,7 +206,7 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
         </div>
       }
 
-      {mostRecentMessage.error &&
+      {mostRecentMessage.error && mostRecentMessage.messageBody &&
         <div className="Footer__main-detatails">
           <ul>
             {
