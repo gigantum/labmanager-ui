@@ -69,7 +69,7 @@ export default class LocalLabbookPanel extends Component {
 
               exportClassList.remove('LocalLabbooks__export--downloading')
           }).catch((error)=>{
-
+              console.log(error)
               if(error){
                 store.dispatch({
                   type: 'ERROR_MESSAGE',
@@ -82,7 +82,7 @@ export default class LocalLabbookPanel extends Component {
               exportClassList.remove('LocalLabbooks__export--downloading')
           })
       }else{
-
+        console.log(error)
         store.dispatch({
           type: 'ERROR_MESSAGE',
           payload: {

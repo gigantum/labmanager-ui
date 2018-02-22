@@ -133,6 +133,7 @@ export default class Routes extends Component {
 
                 <Route
                   path="/labbooks/:owner/:labbookName"
+                  auth={auth}
                   render={(parentProps) =>{
 
                       const labbookName = parentProps.match.params.labbookName;

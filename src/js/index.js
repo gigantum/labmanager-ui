@@ -16,6 +16,12 @@ UserIdentity.getUserIdentity().then((response)=>{
       localStorage.setItem('email', response.data.userIdentity.email);
       localStorage.setItem('username', response.data.userIdentity.username);
       localStorage.setItem('expires_at', expiresAt);
+    }else{
+      localStorage.removeItem('family_name')
+      localStorage.removeItem('given_name')
+      localStorage.removeItem('email')
+      localStorage.removeItem('username')
+      localStorage.removeItem('expires_at')
     }
   }else if(response.error){
     console.error(response.errors[0].message)

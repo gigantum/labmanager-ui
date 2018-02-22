@@ -46,7 +46,6 @@ class PackageDependencies extends Component {
 
       this._loadMore() //routes query only loads 2, call loadMore
     }else{
-      console.log('refetch')
       this._refetch()
     }
 
@@ -110,20 +109,22 @@ class PackageDependencies extends Component {
     let relay = this.props.relay
     let packageDependencies = this.props.environment.packageDependencies
 
+    if(packageDependencies.edges.length > 0){
 
-    let cursor =  packageDependencies.edges[packageDependencies.edges.length - 1].node.cursor
+      let cursor =  packageDependencies.edges[packageDependencies.edges.length - 1].node.cursor
 
-    relay.refetchConnection(
-      totalCount + 5,
-      (response) =>{
+      relay.refetchConnection(
+        totalCount + 5,
+        (response) =>{
 
-        self.setState({forceRender: true})
-      },
-      {
-        hasNext: true,
-        cursor: cursor
-      }
-    )
+          self.setState({forceRender: true})
+        },
+        {
+          hasNext: true,
+          cursor: cursor
+        }
+      )
+    }
   }
   /**
   *  @param {Object}
@@ -578,11 +579,12 @@ export default createPaginationContainer(
     let first = totalCount;
     let length = props.environment.packageDependencies.edges.length
     const {labbookName} = store.getState().routes
-
+    console.log(totalCount)
     let cursor = props.environment.packageDependencies.edges[length-1].cursor
     let hasNext = !props.environment.packageDependencies.pageInfo.hasNextPage
 
     first = hasNext ? first + 1 : first
+    console.log(first)
     console.log(first, hasNext)
      return {
        first,
