@@ -90,7 +90,7 @@ const updateChunkStatus = (file, chunkData) =>{
       uploadId,
     } = chunkData
   let chunkIndex = chunkData.chunkIndex + 1
-  let uploadedChunkSize = ((chunkSize/1000) * chunkIndex) >fileSizeKb ? humanFileSize(fileSizeKb) : humanFileSize((chunkSize/1000) * chunkIndex) 
+  let uploadedChunkSize = ((chunkSize/1000) * chunkIndex) >fileSizeKb ? humanFileSize(fileSizeKb) : humanFileSize((chunkSize/1000) * chunkIndex)
   let fileSize = humanFileSize(fileSizeKb)
   store.dispatch({
     type: 'UPLOAD_MESSAGE_UPDATE',
@@ -132,7 +132,7 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
     accessToken,
     section,
     (result, error)=>{
-      console.log(store.getState().footer.totalFiles)
+  
       if(result && (error === undefined)){
         getChunkCallback(file, result)
         if(store.getState().footer.totalFiles > 1){

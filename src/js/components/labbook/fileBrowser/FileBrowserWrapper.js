@@ -124,7 +124,7 @@ export default class FileBrowserWrapper extends Component {
 
     let totalFiles = getTotalFileLength(files)
     if(totalFiles > 0){
-      console.log(files, prefix)
+
       store.dispatch({
         type: 'UPLOAD_MESSAGE_SETTER',
         payload:{
@@ -145,7 +145,6 @@ export default class FileBrowserWrapper extends Component {
     }
 
     let folderFiles = []
-    console.log(files)
     files.forEach((file, index) => {
       if(file.isDirectory){
         folderFiles.push(file)
@@ -186,21 +185,18 @@ export default class FileBrowserWrapper extends Component {
       }
 
     })
+    let flattenedFiles = []
 
     if(folderFiles.length > 0){
-      let flattenedFiles = []
+
       function flattenFiles(filesArray){
 
-          if(filesArray.entry){
+          if(Array.isArray(filesArray)){
+            filesArray.forEach(filesSubArray => {
+              flattenFiles(filesSubArray)
+            })
+          }else if(filesArray.entry){
             flattenedFiles.push(filesArray)
-          }else if(filesArray.isDirectory){
-            flattenedFiles.push(filesArray)
-          }else{
-            if(filesArray.forEach){
-              filesArray.forEach(filesSubArray => {
-                flattenFiles(filesSubArray)
-              })
-            }
           }
       }
 
