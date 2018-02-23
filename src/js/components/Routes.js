@@ -17,7 +17,7 @@ import store from 'JS/redux/store'
 
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
-  query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+  query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String, $hasNext: Boolean!){
     labbook(name: $name, owner: $owner){
       id
       description
@@ -133,6 +133,7 @@ export default class Routes extends Component {
 
                 <Route
                   path="/labbooks/:owner/:labbookName"
+                  auth={auth}
                   render={(parentProps) =>{
 
                       const labbookName = parentProps.match.params.labbookName;
@@ -147,7 +148,8 @@ export default class Routes extends Component {
                           {
                             name: parentProps.match.params.labbookName,
                             owner: parentProps.match.params.owner,
-                            first: 2
+                            first: 2,
+                            hasNext: false
                           }
                         }
                         render={({error, props}) => {

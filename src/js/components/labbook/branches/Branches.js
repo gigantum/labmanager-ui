@@ -48,7 +48,7 @@ class Branches extends Component {
 
        if(self.props.labbook.branches &&
          self.props.labbook.branches.pageInfo.hasNextPage) {
-
+        
          self._loadMore()
        }
      }

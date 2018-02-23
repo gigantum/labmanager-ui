@@ -124,6 +124,7 @@ export default class FileBrowserWrapper extends Component {
 
     let totalFiles = getTotalFileLength(files)
     if(totalFiles > 0){
+
       store.dispatch({
         type: 'UPLOAD_MESSAGE_SETTER',
         payload:{
@@ -144,7 +145,6 @@ export default class FileBrowserWrapper extends Component {
     }
 
     let folderFiles = []
-
     files.forEach((file, index) => {
       if(file.isDirectory){
         folderFiles.push(file)
@@ -185,21 +185,18 @@ export default class FileBrowserWrapper extends Component {
       }
 
     })
+    let flattenedFiles = []
 
     if(folderFiles.length > 0){
-      let flattenedFiles = []
+
       function flattenFiles(filesArray){
 
-          if(filesArray.entry){
+          if(Array.isArray(filesArray)){
+            filesArray.forEach(filesSubArray => {
+              flattenFiles(filesSubArray)
+            })
+          }else if(filesArray.entry){
             flattenedFiles.push(filesArray)
-          }else if(filesArray.isDirectory){
-            flattenedFiles.push(filesArray)
-          }else{
-            if(filesArray.forEach){
-              filesArray.forEach(filesSubArray => {
-                flattenFiles(filesSubArray)
-              })
-            }
           }
       }
 
@@ -210,7 +207,7 @@ export default class FileBrowserWrapper extends Component {
 
         return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
       })
-    
+
       FolderUpload.uploadFiles(
         filterFiles,
         prefix,

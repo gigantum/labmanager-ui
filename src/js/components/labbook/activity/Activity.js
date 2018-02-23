@@ -57,8 +57,8 @@ class Activity extends Component {
     }
 
     if(activityRecords.edges && activityRecords.edges.length){
+      this._refetch()
 
-      this.interval = setInterval(this._refetch, 5000)
     }
   }
 
@@ -73,6 +73,7 @@ class Activity extends Component {
    *
    */
   _refetch(){
+    let self = this
     let relay = this.props.relay
     let activityRecords = this.props.labbook.activityRecords
 
@@ -85,6 +86,11 @@ class Activity extends Component {
         if(!activityRecords.pageInfo.hasNextPage){
           isLoadingMore = false
         }
+
+        setTimeout(function(){
+
+            self._refetch()
+        },5000)
       },
       {
         cursor: cursor

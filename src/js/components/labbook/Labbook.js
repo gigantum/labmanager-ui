@@ -8,6 +8,7 @@ import {
 //store
 import store from "JS/redux/store"
 //components
+import Login from 'Components/login/Login';
 import Activity from './activity/Activity'
 import Code from './code/Code'
 import InputData from './inputData/InputData'
@@ -211,7 +212,7 @@ class Labbook extends Component {
   }
 
   render(){
-
+    const { isAuthenticated } = this.props.auth;
     const {labbookName} = this.props;
 
     if(this.props.labbook){
@@ -371,8 +372,13 @@ class Labbook extends Component {
           </div>
         </div>
       )
+
     }else{
-      return (<Loader />)
+      if(isAuthenticated()){
+        return (<Loader />)
+      }else{
+        return (<Login auth={this.props.auth}/>)
+      }
     }
   }
 }
