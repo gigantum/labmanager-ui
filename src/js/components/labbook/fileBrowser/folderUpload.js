@@ -285,13 +285,13 @@ const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, co
     let directoryExistsAll = getFolderExistsQueryPromises(uniqueFolderPaths, labbookName, owner, section)
 
     Promise.all(directoryExistsAll).then((labbooks)=>{
-      console.log(labbooks)
+
       let index = 0;
       function createFolder(response){
-          console.log(response)
+
           if((response.labbook[section].files === null) || (directoryExists.indexOf(response.variables.path) < -1)){
             directoryExists.push(response.variables.path)
-            console.log(response.variables.path)
+
             makeDirectory(
                 connectionKey,
                 owner,
@@ -301,7 +301,7 @@ const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, co
                 section)
                 .then((result)=>{
                   index++
-                  console.log(labbooks[index])
+    
                   if(labbooks[index]){
                     createFolder(labbooks[index])
                   }else{
@@ -348,7 +348,6 @@ const FolderUpload = {
 
 
     function fileCheck(fileItem){
-      console.log(fileItem)
       filePaths.push(fileItem)
       count++
 
