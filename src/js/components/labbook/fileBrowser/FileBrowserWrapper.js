@@ -124,6 +124,7 @@ export default class FileBrowserWrapper extends Component {
 
     let totalFiles = getTotalFileLength(files)
     if(totalFiles > 0){
+      console.log(files, prefix)
       store.dispatch({
         type: 'UPLOAD_MESSAGE_SETTER',
         payload:{
@@ -144,7 +145,7 @@ export default class FileBrowserWrapper extends Component {
     }
 
     let folderFiles = []
-
+    console.log(files)
     files.forEach((file, index) => {
       if(file.isDirectory){
         folderFiles.push(file)
@@ -210,7 +211,7 @@ export default class FileBrowserWrapper extends Component {
 
         return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
       })
-    
+
       FolderUpload.uploadFiles(
         filterFiles,
         prefix,

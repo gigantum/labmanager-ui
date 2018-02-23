@@ -148,7 +148,8 @@ prefix,
 chunkLoader) =>{
 
   files.forEach((file, count) =>{
-
+  console.log("%c FILE", 'color: red; font-size: 20px;')
+  console.log(file)
   let fileReader = new FileReader();
 
   fileReader.onloadend = function (evt) {
@@ -259,6 +260,7 @@ const FolderUpload = {
   */
   uploadFiles: (files, prefix, labbookName, owner, section, connectionKey, sectionId, chunkLoader) =>{
     let count = 0;//
+    let fileSectionCount = 0;
     let existingPaths = []
     let filePaths = []
     /**
@@ -267,38 +269,70 @@ const FolderUpload = {
     *  pushes fileItems into an array to make a flat keyed structure - similar to s3
     *  @return {boolean}
     */
+
     function fileCheck(fileItem){
       filePaths.push(fileItem)
       count++
-
+      console.log(fileItem)
       if(fileItem && fileItem.entry){
         let filePath = fileItem.entry.fullPath.replace('/' + fileItem.file.name, '')
         const path = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
         const folderNames = path.split('/')
-
+        console.log('count', count)
         let folderPaths = getFolderPaths(folderNames, prefix);
 
         let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, section)
 
         Promise.all(directoryExistsAll).then((labbooks)=>{
           let directoryAll = []
+          let index = 0;
+          console.log(folderPaths, labbooks)
 
-          labbooks.forEach((response)=>{
 
-            if(response.labbook[section].files === null){
-              let directoryPromise = makeDirectory(
+          function iterate(labbook){
+            console.log(index, labbook)
+            if(labbook.labbook[section].files === null){
+              makeDirectory(
                   connectionKey,
                   owner,
                   labbookName,
                   sectionId,
-                  path,
+                  labbook.variables.path,
                   section)
+                  .then((result)=>{
+                    index++
 
-              directoryAll.push(directoryPromise)
+                    if(labbooks[index]){
+                      iterate(labbooks[index])
+                    }else{
+                        fileSectionCount++
+                      if(fileItem[fileSectionCount]){
+                        fileCheck(fileItem[fileSectionCount])
+                      }else if(files[count]){
+                        fileCheck(files[count])
+                      }
+                    }
+
+                    existingPaths.push(labbook.variables.path)
+                })
+
             }else{
-              existingPaths.push(path)
+              index++;
+              if(index > labbooks.length){
+
+                fileCheck(files[count])
+              }else{
+                if(labbooks[index]){
+                  iterate(labbooks[index])
+                }else if(files[count]){
+                  fileCheck(files[count])
+                }
+              }
+              existingPaths.push(labbook.variables.path)
             }
-          })
+          }
+
+          iterate(labbooks[index])
 
           if(directoryAll.length < 1){
 
@@ -343,6 +377,7 @@ const FolderUpload = {
 
         })
       }else{
+        console.log('here')
         if(fileItem){
           let filePath = fileItem.fullPath;
           const path = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
