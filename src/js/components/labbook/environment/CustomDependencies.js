@@ -224,10 +224,10 @@ class CustomDependencies extends Component {
   *  filters custom dependencies in table view
   */
   _filterCustomDependencies(customDependencies){
-    console.log(customDependencies)
+
     let searchValue = this.state.searchValue.toLowerCase()
     let dependencies = customDependencies.edges.filter((edge)=>{
-      console.log(edge)
+
       let name = edge.node.name.toLowerCase()
       let searchMatch = ((searchValue === '') || (name.indexOf(searchValue) > -1))
       return searchMatch
@@ -263,7 +263,7 @@ class CustomDependencies extends Component {
 
     const {customDependencies} = this.props.environment;
 
-    console.log(this.props)
+  
     if (customDependencies) {
       const viewContainerCss = classNames({
         'CustomDependencies__view-container': true,

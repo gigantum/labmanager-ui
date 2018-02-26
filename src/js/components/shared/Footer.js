@@ -137,7 +137,7 @@ export default class Footer extends Component {
        'Footer--expand': (this.state.open || this.state.uploadOpen),
        'Footer--expand-extra': (this.state.open && this.state.uploadOpen)
       });
-    console.log(this.state.messageStack)
+
     let mostRecentMessage = this.state.messageStack[this.state.messageStack.length - 1]
 
     let statusClassType = '';

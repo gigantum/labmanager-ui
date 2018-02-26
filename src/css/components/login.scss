@@ -13,3 +13,30 @@
   width: 100px;
   align-self: center;
 }
+
+
+.LoginError{
+  color: $crimson;
+  height: 200px;
+
+  border: 2px solid $crimson;
+  width: 500px;
+  margin: 30px auto;
+}
+
+.Login__error{
+  @include flex(space-around, column);
+  height: 100%;
+}
+
+.Login__error-type{
+  font-size: 22px;
+  @include flex(center, row);
+  align-items: center;
+}
+
+.Login__error-exclamation{
+  @extend .fa;
+  @extend .fa-exclamation-circle;
+  margin-right: 10px;
+}

@@ -240,17 +240,17 @@ export default (
    let messageStack = state.messageStack;
    let previousIndex = 0;
    let doesMessageExist = messageStack.filter((message, index) => {
-     console.log(message.id, action.payload.id)
+
      if(message.id === action.payload.id){
        previousIndex = index
      }
      return message.id === action.payload.id
    })
    if(doesMessageExist.length > 0){
-    console.log(doesMessageExist)
+
     messageStack.splice(previousIndex, 1);
   }
-  console.log(action)
+
   messageStack.push({
     message: action.payload.message,
     id: action.payload.id,
@@ -261,7 +261,7 @@ export default (
     error: action.payload.error
   })
 
-  console.log(messageStack)
+
     return {
       ...state,
       id: action.payload.id,

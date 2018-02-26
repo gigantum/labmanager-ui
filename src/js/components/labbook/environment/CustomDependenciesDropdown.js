@@ -148,6 +148,7 @@ export default class CustomDependenciesDropdown extends Component {
                     className="CustomDependenciesDropdown__input-container"
                     onFocus={()=>{this._showMenu()}}>
                     <input
+
                       placeholder="Click or type to search custom dependencies"
                       onKeyUp={(evt)=> this._setFilterText(evt)}
                       className="CustomDependenciesDropdown__input"
