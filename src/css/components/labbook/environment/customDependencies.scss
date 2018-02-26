@@ -36,13 +36,19 @@ input.CustomDependenciesDropdown__input[type="text"]{
   border-radius: 8px;
   padding: 0 15px;
   width: calc(100% - 30px);
+  background: url(../images/icons/down-arrow-silver.svg) no-repeat 95% 50%;
+  background-size: 20px;
+  cursor: pointer;
+}
+input.CustomDependenciesDropdown__input[type="text"]:focus{
+  cursor: text;
 }
 
 .CustomDependenciesDropdown__menu{
 
   @extend .box-shadow;
   padding: 20px;
-  top: 117px;
+  top: 142px;
   position: absolute;
   overflow: hidden;
   height: auto;
@@ -52,7 +58,7 @@ input.CustomDependenciesDropdown__input[type="text"]{
   z-index: 200;
 
   background: $white;
-  width: calc(100% - 78px);
+  width: calc(100% - 118px);
 }
 
 .CustomDependenciesDropdown__menu-row{
@@ -76,6 +82,25 @@ input.CustomDependenciesDropdown__input[type="text"]{
   height: 30px;
   border-radius: 15px;
   padding: 0;
+}
+.CustomDependenciesDropdown__button--add,
+.CustomDependencies__button--add{
+  background: $azure url('../images/icons/add.svg') no-repeat 50% 50%;
+  background-size: 16px;
+}
+.CustomDependenciesDropdown__button--add:hover,
+.CustomDependencies__button--add:hover{
+  background: $turquise url('../images/icons/add.svg') no-repeat 50% 50%;
+  background-size: 16px;
+}
+
+.CustomDependencies__button--remove{
+  background: $azure url('../images/icons/close-white.svg') no-repeat 50% 50%;
+  background-size: 14px;
+}
+.CustomDependencies__button--remove:hover{
+  background: $turquise url('../images/icons/close-white.svg') no-repeat 50% 50%;
+  background-size: 14px;
 }
 
 .CustomDependencies__table-container{

@@ -142,6 +142,7 @@ export default function AddEnvironmentPackageMutation(
         node.setValue(repository, 'repository')
         node.setValue(labbookName, 'labbookName')
         node.setValue(owner, 'owner')
+        node.setValue(componentId, 'name')
         const newEdge = store.create(
           'client:newEdge:' + tempID,
           'PackageManagerEdge',

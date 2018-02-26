@@ -148,6 +148,7 @@ export default class CustomDependenciesDropdown extends Component {
                     className="CustomDependenciesDropdown__input-container"
                     onFocus={()=>{this._showMenu()}}>
                     <input
+                      placeholder="Click or type to search custom dependencies"
                       onKeyUp={(evt)=> this._setFilterText(evt)}
                       className="CustomDependenciesDropdown__input"
                       type="text" />
@@ -183,7 +184,7 @@ const CustomDependency = ({edge, self}) =>{
       <div>{edge.node.name}</div>
       <div>
         <button
-          className="CustomDependenciesDropdown__button--round"
+          className="CustomDependenciesDropdown__button--round CustomDependenciesDropdown__button--add"
           onClick={()=>self._addDependency(edge)}>
         </button>
       </div>

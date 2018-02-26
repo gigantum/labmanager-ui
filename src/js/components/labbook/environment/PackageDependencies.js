@@ -397,7 +397,7 @@ class PackageDependencies extends Component {
       <div className="PackageDependencies">
 
         <div className={blockClass + '__header-container'}>
-          <h4 className="PackageDependencies__header">Package Dependencies</h4>
+          <h4 className="PackageDependencies__header">Packages</h4>
         </div>
 
         <div className="PackageDependencies__card">
@@ -424,7 +424,7 @@ class PackageDependencies extends Component {
             <button
               onClick={()=> this._toggleAddPackageMenu()}
               className="PackageDependencies__button PackageDependencies__button--line-18">
-              Add Dependencies
+              Add Packages
             </button>
             <div className={packageMenu}>
               <div className="PackageDependencies__package-menu">
@@ -473,7 +473,7 @@ class PackageDependencies extends Component {
                   className="PackageDependencies__button--absolute"
                   onClick={()=> this._addPackageComponentMutation()}
                   disabled={disableInstall}>
-                  Install Selected Dependencies
+                  Install Selected Packages
                 </button>
             </div>
           </div>
@@ -587,7 +587,7 @@ export default createPaginationContainer(
     let hasNext = !props.environment.packageDependencies.pageInfo.hasNextPage
 
     first = hasNext ? first + 1 : first
-  
+
      return {
        first,
        cursor,
