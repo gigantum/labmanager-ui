@@ -1,5 +1,6 @@
 //vendor
 import React from 'react'
+import uuidv4 from 'uuid/v4'
 //utilities
 import validation from 'JS/utils/Validation'
 //mutations
@@ -28,30 +29,31 @@ export default class CreateLabbook extends React.Component {
     this._updateRemoteUrl =  this._updateRemoteUrl.bind(this)
 
   }
-
-
   /**
   *   @param {Object} evt
   *   takes an event input
   *   creates a labbook mutation sets labbook name on parent component
   *   triggers setComponent to proceed to next view
   **/
-
   continueSave = (evt) => {
     const {name, description} = this.state;
+    const id = uuidv4()
     let viewerId = 'localLabbooks';//Todo: figure out what to do with viewerId in the mutation context
     let self = this;
 
     if(this.state.remoteURL.length > 0){
       const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
       const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
-      const remote = 'https://' + this.state.remoteURL + '.git'
-
+      const remote = this.state.remoteURL.indexOf('https://') > -1 ? this.state.remoteURL + '.git' : 'https://' + this.state.remoteURL + '.git'
+      console.log(remote)
       store.dispatch(
         {
-          type: "INFO_MESSAGE",
+          type: "MULTIPART_INFO_MESSAGE",
           payload: {
-            message: 'Importing LabBook please wait'
+            id: id,
+            message: 'Importing LabBook please wait',
+            isLast: false,
+            error: false
           }
         })
 
@@ -66,10 +68,12 @@ export default class CreateLabbook extends React.Component {
             console.error(error)
             store.dispatch(
               {
-                type: 'ERROR_MESSAGE',
+                type: 'MULTIPART_INFO_MESSAGE',
                 payload: {
-                  message: 'ERRROR: Could not import remote LabBook',
-                  messagesList: error
+                  id: id,
+                  message: 'ERROR: Could not import remote LabBook',
+                  messagesList: error,
+                  error: true
               }
             })
 
@@ -77,9 +81,12 @@ export default class CreateLabbook extends React.Component {
 
             store.dispatch(
               {
-                type: 'INFO_MESSAGE',
+                type: 'MULTIPART_INFO_MESSAGE',
                 payload: {
-                  message: `Successfully imported remote LabBook ${labbookName}`
+                  id: id,
+                  message: `Successfully imported remote LabBook ${labbookName}`,
+                  isLast: true,
+                  error: false
                 }
               })
             BuildImageMutation(
@@ -91,10 +98,12 @@ export default class CreateLabbook extends React.Component {
                 console.error(error)
                 store.dispatch(
                   {
-                    type: 'ERROR_MESSAGE',
+                    type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
+                      id: id,
                       message: `ERROR: Failed to build ${labbookName}`,
-                      messsagesList: error
+                      messsagesList: error,
+                      error: true
                   }
                 })
               }
@@ -112,10 +121,12 @@ export default class CreateLabbook extends React.Component {
                 console.error(error)
                 store.dispatch(
                   {
-                    type: 'ERROR_MESSAGE',
+                    type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
+                      id: id,
                       message: `ERROR: Failed to build ${labbookName}`,
-                      messsagesList: error
+                      messsagesList: error,
+                      error: true
                   }
                 })
               }

@@ -3,12 +3,13 @@ import Routes from 'Components/Routes'
 import store from 'JS/redux/store'
 
 class Callback extends Component {
-  render() {
+  componentWillMount() {
     let route = sessionStorage.getItem('CALLBACK_ROUTE') ? sessionStorage.getItem('CALLBACK_ROUTE') : '/labbooks';
-
+    console.log(this)
     this.props.history.replace(route)
-
-    return(<Routes />)
+  }
+  render() {
+    return(<div></div>)
   }
 }
 

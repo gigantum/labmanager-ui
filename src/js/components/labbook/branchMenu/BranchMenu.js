@@ -1,6 +1,7 @@
 //vendor
 import React, { Component } from 'react'
 import classNames from 'classnames'
+import uuidv4 from 'uuid/v4'
 //components
 import LoginPrompt from './LoginPrompt'
 //utilities
@@ -182,7 +183,7 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _addRemote(){
-
+    let id = uuidv4()
     let self = this;
     this._checkSessionIsValid().then((response) => {
       if(response.data){
@@ -192,9 +193,12 @@ export default class UserNote extends Component {
           self.setState({menuOpen: false})
 
           store.dispatch({
-            type: 'INFO_MESSAGE',
+            type: 'MULTIPART_INFO_MESSAGE',
             payload: {
-              message: 'Adding remote server ..'
+              id: id,
+              message: 'Publishing LabBook to Gigantum cloud ...',
+              isLast: false,
+              error: false
             }
           })
 
@@ -207,17 +211,23 @@ export default class UserNote extends Component {
                 if(error){
 
                   store.dispatch({
-                    type: 'INFO_MESSAGE',
+                    type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
-                      message: 'Publish failed'
+                      id: id,
+                      message: 'Publish failed',
+                      messageList: error,
+                      error: true
                     }
                   })
                 }else{
 
                   store.dispatch({
-                    type: 'INFO_MESSAGE',
+                    type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
-                      message: `Added remote https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`
+                      id: id,
+                      message: `Added remote https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`,
+                      isLast: true,
+                      error: false
                     }
                   })
                   self.setState({
@@ -249,15 +259,19 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _sync(){
+    let id = uuidv4()
     let self = this;
     this._checkSessionIsValid().then((response) => {
       if(response.data){
 
         if(response.data.userIdentity.isSessionValid){
           store.dispatch({
-            type: 'INFO_MESSAGE',
+            type: 'MULTIPART_INFO_MESSAGE',
             payload: {
-              message: 'Syncing with remote ...'
+              id: id,
+              message: 'Syncing LabBook with Gigantum cloud ...',
+              isLast: false,
+              error: false
             }
           })
 
@@ -269,15 +283,21 @@ export default class UserNote extends Component {
                 store.dispatch({
                   type: 'ERROR_MESSAGE',
                   payload: {
+                    id: id,
                     message: `Could not sync ${this.state.labbookName}`,
-                    messagesList: error
+                    messagesList: error,
+                    error: true
                   }
                 })
               }else{
+          
                 store.dispatch({
                   type: 'INFO_MESSAGE',
                   payload: {
-                    message: `Successfully synced ${this.state.labbookName}`
+                    id: id,
+                    message: `Successfully synced ${this.state.labbookName}`,
+                    isLast: true,
+                    error: false
                   }
                 })
               }

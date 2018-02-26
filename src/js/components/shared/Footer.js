@@ -52,9 +52,14 @@ export default class Footer extends Component {
     footer.messageStack.forEach((messageItem)=>{
       const timeInSeconds = 15 * 1000
       if(!messageItem.error){
-        setTimeout(()=>{
-          this._removeMessage(messageItem)
-        }, timeInSeconds)
+
+        if(!messageItem.isMultiPart || (messageItem.isMultiPart && messageItem.isLast)){
+          console.log('remove')
+          setTimeout(()=>{
+
+            this._removeMessage(messageItem)
+          }, timeInSeconds)
+        }
       }
     })
   }
@@ -132,7 +137,7 @@ export default class Footer extends Component {
        'Footer--expand': (this.state.open || this.state.uploadOpen),
        'Footer--expand-extra': (this.state.open && this.state.uploadOpen)
       });
-
+    console.log(this.state.messageStack)
     let mostRecentMessage = this.state.messageStack[this.state.messageStack.length - 1]
 
     let statusClassType = '';
