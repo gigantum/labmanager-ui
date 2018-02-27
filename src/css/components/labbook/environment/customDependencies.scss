@@ -2,6 +2,10 @@
   position: relative;
 }
 
+.CustomDependencies__header{
+  color: $romanSilver;
+}
+
 .CustomDependencies__card{
   @extend .card;
   padding: 20px;

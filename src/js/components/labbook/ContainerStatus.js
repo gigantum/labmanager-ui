@@ -344,7 +344,7 @@ export default class ContainerStatus extends Component {
       (response, error)=>{
           if(response){
 
-            let path = response.startDevTool.path.replace('0.0.0.0', 'localhost')
+            let path = response.startDevTool.path.replace('0.0.0.0', window.location.hostname)
             window.open(path, '_blank')
           }
           if(error){

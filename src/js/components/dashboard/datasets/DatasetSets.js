@@ -10,6 +10,7 @@ import React, { Component } from 'react'
 export default class DatasetSets extends Component {
 
   render(){
+    console.log(this)
     return(
       <div className="Datasets">
         <h1>Datasets</h1>

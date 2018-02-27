@@ -15,12 +15,8 @@
 
 .Dashboard__nav-item{
   cursor: pointer;
-  color: $charcoal;
+  color: $jet;
 }
 .Dashboard__nav-item.selected{
   text-decoration: underline;
-}
-
-.Dashboard__nav-item:hover{
-  color: $orange;
 }

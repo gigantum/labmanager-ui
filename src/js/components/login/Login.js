@@ -52,6 +52,7 @@ export default class Login extends Component {
 
     const errorType = sessionStorage.getItem('LOGIN_ERROR_TYPE'),
     errorDescription = sessionStorage.getItem('LOGIN_ERROR_DESCRIPTION')
+
     return(
       <div className="Login">
 
