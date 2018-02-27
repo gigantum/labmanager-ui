@@ -34,10 +34,16 @@ export default class Auth {
       if (authResult && authResult.accessToken && authResult.idToken) {
 
         this.setSession(authResult);
+        sessionStorage.removeItem('LOGIN_ERROR_DESCRIPTION')
+        sessionStorage.removeItem('LOGIN_ERROR_TYPE')
 
       } else if (err) {
         console.error(err);
-        alert(`Error: ${err.error}. Check the console for further details.`); //TODO make this a modal or redirect to login failure page
+        history.replace('/login')
+        store.dispatch({type: 'LOGIN_ERROR', payload:{error: err}})
+        sessionStorage.setItem('LOGIN_ERROR_TYPE', err.error)
+        sessionStorage.setItem('LOGIN_ERROR_DESCRIPTION', err.errorDescription)
+      //  alert(`Error: ${err.error}. Check the console for further details.`); //TODO make this a modal or redirect to login failure page
       }
     });
   }
@@ -54,10 +60,9 @@ export default class Auth {
     localStorage.setItem('email', authResult.idTokenPayload.email);
     localStorage.setItem('username', authResult.idTokenPayload.nickname);
     //redirect to labbooks when user logs in
+    let route = sessionStorage.getItem('CALLBACK_ROUTE') ? sessionStorage.getItem('CALLBACK_ROUTE') : '/labbooks';
 
-    let storageRoute = sessionStorage.getItem('CALLBACK_ROUTE')
-    let route = storageRoute !== '' ? storageRoute : `/labbooks`
-
+    route = route === '/callback' ? '/labbook': route;
     history.replace(route)
   }
 
@@ -70,6 +75,9 @@ export default class Auth {
     localStorage.removeItem('given_name');
     localStorage.removeItem('email');
     localStorage.removeItem('username');
+    sessionStorage.removeItem('CALLBACK_ROUTE');
+
+
     RemoveUserIdentityMutation(()=>{
       //redirect to root when user logs out
       history.replace('/');

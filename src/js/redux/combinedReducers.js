@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import footer from './reducers/footer';
+import login from './reducers/login';
 import routes from './reducers/routes';
 //labbook reducers
 import labbook from './reducers/labbook/labbook';
@@ -17,5 +18,6 @@ export default combineReducers({
   detailView,
   routes,
   containerStatus,
-  environment
+  environment,
+  login
 });

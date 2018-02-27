@@ -13,8 +13,11 @@ export const UPLOAD_MESSAGE_UPDATE = 'UPLOAD_MESSAGE_UPDATE';
 export const UPLOAD_MESSAGE_REMOVE = 'UPLOAD_MESSAGE_REMOVE';
 export const IMPORT_MESSAGE_SUCCESS = 'IMPORT_MESSAGE_SUCCESS';
 //
-export const RESET_FOOTER_STORE = "RESET_FOOTER_STORE"
+export const RESET_FOOTER_STORE = 'RESET_FOOTER_STORE'
 export const TOGGLE_MESSAGE_LIST = 'TOGGLE_MESSAGE_LIST'
+
+export const MULTIPART_INFO_MESSAGE = 'MULTIPART_INFO_MESSAGE'
+export const MULTIPART_ERROR_MESSAGE = 'MULTIPART_ERROR_MESSAGE'
 
 let tempId = 0
 
@@ -69,7 +72,8 @@ export default (
       id: id,
       error: false,
       className: 'Footer__message',
-      messageBody: action.payload.messagesList ? action.payload.messagesList : []
+      messageBody: action.payload.messagesList ? action.payload.messagesList : [],
+      isMultiPart: false
   })
 
   return {
@@ -232,7 +236,43 @@ export default (
      ...state,
      messageListOpen: action.payload.messageListOpen
    }
- }else if(action.type === RESET_FOOTER_STORE){
+ }else if(action.type === MULTIPART_INFO_MESSAGE){
+   let messageStack = state.messageStack;
+   let previousIndex = 0;
+   let doesMessageExist = messageStack.filter((message, index) => {
+
+     if(message.id === action.payload.id){
+       previousIndex = index
+     }
+     return message.id === action.payload.id
+   })
+   if(doesMessageExist.length > 0){
+
+    messageStack.splice(previousIndex, 1);
+  }
+
+  messageStack.push({
+    message: action.payload.message,
+    id: action.payload.id,
+    className: action.payload.error ? 'Footer__message--error' : 'Footer__message',
+    isLast: action.payload.isLast,
+    isMultiPart: true,
+    messageBody: action.payload.messageList,
+    error: action.payload.error
+  })
+
+
+    return {
+      ...state,
+      id: action.payload.id,
+      message: action.payload.message,
+      isLast: action.payload.isLast,
+      messageStack: messageStack,
+      open: true,
+      success: true,
+      error: action.payload.error
+    }
+  }else if(action.type === RESET_FOOTER_STORE){
    return {
      ...state,
      open: false,

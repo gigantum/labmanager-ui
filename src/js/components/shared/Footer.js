@@ -52,9 +52,14 @@ export default class Footer extends Component {
     footer.messageStack.forEach((messageItem)=>{
       const timeInSeconds = 15 * 1000
       if(!messageItem.error){
-        setTimeout(()=>{
-          this._removeMessage(messageItem)
-        }, timeInSeconds)
+
+        if(!messageItem.isMultiPart || (messageItem.isMultiPart && messageItem.isLast)){
+
+          setTimeout(()=>{
+
+            this._removeMessage(messageItem)
+          }, timeInSeconds)
+        }
       }
     })
   }

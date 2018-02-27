@@ -224,8 +224,10 @@ class CustomDependencies extends Component {
   *  filters custom dependencies in table view
   */
   _filterCustomDependencies(customDependencies){
+
     let searchValue = this.state.searchValue.toLowerCase()
     let dependencies = customDependencies.edges.filter((edge)=>{
+
       let name = edge.node.name.toLowerCase()
       let searchMatch = ((searchValue === '') || (name.indexOf(searchValue) > -1))
       return searchMatch
@@ -261,7 +263,7 @@ class CustomDependencies extends Component {
 
     const {customDependencies} = this.props.environment;
 
-
+  
     if (customDependencies) {
       const viewContainerCss = classNames({
         'CustomDependencies__view-container': true,
@@ -297,7 +299,7 @@ class CustomDependencies extends Component {
                           <div>{edge.node.name}</div>
                           <div>
                             <button
-                              className="CustomDependenciesDropdown__button--round"
+                              className="CustomDependencies__button--round CustomDependencies__button--remove"
                               onClick={()=> this._removeDependency(edge, index)}></button>
                           </div>
                         </div>)
@@ -305,6 +307,7 @@ class CustomDependencies extends Component {
                   }
                   <button
                     className="CustomDependencies__button"
+                    disabled={this.state.customDependencies.length === 0}
                     onClick={() => this._addCustomDepenedenciesMutation()}>
                     Install Selected Dependencies
                   </button>
@@ -367,7 +370,7 @@ const CustomDependencyItem = ({edge, index, self}) =>{
       <td></td>
       <td width="60">
         <button
-          className="CustomDependencies__button--round"
+          className="CustomDependencies__button--round CustomDependencies__button--remove"
           onClick={()=> self._removeDependencyMuation(edge) }></button>
       </td>
   </tr>)
