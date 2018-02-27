@@ -79,7 +79,7 @@ export default class Routes extends Component {
   render(){
 
     let self = this
-    console.log(this)
+
     return(
 
         <Router>

@@ -67,7 +67,7 @@ export default class DashboardContainer extends Component {
             cursor: null
           }}
           render={({error, props}) => {
-            console.log(props)
+
             if (error) {
               console.log(error)
               return <div>{error.message}</div>
@@ -93,7 +93,7 @@ export default class DashboardContainer extends Component {
       }
   }
   render() {
-    console.log(this)
+
     return (
       <div className='Dashboard flex flex-column'>
 
