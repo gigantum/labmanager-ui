@@ -45,7 +45,7 @@ export default class CreateLabbook extends React.Component {
       const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
       const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
       const remote = this.state.remoteURL.indexOf('https://') > -1 ? this.state.remoteURL + '.git' : 'https://' + this.state.remoteURL + '.git'
-      console.log(remote)
+  
       store.dispatch(
         {
           type: "MULTIPART_INFO_MESSAGE",

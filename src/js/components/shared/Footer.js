@@ -54,7 +54,7 @@ export default class Footer extends Component {
       if(!messageItem.error){
 
         if(!messageItem.isMultiPart || (messageItem.isMultiPart && messageItem.isLast)){
-          console.log('remove')
+
           setTimeout(()=>{
 
             this._removeMessage(messageItem)
