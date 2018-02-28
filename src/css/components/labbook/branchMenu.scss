@@ -159,7 +159,10 @@
 }
 
 .BranchMenu__sync{
-  width: 100%
+  width: 100%;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
 }
 
 .BranchMenu__item--collaborators-button{

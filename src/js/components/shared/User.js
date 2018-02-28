@@ -82,7 +82,7 @@ export default class User extends Component {
             className="User__button btn-margin"
             onClick={this.logout.bind(this)}
           >
-            Log Out
+            Logout
         </button>
 
         </div>

@@ -392,6 +392,11 @@ class PackageDependencies extends Component {
         return packageItem.validity === 'checking'
       })
 
+      let addPackageCSS = classNames({
+        'PackageDependencies__button': true, 'PackageDependencies__button--line-18': true,
+        'PackageDependencies__button--open': this.state.packageMenuVisible
+      })
+
       let disableInstall = (this.state.packages.length === 0) || (packagesProcessing.length > 0)
       return(
       <div className="PackageDependencies">
@@ -423,7 +428,7 @@ class PackageDependencies extends Component {
           <div className="PackageDependencies__add-package">
             <button
               onClick={()=> this._toggleAddPackageMenu()}
-              className="PackageDependencies__button PackageDependencies__button--line-18">
+              className={addPackageCSS}>
               Add Packages
             </button>
             <div className={packageMenu}>

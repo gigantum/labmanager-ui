@@ -4,7 +4,7 @@
 
 .RecentActivity__title-container{
   @include flex(space-between, row);
-  align-items: flex-end;
+  align-items: center;
 }
 
 .RecentActivity__card{

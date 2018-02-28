@@ -3,7 +3,6 @@
   padding: 20px;
 }
 .PackageDependencies__header{
-  margin: 30px 0 10px 0;
   color: $romanSilver;
 }
 
@@ -36,7 +35,7 @@
 }
 
 .PackageDependencies__table-row--checking{
-  background: linear-gradient(-45deg, $slateBlue, $purple, $turquise, $goldenLemon) no-repeat;
+  background: linear-gradient(-45deg, $slateBlue, $azure, $turquise, $goldenLemon) no-repeat;
   background-size: 200% 2px;
   animation: Gradient 7s ease infinite;
   border: 0px;
@@ -68,14 +67,16 @@
   height: 0px;
 }
 
-.PackageDependencies__button--line-18{
-    line-height: 18px;
-}
+
+
+
 
 .PackageDependencies__button:hover{
   background-color: $grey-light;
   color: $turquise;
   border: none;
+  font-weight: bold;
+
 }
 .PackageDependencies__button,
 .PackageDependencies__button:focus{
@@ -109,6 +110,32 @@
 .PackageDependencies__button--remove:hover{
   background: $turquise url('../images/icons/close-white.svg') no-repeat 50% 50%;
   background-size: 14px;
+}
+
+.PackageDependencies__button--line-18:hover,
+.PackageDependencies__button--line-18:focus{
+  color: $turquise !important;
+  background: url('../images/icons/down-arrow-turquise.svg') no-repeat calc(50% + 70px) 50%;
+  background-size: 20px;
+}
+
+
+.PackageDependencies__button--line-18{
+    line-height: 18px;
+    font-weight: bold;
+    background: url('../images/icons/down-arrow-azure.svg') no-repeat calc(50% + 70px) 50%;
+    background-size: 20px;
+}
+
+.PackageDependencies__button--open{
+  background: url('../images/icons/up-arrow-azure.svg') no-repeat calc(50% + 70px) 50%;
+  background-size: 20px;
+}
+
+.PackageDependencies__button--open:hover,
+.PackageDependencies__button--open:focus{
+  background: url('../images/icons/up-arrow-turquise.svg') no-repeat calc(50% + 70px) 50%;
+  background-size: 20px;
 }
 
 

@@ -2,7 +2,7 @@
   margin-top: 20px;
   .FilePreview__title-container{
     @include flex(space-between, row);
-    align-items: flex-end;
+    align-items: center;
   }
 
   .FilePreview__list{
