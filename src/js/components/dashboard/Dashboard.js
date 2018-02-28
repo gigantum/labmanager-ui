@@ -58,38 +58,39 @@ export default class DashboardContainer extends Component {
         <DatasetSets/>)
     }else{
 
-      return (<QueryRenderer
-        environment={environment}
-        query={LabbookQuery}
-        variables={{
-          first: 20,
-          cursor: null
-        }}
-        render={({error, props}) => {
+      return (
+        <QueryRenderer
+          environment={environment}
+          query={LabbookQuery}
+          variables={{
+            first: 20,
+            cursor: null
+          }}
+          render={({error, props}) => {
 
-          if (error) {
-            console.log(error)
-            return <div>{error.message}</div>
-          } else if (props) {
+            if (error) {
+              console.log(error)
+              return <div>{error.message}</div>
+            } else if (props) {
+
+                return (
+                  <LocalLabbooks
+                    feed={props}
+                    history={this.props.history}
+                  />
+                )
+
+            }else{
 
               return (
-                <LocalLabbooks
-                  feed={props}
-                  history={this.props.history}
-                />
+                <Loader />
               )
+            }
+          }}
+        />
+      )
 
-          }else{
-
-            return (
-              <Loader />
-            )
-          }
-        }}
-      />
-    )
-
-    }
+      }
   }
   render() {
 

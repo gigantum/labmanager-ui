@@ -211,6 +211,7 @@ class LocalLabbooks extends Component {
   }
 
   render(){
+
       let {props} = this;
       let owner = localStorage.getItem('username')
 

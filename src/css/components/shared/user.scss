@@ -34,9 +34,11 @@
 }
 
 .User__dropdown{
-  width: 120px;
+  border: 1px solid $white;
+  margin: 10px;
+  width: 100px;
   padding: 5px;
-
+  border-radius: 8px;
 }
 
 // .User__dropdown--arrow{
@@ -50,18 +52,15 @@
 .User__button{
   width: 100%;
   align-self: center;
-  background-color: $jet;
-  border-top: 1px solid $turquise;
-  border-bottom: 1px solid $turquise;
-  border-left: 0px solid $turquise;
-  border-right: 0px solid $turquise;
   color: $white;
   border-radius: 0px;
   padding: 5px;
+  background-color: transparent !important;
+  border-width: 0px;
 
 }
 
 .User__button:hover{
   color: $turquise;
-  background: $jet;
+  border-width: 0px;
 }

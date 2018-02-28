@@ -2,26 +2,16 @@
   position: relative;
 }
 
+.CustomDependencies__header{
+  color: $romanSilver;
+}
+
 .CustomDependencies__card{
   @extend .card;
   padding: 20px;
 }
 
-.CustomDependencies__button--flat,
-.CustomDependencies__button--flat:focus{
-  padding: 5px 0;
-  background-color: $grey-light;
-  border: none;
-  color: $azure;
-  width: 100%;
-}
 
-.CustomDependencies__button--flat:hover{
-  background-color: $grey-light;
-  border: none;
-  color: $turquise;
-  width: 100%;
-}
 
 .CustomDependencies__add-dependencies{
   background-color: $grey-light;
@@ -112,9 +102,9 @@ input.CustomDependenciesDropdown__input[type="text"]:focus{
     position: absolute;
     bottom: -20px;
     left: 50%;
-    width: 240px;
+    width: 270px;
     height: 40px;
-    margin: 0 0 0 -120px;
+    margin: 0 0 0 -135px;
   }
 }
 
@@ -135,4 +125,47 @@ input.CustomDependenciesDropdown__input[type="text"]:focus{
   height: 0px;
   max-height: 0px;
   padding: 0px;
+}
+
+
+// .CustomDependencies__button--flat{
+//   padding: 5px 0;
+//   font-weight: bold;
+//   background-color: $grey-light;
+//   border: none;
+//   color: $azure;
+//   width: 100%;
+// }
+
+
+.CustomDependencies__button--flat:hover,
+.CustomDependencies__button--flat:focus{
+  width: 100%;
+  background-color: $grey-light;
+  border: none;
+  color: $turquise !important;
+  background: url('../images/icons/down-arrow-turquise.svg') no-repeat calc(50% + 87px) 50%;
+  background-size: 20px;
+}
+
+
+.CustomDependencies__button--flat{
+    border: none;
+    color: $azure;
+    width: 100%;
+    line-height: 18px;
+    font-weight: bold;
+    background: url('../images/icons/down-arrow-azure.svg') no-repeat calc(50% + 87px) 50%;
+    background-size: 20px;
+}
+
+.CustomDependencies__button--open{
+  background: url('../images/icons/up-arrow-azure.svg') no-repeat calc(50% + 87px) 50%;
+  background-size: 20px;
+}
+
+.CustomDependencies__button--open:hover,
+.CustomDependencies__button--open:focus{
+  background: url('../images/icons/up-arrow-turquise.svg') no-repeat calc(50% + 87px) 50%;
+  background-size: 20px;
 }

@@ -263,18 +263,25 @@ class CustomDependencies extends Component {
 
     const {customDependencies} = this.props.environment;
 
-  
+
     if (customDependencies) {
       const viewContainerCss = classNames({
         'CustomDependencies__view-container': true,
         'CustomDependencies__view-container--no-height': !this.state.viewContainerVisible
       })
 
+      const addDependenciesButtonCSS = classNames({
+        'CustomDependencies__button--flat': true,
+        'CustomDependencies__button--open': this.state.viewContainerVisible
+      })
+
       const customDependenciesEdges = this._filterCustomDependencies(customDependencies)
+
+
       return(
         <div className="CustomDependencies">
 
-            <div className="CustomDependencies__header-container">
+            <div className="Environment__header-container">
               <h4 className="CustomDependencies__header">
                 Custom Dependencies
               </h4>
@@ -283,7 +290,7 @@ class CustomDependencies extends Component {
             <div className="CustomDependencies__add-dependencies">
               <button
                 onClick={()=>{this._toggleViewContainer()}}
-                className="CustomDependencies__button--flat">
+                className={addDependenciesButtonCSS}>
                 Add Dependencies</button>
               <div className={viewContainerCss}>
                 <CustomDependenciesDropdown

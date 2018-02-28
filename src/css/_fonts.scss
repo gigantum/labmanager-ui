@@ -1,20 +1,20 @@
 @font-face {
-	font-family: "SourceSansPro";
+	font-family: "NunitoSans";
 	font-weight: normal;
 	font-style: normal;
-	src: url("./../fonts/source-sans-pro/SourceSansPro-Regular.ttf");
+	src: url("./../fonts/nunito-sans/NunitoSans-Regular.ttf");
 }
 
 @font-face {
-	font-family: "SourceSansPro";
-	src: url("./../fonts/source-sans-pro/SourceSansPro-Bold.ttf");
+	font-family: "NunitoSans";
+	src: url("./../fonts/nunito-sans/NunitoSans-Bold.ttf");
 	font-weight: bold;
 	font-style: bold;
 }
 
 @font-face {
-	font-family: "SourceSansPro";
-	src: url("./../fonts/source-sans-pro/SourceSansPro-ExtraLight.ttf");
+	font-family: "NunitoSans";
+	src: url("./../fonts/nunito-sans/NunitoSans-Light.ttf");
 	font-weight: 100;
 	font-style: 100;
 }
@@ -32,7 +32,7 @@
 }
 
 body *{
-  font-family: "SourceSansPro";
+  font-family: "NunitoSans";
 }
 
 body .fa {

@@ -82,7 +82,7 @@ export default class Routes extends Component {
 
     return(
 
-        <Router history={history}>
+        <Router>
 
           <Switch>
 

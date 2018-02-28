@@ -33,7 +33,6 @@
 @import 'components/shared/loader';
 @import 'components/shared/user';
 //
-@import 'components/breadCrumbs.scss';
 @import 'components/routes.scss';
 @import 'components/login.scss';
 @import 'components/home.scss';
@@ -102,7 +101,7 @@
 }
 
 .btn{
-  background-color: $datasets;
+  background-color: $slateBlue;
   border-radius: 20px;
   font-weight: 100;
 }

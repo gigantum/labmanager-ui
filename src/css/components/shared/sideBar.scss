@@ -23,7 +23,7 @@
 }
 
 .SideBar__title{
-  color: $cream;
+  color: $white;
 }
 
 .SideBar__list-item{
@@ -104,16 +104,16 @@
 }
 
 .SideBar__button{
-  background-color: $orange;
-  border: 1px solid $cream;
-  color: $cream;
+  background-color: none;
+  border: 1px solid $white;
+  color: $white;
 }
 
 .SideBar__button:hover{
-  background-color: $cream;
-  border: 1px solid $cream;
+  background-color: $white;
+  border: 1px solid $white;
   border-width: 0px;
-  color: $orange;
+  color: $azure;
 }
 
 .SideBar__button--logout{

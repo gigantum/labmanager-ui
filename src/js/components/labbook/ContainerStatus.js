@@ -299,6 +299,8 @@ export default class ContainerStatus extends Component {
       payload:{
       }
     })
+
+
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
@@ -326,6 +328,8 @@ export default class ContainerStatus extends Component {
             payload:{
             }
           })
+
+
         }
       }
     )
@@ -336,7 +340,12 @@ export default class ContainerStatus extends Component {
   */
   _openDevToolMuation(developmentTool){
     const {owner, labbookName} = store.getState().routes
-
+    store.dispatch({
+      type: 'INFO_MESSAGE',
+      payload:{
+        message: `Starting ${developmentTool}`,
+      }
+    })
     StartDevToolMutation(
       owner,
       labbookName,
@@ -344,7 +353,7 @@ export default class ContainerStatus extends Component {
       (response, error)=>{
           if(response){
 
-            let path = response.startDevTool.path.replace('0.0.0.0', 'localhost')
+            let path = response.startDevTool.path.replace('0.0.0.0', window.location.hostname)
             window.open(path, '_blank')
           }
           if(error){

@@ -3,6 +3,10 @@
 
 }
 
+.Base__header{
+  color: $romanSilver;
+}
+
 .Base__card{
   @extend .card;
   @include flex(space-between, row);

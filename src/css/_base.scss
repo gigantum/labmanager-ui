@@ -3,7 +3,7 @@ html, body, .root{
   height: 100%;
   margin: 0;
   padding: 0;
-  color: $charcoal;
+  color: $jet;
   font-family: arial;
   position: relative;
 }
@@ -27,7 +27,11 @@ h1,
 h2,
 h3,
 h4,
-h5,
+h5{
+  padding: 0px 0;
+  margin: 20px 0;
+  font-weight: 100;
+}
 h6 {
   padding: 0px 0;
   margin: 0;

@@ -23,7 +23,7 @@
 
 .LocalLabbooks__menu{
   width: 100%;
-  border-bottom: 1px solid $lightGrey;
+  border-bottom: 1px solid $grey;
 }
 
 .LocalLabbooks__nav{
@@ -31,7 +31,7 @@
 }
 
 .LocalLabbooks__menu{
-  border-bottom: 1px solid $lightGrey;
+  border-bottom: 1px solid $grey;
   position: relative;
   box-shadow: none;
   height: 31px;
@@ -46,7 +46,7 @@
     padding: 5px 5px;
     margin: 0 25px;
     cursor: pointer;
-    bottom: -2px;
+    bottom: 0px;
   }
 
   .Labbook__navigation-item--overview{
@@ -60,7 +60,7 @@
     border-bottom: 3px solid $turquise;
     z-index: 100;
     position: relative;
-    bottom: -2px;
+    bottom: 0px;
     line-height: 15px;
 
   }
