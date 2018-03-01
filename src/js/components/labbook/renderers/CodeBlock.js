@@ -16,8 +16,6 @@ class CodeBlock extends React.PureComponent {
   }
 
   render() {
-    console.log(CodeMirror)
-    console.log(this.props.value, CodeMirror)
     let code = this.props.value
     return (
       <SyntaxHighlighter language='python' style={okaidia}>{code}</SyntaxHighlighter>
