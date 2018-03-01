@@ -6,9 +6,6 @@ import GigantumPNG from 'Images/logos/gigantum.png'
 
 
 export default class SideBar extends Component {
-  constructor(props){
-  	super(props);
-  }
   /**
     @param {}
     logout through Auth0
@@ -22,7 +19,7 @@ export default class SideBar extends Component {
     return (
       <div className="SideBar col-sm-1">
         <div className={'SideBar__inner-container'}>
-          <img className="SideBar__logo" src={GigantumPNG}></img>
+          <img alt="gigantum" className="SideBar__logo" src={GigantumPNG}></img>
           <ul className='SideBar__nav'>
             <li className={isLabbooks ? 'SideBar__list-item--selected' : 'SideBar__list-item'}>
               <Link

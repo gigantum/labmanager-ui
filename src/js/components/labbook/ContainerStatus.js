@@ -398,7 +398,6 @@ export default class ContainerStatus extends Component {
   }
 
   render(){
-    let self = this
     return(
       <QueryRenderer
         variables={{

@@ -4,8 +4,6 @@ import {
   QueryRenderer,
   graphql
 } from 'react-relay'
-//components
-import Loader from 'Components/shared/Loader'
 //utilites
 import environment from 'JS/createRelayEnvironment'
 //store

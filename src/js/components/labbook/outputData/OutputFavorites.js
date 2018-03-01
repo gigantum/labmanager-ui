@@ -7,9 +7,6 @@ import FavoriteCard from './../fileBrowser/FavoriteCard'
 import store from 'JS/redux/store'
 
 class OutputFavorites extends Component {
-  constructor(props){
-  	super(props);
-  }
 
   /*
     handle state and addd listeners when component mounts

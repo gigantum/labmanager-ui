@@ -42,11 +42,9 @@ export default class ActivityCard extends Component {
 
   render(){
 
-    let tags = (typeof this.props.edge.node.tags === 'string') ? JSON.parse(this.props.edge.node.tags) : this.props.edge.node.tags
-
     const node = this.props.edge.node;
     const type = this.props.edge.node.type.toLowerCase()
-    
+
     return(
       <div className={this.state.showExtraInfo ? 'ActivityCard card': 'ActivityCard--collapsed card'}>
 

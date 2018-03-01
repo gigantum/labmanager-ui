@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-//utilities
-import JobStatus from 'JS/utils/JobStatus'
 //store
 import store from "JS/redux/store"
 

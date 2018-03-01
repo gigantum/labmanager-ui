@@ -6,8 +6,6 @@ import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrappe
 //store
 import store from 'JS/redux/store'
 
-let outputRootFolder = 'output'
-
 class OutputDataBrowser extends Component {
   constructor(props){
   	super(props);
@@ -57,7 +55,6 @@ class OutputDataBrowser extends Component {
 
   setRootFolder(key){
     this.setState({rootFolder: key})
-    outputRootFolder = key
     this._loadMore()
   }
 

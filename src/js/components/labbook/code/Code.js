@@ -6,9 +6,6 @@ import CodeBrowser from './CodeBrowser'
 import CodeFavorites from './CodeFavorites'
 
 class Code extends Component {
-  constructor(props){
-  	super(props);
-  }
 
   render(){
 

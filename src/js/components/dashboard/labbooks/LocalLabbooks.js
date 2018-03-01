@@ -13,8 +13,6 @@ import ImportModule from 'Components/import/ImportModule'
 import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
 //utils
 import Validation from 'JS/utils/Validation'
-//store
-import store from 'JS/redux/store'
 
 let isLoadingMore = false;
 

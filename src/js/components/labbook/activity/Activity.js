@@ -198,7 +198,7 @@ class Activity extends Component {
 
                       <div className="Activity__date-tab flex flex--column justify--space-around">
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
-                        <div className="Activity__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
+                        <div className="Activity__date-month">{ Config.months[parseInt(k.split('_')[1], 10)] }</div>
                       </div>
 
                       {

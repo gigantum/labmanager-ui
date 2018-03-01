@@ -160,7 +160,7 @@ class PackageDependencies extends Component {
 
     if((store.getState().containerStatus.status === 'Closed') || (store.getState().containerStatus.status === 'Failed')){
       const {labbookName, owner} = store.getState().routes
-      const {environmentId, labbookId} = this.props
+      const {environmentId} = this.props
       const clinetMutationId = uuidv4()
       let self = this
 
@@ -502,12 +502,10 @@ class PackageDependencies extends Component {
             </thead>
             <tbody>
             {
-              filteredPackageDependencies.map((edge, index) => {
-                if(edge.node){
+              filteredPackageDependencies.filter(edge => edge.node).map((edge, index) => {
                   return(
                     this._packageRow(edge, index)
                   )
-                }
               })
             }
             </tbody>

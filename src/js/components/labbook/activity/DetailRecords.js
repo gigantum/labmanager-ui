@@ -42,15 +42,15 @@ export default class UserNote extends Component {
       case 'text/plain':
         return(<b>{item[1]}</b>)
       case 'image/png':
-        return(<img src={item[1]} />)
+        return(<img alt="detail" src={item[1]} />)
       case 'image/jpg':
-        return(<img src={item[1]} />)
+        return(<img alt="detail" src={item[1]} />)
       case 'image/jpeg':
-        return(<img src={item[1]} />)
+        return(<img alt="detail" src={item[1]} />)
       case 'image/bmp':
-        return(<img src={item[1]} />)
+        return(<img alt="detail" src={item[1]} />)
       case 'image/gif':
-        return(<img src={item[1]} />)
+        return(<img alt="detail" src={item[1]} />)
       case 'text/markdown':
         return(<ReactMarkdown source={item[1]} />)
       default:
