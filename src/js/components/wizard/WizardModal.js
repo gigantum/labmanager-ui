@@ -11,8 +11,7 @@ import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
-//config
-import Config from 'JS/config'
+
 
 
 export default class WizardModal extends React.Component {
