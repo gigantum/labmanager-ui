@@ -82,11 +82,12 @@ export default class DetailPanel extends Component {
 
   }
   render(){
+      //added hidden to className to prevent dialogue from showing until this feature is fully implemented
       return(
 
         <div
           ref="DetailPanel"
-          className="DetailPanel">
+          className="DetailPanel hidden">
           <div
             className="DetailPanel--close"
             onClick={()=> this._closePanel()}>

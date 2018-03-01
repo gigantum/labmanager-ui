@@ -30,7 +30,6 @@ class Code extends Component {
             <h5 className="Code__subtitle">Code Files</h5>
             <div className="Code__toolbar">
               <a className="Code__filter">Favorites</a>
-              <a className="Code__filter">Most Used</a>
               <a className="Code__filter">Most Recent</a>
             </div>
           </div>

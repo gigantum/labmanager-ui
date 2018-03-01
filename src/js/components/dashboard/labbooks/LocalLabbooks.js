@@ -32,7 +32,6 @@ class LocalLabbooks extends Component {
 
     this._goToLabbook = this._goToLabbook.bind(this)
     this._loadMore = this._loadMore.bind(this)
-    this._renameLabbookModal = this._renameLabbookModal.bind(this)
     this._showModal = this._showModal.bind(this)
   }
 
@@ -103,20 +102,6 @@ class LocalLabbooks extends Component {
   }
   /**
   *  @param {string} labbookName
-  *  opens rename labbook modal and stores the old labbookName
-  */
-  _renameLabbookModal(labbookName){
-    this.setState({
-      labbookModalVisible: true,
-      oldLabbookName: labbookName
-    })
-
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.remove('hidden')
-    }
-  }
-  /**
-  *  @param {string} labbookName
   *  closes labbook modal and resets state to initial state
   */
   _closeLabbook(labbookName){
@@ -146,31 +131,6 @@ class LocalLabbooks extends Component {
     }else{
       this.setState({showNamingError: true})
     }
-  }
-  /**
-  *  @param {}
-  *  triggers rename mutation
-  **/
-  _renameMutation(){
-    const username = localStorage.getItem('username')
-    let self = this;
-    RenameLabbookMutation(
-      username,
-      this.state.oldLabbookName,
-      this.state.newLabbookName,
-      (response, error) =>{
-
-        if(error){
-          self.setState({renameError: error[0].message})
-        }
-        if(response.renameLabbook.success){
-          if(document.getElementById('modal__cover')){
-            document.getElementById('modal__cover').classList.add('hidden')
-          }
-          self.props.history.replace(`labbooks/${username}/${self.state.newLabbookName}`)
-        }
-      }
-    )
   }
   /**
    * @param {string} filter
@@ -220,29 +180,6 @@ class LocalLabbooks extends Component {
         return(
 
           <div className="LocalLabbooks">
-            { this.state.labbookModalVisible &&
-              <div className="LocalLabbooks__rename-modal">
-                <div
-                  onClick={()=> this._closeLabbook()}
-                  className="LocalLabbooks__rename-close">
-                </div>
-                <h4 className="LocalLabbooks__modal-title">Rename Labbook</h4>
-                <input
-                  onKeyUp={(evt)=> this._setLabbookTitle(evt)}
-                  className="LocalLabbooks__rename-input"
-                  type="text"
-                  placeholder="New Labbook Name"></input>
-                {this.state.showNamingError && <p className="LocalLabbooks__rename-error">Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)</p>}
-                {this.state.renameError && <p className="LocalLabbooks__rename-error">{this.state.renameError}</p>}
-                <button
-                  disabled={(this.state.newLabbookName.length === 0) && !this.state.showNamingError}
-                  className="LocalLabbooks__rename-submit"
-                  onClick={()=> this._renameMutation()}>
-                  Rename LabBook
-                </button>
-
-              </div>
-            }
 
 
             <WizardModal
@@ -292,7 +229,6 @@ class LocalLabbooks extends Component {
                         ref={'LocalLabbookPanel' + edge.node.name}
                         className="LocalLabbooks__panel"
                         edge={edge}
-                        renameLabbookModal={this._renameLabbookModal}
                         goToLabbook={this._goToLabbook}/>
                     )
                   })
