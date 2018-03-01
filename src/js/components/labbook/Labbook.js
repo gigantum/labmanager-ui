@@ -94,7 +94,6 @@ class Labbook extends Component {
     updates history prop
   */
   _setSelectedComponent = (componentName) =>{
-    const {owner} = store.getState().routes
     if(componentName !== this.state.selectedComponent){
       if(store.getState().detailView.selectedComponent === true){
         store.dispatch({
@@ -212,7 +211,7 @@ class Labbook extends Component {
   }
 
   render(){
-  
+
     const { isAuthenticated } = this.props.auth;
     const {labbookName} = this.props;
 

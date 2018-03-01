@@ -33,8 +33,10 @@ export default function CreateLabbookMutation(
   repository,
   componentId,
   revision,
+  isUntracked,
   callback
 ) {
+
   const variables = {
     input: {
       name,
@@ -42,6 +44,7 @@ export default function CreateLabbookMutation(
       repository,
       componentId,
       revision,
+      isUntracked,
       clientMutationId: tempID++
     }
   }

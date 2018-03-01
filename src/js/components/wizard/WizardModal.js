@@ -8,12 +8,10 @@ import SelectBase from './SelectBase'
 import TrackingToggle from './TrackingToggle'
 //mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
-import SetArtifactsUntrackedMutation from 'Mutations/SetArtifactsUntrackedMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
-//config
-import Config from 'JS/config'
+
 
 
 export default class WizardModal extends React.Component {
@@ -195,16 +193,15 @@ export default class WizardModal extends React.Component {
       repository,
       componentId,
       revision,
+      !self.state.isTrackingOn,
       (response, error) => {
         if(error){
 
         }else{
           const {owner, name} = response.createLabbook.labbook
-          if(self.state.isTrackingOn){
-            self._buildImage(name, owner)
-          }else{
-            self._setArtifactsUntracked(name, owner)
-          }
+
+          self._buildImage(name, owner)
+
 
           self.props.history.push(`../labbooks/${owner}/${name}`)
 
@@ -214,31 +211,6 @@ export default class WizardModal extends React.Component {
         }
       }
     )
-  }
-  /**
-      @param {name, owner}
-      sets labbook to be untracked
-      calls build image function
-  */
-  _setArtifactsUntracked(name, owner){
-    let self = this
-    SetArtifactsUntrackedMutation(
-      name,
-      owner,
-      (response, error) => {
-        if(error){
-          store.dispatch(
-            {
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: Failed to untrack ${name}`,
-                messsagesList: error
-            }
-          })
-        }else{
-          self._buildImage(name, owner)
-        }
-    })
   }
   /**
       @param {name, owner}

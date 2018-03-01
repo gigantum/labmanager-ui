@@ -48,7 +48,7 @@ class Branches extends Component {
 
        if(self.props.labbook.branches &&
          self.props.labbook.branches.pageInfo.hasNextPage) {
-        
+
          self._loadMore()
        }
      }
@@ -70,7 +70,6 @@ class Branches extends Component {
   }
 
   render(){
-    let cardsShowing = Math.round(100/25) + 1
     let showRightBumper = (-this.state.listPosition < (25*(this.props.labbook.branches.edges.length - 4)))
 
     if(this.props.labbook){

@@ -8,8 +8,6 @@ import {Link} from 'react-router-dom';
 import ReactMarkdown from 'react-markdown'
 import Moment from 'moment'
 //components
-import Loader from 'Components/shared/Loader'
-import FileCard from './FileCard'
 import CodeBlock from 'Components/labbook/renderers/CodeBlock'
 //utilites
 import environment from 'JS/createRelayEnvironment'
@@ -43,15 +41,15 @@ export default class RecentActivity extends Component {
         case 'text/plain':
           return(<ReactMarkdown className="ReactMarkdown" source={item[1]} />)
         case 'image/png':
-          return(<img src={item[1]} />)
+          return(<img alt="detail" src={item[1]} />)
         case 'image/jpg':
-          return(<img src={item[1]} />)
+          return(<img alt="detail" src={item[1]} />)
         case 'image/jpeg':
-          return(<img src={item[1]} />)
+          return(<img alt="detail" src={item[1]} />)
         case 'image/bmp':
-          return(<img src={item[1]} />)
+          return(<img alt="detail" src={item[1]} />)
         case 'image/gif':
-          return(<img src={item[1]} />)
+          return(<img alt="detail" src={item[1]} />)
         case 'text/markdown':
           return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
         default:

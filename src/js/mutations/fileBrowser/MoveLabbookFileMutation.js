@@ -42,32 +42,6 @@ function sharedDeleteUpdater(store, labbookID, deletedID, connectionKey) {
   }
 }
 
-function sharedUpdater(store, labbookId, connectionKey, node) {
-  const labbookProxy = store.get(labbookId);
-
-
-  if(labbookProxy){
-    const conn = RelayRuntime.ConnectionHandler.getConnection(
-      labbookProxy,
-      connectionKey
-    );
-
-
-    if(conn){
-      const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-        store,
-        conn,
-        node,
-        "newLabbookFileEdge"
-      )
-
-      RelayRuntime.ConnectionHandler.insertEdgeAfter(
-        conn,
-        newEdge
-      );
-    }
-  }
-}
 
 
 export default function MoveLabbookFileMutation(

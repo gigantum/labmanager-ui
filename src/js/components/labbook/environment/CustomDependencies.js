@@ -342,14 +342,12 @@ class CustomDependencies extends Component {
                 </thead>
                 <tbody>
                   {
-                    customDependenciesEdges.map((edge, index) => {
-                      if(edge){
+                    customDependenciesEdges.filter(edge => edge).map((edge, index) => {
                         return (<CustomDependencyItem
                           key={edge.node.id}
                           edge={edge}
                           index={index}
                           self={this} />)
-                      }
                     })
                   }
                 </tbody>

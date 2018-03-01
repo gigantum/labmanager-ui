@@ -6,9 +6,6 @@ import OutputDataBrowser from './OutputDataBrowser'
 import OutputFavorites from './OutputFavorites'
 
 class OutputData extends Component {
-  constructor(props){
-  	super(props);
-  }
 
   render(){
 

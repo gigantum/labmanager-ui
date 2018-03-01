@@ -5,7 +5,6 @@ import {createPaginationContainer, graphql} from 'react-relay'
 import FavoriteCard from './../fileBrowser/FavoriteCard'
 //store
 import store from 'JS/redux/store'
-let owner;
 
 class CodeFavorites extends Component {
   constructor(props){
@@ -13,8 +12,6 @@ class CodeFavorites extends Component {
     this.state = {
       loading: false
     }
-
-    owner = this.props.owner
   }
 
   /**
