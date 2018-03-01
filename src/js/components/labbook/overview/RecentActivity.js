@@ -37,6 +37,7 @@ export default class RecentActivity extends Component {
   _renderDetail(node){
     let item = node.detailObjects[0].data[0] ? node.detailObjects[0].data[0] : ['text/markdown', node.message]
     if(item){
+      console.log(item)
       switch(item[0]){
         case 'text/plain':
           return(<ReactMarkdown className="ReactMarkdown" source={item[1]} />)

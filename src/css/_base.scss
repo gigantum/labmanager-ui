@@ -52,3 +52,8 @@ h6 { font-size: $h6-fontsize; line-height: 110%;}
 h6{
   font-size: 1.2rem;
 }
+
+p > code {
+  display: inline;
+  padding: 0px 3px;
+}

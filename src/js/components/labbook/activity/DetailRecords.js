@@ -2,6 +2,8 @@
 import React, { Component } from 'react'
 import {QueryRenderer, graphql} from 'react-relay'
 import ReactMarkdown from 'react-markdown'
+//Components
+import CodeBlock from 'Components/labbook/renderers/CodeBlock'
 //environment
 import environment from 'JS/createRelayEnvironment'
 //store
@@ -40,7 +42,7 @@ export default class UserNote extends Component {
   _renderDetail(item){
     switch(item[0]){
       case 'text/plain':
-        return(<b>{item[1]}</b>)
+        return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
       case 'image/png':
         return(<img alt="detail" src={item[1]} />)
       case 'image/jpg':
@@ -52,7 +54,7 @@ export default class UserNote extends Component {
       case 'image/gif':
         return(<img alt="detail" src={item[1]} />)
       case 'text/markdown':
-        return(<ReactMarkdown source={item[1]} />)
+        return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
       default:
         return(<b>{item[1]}</b>)
     }

@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import CodeBlocks from 'gfm-code-blocks'
+import CodeMirror from 'codemirror-highlight'
+import SyntaxHighlighter from 'react-syntax-highlighter/prism';
+import { okaidia } from 'react-syntax-highlighter/styles/prism';
 
 class CodeBlock extends React.PureComponent {
   constructor(props) {
@@ -13,22 +15,12 @@ class CodeBlock extends React.PureComponent {
     this.codeEl = el
   }
 
-  componentDidMount() {
-    this.highlightCode()
-  }
-
-  componentDidUpdate() {
-    this.highlightCode()
-  }
-
   render() {
-
+    console.log(CodeMirror)
+    console.log(this.props.value, CodeMirror)
+    let code = this.props.value
     return (
-      <pre>
-        <code ref={this.setRef} className={this.props.language}>
-          {CodeBlocks(this.props.value)}
-        </code>
-      </pre>
+      <SyntaxHighlighter language='python' style={okaidia}>{code}</SyntaxHighlighter>
     )
   }
 }
