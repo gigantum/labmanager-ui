@@ -124,8 +124,7 @@ export default class LocalLabbookPanel extends Component {
               onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}>
               {edge.node.name}
             </h4>
-            <div className="LocalLabbooks__edit-button" onClick={() => this.props.renameLabbookModal(edge.node.name)}>
-            </div>
+          
           </div>
           <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner}</p>
           <p

@@ -1,11 +1,7 @@
 import React from 'react'
 
 export default class BaseDetails extends React.Component {
-  constructor(props){
-    super(props)
 
-  }
-  
   render(){
     const {base} = this.props
     if(base){

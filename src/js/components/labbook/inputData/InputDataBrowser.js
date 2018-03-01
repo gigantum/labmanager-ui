@@ -72,6 +72,8 @@ class InputDataBrowser extends Component {
           ref='inputBrowser'
           section="input"
           files={inputFiles}
+          selectedFiles={this.props.selectedFiles}
+          clearSelectedFiles={this.props.clearSelectedFiles}
           connection="InputDataBrowser_allFiles"
           parentId={this.props.inputId}
           favoriteConnection="InputFavorites_favorites"

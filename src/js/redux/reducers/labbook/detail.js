@@ -13,9 +13,10 @@ export default (
  action
 ) => {
  if (action.type === UPDATE_DETAIL_VIEW) {
+    //preventing detail mode from opening until feature has been fully implemented
    return {
      ...state,
-     detailMode: action.payload.detailMode
+     detailMode: false//action.payload.detailMode 
    };
  }else if(action.type === RESET_DETAIL_STORE){
    return {

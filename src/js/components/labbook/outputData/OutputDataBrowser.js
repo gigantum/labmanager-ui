@@ -74,6 +74,8 @@ class OutputDataBrowser extends Component {
           ref="OutputBrowser"
           files={outputFiles}
           section="output"
+          selectedFiles={this.props.selectedFiles}
+          clearSelectedFiles={this.props.clearSelectedFiles}
           parentId={this.props.outputId}
           favoriteConnection="OutputFavorites_favorites"
           connection="OutputDataBrowser_allFiles"
