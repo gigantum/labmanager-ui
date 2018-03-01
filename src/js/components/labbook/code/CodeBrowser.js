@@ -75,6 +75,8 @@ class CodeBrowser extends Component {
           <FileBrowserWrapper
             ref='codeBrowser'
             section="code"
+            selectedFiles={this.props.selectedFiles}
+            clearSelectedFiles={this.props.clearSelectedFiles}
             setRootFolder={this.setRootFolder}
             files={codeFiles}
             parentId={this.props.codeId}

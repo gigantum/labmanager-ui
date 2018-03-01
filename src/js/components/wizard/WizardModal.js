@@ -1,6 +1,5 @@
 //vendor
 import React from 'react'
-import { CSSTransitionGroup } from 'react-transition-group'
 import classNames from 'classnames'
 //components
 import CreateLabbook from './CreateLabbook'
@@ -353,7 +352,7 @@ function ModalNav({self, state, getSelectedComponentId, setComponent, hideModal,
         </button>
         <div className={trackingButton}>
           <TrackingToggle
-          setTracking={self._setTracking}
+            setTracking={self._setTracking}
           />
         </div>
       </div>

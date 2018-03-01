@@ -41,11 +41,11 @@ export default class BaseDetails extends React.Component {
             id="TrackingToggle__input"
             className="TrackingToggle__input"
             type="checkbox"
-            checked={this.state.isTrackingOn}
+            defaultChecked={this.state.isTrackingOn}
           />
           <label
             className={toggleCondition}
-            for="TrackingToggle__input">
+            htmlFor="TrackingToggle__input">
           </label>
         </span>
       </div>

@@ -71,6 +71,15 @@ export default class FileBrowserWrapper extends Component {
     this.handleFileFavoriting = this.handleFileFavoriting.bind(this)
 
   }
+
+  componentWillUpdate(nextProps, nextState) {
+    if(nextProps.selectedFiles.length > 0){
+
+      this.handleCreateFiles(nextProps.selectedFiles, '')
+
+      this.props.clearSelectedFiles()
+    }
+  }
   /**
   *  @param {string} key - file key
   *  creates a directory using MakeLabbookDirectoryMutation
