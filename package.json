@@ -76,7 +76,7 @@
     "file-icons-js": "github:websemantics/file-icons-js",
     "gfm-code-blocks": "^1.0.0",
     "graphql": "^0.10.5",
-    "graphql-cli": "^2.14.0",
+    "graphql-cli": "^2.15.8",
     "inline-attachment": "^2.0.3",
     "moment": "^2.19.1",
     "normalize": "^0.3.1",
