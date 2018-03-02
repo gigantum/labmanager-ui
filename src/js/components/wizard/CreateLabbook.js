@@ -1,11 +1,16 @@
 //vendor
 import React from 'react'
+import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
 //utilities
 import validation from 'JS/utils/Validation'
+//components
+import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 //mutations
 import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
+//queries
+import UserIdentity from 'JS/Auth/UserIdentity'
 //store
 import store from 'JS/redux/store'
 
@@ -21,14 +26,19 @@ export default class CreateLabbook extends React.Component {
       'errorType': '',
       'remoteURL': '',
       'textWarning': 'hidden',
-      'textLength': 0
+      'textLength': 0,
+      'isUserValid': false,
+      'showLoginPrompt': false
     };
+
 
     this.continueSave = this.continueSave.bind(this)
     this._updateTextState = this._updateTextState.bind(this)
     this._updateRemoteUrl =  this._updateRemoteUrl.bind(this)
+    this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
 
   }
+
   /**
   *   @param {Object} evt
   *   takes an event input
@@ -45,99 +55,136 @@ export default class CreateLabbook extends React.Component {
       const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
       const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
       const remote = this.state.remoteURL.indexOf('https://') > -1 ? this.state.remoteURL + '.git' : 'https://' + this.state.remoteURL + '.git'
-  
-      store.dispatch(
-        {
-          type: "MULTIPART_INFO_MESSAGE",
-          payload: {
-            id: id,
-            message: 'Importing LabBook please wait',
-            isLast: false,
-            error: false
-          }
-        })
-
-      ImportRemoteLabbookMutation(
-        owner,
-        labbookName,
-        remote,
-        (response, error) => {
 
 
-          if(error){
-            console.error(error)
-            store.dispatch(
-              {
-                type: 'MULTIPART_INFO_MESSAGE',
-                payload: {
-                  id: id,
-                  message: 'ERROR: Could not import remote LabBook',
-                  messagesList: error,
-                  error: true
+
+      console.log('asdasdas')
+      UserIdentity.getUserIdentity().then(response => {
+      console.log(response)
+      if(response.data){
+
+        if(response.data.userIdentity.isSessionValid){
+
+          store.dispatch(
+            {
+              type: "MULTIPART_INFO_MESSAGE",
+              payload: {
+                id: id,
+                message: 'Importing LabBook please wait',
+                isLast: false,
+                error: false
               }
             })
+          ImportRemoteLabbookMutation(
+            owner,
+            labbookName,
+            remote,
+            (response, error) => {
 
-          }else if(response){
+
+              if(error){
+                console.error(error)
+                store.dispatch(
+                  {
+                    type: 'MULTIPART_INFO_MESSAGE',
+                    payload: {
+                      id: id,
+                      message: 'ERROR: Could not import remote LabBook',
+                      messagesList: error,
+                      error: true
+                  }
+                })
+
+              }else if(response){
+
+                store.dispatch(
+                  {
+                    type: 'MULTIPART_INFO_MESSAGE',
+                    payload: {
+                      id: id,
+                      message: `Successfully imported remote LabBook ${labbookName}`,
+                      isLast: true,
+                      error: false
+                    }
+                  })
+                BuildImageMutation(
+                labbookName,
+                owner,
+                false,
+                (error)=>{
+                  if(error){
+                    console.error(error)
+                    store.dispatch(
+                      {
+                        type: 'MULTIPART_INFO_MESSAGE',
+                        payload: {
+                          id: id,
+                          message: `ERROR: Failed to build ${labbookName}`,
+                          messsagesList: error,
+                          error: true
+                      }
+                    })
+                  }
+                })
+                document.getElementById('modal__cover').classList.add('hidden')
+                self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
+              }else{
+
+                BuildImageMutation(
+                labbookName,
+                localStorage.getItem('username'),
+                false,
+                (error)=>{
+                  if(error){
+                    console.error(error)
+                    store.dispatch(
+                      {
+                        type: 'MULTIPART_INFO_MESSAGE',
+                        payload: {
+                          id: id,
+                          message: `ERROR: Failed to build ${labbookName}`,
+                          messsagesList: error,
+                          error: true
+                      }
+                    })
+                  }
+                })
+              }
+            }
+          )
+        }else{
+            console.log('sdsdd')
 
             store.dispatch(
               {
-                type: 'MULTIPART_INFO_MESSAGE',
+                type: "MULTIPART_INFO_MESSAGE",
                 payload: {
                   id: id,
-                  message: `Successfully imported remote LabBook ${labbookName}`,
-                  isLast: true,
-                  error: false
+                  message: 'ERROR: User session not valid for remote import',
+                  messsagesList: [{message:'User must be authenticated to perform this action.'}],
+                  error: true
                 }
               })
-            BuildImageMutation(
-            labbookName,
-            owner,
-            false,
-            (error)=>{
-              if(error){
-                console.error(error)
-                store.dispatch(
-                  {
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                      id: id,
-                      message: `ERROR: Failed to build ${labbookName}`,
-                      messsagesList: error,
-                      error: true
-                  }
-                })
-              }
-            })
-            document.getElementById('modal__cover').classList.add('hidden')
-            self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
-          }else{
 
-            BuildImageMutation(
-            labbookName,
-            localStorage.getItem('username'),
-            false,
-            (error)=>{
-              if(error){
-                console.error(error)
-                store.dispatch(
-                  {
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                      id: id,
-                      message: `ERROR: Failed to build ${labbookName}`,
-                      messsagesList: error,
-                      error: true
-                  }
-                })
-              }
-            })
-          }
+            this.setState({'showLoginPrompt': true})
         }
-      )
+        }
+      })
     }
     else{
       this.props.createLabbookCallback(name, description)
     }
+  }
+  /**
+  *  @param {}
+  *  closes login prompt modal
+  *  @return {}
+  */
+  _closeLoginPromptModal(){
+    this.setState({
+      'showLoginPrompt': false
+    })
+    document.getElementById('modal__cover').classList.add('hidden')
   }
   /**
     @param {Object, string} evt,field
@@ -199,8 +246,19 @@ export default class CreateLabbook extends React.Component {
   }
 
   render(){
+
+    let loginPromptModalCss = classNames({
+      'CreateLabbook--login-prompt': this.state.showLoginPrompt,
+      'hidden': !this.state.showLoginPrompt
+    })
     return(
       <div className="CreateLabbook">
+          <div className={loginPromptModalCss}>
+            <div
+              onClick={()=>{this._closeLoginPromptModal()}}
+              className="BranchModal--close"></div>
+            <LoginPrompt closeModal={this._closeLoginPromptModal}/>
+          </div>
           <h4 className="CreateLabbook__header">Create LabBook</h4>
           <div className='CreateLabbook__modal-inner-container flex flex--column justify--space-between'>
 

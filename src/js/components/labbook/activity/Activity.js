@@ -180,7 +180,7 @@ class Activity extends Component {
     if(!this.props.labbook.activityRecords.pageInfo.hasNextPage){
       isLoadingMore = false;
     }
-
+    console.log(this.props)
     if(this.props.labbook){
       return(
         <div key={this.props.labbook} className='Activity'>
