@@ -1,44 +1,47 @@
-.Overview{
+.Overview {
   height: auto;
   color: $romanSilver;
   font-weight: 100;
-  .Base__header-container{
+
+  .Base__header-container {
     display: none;
   }
-  .Base__categories{
+
+  .Base__categories {
     justify-content: space-between;
-    .Base__categories-languages{
+
+    .Base__categories-languages {
       width: 25%;
     }
 
-    .Base__categories-tools{
+    .Base__categories-tools {
       width: 25%;
     }
   }
 }
 
-.Overview__title-container{
-  @include flex(space-between, row);
+.Overview__title-container {
   align-items: center;
+  @include flex(space-between, row);
 }
 
-.Overview__title{
+.Overview__title {
   padding: 0px;
 }
 
-.Overview__description{
+.Overview__description {
   padding: 20px 0;
 }
 
-.Overview__jupyter-button{
+.Overview__jupyter-button {
 
 }
 
-.Overview__header{
+.Overview__header {
   font-weight: light;
 }
 
-.Overview__card{
+.Overview__card {
   background-color: $white;
   padding: 15px;
   color: $jet;
@@ -46,23 +49,24 @@
   font-size: 12px;
   height: 180px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-  p{
+
+  p {
     padding: 0px;
     margin: 2px;
   }
 }
 
-.Overview__image-container{
+.Overview__image-container {
   padding: 0 10px;
-  @include flex(center, column)
+  @include flex(center, column);
 
-  img{
+  img {
     align-content: center;
   }
 
 }
 
-.Overview__card-text{
+.Overview__card-text {
   padding: 0px;
   width: 120px;
   display: flex;
@@ -70,7 +74,7 @@
   justify-content: space-between;
 }
 
-.Overview__modal{
+.Overview__modal {
   position: fixed;
   left: 50%;
   top: 50%;
@@ -84,65 +88,66 @@
   background-color: $grey-light;
   box-shadow: 10px 10px 5px #888888;
 
-  .SelectBaseImage__progress-button{
+  .SelectBaseImage__progress-button {
     display: none;
   }
 
 }
 
-.Overview__modal-close{
+.Overview__modal-close {
   position: absolute;
   top: 5px;
   right: 5px;
   cursor: pointer;
 }
 
-.Overview__package-dependencies{
+.Overview__package-dependencies {
   margin: 10px;
 
-  .Overview__card-text{
+  .Overview__card-text {
       width: 170px;
-      p{
-        margin: 0 5px 0 0;
-      }
       background-color: $white;
       border-radius: 0px;
+
+      p {
+        margin: 0 5px 0 0;
+      }
   }
 }
 
-.Overview__name{
+.Overview__name {
   font-size: 8px;
 }
 
-.Overview__human-name{
+.Overview__human-name {
   color: $jet;
   font-size: 12px;
 }
 
-.Overview__open-jupyter-container{
+.Overview__open-jupyter-container {
   align-self: center;
   width: 200px;
 }
 
-.Overview__development-environment-item{
+.Overview__development-environment-item {
   margin: 0;
 }
 
-.PackageCount{
-  @include flex(flex-start, row);
+.PackageCount {
   width: 50%;
+  @include flex(flex-start, row);
 
-  .PackageCount__dependencies{
+  .PackageCount__dependencies {
     width: 50%;
   }
 }
 
-.PackageCount__item{
+.PackageCount__item {
   color: $romanSilver;
   padding: 5px 0px;
   margin: 0 10px 0 0;
 }
 
-.PackageCount__dependencies{
+.PackageCount__dependencies {
   margin: 0px;
 }

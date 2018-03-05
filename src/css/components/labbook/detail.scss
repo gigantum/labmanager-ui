@@ -1,8 +1,8 @@
-.DetailsRecords__list{
+.DetailsRecords__list {
   margin: 0;
 }
 
-.DetailsRecords__item{
+.DetailsRecords__item {
   border-bottom: 1px solid $lightGrey;
   padding: 15px 15px 15px 66px;
 
@@ -10,17 +10,23 @@
 }
 
 @keyframes fluxuateLoad {
-    0% {opacity: 0.1;}
-    50% {opacity: 0.3;}
-    100% {opacity: 0.1;}
+    0% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0.1;
+    }
 }
 
 
-.DetailsRecords__loader{
+.DetailsRecords__loader {
   width: 100%;
 }
 
-.DetailsRecords__loader{
+.DetailsRecords__loader {
   margin: 10px 10px 10px 66px;
   width: calc(100% - 66px);
   height: 2px;

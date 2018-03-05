@@ -3,8 +3,8 @@
 }
 
 .RecentActivity__title-container{
-  @include flex(space-between, row);
   align-items: center;
+  @include flex(space-between, row);
 }
 
 .RecentActivity__card{
@@ -18,9 +18,15 @@
     padding: 10px 0;
 }
 @keyframes fluxuateLoad {
-    0% {opacity: 0.1;}
-    50% {opacity: 0.5;}
-    100% {opacity: 0.1;}
+    0% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 0.1;
+    }
 
 }
 .RecentActivity__card--loading{

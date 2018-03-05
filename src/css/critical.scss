@@ -69,7 +69,7 @@
 @import 'components/wizard/baseDetails';
 @import 'components/wizard/trackingToggle';
 
-.modal__cover{
+.modal__cover {
   position: fixed;
   top: 0px;
   bottom: 0px;
@@ -80,7 +80,7 @@
   z-index: 900;
 }
 
-.ApiDown{
+.ApiDown {
   position: fixed;
   z-index: 200;
   top: 0;
@@ -96,16 +96,16 @@
 
 
 
-.rendered-react-keyed-file-browser{
+.rendered-react-keyed-file-browser {
   width: 100%;
 }
 
-.btn{
+.btn {
   background-color: $slateBlue;
   border-radius: 20px;
   font-weight: 100;
 }
-.btn:hover{
+.btn:hover {
   background-color: #8ea4b2;
 }
 

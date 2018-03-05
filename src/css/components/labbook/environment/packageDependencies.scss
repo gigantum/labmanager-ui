@@ -1,20 +1,20 @@
-.PackageDependencies__card{
+.PackageDependencies__card {
   @extend .card;
   padding: 20px;
 }
-.PackageDependencies__header{
+.PackageDependencies__header {
   color: $romanSilver;
 }
 
-.PackageDependencies__tabs-list{
+.PackageDependencies__tabs-list {
   @extend .tabs-list;
 }
 
-.PackageDependencies__tab{
+.PackageDependencies__tab {
   @extend .tab;
   width: calc(25% - 20px);
 }
-.PackageDependencies__tab--selected{
+.PackageDependencies__tab--selected {
   @extend .tab--selected;
 }
 
@@ -30,63 +30,61 @@
 	}
 }
 
-.PackageDependencies__table-row--valid{
+.PackageDependencies__table-row--valid {
 
 }
 
-.PackageDependencies__table-row--checking{
+.PackageDependencies__table-row--checking {
   background: linear-gradient(-45deg, $slateBlue, $azure, $turquise, $goldenLemon) no-repeat;
   background-size: 200% 2px;
   animation: Gradient 7s ease infinite;
   border: 0px;
 }
 
-.PackageDependencies__table-row--invalid{
+.PackageDependencies__table-row--invalid {
   color: $crimson;
 }
 
-.PackageDependencies__table--border{
+.PackageDependencies__table--border {
   position: relative;
   padding: 20px 20px 35px;
   border: 1px solid $grey;
   margin-bottom: 25px;
 }
 
-.PackageDependencies__table--no-right-padding{
+.PackageDependencies__table--no-right-padding {
   padding-right: 0px;
 }
-.PackageDependencies__menu{
+.PackageDependencies__menu {
   transition: min-height 0.5s, height 0.5s;
   min-height: 0px;
   max-height: auto;
   overflow: hidden;
 };
 
-.PackageDependencies__menu--min-height{
+.PackageDependencies__menu--min-height {
   min-height: 0px;
   height: 0px;
 }
 
-
-
-
-
-.PackageDependencies__button:hover{
+.PackageDependencies__button:hover {
   background-color: $grey-light;
   color: $turquise;
-  border: none;
+  border: 0;
   font-weight: bold;
 
 }
+
 .PackageDependencies__button,
-.PackageDependencies__button:focus{
+.PackageDependencies__button:focus {
   padding: 5px 0;
   background-color: $grey-light;
-  border: none;
+  border: 0;
   color: $azure;
   width: 100%;
 }
-.PackageDependencies__button--absolute{
+
+.PackageDependencies__button--absolute {
   position: absolute;
   height: 40px;
   left: 50%;
@@ -94,76 +92,79 @@
   margin: 0 0 0 -117px;
 }
 
-.PackageDependencies__button--add{
+.PackageDependencies__button--add {
   background: $azure url('../images/icons/add.svg') no-repeat 50% 50%;
   background-size: 16px;
 }
-.PackageDependencies__button--add:hover{
+.PackageDependencies__button--add:hover {
   background: $turquise url('../images/icons/add.svg') no-repeat 50% 50%;
   background-size: 16px;
 }
 
-.PackageDependencies__button--remove{
+.PackageDependencies__button--remove {
   background: $azure url('../images/icons/close-white.svg') no-repeat 50% 50%;
   background-size: 14px;
 }
-.PackageDependencies__button--remove:hover{
+.PackageDependencies__button--remove:hover {
   background: $turquise url('../images/icons/close-white.svg') no-repeat 50% 50%;
   background-size: 14px;
 }
 
 .PackageDependencies__button--line-18:hover,
-.PackageDependencies__button--line-18:focus{
+.PackageDependencies__button--line-18:focus {
   color: $turquise !important;
   background: url('../images/icons/down-arrow-turquise.svg') no-repeat calc(50% + 70px) 50%;
   background-size: 20px;
 }
 
 
-.PackageDependencies__button--line-18{
+.PackageDependencies__button--line-18 {
     line-height: 18px;
     font-weight: bold;
     background: url('../images/icons/down-arrow-azure.svg') no-repeat calc(50% + 70px) 50%;
     background-size: 20px;
 }
 
-.PackageDependencies__button--open{
+.PackageDependencies__button--open {
   background: url('../images/icons/up-arrow-azure.svg') no-repeat calc(50% + 70px) 50%;
   background-size: 20px;
 }
 
 .PackageDependencies__button--open:hover,
-.PackageDependencies__button--open:focus{
+.PackageDependencies__button--open:focus {
   background: url('../images/icons/up-arrow-turquise.svg') no-repeat calc(50% + 70px) 50%;
   background-size: 20px;
 }
 
 
-.PackageDependencies__add-package{
+.PackageDependencies__add-package {
   background-color: $grey-light;
   margin: 20px 0;
   padding: 5px 20px;
   border-radius: 8px;
 }
-.PackageDependencies__package-menu{
+.PackageDependencies__package-menu {
   padding: 20px 0;
-  @include flex(space-around, row);
   margin: 20px 0;
-  .PackageDependencies__input-text[type="text"]{
+  @include flex(space-around, row);
+
+  .PackageDependencies__input-text[type="text"] {
     flex: 2;
     margin: 0 20px 0 0;
   }
-  .PackageDependencies__input-text--version[type="text"]{
+
+  .PackageDependencies__input-text--version[type="text"] {
     @extend .PackageDependencies__input-text;
     flex: 1 1;
   }
-  button{
+
+  button {
     margin: 0 0 0 10px;
     line-height: 18px;
   }
 }
 
-.PackageDependencies__button--round{
+.PackageDependencies__button--round {
   width: 30px;
   height: 30px;
   border-radius: 15px;

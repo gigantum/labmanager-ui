@@ -1,76 +1,75 @@
-.Code{
+.Code {
   width: 100%;
 
   text-align: center;
-  .fa{
+
+  .fa {
     font-family: FontAwesome !important;
   }
 }
 
-.Code__favorites{
+.Code__favorites {
 
   width: 100%;
 }
 
-.Code__header{
+.Code__header {
   line-height: 20px;
-
   @include flex(space-between, row);
 }
 
-.Code__toolbar{
+.Code__toolbar {
   align-self: center;
   flex: 0 1 auto;
-
   @include flex(space-between, row);
 }
 
-.Code__filter{
+.Code__filter {
   margin: 0 10px;
 }
 
-.Code__filter:nth-last-child(1){
+.Code__filter:nth-last-child(1) {
   margin: 0 0 0 10px;
 }
 
 .Code__filter,
 .Code__import-text,
-.Code__import-file{
+.Code__import-file {
   cursor: pointer;
 
   color: $romanSilver;
 }
 
-.Code__import-text{
+.Code__import-text {
   align-self: right;
 }
 
-.Code__import-file{
+.Code__import-file {
   padding-right: 3px;
   font-size: 16px;
   text-decoration: underline;
 }
 
 .Code__filter:hover,
-.Code__import-file:hover{
+.Code__import-file:hover {
   color: $jet;
 }
 
-.Code__filter--selected{
+.Code__filter--selected {
   color: $jet;
 }
 
-.Code__favorites-card{
+.Code__favorites-card {
 }
 
-.Code__file-browser{
+.Code__file-browser {
   padding: 10px 15px;
 
   background-color: $white;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
 
-.Code__subtitle{
+.Code__subtitle {
 
   text-align: left;
 
@@ -79,16 +78,16 @@
   font-weight: 100;
 }
 
-.Code{
-
-  .FileBrowser__icon{
+.Code {
+  .FileBrowser__icon {
     margin: 0 5px 0 0;
   }
-  .action-bar{
+
+  .action-bar {
     flex-direction: space-between;
 
 
-    input[type='search']{
+    input[type='search'] {
       height: 50px;
       margin-right: 20px;
 
@@ -96,34 +95,36 @@
       border-radius: 15px !important;
     }
 
-    input[type='search']:focus{
+    input[type='search']:focus {
       border-color: $turquise;
       border-bottom: 1px solid $turquise;
       box-shadow: 0 1px 0 0 $turquise;
     }
 
-    .btn{
+    .btn {
       padding: 0 10px;
 
       color: $jet;
       background-color: initial;
       box-shadow: none;
     }
-    .btn:hover{
+
+    .btn:hover {
       color: $romanSilver;
     }
   }
 
-  .files{
-    .file.selected, .folder.selected{
+  .files {
+    .file.selected, .folder.selected {
       background: $lightGrey;
     }
-    th{
+
+    th {
       color: $jet;
     }
   }
 
-  .item-actions{
+  .item-actions {
     min-height: 60px;
     margin-left: 25px;
     padding: 10px;
@@ -131,17 +132,15 @@
     border-radius: 15px;
     background-color: $lightGrey;
 
-    li{
+    li {
       margin: 10px 0 !important;
     }
-
-
   }
 }
-.Code__tracked-container{
+.Code__tracked-container {
   @include flex(flex-end, row);
 }
-.Code__tracked{
+.Code__tracked {
   padding: 3px 5px;
   background-color: $lightGrey;
   color: $romanSilver;

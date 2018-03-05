@@ -329,7 +329,7 @@ function ModalNav({self, state, getSelectedComponentId, setComponent, hideModal,
 
   let backButton = classNames({
     'WizardModal__progress-button': true,
-    'flat--button': true,
+    'button--flat': true,
     'hidden': (state.selectedComponentId === 'createLabbook')
   })
 
@@ -359,7 +359,7 @@ function ModalNav({self, state, getSelectedComponentId, setComponent, hideModal,
       <div className="WizardModal__nav-group">
         <button
           onClick={() => {hideModal()}}
-          className="WizardModal__progress-button flat--button">
+          className="WizardModal__progress-button button--flat">
           Cancel
         </button>
         <button
