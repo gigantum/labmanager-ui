@@ -48,7 +48,7 @@ export default class CreateLabbook extends React.Component {
   continueSave = (evt) => {
     const {name, description} = this.state;
     const id = uuidv4()
-    let viewerId = 'localLabbooks';//Todo: figure out what to do with viewerId in the mutation context
+
     let self = this;
 
     if(this.state.remoteURL.length > 0){
@@ -56,11 +56,8 @@ export default class CreateLabbook extends React.Component {
       const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
       const remote = this.state.remoteURL.indexOf('https://') > -1 ? this.state.remoteURL + '.git' : 'https://' + this.state.remoteURL + '.git'
 
-
-
-      console.log('asdasdas')
       UserIdentity.getUserIdentity().then(response => {
-      console.log(response)
+
       if(response.data){
 
         if(response.data.userIdentity.isSessionValid){
@@ -153,7 +150,6 @@ export default class CreateLabbook extends React.Component {
             }
           )
         }else{
-            console.log('sdsdd')
 
             store.dispatch(
               {

@@ -73,7 +73,7 @@ export default class FilePreview extends Component {
       variables={{
         name: labbookName,
         owner: owner,
-        first: 6
+        first: 3
       }}
       query={filePreviewQuery}
       environment={environment}
