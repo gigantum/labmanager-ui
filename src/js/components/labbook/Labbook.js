@@ -5,7 +5,6 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
-import { Textfit } from 'react-textfit';
 //store
 import store from "JS/redux/store"
 //components
