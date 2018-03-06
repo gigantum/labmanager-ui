@@ -61,7 +61,7 @@ export default class ActivityCard extends Component {
 
 
   _hideElipsis(){
-    this.setState('showEllispsis': false)
+    this.setState({'showEllispsis': false})
   }
   render(){
 
