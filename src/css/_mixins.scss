@@ -1,4 +1,4 @@
-@mixin modal($height, $width){
+@mixin modal($height, $width) {
   position: fixed;
   left: 50%;
   top: 50%;
@@ -16,13 +16,13 @@
 }
 
 
-@mixin flex($content, $direction){
+@mixin flex($content, $direction) {
   display: flex;
   justify-content: $content;
   flex-direction: $direction;
 }
 
-@mixin close(){
+@mixin close() {
   position: absolute;
   height: 20px;
   width: 20px;
@@ -33,7 +33,7 @@
   cursor: pointer;
 }
 
-@mixin card($height, $width){
+@mixin card($height, $width) {
   width: $width;
   height: $height;
 
