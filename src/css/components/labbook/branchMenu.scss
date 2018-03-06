@@ -1,57 +1,56 @@
-.BranchMenu{
+.BranchMenu {
   position: relative;
-  @include flex(flex-end, row)
   overflow: visible;
 
   height: 30px;
   min-height: 30px;
   width: 50%;
   align-self: flex-end;
-
+  @include flex(flex-end, row)
 }
 
-.BranchModal{
+.BranchModal {
   position: relative;
   padding: 15px;
   @include flex(space-between, column);
   @include modal(500px, 500px);
 }
 
-.BranchModal--collaborators{
+.BranchModal--collaborators {
   @extend .BranchModal;
   justify-content: flex-start;
 }
-.BranchModal--login-prompt{
-  @include flex(space-between, column);
-  @include modal(200px, 400px);
+.BranchModal--login-prompt {
   justify-content: flex-start;
   padding: 20px;
+  @include flex(space-between, column);
+  @include modal(200px, 400px);
 
-  .LoginPrompt__button-container{
+  .LoginPrompt__button-container {
     @include flex(space-around, row);
   }
 }
 
-.BranchModal__header{
+.BranchModal__header {
   padding: 5px 0 5px 0px;
   color: $azure;
   text-align: center;
   width: 300px;
   margin: 0 auto;
 }
-.BranchModal__header--new-branch{
+.BranchModal__header--new-branch {
   @extend .BranchModal__header;
   background: url('./../images/icons/new-branch.svg') no-repeat left 5px;
   background-size: 40px;
 
 }
 
-.BranchModal--close{
+.BranchModal--close {
   @include close()
 }
 
 .BranchMenu__button,
-.BranchMenu__button:focus{
+.BranchMenu__button:focus {
   width: 40px;
   border-radius: 10px;
   height: 20px;
@@ -61,11 +60,11 @@
   background-size: 30px 30px;
 }
 
-.BranchMenu__button:hover{
+.BranchMenu__button:hover {
   background: $white url('./../images/icons/ellipsis.svg') no-repeat center center;
   background-size: 32px 32px;
 }
-.BranchMenu__menu{
+.BranchMenu__menu {
   position: absolute;
   right: 0px;
   top: 30px;
@@ -76,96 +75,101 @@
   width: 230px;
   @extend .box-shadow;
 
-  ul{
+  ul {
     margin-top: 0px;
   }
 
-  hr{
+  hr {
     background-color: $lightGrey;
     border-color: $lightGrey;
     border-width: 1px;
   }
 }
 
-.BranchMenu__menu-arrow{
+.BranchMenu__menu-arrow {
   z-index: 203;
   position: absolute;
   top: 22px;
   right: 16px;
   @include triangle('up', 14px, $white);
 }
-.BranchMenu__item{
+.BranchMenu__item {
   padding: 2px 0 2px 30px;
   line-height: 24px;
   cursor: pointer;
   color: $romanSilver;
-  a{
+
+  a {
     color: $romanSilver;
   }
 }
 
-.BranchMenu__item:hover{
+.BranchMenu__item:hover {
   color: $turquise;
-  .BranchMenu__item--new-branch{color: $turquise};
+  .BranchMenu__item--new-branch {
+    color: $turquise
+  };
 }
-.BranchMenu__item--new-branch{
+.BranchMenu__item--new-branch {
   @extend .BranchMenu__item;
   background: url('./../images/icons/new-branch.svg') no-repeat left center;
   background-size: 16px;
   opacity: .3;
 }
-.BranchMenu__item--merge{
+.BranchMenu__item--merge {
   @extend .BranchMenu__item;
   background: url('./../images/icons/merge.svg') no-repeat left center;
   background-size: 16px;
   opacity: .3;
 }
-.BranchMenu__item--deadend{
+.BranchMenu__item--deadend {
   @extend .BranchMenu__item;
   background: url('./../images/icons/deadend.svg') no-repeat left center;
   background-size: 16px;
   opacity: .3;
 }
-.BranchMenu__item--favorite{
+.BranchMenu__item--favorite {
   @extend .BranchMenu__item;
   background: url('./../images/icons/favestar.svg') no-repeat left center;
   background-size: 16px;
   opacity: .3;
 }
 
-.BranchMenu__item--collaborators{
+.BranchMenu__item--collaborators {
   @extend .BranchMenu__item;
   background: url('./../images/icons/user.svg') no-repeat left 7px;
   background-size: 16px;
   @extend .BranchMenu__item;
-  a{
+
+  a {
     color: $romanSilver;
     cursor: pointer;
   }
-  p{
+
+  p {
     padding: 0px;
   }
 }
 
-.BranchMenu__add-collaborators{
+.BranchMenu__add-collaborators {
   width: 300px !important;
 }
 
-.BranchMenu__add-button{
+.BranchMenu__add-button {
   width: 100px;
   height: 30px;
   align-self: center;
   padding: 0;
 }
 
-.BranchMenu__sync{
+.BranchMenu__sync {
   width: 100%;
   text-align: center;
   height: 40px;
   line-height: 40px;
 }
 
-.BranchMenu__item--collaborators-button{
+.BranchMenu__item--collaborators-button {
   background-size: 16px;
   width: 100%;
   cursor: pointer;
@@ -176,8 +180,9 @@
   padding: 0px;
   color: $romanSilver;
 }
+
 .BranchMenu__item--collaborators-button:hover,
-.BranchMenu__item--collaborators-button:focus{
+.BranchMenu__item--collaborators-button:focus {
   background-size: 16px;
   color: $turquise;
   width: 100%;
@@ -189,7 +194,7 @@
 }
 
 .BranchMenu__item--collaborators-button:disabled,
-.BranchMenu__item--collaborators-button:disabled:hover{
+.BranchMenu__item--collaborators-button:disabled:hover {
   background-size: 16px;
   width: 100%;
   cursor: pointer;
@@ -198,45 +203,41 @@
   border: 0px solid $white;
 }
 
-.BranchMenu__collaborators-modal{
-  @include modal(400px, 500px);
+.BranchMenu__collaborators-modal {
   padding: 15px;
-
+  @include modal(400px, 500px);
 }
 
-.BranchMenu__close-button{
+.BranchMenu__close-button {
   @include close();
 }
 
-.BranchMenu__collaborators-modal--hidden{
+.BranchMenu__collaborators-modal--hidden {
   display: hidden;
 }
 
-.BranchMenu__add{
+.BranchMenu__add {
   @include flex(space-between, row);
 }
 
-.BranchMenu__collaborator--item{
-  @include flex(space-between, row);
+.BranchMenu__collaborator--item {
   border-bottom: 1px solid $lightGrey;
   padding: 10px 0;
+  @include flex(space-between, row);
 }
 
-.BranchMenu__collaborators-list{
+.BranchMenu__collaborators-list {
   height: 340px;
   overflow: auto;
 }
 
-
-
-
-.BranchMenu__item--collaborators-menu{
+.BranchMenu__item--collaborators-menu {
   height: auto;
   max-height: 300px;
   overflow: auto;
 }
 
-.BranchMenu__item--collaborators-menu--collapsed{
+.BranchMenu__item--collaborators-menu--collapsed {
   height: 0;
   max-height: 0;
   overflow: hidden

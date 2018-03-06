@@ -122,7 +122,7 @@ class Environment extends Component {
               ref="base"
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
-              editVisible={true}
+              editVisible
               containerStatus={this.props.containerStatus}
               setComponent={this._setComponent}
               setBase={this._setBase}
@@ -150,7 +150,7 @@ class Environment extends Component {
               environment={this.props.labbook.environment}
               blockClass="Environment"
               buildCallback={this._buildCallback}
-              editVisible={true}
+              editVisible
               labbookId={this.props.labbook.id}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}

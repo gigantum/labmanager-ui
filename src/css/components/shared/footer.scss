@@ -1,4 +1,4 @@
-.Footer{
+.Footer {
   position: fixed;
   z-index: 50;
   z-index: 1200;
@@ -19,7 +19,7 @@
   @include flex(space-between, column);
 }
 
-.Footer *{
+.Footer * {
   font-weight: 400;
 }
 
@@ -34,22 +34,22 @@
 .Footer--expand-extra {
   max-height: 240px !important;
 }
-.Footer__main-message{
+.Footer__main-message {
   min-height: 40px;
   overflow: hidden;
   align-items: center;
   @include flex(flex-start, row);
 }
-.Footer__main-detatails{
+.Footer__main-detatails {
   margin: 0 10px;
-  @include flex(space-around, row);
   flex: 1;
   align-items: center;
+  @include flex(space-around, row);
 }
-.Foooter__message-body{
+.Foooter__message-body {
   flex: 1;
 }
-.Footer__messages-section{
+.Footer__messages-section {
   z-index: 300;
 
   width: 100%;
@@ -57,7 +57,7 @@
   text-align: center;
 }
 
-.Footer__upload-message{
+.Footer__upload-message {
   z-index: 400;
   text-align: center;
   width: 100%;
@@ -65,7 +65,7 @@
 
 }
 
-.Footer__message-list{
+.Footer__message-list {
   max-height: 200px;
   height: auto;
   transition: height 0.5s, max-height 0.5s, opacity 1s;
@@ -79,23 +79,23 @@
 // 	background-color: rgba(255,255,255, 0.7);
 // }
 
-.Footer__message-list::-webkit-scrollbar{
+.Footer__message-list::-webkit-scrollbar {
 	width: 8px;
 	background-color: rgba(255,255,255,0.5);
 }
 
-.Footer__message-list::-webkit-scrollbar-thumb{
+.Footer__message-list::-webkit-scrollbar-thumb {
 	background-color: #fff;
 }
 
-.Footer__message-list--collapsed{
+.Footer__message-list--collapsed {
   //height: 0px !important;
   max-height: 0px !important;
   opacity: 0 !important;
   overflow: hidden;
 }
 
-.Footer__expand-messages-button{
+.Footer__expand-messages-button {
   width: 200px;
   margin: 0 15px;
   text-decoration: underline;
@@ -104,19 +104,19 @@
   background-size: 18px;
 }
 
-.Footer__expand-messages-button--expanded{
+.Footer__expand-messages-button--expanded {
   width: 200px;
   margin: 0 15px;
   background: url('../images/icons/up-arrow-white.svg') no-repeat 100% 50% !important;
   background-size: 18px !important;
 }
 
-.Footer--error{
+.Footer--error {
   color: $white;
   background-color: $crimson;
 }
 
-.Footer__progress-bar{
+.Footer__progress-bar {
   position: absolute;
   z-index: 50;
   top: 0;
@@ -131,25 +131,25 @@
   background-color: $turquise;
 }
 
-.Footer__progress-bar__error{
+.Footer__progress-bar__error {
   background-color: $crimson;
 }
 
-.Footer__upload-error{
+.Footer__upload-error {
   background-color: $crimson;
-  .Footer__progress-bar{
+  .Footer__progress-bar {
     @extend .hidden;
   }
 }
 
-.Footer__collapse-message-list{
-    @include close();
+.Footer__collapse-message-list {
     background: url('./../images/icons/close-white.svg') no-repeat center center;
     background-size: 18px;
     right: 20px;
+    @include close();
 }
 
-.Footer__status{
+.Footer__status {
 
   position: relative;
   z-index: 60;
@@ -167,52 +167,52 @@
 
   @include flex(space-between, column);
 
-  ul{
+  ul {
     margin: 0px;
     text-align: left;
     @include flex(space-between, column);
 
-    li{
+    li {
       border-bottom: 1px solid white;
       margin: 0 30px 0 0;
     }
-    li:last-child{
+    li:last-child {
       border-bottom: 0px solid white;
     }
   }
 
-  .Footer__message{
+  .Footer__message {
     vertical-align: middle;
     line-height: 40px;
 
 
   }
 
-  .Footer__message--error{
+  .Footer__message--error {
     @extend .Footer__message;
     @extend .fa;
     @extend .fa-exclamation-circle;
+    align-items: center;
     @include flex(flex-start, row);
 
-    align-items: center;
-
-    // i:before{
+    // i:before {
     //   align-self: flex-end;
     //   align-content: flex-end;
     //   flex-grow: 1;
     // }
   }
-  .Footer__message-title{
+
+  .Footer__message-title {
     flex: 1 0 auto;
     margin: 0;
   }
 
-  .Footer__message--error:before{
+  .Footer__message--error:before {
     margin: 0 10px;
     align-self: flex-start;
   }
 
-  .Footer__message-dismiss{
+  .Footer__message-dismiss {
     margin-left: 30px;
 
     border: 1px solid white;
@@ -230,19 +230,20 @@
     background-size: 10px;
   }
 
-  .Footer__message-dismiss:hover{
+  .Footer__message-dismiss:hover {
     color: $turquise;
   }
 }
 
-.Footer__status--error{
+.Footer__status--error {
   background-color: $crimson;
 }
-.Footer__status--warning{
+
+.Footer__status--warning {
   background-color: $goldenLemon;
 }
 
-.Footer__upload-status{
+.Footer__upload-status {
   position: relative;
 
   text-align: center;
@@ -251,8 +252,7 @@
   width: 100%;
 }
 
-.Footer__button{
-
+.Footer__button {
   position: absolute;
   z-index: 60;
   top: 5px;
@@ -268,20 +268,18 @@
   line-height: 10px;
 }
 
-.Footer__button:hover{
+.Footer__button:hover {
   color: $jet ;
   background-color: $white !important;
 }
 
-.Footer__message{
+.Footer__message {
     flex: 1;
 
     color: $white;
-
-
 }
 
-.Footer__close{
+.Footer__close {
   position: absolute;
   right: 10px;
   bottom: 0px;
@@ -295,7 +293,7 @@
   background-size: 16px;
 }
 
-.Footer__close:hover{
+.Footer__close:hover {
   background: url('../images/icons/close-turquise.svg') no-repeat center center;
   background-size: 16px;
 }

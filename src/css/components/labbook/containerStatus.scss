@@ -1,8 +1,8 @@
-.ContainerStatus{
+.ContainerStatus {
   align-self: center;
   position: relative;
 }
-.ContainerStatus__button-menu{
+.ContainerStatus__button-menu {
   top: 42px;
   right: 0px;
   position: absolute;
@@ -15,7 +15,7 @@
   text-align: center;
 }
 
-.ContainerStatus__menu-pointer{
+.ContainerStatus__menu-pointer {
   top: 30px;
   right: 75px;
   position: absolute;
@@ -23,15 +23,15 @@
   @include triangle('up', 14px, $white);
 }
 
-.ContainerStatus__plugins-list-item{
+.ContainerStatus__plugins-list-item {
   padding: 5px 0;
 }
 
-.ContainerStatus__button--flat{
-    @extend .flat--button;
+.ContainerStatus__button--flat {
+    @extend .button--flat;
 }
 
-.ContainerStatus__container-state{
+.ContainerStatus__container-state {
   width: 120px;
   text-align: center;
   height: 30px;
@@ -47,48 +47,48 @@
   @extend .box-shadow;
 }
 
-.ContainerStatus__container-state--menu-open{
+.ContainerStatus__container-state--menu-open {
   @extend .ContainerStatus__container-state;
   background: $background-color url('./../images/icons/up-arrow-silver.svg') no-repeat 90% center;
 }
 
-.ContainerStatus__container-state.Open{
+.ContainerStatus__container-state.Open {
   border: 3px solid $turquise;
   background-size: 20px;
 }
-.ContainerStatus__container-state.Building{
+.ContainerStatus__container-state.Building {
   border: 3px solid $goldenLemon;
   background-size: 20px;
 }
-.ContainerStatus__container-state.Closed{
+.ContainerStatus__container-state.Closed {
   border: 3px solid $crimson;
   background-size: 20px;
 }
 
-.ContainerStatus__container-state.Failed{
+.ContainerStatus__container-state.Failed {
   border: 3px solid $crimson;
   background-size: 20px;
   color: $crimson;
 }
 
-.ContainerStatus__container-state.Starting{
+.ContainerStatus__container-state.Starting {
   border: 1px solid $turquise;
   opacity: 0.75;
   background: none;
 }
 
-.ContainerStatus__container-state.Stopping{
+.ContainerStatus__container-state.Stopping {
   border: 1px solid $jet;
   opacity: 0.75;
   background: none;
 }
 
-.ContainerStatus__plugins{
+.ContainerStatus__plugins {
   position: relative;
   overflow: visible;
 }
 
-.ContainerStatus__plugins-button{
+.ContainerStatus__plugins-button {
   height: 24px;
   width: 30px;
   background-color: #aaa;
@@ -104,24 +104,24 @@
   background-size: 30px;
 }
 
-.ContainerStatus__plugins-title{
+.ContainerStatus__plugins-title {
   text-align: center;
   width: 100%;
   border-bottom: 1px solid $romanSilver;
 }
 
-.ContainerStatus__plugins-list{
-  .jupyter-icon:before{
+.ContainerStatus__plugins-list {
+  .jupyter-icon:before {
     padding: 0 6px 0 0;
     font-size: 17px;
   }
 }
 
-.ContainerStatus__plugins-item:hover{
+.ContainerStatus__plugins-item:hover {
   color: $turquise;
 }
 
-.ContainerStatus__plugins-menu{
+.ContainerStatus__plugins-menu {
   position: absolute;
   top: 42px;
   right: -100px;
@@ -135,7 +135,7 @@
   padding: 15px;
 }
 
-.ContainerStatus__plugins-menu-arrow{
+.ContainerStatus__plugins-menu-arrow {
   z-index: 203;
   position: absolute;
   top: 29px;

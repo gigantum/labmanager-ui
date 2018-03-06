@@ -1,4 +1,4 @@
-button{
+button {
   height: 26px;
   line-height: 22px;
   padding: 0px 20px;
@@ -11,26 +11,25 @@ button{
 
 }
 
-button:hover{
-
+button:hover {
   color: $white;
   background: $turquise;
   border: 2px solid $turquise;
 }
 
-button:focus{
+button:focus {
   color: $white;
   background: $azure;
 }
 
 
-button:disabled{
+button:disabled {
   color: $grey;
   background: $grey-light;
   border: 2px solid $grey;
 }
 
-.flat--button{
+.button--flat {
   padding: 0px 20px;
   border: 0px solid $azure;
   border-radius: 0px;
@@ -40,12 +39,12 @@ button:disabled{
   text-decoration: underline;
 }
 
-.flat--button:hover{
+.button--flat:hover {
   color: $turquise;
   background: none;
   border: 0px solid $turquise;
 }
-.flat--button:focus{
+.button--flat:focus {
   color: $azure;
   background: none;
   border: 0px solid $azure;

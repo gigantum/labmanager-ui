@@ -1,15 +1,15 @@
-.WizardModal__modal{
-  @include modal(600px, 960px);
+.WizardModal__modal {
   overflow: hidden;
   padding: 20px 60px;
+  @include modal(600px, 960px);
 }
 
-.WizardModal__nav{
+.WizardModal__nav {
   @include flex(space-between, row);
 }
 
-.WizardModal__nav-group{
-    @include flex(flex-end, row);
+.WizardModal__nav-group {
+  @include flex(flex-end, row);
 }
 
 .WizardModal__modalWrap-enter {
@@ -22,18 +22,17 @@
 }
 
 
-.WizardModal__modal-inner-container{
+.WizardModal__modal-inner-container {
     height: calc(100% - 40px);
     padding: 20px;
 }
 
-.WizardModal__title{
+.WizardModal__title {
   color: $jet;
   text-align: center;
 }
 
-
-.WizardModal__modal-close{
+.WizardModal__modal-close {
   position: absolute;
   top: 5px;
   right: 5px;
@@ -50,11 +49,12 @@
     width: 100%;
 }
 
-.WizardModal__progress-bar{
+.WizardModal__progress-bar {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
     li{
       flex: 1 0 auto;
       border-top: 2px solid $azure;
@@ -65,11 +65,11 @@
       font-size: 12px;
     }
 
-    li.selected{
+    li.selected {
       border-top: 6px solid $azure;
     }
 }
 
-.WizardModal__progress-button{
+.WizardModal__progress-button {
   margin: 0 10px;
 }

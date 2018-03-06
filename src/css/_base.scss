@@ -1,4 +1,4 @@
-html, body, .root{
+html, body, .root {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -8,17 +8,17 @@ html, body, .root{
   position: relative;
 }
 
-body{
+body {
   overflow-y: auto;
   overflow-x: hidden;
   background-color: $background-color;
 }
 
-a{
+a {
   color: $romanSilver;
 }
 
-a:hover{
+a:hover {
   color: $turquise;
   text-decoration: underline;
 }
@@ -27,7 +27,7 @@ h1,
 h2,
 h3,
 h4,
-h5{
+h5 {
   padding: 0px 0;
   margin: 20px 0;
   font-weight: 100;
@@ -38,7 +38,7 @@ h6 {
   font-weight: 100;
 }
 
-ul{
+ul {
   margin: 0;
 }
 
@@ -49,7 +49,7 @@ h4 { font-size: $h4-fontsize; line-height: 110%;}
 h5 { font-size: $h5-fontsize; line-height: 110%;}
 h6 { font-size: $h6-fontsize; line-height: 110%;}
 
-h6{
+h6 {
   font-size: 1.2rem;
 }
 

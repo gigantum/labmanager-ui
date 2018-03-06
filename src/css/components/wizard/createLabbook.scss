@@ -1,40 +1,41 @@
-.CreateLabbook{
+.CreateLabbook {
   padding: 20px;
   height: 500px;
+
   input[type=text].invalid,
   input[type=text].invalid:focus,
-  input[type=text].invalid:hover{
+  input[type=text].invalid:hover {
     color: $crimson;
     border-color: $crimson;
   }
 
-  .error{
+  .error {
     color: $crimson;
   }
 }
-.CreateLabbook__warning{
+.CreateLabbook__warning {
   text-align: right;
   margin: 0px;
 }
-.CreateLabbook__warning--hidden{
+.CreateLabbook__warning--hidden {
   color: $turquise;
   visibility: hidden;
 
 }
 
-.CreateLabbook__warning--green{
+.CreateLabbook__warning--green {
   color: $turquise;
 }
 
-.CreateLabbook__warning--yellow{
+.CreateLabbook__warning--yellow {
   color: $goldenLemon;
 }
 
-.CreateLabbook__warning--red{
+.CreateLabbook__warning--red {
   color: $crimson;
 }
 
-.CreateLabbook__header{
+.CreateLabbook__header {
     margin: 0 0 20px 0;
     padding: 0 0 20px 0;
     color: $azure;
@@ -43,22 +44,22 @@
     border-bottom: 1px solid $azure;
 }
 
-.CreateLabbook__modal-close{
+.CreateLabbook__modal-close {
   position: absolute;
   top: 5px;
   right: 5px;
   cursor: pointer;
 }
 
-.CreateLabbook__modal-inner-container{
+.CreateLabbook__modal-inner-container {
   height: 360px;
 }
 
-.CreateLabbook__button--margin {
+.CreateLabbook__button--margin  {
   margin-left: 20px;
 }
 
-.CreateLabbook__description-input{
+.CreateLabbook__description-input {
   width: 100%;
   height: 100px;
   resize: none;
@@ -66,24 +67,24 @@
 
 }
 
-.CreateLabbook__description-input:focus{
+.CreateLabbook__description-input:focus {
   border: 2px solid #26a69a;
   box-shadow: 0 1px 0 0 #26a69a;
   outline: none;
   padding: 3px;
 }
 
-.CreateLabbook__text-divider{
+.CreateLabbook__text-divider {
   text-align: center;
   color: $font-grey;
 }
-.CreateLabbook__text-divider-container{
+.CreateLabbook__text-divider-container {
   position: relative;
   display: flex;
   justify-content: center;
 }
 
-.CreateLabbook__text-divider-container:after{
+.CreateLabbook__text-divider-container:after {
   border-top: 1px solid $font-grey;
   content:"";
   position: absolute;
@@ -96,7 +97,7 @@
 }
 
 
-.CreateLabbook__text-divider-container:before{
+.CreateLabbook__text-divider-container:before {
   border-top: 1px solid $font-grey;
   content:"";
   position: absolute;

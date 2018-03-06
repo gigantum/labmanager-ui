@@ -1,6 +1,4 @@
-
-
-.Notes{
+.Notes {
   overflow-x: hidden;
   overflow-y: auto;
   padding: 10px;
@@ -8,7 +6,7 @@
   height: calc(100% - 13px);
 }
 
-.NotesCard{
+.NotesCard {
   margin: 15px 15px;
   padding: 0 10px;
   //border: 1px solid $romanSilver;
@@ -16,24 +14,20 @@
   z-index: 200;
   position: relative;
   background: white;
-
-
-
   border-bottom: 10px solid $azure;
-
 }
 
-.NotesCard__stack{
+.NotesCard__stack {
   @include flex(flex-start, column)
 }
 
-.NotesCard__user{
+.NotesCard__user {
   height: 20px;
   width: 20px;
   align-self: center;
 }
 
-.NotesCard__time{
+.NotesCard__time {
   align-self: center;
   max-width: 120px;
   margin: 2px 0;
@@ -42,16 +36,15 @@
 
 }
 
-.NotesCard__loader{
+.NotesCard__loader {
   height: 40px;
   width: calc(100% - 30px);
   background: $white url('../images/icons/paragraph.svg') repeat-X 10px center;
   padding: 0 5px;
   background-size: 30px 30px;
-
 }
 
-.NotesCard:before, .Notes__date-tab:before{
+.NotesCard:before, .Notes__date-tab:before {
   content: "";
   display: block;
   position: absolute;
@@ -63,29 +56,27 @@
   width: 1px;
   height: 15px;
 }
-.Notes__date-tab:nth-child(1):before{
+.Notes__date-tab:nth-child(1):before {
   height: 40px;
 }
 
-.Notes__date-tab:before{
+.Notes__date-tab:before {
   top: 76px;
   left: 35px;
 }
 
-.NotesCard:nth-last-child(1):before{
+.NotesCard:nth-last-child(1):before {
   display: none !important;
 }
 
-.NotesCard__title{
-
-  h6{
+.NotesCard__title {
+  h6 {
     padding: 5px;
   }
 }
 
-.NotesCard__row{
-
-  p{
+.NotesCard__row {
+  p {
     padding: 5px 15px;
     border-left: 1px solid $romanSilver;
     flex: 1 1 auto;
@@ -93,18 +84,18 @@
     word-break: break-all;
   }
 
-  p:nth-child(1){
+  p:nth-child(1) {
     border-left: 0px solid white;
     padding: 5px 15px 5px 0;
   }
 }
 
-.Notes__sizer{
+.Notes__sizer {
   width: 100%;
 }
 
 
-.NotesCard__toggle-button{
+.NotesCard__toggle-button {
   align-self: flex-end;
 
   width: 120px;
@@ -113,34 +104,34 @@
 
   background: none;
   width: 200px;
-  border: none;
+  border: 0;
   color: $romanSilver;
 }
 
-.NotesCard__toggle-button:focus{
+.NotesCard__toggle-button:focus {
   background: none;
-  border: none;
+  border: 0;
   color: $romanSilver;
 }
 
-.NotesCard__toggle-icon{
+.NotesCard__toggle-icon {
    width: 20px;
    height: 20px;
  }
 
-.NotesCard__toggle-button.open .NotesCard__toggle-icon{
+.NotesCard__toggle-button.open .NotesCard__toggle-icon {
   transform: rotate(90deg);
 
   background: url('./../images/icons/down-arrow.svg') no-repeat 90% center;
   background-size: 10px;
 }
 
-.NotesCard__toggle-button.closed .NotesCard__toggle-icon{
+.NotesCard__toggle-button.closed .NotesCard__toggle-icon {
   background: url('./../images/icons/down-arrow.svg') no-repeat 90% center;
   background-size: 10px;
 }
 
-.NotesCard__expanded-view{
+.NotesCard__expanded-view {
   overflow: hidden;
   border-top: 2px solid $azure;
   min-height: 0px;
@@ -148,7 +139,7 @@
 
   transition: height 0.5s;
 }
-.NotesCard__expanded-view.no-height{
+.NotesCard__expanded-view.no-height {
   height: 0px;
   padding: 0px;
   border: 0px;
@@ -157,7 +148,7 @@
 }
 
 
-.NotesCard__commit-message{
+.NotesCard__commit-message {
   width: calc(100% - 240px);
   align-self: center;
   flex: 1 0 auto;
@@ -165,12 +156,12 @@
   margin: 18px 15px;
 }
 
-.NotesCard__tags-list{
-
-  li{
+.NotesCard__tags-list {
+  li {
     padding: 0 10px 0 0
   }
-  li:before{
+
+  li:before {
    display: inline-block;
 
    width: 12px;
@@ -183,11 +174,11 @@
  }
 }
 
-.Notes__next-button-container{
+.Notes__next-button-container {
   text-align: center;
 }
 
-.Notes__date-tab{
+.Notes__date-tab {
     position: relative;
 
     width: 80px;
@@ -200,7 +191,7 @@
     font-weight: lighter;
 }
 
-.Notes__date-month{
+.Notes__date-month {
   align-self: center;
 
   height: 30px;
@@ -210,7 +201,7 @@
   font-size: 20px;
 }
 
-.Notes__date-day{
+.Notes__date-day {
   align-self: center;
 
   height: 26px;
@@ -220,19 +211,20 @@
   font-size: 26px;
 }
 
-.Notes__user-note{
+.Notes__user-note {
   color: $azure;
   position: relative;
   font-size: 14px;
   cursor: pointer;
   z-index: 200;
-  h5{
+
+  h5 {
     padding: 0px 0 0 60px;
   }
 }
 
 .Notes__user-note--remove,
-.Notes__user-note--add{
+.Notes__user-note--add {
   background: $azure;
   background-size: 10px;
   height: 20px;
@@ -244,7 +236,7 @@
   transition: all 0.3s;
 }
 
-.Notes__user-note:before, .Notes__user-note:before{
+.Notes__user-note:before, .Notes__user-note:before {
   content: "";
   display: block;
   position: absolute;
@@ -258,19 +250,19 @@
 
 }
 
-.Notes__user-note--remove{
+.Notes__user-note--remove {
   background: $azure url('../images/icons/remove.svg') no-repeat center center;
   background-size: 14px;
 }
 
-.Notes__user-note--add{
+.Notes__user-note--add {
   background: $azure url('../images/icons/add.svg') no-repeat center center;
   background-size: 14px;
 }
 
-.Notes__user-note:hover{
+.Notes__user-note:hover {
   .Notes__user-note--remove,
-  .Notes__user-note--add{
+  .Notes__user-note--add {
     height: 24px;
     width: 24px;
     top: 1px;
@@ -279,29 +271,29 @@
   }
 }
 
-.NotesCard.NotesCard__loader-hidden{
+.NotesCard.NotesCard__loader-hidden {
   display: block;
   opacity: 0;
   height: 0;
 }
 
-.NotesCard.NotesCard__loader{
+.NotesCard.NotesCard__loader {
   opacity: 1;
 }
 
-.NotesCard.NotesCard__loader--1{
+.NotesCard.NotesCard__loader--1 {
   transition: opacity 0.8s;
 }
 
-.NotesCard.NotesCard__loader--2{
+.NotesCard.NotesCard__loader--2 {
   transition: opacity 1.2s;
 }
-.NotesCard.NotesCard__loader--3{
+.NotesCard.NotesCard__loader--3 {
   transition: opacity 2s;
 }
-.NotesCard.NotesCard__loader--4{
+.NotesCard.NotesCard__loader--4 {
   transition: opacity 2.8s;
 }
-.NotesCard.NotesCard__loader--5{
+.NotesCard.NotesCard__loader--5 {
   transition: opacity 3.6s;
 }

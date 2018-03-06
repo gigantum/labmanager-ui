@@ -140,7 +140,9 @@ class Labbook extends Component {
         onClick={()=> this._setSelectedComponent(item.id)}
         >
         <Link
-          to={`../../../labbooks/${this.state.owner}/${this.props.match.params.labbookName}/${item.id}`} replace={true}>
+          to={`../../../labbooks/${this.state.owner}/${this.props.match.params.labbookName}/${item.id}`}
+          replace
+        >
           {item.name}
         </Link>
       </div>

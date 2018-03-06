@@ -1,10 +1,16 @@
-.light { font-weight: 100; }
-.regular { font-weight: 400; }
-.bold { font-weight: 400; }
+.light {
+  font-weight: 100;
+}
 
+.regular {
+  font-weight: 400;
+}
 
+.bold {
+  font-weight: 400;
+}
 
-.error{
+.error {
   color: $crimson;
 }
 
@@ -12,105 +18,107 @@
   display: flex, none, block
 */
 
-.box-shadow{
+.box-shadow {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
 
-.flex{
+.flex {
   display: flex;
 }
 
-.hidden{
+.hidden {
   display: none !important;
 }
 
-.visible{
+.visible {
   display: block;
 }
-
 
 /*
   justify-content
 */
-.justify--center{
+
+.justify--center {
     justify-content: center;
 }
 
-.justify--left{
+.justify--left {
     justify-content: left;
 }
 
-.justify--right{
+.justify--right {
     justify-content: left;
 }
 
-.justify--space-around{
+.justify--space-around {
     justify-content: space-around;
 }
 
-.justify--space-between{
+.justify--space-between {
     justify-content: space-between;
 }
+
 /*
   flex: 0 0 auto, 1 0 auto, 0 1 auto, 1 1 auto
 */
-.flex-0-0-auto{
+
+.flex-0-0-auto {
   flex: 0 0 auto;
 }
 
-.flex-1-0-auto{
+.flex-1-0-auto {
   flex: 1 0 auto;
 }
 
-.flex-1-0-auto{
+.flex-1-0-auto {
   flex: 1 0 auto;
 }
 
-.flex-1-1-auto{
+.flex-1-1-auto {
   flex: 1 1 auto;
 }
 
-.flex-1{
+.flex-1 {
   flex: 1;
 }
-
-
 
 /*
   flex-direction: row, row-reverse, column, column-reverse
 */
-.flex--row{
+
+.flex--row {
     flex-direction: row;
 }
 
-.flex--row-reverse{
+.flex--row-reverse {
     flex-direction: row-reverse;
 }
 
-.flex--column{
+.flex--column {
     flex-direction: column;
 }
 
-.flex--column-reverse{
+.flex--column-reverse {
     flex-direction: column-reverse;
 }
 
 /*
   flex-wrap: nowrap, wrap, wrap-reverse
 */
-.flex--nowrap{
+
+.flex--nowrap {
     flex-wrap: nowrap;
 }
 
-.flex--wrap{
+.flex--wrap {
     flex-wrap: wrap;
 }
 
-.flex--wrap-reverse{
+.flex--wrap-reverse {
     flex-wrap: wrap-reverse;
 }
 
-.flex--column-reverse{
+.flex--column-reverse {
     flex-wrap: column-reverse;
 }
 
@@ -118,15 +126,15 @@
   .text-align: center, left, right
 */
 
-.text-center{
+.text-center {
   text-align: center;
 }
 
-.text-left{
+.text-left {
   text-align: left;
 }
 
-.text-right{
+.text-right {
   text-align: right;
 }
 
@@ -134,21 +142,20 @@
   visibility visible hidden
 */
 
-.visibility-hidden{
+.visibility-hidden {
   visibility: hidden;
 }
 
-.visibility-visible{
+.visibility-visible {
   visibility: visible;
 }
 
-
-.tabs-list{
+.tabs-list {
   @include flex(flex-start, row);
   border-bottom: 1px solid $grey;
 }
 
-.tab{
+.tab {
   cursor: pointer;
   margin: 0 0 -1px 15px;
   padding: 5px 10px;
@@ -159,6 +166,6 @@
   width: 100px;
 }
 
-.tab--selected{
+.tab--selected {
   border-bottom: 1px solid $white;
 }

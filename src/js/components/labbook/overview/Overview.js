@@ -70,7 +70,12 @@ class Overview extends Component {
             </div>
             <div className="Overview__title-container">
               <h5 className="Overview__title">Environment</h5>
-              <Link to={{pathname: `../../../../labbooks/${owner}/${labbookName}/environment`}} replace={true}>Environment Details ></Link>
+              <Link
+                to={{pathname: `../../../../labbooks/${owner}/${labbookName}/environment`}}
+                replace
+              >
+                Environment Details >
+              </Link>
             </div>
             <div className="Overview__environment">
                 <Base

@@ -11,7 +11,7 @@ export default class BaseDetails extends React.Component {
         <div className="BaseDetails__button">
           <button
             onClick={()=> this.props.backToBaseSelect()}
-            className="flat--button">
+            className="button--flat">
             Back To Select A Base
           </button>
         </div>

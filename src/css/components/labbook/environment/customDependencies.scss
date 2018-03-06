@@ -1,19 +1,17 @@
-.CustomDependencies{
+.CustomDependencies {
   position: relative;
 }
 
-.CustomDependencies__header{
+.CustomDependencies__header {
   color: $romanSilver;
 }
 
-.CustomDependencies__card{
-  @extend .card;
+.CustomDependencies__card {
   padding: 20px;
+  @extend .card;
 }
 
-
-
-.CustomDependencies__add-dependencies{
+.CustomDependencies__add-dependencies {
   background-color: $grey-light;
   border-radius: 8px;
   padding: 5px 20px;
@@ -21,7 +19,7 @@
   margin: 20px 0;
 }
 
-input.CustomDependenciesDropdown__input[type="text"]{
+input.CustomDependenciesDropdown__input[type="text"] {
   border: 1px solid $romanSilver;
   border-radius: 8px;
   padding: 0 15px;
@@ -30,13 +28,11 @@ input.CustomDependenciesDropdown__input[type="text"]{
   background-size: 20px;
   cursor: pointer;
 }
-input.CustomDependenciesDropdown__input[type="text"]:focus{
+input.CustomDependenciesDropdown__input[type="text"]:focus {
   cursor: text;
 }
 
-.CustomDependenciesDropdown__menu{
-
-  @extend .box-shadow;
+.CustomDependenciesDropdown__menu {
   padding: 20px;
   top: 142px;
   position: absolute;
@@ -49,56 +45,57 @@ input.CustomDependenciesDropdown__input[type="text"]:focus{
 
   background: $white;
   width: calc(100% - 118px);
+  @extend .box-shadow;
 }
 
-.CustomDependenciesDropdown__menu-row{
-  @include flex(space-between, row);
+.CustomDependenciesDropdown__menu-row {
   width: 100%;
   height: 40px;
   border-bottom: 1px solid $romanSilver;
   align-items: center;
+  @include flex(space-between, row);
 }
 
 
-.CustomDependenciesDropdown__menu--no-height{
+.CustomDependenciesDropdown__menu--no-height {
   position: absolute;
   height: 0px;
   padding: 0px;
 }
 
 .CustomDependenciesDropdown__button--round,
-.CustomDependencies__button--round{
+.CustomDependencies__button--round {
   width: 30px;
   height: 30px;
   border-radius: 15px;
   padding: 0;
 }
 .CustomDependenciesDropdown__button--add,
-.CustomDependencies__button--add{
+.CustomDependencies__button--add {
   background: $azure url('../images/icons/add.svg') no-repeat 50% 50%;
   background-size: 16px;
 }
 .CustomDependenciesDropdown__button--add:hover,
-.CustomDependencies__button--add:hover{
+.CustomDependencies__button--add:hover {
   background: $turquise url('../images/icons/add.svg') no-repeat 50% 50%;
   background-size: 16px;
 }
 
-.CustomDependencies__button--remove{
+.CustomDependencies__button--remove {
   background: $azure url('../images/icons/close-white.svg') no-repeat 50% 50%;
   background-size: 14px;
 }
-.CustomDependencies__button--remove:hover{
+.CustomDependencies__button--remove:hover {
   background: $turquise url('../images/icons/close-white.svg') no-repeat 50% 50%;
   background-size: 14px;
 }
 
-.CustomDependencies__table-container{
+.CustomDependencies__table-container {
   position: relative;
   padding: 20px 20px 60px;
   border: 1px solid $romanSilver;
 
-  .CustomDependencies__button{
+  .CustomDependencies__button {
     position: absolute;
     bottom: -20px;
     left: 50%;
@@ -108,49 +105,46 @@ input.CustomDependenciesDropdown__input[type="text"]:focus{
   }
 }
 
-.CustomDependencies__item{
+.CustomDependencies__item {
   height: 40px;
-  @include flex(space-between, row);
-
   border-bottom: 1px solid $romanSilver;
+  @include flex(space-between, row);
 }
 
-.CustomDependencies__view-container{
+.CustomDependencies__view-container {
   padding: 20px 20px 40px;
   height: auto;
   overflow: hidden;
 }
 
-.CustomDependencies__view-container--no-height{
+.CustomDependencies__view-container--no-height {
   height: 0px;
   max-height: 0px;
   padding: 0px;
 }
 
-
 // .CustomDependencies__button--flat{
 //   padding: 5px 0;
 //   font-weight: bold;
 //   background-color: $grey-light;
-//   border: none;
+//   border: 0;
 //   color: $azure;
 //   width: 100%;
 // }
 
-
 .CustomDependencies__button--flat:hover,
-.CustomDependencies__button--flat:focus{
+.CustomDependencies__button--flat:focus {
   width: 100%;
   background-color: $grey-light;
-  border: none;
+  border: 0;
   color: $turquise !important;
   background: url('../images/icons/down-arrow-turquise.svg') no-repeat calc(50% + 87px) 50%;
   background-size: 20px;
 }
 
 
-.CustomDependencies__button--flat{
-    border: none;
+.CustomDependencies__button--flat {
+    border: 0;
     color: $azure;
     width: 100%;
     line-height: 18px;
@@ -159,13 +153,13 @@ input.CustomDependenciesDropdown__input[type="text"]:focus{
     background-size: 20px;
 }
 
-.CustomDependencies__button--open{
+.CustomDependencies__button--open {
   background: url('../images/icons/up-arrow-azure.svg') no-repeat calc(50% + 87px) 50%;
   background-size: 20px;
 }
 
 .CustomDependencies__button--open:hover,
-.CustomDependencies__button--open:focus{
+.CustomDependencies__button--open:focus {
   background: url('../images/icons/up-arrow-turquise.svg') no-repeat calc(50% + 87px) 50%;
   background-size: 20px;
 }

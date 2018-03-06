@@ -1,19 +1,19 @@
-.User{
+.User {
   height: 200px;
   width: 120px;
   position: relative;
   border-top: 5px solid $jet;
+  padding: 20px 0;
   @include flex(flex-start, column);
-  padding: 20px 0
 }
 
-.User__image{
+.User__image {
   height: 60px;
   width: 60px;
   align-self: center;
 }
 
-.User__name{
+.User__name {
   height: 30px;
   line-height: 20px;
   font-size: 14px;
@@ -27,13 +27,13 @@
 
 }
 
-.User__name--active{
+.User__name--active {
   @extend .User__name;
   background: url('./../images/icons/up-arrow-white.svg') no-repeat center right;
     background-size: 16px;
 }
 
-.User__dropdown{
+.User__dropdown {
   border: 1px solid $white;
   margin: 10px;
   width: 100px;
@@ -41,7 +41,7 @@
   border-radius: 8px;
 }
 
-// .User__dropdown--arrow{
+// .User__dropdown--arrow {
 //   position: absolute;
 //   top: 81px;
 //   right: 5px;
@@ -49,7 +49,7 @@
 // }
 
 
-.User__button{
+.User__button {
   width: 100%;
   align-self: center;
   color: $white;
@@ -60,7 +60,7 @@
 
 }
 
-.User__button:hover{
+.User__button:hover {
   color: $turquise;
   border-width: 0px;
 }

@@ -1,14 +1,12 @@
-
-
-.Environment{
+.Environment {
   width: 100%;
 }
 
-.Environment__header-container{
+.Environment__header-container {
   @include flex(left, row)
 }
 
-.Environment__header{
+.Environment__header {
   font-weight: light;
   color: $font-grey;
   font-size: 22px;
@@ -16,7 +14,7 @@
 
 .Environment__edit-button,
 .Environment__edit-button:hover,
-.Environment__edit-button:focus{
+.Environment__edit-button:focus {
   font-weight: light;
   color: $font-grey;
   font-size: 14px;
@@ -28,7 +26,7 @@
   background-size: 22px;
 }
 
-.Environment__card{
+.Environment__card {
   background-color: $white;
   padding: 10px;
   color: $jet;
@@ -37,28 +35,30 @@
 }
 
 
-.Environment__image-container{
+.Environment__image-container {
   align-items: center;
   align-content: center;
   align-self: center;
 }
 
-.Environment__card-text{
+.Environment__card-text {
   //background-color: $grey-light;
   padding: 10px;
   width: 200px;
 }
 
-.Environment__edit-container{
+.Environment__edit-container {
   align-self: center;
   margin-left: 20px;
 }
 
-.Environment__modal{
+.Environment__modal {
   position: fixed;
+  @include modal(500px, 800px);
+
   .SelectDevelopmentEnvironment__title,
   .AddEnvironmentPackage__title,
-  .AddCustomDependencies__title{
+  .AddCustomDependencies__title {
     font-size: 1.5em;
     text-align: center;
     border-bottom: 1px solid $azure;
@@ -66,26 +66,25 @@
     color: $azure;
   }
 
-  @include modal(500px, 800px)
-
-  .SelectBaseImage__progress-button{
+  .SelectBaseImage__progress-button {
     display: none;
   }
 
 }
 
-.Environment__modal-close{
-  @include close();
+.Environment__modal-close {
   cursor: pointer;
+  @include close();
 }
 
-.Environment__package-dependencies{
+.Environment__package-dependencies {
   margin: 10px 20px 10px 0;
 
   .Environment__card-text{
       background-color: $white;
       width: 150px;
       box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+
       p{
         margin: 0 5px 0 0;
       }
@@ -94,6 +93,6 @@
 }
 
 .Environment__development-environment-item,
-.Environment__dependencies{
+.Environment__dependencies {
   margin: 0 20px 0 0;
 }

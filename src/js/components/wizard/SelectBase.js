@@ -304,7 +304,7 @@ const BaseSlide = ({node, self}) =>{
           </div>
         </div>
         <div className="SelectBase__image-actions">
-          <button  onClick={()=> self._viewBase(node)} className="flat--button">View Details</button>
+          <button  onClick={()=> self._viewBase(node)} className="button--flat">View Details</button>
           <button  onClick={()=> self._selectBase(node)}>Select</button>
         </div>
       </div>

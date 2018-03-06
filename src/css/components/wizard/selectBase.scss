@@ -1,16 +1,16 @@
-.SelectBase{
+.SelectBase {
   color: $romanSilver;
   font-weight: 100;
   height: 500px;
-  p{
+  p {
     margin: 0px
   }
 
-  .slick-arrow.slick-next{
+  .slick-arrow.slick-next {
     background: url(../images/icons/right-arrow-silver.svg) no-repeat 50% 50%;
     background-size: 30px;
   }
-  .slick-arrow.slick-prev{
+  .slick-arrow.slick-prev {
     background: url(../images/icons/left-arrow-silver.svg) no-repeat 50% 50%;
     background-size: 30px;
   }
@@ -18,7 +18,7 @@
 
 }
 
-.SelectBase__inner-container{
+.SelectBase__inner-container {
   position: relative;
   padding: 0 40px;
   @include flex(flex-start, row);
@@ -27,37 +27,37 @@
   right: 0%;
 }
 
-.SelectBase__inner-container--viewer{
+.SelectBase__inner-container--viewer {
     right: calc(100% + 160px);
 }
 
-.SelectBase__select-container{
+.SelectBase__select-container {
   min-width: 100%;
   flex-wrap: nowrap;
 }
 
-.SelectBase__viewer-container{
+.SelectBase__viewer-container {
   min-width: 100%;
   margin: 0 240px;
 }
 
-.SelectBase__tabs-container{
+.SelectBase__tabs-container {
 
 }
 
-.SelectBase__tabs-list{
+.SelectBase__tabs-list {
   @extend .tabs-list;
 }
 
-.SelectBase__tab{
+.SelectBase__tab {
   @extend .tab;
 }
 
-.SelectBase__tab--selected{
+.SelectBase__tab--selected {
   @extend .tab--selected;
 }
 
-.SelectedBase__header{
+.SelectedBase__header {
     margin: 0 0 20px 0;
     padding: 0 0 20px 0;
     color: $azure;
@@ -66,20 +66,20 @@
     border-bottom: 1px solid $azure;
 }
 
-.SelectedBase__modal-header{
+.SelectedBase__modal-header {
   color: $azure;
   text-align: center;
 }
-.SelectBase__images{
+.SelectBase__images {
   padding: 10px;
   background: $white;
 }
-.SelectBase__images--hidden{
+.SelectBase__images--hidden {
   overflow: hidden;
 }
 
 
-.SelectBase__image-wrapper{
+.SelectBase__image-wrapper {
   height: 300px;
   width: 100%;
 }
@@ -87,7 +87,7 @@
 
 
 
-.SelectBase__image{
+.SelectBase__image {
 
   display: flex;
   flex-direction: flex-start;
@@ -103,70 +103,70 @@
   border: 2px solid $lightGrey;
 }
 
-.SelectBase__image--selected{
+.SelectBase__image--selected {
   border: 2px solid $azure;
 }
 
 
-.SelectBase__image-icon{
+.SelectBase__image-icon {
   width: 70px;
   padding: 10px;
 }
 
-.SelectBase__image-text{
+.SelectBase__image-text {
   padding: 5px;
   flex: 1;
-  h6{
+  h6 {
     padding: 10px 0;
     font-weight: 400;
     font-size: 14px;
   }
-  p{
+  p {
     padding: 5px 0;
   }
-  ul{
+  ul {
     margin: 0;
   }
 }
 
-.SelectBase__image-header{
+.SelectBase__image-header {
   font-size: 18px !important;
   font-weight: 400;
   height: 62px;
 }
 
-.SelectBase__image-actions{
+.SelectBase__image-actions {
   @include flex(center, row);
   margin: 10px;
   width: 200px;
 }
 
-.SelectBase__image:hover{
+.SelectBase__image:hover {
   background-color: $grey;
 }
 
-.SelectBase__image-description{
+.SelectBase__image-description {
   height: 70px;
 }
 
-.SelectBase__image-info{
+.SelectBase__image-info {
   @include flex(flex-start, row)
 }
 
-.SelectBase__image-languages{
+.SelectBase__image-languages {
   width: calc(50% - 10px);
   padding: 0 10px 0 0;
 }
-.SelectBase__image-tools{
+.SelectBase__image-tools {
   width: calc(50% - 10px);
   padding: 0 10px 0 0;
 }
 
-.SelectBase__selected-image-container{
+.SelectBase__selected-image-container {
   height: 120px;
 }
 
-.SelectBase__selected-image{
+.SelectBase__selected-image {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -177,17 +177,17 @@
   border: 1px dashed $grey;
 
   img,
-  p{
+  p {
     align-self: center;
     height: 50px;
   }
 }
 
-.Environment__modal{
-  .SelectBase__inner-container{
+.Environment__modal {
+  .SelectBase__inner-container {
     height: 500px;
   }
-  .SelectBase__progress-button{
+  .SelectBase__progress-button {
     visibility: hidden;
   }
 }

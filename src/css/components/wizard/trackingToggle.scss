@@ -1,4 +1,4 @@
-.TrackingToggle{
+.TrackingToggle {
     color: $romanSilver;
     background-color: $lightGrey;
     padding: 3px 10px;
@@ -6,16 +6,16 @@
     align-items: center;
 }
 
-// .TrackingToggle__label--on{
+// .TrackingToggle__label--on {
 //   width: 40px;
 //   border: 1px solid $azure;
 //   height: 16px;
 //   border-radius: 8px;
 // }
-.TrackingToggle__checkbox--on{
+.TrackingToggle__checkbox--on {
   border: 1px solid $azure;
 }
-.TrackingToggle__checkbox--off{
+.TrackingToggle__checkbox--off {
   border: 1px solid $romanSilver;
 }
 
@@ -31,7 +31,7 @@
   margin:10px;
 }
 
-.TrackingToggle__text{
+.TrackingToggle__text {
   width: 300px;
 }
 
