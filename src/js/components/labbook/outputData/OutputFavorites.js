@@ -99,10 +99,14 @@ export default createPaginationContainer(
           edges{
             node{
               id
-              isDir
-              description
-              key
+              owner
+              name
               index
+              key
+              description
+              isDir
+              associatedLabbookFileId
+              section
             }
             cursor
           }

@@ -27,6 +27,7 @@ const mutation = graphql`
 
 
 function sharedUpdater(store, labbookId, connectionKey, node) {
+  console.log(store, node)
   const labbookProxy = store.get(labbookId);
 
   const conn = RelayRuntime.ConnectionHandler.getConnection(

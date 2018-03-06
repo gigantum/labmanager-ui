@@ -222,7 +222,7 @@ export default class CreateLabbook extends React.Component {
     @return {string} errorMessage
   */
   _getErrorText(){
-    return this.state.errorType === 'send' ? 'Error: Last character cannot be a hyphen.' : 'Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)'
+    return this.state.errorType === 'send' ? 'Error: Last character cannot be a hyphen.' : 'Error: Title may only contain lowercase alphanumeric and `-`. (e.g. lab-book-title)'
   }
 
   /**

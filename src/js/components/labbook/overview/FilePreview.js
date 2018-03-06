@@ -91,9 +91,9 @@ export default class FilePreview extends Component {
                 <p>Recent Files</p>
                 <div className="FilePreview__list">
                   {
-                    props.labbook.code.favorites.edges.map(edge =>{
-                      return <FileCard edge={edge} />
-                    })
+                    // props.labbook.code.favorites.edges.map(edge =>{
+                    //   return <FileCard edge={edge} />
+                    // })
                   }
                 </div>
               </div>

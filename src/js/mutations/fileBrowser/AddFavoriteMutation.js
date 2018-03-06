@@ -13,10 +13,14 @@ const mutation = graphql`
       newFavoriteEdge{
         node{
           id
+          owner
+          name
           index
           key
           description
           isDir
+          associatedLabbookFileId
+          section
         }
         cursor
       }
@@ -68,7 +72,6 @@ export default function AddFavoriteMutation(
   key,
   description,
   isDir,
-  index,
   fileItem,
   section,
   callback
@@ -82,7 +85,6 @@ export default function AddFavoriteMutation(
       key,
       description,
       isDir,
-      index,
       section,
       clientMutationId
     }

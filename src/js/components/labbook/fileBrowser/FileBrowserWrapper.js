@@ -494,7 +494,6 @@ export default class FileBrowserWrapper extends Component {
       key,
       '',
       false,
-      0,
       fileItem,
       this.props.section,
       (response, error)=>{

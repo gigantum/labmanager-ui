@@ -58,7 +58,7 @@ class CodeFavorites extends Component {
 
 
   render(){
-
+    console.log(this.props.code)
     if(this.props.code && this.props.code.favorites){
 
       let loadingClass = (this.props.code.favorites.pageInfo.hasNextPage) ? 'Favorite__action-bar' : 'hidden'
@@ -122,10 +122,14 @@ export default createPaginationContainer(
           edges{
             node{
               id
-              isDir
-              description
-              key
+              owner
+              name
               index
+              key
+              description
+              isDir
+              associatedLabbookFileId
+              section
             }
             cursor
           }
