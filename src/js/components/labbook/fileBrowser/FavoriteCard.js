@@ -98,15 +98,13 @@ class FavoriteCard extends Component {
     }
 
 		this._updateIndexMutation = this._updateIndexMutation.bind(this)
+		this._removeFavorite = this._removeFavorite.bind(this)
   }
 
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
-    //connectDropTarget: PropTypes.func.isRequired,
-    //index: PropTypes.number.isRequired,
-    isDragging: PropTypes.bool.isRequired,
+    connectDropTarget: PropTypes.func.isRequired,
     id: PropTypes.any.isRequired,
-    //text: PropTypes.string.isRequired,
     moveCard: PropTypes.func.isRequired,
   }
 
@@ -175,7 +173,7 @@ class FavoriteCard extends Component {
 
   }
 
-  /*
+  /**
     @param {object} node
     triggers remove favorite mutation
   */
@@ -189,6 +187,8 @@ class FavoriteCard extends Component {
       this.props.section,
       node.key,
       node.id,
+			node,
+			null,
       (response, error)=>{
         if(error){
           console.error(error)
@@ -196,6 +196,13 @@ class FavoriteCard extends Component {
       }
     )
   }
+	/**
+    @param {}
+    sets description to edit mode on double click
+  */
+	_handleClickDescription() {
+		this._editDescription(true);
+	}
 
   render(){
     let fileDirectories = this.props.favorite.key.split('/');
@@ -217,10 +224,13 @@ class FavoriteCard extends Component {
               onClick={()=>{ this._removeFavorite(this.props.favorite) }}
               className="Favorite__star">
             </div>
-
+						<div className="Favorite__header-section">
             <h6 className="Favorite__card-header">{filename}</h6>
+						</div>
 
-            <p className="Favorite__path">{path}</p>
+						<div className="Favorite__path-section">
+            	<p className="Favorite__path">{path}</p>
+						</div>
 
             <div className="Favorite__description-section">
 
@@ -234,7 +244,9 @@ class FavoriteCard extends Component {
 
               { !this.state.editMode && (this.props.favorite.description.length < 1) &&
 
-                  <p className="Favorite__description-filler">Enter a short description<button
+                  <p
+										onDoubleClick={() => this._handleClickDescription()}
+										className="Favorite__description-filler">Enter a short description<button
                       onClick={()=>this._editDescription(true)}
                       className="Favorite__edit-button">
                   </button></p>

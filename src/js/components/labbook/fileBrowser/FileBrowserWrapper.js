@@ -486,7 +486,7 @@ export default class FileBrowserWrapper extends Component {
           return edge.node
         }
     })[0]
-    console.log(fileItem)
+
     if(!fileItem.node.isFavorite){
       AddFavoriteMutation(
         this.props.favoriteConnection,
@@ -513,6 +513,7 @@ export default class FileBrowserWrapper extends Component {
         }
       )
     }else{
+      
       RemoveFavoriteMutation(
         this.props.connection,
         this.props.parentId,
@@ -520,7 +521,9 @@ export default class FileBrowserWrapper extends Component {
         this.state.labbookName,
         this.props.section,
         key,
-        fileItem.id,
+        fileItem.node.id,
+        fileItem,
+        this.props.favorites,
         (response, error)=>{
           if(error){
             console.error(error)

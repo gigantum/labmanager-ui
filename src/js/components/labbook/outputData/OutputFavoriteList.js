@@ -6,7 +6,7 @@ import FavoriteCard from './../fileBrowser/FavoriteCard'
 //store
 import store from 'JS/redux/store'
 
-class CodeFavoriteList extends Component {
+class OutputFavoriteList extends Component {
   constructor(props){
   	super(props);
     this.state = {
@@ -84,9 +84,9 @@ class CodeFavoriteList extends Component {
                   id={edge.node.id}
                   index={index}
                   labbookName={this.props.labbookName}
-                  parentId={this.props.codeId}
-                  section={'code'}
-                  connection={"CodeFavorites_favorites"}
+                  parentId={this.props.outputId}
+                  section={'Output'}
+                  connection={"OutputFavorites_favorites"}
                   favorite={edge.node}
                   owner={this.props.owner}
                   moveCard={this.moveCard}
@@ -99,4 +99,4 @@ class CodeFavoriteList extends Component {
   }
 }
 
-export default CodeFavoriteList
+export default OutputFavoriteList

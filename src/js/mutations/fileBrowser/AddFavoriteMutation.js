@@ -41,23 +41,25 @@ function sharedUpdater(store, parentId, connectionKey, node, tempId) {
 
   if(conn){
 
-    const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-      store,
-      conn,
-      node,
-      "newFavoriteEdge"
-    )
     if(tempId){
+
       RelayRuntime.ConnectionHandler.deleteNode(
         conn,
         tempId
       );
     }
 
-      RelayRuntime.ConnectionHandler.insertEdgeAfter(
-        conn,
-        newEdge
-      );
+    const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+      store,
+      conn,
+      node,
+      "newFavoriteEdge"
+    )
+
+    RelayRuntime.ConnectionHandler.insertEdgeAfter(
+      conn,
+      newEdge
+    );
 
   }
 }
@@ -89,13 +91,7 @@ export default function AddFavoriteMutation(
       clientMutationId
     }
   }
-  console.log(  owner,
-    labbookName,
-    key,
-    description,
-    isDir,
-    section,
-    clientMutationId)
+
   commitMutation(
     environment,
     {
@@ -138,7 +134,6 @@ export default function AddFavoriteMutation(
         const fileNode = store.get(fileItem.node.id)
         if(fileNode){
           fileNode.setValue(true, 'isFavorite')
-
         }
 
       }

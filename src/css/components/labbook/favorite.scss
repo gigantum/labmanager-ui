@@ -59,7 +59,11 @@
   bottom: 10px;
   right: 20px;
 }
-
+.Favorite__description-section{
+    p{
+      margin: 0;
+    }
+}
 .Favorite__description-editor{
   resize: none;
   height: 90px;
@@ -76,6 +80,15 @@
   background-size: 100% 38px;
   color: $romanSilver;
 }
+.Favorite__header-section{
+  height: 50px;
+}
+.Favorite__path-section{
+  height: 30px;
+  .Favorite__path{
+    margin: 0;
+  }
+}
 
 .Favorite__card-header{
   font-size: 18px;
@@ -83,7 +96,7 @@
   padding: 5px 0;
   color: $slateBlue;
   word-break: break-all;
-  width: calc(100% - 20px);
+  width: calc(100% - 35px);
 }
 
 .Favorite__star{

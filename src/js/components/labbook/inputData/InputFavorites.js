@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 
 //componenets
-import FavoriteCard from './../fileBrowser/FavoriteCard'
+import InputFavoriteList from './InputFavoriteList'
 //store
 import store from 'JS/redux/store'
 
@@ -51,26 +51,18 @@ class InputFavorites extends Component {
   render(){
     if(this.props.input && this.props.input.favorites){
       if(this.props.input.favorites.edges.length > 0){
+        const favorites = this.props.input.favorites.edges.filter((edge)=>{
+          return edge && (edge.node !== undefined)
+        })
         return(
           <div className="Favorite">
-            <div className="Favorite__list">
-              {
-                this.props.input.favorites.edges.map((edge)=>{
-                    return(
-                      <div
-                        key={edge.node.key}
-                        className="Favorite__card-wrapper">
-
-                        <FavoriteCard
-                          parentId={this.props.inputId}
-                          section={'input'}
-                          connection={"InputFavorites_favorites"}
-                          favorite={edge.node}
-                        />
-                      </div>)
-                })
-            }
-            </div>
+            <InputFavoriteList
+              labbookName={this.props.labbookName}
+              inputId={this.props.inputId}
+              section={'input'}
+              favorites={favorites}
+              owner={this.props.owner}
+            />
 
             <div className={this.props.input.favorites.pageInfo.hasNextPage ? "Favorite__action-bar" : "hidden"}>
               <button

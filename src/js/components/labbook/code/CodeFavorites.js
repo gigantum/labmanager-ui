@@ -1,8 +1,6 @@
 // vendor
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
-// import { DragDropContextProvider } from 'react-dnd'
-// import HTML5Backend from 'react-dnd-html5-backend'
 //componenets
 import CodeFavoriteList from './CodeFavoriteList'
 //store
@@ -14,15 +12,6 @@ class CodeFavorites extends Component {
     this.state = {
       loading: false,
     }
-
-    this.moveCard = this.moveCard.bind(this)
-  }
-
-  moveCard(dragIndex, hoverIndex) {
-  const { cards } = this.state
-  const dragCard = cards[dragIndex]
-
-    console.log(cards)
   }
 
   /**
@@ -71,7 +60,6 @@ class CodeFavorites extends Component {
   render(){
 
     if(this.props.code && this.props.code.favorites){
-
       let loadingClass = (this.props.code.favorites.pageInfo.hasNextPage) ? 'Favorite__action-bar' : 'hidden'
       loadingClass = (this.state.loading) ? 'Favorite__action-bar--loading' : loadingClass
 
@@ -79,14 +67,14 @@ class CodeFavorites extends Component {
         const favorites = this.props.code.favorites.edges.filter((edge)=>{
           return edge && (edge.node !== undefined)
         })
-        console.log(this.props)
+
         return(
 
           <div className="Favorite">
 
             <CodeFavoriteList
               labbookName={this.props.labbookName}
-              parentId={this.props.codeId}
+              codeId={this.props.codeId}
               section={'code'}
               favorites={favorites}
               owner={this.props.owner}
@@ -121,7 +109,7 @@ export default createPaginationContainer(
 
     code: graphql`
       fragment CodeFavorites_code on LabbookSection{
-        favorites(after: $cursor, first: $first)@connection(key: "CodeFavorites_favorites", filters: []){
+        favorites(after: $cursor, first: $first)@connection(key: "CodeFavorites_favorites"){
           edges{
             node{
               id
@@ -143,7 +131,6 @@ export default createPaginationContainer(
             endCursor
           }
         }
-
       }`
   },
   {
