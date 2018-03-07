@@ -10,6 +10,7 @@ import environment from 'JS/createRelayEnvironment'
 import Home from 'Components/home/Home';
 import SideBar from 'Components/shared/SideBar';
 import Footer from 'Components/shared/Footer';
+import Prompt from 'Components/shared/Prompt';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
 //
@@ -197,7 +198,9 @@ export default class Routes extends Component {
                     )
                   }}
                 />
-
+                <Prompt
+                  ref="prompt"
+                />
                 <Footer
                   ref="footer"
                   history={history}
