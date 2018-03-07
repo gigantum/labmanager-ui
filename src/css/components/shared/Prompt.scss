@@ -1,3 +1,7 @@
+.Prompt {
+    position: relative;
+}
+
 .Prompt__info {
     position: fixed;
     z-index: 1000;
@@ -21,7 +25,7 @@
 
 .Prompt__logo--raised {
     position: absolute;
-    top: 30%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     transition: top 2s ease 0s;
@@ -29,10 +33,56 @@
 
 .Prompt__logo--final {
     position: absolute;
-    top: 10%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
     transition: top 2s ease 0s;
+}
+
+.Prompt__loading-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: fade-in-out 13s linear;
+    animation-delay: 2s;
+}
+
+.Prompt__failure-text {
+    line-height: 1.5;
+    max-width: 500px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: fade-in 3s forwards;
+    animation-delay: 2s;
+
+    p {
+        margin: 0
+    }
+}
+
+.Prompt__cli {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    animation: fade-in 3s forwards;
+    animation-delay: 2s;
+}
+
+@keyframes fade-in {
+    0% { opacity: 0 }
+    100% { opacity: 1 }
+}
+
+@keyframes fade-in-out {
+    0%, 100% { opacity: 0 }
+    10%, 90% { opacity: 1 }
 }
 
 .hidden {
