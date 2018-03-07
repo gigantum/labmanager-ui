@@ -147,6 +147,7 @@ export default class SelectBase extends React.Component {
       arrows: false
     };
 
+
     return(
       <div className="SelectBase">
         <p className="SelectedBase__modal-header">Create LabBook</p>
@@ -159,7 +160,6 @@ export default class SelectBase extends React.Component {
           query={BaseQuery}
           environment={environment}
           render={({error, props}) =>{
-
               if(error){
 
                 return(<div>{error.message}</div>)
@@ -176,6 +176,7 @@ export default class SelectBase extends React.Component {
                     'SelectBase__inner-container': true,
                     'SelectBase__inner-container--viewer': this.state.viewingBase
                   })
+                  if (sortedBaseItems.bases[this.state.selectedTab].length > 2) sliderSettings.arrows = true;
                   return(
                     <div className={innerContainer}>
                       <div className="SelectBase__select-container">
