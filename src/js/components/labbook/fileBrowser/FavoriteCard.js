@@ -1,12 +1,91 @@
 //vendor
 import React, { Component } from 'react'
+import { DragSource, DropTarget } from 'react-dnd'
+import PropTypes from 'prop-types'
+import { findDOMNode } from 'react-dom'
 //Mutations
 import RemoveFavoriteMutation from 'Mutations/fileBrowser/RemoveFavoriteMutation'
 import UpdateFavoriteMutation from 'Mutations/fileBrowser/UpdateFavoriteMutation'
 //store
 import store from 'JS/redux/store'
 
-export default class FavoriteCard extends Component {
+
+const cardSource = {
+	beginDrag(props, monitor, component) {
+		return {
+			id: props.id,
+			index: props.index,
+		}
+	},
+}
+
+const cardTarget = {
+	hover(props, monitor, component) {
+		const dragIndex = monitor.getItem().index
+		const hoverIndex = props.index
+
+		// Don't replace items with themselves
+		if (dragIndex === hoverIndex) {
+			return
+		}
+
+		// Determine rectangle on screen
+		const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
+
+		// Get vertical middle
+		const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+
+		// Determine mouse position
+		const clientOffset = monitor.getClientOffset()
+
+		// Get pixels to the top
+		const hoverClientY = clientOffset.y - hoverBoundingRect.top
+
+		// Only perform the move when the mouse has crossed half of the items height
+		// When dragging downwards, only move when the cursor is below 50%
+		// When dragging upwards, only move when the cursor is above 50%
+
+		// Dragging downwards
+		if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+			return
+		}
+
+		// Dragging upwards
+		if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+			return
+		}
+
+		// Time to actually perform the action
+		props.moveCard(dragIndex, hoverIndex)
+
+		// Note: we're mutating the monitor item here!
+		// Generally it's better to avoid mutations,
+		// but it's good here for the sake of performance
+		// to avoid expensive index searches.
+		monitor.getItem().index = hoverIndex
+	},
+	drop(props, monitor, component){
+		const newIndex = props.index
+		component._updateIndexMutation(newIndex)
+	}
+}
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+  };
+}
+function collectDropTarget(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget()
+  };
+}
+
+const propTypes = {
+  connectDragSource: PropTypes.func.isRequired
+};
+
+class FavoriteCard extends Component {
   constructor(props){
   	super(props);
 
@@ -17,7 +96,44 @@ export default class FavoriteCard extends Component {
       owner,
       labbookName
     }
+
+		this._updateIndexMutation = this._updateIndexMutation.bind(this)
   }
+
+  static propTypes = {
+    connectDragSource: PropTypes.func.isRequired,
+    //connectDropTarget: PropTypes.func.isRequired,
+    //index: PropTypes.number.isRequired,
+    isDragging: PropTypes.bool.isRequired,
+    id: PropTypes.any.isRequired,
+    //text: PropTypes.string.isRequired,
+    moveCard: PropTypes.func.isRequired,
+  }
+
+	/*
+		@param {num}
+		sets editMode to true or false
+		displays textarea if true
+	*/
+	_updateIndexMutation(newIndex){
+		UpdateFavoriteMutation(
+			this.props.connection,
+			this.props.parentId,
+			this.state.owner,
+			this.state.labbookName,
+			this.props.favorite.id,
+			this.props.favorite.key,
+			this.props.favorite.description,
+			newIndex,
+			this.props.favorite,
+			this.props.section,
+			(response, error)=>{
+				if(error){
+					console.error(error)
+				}
+			}
+		)
+	}
 
   /*
     @param {boolean} value
@@ -45,7 +161,6 @@ export default class FavoriteCard extends Component {
           favorite.id,
           filepath,
           evt.target.value,
-          favorite.index,
           favorite.index,
           favorite,
           this.props.section,
@@ -87,50 +202,67 @@ export default class FavoriteCard extends Component {
     let filename = fileDirectories[fileDirectories.length - 1]
     let path = this.props.favorite.key.replace(filename, '')
 
+    const {
+	    connectDragSource,
+			connectDropTarget
+  	} = this.props
     return(
-      <div className={(this.props.favorite.index !== undefined) ? 'Favorite__card card' : 'Favorite__card--opaque card'}>
+      connectDragSource(
+				connectDropTarget(
         <div
-          onClick={()=>{ this._removeFavorite(this.props.favorite) }}
-          className="Favorite__star">
+        className="Favorite__card-wrapper">
+          <div
+            className={(this.props.favorite.index !== undefined) ? 'Favorite__card card' : 'Favorite__card--opaque card'}>
+            <div
+              onClick={()=>{ this._removeFavorite(this.props.favorite) }}
+              className="Favorite__star">
+            </div>
+
+            <h6 className="Favorite__card-header">{filename}</h6>
+
+            <p className="Favorite__path">{path}</p>
+
+            <div className="Favorite__description-section">
+
+              { !this.state.editMode && (this.props.favorite.description.length > 0) &&
+
+                  <p className="Favorite__description">{this.props.favorite.description} <button
+                      onClick={()=>this._editDescription(true)}
+                      className="Favorite__edit-button">
+                    </button></p>
+              }
+
+              { !this.state.editMode && (this.props.favorite.description.length < 1) &&
+
+                  <p className="Favorite__description-filler">Enter a short description<button
+                      onClick={()=>this._editDescription(true)}
+                      className="Favorite__edit-button">
+                  </button></p>
+              }
+
+              {
+                this.state.editMode &&
+                <textarea
+                  className="Favorite__description-editor"
+                  onKeyDown={(evt)=>this._updateDescription(evt, this.props.favorite)}
+                  placeholder={this.props.favorite.description}>
+                  {this.props.favorite.description}
+                </textarea>
+              }
+
+              <div className={(this.props.favorite.index !== undefined) ? 'Favorite__mask hidden' : 'Favorite__mask'}></div>
+
+            </div>
+
+          </div>
         </div>
-
-        <h6 className="Favorite__card-header">{filename}</h6>
-
-        <p className="Favorite__path">{path}</p>
-
-        <div className="Favorite__description-section">
-
-          { !this.state.editMode && (this.props.favorite.description.length > 0) &&
-
-              <p className="Favorite__description">{this.props.favorite.description} <button
-                  onClick={()=>this._editDescription(true)}
-                  className="Favorite__edit-button">
-                </button></p>
-          }
-
-          { !this.state.editMode && (this.props.favorite.description.length < 1) &&
-
-              <p className="Favorite__description-filler">Enter a short description<button
-                  onClick={()=>this._editDescription(true)}
-                  className="Favorite__edit-button">
-              </button></p>
-          }
-
-          {
-            this.state.editMode &&
-            <textarea
-              className="Favorite__description-editor"
-              onKeyDown={(evt)=>this._updateDescription(evt, this.props.favorite)}
-              placeholder={this.props.favorite.description}>
-              {this.props.favorite.description}
-            </textarea>
-          }
-
-          <div className={(this.props.favorite.index !== undefined) ? 'Favorite__mask hidden' : 'Favorite__mask'}></div>
-
-        </div>
-
-      </div>
+      )
     )
+	)
+
+
   }
 }
+const DropTargetContainer = DropTarget('Card', cardTarget, collectDropTarget)(FavoriteCard);
+
+export default DragSource('Card', cardSource, collect)(DropTargetContainer);

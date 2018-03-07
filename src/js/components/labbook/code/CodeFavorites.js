@@ -1,8 +1,10 @@
 // vendor
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
+// import { DragDropContextProvider } from 'react-dnd'
+// import HTML5Backend from 'react-dnd-html5-backend'
 //componenets
-import FavoriteCard from './../fileBrowser/FavoriteCard'
+import CodeFavoriteList from './CodeFavoriteList'
 //store
 import store from 'JS/redux/store'
 
@@ -10,8 +12,17 @@ class CodeFavorites extends Component {
   constructor(props){
   	super(props);
     this.state = {
-      loading: false
+      loading: false,
     }
+
+    this.moveCard = this.moveCard.bind(this)
+  }
+
+  moveCard(dragIndex, hoverIndex) {
+  const { cards } = this.state
+  const dragCard = cards[dragIndex]
+
+    console.log(cards)
   }
 
   /**
@@ -58,38 +69,29 @@ class CodeFavorites extends Component {
 
 
   render(){
-    console.log(this.props.code)
+
     if(this.props.code && this.props.code.favorites){
 
       let loadingClass = (this.props.code.favorites.pageInfo.hasNextPage) ? 'Favorite__action-bar' : 'hidden'
       loadingClass = (this.state.loading) ? 'Favorite__action-bar--loading' : loadingClass
 
       if(this.props.code.favorites.edges.length > 0){
-        let favorites = this.props.code.favorites.edges.filter((edge)=>{
+        const favorites = this.props.code.favorites.edges.filter((edge)=>{
           return edge && (edge.node !== undefined)
         })
+        console.log(this.props)
         return(
-          <div className="Favorite">
-            <div className="Favorite__list">
-              {
-                favorites.map((edge)=>{
 
-                    return(
-                      <div
-                        key={edge.node.key}
-                        className="Favorite__card-wrapper">
-                        <FavoriteCard
-                          labbookName={this.props.labbookName}
-                          parentId={this.props.codeId}
-                          section={'code'}
-                          connection={"CodeFavorites_favorites"}
-                          favorite={edge.node}
-                          owner={this.props.owner}
-                        />
-                      </div>)
-                })
-            }
-            </div>
+          <div className="Favorite">
+
+            <CodeFavoriteList
+              labbookName={this.props.labbookName}
+              parentId={this.props.codeId}
+              section={'code'}
+              favorites={favorites}
+              owner={this.props.owner}
+            />
+
 
             <div className={loadingClass}>
               <button
@@ -100,6 +102,7 @@ class CodeFavorites extends Component {
               </button>
             </div>
         </div>
+
         )
       }else{
         return(

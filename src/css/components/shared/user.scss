@@ -1,6 +1,6 @@
 .User{
   height: 200px;
-  width: 120px;
+  width: 100%;
   position: relative;
   border-top: 5px solid $jet;
   @include flex(flex-start, column);

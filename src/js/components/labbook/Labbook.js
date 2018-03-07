@@ -5,6 +5,8 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 //store
 import store from "JS/redux/store"
 //components
@@ -19,6 +21,8 @@ import ContainerStatus from './ContainerStatus'
 import Loader from 'Components/shared/Loader'
 import Branches from './branches/Branches'
 import BranchMenu from './branchMenu/BranchMenu'
+//utils
+import {getFilesFromDragEvent, getFiles} from "JS/utils/html-dir-content";
 
 import Config from 'JS/config'
 
@@ -386,7 +390,7 @@ class Labbook extends Component {
 }
 
 
-export default createFragmentContainer(
+const LabbookFragmentContainer = createFragmentContainer(
   Labbook,
   {
     labbook: graphql`
@@ -431,3 +435,22 @@ export default createFragmentContainer(
   }
 
 )
+
+const backend = (manager: Object) => {
+    const backend = HTML5Backend(manager),
+        orgTopDropCapture = backend.handleTopDropCapture;
+
+    backend.handleTopDropCapture = (e) => {
+
+        let datatransfer = e.dataTransfer.getData('data');
+
+        if(backend.currentNativeSource){
+          orgTopDropCapture.call(backend, e);
+          backend.currentNativeSource.item.dirContent = getFilesFromDragEvent(e, {recursive: true}); //returns a promise
+        }
+    };
+
+    return backend;
+}
+
+export default DragDropContext(backend)(LabbookFragmentContainer);

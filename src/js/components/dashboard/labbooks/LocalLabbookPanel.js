@@ -119,12 +119,12 @@ export default class LocalLabbookPanel extends Component {
 
         <div className="LocalLabbooks__text-row">
           <div className="LocalLabbooks__title-row">
-            <h4
+            <h6
               className="LocalLabbooks__panel-title"
               onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}>
               {edge.node.name}
-            </h4>
-          
+            </h6>
+
           </div>
           <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner}</p>
           <p

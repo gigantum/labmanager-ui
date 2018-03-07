@@ -18,8 +18,6 @@ import UserIdentity from 'JS/Auth/UserIdentity'
 //store
 import store from 'JS/redux/store'
 
-
-
 export default class UserNote extends Component {
   constructor(props){
   	super(props);

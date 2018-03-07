@@ -1,10 +1,14 @@
 // vendor
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
+
 //componenets
 import FavoriteCard from './../fileBrowser/FavoriteCard'
 //store
 import store from 'JS/redux/store'
+
+
+
 
 class InputFavorites extends Component {
 
@@ -45,7 +49,6 @@ class InputFavorites extends Component {
 
 
   render(){
-
     if(this.props.input && this.props.input.favorites){
       if(this.props.input.favorites.edges.length > 0){
         return(

@@ -91,16 +91,17 @@ export default class FilePreview extends Component {
                 <p>Recent Files</p>
                 <div className="FilePreview__list">
                   {
-                    // props.labbook.code.favorites.edges.map(edge =>{
-                    //   return <FileCard edge={edge} />
-                    // })
+                    props.labbook.code.favorites.edges.map(edge =>{
+                      return <FileCard edge={edge} />
+                    })
                   }
                 </div>
               </div>
               <div className="FilePreview__section">
                 <div className="FilePreview__title-container">
                   <h5>Input Data</h5>
-                  <Link to={{pathname: `../../../../labbooks/${owner}/${labbookName}/inputData`}} replace={true}>Input Data Details ></Link>
+                  <Link
+                    to={{pathname: `../../../../labbooks/${owner}/${labbookName}/inputData`}} replace={true}>Input Data Details ></Link>
                 </div>
                 <p>Recent Files</p>
                 <div className="FilePreview__list">
