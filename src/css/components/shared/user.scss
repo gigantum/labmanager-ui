@@ -2,7 +2,7 @@
   height: 200px;
   width: 120px;
   position: relative;
-  border-top: 5px solid $jet;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 9px);
   padding: 20px 0;
   @include flex(flex-start, column);
 }
