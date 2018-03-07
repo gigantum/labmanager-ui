@@ -1,6 +1,6 @@
 .User {
   height: 200px;
-  width: 120px;
+  width: 100%;
   position: relative;
   border-top: 5px solid $jet;
   padding: 20px 0;
@@ -35,7 +35,7 @@
 
 .User__dropdown {
   border: 1px solid $white;
-  margin: 10px;
+  margin: auto;
   width: 100px;
   padding: 5px;
   border-radius: 8px;

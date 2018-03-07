@@ -274,7 +274,7 @@
 }
 
 .LocalLabbooks__icon-row {
-  padding: 20px;
+  padding: 20px 20px 10px;
   height: 68px;
   @include flex(space-between, row);
 }
@@ -317,8 +317,9 @@
 }
 
 .LocalLabbooks__text-row {
+  flex: 1;
   text-align: left;
-  padding: 20px;
+  padding: 10px 20px;
   height: 100px;
 
   h4{
@@ -334,7 +335,7 @@
 
 .LocalLabbooks__info-row {
   height: 80px;
-  padding: 20px;
+  padding: 10px 20px;
   color: $romanSilver;
   font-size: 12px;
 }

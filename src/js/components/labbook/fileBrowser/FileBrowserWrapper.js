@@ -8,6 +8,7 @@ import DeleteLabbookFileMutation from 'Mutations/fileBrowser/DeleteLabbookFileMu
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
 import MoveLabbookFileMutation from 'Mutations/fileBrowser/MoveLabbookFileMutation'
 import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
+import RemoveFavoriteMutation from 'Mutations/fileBrowser/RemoveFavoriteMutation'
 //helpers
 import FolderUpload from './folderUpload'
 //Config
@@ -478,6 +479,7 @@ export default class FileBrowserWrapper extends Component {
   *  triggers file favorite mutation
   */
   handleFileFavoriting(key){
+
     let fileItem = this.props.files.edges.filter((edge) => {
 
         if(edge && (edge.node.key === key)){
@@ -485,31 +487,50 @@ export default class FileBrowserWrapper extends Component {
         }
     })[0]
 
-    AddFavoriteMutation(
-      this.props.favoriteConnection,
-      this.props.connection,
-      this.props.parentId,
-      this.state.owner,
-      this.state.labbookName,
-      key,
-      '',
-      false,
-      0,
-      fileItem,
-      this.props.section,
-      (response, error)=>{
-        if(error){
-          console.error(error)
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `ERROR: could not add favorite ${key}`,
-              messagesList: error
-            }
-          })
+    if(!fileItem.node.isFavorite){
+      AddFavoriteMutation(
+        this.props.favoriteConnection,
+        this.props.connection,
+        this.props.parentId,
+        this.state.owner,
+        this.state.labbookName,
+        key,
+        '',
+        false,
+        fileItem,
+        this.props.section,
+        (response, error)=>{
+          if(error){
+            console.error(error)
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `ERROR: could not add favorite ${key}`,
+                messagesList: error
+              }
+            })
+          }
         }
-      }
-    )
+      )
+    }else{
+      
+      RemoveFavoriteMutation(
+        this.props.connection,
+        this.props.parentId,
+        this.state.owner,
+        this.state.labbookName,
+        this.props.section,
+        key,
+        fileItem.node.id,
+        fileItem,
+        this.props.favorites,
+        (response, error)=>{
+          if(error){
+            console.error(error)
+          }
+        }
+      )
+    }
   }
   /**
   *  @param {object} file

@@ -23,8 +23,10 @@ export default function RemoveFavoriteMutation(
   owner,
   labbookName,
   section,
-  index,
+  key,
   removeFavoriteId,
+  fileItem,
+  favorites,
   callback
 ) {
 
@@ -34,19 +36,20 @@ export default function RemoveFavoriteMutation(
       owner,
       labbookName,
       section,
-      index,
+      key,
       clientMutationId
     }
   }
 
   function sharedUpdater(store, parentID, deletedId, connectionKey) {
     const userProxy = store.get(parentID);
-
     const conn = RelayRuntime.ConnectionHandler.getConnection(
       userProxy,
-      connectionKey,
+      connectionKey
     );
+
     if(conn){
+
       RelayRuntime.ConnectionHandler.deleteNode(
         conn,
         deletedId,
@@ -67,12 +70,27 @@ export default function RemoveFavoriteMutation(
       onError: err => console.error(err),
       optimisticUpdater:(store)=>{
 
-        sharedUpdater(store, parentId, removeFavoriteId, connectionKey)
+        const id = fileItem.associatedLabbookFileId ? fileItem.associatedLabbookFileId : fileItem.node.id;
+
+        const fileNode = store.get(id)
+        if(fileNode){
+          fileNode.setValue(false, 'isFavorite')
+        }
+        if(fileItem.associatedLabbookFileId){
+          sharedUpdater(store, parentId, removeFavoriteId, connectionKey)
+        }
 
       },
       updater: (store, response) => {
+        const id = fileItem.associatedLabbookFileId ? fileItem.associatedLabbookFileId : fileItem.node.id;
 
-        sharedUpdater(store, parentId, removeFavoriteId, connectionKey)
+        const fileNode = store.get(id)
+        if(fileNode){
+          fileNode.setValue(false, 'isFavorite')
+        }
+        if(fileItem.associatedLabbookFileId){
+          sharedUpdater(store, parentId, removeFavoriteId, connectionKey)
+        }
 
       }
     },

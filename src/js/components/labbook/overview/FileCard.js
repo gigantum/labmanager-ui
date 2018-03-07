@@ -13,7 +13,7 @@ export default class Overview extends Component {
   render(){
     let paths = this.props.edge.node.key.split('/')
     let name = paths[paths.length - 1]
-    let truncatedName = this._truncate(name, 14)
+    let truncatedName = this._truncate(name, 32)
     paths.pop()
     let path = paths.join('/')
     return(

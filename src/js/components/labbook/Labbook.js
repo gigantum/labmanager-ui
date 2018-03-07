@@ -5,6 +5,8 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 //store
 import store from "JS/redux/store"
 //components
@@ -19,6 +21,8 @@ import ContainerStatus from './ContainerStatus'
 import Loader from 'Components/shared/Loader'
 import Branches from './branches/Branches'
 import BranchMenu from './branchMenu/BranchMenu'
+//utils
+import {getFilesFromDragEvent, getFiles} from "JS/utils/html-dir-content";
 
 import Config from 'JS/config'
 
@@ -218,7 +222,7 @@ class Labbook extends Component {
     const {labbookName} = this.props;
 
     if(this.props.labbook){
-
+      const name = this.props.labbook.activeBranch.name.replace(/-/g, ' ')
       return(
         <div
           className={this.state.detailMode ? "Labbook Labbook--detail-mode" : "Labbook"}>
@@ -240,7 +244,9 @@ class Labbook extends Component {
                <div className="Labbook__header flex flex--row justify--space-between">
 
                  <div className={(this.state.branchesOpen) ? 'Labbook__branch-title Labbook__branch-title--open' : 'Labbook__branch-title Labbook__branch-title--closed'}>
-                   <h2 onClick={()=> this._toggleBranchesView()}>{this.props.labbook.activeBranch.name}</h2>
+                   <div className="Labbok__name" onClick={()=> this._toggleBranchesView()}>
+                       {name}
+                   </div>
                    <div
                      onClick={()=> this._toggleBranchesView()}
                     className="Labbook__branch-toggle"></div>
@@ -386,7 +392,7 @@ class Labbook extends Component {
 }
 
 
-export default createFragmentContainer(
+const LabbookFragmentContainer = createFragmentContainer(
   Labbook,
   {
     labbook: graphql`
@@ -431,3 +437,22 @@ export default createFragmentContainer(
   }
 
 )
+
+const backend = (manager: Object) => {
+    const backend = HTML5Backend(manager),
+        orgTopDropCapture = backend.handleTopDropCapture;
+
+    backend.handleTopDropCapture = (e) => {
+
+        let datatransfer = e.dataTransfer.getData('data');
+
+        if(backend.currentNativeSource){
+          orgTopDropCapture.call(backend, e);
+          backend.currentNativeSource.item.dirContent = getFilesFromDragEvent(e, {recursive: true}); //returns a promise
+        }
+    };
+
+    return backend;
+}
+
+export default DragDropContext(backend)(LabbookFragmentContainer);

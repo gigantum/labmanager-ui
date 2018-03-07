@@ -4,7 +4,6 @@
 
   height: 30px;
   min-height: 30px;
-  width: 50%;
   align-self: flex-end;
   @include flex(flex-end, row)
 }
@@ -162,7 +161,8 @@
   padding: 0;
 }
 
-.BranchMenu__sync {
+.BranchMenu__sync,
+.BranchMenu__publish {
   width: 100%;
   text-align: center;
   height: 40px;

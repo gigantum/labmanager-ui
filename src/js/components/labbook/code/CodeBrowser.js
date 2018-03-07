@@ -63,7 +63,7 @@ class CodeBrowser extends Component {
 
   render(){
     if(this.props.code && this.props.code.allFiles){
-
+  
       let codeFiles = this.props.code.allFiles
       if(this.props.code.allFiles.edges.length === 0){
         codeFiles = {
@@ -82,6 +82,7 @@ class CodeBrowser extends Component {
             parentId={this.props.codeId}
             connection="CodeBrowser_allFiles"
             favoriteConnection="CodeFavorites_favorites"
+            favorites={this.props.favorites}
             {...this.props}
           />
       )
@@ -155,7 +156,8 @@ export default createPaginationContainer(
              id
             # You could reference the fragment defined previously.
             ...CodeBrowser_code
-            }
+
+          }
         }
       }
     `
