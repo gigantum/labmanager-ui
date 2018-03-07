@@ -89,7 +89,13 @@ export default function AddFavoriteMutation(
       clientMutationId
     }
   }
-
+  console.log(  owner,
+    labbookName,
+    key,
+    description,
+    isDir,
+    section,
+    clientMutationId)
   commitMutation(
     environment,
     {
@@ -104,7 +110,6 @@ export default function AddFavoriteMutation(
       onError: err => console.error(err),
       optimisticUpdater:(store)=>{
 
-
         const node = store.create(tempId, 'Favorite')
 
         node.setValue(tempId, "id")
@@ -113,7 +118,6 @@ export default function AddFavoriteMutation(
         node.setValue(description, 'description')
 
         sharedUpdater(store, parentId, favoriteKey, node)
-
 
       },
 

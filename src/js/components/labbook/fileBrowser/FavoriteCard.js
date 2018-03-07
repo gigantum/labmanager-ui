@@ -187,7 +187,7 @@ class FavoriteCard extends Component {
       this.state.owner,
       this.state.labbookName,
       this.props.section,
-      node.index,
+      node.key,
       node.id,
       (response, error)=>{
         if(error){

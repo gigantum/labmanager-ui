@@ -97,8 +97,17 @@
 .Favorite__star--file{
   height: 30px;
   width: 30px;
-  background-size: 24px;
+
   background: url('../images/icons/star__on.svg') no-repeat center center;
+  background-size: 24px;
+}
+
+.Favorite__star--empty{
+  height: 30px;
+  width: 30px;
+
+  background: url('../images/icons/star__off.svg') no-repeat center center;
+  background-size: 24px;
 }
 
 

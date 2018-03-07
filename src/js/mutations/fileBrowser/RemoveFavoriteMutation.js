@@ -23,7 +23,7 @@ export default function RemoveFavoriteMutation(
   owner,
   labbookName,
   section,
-  index,
+  key,
   removeFavoriteId,
   callback
 ) {
@@ -34,7 +34,7 @@ export default function RemoveFavoriteMutation(
       owner,
       labbookName,
       section,
-      index,
+      key,
       clientMutationId
     }
   }
