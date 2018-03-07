@@ -34,7 +34,8 @@ class CodeFavoriteList extends Component {
       favoritesIds.push(fav.node.id)
 
       if(nextPropsFavoritesIds.indexOf(fav.node.id) > -1){
-        newFavorites.push(fav)
+        let favorite = nextPropsFavorites[nextPropsFavoritesIds.indexOf(fav.node.id)]
+        newFavorites.push(favorite)
       }
     })
 

@@ -1,7 +1,6 @@
 /* html-dir-content v0.1.3 (c) 2017, Yoav Niran, https://github.com/yoavniran/html-dir-content.git/blob/master/LICENSE */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	// typeof define === 'function' && define.amd ? define(['exports'], factory) :
 	(factory((global.htmlDirContent = {})));
 }(this, (function (exports) { 'use strict';
 
