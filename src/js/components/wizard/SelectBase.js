@@ -55,7 +55,7 @@ export default class SelectBase extends React.Component {
       'description': '',
       'selectedBase': null,
       'selectedBaseId': false,
-      'selectedTab': 'none',
+      'selectedTab': 'python3',
       'viewedBase': null,
       'viewingBase': false
     };
@@ -140,11 +140,11 @@ export default class SelectBase extends React.Component {
 
     let sliderSettings = {
       dots: false,
-      infinite: true,
+      infinite: false,
       speed: 500,
       slidesToShow: 2,
       slidesToScroll: 1,
-      arrows: true
+      arrows: false
     };
 
     return(
@@ -183,9 +183,9 @@ export default class SelectBase extends React.Component {
                           <ul className="SelectBase__tabs-list">
                             {
                               sortedBaseItems.tabs.map((tab)=>{
-
                                 return(
                                   <LanguageTab
+                                    key={tab}
                                     tab={tab}
                                     self={this}
                                 />)
@@ -197,10 +197,10 @@ export default class SelectBase extends React.Component {
                           <Slider {...sliderSettings}>
                             {
                               (this.state.selectedTab !== 'none') && sortedBaseItems.bases[this.state.selectedTab].map((node) => {
-
                                   return(
                                     <div className="BaseSlide__wrapper">
                                       <BaseSlide
+                                        key={node.id}
                                         node={node}
                                         self={this}
                                       />
