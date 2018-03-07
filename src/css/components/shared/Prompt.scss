@@ -1,0 +1,40 @@
+.Prompt__info {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $slateBlue;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    line-height: 300px;
+}
+
+.Prompt__logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.Prompt__logo--raised {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: top 2s ease 0s;
+}
+
+.Prompt__logo--final {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: top 2s ease 0s;
+}
+
+.hidden {
+    display: none;
+}

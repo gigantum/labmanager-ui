@@ -54,30 +54,8 @@ function fetchQuery(
     'method': 'POST',
     'headers': headers,
     'body': body,
-  }).then(response => {
-
-      if(!(uploadables && uploadables[0])){
-        if(response.status === 404){
-          document.getElementById('apiDown').classList.remove('hidden')
-        }else{
-
-          document.getElementById('apiDown').classList.add('hidden')
-        }
-      }
-      return response.json()
-
-  }).catch(error => {
-
-    if(!(uploadables && uploadables[0])){
-      if((error.message.toString()+'') === 'Failed to fetch'){
-
-        document.getElementById('apiDown').classList.remove('hidden')
-      }else{
-        document.getElementById('apiDown').classList.add('hidden')
-      }
-    }
-    return error
-  });
+  }).then(response => response.json())
+    .catch(error => error);
 
 }
 

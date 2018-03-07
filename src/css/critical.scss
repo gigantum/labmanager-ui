@@ -30,6 +30,7 @@
 //shared components
 @import 'components/shared/sideBar';
 @import 'components/shared/footer';
+@import 'components/shared/prompt';
 @import 'components/shared/loader';
 @import 'components/shared/user';
 //
@@ -69,7 +70,7 @@
 @import 'components/wizard/baseDetails';
 @import 'components/wizard/trackingToggle';
 
-.modal__cover {
+.modal__cover{
   position: fixed;
   top: 0px;
   bottom: 0px;
@@ -80,35 +81,19 @@
   z-index: 900;
 }
 
-.ApiDown {
-  position: fixed;
-  z-index: 200;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.5);
-  color: white;
-  font-size: 20px;
-  text-align: center;
-  line-height: 300px;
-}
-
-
-
-.rendered-react-keyed-file-browser {
+.rendered-react-keyed-file-browser{
   width: 100%;
 }
 
-.btn {
+.btn{
   background-color: $slateBlue;
   border-radius: 20px;
   font-weight: 100;
 }
-.btn:hover {
+.btn:hover{
   background-color: #8ea4b2;
 }
 
-// .Routes {
+// .Routes{
 //   filter: invert(1);
 // }
