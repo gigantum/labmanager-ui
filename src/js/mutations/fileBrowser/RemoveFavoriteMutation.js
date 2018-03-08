@@ -11,6 +11,7 @@ const mutation = graphql`
   mutation RemoveFavoriteMutation($input: RemoveLabbookFavoriteInput!){
     removeFavorite(input: $input){
       success
+      removedNodeId
       clientMutationId
     }
   }
@@ -88,9 +89,10 @@ export default function RemoveFavoriteMutation(
         if(fileNode){
           fileNode.setValue(false, 'isFavorite')
         }
-        if(fileItem.associatedLabbookFileId){
-          sharedUpdater(store, parentId, removeFavoriteId, connectionKey)
-        }
+        const removeId = fileItem.associatedLabbookFileId ? fileItem.fileItem.node.id  : response.removeFavorite.removedNodeId
+      
+        sharedUpdater(store, parentId, removeId, connectionKey)
+
 
       }
     },

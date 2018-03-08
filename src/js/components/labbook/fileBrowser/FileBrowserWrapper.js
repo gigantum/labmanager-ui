@@ -513,9 +513,9 @@ export default class FileBrowserWrapper extends Component {
         }
       )
     }else{
-      
+
       RemoveFavoriteMutation(
-        this.props.connection,
+        this.props.favoriteConnection,
         this.props.parentId,
         this.state.owner,
         this.state.labbookName,
