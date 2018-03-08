@@ -53,7 +53,7 @@ export default function CreateLabbookMutation(
     {
       mutation,
       variables,
-      configs: configs,
+      // configs: configs,
       onCompleted: (response, error) => {
 
         if(error){

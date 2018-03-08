@@ -484,12 +484,12 @@ class PackageDependencies extends Component {
           </div>
         </div>
         <div className="PackageDependencies__table-container">
-          <input
+          {/* <input
             type="text"
             className="full--border"
             placeholder="Filter dependencies by keyword"
             onKeyUp={(evt)=> this._setSearchValue(evt)}
-          />
+          /> */}
           <table className="PackageDependencies__table">
             <thead>
               <tr>

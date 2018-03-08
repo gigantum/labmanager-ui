@@ -6,6 +6,10 @@
   border-bottom: 1px solid $lightGrey;
   padding: 15px 15px 15px 66px;
 
+  img {
+    width: fit-content;
+  }
+
   @include flex(flex-start, column);
 }
 
