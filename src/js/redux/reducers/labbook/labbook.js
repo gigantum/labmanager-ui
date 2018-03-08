@@ -9,6 +9,7 @@ export const MODAL_VISIBLE = 'MODAL_VISIBLE'
 export const SELECTED_COMPONENT = 'SELECTED_COMPONENT'
 export const UPDATE_BRANCHES_VIEW = 'UPDATE_BRANCHES_VIEW'
 export const UPDATE_ALL = 'UPDATE_ALL'
+export const UPDATE_STICKY_STATE = "UPDATE_STICKY_STATE"
 
 export default (
  state = {
@@ -20,7 +21,8 @@ export default (
    'modalVisible': '',
    'detailMode': false,
    'previousDetailMode': false,
-   'branchesOpen': false
+   'branchesOpen': false,
+   'isSticky': false
  },
  action
 ) => {
@@ -31,6 +33,12 @@ export default (
      ...state,
      previousDetailMode: false, //state.detailMode,
      detailMode: false, //action.payload.detailMode
+  };
+}else  if (action.type === UPDATE_STICKY_STATE) {
+   //preventing detail mode from opening until feature has been fully implemented
+   return {
+     ...state,
+     isSticky: action.payload.isSticky //state.detailMode,
   };
  }else if(action.type === INITIALIZE){
 

@@ -5,8 +5,11 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
+import 'react-sticky-header/styles.css';
+import StickyHeader from 'react-sticky-header';
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+import classNames from 'classnames'
 //store
 import store from "JS/redux/store"
 //components
@@ -207,11 +210,26 @@ class Labbook extends Component {
     updates branchOpen state
   */
   _toggleBranchesView(){
-
+    if(!this.state.isSticky){
     store.dispatch({
       type: 'UPDATE_BRANCHES_VIEW',
       payload: {
         branchesOpen: !this.state.branchesOpen
+      }
+    })
+    }
+  }
+
+  /**
+    @param {boolean} isSticky
+    sets sticky state on component
+  */
+  _setStickyState(isSticky){
+
+    store.dispatch({
+      type: 'UPDATE_STICKY_STATE',
+      payload: {
+        'isSticky': isSticky
       }
     })
   }
@@ -221,6 +239,11 @@ class Labbook extends Component {
     const { isAuthenticated } = this.props.auth;
     const {labbookName} = this.props;
 
+    const stickyClasses = classNames({
+
+      'Labbook__header-sticky': this.state.isSticky
+    })
+
     if(this.props.labbook){
       const name = this.props.labbook.activeBranch.name.replace(/-/g, ' ')
       return(
@@ -229,38 +252,46 @@ class Labbook extends Component {
 
            <div className="Labbook__inner-container flex flex--row">
              <div className="Labbook__component-container flex flex--column">
-               <div className="Labbook__header-conatiner">
-                 <div className="Labbook__name-title">
-                   {this.props.labbook.owner + '/' + labbookName}
-                 </div>
-                 <BranchMenu
-                   history={this.props.history}
-                   collaborators={this.props.labbook.collaborators}
-                   canManageCollaborators={this.props.labbook.canManageCollaborators}
-                   defaultRemote={this.props.labbook.defaultRemote}
-                   labbookId={this.props.labbook.id}
-                  />
-              </div>
-               <div className="Labbook__header flex flex--row justify--space-between">
-
-                 <div className={(this.state.branchesOpen) ? 'Labbook__branch-title Labbook__branch-title--open' : 'Labbook__branch-title Labbook__branch-title--closed'}>
-                   <div className="Labbok__name" onClick={()=> this._toggleBranchesView()}>
-                       {name}
+              <StickyHeader
+                onSticky={(isSticky)=> this._setStickyState(isSticky)}
+                header ={
+              <div className={stickyClasses}>
+                <div className="Labbook__row-container">
+                 <div className="Labbook__column-container--flex-1">
+                   <div className="Labbook__name-title">
+                     {this.props.labbook.owner + '/' + labbookName}
                    </div>
-                   <div
-                     onClick={()=> this._toggleBranchesView()}
-                    className="Labbook__branch-toggle"></div>
-                 </div>
 
-                 <ContainerStatus
-                   ref="ContainerStatus"
-                   base={this.props.labbook.environment.base}
-                   containerStatus={this.props.labbook.environment.containerStatus}
-                   imageStatus={this.props.labbook.environment.imageStatus}
-                   labbookId={this.props.labbook.id}
-                   setBuildingState={this._setBuildingState}
-                   isBuilding={this.state.isBuilding}
-                 />
+                   <div className={(this.state.branchesOpen) ? 'Labbook__branch-title Labbook__branch-title--open' : 'Labbook__branch-title Labbook__branch-title--closed'}>
+                     <div className="Labbook__name" onClick={()=> this._toggleBranchesView()}>
+                         {name}
+                     </div>
+                     <div
+                       onClick={()=> this._toggleBranchesView()}
+                      className="Labbook__branch-toggle"></div>
+                   </div>
+
+                </div>
+                <div className="Labbook__column-container">
+
+                   <BranchMenu
+                     history={this.props.history}
+                     collaborators={this.props.labbook.collaborators}
+                     canManageCollaborators={this.props.labbook.canManageCollaborators}
+                     defaultRemote={this.props.labbook.defaultRemote}
+                     labbookId={this.props.labbook.id}
+                    />
+
+                   <ContainerStatus
+                     ref="ContainerStatus"
+                     base={this.props.labbook.environment.base}
+                     containerStatus={this.props.labbook.environment.containerStatus}
+                     imageStatus={this.props.labbook.environment.imageStatus}
+                     labbookId={this.props.labbook.id}
+                     setBuildingState={this._setBuildingState}
+                     isBuilding={this.state.isBuilding}
+                   />
+                </div>
               </div>
               <div className={(this.state.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
@@ -272,9 +303,9 @@ class Labbook extends Component {
                   labbookId={this.props.labbook.id}
                   activeBranch={this.props.labbook.activeBranch}
                 />
-                  <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
+                <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
               </div>
-
+              </div>}>
               <div className="Labbook__navigation-container mui-container flex-0-0-auto">
                  <nav className="Labbook__navigation flex flex--row">
                    {
@@ -284,6 +315,9 @@ class Labbook extends Component {
                    }
                  </nav>
                </div>
+
+
+              </StickyHeader>
 
                <div className="Labbook__view mui-container flex flex-1-0-auto">
 
