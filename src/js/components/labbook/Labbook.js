@@ -210,13 +210,14 @@ class Labbook extends Component {
     updates branchOpen state
   */
   _toggleBranchesView(){
-
+    if(!this.state.isSticky){
     store.dispatch({
       type: 'UPDATE_BRANCHES_VIEW',
       payload: {
         branchesOpen: !this.state.branchesOpen
       }
     })
+    }
   }
 
   /**
@@ -262,7 +263,7 @@ class Labbook extends Component {
                    </div>
 
                    <div className={(this.state.branchesOpen) ? 'Labbook__branch-title Labbook__branch-title--open' : 'Labbook__branch-title Labbook__branch-title--closed'}>
-                     <div className="Labbok__name" onClick={()=> this._toggleBranchesView()}>
+                     <div className="Labbook__name" onClick={()=> this._toggleBranchesView()}>
                          {name}
                      </div>
                      <div

@@ -5,7 +5,7 @@
   width: 100%;
   transition: width 0.25s;
 }
-.Labbok__name {
+.Labbook__name {
   margin: 2px 0;
   padding: 0 0 10px 0;
   cursor: pointer;
@@ -15,6 +15,8 @@
   line-height: 1em;
 }
 .Labbook__branch-title{
+  opacity: 1;
+  transition: opacity 0.25s;
   h2 {
       margin: 2px 0;
       padding: 0 0 10px 0;
@@ -341,6 +343,12 @@
 
       .Labbook__branch-title{
         flex: 1;
+        opacity: 0;
+        cursor: default;
+
+        .Labbook__name{
+          cursor: default;
+        }
       }
     }
   }
