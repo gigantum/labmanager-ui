@@ -23,7 +23,7 @@ const configs = [{
     key: 'LocalLabbooks_localLabbooks',
     rangeBehavior: 'append',
   }],
-  edgeName: 'newLabbookEdge',
+  edgeName: 'labbook',
 }];
 let tempID = 0;
 

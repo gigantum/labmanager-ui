@@ -18,8 +18,6 @@ import UserIdentity from 'JS/Auth/UserIdentity'
 //store
 import store from 'JS/redux/store'
 
-
-
 export default class UserNote extends Component {
   constructor(props){
   	super(props);
@@ -281,18 +279,19 @@ export default class UserNote extends Component {
             (error)=>{
               if(error){
                 store.dispatch({
-                  type: 'ERROR_MESSAGE',
+                  type: 'MULTIPART_INFO_MESSAGE',
                   payload: {
                     id: id,
                     message: `Could not sync ${this.state.labbookName}`,
                     messagesList: error,
+                    isLast: true,
                     error: true
                   }
                 })
               }else{
-          
+
                 store.dispatch({
-                  type: 'INFO_MESSAGE',
+                  type: 'MULTIPART_INFO_MESSAGE',
                   payload: {
                     id: id,
                     message: `Successfully synced ${this.state.labbookName}`,

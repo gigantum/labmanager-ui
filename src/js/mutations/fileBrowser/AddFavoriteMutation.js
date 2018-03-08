@@ -13,10 +13,14 @@ const mutation = graphql`
       newFavoriteEdge{
         node{
           id
+          owner
+          name
           index
           key
           description
           isDir
+          associatedLabbookFileId
+          section
         }
         cursor
       }
@@ -37,23 +41,25 @@ function sharedUpdater(store, parentId, connectionKey, node, tempId) {
 
   if(conn){
 
-    const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-      store,
-      conn,
-      node,
-      "newFavoriteEdge"
-    )
     if(tempId){
+
       RelayRuntime.ConnectionHandler.deleteNode(
         conn,
         tempId
       );
     }
 
-      RelayRuntime.ConnectionHandler.insertEdgeAfter(
-        conn,
-        newEdge
-      );
+    const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+      store,
+      conn,
+      node,
+      "newFavoriteEdge"
+    )
+
+    RelayRuntime.ConnectionHandler.insertEdgeAfter(
+      conn,
+      newEdge
+    );
 
   }
 }
@@ -68,7 +74,6 @@ export default function AddFavoriteMutation(
   key,
   description,
   isDir,
-  index,
   fileItem,
   section,
   callback
@@ -82,7 +87,6 @@ export default function AddFavoriteMutation(
       key,
       description,
       isDir,
-      index,
       section,
       clientMutationId
     }
@@ -102,7 +106,6 @@ export default function AddFavoriteMutation(
       onError: err => console.error(err),
       optimisticUpdater:(store)=>{
 
-
         const node = store.create(tempId, 'Favorite')
 
         node.setValue(tempId, "id")
@@ -111,7 +114,6 @@ export default function AddFavoriteMutation(
         node.setValue(description, 'description')
 
         sharedUpdater(store, parentId, favoriteKey, node)
-
 
       },
 
@@ -132,7 +134,6 @@ export default function AddFavoriteMutation(
         const fileNode = store.get(fileItem.node.id)
         if(fileNode){
           fileNode.setValue(true, 'isFavorite')
-
         }
 
       }

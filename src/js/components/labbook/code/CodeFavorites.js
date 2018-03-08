@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
-import FavoriteCard from './../fileBrowser/FavoriteCard'
+import CodeFavoriteList from './CodeFavoriteList'
 //store
 import store from 'JS/redux/store'
 
@@ -10,7 +10,7 @@ class CodeFavorites extends Component {
   constructor(props){
   	super(props);
     this.state = {
-      loading: false
+      loading: false,
     }
   }
 
@@ -60,36 +60,26 @@ class CodeFavorites extends Component {
   render(){
 
     if(this.props.code && this.props.code.favorites){
-
       let loadingClass = (this.props.code.favorites.pageInfo.hasNextPage) ? 'Favorite__action-bar' : 'hidden'
       loadingClass = (this.state.loading) ? 'Favorite__action-bar--loading' : loadingClass
 
       if(this.props.code.favorites.edges.length > 0){
-        let favorites = this.props.code.favorites.edges.filter((edge)=>{
+        const favorites = this.props.code.favorites.edges.filter((edge)=>{
           return edge && (edge.node !== undefined)
         })
-        return(
-          <div className="Favorite">
-            <div className="Favorite__list">
-              {
-                favorites.map((edge)=>{
 
-                    return(
-                      <div
-                        key={edge.node.key}
-                        className="Favorite__card-wrapper">
-                        <FavoriteCard
-                          labbookName={this.props.labbookName}
-                          parentId={this.props.codeId}
-                          section={'code'}
-                          connection={"CodeFavorites_favorites"}
-                          favorite={edge.node}
-                          owner={this.props.owner}
-                        />
-                      </div>)
-                })
-            }
-            </div>
+        return(
+
+          <div className="Favorite">
+
+            <CodeFavoriteList
+              labbookName={this.props.labbookName}
+              codeId={this.props.codeId}
+              section={'code'}
+              favorites={favorites}
+              owner={this.props.owner}
+            />
+
 
             <div className={loadingClass}>
               <button
@@ -100,6 +90,7 @@ class CodeFavorites extends Component {
               </button>
             </div>
         </div>
+
         )
       }else{
         return(
@@ -118,14 +109,18 @@ export default createPaginationContainer(
 
     code: graphql`
       fragment CodeFavorites_code on LabbookSection{
-        favorites(after: $cursor, first: $first)@connection(key: "CodeFavorites_favorites", filters: []){
+        favorites(after: $cursor, first: $first)@connection(key: "CodeFavorites_favorites"){
           edges{
             node{
               id
-              isDir
-              description
-              key
+              owner
+              name
               index
+              key
+              description
+              isDir
+              associatedLabbookFileId
+              section
             }
             cursor
           }
@@ -136,7 +131,6 @@ export default createPaginationContainer(
             endCursor
           }
         }
-
       }`
   },
   {

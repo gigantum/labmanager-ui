@@ -49,13 +49,25 @@
     animation-delay: 2s;
 }
 
+.Prompt__failure-container{
+  position: absolute;
+  top: 35%;
+  left: calc(50% - 400px);
+  width: 800px;
+
+
+  @include flex(space-between, column);
+  align-items: center;
+
+  img{
+    margin-top: 20px;
+    width: 600px;
+    height: auto;
+  }
+}
+
 .Prompt__failure-text {
     line-height: 1.5;
-    max-width: 500px;
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     opacity: 0;
     animation: fade-in 3s forwards;
     animation-delay: 2s;
@@ -63,14 +75,13 @@
     p {
         margin: 0
     }
+
+
 }
 
 .Prompt__cli {
-    position: absolute;
-    top: 60%;
-    left: 50%;
     opacity: 0;
-    transform: translate(-50%, -50%);
+
     animation: fade-in 3s forwards;
     animation-delay: 2s;
 }

@@ -5,11 +5,16 @@
   width: 100%;
   transition: width 0.25s;
 }
-
-.Labbook__branch-title {
-  height: 65px;
-  @include flex(flex-start, row);
-
+.Labbok__name {
+  margin: 2px 0;
+  padding: 0 0 10px 0;
+  cursor: pointer;
+  font-weight: 100;
+  font-size: 3.54em;
+  word-break: break-all;
+  line-height: 1em;
+}
+.Labbook__branch-title{
   h2 {
       margin: 2px 0;
       padding: 0 0 10px 0;
@@ -20,11 +25,14 @@
   h2:hover {
     color: $turquise;
   }
+
+  @include flex(flex-start, row)
 }
 
 .Labbook__branch-toggle {
   height: 24px;
   width: 24px;
+  min-width: 24px;
   border: 2px solid $romanSilver;
   border-radius: 12px;
   margin: 0 15px;
@@ -70,7 +78,7 @@
 }
 
 .Labbook__name-title {
-  width: 50%;
+  flex: 1;
   margin: 0;
 }
 
@@ -86,6 +94,7 @@
 
 
 .Labbook__header {
+  flex: 1 0 auto;
   min-height: 80px;
   height: auto;
   .Labbook__name-title {

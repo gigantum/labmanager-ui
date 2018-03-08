@@ -39,7 +39,7 @@ export default class RecentActivity extends Component {
     if(item){
       switch(item[0]){
         case 'text/plain':
-          return(<ReactMarkdown className="ReactMarkdown" source={item[1]} />)
+          return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
         case 'image/png':
           return(<img alt="detail" src={item[1]} />)
         case 'image/jpg':

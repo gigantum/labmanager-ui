@@ -66,6 +66,7 @@ class LocalLabbooks extends Component {
           expandOn = root.offsetHeight;
 
       if(that.props.feed.localLabbooks){
+    
         if ((distanceY > expandOn) && !isLoadingMore && that.props.feed.localLabbooks.pageInfo.hasNextPage) {
             that._loadMore(e);
         }

@@ -13,7 +13,7 @@
   .FileCard {
     @extend .card;
     position: relative;
-    width: calc(16.6666% - 25px);
+    width: calc(33.33333% - 25px);
     padding: 15px 10px;
     height: 200px;
     overflow: hidden;
@@ -21,7 +21,6 @@
 
     .FileCard__key {
       font-size: 12px;
-
     }
 
     .FileCard__description {
