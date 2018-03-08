@@ -284,6 +284,10 @@
 }
 
 .Labbook__component-container{
+  .ReactStickyHeader_background-bg,
+  .ReactStickyHeader_foreground{
+    display: none;
+  }
   .ReactStickyHeader_root{
     .ReactStickyHeader_fixed{
       z-index: 2000;
@@ -292,8 +296,6 @@
       margin: 10px 0px 0px 160px;
       padding: 5px 80px 0;
       background-color: $background-color;
-
-
     }
   }
 
@@ -320,11 +322,12 @@
       align-items: center;
     }
     .Labbook__column-container > div{
-      margin: 0 10px;
+        margin: 0 10px 0 30px;
     }
 
     .Labbook__column-container--flex-1{
       justify-content: flex-start;
+      margin: 0 10px;
 
       .Labbook__name-title{
         flex: 0 1;
