@@ -555,7 +555,7 @@ export default class UserNote extends Component {
               </button>
             </div>
           </div>
-          <button onClick={()=>{this._openMenu()}} className="BranchMenu__button"></button>
+          <button onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
           <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
           <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
 

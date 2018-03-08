@@ -50,23 +50,32 @@
 
 .BranchMenu__button,
 .BranchMenu__button:focus {
-  width: 40px;
-  border-radius: 10px;
-  height: 20px;
-  border: 1px solid $lightGrey;
+  color: $romanSilver;
+  width: 120px;
+  border-radius: 15px;
+  height: 30px;
+  line-height: 26px;
+  border: 3px solid $romanSilver;
+  padding: 0 30px 0 15px;
+  text-align: left;
 
-  background: $white url('./../images/icons/ellipsis.svg') no-repeat center center;
+
+
+  background: $white url('./../images/icons/ellipsis.svg') no-repeat calc(100% - 10px) center;
   background-size: 30px 30px;
 }
 
 .BranchMenu__button:hover {
-  background: $white url('./../images/icons/ellipsis.svg') no-repeat center center;
-  background-size: 32px 32px;
+  border-width: 3px;
+  color: $romanSilver;
+  background: $white url('./../images/icons/ellipsis.svg') no-repeat no-repeat calc(100% - 10px) center;
+  background-size: 30px 30px;
 }
+
 .BranchMenu__menu {
   position: absolute;
   right: 0px;
-  top: 30px;
+  top: 42px;
   background: $white;
   border-radius: 10px;
   padding: 20px;
@@ -88,7 +97,7 @@
 .BranchMenu__menu-arrow {
   z-index: 203;
   position: absolute;
-  top: 22px;
+  top: 30px;
   right: 16px;
   @include triangle('up', 14px, $white);
 }

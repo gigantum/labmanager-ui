@@ -52,33 +52,47 @@
   background: $background-color url('./../images/icons/up-arrow-silver.svg') no-repeat 90% center;
 }
 
-.ContainerStatus__container-state.Open {
+.ContainerStatus__container-state.Running {
   border: 3px solid $turquise;
+  background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
   background-size: 20px;
 }
+.ContainerStatus__container-state.Running:hover {
+  border: 3px solid $jet;
+  background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
+  background-size: 20px;
+}
+
 .ContainerStatus__container-state.Building {
   border: 3px solid $goldenLemon;
   background-size: 20px;
 }
-.ContainerStatus__container-state.Closed {
-  border: 3px solid $crimson;
+.ContainerStatus__container-state.Stopped {
+  background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
+  border: 3px solid $jet;
   background-size: 20px;
 }
 
-.ContainerStatus__container-state.Failed {
+.ContainerStatus__container-state.Stopped:hover {
+  background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
+  border: 3px solid $turquise;
+  background-size: 20px;
+
+}
+
+.ContainerStatus__container-state.Build.Failed {
   border: 3px solid $crimson;
   background-size: 20px;
-  color: $crimson;
 }
 
 .ContainerStatus__container-state.Starting {
-  border: 1px solid $turquise;
+  border: 3px solid $goldenLemon;
   opacity: 0.75;
   background: none;
 }
 
 .ContainerStatus__container-state.Stopping {
-  border: 1px solid $jet;
+  border: 3px solid $goldenLemon;
   opacity: 0.75;
   background: none;
 }
@@ -90,18 +104,21 @@
 
 .ContainerStatus__plugins-button {
   height: 24px;
-  width: 30px;
+  width: 134px;
   background-color: #aaa;
   border-radius: 12px 0 0 12px;
   position: absolute;
   top: 3px;
-  left: -25px;
+  left: -129px;
   color: white;
   text-align: center;
-  line-height: 25px;
+  line-height: 21px;
   cursor: pointer;
-  background: #aaa url('./../images/icons/rocket.svg') no-repeat center -3px;
+  //@extend: .jupyter-icon;
   background-size: 30px;
+  &.jupyter-icon:before {
+    margin: 3px 5px 0px 0px;
+  }
 }
 
 .ContainerStatus__plugins-title {
@@ -114,6 +131,7 @@
   .jupyter-icon:before {
     padding: 0 6px 0 0;
     font-size: 17px;
+    margin: 0 6px;
   }
 }
 

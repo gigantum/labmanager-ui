@@ -93,11 +93,11 @@ export default class FilePreview extends Component {
                     Code Details >
                   </Link>
                 </div>
-                <p>Recent Files</p>
+                <p>Favorites</p>
                 <div className="FilePreview__list">
                   {
                     props.labbook.code.favorites && props.labbook.code.favorites.edges.map(edge =>{
-                      return <FileCard edge={edge} />
+                      return <FileCard key={edge.node.id} edge={edge} />
                     })
                   }
                 </div>
@@ -112,11 +112,11 @@ export default class FilePreview extends Component {
                     Input Data Details >
                   </Link>
                 </div>
-                <p>Recent Files</p>
+                <p>Favorites</p>
                 <div className="FilePreview__list">
                   {
                     props.labbook.input.favorites && props.labbook.input.favorites.edges.map(edge =>{
-                      return <FileCard edge={edge} />
+                      return <FileCard key={edge.node.id} edge={edge} />
                     })
                   }
                 </div>
@@ -131,11 +131,11 @@ export default class FilePreview extends Component {
                     Output Data Details >
                   </Link>
                 </div>
-                <p>Recent Files</p>
+                <p>Favorites</p>
                 <div className="FilePreview__list">
                   {
                     props.labbook.output.favorites && props.labbook.output.favorites.edges.map(edge =>{
-                      return <FileCard edge={edge} />
+                      return <FileCard  key={edge.node.id}edge={edge} />
                     })
                   }
                 </div>

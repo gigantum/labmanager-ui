@@ -158,7 +158,7 @@ class PackageDependencies extends Component {
   */
   _removePackage(node){
 
-    if((store.getState().containerStatus.status === 'Closed') || (store.getState().containerStatus.status === 'Failed')){
+    if((store.getState().containerStatus.status === 'Stopped') || (store.getState().containerStatus.status === 'Build Failed')){
       const {labbookName, owner} = store.getState().routes
       const {environmentId} = this.props
       const clinetMutationId = uuidv4()
@@ -189,7 +189,7 @@ class PackageDependencies extends Component {
   *  triggers remove package mutation
   */
   _toggleAddPackageMenu(){
-    if((store.getState().containerStatus.status === 'Closed') || (store.getState().containerStatus.status === 'Failed')){
+    if((store.getState().containerStatus.status === 'Stopped') || (store.getState().containerStatus.status === 'Build Failed')){
       store.dispatch({
         type: 'TOGGLE_PACKAGE_MENU',
         payload:{

@@ -220,29 +220,10 @@ class Labbook extends Component {
     }
   }
 
-  /**
-    @param {boolean} isSticky
-    sets sticky state on component
-  */
-  _setStickyState(isSticky){
-
-    store.dispatch({
-      type: 'UPDATE_STICKY_STATE',
-      payload: {
-        'isSticky': isSticky
-      }
-    })
-  }
-
   render(){
 
     const { isAuthenticated } = this.props.auth;
     const {labbookName} = this.props;
-
-    const stickyClasses = classNames({
-
-      'Labbook__header-sticky': this.state.isSticky
-    })
 
     if(this.props.labbook){
       const name = this.props.labbook.activeBranch.name.replace(/-/g, ' ')
@@ -253,9 +234,8 @@ class Labbook extends Component {
            <div className="Labbook__inner-container flex flex--row">
              <div className="Labbook__component-container flex flex--column">
               <StickyHeader
-                onSticky={(isSticky)=> this._setStickyState(isSticky)}
                 header ={
-              <div className={stickyClasses}>
+              <div className="Labbook__header">
                 <div className="Labbook__row-container">
                  <div className="Labbook__column-container--flex-1">
                    <div className="Labbook__name-title">
