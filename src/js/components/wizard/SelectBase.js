@@ -55,7 +55,7 @@ export default class SelectBase extends React.Component {
       'description': '',
       'selectedBase': null,
       'selectedBaseId': false,
-      'selectedTab': 'none',
+      'selectedTab': 'python3',
       'viewedBase': null,
       'viewingBase': false
     };
@@ -140,12 +140,13 @@ export default class SelectBase extends React.Component {
 
     let sliderSettings = {
       dots: false,
-      infinite: true,
+      infinite: false,
       speed: 500,
       slidesToShow: 2,
       slidesToScroll: 1,
-      arrows: true
+      arrows: false
     };
+
 
     return(
       <div className="SelectBase">
@@ -159,7 +160,6 @@ export default class SelectBase extends React.Component {
           query={BaseQuery}
           environment={environment}
           render={({error, props}) =>{
-
               if(error){
 
                 return(<div>{error.message}</div>)
@@ -176,6 +176,7 @@ export default class SelectBase extends React.Component {
                     'SelectBase__inner-container': true,
                     'SelectBase__inner-container--viewer': this.state.viewingBase
                   })
+                  if (sortedBaseItems.bases[this.state.selectedTab].length > 2) sliderSettings.arrows = true;
                   return(
                     <div className={innerContainer}>
                       <div className="SelectBase__select-container">
@@ -183,9 +184,9 @@ export default class SelectBase extends React.Component {
                           <ul className="SelectBase__tabs-list">
                             {
                               sortedBaseItems.tabs.map((tab)=>{
-
                                 return(
                                   <LanguageTab
+                                    key={tab}
                                     tab={tab}
                                     self={this}
                                 />)
@@ -197,10 +198,10 @@ export default class SelectBase extends React.Component {
                           <Slider {...sliderSettings}>
                             {
                               (this.state.selectedTab !== 'none') && sortedBaseItems.bases[this.state.selectedTab].map((node) => {
-
                                   return(
                                     <div className="BaseSlide__wrapper">
                                       <BaseSlide
+                                        key={node.id}
                                         node={node}
                                         self={this}
                                       />
