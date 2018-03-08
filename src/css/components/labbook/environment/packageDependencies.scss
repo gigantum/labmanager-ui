@@ -140,8 +140,9 @@
 .PackageDependencies__add-package {
   background-color: $grey-light;
   margin: 20px 0;
-  padding: 5px 20px;
+  padding: 20px 20px;
   border-radius: 8px;
+  border: 1px solid $romanSilver;
 }
 .PackageDependencies__package-menu {
   padding: 20px 0;
