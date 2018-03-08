@@ -10,7 +10,7 @@
   padding: 0 0 10px 0;
   cursor: pointer;
   font-weight: 100;
-  font-size: 3.54em;
+  font-size: 2em;
   word-break: break-all;
   line-height: 1em;
 }
@@ -38,6 +38,10 @@
   margin: 0 15px;
   cursor: pointer;
   align-self: center;
+}
+
+.Labbook__navigation-container{
+  margin-top: 80px;
 }
 
 .Labbook__branches-shadow {
@@ -124,6 +128,7 @@
   height: 310px;
   position: relative;
   transition: height 0.6s;
+  background-color: $background-color;
 }
 
 .Labbook__branches-container--collapsed {
@@ -263,4 +268,72 @@
   background-color: $grey-light;
   box-shadow: 10px 10px 5px #888888;
 
+}
+
+.Labbook__row-container{
+  @include flex(space-between, row);
+  flex-wrap: nowrap;
+}
+
+.Labbook__column-container{
+  @include flex(flex-start, column);
+}
+.Labbook__column-container--flex-1{
+  @extend .Labbook__column-container;
+  flex: 1;
+}
+
+.Labbook__component-container{
+  .ReactStickyHeader_root{
+    .ReactStickyHeader_fixed{
+      z-index: 2000;
+      transition: height 0.5s, padding 0.5s, margin 0.5s;
+      height: 80px;
+      margin: 10px 0px 0px 160px;
+      padding: 5px 80px 0;
+      background-color: $background-color;
+
+
+    }
+  }
+
+  .ReactStickyHeader_root.is-sticky{
+    .ReactStickyHeader_fixed{
+      height: 60px;
+      padding: 5px 20px 0;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 6px 2px;
+    }
+
+    .Labbook__branches-container {
+      max-width: calc(100% + 40px);
+      margin: 0px -20px;
+
+    }
+
+    .Labbook__branches-container--collapsed{
+      padding: 0px;
+    }
+
+    .Labbook__column-container{
+      @include flex(flex-start, row);
+      align-content: center;
+      align-items: center;
+    }
+    .Labbook__column-container > div{
+      margin: 0 10px;
+    }
+
+    .Labbook__column-container--flex-1{
+      justify-content: flex-start;
+
+      .Labbook__name-title{
+        flex: 0 1;
+        white-space: nowrap;
+      }
+
+      .Labbook__branch-title{
+        flex: 1;
+      }
+    }
+  }
 }
