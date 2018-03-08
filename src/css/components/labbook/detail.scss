@@ -34,3 +34,7 @@
   opacity: 0.1;
   animation: fluxuateLoad 3s infinite;
 }
+
+li.DetailsRecords__item * {
+  max-width: 100%;
+}
