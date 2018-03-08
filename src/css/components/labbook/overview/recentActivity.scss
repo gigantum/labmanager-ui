@@ -17,6 +17,12 @@
 .RecentActivity__card-detail{
     padding: 10px 0;
 }
+
+.RecentActivity__card-detail *{
+  max-width: 100%;
+  max-height: 100%;
+}
+
 @keyframes fluxuateLoad {
     0% {
       opacity: 0.1;
