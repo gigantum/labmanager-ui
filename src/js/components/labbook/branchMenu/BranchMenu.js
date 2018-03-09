@@ -464,7 +464,6 @@ export default class UserNote extends Component {
   */
   _exportLabbook = (evt) => {
     this.setState({ exporting: true, menuOpen: false });
-    let username = localStorage.getItem('username')
     store.dispatch({
       type: 'INFO_MESSAGE',
       payload: {
@@ -472,7 +471,7 @@ export default class UserNote extends Component {
       }
     })
 
-    ExportLabbookMutation(username, this.state.labbookName, (response, error) => {
+    ExportLabbookMutation(this.state.owner, this.state.labbookName, (response, error) => {
 
       if (response.exportLabbook) {
         JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data) => {
@@ -491,11 +490,13 @@ export default class UserNote extends Component {
         }).catch((error) => {
           console.log(error)
           if (error) {
+
+            let errorArray = [{'message': 'Export failed.'}]
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
                 message: `${this.state.labbookName} failed to export `,
-                messagesList: error
+                messagesList: errorArray
               }
             })
           }
