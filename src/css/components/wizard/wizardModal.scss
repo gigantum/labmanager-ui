@@ -4,6 +4,14 @@
   @include modal(600px, 960px);
 }
 
+.WizardModal__modal--blur {
+  pointer-events: none;
+  filter: blur(5px);
+  overflow: hidden;
+  padding: 20px 60px;
+  @include modal(600px, 960px);
+}
+
 .WizardModal__nav {
   @include flex(space-between, row);
 }
@@ -72,4 +80,30 @@
 
 .WizardModal__progress-button {
   margin: 0 10px;
+}
+
+.WizardModal__logo {
+  z-index: 1001;
+  position: absolute;
+  top: calc(50% - 75px);
+  left: calc(50% - 75px);
+}
+
+.WizardModal__logo-border {
+  box-sizing: content-box;
+  z-index: 1000;
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  top: calc(50% - 90px);
+  left: calc(50% - 90px);
+  border: 16px solid $grey;
+  border-top: 16px solid $turquise;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

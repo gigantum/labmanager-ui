@@ -10,6 +10,8 @@ import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
+//assets
+import logoCirlce from 'Images/logos/logo-circle-cyan.png'
 
 
 
@@ -27,6 +29,7 @@ export default class WizardModal extends React.Component {
       'nextComponentId': 'selectBase',
       'previousComponentId': null,
       'continueDisabled': true,
+      'modalBlur': false,
       'menuVisibility': true,
       'isTrackingOn': true
     };
@@ -141,10 +144,10 @@ export default class WizardModal extends React.Component {
     @param { boolean} isSkip
     gets selected id and triggers continueSave function using refs
   */
-  _continueSave = (isSkip) =>{
-    this.refs[this._getSelectedComponentId()].continueSave(isSkip)
-
-    this.setState({'continueDisabled': true})
+  _continueSave = (isSkip, text) =>{
+    this.refs[this._getSelectedComponentId()].continueSave(isSkip);
+    this.setState({'continueDisabled': true});
+    if (text === 'Create Labbook') this.setState({ modalBlur: true })
   }
   /**
     @param {string ,string} name,description
@@ -236,13 +239,19 @@ export default class WizardModal extends React.Component {
   }
 
   render(){
-
+    let modalCSS = classNames({
+      'WizardModal__modal': !this.state.modalBlur,
+      'WizardModal__modal--blur': this.state.modalBlur
+    });
+    let logoCSS = classNames({
+      'WizardModal__logo-container': this.state.modalBlur,
+      'hidden': !this.state.modalBlur
+    })
     return(
         <div className="WizardModal">
           { this.state.modal_visible &&
-
-              <div className={'WizardModal__modal'}>
-
+            <div className="WizardModal__container">
+              <div className={modalCSS}>
                 <div
                   className="WizardModal__modal-close"
                   onClick={() => this._hideModal()}>
@@ -260,8 +269,11 @@ export default class WizardModal extends React.Component {
                   continueSave={this._continueSave}
                   createLabbookCallback={this._createLabbookCallback}
                 />
-
-
+              </div>
+                <div className={logoCSS}>
+                  <img alt="logo-circle" src={logoCirlce} className='WizardModal__logo' />
+                  <div className="WizardModal__logo-border" />
+                </div>
             </div>
           }
         </div>
@@ -363,7 +375,7 @@ function ModalNav({self, state, getSelectedComponentId, setComponent, hideModal,
           Cancel
         </button>
         <button
-          onClick={() => {continueSave(false)}}
+          onClick={() => {continueSave(false, _getButtonText(state))}}
           disabled={(state.continueDisabled)}
           >
             {
