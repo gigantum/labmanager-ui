@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 //components
 import User from './User'
-import GigantumPNG from 'Images/logos/gigantum.png'
+import GigantumSVG from 'Images/logos/gigantum.svg'
 
 
 export default class SideBar extends Component {
@@ -19,7 +19,7 @@ export default class SideBar extends Component {
     return (
       <div className="SideBar col-sm-1">
         <div className={'SideBar__inner-container'}>
-          <img alt="gigantum" className="SideBar__logo" src={GigantumPNG}></img>
+          <img alt="gigantum" className="SideBar__logo" src={GigantumSVG}></img>
           <ul className='SideBar__nav'>
             <li className={isLabbooks ? 'SideBar__list-item--selected' : 'SideBar__list-item'}>
               <Link
