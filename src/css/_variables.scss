@@ -38,6 +38,7 @@ $backgroundGrey: rgb(196, 199, 201);
 $grey-light: rgb(244,244,244);
 $grey: rgb(213,213,213);
 $grey-background: rgb(227,225,226);
+$grey-border: #E3E4E5;
 $font-grey: #9c9b9b;
 
 $background-color: rgb(240, 241, 245);
@@ -60,3 +61,11 @@ $h3-fontsize: 2.92rem !default;
 $h4-fontsize: 2.28rem !default;
 $h5-fontsize: 1.64rem !default;
 $h6-fontsize: 1rem !default;
+
+/*****************************
+*
+* width
+*
+********************************/
+
+$sideBarWidth: 140px;

@@ -8,7 +8,6 @@ import {Link} from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 //components
 import Base from 'Components/labbook/environment/Base'
-import PackageCount from './PackageCount'
 import FilePreview from './FilePreview'
 import RecentActivity from './RecentActivity'
 import Loader from 'Components/shared/Loader'
@@ -66,7 +65,7 @@ class Overview extends Component {
               <ReactMarkdown source={this.props.description} />
             </div>
             <div>
-              <RecentActivity />
+              <RecentActivity recentActivity={this.props.labbook.overview.recentActivity}/>
             </div>
             <div className="Overview__title-container">
               <h5 className="Overview__title">Environment</h5>
@@ -82,7 +81,7 @@ class Overview extends Component {
                   ref="base"
                   environment={this.props.labbook.environment}
                   blockClass="Overview"
-                  PackageCount={PackageCount}
+                  overview={this.props.labbook.overview}
                 />
             </div>
 
@@ -105,6 +104,30 @@ class Overview extends Component {
 export default createFragmentContainer(
   Overview,
   graphql`fragment Overview_labbook on Labbook {
+    overview{
+      id
+      owner
+      name
+      numAptPackages
+      numConda2Packages
+      numConda3Packages
+      numPipPackages
+      recentActivity{
+        id
+        owner
+        name
+        message
+        detailObjects {
+          id
+          data
+        }
+        type
+        timestamp
+        username
+        email
+      }
+      remoteUrl
+    }
     environment{
       id
       imageStatus

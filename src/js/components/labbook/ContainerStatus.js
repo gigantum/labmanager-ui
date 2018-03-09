@@ -471,7 +471,7 @@ export default class ContainerStatus extends Component {
     trigger mutatuion to stop or start container depdending on the state
   */
   _setMouseOverState(value){
-    console.log(value)
+
     this.setState({'isMouseOver': value})
   }
   /**
@@ -482,12 +482,12 @@ export default class ContainerStatus extends Component {
   _getStatusText(status){
     let newStatus = status
 
-    newStatus =this.state.isMouseOver && (status === 'Running') ? 'Stop' : newStatus
+    newStatus = this.state.isMouseOver && (status === 'Running') ? 'Stop' : newStatus
     newStatus = this.state.isMouseOver && (status === 'Stopped') ? 'Run' : newStatus
     newStatus = this.state.isMouseOver && (status === 'Build Failed') ? 'Rebuild' : newStatus
 
     newStatus = this.state.isBuilding ? 'Building' : newStatus
-    console.log(newStatus, status)
+
     return newStatus;
   }
 
@@ -515,7 +515,8 @@ export default class ContainerStatus extends Component {
       'ContainerStatus__container-state--menu-open': this.state.containerMenuRunning,
       'ContainerStatus__container-state': !this.state.containerMenuRunning,
       'Building': this.props.isBuilding,
-      [status]: !this.props.isBuilding
+      [status]: !this.props.isBuilding,
+      'ContainerStatus__container-state--expanded': this.state.isMouseOver
     })
 
     const containerMenuIconCSS = classNames({
@@ -528,12 +529,18 @@ export default class ContainerStatus extends Component {
         'hidden': !this.state.pluginsMenu
     })
 
+    const jupyterButtonCss = classNames({
+      'ContainerStatus__plugins-button': true,
+      'jupyter-icon': true,
+      'ContainerStatus__button--bottom': this.state.isMouseOver
+    })
+
     return(
       <div className="ContainerStatus flex flex--row">
         { (status === 'Running') &&
             <div className="ContainerStatus__plugins">
                 <div
-                  className="fa jupyter-icon ContainerStatus__plugins-button"
+                  className={jupyterButtonCss}
                   onClick={()=>{this._openDevToolMuation(this.props.base.developmentTools[0])}}>
                   Open Jupyter
                 </div>
@@ -550,7 +557,7 @@ export default class ContainerStatus extends Component {
                             key={developmentTool}
                             className="ContainerStatus__plugins-list-item">
                             <button
-                              className="ContainerStatus__button--flat jupyter-icon"
+                              className={jupyterButtonCss}
                               onClick={()=>this._openDevToolMuation(developmentTool)}
                               rel="noopener noreferrer">
                                 {developmentTool}

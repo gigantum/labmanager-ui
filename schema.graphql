@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Wed Mar 07 2018 20:10:11 GMT-0500 (EST)
+# timestamp: Thu Mar 08 2018 22:33:40 GMT-0500 (EST)
 
 schema {
   query: LabbookQuery
@@ -415,6 +415,7 @@ interface GitRepository {
 enum ImageStatus {
   DOES_NOT_EXIST
   BUILD_IN_PROGRESS
+  BUILD_QUEUED
   EXISTS
   STALE
   BUILD_FAILED

@@ -452,6 +452,24 @@ export default class UserNote extends Component {
     })
     document.getElementById('modal__cover').classList.add('hidden')
   }
+  /**
+  *  @param {}
+  *  copies remote
+  *  @return {}
+  */
+  _copyRemote(){
+
+    let copyText = document.getElementById('BranchMenu-copy')
+    copyText.select();
+    document.execCommand("Copy");
+
+    store.dispatch({
+      type: 'INFO_MESSAGE',
+      payload: {
+        'message':`${copyText.value} copied!`
+      }
+    })
+  }
 
   render(){
     let collaboratorsModalCss = classNames({
@@ -596,6 +614,18 @@ export default class UserNote extends Component {
                   >
                   Sync Branch
                 </button>
+              </div>
+            }
+
+            {
+
+              this.props.remoteUrl &&
+              <div>
+                <hr className="BranchMenu__line"/>
+                <div className="BranchMenu__copy-remote">
+                  <input id="BranchMenu-copy" className="BranchMenu__input" value={this.props.remoteUrl} type="text" />
+                  <button onClick={()=> this._copyRemote()} className="BranchMenu__copy-button fa fa-clone"></button>
+                </div>
               </div>
             }
           </div>

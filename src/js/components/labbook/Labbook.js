@@ -260,6 +260,7 @@ class Labbook extends Component {
                      canManageCollaborators={this.props.labbook.canManageCollaborators}
                      defaultRemote={this.props.labbook.defaultRemote}
                      labbookId={this.props.labbook.id}
+                     remoteUrl={this.props.labbook.overview.remoteUrl}
                     />
 
                    <ContainerStatus
@@ -282,6 +283,7 @@ class Labbook extends Component {
                   labbook={this.props.labbook}
                   labbookId={this.props.labbook.id}
                   activeBranch={this.props.labbook.activeBranch}
+
                 />
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
               </div>
@@ -434,6 +436,10 @@ const LabbookFragmentContainer = createFragmentContainer(
             base{
               developmentTools
             }
+          }
+
+          overview{
+            remoteUrl
           }
 
           collaborators
