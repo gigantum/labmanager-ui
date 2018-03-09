@@ -4,9 +4,9 @@ import {Link} from 'react-router-dom';
 
 import store from "JS/redux/store";
 
-import codeSVG from "../../../../images/icons/code.svg";
-import inputSVG from "../../../../images/icons/data-input.svg";
-import outputSVG from "../../../../images/icons/data-output.svg";
+import codeSVG from "../../../../images/icons/code-grey.svg";
+import inputSVG from "../../../../images/icons/data-input-grey.svg";
+import outputSVG from "../../../../images/icons/data-output-grey.svg";
 
 export default class FileEmpty extends Component {
 
