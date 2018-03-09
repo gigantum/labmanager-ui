@@ -529,8 +529,7 @@ export default class UserNote extends Component {
       'BranchMenu__item--export': !this.state.exporting,
       'BranchMenu__item--export--downloading': this.state.exporting
     })
-    console.log(store.getState())
-    console.log(this.state);
+
     return (
       <div className="BranchMenu flex flex--column">
         <div className={loginPromptModalCss}>
