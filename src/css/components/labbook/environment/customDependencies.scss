@@ -20,6 +20,10 @@
   margin: 20px 0;
 }
 
+input.CustomDependenciesDropdown__input[type="text"]::placeholder {
+  color: $romanSilver;
+}
+
 input.CustomDependenciesDropdown__input[type="text"] {
   border: 1px solid $romanSilver;
   border-radius: 8px;
@@ -139,8 +143,8 @@ input.CustomDependenciesDropdown__input[type="text"]:focus {
   background-color: $grey-light;
   border: 0;
   color: $turquise !important;
-  background: url('../images/icons/down-arrow-turquise.svg') no-repeat calc(50% + 87px) 50%;
-  background-size: 20px;
+  background: url('../images/icons/down-arrow-turquise.svg') no-repeat calc(50% + 107px) 50%;
+  background-size: 25px;
 }
 
 
@@ -148,19 +152,20 @@ input.CustomDependenciesDropdown__input[type="text"]:focus {
     border: 0;
     color: $azure;
     width: 100%;
+    font-size: 20px;
     line-height: 18px;
     font-weight: bold;
-    background: url('../images/icons/down-arrow-azure.svg') no-repeat calc(50% + 87px) 50%;
-    background-size: 20px;
+    background: url('../images/icons/down-arrow-azure.svg') no-repeat calc(50% + 107px) 50%;
+    background-size: 25px;
 }
 
 .CustomDependencies__button--open {
-  background: url('../images/icons/up-arrow-azure.svg') no-repeat calc(50% + 87px) 50%;
-  background-size: 20px;
+  background: url('../images/icons/up-arrow-azure.svg') no-repeat calc(50% + 107px) 50%;
+  background-size: 25px;
 }
 
 .CustomDependencies__button--open:hover,
 .CustomDependencies__button--open:focus {
-  background: url('../images/icons/up-arrow-turquise.svg') no-repeat calc(50% + 87px) 50%;
-  background-size: 20px;
+  background: url('../images/icons/up-arrow-turquise.svg') no-repeat calc(50% + 107px) 50%;
+  background-size: 25px;
 }

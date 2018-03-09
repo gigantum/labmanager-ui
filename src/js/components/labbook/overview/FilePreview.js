@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom';
 //components
 import Loader from 'Components/shared/Loader'
 import FileCard from './FileCard'
+import FileEmpty from './FileEmpty'
 //utilites
 import environment from 'JS/createRelayEnvironment'
 //store
@@ -93,14 +94,28 @@ export default class FilePreview extends Component {
                     Code Details >
                   </Link>
                 </div>
-                <p>Recent Files</p>
+                <p>Favorite Code Files</p>
                 <div className="FilePreview__list">
                   {
-                    props.labbook.code.favorites && props.labbook.code.favorites.edges.map(edge =>{
+                    props.labbook.code.favorites && props.labbook.code.favorites.edges.length ?
+                    props.labbook.code.favorites.edges.map(edge =>{
                       return <FileCard edge={edge} />
-                    })
+                    }) :
+                    <FileEmpty
+                      icon="code"
+                      mainText="This LabBook has No Code Favorites"
+                      subText="View LabBook Code Details"
+                    />
                   }
                 </div>
+
+
+
+
+
+
+
+
               </div>
               <div className="FilePreview__section">
                 <div className="FilePreview__title-container">
@@ -112,12 +127,18 @@ export default class FilePreview extends Component {
                     Input Data Details >
                   </Link>
                 </div>
-                <p>Recent Files</p>
+                <p>Favorite Input Files</p>
                 <div className="FilePreview__list">
                   {
-                    props.labbook.input.favorites && props.labbook.input.favorites.edges.map(edge =>{
+                    props.labbook.input.favorites &&
+                    props.labbook.input.favorites.edges.length ? props.labbook.input.favorites.edges.map(edge =>{
                       return <FileCard edge={edge} />
-                    })
+                    }) :
+                    <FileEmpty
+                      icon="inputData"
+                      mainText="This LabBook has No Input Favorites"
+                      subText="View LabBook Input Data Details"
+                    />
                   }
                 </div>
               </div>
@@ -131,12 +152,18 @@ export default class FilePreview extends Component {
                     Output Data Details >
                   </Link>
                 </div>
-                <p>Recent Files</p>
+                <p>Favorite Output Files</p>
                 <div className="FilePreview__list">
                   {
-                    props.labbook.output.favorites && props.labbook.output.favorites.edges.map(edge =>{
+                    props.labbook.output.favorites &&
+                    props.labbook.output.favorites.edges.length ? props.labbook.output.favorites.edges.map(edge =>{
                       return <FileCard edge={edge} />
-                    })
+                    }) :
+                    <FileEmpty
+                      icon="outputData"
+                      mainText="This LabBook has No Output Favorites"
+                      subText="View LabBook Output Data Details"
+                    />
                   }
                 </div>
               </div>

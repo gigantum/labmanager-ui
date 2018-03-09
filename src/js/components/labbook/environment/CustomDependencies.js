@@ -323,12 +323,15 @@ class CustomDependencies extends Component {
             </div>
 
             <div className="CustomDependencies__table--container">
-              <input
+              {
+              //Awaiting new UI design due to user confusion
+              /* <input
                 type="text"
                 className="full--border"
                 placeholder="Filter dependencies by keyword"
                 onKeyUp={(evt)=> this._setSearchValue(evt)}
-              />
+              /> */
+            }
 
               <table className="CustomDependencies__table">
                 <thead>
