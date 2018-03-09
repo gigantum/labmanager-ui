@@ -292,26 +292,6 @@
   opacity: 1;
 }
 
-.LocalLabbooks__export,
-.LocalLabbooks__export--downloading {
-  height: auto;
-  width: 100px;
-  padding: 0 40px 0 0;
-
-  padding: 5px;
-  font-size: 16px;
-}
-
-.LocalLabbooks__export {
-  background: url('../images/icons/download.svg') no-repeat center right;
-  background-size: 15px !important;
-}
-
-.LocalLabbooks__export--downloading {
-  background: url('../images/icons/rings.svg') no-repeat center right;
-  background-size: 20px !important;
-}
-
 .LocalLabbooks__export:hover {
   color: $azure;
 }
