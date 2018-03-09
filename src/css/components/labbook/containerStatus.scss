@@ -1,6 +1,9 @@
 .ContainerStatus {
   align-self: center;
   position: relative;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
 }
 .ContainerStatus__button-menu {
   top: 42px;
@@ -29,13 +32,17 @@
 
 .ContainerStatus__button--flat {
     @extend .button--flat;
+    transition: bottom, 05s;
 }
 
 .ContainerStatus__container-state {
-  width: 120px;
+  @extend .box-shadow;
+  transition: height 0.5s, width 0.5s, box-shadow 0.5s;
+  width: 141px;
   text-align: center;
-  height: 30px;
-  border-radius: 15px;
+  height: 31px;
+  font-size: 16px;
+  border-radius: 20px;
   color: $romanSilver;
   line-height: 26px;
   cursor: pointer;
@@ -47,38 +54,63 @@
   @extend .box-shadow;
 }
 
+.ContainerStatus__container-state--expanded{
+  width: 155px;
+  height: 35px;
+  box-shadow: 0 0px 12px 0 rgba(0,0,0,.80) !important;
+}
+
 .ContainerStatus__container-state--menu-open {
   @extend .ContainerStatus__container-state;
   background: $background-color url('./../images/icons/up-arrow-silver.svg') no-repeat 90% center;
 }
 
-.ContainerStatus__container-state.Open {
+.ContainerStatus__container-state.Running {
   border: 3px solid $turquise;
+  background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
   background-size: 20px;
 }
+.ContainerStatus__container-state.Running:hover {
+  width: 155px;
+  height: 35px;
+  border: 3px solid $romanSilver;
+  background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
+  background-size: 20px;
+}
+
 .ContainerStatus__container-state.Building {
   border: 3px solid $goldenLemon;
   background-size: 20px;
 }
-.ContainerStatus__container-state.Closed {
-  border: 3px solid $crimson;
+.ContainerStatus__container-state.Stopped {
+  background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
+  border: 3px solid $romanSilver;
   background-size: 20px;
+  @extend .box-shadow;
 }
 
-.ContainerStatus__container-state.Failed {
+.ContainerStatus__container-state.Stopped:hover {
+  width: 155px;
+  height: 35px;
+  background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
+  border: 3px solid $turquise;
+  background-size: 20px;
+
+}
+
+.ContainerStatus__container-state.Build.Failed {
   border: 3px solid $crimson;
   background-size: 20px;
-  color: $crimson;
 }
 
 .ContainerStatus__container-state.Starting {
-  border: 1px solid $turquise;
+  border: 3px solid $goldenLemon;
   opacity: 0.75;
   background: none;
 }
 
 .ContainerStatus__container-state.Stopping {
-  border: 1px solid $jet;
+  border: 3px solid $goldenLemon;
   opacity: 0.75;
   background: none;
 }
@@ -89,19 +121,29 @@
 }
 
 .ContainerStatus__plugins-button {
+
   height: 24px;
-  width: 30px;
+  width: 134px;
   background-color: #aaa;
   border-radius: 12px 0 0 12px;
   position: absolute;
-  top: 3px;
-  left: -25px;
+  bottom: 3px;
+  transition: bottom 0.5s;
+  left: -129px;
   color: white;
   text-align: center;
-  line-height: 25px;
+  line-height: 21px;
   cursor: pointer;
-  background: #aaa url('./../images/icons/rocket.svg') no-repeat center -3px;
+  font-size: 14px;
+  //@extend: .jupyter-icon;
   background-size: 30px;
+  &.jupyter-icon:before {
+    margin: 6px 5px 0px 0px;
+  }
+}
+
+.ContainerStatus__plugins-button:hover{
+  background-color: rgba(237,97, 31, 0.8);
 }
 
 .ContainerStatus__plugins-title {
@@ -111,9 +153,16 @@
 }
 
 .ContainerStatus__plugins-list {
+  .jupyter-icon{
+    font-size: 14px;
+    font-weight: 100;
+    font-family: 'NunitoSans' !important;
+  }
   .jupyter-icon:before {
+    font-family: 'file-icons' !important;
     padding: 0 6px 0 0;
     font-size: 17px;
+    margin: 0 6px;
   }
 }
 
@@ -141,4 +190,8 @@
   top: 29px;
   right: -3px;
   @include triangle('up', 14px, $white);
+}
+
+.ContainerStatus__button--bottom{
+  bottom: 5px
 }
