@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
 import OutputFavoriteList from './OutputFavoriteList'
+import FileEmpty from '../overview/FileEmpty'
+
 //store
 import store from 'JS/redux/store'
 
@@ -72,7 +74,10 @@ class OutputFavorites extends Component {
         )
       }else{
         return(
-          <div> No Files Favorited</div>
+          <FileEmpty
+            icon="outputData"
+            mainText="This LabBook has No Output Favorites"
+          />
         )
       }
     }else{
