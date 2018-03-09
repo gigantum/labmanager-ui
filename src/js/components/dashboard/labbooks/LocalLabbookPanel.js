@@ -31,6 +31,7 @@ export default class LocalLabbookPanel extends Component {
 
     return (
       <div
+        onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}
         key={edge.node.name}
         className='LocalLabbooks__panel flex flex--column justify--space-between'>
 
@@ -54,7 +55,7 @@ export default class LocalLabbookPanel extends Component {
           </div>
           <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner}</p>
           <p
-            onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)} className="LocalLabbooks__description">
+            className="LocalLabbooks__description">
             {edge.node.description}
           </p>
         </div>
