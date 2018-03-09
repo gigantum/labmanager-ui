@@ -47,6 +47,7 @@ export default class UserNote extends Component {
     this._createNewBranch = this._createNewBranch.bind(this)
     this._sync = this._sync.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
+    this._exportLabbook = this._exportLabbook.bind(this)
   }
 
   /**
