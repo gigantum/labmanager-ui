@@ -456,6 +456,24 @@ export default class UserNote extends Component {
     })
     document.getElementById('modal__cover').classList.add('hidden')
   }
+  /**
+  *  @param {}
+  *  copies remote
+  *  @return {}
+  */
+  _copyRemote(){
+
+    let copyText = document.getElementById('BranchMenu-copy')
+    copyText.select();
+    document.execCommand("Copy");
+
+    store.dispatch({
+      type: 'INFO_MESSAGE',
+      payload: {
+        'message':`${copyText.value} copied!`
+      }
+    })
+  }
 
   /**
   *  @param {}
@@ -622,10 +640,9 @@ export default class UserNote extends Component {
               Add Remote
               </button>
           </div>
-        </div>
-        <button onClick={() => { this._openMenu() }} className="BranchMenu__button"></button>
-        <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' : 'BranchMenu__menu-arrow hidden'}></div>
-        <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
+          <button onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
+          <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
+          <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
 
           <ul className="BranchMenu__list">
             <li className="BranchMenu__item--collaborators">
@@ -671,8 +688,21 @@ export default class UserNote extends Component {
               >
                 Sync Branch
                 </button>
-            </div>
-          }
+              </div>
+            }
+
+            {
+
+              this.props.remoteUrl &&
+              <div>
+                <hr className="BranchMenu__line"/>
+                <div className="BranchMenu__copy-remote">
+                  <input id="BranchMenu-copy" className="BranchMenu__input" value={this.props.remoteUrl} type="text" />
+                  <button onClick={()=> this._copyRemote()} className="BranchMenu__copy-button fa fa-clone"></button>
+                </div>
+              </div>
+            }
+          </div>
         </div>
       </div>
     )
