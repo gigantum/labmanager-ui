@@ -4,7 +4,7 @@ import {createPaginationContainer, graphql} from 'react-relay'
 
 //componenets
 import InputFavoriteList from './InputFavoriteList'
-import FileEmpty from '../overview/FileEmpty'
+import FileEmpty from 'Components/labbook/overview/FileEmpty'
 
 //store
 import store from 'JS/redux/store'
