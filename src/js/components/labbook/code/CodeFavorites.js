@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
 import CodeFavoriteList from './CodeFavoriteList'
+import FileEmpty from 'Components/labbook/overview/FileEmpty'
 //store
 import store from 'JS/redux/store'
 
@@ -71,7 +72,6 @@ class CodeFavorites extends Component {
         return(
 
           <div className="Favorite">
-
             <CodeFavoriteList
               labbookName={this.props.labbookName}
               codeId={this.props.codeId}
@@ -94,7 +94,10 @@ class CodeFavorites extends Component {
         )
       }else{
         return(
-          <div> No Files Favorited</div>
+          <FileEmpty
+            icon="code"
+            mainText="This LabBook has No Code Favorites"
+          />
         )
       }
     }else{

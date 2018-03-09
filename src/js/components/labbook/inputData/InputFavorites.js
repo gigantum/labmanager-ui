@@ -4,6 +4,8 @@ import {createPaginationContainer, graphql} from 'react-relay'
 
 //componenets
 import InputFavoriteList from './InputFavoriteList'
+import FileEmpty from 'Components/labbook/overview/FileEmpty'
+
 //store
 import store from 'JS/redux/store'
 
@@ -76,7 +78,10 @@ class InputFavorites extends Component {
         )
       }else{
         return(
-          <div> No Files Favorited</div>
+          <FileEmpty
+            icon="inputData"
+            mainText="This LabBook has No Input Favorites"
+          />
         )
       }
     }else{
