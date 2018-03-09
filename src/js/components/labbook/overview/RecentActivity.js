@@ -62,66 +62,50 @@ export default class RecentActivity extends Component {
 
   _getDate(edge){
 
-    let date = new Date(edge.node.timestamp)
+    let date = new Date(edge.timestamp)
     return Moment((date)).format('hh:mm a, MMMM Do, YYYY')
   }
   render(){
-    const {owner, labbookName} = store.getState().routes
-    return(
-    <QueryRenderer
-      variables={{
-        name: labbookName,
-        owner: owner,
-        first: 3
-      }}
-      query={RecentActivityQuery}
-      environment={environment}
-      render={({error, props}) =>{
 
-        if(props){
-          const {owner, labbookName} = store.getState().routes
-          return(
-            <div className="RecentActivity">
-              <div className="RecentActivity__title-container">
-                <h5 className="RecentActivity__header">Activity</h5>
-                <Link to={`../../../../labbooks/${owner}/${labbookName}/activity`}>Activity Details ></Link>
-              </div>
-              <div className="RecentActivity__list">
-                {
-                  props.labbook.activityRecords.edges.map(edge =>{
-                    return (
-                      <div
-                        key={edge.node.id}
-                        className="RecentActivity__card">
-                        <div>{this._getDate(edge)}</div>
-                        <div className="RecentActivity__card-detail">
-                          {
-                            this._renderDetail(edge.node)
-                          }
-                        </div>
-                      </div>
-                    )
-                  })
-                }
-              </div>
-            </div>
-          )
-        }else if(error){
-
-          return(<div>{error.message}</div>)
-        }else{
-          return(
-          <div className="RecentActivity">
+    if(this.props.recentActivity){
+      const {owner, labbookName} = store.getState().routes
+      const recentActivity = this.props.recentActivity.slice(0,3)
+      return(
+        <div className="RecentActivity">
+          <div className="RecentActivity__title-container">
             <h5 className="RecentActivity__header">Activity</h5>
-            <div className="RecentActivity__list">
-              <div className="RecentActivity__card--loading"></div>
-              <div className="RecentActivity__card--loading"></div>
-              <div className="RecentActivity__card--loading"></div>
-            </div>
-          </div>)
-        }
-      }}
-
-    />)
+            <Link to={`../../../../labbooks/${owner}/${labbookName}/activity`}>Activity Details ></Link>
+          </div>
+          <div className="RecentActivity__list">
+            {
+              recentActivity.map(edge =>{
+                return (
+                  <div
+                    key={edge.id}
+                    className="RecentActivity__card">
+                    <div>{this._getDate(edge)}</div>
+                    <div className="RecentActivity__card-detail">
+                      {
+                        this._renderDetail(edge)
+                      }
+                    </div>
+                  </div>
+                )
+              })
+            }
+          </div>
+        </div>
+      )
+    }else{
+      return(
+      <div className="RecentActivity">
+        <h5 className="RecentActivity__header">Activity</h5>
+        <div className="RecentActivity__list">
+          <div className="RecentActivity__card--loading"></div>
+          <div className="RecentActivity__card--loading"></div>
+          <div className="RecentActivity__card--loading"></div>
+        </div>
+      </div>)
+    }
   }
 }

@@ -99,7 +99,7 @@ export default class FilePreview extends Component {
                   {
                     props.labbook.code.favorites && props.labbook.code.favorites.edges.length ?
                     props.labbook.code.favorites.edges.map(edge =>{
-                      return <FileCard edge={edge} />
+                      return <FileCard key={edge.node.id} edge={edge} />
                     }) :
                     <FileEmpty
                       icon="code"
@@ -132,7 +132,7 @@ export default class FilePreview extends Component {
                   {
                     props.labbook.input.favorites &&
                     props.labbook.input.favorites.edges.length ? props.labbook.input.favorites.edges.map(edge =>{
-                      return <FileCard edge={edge} />
+                      return <FileCard key={edge.node.id} edge={edge} />
                     }) :
                     <FileEmpty
                       icon="inputData"
@@ -157,7 +157,7 @@ export default class FilePreview extends Component {
                   {
                     props.labbook.output.favorites &&
                     props.labbook.output.favorites.edges.length ? props.labbook.output.favorites.edges.map(edge =>{
-                      return <FileCard edge={edge} />
+                      return <FileCard key={edge.node.id} edge={edge} />
                     }) :
                     <FileEmpty
                       icon="outputData"

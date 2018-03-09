@@ -1,115 +1,54 @@
 //vendor
 import React, { Component } from 'react'
-import {
-  QueryRenderer,
-  graphql
-} from 'react-relay'
 //utilites
 import environment from 'JS/createRelayEnvironment'
 //store
 import store from 'JS/redux/store'
 
-let packageQuery = graphql`query PackageCountQuery($name: String!, $owner: String!, $first: Int!){
-  labbook(name: $name, owner: $owner){
-    environment{
-      packageDependencies(first: $first){
-        edges{
-          node{
-            id
-            manager
-          }
-        }
-      }
-      customDependencies(first: $first) @connection(key:"CustomDependencies_customDependencies"){
-        edges{
-          node{
-            id
-          }
-        }
-      }
-    }
-  }
-}
-`
 
 export default class PackageCount extends Component {
 
   render(){
     const {owner, labbookName} = store.getState().routes
+    const {overview} = this.props
+
+    let totalPackageCount = overview.numPipPackages + overview.numAptPackages + overview.numConda2Packages + overview.numConda3Packages
     return(
-    <QueryRenderer
-      variables={{
-        name: labbookName,
-        owner: owner,
-        first: 100
-      }}
-      query={packageQuery}
-      environment={environment}
-      render={({error, props}) =>{
 
-        if(props){
-          let packages = {}
-          props.labbook.environment.packageDependencies.edges.forEach((edge) => {
-            if(edge.node){
-              if(packages[edge.node.manager]){
-
-                packages[edge.node.manager]++
-              }else{
-                packages[edge.node.manager] = 1
-              }
+      <div className="PackageCount">
+        <div className="PackageCount__dependencies">
+          <h6 className={'Overview__header'}>Packages</h6>
+          <ul className="flex flex--wrap">
+            { (overview.numPipPackages > 0) &&
+              <li key="numPipPackages" className="PackageCount__item">{`${overview.numPipPackages} pip package(s)` }</li>
             }
-          })
 
-          return(
-            <div className="PackageCount">
-                <div className="PackageCount__dependencies">
-                  <h6 className={'Overview__header'}>Packages</h6>
-                  <ul className="flex flex--wrap">
+            { (overview.numAptPackages > 0) &&
+              <li key="numAptPackages" className="PackageCount__item">{`${overview.numAptPackages } apt package(s)` }</li>
+            }
 
-                    { (Object.keys(packages).length > 0) && (
+            { (overview.numConda2Packages > 0) &&
+              <li key="numConda2Packages" className="PackageCount__item">{`${overview.numConda2Packages} conda2 package(s)` }</li>
+            }
 
-                       Object.keys(packages).map(key => {
+            { (overview.numConda3Packages > 0) &&
+              <li key="numConda3Packages" className="PackageCount__item">{`${overview.numConda3Packages} conda3 package(s)` }</li>
+            }
 
-                         return (<li key={this.props.labbookName + key} className="PackageCount__item">{packages[key] + ' ' + key + ' package(s)' }</li>)
-                       }))
-                    }
+            {
+              (totalPackageCount === 0) &&
+              <li className="PackageCount__item" key="totalNone">{'0 pip, apt-get, and conda packages'}</li>
+            }
+          </ul>
+        </div>
+        <div className="PackageCount__dependencies">
+          <h6 className={'Overview__header'}>Custom Dependencies</h6>
+          <ul className="flex flex--wrap">
+            <li className="PackageCount__item">{ `${overview.numCustomDependencies} custom package(s)` }</li>
+          </ul>
+        </div>
+      </div>)
 
-                    {
-                      (Object.keys(packages).length === 0) && (() =>{ return (<li className="PackageCount__item" key={this.props.labbookName + 'none'}>{'0 pip and apt-get packages'}</li>)})()
 
-                    }
-                  </ul>
-                </div>
-                <div className="PackageCount__dependencies">
-                  <h6 className={'Overview__header'}>Custom Dependencies</h6>
-                  <ul className="flex flex--wrap">
-                    <li className="PackageCount__item">{props.labbook.environment.customDependencies.edges.length +  ' custom package(s)' }</li>
-                  </ul>
-                </div>
-            </div>
-          )
-        }else if(error){
-
-          return(<div>{error.message}</div>)
-        }else{
-          return(
-            <div className="PackageCount">
-              <div className="PackageCount__dependencies">
-                <h6 className={'Overview__header'}>Packages</h6>
-                <div>
-                  loading..
-                </div>
-              </div>
-              <div className="PackageCount__dependencies">
-                <h6 className={'Overview__header'}>Custom Dependencies</h6>
-                <div>
-                  loading..
-                </div>
-              </div>
-            </div>)
-        }
-      }}
-
-    />)
   }
 }

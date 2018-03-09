@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import {createFragmentContainer, graphql} from 'react-relay'
 //components
+import PackageCount from 'Components/labbook/overview/PackageCount'
 import Loader from 'Components/shared/Loader'
 
 class Base extends Component {
@@ -55,7 +56,7 @@ class Base extends Component {
     const {base} = this.props.environment;
 
     if (base) {
-      let PackageCount = this.props.PackageCount
+  
       return(
         <div className="Base">
           <div className="Base__header-container">
@@ -106,7 +107,7 @@ class Base extends Component {
                   </div>
 
                   {
-                    PackageCount && <PackageCount />
+                    (this.props.overview) && <PackageCount overview={this.props.overview}/>
                   }
 
                 </div>

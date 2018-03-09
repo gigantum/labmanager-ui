@@ -48,7 +48,7 @@
   width: 250px;
   font-size: 12px;
   height: 180px;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  @extend .box-shadow;
 
   p {
     padding: 0px;
@@ -86,7 +86,7 @@
 
   border: 1px solid $grey;
   background-color: $grey-light;
-  box-shadow: 10px 10px 5px #888888;
+  @extend .box-shadow;
 
   .SelectBaseImage__progress-button {
     display: none;

@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Wed Mar 07 2018 20:10:11 GMT-0500 (EST)
+# timestamp: Fri Mar 09 2018 18:11:26 GMT-0500 (EST)
 
 schema {
   query: LabbookQuery
@@ -366,6 +366,19 @@ type DeleteLabbookFilePayload {
   clientMutationId: String
 }
 
+input DeleteLabbookInput {
+  owner: String!
+  labbookName: String!
+  confirm: Boolean!
+  clientMutationId: String
+}
+
+"""Delete a labbook from disk. """
+type DeleteLabbookPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
 """A type that represents the Environment for a LabBook"""
 type Environment implements Node & GitRepository {
   """The ID of the object."""
@@ -415,6 +428,7 @@ interface GitRepository {
 enum ImageStatus {
   DOES_NOT_EXIST
   BUILD_IN_PROGRESS
+  BUILD_QUEUED
   EXISTS
   STALE
   BUILD_FAILED
@@ -593,6 +607,7 @@ type LabbookMutations {
   importRemoteLabbook(input: ImportRemoteLabbookInput!): ImportRemoteLabbookPayload
   exportLabbook(input: ExportLabbookInput!): ExportLabbookPayload
   createLabbook(input: CreateLabbookInput!): CreateLabbookPayload
+  deleteLabbook(input: DeleteLabbookInput!): DeleteLabbookPayload
   renameLabbook(input: RenameLabbookInput!): RenameLabbookPayload
   publishLabbook(input: PublishLabbookInput!): PublishLabbookPayload
   syncLabbook(input: SyncLabbookInput!): SyncLabbookPayload
@@ -636,6 +651,7 @@ type LabbookOverview implements Node & GitRepository {
   numConda2Packages: Int
   numConda3Packages: Int
   numPipPackages: Int
+  numCustomDependencies: Int
   recentActivity: [ActivityRecordObject]
   remoteUrl: String
 }
