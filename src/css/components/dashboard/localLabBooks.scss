@@ -212,9 +212,8 @@
   };
 }
 
-.LocalLabbooks__panel-title:hover,
-.LocalLabbooks__description:hover {
-  color: $azure;
+.LocalLabbooks__panel:hover {
+  box-shadow: 0 2px 2px 0 $slateBlueOpaque, 0 1px 5px 0 $slateBlueOpaque, 0 3px 1px -2px $slateBlueOpaque;
 }
 
 .LocalLabbooks__panel--add {
@@ -286,34 +285,6 @@
   background-size: 100px;
   transition: 0.25s all;
   opacity: 0.4;
-}
-
-.LocalLabbooks__labbook-icon:hover {
-  opacity: 1;
-}
-
-.LocalLabbooks__export,
-.LocalLabbooks__export--downloading {
-  height: auto;
-  width: 100px;
-  padding: 0 40px 0 0;
-
-  padding: 5px;
-  font-size: 16px;
-}
-
-.LocalLabbooks__export {
-  background: url('../images/icons/download.svg') no-repeat center right;
-  background-size: 15px !important;
-}
-
-.LocalLabbooks__export--downloading {
-  background: url('../images/icons/rings.svg') no-repeat center right;
-  background-size: 20px !important;
-}
-
-.LocalLabbooks__export:hover {
-  color: $azure;
 }
 
 .LocalLabbooks__text-row {

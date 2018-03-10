@@ -1,11 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-//mutations
-import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
-//utilities
-import JobStatus from 'JS/utils/JobStatus'
-//store
-import store from 'JS/redux/store'
 
 /**
 *  labbook panel is to only render the edge passed to it
@@ -19,8 +13,6 @@ export default class LocalLabbookPanel extends Component {
     this.state = {
       'exportPath': '',
     }
-
-    this._exportLabbook = this._exportLabbook.bind(this)
   }
 
   _getContainerStatusText(containerStatus, imageStatus){
@@ -31,72 +23,6 @@ export default class LocalLabbookPanel extends Component {
 
     return status;
   }
-  /**
-  * @param {event, object} evt,edge
-  *  runs export mutation if export has not been downloaded
-  *
-  */
-  _exportLabbook = (evt, edge) => {
-
-    if(this.state.exportPath.length === 0){
-
-      let exportClassList = document.getElementById(evt.target.id).classList;
-
-      exportClassList.add('LocalLabbooks__export--downloading')
-      let username = localStorage.getItem('username')
-      let labbookName = edge.node.name
-      store.dispatch({
-        type: 'INFO_MESSAGE',
-        payload: {
-          message: `Exporting ${labbookName} LabBook`,
-        }
-      })
-
-      ExportLabbookMutation(username, edge.node.name, (response, error)=>{
-
-        if(response.exportLabbook){
-          JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
-
-
-              if(data.jobStatus.result){
-                store.dispatch({
-                  type: 'INFO_MESSAGE',
-                  payload: {
-                    message: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-                  }
-                })
-              }
-
-              exportClassList.remove('LocalLabbooks__export--downloading')
-          }).catch((error)=>{
-              console.log(error)
-              if(error){
-                store.dispatch({
-                  type: 'ERROR_MESSAGE',
-                  payload: {
-                    message: `${labbookName} failed to export `,
-                    messagesList: error
-                  }
-                })
-              }
-              exportClassList.remove('LocalLabbooks__export--downloading')
-          })
-      }else{
-        console.log(error)
-        store.dispatch({
-          type: 'ERROR_MESSAGE',
-          payload: {
-            message: 'Export Failed',
-            messagesList: error
-          }
-        })
-
-        exportClassList.remove('LocalLabbooks__export--downloading')
-      }
-    })
-  }
-
-  }
 
 
   render(){
@@ -105,6 +31,7 @@ export default class LocalLabbookPanel extends Component {
 
     return (
       <div
+        onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}
         key={edge.node.name}
         className='LocalLabbooks__panel flex flex--column justify--space-between'>
 
@@ -128,28 +55,10 @@ export default class LocalLabbookPanel extends Component {
           </div>
           <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner}</p>
           <p
-            onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)} className="LocalLabbooks__description">
+            className="LocalLabbooks__description">
             {edge.node.description}
           </p>
         </div>
-
-        <div className="LocalLabbooks__info-row flex flex--row justify--space-between">
-          <div className="LocalLabbooks__owner flex flex--row">
-
-          </div>
-          <div className="LocalLabbooks__status">
-            <div
-              id={'Export__localLabbooks' + edge.node.name}
-              ref={'Export__localLabbooks' + edge.node.name}
-              onMouseDown={(evt) => this._exportLabbook(evt, edge)} className="LocalLabbooks__export">
-              Export
-            </div>
-
-          </div>
-
-        </div>
-
-
     </div>)
   }
 }

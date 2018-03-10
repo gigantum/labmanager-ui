@@ -130,17 +130,18 @@
   background-size: 16px;
   opacity: .3;
 }
-.BranchMenu__item--deadend {
+.BranchMenu__item--export {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/deadend.svg') no-repeat left center;
+  background: url('./../images/icons/download.svg') no-repeat left center;
   background-size: 16px;
-  opacity: .3;
+  // opacity: .3;
 }
-.BranchMenu__item--favorite {
+
+.BranchMenu__item--export--downloading {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/favestar.svg') no-repeat left center;
-  background-size: 16px;
-  opacity: .3;
+  background: url('./../images/icons/rings.svg') no-repeat left center;
+  background-size: 20px;
+  // opacity: 1;
 }
 
 .BranchMenu__item--collaborators {
@@ -178,7 +179,9 @@
   line-height: 40px;
 }
 
-.BranchMenu__item--collaborators-button {
+
+.BranchMenu__item--collaborators-button,
+.BranchMenu__item--export-button {
   background-size: 16px;
   width: 100%;
   cursor: pointer;
@@ -191,7 +194,9 @@
 }
 
 .BranchMenu__item--collaborators-button:hover,
-.BranchMenu__item--collaborators-button:focus {
+.BranchMenu__item--collaborators-button:focus,
+.BranchMenu__item--export-button:hover,
+.BranchMenu__item--export-button:focus {
   background-size: 16px;
   color: $turquise;
   width: 100%;
@@ -203,7 +208,9 @@
 }
 
 .BranchMenu__item--collaborators-button:disabled,
-.BranchMenu__item--collaborators-button:disabled:hover {
+.BranchMenu__item--collaborators-button:disabled:hover,
+.BranchMenu__item--export-button:disabled,
+.BranchMenu__item--export-button:disabled:hover{
   background-size: 16px;
   width: 100%;
   cursor: pointer;
