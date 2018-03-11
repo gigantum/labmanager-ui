@@ -14,26 +14,12 @@ import BuildImageMutation from 'Mutations/BuildImageMutation'
 import environment from 'JS/createRelayEnvironment'
 //store
 import store from 'JS/redux/store'
+//
+import FetchContainerStatus from './fetchContainerStatus'
 
 let unsubscribe;
 
-const containerStatusQuery = graphql`
-  query ContainerStatusQuery($name: String!, $owner: String!, $first: Int!){
-  labbook(name: $name, owner: $owner){
-    environment{
-      containerStatus
-      imageStatus
-    }
-    activityRecords(first: $first){
-      edges{
-        node{
-          id
-        }
-      }
-    }
-  }
-}
-`
+
 
 export default class ContainerStatus extends Component {
   constructor(props){
@@ -56,7 +42,6 @@ export default class ContainerStatus extends Component {
 
     this.state = state;
 
-    this._tick = this._tick.bind(this)
     this._checkJupyterStatus = this._checkJupyterStatus.bind(this)
     this._getContainerStatusText = this._getContainerStatusText.bind(this)
     this._openCloseContainer = this._openCloseContainer.bind(this)
@@ -81,7 +66,7 @@ export default class ContainerStatus extends Component {
       let intervalInSeconds = 3 * 1000
 
       setTimeout(function(){
-        self._tick()
+        self._fetchStatus()
       }, intervalInSeconds);
     }
   }
@@ -101,29 +86,19 @@ export default class ContainerStatus extends Component {
   }
   /**
   *  @param {}
-  *  set containerStatus secondsElapsed state by iterating
-  *  @return {string}
-  */
-  _tick(){
-    this.setState({secondsElapsed: this.state.secondsElapsed + 3});
-  }
-  /**
-  *  @param {}
-  *  set tick interval
+  *  set fetch interval
   *  @return {string}
   */
   componentDidMount(){
     let self = this
     let intervalInSeconds = 3 * 1000
     setTimeout(function(){
-      self._tick()
+      self._fetchStatus()
     }, intervalInSeconds);
-    // let intervalInSeconds = 3 * 1000
-    // setTimeout(this._tick, intervalInSeconds);
 
     unsubscribe = store.subscribe(() =>{
 
-      this.storeDidUpdate(store.getState().containerStatus)
+      this.storeDidUpdate(store.getState().environment)
     })
 
     let status = this._getContainerStatusText(
@@ -147,6 +122,27 @@ export default class ContainerStatus extends Component {
     }
 
     window.addEventListener("click", this._closePopupMenus)
+  }
+
+  _fetchStatus(){
+    const {owner, labbookName} = store.getState().routes
+    const state = this.state
+    const self = this
+    FetchContainerStatus.getContainerStatus(owner, labbookName).then((response, error)=>{
+
+      const {environment} = response.labbook
+
+      if((state.containerStatus !== environment.containerStatus) || (state.imageStatus !== environment.imageStatus)){
+        self.setState({
+          'imageStatus': environment.imageStatus,
+          'containerStatus': environment.containerStatus
+        })
+      }
+
+      setTimeout(()=>{
+        self._fetchStatus()
+      }, 3 * 1000)
+    })
   }
   /**
    *  @param {event} evt
@@ -353,7 +349,7 @@ export default class ContainerStatus extends Component {
       labbookName,
       developmentTool,
       (response, error)=>{
-          if(response){
+          if(response.startDevTool){
 
             let path = response.startDevTool.path.replace('0.0.0.0', window.location.hostname)
             window.open(path, '_blank')
@@ -400,35 +396,9 @@ export default class ContainerStatus extends Component {
   }
 
   render(){
+    let status = this._getContainerStatusText(this.state)
     return(
-      <QueryRenderer
-        variables={{
-          'owner': this.state.owner,
-          'name': this.state.labbookName,
-          'first': Math.floor(Math.random() * 10000)
-          }
-        }
-        environment={environment}
-        query={containerStatusQuery}
-        render={({error, props}) => {
-
-          if(error){
-            console.error(error)
-            return(this._errorMessage(error))
-          }else if(props){
-            let status = this._getContainerStatusText(props.labbook.environment)
-            return(this._containerStatus(status, 'setStatus')
-            )
-          } else{
-
-            let status = this._getContainerStatusText(this.state)
-
-            return (this._containerStatus(status, 'tempStatus'))
-          }
-        }
-      }
-
-      />
+        this._containerStatus(status, 'setStatus')
     )
   }
 

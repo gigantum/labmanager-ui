@@ -1,0 +1,50 @@
+import {
+  commitMutation,
+  graphql,
+} from 'react-relay'
+import environment from 'JS/createRelayEnvironment'
+import RelayRuntime from 'relay-runtime'
+
+const mutation = graphql`
+  mutation DeleteLabbookMutation($input: DeleteLabbookInput!){
+    deleteLabbook(input: $input){
+      success
+      clientMutationId
+    }
+  }
+`;
+let tempID = 0;
+
+export default function DeleteLabbookMutation(
+  labbookName,
+  owner,
+  confirm,
+  callback
+) {
+  console.log(labbookName,
+  owner,
+  confirm)
+  const variables = {
+    input: {
+      labbookName,
+      owner,
+      confirm,
+      clientMutationId: '' + tempID++
+    }
+  }
+  commitMutation(
+    environment,
+    {
+      mutation,
+      variables,
+      onCompleted: (response, error) => {
+
+        if(error){
+          console.log(error)
+        }
+
+        callback(response, error)
+      }
+    },
+  )
+}

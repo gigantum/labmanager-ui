@@ -19,7 +19,7 @@
   @extend .BranchModal;
   justify-content: flex-start;
 }
-.BranchModal--login-prompt {
+.BranchModal--login-prompt{
   justify-content: flex-start;
   padding: 20px;
   @include flex(space-between, column);
@@ -30,6 +30,28 @@
   }
 }
 
+.BranchModal--delete-modal {
+
+  justify-content: flex-start;
+  padding: 30px;
+  @include flex(space-between, column);
+  @include modal(300px, 500px);
+
+  .LoginPrompt__button-container {
+    @include flex(space-around, row);
+  }
+
+  .DeleteLabbook{
+    hr{
+      border-bottom: 1px solid $azure;
+    }
+    height: 300px;
+    @include flex(space-between, column);
+    align-items: center;
+  }
+
+}
+.DeleteLabbook__header,
 .BranchModal__header {
   padding: 5px 0 5px 0px;
   color: $azure;
@@ -137,6 +159,8 @@
   // opacity: .3;
 }
 
+
+
 .BranchMenu__item--export--downloading {
   @extend .BranchMenu__item;
   background: url('./../images/icons/rings.svg') no-repeat left center;
@@ -181,7 +205,8 @@
 
 
 .BranchMenu__item--collaborators-button,
-.BranchMenu__item--export-button {
+.BranchMenu__item--export-button,
+.BranchMenu__item--delete-button  {
   background-size: 16px;
   width: 100%;
   cursor: pointer;
@@ -195,6 +220,8 @@
 
 .BranchMenu__item--collaborators-button:hover,
 .BranchMenu__item--collaborators-button:focus,
+.BranchMenu__item--delete-button:hover,
+.BranchMenu__item--delete-button:focus,
 .BranchMenu__item--export-button:hover,
 .BranchMenu__item--export-button:focus {
   background-size: 16px;
@@ -210,7 +237,9 @@
 .BranchMenu__item--collaborators-button:disabled,
 .BranchMenu__item--collaborators-button:disabled:hover,
 .BranchMenu__item--export-button:disabled,
-.BranchMenu__item--export-button:disabled:hover{
+.BranchMenu__item--export-button:disabled:hover,
+.BranchMenu__item--delete-button:disabled,
+.BranchMenu__item--delete-button:disabled:hover{
   background-size: 16px;
   width: 100%;
   cursor: pointer;
