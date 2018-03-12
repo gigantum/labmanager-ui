@@ -65,7 +65,7 @@ export default class DeleteLabbook extends Component {
   }
 
   render(){
-    console.log(this.props.history)
+  
     return(
       <div className="DeleteLabbook">
         <h5 className="DeleteLabbook__header">Delete Labbook</h5>
