@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import Loader from 'Components/shared/Loader';
 
-class Callback extends Component {
+export default class Callback extends Component {
+
   render() {
-    return(<div></div>)
+    return(
+      <div className="Callback">
+      <Loader />
+      </div>)
   }
 }
 
-export default Callback;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import classNames from 'classnames'
 import {Link} from 'react-router-dom'
 //components
 import User from './User'
@@ -16,8 +17,13 @@ export default class SideBar extends Component {
   render() {
     const { isAuthenticated } = this.props.auth;
     const isLabbooks = (window.location.href.indexOf('labbooks') > 0) || (window.location.href.indexOf('datsets') === -1);
+    let authed = isAuthenticated();
+    let sidebarCSS = classNames({
+      'SideBar col-sm-1': authed,
+      'hidden': !authed
+    })
     return (
-      <div className="SideBar col-sm-1">
+      <div className={sidebarCSS}>
         <div className={'SideBar__inner-container'}>
           <img alt="gigantum" className="SideBar__logo" src={GigantumSVG}></img>
           <ul className='SideBar__nav'>
@@ -42,7 +48,7 @@ export default class SideBar extends Component {
           </ul>
 
           {
-            isAuthenticated() && (
+            authed && (
                 <User {...this.props} />
               )
           }
