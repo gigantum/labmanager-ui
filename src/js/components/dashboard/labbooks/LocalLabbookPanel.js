@@ -13,6 +13,7 @@ export default class LocalLabbookPanel extends Component {
     this.state = {
       'exportPath': '',
     }
+    this._getContainerStatusText = this._getContainerStatusText.bind(this)
   }
 
   _getContainerStatusText(containerStatus, imageStatus){
@@ -23,7 +24,6 @@ export default class LocalLabbookPanel extends Component {
 
     return status;
   }
-
 
   render(){
     let edge = this.props.edge;
