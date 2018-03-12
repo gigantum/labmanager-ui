@@ -486,7 +486,7 @@ export default class ImportModule extends Component {
             <div
               id="dropZone__create"
               className="LocalLabbooks__add-text">
-                <h4>Create LabBook</h4>
+                <h4>Add LabBook</h4>
             </div>
 
             <p id="dropZone__subtext">
