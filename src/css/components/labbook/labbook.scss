@@ -2,7 +2,9 @@
   margin-bottom: 100px;
   min-height: calc(100% - 230px);
   height: auto;
-  width: 100%;
+  width: auto;
+  max-width: 1240px;
+  min-width: 760px;
   transition: width 0.25s;
 }
 .Labbook__name {
@@ -103,6 +105,7 @@
   flex: 1 0 auto;
   min-height: 90px;
   height: auto;
+  min-width: 700px;
   .Labbook__name-title {
     padding: 0px;
     color: $romanSilver;
@@ -381,5 +384,11 @@
 
 
 
+  }
+}
+
+@media screen and (max-width: 1120px) and (min-width: 300px) {
+  .Labbook__navigation-item {
+    margin: 0 15px !important;
   }
 }

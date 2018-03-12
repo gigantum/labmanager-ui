@@ -2,6 +2,8 @@
   height: calc(100% - 10px);
   width: 100%;
   @include flex(flex-start, row);
+  max-width: 1440px;
+  min-width: 960px;
 }
 
 .Header {

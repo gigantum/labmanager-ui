@@ -33,7 +33,7 @@
 .BranchModal--delete-modal {
 
   justify-content: flex-start;
-  padding: 30px;
+  padding: 20px 40px;
   @include flex(space-between, column);
   @include modal(300px, 500px);
 
@@ -49,14 +49,17 @@
     @include flex(space-between, column);
     align-items: center;
   }
-
+}
+.DeleteLabbook__header{
+  border-bottom: 1px solid #007ea8;
+  width: 300px;
 }
 .DeleteLabbook__header,
 .BranchModal__header {
   padding: 5px 0 5px 0px;
   color: $azure;
   text-align: center;
-  width: 300px;
+  min-width: 100%;
   margin: 0 auto;
 }
 .BranchModal__header--new-branch {

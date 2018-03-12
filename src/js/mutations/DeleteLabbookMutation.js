@@ -21,9 +21,7 @@ export default function DeleteLabbookMutation(
   confirm,
   callback
 ) {
-  console.log(labbookName,
-  owner,
-  confirm)
+
   const variables = {
     input: {
       labbookName,

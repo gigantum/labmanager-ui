@@ -143,7 +143,7 @@ class Labbook extends Component {
       <div
         id={item.id}
         key={item.id}
-        className={(selectedPath === item.id) ? 'selected' : 'Labbook__navigation-item--' + item.id}
+        className={(selectedPath === item.id) ? 'selected' : ' Labbook__navigation-item Labbook__navigation-item--' + item.id}
         onClick={()=> this._setSelectedComponent(item.id)}
         >
         <Link

@@ -65,13 +65,13 @@ export default class DeleteLabbook extends Component {
   }
 
   render(){
-  
+
     return(
       <div className="DeleteLabbook">
-        <h5 className="DeleteLabbook__header">Delete Labbook</h5>
-        <hr />
-        <p>Enter Labbook Name to delete</p>
+        <h4 className="DeleteLabbook__header">Delete Labbook</h4>
+
         <input
+          placeholder="Enter Labbook Name to delete"
           onKeyUp={(evt)=>{this._setLabbookName(evt)}}
           type="text"
         />
