@@ -19,6 +19,8 @@ import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
 import UserIdentity from 'JS/Auth/UserIdentity'
 //store
 import store from 'JS/redux/store'
+//components
+import DeleteLabbook from './DeleteLabbook'
 
 export default class UserNote extends Component {
   constructor(props) {
@@ -37,6 +39,7 @@ export default class UserNote extends Component {
       'canManageCollaborators': this.props.canManageCollaborators,
       'showLoginPrompt': false,
       'exporting': false,
+      'deleteModalVisible': false,
       owner,
       labbookName
     }
@@ -114,7 +117,7 @@ export default class UserNote extends Component {
               }
             })
         } else {
-          document.getElementById('modal__cover').classList.remove('hidden')
+
           //auth.login()
           self.setState({
             showLoginPrompt: true
@@ -454,7 +457,6 @@ export default class UserNote extends Component {
     this.setState({
       'showLoginPrompt': false
     })
-    document.getElementById('modal__cover').classList.add('hidden')
   }
   /**
   *  @param {}
@@ -534,6 +536,10 @@ export default class UserNote extends Component {
 
   }
 
+  _toggleDeleteModal(){
+    this.setState({deleteModalVisible: !this.state.deleteModalVisible})
+  }
+
 
   render() {
     let collaboratorsModalCss = classNames({
@@ -550,6 +556,16 @@ export default class UserNote extends Component {
       'BranchMenu__item--export--downloading': this.state.exporting
     })
 
+    let deleteModalCSS = classNames({
+      'BranchModal--delete-modal': this.state.deleteModalVisible,
+      'hidden': !this.state.deleteModalVisible
+    })
+
+    let modalCoverCSS = classNames({
+      'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt,
+      'modal__cover': true
+    })
+
     return (
       <div className="BranchMenu flex flex--column">
         <div className={loginPromptModalCss}>
@@ -558,6 +574,14 @@ export default class UserNote extends Component {
             className="BranchModal--close"></div>
           <LoginPrompt closeModal={this._closeLoginPromptModal} />
         </div>
+
+        <div className={deleteModalCSS}>
+          <div
+            onClick={() => { this._toggleDeleteModal() }}
+            className="BranchModal--close"></div>
+            <DeleteLabbook remoteAdded={this.state.addedRemoteThisSession} history={this.props.history}/>
+        </div>
+
         <div className={collaboratorsModalCss}>
           <div
             onClick={() => { this._toggleCollaborators() }}
@@ -667,6 +691,15 @@ export default class UserNote extends Component {
                 Export
               </button>
             </li>
+
+            <li className={exportCSS}>
+              <button
+                onClick={() => this._toggleDeleteModal()}
+                className="BranchMenu__item--delete-button"
+              >
+                Delete Labbook
+              </button>
+            </li>
           </ul>
           <hr className="BranchMenu__line" />
           {/* <button>Publish</button> */}
@@ -704,6 +737,7 @@ export default class UserNote extends Component {
               </div>
             }
           </div>
+          <div className={modalCoverCSS}></div>
         </div>
     )
   }

@@ -1,15 +1,11 @@
 .LocalLabbooks {
   height: 100%;
-  // $neat-grid: (
-  //   columns: 12,
-  //   gutter: 20px,
-  // );
   margin: auto;
   width: auto;
-  max-width: 1400px;
+  max-width: 1240px;
   @include flex(space-between, column);
   padding: 0 40px;
-  //@include span-columns(12)
+  min-width: 760px;
 }
 
 .LocalLabbooks__sizer {
@@ -73,22 +69,17 @@
 
 @media screen and (max-width: 20000px) and (min-width: 1520px) {
   .LocalLabbooks__sizer {
-    width: 1420px !important;
+    width: 1240px !important;
   }
 }
-@media screen and (max-width: 1520px) and (min-width: 1150px) {
+@media screen and (max-width: 1440px) and (min-width: 960px) {
   .LocalLabbooks__sizer {
-    width: 1050px !important;
+    width: auto !important;
   }
 }
-@media screen and (max-width: 1149px) and (min-width: 835px) {
+@media screen and (max-width: 959px) and (min-width: 200px) {
   .LocalLabbooks__sizer {
-    width: 735px !important;
-  }
-}
-@media screen and (max-width: 834px) and (min-width: 440px) {
-  .LocalLabbooks__sizer {
-    width: 340px !important;
+    width: 760px !important;
   }
 }
 

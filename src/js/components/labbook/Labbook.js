@@ -20,7 +20,7 @@ import InputData from './inputData/InputData'
 import OutputData from './outputData/OutputData'
 import Overview from './overview/Overview'
 import Environment from './environment/Environment'
-import ContainerStatus from './ContainerStatus'
+import ContainerStatus from './containerStatus/ContainerStatus'
 import Loader from 'Components/shared/Loader'
 import Branches from './branches/Branches'
 import BranchMenu from './branchMenu/BranchMenu'
@@ -143,7 +143,7 @@ class Labbook extends Component {
       <div
         id={item.id}
         key={item.id}
-        className={(selectedPath === item.id) ? 'selected' : 'Labbook__navigation-item--' + item.id}
+        className={(selectedPath === item.id) ? 'selected' : ' Labbook__navigation-item Labbook__navigation-item--' + item.id}
         onClick={()=> this._setSelectedComponent(item.id)}
         >
         <Link
