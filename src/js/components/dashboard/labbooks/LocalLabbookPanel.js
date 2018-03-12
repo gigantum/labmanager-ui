@@ -14,7 +14,7 @@ export default class LocalLabbookPanel extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props)
+
     this.state = {
       'exportPath': '',
       'status': '',
