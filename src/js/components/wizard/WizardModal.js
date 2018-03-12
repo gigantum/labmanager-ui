@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import CreateLabbook from './CreateLabbook'
 import SelectBase from './SelectBase'
 import TrackingToggle from './TrackingToggle'
+import Loader from 'Components/shared/Loader'
 //mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
@@ -243,8 +244,7 @@ export default class WizardModal extends React.Component {
       'WizardModal__modal': !this.state.modalBlur,
       'WizardModal__modal--blur': this.state.modalBlur
     });
-    let logoCSS = classNames({
-      'WizardModal__logo-container': this.state.modalBlur,
+    let loaderCSS = classNames({
       'hidden': !this.state.modalBlur
     })
     return(
@@ -270,10 +270,10 @@ export default class WizardModal extends React.Component {
                   createLabbookCallback={this._createLabbookCallback}
                 />
               </div>
-                <div className={logoCSS}>
-                  <img alt="logo-circle" src={logoCirlce} className='WizardModal__logo' />
-                  <div className="WizardModal__logo-border" />
-                </div>
+              {
+                this.state.modalBlur &&
+                <Loader className={loaderCSS}/>
+              }
             </div>
           }
         </div>
