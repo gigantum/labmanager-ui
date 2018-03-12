@@ -6,18 +6,11 @@ import {
 import {fetchQuery} from 'JS/createRelayEnvironment';
 
 const containerStatusQuery = graphql`
-  query fetchContainerStatusQuery($name: String!, $owner: String!, $first: Int!){
+  query fetchContainerStatusQuery($name: String!, $owner: String!){
   labbook(name: $name, owner: $owner){
     environment{
       containerStatus
       imageStatus
-    }
-    activityRecords(first: $first){
-      edges{
-        node{
-          id
-        }
-      }
     }
   }
 }
@@ -28,7 +21,6 @@ const FetchContainerStatus = {
     const variables = {
       'owner': owner,
       'name': labbookName,
-      'first': Math.floor(Math.random() * 10000)
       }
 
     return new Promise((resolve, reject) =>{
