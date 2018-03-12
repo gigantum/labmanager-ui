@@ -48,7 +48,7 @@ export default class SideBar extends Component {
           </ul>
 
           {
-            authed && (
+            isAuthenticated() && (
                 <User {...this.props} />
               )
           }
