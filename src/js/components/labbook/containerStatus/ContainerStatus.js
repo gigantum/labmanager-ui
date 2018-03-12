@@ -36,6 +36,7 @@ export default class ContainerStatus extends Component {
       'pluginsMenu': false,
       'containerMenuRunning': false,
       'isMouseOver': false,
+      'rebuildAttempts': 0,
       owner,
       labbookName
     }
@@ -264,6 +265,8 @@ export default class ContainerStatus extends Component {
       }
     })
 
+    let self = this;
+
     StopContainerMutation(
       this.state.labbookName,
       this.state.owner,
@@ -279,6 +282,10 @@ export default class ContainerStatus extends Component {
               messagesList: error
             }
           })
+
+          self.setState({
+            'status': ''
+          })
         }else{
           console.log('stopped container')
         }
@@ -292,6 +299,7 @@ export default class ContainerStatus extends Component {
     triggers start container mutation
   */
   _startContainerMutation(){
+    let self = this;
     store.dispatch({
       type: 'CLOSE_ENVIRONMENT_MENUS',
       payload:{
@@ -319,6 +327,11 @@ export default class ContainerStatus extends Component {
               messagesList: error
             }
           })
+
+
+          if(error[0].message.indexOf('404 Client Error') > -1){
+            self._rebuildContainer()
+          }
         }else{
           console.log('started container')
           store.dispatch({
@@ -410,6 +423,7 @@ export default class ContainerStatus extends Component {
       }
     })
     let {labbookName, owner} = this.state
+    let self = this
     BuildImageMutation(
       labbookName,
       owner,
@@ -417,6 +431,15 @@ export default class ContainerStatus extends Component {
       (response, error)=>{
           if(error){
             console.log(error)
+          }
+          self.setState({rebuildAttempts: this.state.rebuildAttempts++})
+          if((this.state.status === 'Starting') && (this.state.rebuildAttempts < 1)){
+            self._startContainerMutation()
+          }else{
+            self.setState({
+              rebuildAttempts: 0,
+              'status': ''
+            })
           }
       }
     )

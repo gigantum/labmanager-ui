@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="12px" viewBox="0 0 20 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>icon/branch/trash</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icon/branch/trash" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <path d="M12,4 L11.5,9" id="Shape" stroke="#9B9C9E" stroke-linejoin="round"></path>
+        <path d="M10,4 L10,9" id="Line-2" stroke="#9B9C9E"></path>
+        <path d="M8,4 L8.49877356,9" id="Shape-Copy" stroke="#9B9C9E" stroke-linejoin="round"></path>
+        <path d="M14,2 L13.0706825,10.3638546 C13.0305023,10.7254746 12.7086229,11 12.3248033,11 L7.6751964,11 C7.2913773,11 6.9694972,10.7254746 6.92931723,10.3638546 L6,2" id="Shape" stroke="#9B9C9E" stroke-linejoin="round"></path>
+        <path d="M5,2 L15,2" id="Shape" stroke="#9B9C9E" stroke-linejoin="round"></path>
+        <path d="M8,1 L12,1" id="Line" stroke="#9B9C9E"></path>
+    </g>
+</svg>

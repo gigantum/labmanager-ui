@@ -692,7 +692,7 @@ export default class UserNote extends Component {
               </button>
             </li>
 
-            <li className={exportCSS}>
+            <li className="BranchMenu__item--delete">
               <button
                 onClick={() => this._toggleDeleteModal()}
                 className="BranchMenu__item--delete-button"

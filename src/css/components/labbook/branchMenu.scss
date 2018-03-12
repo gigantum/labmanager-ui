@@ -157,8 +157,8 @@
 }
 .BranchMenu__item--export {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/download.svg') no-repeat left center;
-  background-size: 16px;
+  background: url('./../images/icons/download.svg') no-repeat left 8px;
+  background-size: 22px;
   // opacity: .3;
 }
 
@@ -168,7 +168,12 @@
   @extend .BranchMenu__item;
   background: url('./../images/icons/rings.svg') no-repeat left center;
   background-size: 20px;
-  // opacity: 1;
+}
+
+.BranchMenu__item--delete{
+  @extend .BranchMenu__item;
+  background: url('./../images/icons/trash.svg') no-repeat left 8px;
+  background-size: 20px;
 }
 
 .BranchMenu__item--collaborators {
