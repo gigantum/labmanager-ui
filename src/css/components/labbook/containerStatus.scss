@@ -5,7 +5,10 @@
   justify-content: flex-start;
   flex-direction: row;
 }
+
 .ContainerStatus__button-menu {
+  white-space: pre-line;
+  font-size: 15px;
   top: 42px;
   right: 0px;
   position: absolute;
@@ -14,7 +17,7 @@
   padding: 15px;
   border-radius: 8px;
   @extend .box-shadow;
-  width: 200px;
+  width: 350px;
   text-align: center;
 }
 

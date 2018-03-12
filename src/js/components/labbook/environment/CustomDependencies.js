@@ -251,9 +251,9 @@ class CustomDependencies extends Component {
     })
 
     store.dispatch({
-      type: 'WARNING_MESSAGE',
+      type: 'CONTAINER_MENU_WARNING',
       payload: {
-        message: 'Stop container to edit environment, and save any unsaved changes.'
+        message: 'Stop LabBook before editing the environment. \n Be sure to save your changes.'
       }
     })
   }

@@ -6,7 +6,6 @@ export const RESET_DETAIL_STORE = 'RESET_DETAIL_STORE'
 export const UPDATE_CONTAINER_MENU_VISIBILITY = 'UPDATE_CONTAINER_MENU_VISIBILITY'
 
 
-
 export default (
  state = {
    'status': "",
