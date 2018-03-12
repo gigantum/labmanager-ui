@@ -204,7 +204,8 @@
 }
 
 .LocalLabbooks__panel:hover {
-  box-shadow: 0 2px 2px 0 $slateBlueOpaque, 0 1px 5px 0 $slateBlueOpaque, 0 3px 1px -2px $slateBlueOpaque;
+  transition: box-shadow 0.5s;
+  box-shadow: 0 0px 12px 0 rgba(0,0,0,.50);
 }
 
 .LocalLabbooks__panel--add {
@@ -328,28 +329,109 @@
 }
 
 .LocalLabbooks__containerStatus--state {
-  border-radius: 15px;
-  padding: 0px 10px;
-  height: 30px;
-  line-height: 24px;
-  color: $jet;
+  @extend .box-shadow;
+  transition: height 0.5s, width 0.5s, box-shadow 0.5s;
+  width: 141px;
+  text-align: center;
+  height: 31px;
+  font-size: 16px;
+  border-radius: 20px;
+  color: $romanSilver;
+  line-height: 26px;
+  cursor: pointer;
+  border: 2px solid rgba(0,0,0,0);
+  z-index: 100;
+  padding: 0 10px 0 0;
+
+  @extend .box-shadow;
+}
+.LocalLabbooks__containerStatus--state,
+.LocalLabbooks__containerStatus--state:hover,
+.LocalLabbooks__containerStatus--state:focus{
+  background-color: transparent !important;
+  color: $romanSilver;
 }
 
-.LocalLabbooks__containerStatus--state.Closed {
-  border: 3px solid $crimson;
+.LocalLabbooks__containerStatus--state.Stopped {
+  background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
+  border: 3px solid $romanSilver;
+  background-size: 20px;
+  @extend .box-shadow;
 }
 
-.LocalLabbooks__containerStatus--state.Open {
+.LocalLabbooks__containerStatus--state.Stopped:hover {
+  width: 155px;
+  height: 35px;
+  background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
   border: 3px solid $turquise;
+  background-size: 20px;
 
 }
 
-.LocalLabbooks__containerStatus--state.Building {
+.LocalLabbooks__containerStatus--state.Running {
+  border: 3px solid $turquise;
+  background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
+  background-size: 20px;
+}
+
+.LocalLabbooks__containerStatus--state.Running:hover {
+  width: 155px;
+  height: 35px;
+  border: 3px solid $romanSilver;
+  background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
+  background-size: 20px;
+}
+
+.LocalLabbooks__containerStatus--state.Building,
+.LocalLabbooks__containerStatus--state.Stopping,
+.LocalLabbooks__containerStatus--state.Starting {
   border: 3px solid $goldenLemon;
+}
+
+.LocalLabbooks__containerStatus--state.Starting {
+  border: 3px solid $goldenLemon;
+  opacity: 0.75;
+  background: none;
+}
+
+.LocalLabbooks__containerStatus--state.Stopping {
+  border: 3px solid $goldenLemon;
+  opacity: 0.75;
+  background: none;
+}
+
+.LocalLabbooks__containerStatus--state.Building{
+  border: 3px solid $goldenLemon;
+  background-size: 20px;
+}
+
+.LocalLabbooks__containerStatus--state.Building:hover,
+.LocalLabbooks__containerStatus--state.Stopping:hover,
+.LocalLabbooks__containerStatus--state.Starting:hover{
+  color: $jet !important;
 }
 
 .LocalLabbooks__path {
   position: absolute;
   bottom: 5px;
   right: 5px;
+}
+
+.LocalLabbooks__container-state--expanded{
+  width: 155px;
+  height: 35px;
+  box-shadow: 0 0px 12px 0 rgba(0,0,0,.80) !important;
+}
+
+.LocalLabbooks__container-stat--menu-open {
+  @extend .ContainerStatus__container-state;
+  background: $background-color url('./../images/icons/up-arrow-silver.svg') no-repeat 90% center;
+}
+
+.LocalLabbooks__container-state.Running:hover {
+  width: 155px;
+  height: 35px;
+  border: 3px solid $romanSilver;
+  background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
+  background-size: 20px;
 }

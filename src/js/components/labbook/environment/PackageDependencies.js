@@ -443,6 +443,7 @@ class PackageDependencies extends Component {
                   ref={el => this.inputVersion = el}
                   className="PackageDependencies__input-text--version"
                   placeholder="Version (Optional)"
+                  disabled={this.state.selectedTab === 'apt'}
                   type="text"
                   onKeyUp={(evt)=>this._updateVersion(evt)} />
                 <button

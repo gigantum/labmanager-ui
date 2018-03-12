@@ -256,8 +256,8 @@ let ListStatusMessages = ({self}) =>{
                   <p className="Footer__message-title">{messageItem.message}</p>
                   <ul>
                   {
-                    messageItem.messageBody && messageItem.messageBody.map((error)=> {
-                      return(<li>{error.message}</li>)
+                    messageItem.messageBody && messageItem.messageBody.map((error, index)=> {
+                      return(<li key={messageItem.id + index}>{error.message}</li>)
                     })
                   }
                   </ul>

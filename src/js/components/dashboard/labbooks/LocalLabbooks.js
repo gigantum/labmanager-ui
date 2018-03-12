@@ -66,7 +66,7 @@ class LocalLabbooks extends Component {
           expandOn = root.offsetHeight;
 
       if(that.props.feed.localLabbooks){
-    
+
         if ((distanceY > expandOn) && !isLoadingMore && that.props.feed.localLabbooks.pageInfo.hasNextPage) {
             that._loadMore(e);
         }
@@ -230,6 +230,7 @@ class LocalLabbooks extends Component {
                         ref={'LocalLabbookPanel' + edge.node.name}
                         className="LocalLabbooks__panel"
                         edge={edge}
+                        history={this.props.history}
                         goToLabbook={this._goToLabbook}/>
                     )
                   })

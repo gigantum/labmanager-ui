@@ -30,9 +30,7 @@
 	}
 }
 
-.PackageDependencies__table-row--valid {
 
-}
 
 .PackageDependencies__table-row--checking {
   background: linear-gradient(-45deg, $slateBlue, $azure, $turquise, $goldenLemon) no-repeat;
@@ -178,4 +176,8 @@
   height: 30px;
   border-radius: 15px;
   padding: 0;
+}
+
+.PackageDependencies__input-text--version:disabled {
+  opacity: 0.3;
 }
