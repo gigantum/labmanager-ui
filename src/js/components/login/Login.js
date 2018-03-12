@@ -1,5 +1,13 @@
+//vendor
 import React, {Component} from 'react';
 import store from 'JS/redux/store'
+//assets
+import gigantumLogo from 'Images/logos/gigantum.svg'
+
+import Callback from 'JS/Callback/Callback';
+
+
+
 let unsubscribe;
 //import CreatePage from './components/CreatePage';
 export default class Login extends Component {
@@ -58,21 +66,26 @@ export default class Login extends Component {
 
       {
         !isAuthenticated() && (
-            <div className="Login__panel flex flex--column justify--space-around">
-              <div className="LoginError">
+            <div className="Login__panel">
                 {
                   errorType &&
-                  <div className="Login__error">
-                    <div className="Login__error-type">
-                      <div className="Login__error-exclamation"></div>
-                      <div>{errorType}</div>
-                    </div>
-                    <div className="Login__error-description">
-                      {errorDescription}
+                  <div className="LoginError">
+                    <div className="Login__error">
+                      <div className="Login__error-type">
+                        <div className="Login__error-exclamation"></div>
+                        <div>{errorType}</div>
+                      </div>
+                      <div className="Login__error-description">
+                        {errorDescription}
+                      </div>
                     </div>
                   </div>
                 }
-              </div>
+              <img
+                alt="gigantum"
+                className="Login__logo"
+                src={gigantumLogo}
+              />
               <button
                 className="Login__button"
                 onClick={this.login.bind(this)}>

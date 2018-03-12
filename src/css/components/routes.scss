@@ -20,3 +20,16 @@
   margin-left: $sideBarWidth;
   max-width: calc(100%);
 }
+.Routes__main-no-auth {
+  flex: 1 0;
+  max-width: calc(100%);
+}
+
+.Callback {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #f0f1f5;
+}

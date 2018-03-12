@@ -1,5 +1,6 @@
 //vendor
 import React, {Component} from 'react';
+import classNames from 'classnames';
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
 import Auth from 'JS/Auth/Auth';
@@ -78,9 +79,16 @@ export default class Routes extends Component {
   }
 
   render(){
-
+    let authed = auth.isAuthenticated();
     let self = this
-
+    let headerCSS = classNames({
+      'Header': authed,
+      'hidden': !authed
+    })
+    let routesCSS = classNames({
+      'Routes__main': authed,
+      'Routes__main-no-auth': !authed
+    })
     return(
 
         <Router>
@@ -91,11 +99,11 @@ export default class Routes extends Component {
               path=""
               render={(location) => {return(
               <div className="Routes">
-                <div className="Header"></div>
+                <div className={headerCSS}></div>
                 <SideBar
                   auth={auth} history={history}
                 />
-                <div className="Routes__main">
+                <div className={routesCSS}>
 
                 <Route
                   exact
