@@ -35,7 +35,7 @@
   justify-content: flex-start;
   padding: 20px 40px;
   @include flex(space-between, column);
-  @include modal(300px, 500px);
+  @include modal(300px, 600px);
 
   .LoginPrompt__button-container {
     @include flex(space-around, row);

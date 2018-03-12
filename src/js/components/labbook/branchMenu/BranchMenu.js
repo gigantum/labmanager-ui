@@ -579,7 +579,7 @@ export default class UserNote extends Component {
           <div
             onClick={() => { this._toggleDeleteModal() }}
             className="BranchModal--close"></div>
-            <DeleteLabbook history={this.props.history}/>
+            <DeleteLabbook remoteAdded={this.state.addedRemoteThisSession} history={this.props.history}/>
         </div>
 
         <div className={collaboratorsModalCss}>

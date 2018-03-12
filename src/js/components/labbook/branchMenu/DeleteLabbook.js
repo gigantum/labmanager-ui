@@ -64,14 +64,27 @@ export default class DeleteLabbook extends Component {
     }
   }
 
-  render(){
+  _getExplanationText(){
+    const {labbookName, owner} = store.getState().routes
+    if(this.props.remoteAdded){
+      return(
+      <div>
+        <p>This will delete <b>{labbookName}</b> from this gignatum client.</p>
+        <p>You can still download it from repo.gigantum.io/{owner}/{labbookName}.</p>
+      </div>)
+    }else{
+      return(<p>This will delete <b>{labbookName}</b> from this gignatum instance. All data will be removed and can not be recovered.</p>)
+    }
+  }
 
+  render(){
+    const {labbookName} = store.getState().routes
     return(
       <div className="DeleteLabbook">
         <h4 className="DeleteLabbook__header">Delete Labbook</h4>
-
+        {this._getExplanationText()}
         <input
-          placeholder="Enter Labbook Name to delete"
+          placeholder={`Enter ${labbookName} to delete`}
           onKeyUp={(evt)=>{this._setLabbookName(evt)}}
           type="text"
         />
