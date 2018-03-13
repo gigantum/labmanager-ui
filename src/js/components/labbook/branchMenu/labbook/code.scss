@@ -1,0 +1,147 @@
+.Code {
+  width: 100%;
+
+  text-align: center;
+
+  .fa {
+    font-family: FontAwesome !important;
+  }
+}
+
+.Code__favorites {
+
+  width: 100%;
+}
+
+.Code__header {
+  line-height: 20px;
+  @include flex(space-between, row);
+}
+
+.Code__toolbar {
+  align-self: center;
+  flex: 0 1 auto;
+  @include flex(space-between, row);
+}
+
+.Code__filter {
+  margin: 0 10px;
+}
+
+.Code__filter:nth-last-child(1) {
+  margin: 0 0 0 10px;
+}
+
+.Code__filter,
+.Code__import-text,
+.Code__import-file {
+  cursor: pointer;
+
+  color: $romanSilver;
+}
+
+.Code__import-text {
+  align-self: right;
+}
+
+.Code__import-file {
+  padding-right: 3px;
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+.Code__filter:hover,
+.Code__import-file:hover {
+  color: $jet;
+}
+
+.Code__filter--selected {
+  color: $jet;
+}
+
+.Code__favorites-card {
+}
+
+.Code__file-browser {
+  padding: 10px 15px;
+
+  background-color: $white;
+  @extend .box-shadow;
+}
+
+.Code__subtitle {
+
+  text-align: left;
+
+  color: $romanSilver;
+
+  font-weight: 100;
+}
+
+.Code {
+  .FileBrowser__icon {
+    margin: 0 5px 0 0;
+  }
+
+  .action-bar {
+    flex-direction: space-between;
+
+
+    input[type='search'] {
+      height: 50px;
+      margin-right: 20px;
+
+      border-color: $lightGrey;
+      border-radius: 15px !important;
+    }
+
+    input[type='search']:focus {
+      border-color: $turquise;
+      border-bottom: 1px solid $turquise;
+      box-shadow: 0 1px 0 0 $turquise;
+    }
+
+    .btn {
+      padding: 0 10px;
+
+      color: $jet;
+      background-color: initial;
+      box-shadow: none;
+    }
+
+    .btn:hover {
+      color: $romanSilver;
+    }
+  }
+
+  .files {
+    .file.selected, .folder.selected {
+      background: $lightGrey;
+    }
+
+    th {
+      color: $jet;
+    }
+  }
+
+  .item-actions {
+    min-height: 60px;
+    margin-left: 25px;
+    padding: 10px;
+
+    border-radius: 15px;
+    background-color: $lightGrey;
+
+    li {
+      margin: 10px 0 !important;
+    }
+  }
+}
+.Code__tracked-container {
+  @include flex(flex-end, row);
+}
+.Code__tracked {
+  padding: 3px 5px;
+  background-color: $lightGrey;
+  color: $romanSilver;
+}

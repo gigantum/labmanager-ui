@@ -1,0 +1,23 @@
+.FileEmpty {
+    margin: 0.5rem 0 1rem 0;
+    background: $grey-background;
+    border: 1px dashed $romanSilver;
+    width: 100%;
+    height: 200px;
+    text-align: center;
+    color: $romanSilver;
+}
+
+.FileEmpty__container {
+    line-height: 6px;
+    margin-top: 50px;
+}
+
+.FileEmpty__main-text {
+    font-size: 18px;
+}
+
+.FileEmpty__sub-text {
+    font-size: 15px;
+    text-decoration: underline;
+}

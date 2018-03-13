@@ -1,0 +1,76 @@
+//vendor
+import React, { Component } from 'react'
+import uuidv4 from 'uuid/v4'
+//mutations
+import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
+//store
+import store from 'JS/redux/store'
+
+
+export default class LoginPrompt extends Component {
+  _forceSync(){
+    const id = uuidv4;
+    const {owner, labbookName} = store.getState().routes
+    store.dispatch({
+      type: 'MULTIPART_INFO_MESSAGE',
+      payload: {
+        id: id,
+        message: 'Syncing LabBook with Gigantum cloud ...',
+        isLast: false,
+        error: false
+      }
+    })
+
+    SyncLabbookMutation(
+      owner,
+      labbookName,
+      true,
+      (error) => {
+        if (error) {
+          store.dispatch({
+            type: 'MULTIPART_INFO_MESSAGE',
+            payload: {
+              id: id,
+              message: `Could not 'force' sync ${labbookName}`,
+              messagesList: error,
+              isLast: true,
+              error: true
+            }
+          })
+
+
+        } else {
+
+          store.dispatch({
+            type: 'MULTIPART_INFO_MESSAGE',
+            payload: {
+              id: id,
+              message: `Successfully 'force' synced ${labbookName}`,
+              isLast: true,
+              error: false
+            }
+          })
+        }
+      }
+    )
+    this.props.toggleSyncModal()
+  }
+  render(){
+
+    return(
+      <div className="ForceSync">
+        <h4 className="ForceSync__header">Force Sync</h4>
+        <div>
+          <p>Your LabBook conflicts with changes already synced to the server. You can “force” sync to pull the latest changes from the server. **Note: This will overwrite any conflicting files with the copy from the server</p>
+          <p>Do you want "force" sync anyway?</p>
+        </div>
+        <div className="ForceSync__buttons">
+          <button onClick={()=>{this._forceSync()}}>Yes</button>
+          <button onClick={()=>{this.props.toggleSyncModal()}}>no</button>
+        </div>
+
+      </div>
+    )
+
+  }
+}
