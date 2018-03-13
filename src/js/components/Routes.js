@@ -198,18 +198,12 @@ export default class Routes extends Component {
                 <Route
                   path="/callback"
                   render={(props) => {
-                    console.log('running')
                     handleAuthentication(props);
-                    if(auth.isAuthenticated()) {
-                      return (
-                        <Callback
-                          {...props}
-                        />
-                      )
-                    } else {
-                      console.log('else');
-                    }
-
+                    return (
+                      <Callback
+                        {...props}
+                      />
+                    )
                   }}
                 />
                 <Prompt
