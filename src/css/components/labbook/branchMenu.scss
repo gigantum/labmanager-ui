@@ -50,10 +50,12 @@
     align-items: center;
   }
 }
+.ForceSync__header,
 .DeleteLabbook__header{
   border-bottom: 1px solid #007ea8;
   width: 300px;
 }
+.ForceSync__header,
 .DeleteLabbook__header,
 .BranchModal__header {
   padding: 5px 0 5px 0px;
@@ -318,4 +320,15 @@
   padding: 0px;
   border-radius: 0px 8px 8px 0px !important;
   text-align: center;
+}
+
+.ForceSync{
+  @include modal(300px, 500px);
+  @include flex(space-between, column);
+  align-items: center;
+  padding: 20px 40px;
+}
+.ForceSync__buttons{
+  width: 200px;
+  @include flex(space-between, row);
 }

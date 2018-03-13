@@ -2,8 +2,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
-//components
-import LoginPrompt from './LoginPrompt'
+
 //utilities
 import validation from 'JS/utils/Validation'
 import JobStatus from 'JS/utils/JobStatus'
@@ -21,6 +20,8 @@ import UserIdentity from 'JS/Auth/UserIdentity'
 import store from 'JS/redux/store'
 //components
 import DeleteLabbook from './DeleteLabbook'
+import ForceSync from './ForceSync'
+import LoginPrompt from './LoginPrompt'
 
 export default class UserNote extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ export default class UserNote extends Component {
       'showLoginPrompt': false,
       'exporting': false,
       'deleteModalVisible': false,
+      'forceSyncModalVisible': false,
       owner,
       labbookName
     }
@@ -51,6 +53,7 @@ export default class UserNote extends Component {
     this._sync = this._sync.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
     this._exportLabbook = this._exportLabbook.bind(this)
+    this._toggleSyncModal = this._toggleSyncModal.bind(this)
   }
 
   /**
@@ -260,6 +263,14 @@ export default class UserNote extends Component {
 
   /**
   *  @param {}
+  *  toggles sync modal
+  *  @return {string}
+  */
+  _toggleSyncModal(){
+    this.setState({'forceSyncModalVisible': !this.state.forceSyncModalVisible})
+  }
+  /**
+  *  @param {}
   *  pushes code to remote
   *  @return {string}
   */
@@ -285,6 +296,7 @@ export default class UserNote extends Component {
             SyncLabbookMutation(
               this.state.owner,
               this.state.labbookName,
+              false,
               (error) => {
                 if (error) {
                   store.dispatch({
@@ -297,6 +309,11 @@ export default class UserNote extends Component {
                       error: true
                     }
                   })
+
+                  if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1)){
+
+                    self._toggleSyncModal()
+                  }
                 } else {
 
                   store.dispatch({
@@ -572,8 +589,12 @@ export default class UserNote extends Component {
     })
 
     let modalCoverCSS = classNames({
-      'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt,
+      'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt && !this.state.forceSyncModalVisible,
       'modal__cover': true
+    })
+
+    let syncModalCSS = classNames({
+      'hidden': !this.state.forceSyncModalVisible
     })
 
     return (
@@ -590,6 +611,13 @@ export default class UserNote extends Component {
             onClick={() => { this._toggleDeleteModal() }}
             className="BranchModal--close"></div>
             <DeleteLabbook remoteAdded={this.state.addedRemoteThisSession} history={this.props.history}/>
+        </div>
+
+        <div className={syncModalCSS}>
+          <div
+            onClick={() => { this._toggleSyncModal()}}
+            className="BranchModal--close"></div>
+            <ForceSync toggleSyncModal={this._toggleSyncModal}/>
         </div>
 
         <div className={collaboratorsModalCss}>
@@ -741,7 +769,7 @@ export default class UserNote extends Component {
               <div>
                 <hr className="BranchMenu__line"/>
                 <div className="BranchMenu__copy-remote">
-                  <input id="BranchMenu-copy" className="BranchMenu__input" value={this.props.remoteUrl} type="text" />
+                  <input id="BranchMenu-copy" className="BranchMenu__input" defaultValue={this.props.remoteUrl} type="text" />
                   <button onClick={()=> this._copyRemote()} className="BranchMenu__copy-button fa fa-clone"></button>
                 </div>
               </div>

@@ -19,6 +19,7 @@ let tempID = 0;
 export default function SyncLabbookMutation(
   owner,
   labbookName,
+  force,
   callback
 ) {
 
@@ -27,6 +28,7 @@ export default function SyncLabbookMutation(
     input: {
       owner,
       labbookName,
+      force,
       clientMutationId: tempID++
     }
   }

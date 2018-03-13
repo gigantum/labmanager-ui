@@ -63,7 +63,7 @@ export default class Prompt extends Component {
           <div className={this.state.failureCount >= 8 ? "Prompt__failure-container" : "hidden"}>
             <div className="Prompt__failure-text">
               <p>Looks like something is wrong.</p>
-              <p>Are you sure gigantum is running?</p>
+              <p>Are you sure Gigantum is running?</p>
               <p>Use the 'gigantum start' command to run the application.</p>
             </div>
             <img

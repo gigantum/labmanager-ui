@@ -69,11 +69,11 @@ export default class DeleteLabbook extends Component {
     if(this.props.remoteAdded){
       return(
       <div>
-        <p>This will delete <b>{labbookName}</b> from this gignatum client.</p>
+        <p>This will delete <b>{labbookName}</b> from this Gigantum client.</p>
         <p>You can still download it from repo.gigantum.io/{owner}/{labbookName}.</p>
       </div>)
     }else{
-      return(<p>This will delete <b>{labbookName}</b> from this gignatum instance. All data will be removed and can not be recovered.</p>)
+      return(<p>This will delete <b>{labbookName}</b> from this Gigantum instance. All data will be removed and can not be recovered.</p>)
     }
   }
 
