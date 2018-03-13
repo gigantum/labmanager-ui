@@ -40,7 +40,7 @@
 
 .ContainerStatus__container-state {
   @extend .box-shadow;
-  transition: height 0.5s, width 0.5s, box-shadow 0.5s;
+  transition: all 0.25s;
   width: 141px;
   text-align: center;
   height: 31px;
@@ -60,7 +60,7 @@
 .ContainerStatus__container-state--expanded{
   width: 155px;
   height: 35px;
-  box-shadow: 0 0px 12px 0 rgba(0,0,0,.80) !important;
+  box-shadow: 0 0px 12px 0 rgba(0,0,0,.50) !important;
 }
 
 .ContainerStatus__container-state--menu-open {
@@ -79,6 +79,8 @@
   border: 3px solid $romanSilver;
   background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
   background-size: 20px;
+  margin: 0 -7px -2px 0;
+  line-height: 31px;
 }
 
 .ContainerStatus__container-state.Building {
@@ -98,7 +100,8 @@
   background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
   border: 3px solid $turquise;
   background-size: 20px;
-
+  margin: 0 -7px -2px 0;
+  line-height: 31px;
 }
 
 .ContainerStatus__container-state.Build.Failed {
