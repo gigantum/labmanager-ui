@@ -310,7 +310,10 @@ export default class UserNote extends Component {
                     }
                   })
 
-                  self._toggleSyncModal()
+                  if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1)){
+
+                    self._toggleSyncModal()
+                  }
                 } else {
 
                   store.dispatch({
@@ -766,7 +769,7 @@ export default class UserNote extends Component {
               <div>
                 <hr className="BranchMenu__line"/>
                 <div className="BranchMenu__copy-remote">
-                  <input id="BranchMenu-copy" className="BranchMenu__input" value={this.props.remoteUrl} type="text" />
+                  <input id="BranchMenu-copy" className="BranchMenu__input" defaultValue={this.props.remoteUrl} type="text" />
                   <button onClick={()=> this._copyRemote()} className="BranchMenu__copy-button fa fa-clone"></button>
                 </div>
               </div>
