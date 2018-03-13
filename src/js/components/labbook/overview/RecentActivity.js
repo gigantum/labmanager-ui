@@ -135,7 +135,7 @@ export default class RecentActivity extends Component {
                         replace
                         ref={index}
                     >
-                        More...
+                        View More in Activity Feed >
                     </Link>
                   </div>
                 )
