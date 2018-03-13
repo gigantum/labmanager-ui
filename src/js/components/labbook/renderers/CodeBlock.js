@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import SyntaxHighlighter from 'react-syntax-highlighter/prism';
-import { okaidia } from 'react-syntax-highlighter/styles/prism';
+import customizedStyling from './CodeBlockStyle';
+
 
 class CodeBlock extends React.PureComponent {
   constructor(props) {
@@ -17,7 +18,13 @@ class CodeBlock extends React.PureComponent {
   render() {
     let code = this.props.value
     return (
-      <SyntaxHighlighter language='python' style={okaidia}>{code}</SyntaxHighlighter>
+      <SyntaxHighlighter
+        className="CodeBlock"
+        language='python'
+        style={customizedStyling}
+      >
+        {code}
+      </SyntaxHighlighter>
     )
   }
 }

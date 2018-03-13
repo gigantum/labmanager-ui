@@ -7,15 +7,39 @@
   @include flex(space-between, row);
 }
 
-.RecentActivity__card{
+.RecentActivity__card {
   min-height: 150px;
-  padding: 20px;
+  padding: 20px 20px 60px 20px;
   @extend .card;
   width: calc(33.333% - 20px);
 }
 
-.RecentActivity__card-detail{
-    padding: 10px 0;
+.RecentActivity__card-date {
+  color: $jet;
+  padding-bottom: 10px;
+}
+
+.RecentActivity__card-link {
+  position: absolute;
+  margin-top: 10px;
+  right: 30px;
+  color: $jet;
+}
+
+.RecentActivity__card-detail .ReactMarkdown * {
+  line-height: 22px;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  white-space: pre-line;
+  overflow: hidden;
+  word-break: break-word;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+}
+
+.RecentActivity__card-detail .ReactMarkdown {
+  max-height: 240px;
+  overflow: hidden;
 }
 
 .RecentActivity__card-detail *{

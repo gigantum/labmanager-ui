@@ -360,7 +360,8 @@ export default class FileBrowserWrapper extends Component {
         oldKey,
         newKey,
         this.props.section,
-        (response, error) => {
+        (moveResponse, error) => {
+
           if(error){
             console.error(error)
             store.dispatch({
@@ -370,6 +371,61 @@ export default class FileBrowserWrapper extends Component {
                 messagesList: error
               }
             })
+          }else{
+
+            if(edgeToMove.node.isFavorite){
+
+              RemoveFavoriteMutation(
+                this.props.favoriteConnection,
+                this.props.parentId,
+                this.state.owner,
+                this.state.labbookName,
+                this.props.section,
+                oldKey,
+                edgeToMove.node.id,
+                edgeToMove,
+                this.props.favorites,
+                (response, error)=>{
+
+                  if(error){
+                    console.error(error)
+                    store.dispatch({
+                      type: 'ERROR_MESSAGE',
+                      payload: {
+                        message: `ERROR: could not remove favorite ${oldKey}`,
+                        messagesList: error
+                      }
+                    })
+                  }else{
+                    
+                    AddFavoriteMutation(
+                      this.props.favoriteConnection,
+                      this.props.connection,
+                      this.props.parentId,
+                      this.state.owner,
+                      this.state.labbookName,
+                      newKey,
+                      '',
+                      false,
+                      moveResponse.moveLabbookFile.newLabbookFileEdge,
+                      this.props.section,
+                      (response, error)=>{
+                        if(error){
+                          console.error(error)
+                          store.dispatch({
+                            type: 'ERROR_MESSAGE',
+                            payload: {
+                              message: `ERROR: could not add favorite ${newKey}`,
+                              messagesList: error
+                            }
+                          })
+                        }
+                      }
+                    )
+                  }
+                }
+              )
+            }
           }
 
         }
