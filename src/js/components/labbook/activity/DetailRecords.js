@@ -1,5 +1,6 @@
 //vendor
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import {QueryRenderer, graphql} from 'react-relay'
 import ReactMarkdown from 'react-markdown'
 //Components
@@ -37,6 +38,47 @@ export default class UserNote extends Component {
       owner: owner,
       labbookName: labbookName
     }
+    this._setLinks = this._setLinks.bind(this);
+  }
+
+  _setLinks() {
+    let elements = Array.prototype.slice.call(document.getElementsByClassName('ReactMarkdown'));
+    let moreObj = {}
+    elements.forEach((elOuter, index) => {
+      if (this.checkOverflow(elOuter) === true) moreObj[index] = true;
+      if (this.checkOverflow(elOuter.childNodes[elOuter.childNodes.length - 1]) === true) moreObj[index] = true;
+    });
+    let pElements = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__link'));
+
+    for (let key in pElements) {
+      if(!moreObj[key]) {
+        pElements[key].className = 'hidden';
+      } else {
+        pElements[key].className = 'DetailsRecords__link';
+      }
+    }
+  }
+
+  checkOverflow(el) {
+    var curOverflow = el.style.overflow;
+    if ( !curOverflow || curOverflow === "visible" )
+       el.style.overflow = "hidden";
+
+    var isOverflowing = el.clientHeight < el.scrollHeight;
+    el.style.overflow = curOverflow;
+    return isOverflowing;
+   }
+
+  componentDidMount() {
+    let self = this;
+    setTimeout(function(){
+      self._setLinks();
+    }, 100)
+    window.addEventListener("resize", this._setLinks.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this._setLinks.bind(this));
   }
 
   _renderDetail(item){
@@ -60,6 +102,21 @@ export default class UserNote extends Component {
     }
   }
 
+  _moreClicked(target) {
+    if (target.className !== "DetailsRecords__link-clicked") {
+      let elements = Array.prototype.slice.call(document.getElementsByClassName('ReactMarkdown'));
+      let index = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__link')).indexOf(target);
+      elements[index].className = "ReactMarkdown-long"
+      target.className = "DetailsRecords__link-clicked";
+      target.textContent = "Less...";
+    } else {
+      let elements = Array.prototype.slice.call(document.getElementsByClassName('ReactMarkdown-long'));
+      let index = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__link-clicked')).indexOf(target);
+      elements[index].className = "ReactMarkdown"
+      target.className = "DetailsRecords__link";
+      target.textContent = "More...";
+    }
+  }
 
   render(){
     let variables ={
@@ -67,6 +124,7 @@ export default class UserNote extends Component {
       owner: this.state.owner,
       name: this.state.labbookName
     }
+    this.items = {};
     return(
       <QueryRenderer
         environment={environment}
@@ -90,6 +148,7 @@ export default class UserNote extends Component {
                                 key={detailRecord.id + '_'+ index}
                                 className="DetailsRecords__item">
                                 {this._renderDetail(item)}
+                                <p className="DetailsRecords__link hidden" onClick={(e)=> this._moreClicked(e.target)}>More...</p>
                             </li>)
                           })
                         )

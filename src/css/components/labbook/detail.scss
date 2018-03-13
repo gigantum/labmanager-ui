@@ -42,3 +42,42 @@
 li.DetailsRecords__item * {
   max-width: 100%;
 }
+
+li.DetailsRecords__item .ReactMarkdown p,
+li.DetailsRecords__item .ReactMarkdown ul, {
+  line-height: 24px;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  white-space: pre-line;
+  overflow: hidden;
+  word-break: break-word;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+}
+
+li.DetailsRecords__item .ReactMarkdown {
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.DetailsRecords__link {
+  text-align: right;
+  margin-right: 20px;
+  color: $jet;
+}
+
+.DetailsRecords__link:hover {
+  color: $turquise;
+  cursor: pointer;
+}
+
+.DetailsRecords__link-clicked {
+  text-align: right;
+  margin-right: 20px;
+  color: $jet;
+}
+
+.DetailsRecords__link-clicked:hover {
+  color: $turquise;
+  cursor: pointer;
+}
