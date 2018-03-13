@@ -199,6 +199,15 @@ export default class WizardModal extends React.Component {
       !self.state.isTrackingOn,
       (response, error) => {
         if(error){
+          console.log(error)
+          error.push({message: 'test'})
+          store.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload: {
+              message: error[0] && error[0].message,
+              messageList: error
+            }
+          })
           this.setState({ modalBlur: false })
         }else{
           const {owner, name} = response.createLabbook.labbook
