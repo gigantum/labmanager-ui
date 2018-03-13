@@ -199,7 +199,6 @@ export default class WizardModal extends React.Component {
       !self.state.isTrackingOn,
       (response, error) => {
         if(error){
-          console.log(error)
           error.push({message: 'test'})
           store.dispatch({
             type: 'ERROR_MESSAGE',
