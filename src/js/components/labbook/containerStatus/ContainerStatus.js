@@ -26,7 +26,7 @@ export default class ContainerStatus extends Component {
   	super(props);
 
     const {owner, labbookName} = store.getState().routes
-
+    const {containerMenuWarning} = store.getState().environment
     let state = {
       'status': "",
       'building': this.props.isBuilding,
@@ -38,7 +38,8 @@ export default class ContainerStatus extends Component {
       'isMouseOver': false,
       'rebuildAttempts': 0,
       owner,
-      labbookName
+      labbookName,
+      containerMenuWarning
     }
 
     this.state = state;
@@ -49,6 +50,7 @@ export default class ContainerStatus extends Component {
     this._closePopupMenus = this._closePopupMenus.bind(this)
     this._openDevToolMuation = this._openDevToolMuation.bind(this)
     this._rebuildContainer = this._rebuildContainer.bind(this)
+    this._closeMenu = this._closeMenu.bind(this);
   }
 
   /**
@@ -59,6 +61,20 @@ export default class ContainerStatus extends Component {
     unsubscribe()
     //memory clean up
     window.removeEventListener("click", this._closePopupMenus)
+    window.removeEventListener('click', this._closeMenu);
+  }
+
+  _closeMenu(evt) {
+    let isPopup = evt.target.className.indexOf('ContainerStatus__button-menu') > -1
+    || evt.target.className.indexOf('PackageDependencies__button') > -1 || evt.target.className.indexOf('CustomDependencies__button--flat') > -1 || evt.target.className.indexOf('BranchMenu__sync-button') > -1 ;
+    if (!isPopup && this.state.containerMenuWarning.length) {
+      store.dispatch({
+        type: 'CONTAINER_MENU_WARNING',
+        payload: {
+          message: ''
+        }
+      })
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -76,13 +92,15 @@ export default class ContainerStatus extends Component {
     unsubscribe from redux store
   */
   storeDidUpdate = (containerStatusStore) => {
-
     if(this.state.containerMenuRunning !== containerStatusStore.containerMenuRunning){
 
       if(((containerStatusStore.status === 'Stopped') || containerStatusStore.status === 'Running') || (containerStatusStore.status === 'Build Failed')){
 
         this.setState({containerMenuRunning: containerStatusStore.containerMenuRunning}); //triggers  re-render when store updates
       }
+    }
+    if (this.state.containerMenuWarning !== containerStatusStore.containerMenuWarning) {
+      this.setState({containerMenuWarning: containerStatusStore.containerMenuWarning});
     }
   }
   /**
@@ -91,6 +109,7 @@ export default class ContainerStatus extends Component {
   *  @return {string}
   */
   componentDidMount(){
+    window.addEventListener('click', this._closeMenu)
     let self = this
     let intervalInSeconds = 3 * 1000
     setTimeout(function(){
@@ -572,13 +591,13 @@ export default class ContainerStatus extends Component {
           {this._getStatusText(status)}
         </div>
         {
-          this.state.containerMenuRunning &&
+          this.state.containerMenuWarning &&
           <div className="ContainerStatus__menu-pointer"></div>
         }
         {
-          this.state.containerMenuRunning &&
+          this.state.containerMenuWarning &&
           <div className="ContainerStatus__button-menu">
-
+              {this.state.containerMenuWarning}
           </div>
         }
       </div>)

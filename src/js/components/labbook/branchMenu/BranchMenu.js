@@ -264,61 +264,71 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _sync() {
-    let id = uuidv4()
-    let self = this;
-    this._checkSessionIsValid().then((response) => {
-      if (response.data) {
 
-        if (response.data.userIdentity.isSessionValid) {
-          store.dispatch({
-            type: 'MULTIPART_INFO_MESSAGE',
-            payload: {
-              id: id,
-              message: 'Syncing LabBook with Gigantum cloud ...',
-              isLast: false,
-              error: false
-            }
-          })
+    if((store.getState().containerStatus.status === 'Stopped') || (store.getState().containerStatus.status === 'Build Failed')){
+      let id = uuidv4()
+      let self = this;
+      this._checkSessionIsValid().then((response) => {
+        if (response.data) {
 
-          SyncLabbookMutation(
-            this.state.owner,
-            this.state.labbookName,
-            (error) => {
-              if (error) {
-                store.dispatch({
-                  type: 'MULTIPART_INFO_MESSAGE',
-                  payload: {
-                    id: id,
-                    message: `Could not sync ${this.state.labbookName}`,
-                    messagesList: error,
-                    isLast: true,
-                    error: true
-                  }
-                })
-              } else {
-
-                store.dispatch({
-                  type: 'MULTIPART_INFO_MESSAGE',
-                  payload: {
-                    id: id,
-                    message: `Successfully synced ${this.state.labbookName}`,
-                    isLast: true,
-                    error: false
-                  }
-                })
+          if (response.data.userIdentity.isSessionValid) {
+            store.dispatch({
+              type: 'MULTIPART_INFO_MESSAGE',
+              payload: {
+                id: id,
+                message: 'Syncing LabBook with Gigantum cloud ...',
+                isLast: false,
+                error: false
               }
-            }
-          )
-        } else {
-          document.getElementById('modal__cover').classList.remove('hidden')
+            })
 
-          self.setState({
-            showLoginPrompt: true
-          })
+            SyncLabbookMutation(
+              this.state.owner,
+              this.state.labbookName,
+              (error) => {
+                if (error) {
+                  store.dispatch({
+                    type: 'MULTIPART_INFO_MESSAGE',
+                    payload: {
+                      id: id,
+                      message: `Could not sync ${this.state.labbookName}`,
+                      messagesList: error,
+                      isLast: true,
+                      error: true
+                    }
+                  })
+                } else {
+
+                  store.dispatch({
+                    type: 'MULTIPART_INFO_MESSAGE',
+                    payload: {
+                      id: id,
+                      message: `Successfully synced ${this.state.labbookName}`,
+                      isLast: true,
+                      error: false
+                    }
+                  })
+                }
+              }
+            )
+          } else {
+            document.getElementById('modal__cover').classList.remove('hidden')
+
+            self.setState({
+              showLoginPrompt: true
+            })
+          }
         }
-      }
-    })
-
+      })
+    } else {
+      this.setState({ menuOpen: false });
+      store.dispatch({
+        type: 'CONTAINER_MENU_WARNING',
+        payload: {
+          message: 'Stop LabBook before syncing. \n Be sure to save your changes.'
+        }
+      });
+    }
   }
 
   /**

@@ -5,6 +5,7 @@ export const CLOSE_ENVIRONMENT_MENUS = 'CLOSE_ENVIRONMENT_MENUS'
 export const TOGGLE_PACKAGE_MENU = 'TOGGLE_PACKAGE_MENU'
 export const TOGGLE_CUSTOM_MENU = 'TOGGLE_CUSTOM_MENU'
 export const RESET_DETAIL_STORE = 'RESET_DETAIL_STORE'
+export const CONTAINER_MENU_WARNING = 'CONTAINER_MENU_WARNING'
 
 
 
@@ -12,6 +13,7 @@ export default (
  state = {
    'status': "",
    'containerMenuOpen': false,
+   'containerMenuWarning': ''
  },
  action
 ) => {
@@ -38,7 +40,12 @@ if (action.type === CLOSE_ENVIRONMENT_MENUS) {
      ...state,
      detailMode: false
    };
- }
+ } else if(action.type === CONTAINER_MENU_WARNING) {
+  return {
+    ...state,
+    containerMenuWarning: action.payload.message
+  }
+}
 
  return state;
 };
