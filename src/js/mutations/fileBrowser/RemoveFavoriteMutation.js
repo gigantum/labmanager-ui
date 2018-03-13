@@ -89,9 +89,13 @@ export default function RemoveFavoriteMutation(
         if(fileNode){
           fileNode.setValue(false, 'isFavorite')
         }
-        const removeId = fileItem.associatedLabbookFileId ? fileItem.fileItem.node.id  : response.removeFavorite.removedNodeId
+
+
+          const removeId = fileItem.associatedLabbookFileId && fileItem.fileItem ? fileItem.fileItem.node.id  : response.removeFavorite.removedNodeId
+
+
+          sharedUpdater(store, parentId, removeId, connectionKey)
       
-        sharedUpdater(store, parentId, removeId, connectionKey)
 
 
       }

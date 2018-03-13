@@ -39,6 +39,8 @@ export default class LocalLabbookPanel extends Component {
     let status = 'Running';
     status = (containerStatus === 'NOT_RUNNING') ? 'Stopped' : status;
     status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
+    status = (imageStatus === "BUILD_FAILED") ? 'Build Failed' : status;
+    status = (imageStatus === "DOES_NOT_EXIST") ? 'Does Not Exist' : status;
 
     return status;
   }
@@ -55,6 +57,13 @@ export default class LocalLabbookPanel extends Component {
       this._startContainerMutation()
     }else if(status === "Running"){
       this._stopContainerMutation()
+    }else{
+      store.dispatch({
+        type: 'INFO_MESSAGE',
+        payload:{
+          message: `Container must be rebuilt. Open LabBook first and then try to run again.`
+        }
+      })
     }
   }
   /***
@@ -136,7 +145,8 @@ export default class LocalLabbookPanel extends Component {
   * stops labbbok conatainer
   ***/
   _updateTextStatusOver(evt, status){
-    let newStatus = (status === "Running") ? 'Stop' : 'Run'
+    let newStatus = (status === "Running") ? 'Stop' : status;
+    newStatus = (status === "Stopped") ? 'Run' : status;
     this.setState({textStatus: newStatus})
   }
   /***

@@ -275,6 +275,7 @@ class Labbook extends Component {
                 </div>
               </div>
               <div className={(this.state.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
+
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
 
                 <Branches
@@ -283,8 +284,8 @@ class Labbook extends Component {
                   labbook={this.props.labbook}
                   labbookId={this.props.labbook.id}
                   activeBranch={this.props.labbook.activeBranch}
-
                 />
+
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
               </div>
               </div>}>
@@ -328,6 +329,7 @@ class Labbook extends Component {
                               key={this.state.labbookName + '_overview'}
                               labbook={this.props.labbook}
                               description={this.props.labbook.description}
+
                             />)
                           }}
                         />
@@ -356,6 +358,7 @@ class Labbook extends Component {
                                 labbookId={this.props.labbook.id}
                                 setBuildingState={this._setBuildingState}
                                 containerStatus={this.refs.ContainerStatus}
+                                overview={this.props.labbook.overview}
                                 {...this.props}
                               />)
                           }}
@@ -440,6 +443,11 @@ const LabbookFragmentContainer = createFragmentContainer(
 
           overview{
             remoteUrl
+            numAptPackages
+            numConda2Packages
+            numConda3Packages
+            numPipPackages
+            numCustomDependencies
           }
 
           collaborators

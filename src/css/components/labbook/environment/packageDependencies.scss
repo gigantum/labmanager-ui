@@ -13,9 +13,17 @@
 .PackageDependencies__tab {
   @extend .tab;
   width: calc(25% - 20px);
+  background-color: $backgroundGrey;
+  color: $white;
+}
+.PackageDependencies__tab:hover{
+  background-color: $white;
+  color: $turquise;
 }
 .PackageDependencies__tab--selected {
   @extend .tab--selected;
+  background-color: $white;
+  color: $romanSilver;
 }
 
 @keyframes Gradient {

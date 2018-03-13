@@ -141,6 +141,7 @@ class Environment extends Component {
               setBase={this._setBase}
               setComponent={this._setComponent}
               buildCallback={this._buildCallback}
+              overview={this.props.overview}
               base={base}
               blockClass="Environment"
             />

@@ -4,6 +4,7 @@ import {
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
+import uuidv4 from 'uuid/v4'
 
 const mutation = graphql`
   mutation AddCustomComponentMutation($input: AddCustomComponentInput!){
@@ -134,7 +135,7 @@ export default function AddEnvironmentPackageMutation(
       optimisticUpdater: (store) => {
 
 
-        const id = 'client:newPackageManager:' + tempID++;
+        const id = uuidv4()
         const node = store.create(id, 'PackageManager');
 
         node.setValue(revision, 'revision')
@@ -144,7 +145,7 @@ export default function AddEnvironmentPackageMutation(
         node.setValue(owner, 'owner')
         node.setValue(componentId, 'name')
         const newEdge = store.create(
-          'client:newEdge:' + tempID,
+            uuidv4(),
           'PackageManagerEdge',
         );
 

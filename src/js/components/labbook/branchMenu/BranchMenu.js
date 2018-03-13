@@ -329,7 +329,6 @@ export default class UserNote extends Component {
               }
             )
           } else {
-            document.getElementById('modal__cover').classList.remove('hidden')
 
             self.setState({
               showLoginPrompt: true
@@ -371,7 +370,7 @@ export default class UserNote extends Component {
             }
           )
         } else {
-          document.getElementById('modal__cover').classList.remove('hidden')
+
           //auth.login()
           self.setState({
             showLoginPrompt: true
@@ -399,7 +398,7 @@ export default class UserNote extends Component {
           this.setState({ showCollaborators: !this.state.showCollaborators, newCollaborator: '' })
           this.inputTitle.value = ''
         } else {
-          document.getElementById('modal__cover').classList.remove('hidden')
+    
           //auth.login()
           self.setState({
             showLoginPrompt: true

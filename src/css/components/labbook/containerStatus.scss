@@ -52,7 +52,6 @@
   border: 2px solid rgba(0,0,0,0);
   z-index: 100;
   padding-right: 10px;
-  background: $background-color url('./../images/icons/down-arrow-silver.svg') no-repeat 90% center;
 
   @extend .box-shadow;
 }
@@ -104,7 +103,9 @@
   line-height: 31px;
 }
 
-.ContainerStatus__container-state.Build.Failed {
+.ContainerStatus__container-state.Build.Failed,
+.ContainerStatus__container-state.Rebuild,
+.ContainerStatus__container-state.Does.Not.Exist{
   border: 3px solid $crimson;
   background-size: 20px;
 }
