@@ -192,7 +192,7 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
     'Footer__expand-messages-button': true,
     'Footer__expand-messages-button--expanded': self.state.messageListOpen
   })
-  console.log(mostRecentMessage)
+
   return (
     <div
       key={mostRecentMessage.id}
