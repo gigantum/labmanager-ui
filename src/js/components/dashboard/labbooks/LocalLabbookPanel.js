@@ -61,7 +61,7 @@ export default class LocalLabbookPanel extends Component {
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload:{
-          message: `Go to labbook to repair the container.`
+          message: `Container must be rebuilt. Open LabBook first and then try to run again.`
         }
       })
     }
