@@ -130,7 +130,7 @@ export default function AddFavoriteMutation(
           sharedUpdater(store, parentId, favoriteKey, node, tempId)
 
         }
-
+    
         const fileNode = store.get(fileItem.node.id)
         if(fileNode){
           fileNode.setValue(true, 'isFavorite')

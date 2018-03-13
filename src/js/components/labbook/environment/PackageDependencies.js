@@ -32,7 +32,8 @@ class PackageDependencies extends Component {
       'version': '',
       'packages': [],
       'searchValue': '',
-      'forceRender': false
+      'forceRender': false,
+      'disableInstall': false
     };
     //bind functions here
     this._loadMore = this._loadMore.bind(this)
@@ -318,6 +319,9 @@ class PackageDependencies extends Component {
     const {packages} = this.state
     const {labbookName, owner} = store.getState().routes
     const {environmentId} = this.props
+
+
+    this.setState({disableInstall: true})
     let self = this,
         index = 0
 
@@ -341,7 +345,7 @@ class PackageDependencies extends Component {
         environmentId,
         'PackageDependencies_packageDependencies',
         (response, error) => {
-
+          self.setState({disableInstall: false})
           if(error){
 
             store.dispatch({
@@ -375,11 +379,31 @@ class PackageDependencies extends Component {
   _setSearchValue(evt){
     this.setState({'searchValue': evt.target.value})
   }
+  /***
+  *  @param {evt}
+  *  get tabs data
+  **/
+  _getPackmanagerTabs(){
+    let tabs = this.props.base.packageManagers.map((packageName) => {
+      let count = 0
+      this.props.environment.packageDependencies.edges.forEach((edge)=> {
+
+        if(packageName === edge.node.manager){
+          count++
+        }
+      })
+      return {tabName: packageName, count: count}
+    })
+    return tabs
+  }
+
 
   render(){
 
     const {packageDependencies} = this.props.environment
-    const {blockClass, base} = this.props
+    const {blockClass} = this.props
+
+    const  packageManagersTabs = this._getPackmanagerTabs()
 
     if(packageDependencies) {
 
@@ -397,7 +421,7 @@ class PackageDependencies extends Component {
         'PackageDependencies__button--open': this.state.packageMenuVisible
       })
 
-      let disableInstall = (this.state.packages.length === 0) || (packagesProcessing.length > 0)
+      let disableInstall = this.state.disableInstall || ((this.state.packages.length === 0) || (packagesProcessing.length > 0))
       return(
       <div className="PackageDependencies">
 
@@ -409,16 +433,16 @@ class PackageDependencies extends Component {
           <div className="PackageDependencies__tabs">
             <ul className="PackageDependencies__tabs-list">
             {
-              base.packageManagers.map((tab, index) => {
+              packageManagersTabs.map((tab, index) => {
                 let packageTab = classNames({
                   'PackageDependencies__tab': true,
-                  'PackageDependencies__tab--selected': (this.state.selectedTab === tab)
+                  'PackageDependencies__tab--selected': (this.state.selectedTab === tab.tabName)
                 })
 
                 return(<li
                   key={tab + index}
                   className={packageTab}
-                  onClick={() => this._setSelectedTab(tab)}>{tab}
+                  onClick={() => this._setSelectedTab(tab.tabName)}>{`${tab.tabName} (${tab.count})`}
                 </li>)
               })
             }
