@@ -275,11 +275,13 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _sync() {
+    const status = store.getState().containerStatus.status
 
-    if((store.getState().containerStatus.status === 'Stopped') || (store.getState().containerStatus.status === 'Build Failed')){
+    if((status === 'Stopped') || (status === 'Build Failed')){
       let id = uuidv4()
       let self = this;
       this._checkSessionIsValid().then((response) => {
+        console.log(response)
         if (response.data) {
 
           if (response.data.userIdentity.isSessionValid) {
@@ -382,6 +384,20 @@ export default class UserNote extends Component {
   }
   /**
   *  @param {}
+  *  shows collaborators warning if user is not owner
+  *  @return {}
+  */
+  _showCollaboratorsWarning(){
+    let {owner} = store.getState().routes
+    store.dispatch({
+      type: 'WARNING_MESSAGE',
+      payload: {
+        message: `Only ${owner} can add and remove collaborators in the labbook.`,
+      }
+    })
+  }
+  /**
+  *  @param {}
   *  sets state of Collaborators
   *  @return {}
   */
@@ -391,15 +407,10 @@ export default class UserNote extends Component {
       if (response.data) {
 
         if (response.data.userIdentity.isSessionValid) {
-          if (!this.state.showCollaborators) {
-            document.getElementById('modal__cover').classList.remove('hidden')
-          } else {
-            document.getElementById('modal__cover').classList.add('hidden')
-          }
+
           this.setState({ showCollaborators: !this.state.showCollaborators, newCollaborator: '' })
           this.inputTitle.value = ''
         } else {
-          document.getElementById('modal__cover').classList.remove('hidden')
           //auth.login()
           self.setState({
             showLoginPrompt: true
@@ -589,7 +600,7 @@ export default class UserNote extends Component {
     })
 
     let modalCoverCSS = classNames({
-      'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt && !this.state.forceSyncModalVisible,
+      'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt && !this.state.forceSyncModalVisible && !this.state.showCollaborators,
       'modal__cover': true
     })
 
@@ -712,6 +723,7 @@ export default class UserNote extends Component {
               <button
                 disabled={!this.state.canManageCollaborators}
                 onClick={() => this._toggleCollaborators()}
+                onMouseUp={() => this.showCollaboratorsWarning()}
                 className='BranchMenu__item--collaborators-button'>Collaborators</button>
 
               <hr />
