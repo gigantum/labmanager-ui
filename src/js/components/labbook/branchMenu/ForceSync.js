@@ -61,7 +61,8 @@ export default class LoginPrompt extends Component {
       <div className="ForceSync">
         <h4 className="ForceSync__header">Force Sync</h4>
         <div>
-          <p>Your LabBook conflicts with changes already synced to the server. You can “force” sync to pull the latest changes from the server. **Note: This will overwrite any conflicting files with the copy from the server</p>
+          <p>Your LabBook conflicts with changes already synced to the server. You can “force” sync to pull the latest changes from the server.</p>
+          <p><b>**Note: This will overwrite any conflicting files with the copy from the server.</b></p>
           <p>Do you want "force" sync anyway?</p>
         </div>
         <div className="ForceSync__buttons">
