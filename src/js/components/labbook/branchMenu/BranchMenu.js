@@ -251,7 +251,6 @@ export default class UserNote extends Component {
             'remoteURL': ''
           })
         } else {
-          document.getElementById('modal__cover').classList.remove('hidden')
 
           self.setState({
             showLoginPrompt: true
@@ -275,11 +274,13 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _sync() {
+    const status = store.getState().containerStatus.status
 
-    if((store.getState().containerStatus.status === 'Stopped') || (store.getState().containerStatus.status === 'Build Failed')){
+    if((status === 'Stopped') || (status === 'Build Failed') || (status === 'Does Not Exist')){
       let id = uuidv4()
       let self = this;
       this._checkSessionIsValid().then((response) => {
+
         if (response.data) {
 
           if (response.data.userIdentity.isSessionValid) {
@@ -381,31 +382,49 @@ export default class UserNote extends Component {
   }
   /**
   *  @param {}
+  *  shows collaborators warning if user is not owner
+  *  @return {}
+  */
+  _showCollaboratorsWarning(){
+    const {owner} = store.getState().routes
+    const username = localStorage.getItem('username')
+
+    if(owner !== username){
+      store.dispatch({
+        type: 'WARNING_MESSAGE',
+        payload: {
+          message: `Only ${owner} can add and remove collaborators in this labbook.`,
+        }
+      })
+    }
+  }
+  /**
+  *  @param {}
   *  sets state of Collaborators
   *  @return {}
   */
   _toggleCollaborators() {
-    let self = this;
-    this._checkSessionIsValid().then((response) => {
-      if (response.data) {
+    if(this.state.canManageCollaborators){
+      let self = this;
+      this._checkSessionIsValid().then((response) => {
+        if (response.data) {
 
-        if (response.data.userIdentity.isSessionValid) {
-          if (!this.state.showCollaborators) {
-            document.getElementById('modal__cover').classList.remove('hidden')
+          if (response.data.userIdentity.isSessionValid) {
+
+            this.setState({ showCollaborators: !this.state.showCollaborators, newCollaborator: '' })
+            this.inputTitle.value = ''
           } else {
-            document.getElementById('modal__cover').classList.add('hidden')
+
+            //auth.login()
+            self.setState({
+              showLoginPrompt: true
+            })
           }
-          this.setState({ showCollaborators: !this.state.showCollaborators, newCollaborator: '' })
-          this.inputTitle.value = ''
-        } else {
-    
-          //auth.login()
-          self.setState({
-            showLoginPrompt: true
-          })
         }
-      }
-    })
+      })
+    }else{
+      this._showCollaboratorsWarning()
+    }
 
   }
   /**
@@ -588,7 +607,7 @@ export default class UserNote extends Component {
     })
 
     let modalCoverCSS = classNames({
-      'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt && !this.state.forceSyncModalVisible,
+      'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt && !this.state.forceSyncModalVisible && !this.state.showCollaborators,
       'modal__cover': true
     })
 
@@ -707,12 +726,11 @@ export default class UserNote extends Component {
           <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
 
           <ul className="BranchMenu__list">
-            <li className="BranchMenu__item--collaborators">
+            <li className="BranchMenu__item--collaborators"
+              >
               <button
-                disabled={!this.state.canManageCollaborators}
                 onClick={() => this._toggleCollaborators()}
-                className='BranchMenu__item--collaborators-button'>Collaborators</button>
-
+                className='BranchMenu__item--collaborators-button disabled'>Collaborators</button>
               <hr />
             </li>
             <li className="BranchMenu__item--new-branch">

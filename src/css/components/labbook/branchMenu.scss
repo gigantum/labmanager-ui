@@ -244,8 +244,8 @@
   border: 0px solid $white;
 }
 
-.BranchMenu__item--collaborators-button:disabled,
-.BranchMenu__item--collaborators-button:disabled:hover,
+.BranchMenu__item--collaborators-button.disabled,
+.BranchMenu__item--collaborators-button.disabled:hover,
 .BranchMenu__item--export-button:disabled,
 .BranchMenu__item--export-button:disabled:hover,
 .BranchMenu__item--delete-button:disabled,
@@ -256,6 +256,7 @@
   margin: 0 0 5px 0;
   background-color: $white;
   border: 0px solid $white;
+  opacity: 0.3;
 }
 
 .BranchMenu__collaborators-modal {
