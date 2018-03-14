@@ -37,6 +37,12 @@ const CONFIG = {
       'pyc',
       'gitkeep'
     ]
+  },
+
+  containerStatus:{
+    canEditEnvironment: (status)=> {
+      return (status === 'Stopped') || (status === 'Build Failed') || (status === 'Rebuild Required')
+    }
   }
 }
 

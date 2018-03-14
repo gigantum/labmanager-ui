@@ -19,6 +19,7 @@ if (action.type === UPDATE_CONTAINER_STATUS) {
      status: action.payload.status
    };
  }else if (action.type === UPDATE_CONTAINER_MENU_VISIBILITY) {
+
    return {
      ...state,
      containerMenuOpen: action.payload.containerMenuOpen

@@ -34,7 +34,8 @@ class OutputFavoriteList extends Component {
       favoritesIds.push(fav.node.id)
 
       if(nextPropsFavoritesIds.indexOf(fav.node.id) > -1){
-        newFavorites.push(fav)
+        let favorite = nextPropsFavorites[nextPropsFavoritesIds.indexOf(fav.node.id)]
+        newFavorites.push(favorite)
       }
     })
 
@@ -85,7 +86,7 @@ class OutputFavoriteList extends Component {
                   index={index}
                   labbookName={this.props.labbookName}
                   parentId={this.props.outputId}
-                  section={'Output'}
+                  section={'output'}
                   connection={"OutputFavorites_favorites"}
                   favorite={edge.node}
                   owner={this.props.owner}

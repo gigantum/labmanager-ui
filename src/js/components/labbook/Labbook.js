@@ -226,7 +226,9 @@ class Labbook extends Component {
     const {labbookName} = this.props;
 
     if(this.props.labbook){
-      const name = this.props.labbook.activeBranch.name.replace(/-/g, ' ')
+    
+      const name = this.props.labbook.activeBranch ? this.props.labbook.activeBranch.name.replace(/-/g, ' ') : 'temp'
+
       return(
         <div
           className={this.state.detailMode ? "Labbook Labbook--detail-mode" : "Labbook"}>

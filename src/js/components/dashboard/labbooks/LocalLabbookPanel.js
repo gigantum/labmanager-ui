@@ -40,7 +40,7 @@ export default class LocalLabbookPanel extends Component {
     status = (containerStatus === 'NOT_RUNNING') ? 'Stopped' : status;
     status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
     status = (imageStatus === "BUILD_FAILED") ? 'Build Failed' : status;
-    status = (imageStatus === "DOES_NOT_EXIST") ? 'Does Not Exist' : status;
+    status = (imageStatus === "DOES_NOT_EXIST") ? 'Rebuild Required' : status;
 
     return status;
   }

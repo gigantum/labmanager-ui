@@ -57,7 +57,7 @@ class OutputFavorites extends Component {
             <OutputFavoriteList
               labbookName={this.props.labbookName}
               outputId={this.props.outputId}
-              section={'code'}
+              section={'output'}
               favorites={favorites}
               owner={this.props.owner}
             />

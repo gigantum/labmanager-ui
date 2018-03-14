@@ -223,7 +223,7 @@ class LocalLabbooks extends Component {
                 {
 
                   labbooks.map((edge) => {
-
+              
                     return (
                       <LocalLabbookPanel
                         key={edge.node.name}

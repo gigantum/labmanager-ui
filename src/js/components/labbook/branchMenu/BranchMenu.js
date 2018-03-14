@@ -276,7 +276,7 @@ export default class UserNote extends Component {
   _sync() {
     const status = store.getState().containerStatus.status
 
-    if((status === 'Stopped') || (status === 'Build Failed') || (status === 'Does Not Exist')){
+    if((status === 'Stopped') || (status === 'Build Failed') || (status === 'Rebuild Required')){
       let id = uuidv4()
       let self = this;
       this._checkSessionIsValid().then((response) => {

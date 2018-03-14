@@ -13,11 +13,12 @@
   font-size: 48px;
   word-break: break-all;
   line-height: 1em;
-  padding-top: 17px;
+  padding-top: 9px;
+  overflow: hidden;
 }
 .Labbook__branch-title{
   opacity: 1;
-  transition: opacity 0.25s;
+
   h2 {
       margin: 2px 0;
       padding: 0 0 10px 0;
@@ -74,7 +75,9 @@
   .Labbook__branch-toggle {
     background: $white url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
     background-size: 16px;
+
   }
+
 
 }
 
@@ -312,6 +315,11 @@
       height: 60px;
       padding: 5px 20px 0;
       box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 6px 2px;
+    }
+
+    .Labbook__name,
+    .Labbook__branches-container{
+      display: none;
     }
 
     .Labbook__branches-container {
