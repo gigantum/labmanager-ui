@@ -6,6 +6,7 @@ export const TOGGLE_PACKAGE_MENU = 'TOGGLE_PACKAGE_MENU'
 export const TOGGLE_CUSTOM_MENU = 'TOGGLE_CUSTOM_MENU'
 export const RESET_DETAIL_STORE = 'RESET_DETAIL_STORE'
 export const CONTAINER_MENU_WARNING = 'CONTAINER_MENU_WARNING'
+export const UPDATE_CONTAINER_MENU_VISIBILITY = 'UPDATE_CONTAINER_MENU_VISIBILITY'
 
 
 
@@ -45,6 +46,12 @@ if (action.type === CLOSE_ENVIRONMENT_MENUS) {
     ...state,
     containerMenuWarning: action.payload.message
   }
+} else if (action.type === UPDATE_CONTAINER_MENU_VISIBILITY) {
+  
+  return {
+    ...state,
+    containerMenuOpen: action.payload.containerMenuOpen
+  };
 }
 
  return state;

@@ -4,6 +4,7 @@
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
+  margin-left: 135px;
 }
 
 .ContainerStatus__button-menu {
@@ -40,7 +41,7 @@
 
 .ContainerStatus__container-state {
   @extend .box-shadow;
-  transition: all 0.25s;
+  transition: all 0.125s;
   width: 141px;
   text-align: center;
   height: 31px;
@@ -57,9 +58,10 @@
 }
 
 .ContainerStatus__container-state--expanded{
-  width: 155px;
-  height: 35px;
+  width: 149px;
+  height: 33px;
   box-shadow: 0 0px 12px 0 rgba(0,0,0,.50) !important;
+  margin: 0 -7px -1px 0;
 }
 
 .ContainerStatus__container-state--menu-open {
@@ -73,12 +75,12 @@
   background-size: 20px;
 }
 .ContainerStatus__container-state.Running:hover {
-  width: 155px;
-  height: 35px;
+  width: 149px;
+  height: 33px;
   border: 3px solid $romanSilver;
   background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
   background-size: 20px;
-  margin: 0 -7px -2px 0;
+  margin: 0 -7px -1px 0;
   line-height: 31px;
 }
 
@@ -94,20 +96,21 @@
 }
 
 .ContainerStatus__container-state.Stopped:hover {
-  width: 155px;
-  height: 35px;
+  width: 149px;
+  height: 33px;
   background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
   border: 3px solid $turquise;
   background-size: 20px;
-  margin: 0 -7px -2px 0;
+  margin: 0 -7px -1px 0;
   line-height: 31px;
 }
 
 .ContainerStatus__container-state.Build.Failed,
 .ContainerStatus__container-state.Rebuild,
-.ContainerStatus__container-state.Does.Not.Exist{
+.ContainerStatus__container-state.Rebuild.Required{
   border: 3px solid $crimson;
   background-size: 20px;
+  padding: 0px;
 }
 
 .ContainerStatus__container-state.Starting {

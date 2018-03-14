@@ -10,6 +10,8 @@ import AddCustomComponentMutation from 'Mutations/environment/AddCustomComponent
 import RemoveCustomComponentMutation from 'Mutations/environment/RemoveCustomComponentMutation'
 //store
 import store from 'JS/redux/store'
+//config
+import config from 'JS/config'
 
 
 let owner
@@ -124,7 +126,10 @@ class CustomDependencies extends Component {
   *  toggle state and view of container
   */
   _toggleViewContainer(){
-    if((store.getState().containerStatus.status === 'Stopped') || (store.getState().containerStatus.status === 'Build Failed')){
+    const {status} = store.getState().containerStatus;
+    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+
+    if(canEditEnvironment){
       store.dispatch({
         type: 'TOGGLE_CUSTOM_MENU',
         payload: {

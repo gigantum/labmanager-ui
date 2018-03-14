@@ -13,8 +13,8 @@
 .PackageDependencies__tab {
   @extend .tab;
   width: calc(25% - 20px);
-  background-color: $backgroundGrey;
-  color: $white;
+  background-color: $grey-light;
+  color: $romanSilver;
 }
 .PackageDependencies__tab:hover{
   background-color: $white;

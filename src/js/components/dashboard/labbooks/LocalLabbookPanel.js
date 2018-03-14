@@ -28,6 +28,7 @@ export default class LocalLabbookPanel extends Component {
 
   componentWillMount() {
     const {environment} = this.props.edge.node
+
     let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
 
     this.setState({status: status, textStatus: status})
@@ -40,7 +41,7 @@ export default class LocalLabbookPanel extends Component {
     status = (containerStatus === 'NOT_RUNNING') ? 'Stopped' : status;
     status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
     status = (imageStatus === "BUILD_FAILED") ? 'Build Failed' : status;
-    status = (imageStatus === "DOES_NOT_EXIST") ? 'Does Not Exist' : status;
+    status = (imageStatus === "DOES_NOT_EXIST") ? 'Rebuild Required' : status;
 
     return status;
   }

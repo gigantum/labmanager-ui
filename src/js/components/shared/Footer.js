@@ -192,6 +192,11 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
     'Footer__expand-messages-button': true,
     'Footer__expand-messages-button--expanded': self.state.messageListOpen
   })
+  
+  let footerDeleteButtonCSS = classNames({
+    'hidden': mostRecentMessage.messageBody.length < 1,
+    'Footer__message-dismiss fa': true
+  })
 
   return (
     <div
@@ -209,7 +214,7 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
         </div>
       }
         <div className="Footer__main-detatails">
-        {mostRecentMessage.error && mostRecentMessage.messageBody &&
+        {mostRecentMessage && mostRecentMessage.error && mostRecentMessage.messageBody &&
           <ul>
             {
               mostRecentMessage.messageBody.map((error) => {
@@ -220,7 +225,7 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
         }
           <i
             onClick={()=>{self._removeMessage(mostRecentMessage)}}
-            className="Footer__message-dismiss fa">
+            className={footerDeleteButtonCSS}>
           </i>
         </div>
     </div>

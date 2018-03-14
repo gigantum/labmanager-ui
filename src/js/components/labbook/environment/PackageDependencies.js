@@ -12,6 +12,8 @@ import AddPackageComponentMutation from 'Mutations/environment/AddPackageCompone
 import RemovePackageComponentMutation from 'Mutations/environment/RemovePackageComponentMutation'
 //helpers
 import PackageLookup from './PackageLookup'
+//config
+import config from 'JS/config'
 
 
 let totalCount = 2
@@ -158,8 +160,10 @@ class PackageDependencies extends Component {
   *  triggers remove package mutation
   */
   _removePackage(node){
+    const {status} = store.getState().containerStatus;
+    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
 
-    if((store.getState().containerStatus.status === 'Stopped') || (store.getState().containerStatus.status === 'Build Failed')){
+    if(canEditEnvironment){
       const {labbookName, owner} = store.getState().routes
       const {environmentId} = this.props
       const clinetMutationId = uuidv4()
@@ -190,7 +194,10 @@ class PackageDependencies extends Component {
   *  triggers remove package mutation
   */
   _toggleAddPackageMenu(){
-    if((store.getState().containerStatus.status === 'Stopped') || (store.getState().containerStatus.status === 'Build Failed')){
+    const {status} = store.getState().containerStatus;
+    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+
+    if(canEditEnvironment){
       store.dispatch({
         type: 'TOGGLE_PACKAGE_MENU',
         payload:{
@@ -285,6 +292,7 @@ class PackageDependencies extends Component {
   *  sends message to footer
   */
   _promptUserToCloseContainer(){
+
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
@@ -347,7 +355,7 @@ class PackageDependencies extends Component {
         (response, error) => {
           self.setState({disableInstall: false})
           if(error){
-
+            console.log(error)
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {

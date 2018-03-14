@@ -26,7 +26,7 @@ export default class ContainerStatus extends Component {
       'containerStatus': props.containerStatus,
       'imageStatus': props.imageStatus,
       'pluginsMenu': false,
-      'containerMenuRunning': false,
+      'containerMenuOpen': false,
       'isMouseOver': false,
       'rebuildAttempts': 0,
       owner,
@@ -69,11 +69,11 @@ export default class ContainerStatus extends Component {
   */
   storeDidUpdate = (containerStatusStore) => {
 
-    if(this.state.containerMenuRunning !== containerStatusStore.containerMenuRunning){
+    if(this.state.containerMenuOpen !== containerStatusStore.containerMenuOpen){
 
-      if(((containerStatusStore.status === 'Stopped') || containerStatusStore.status === 'Running') || (containerStatusStore.status === 'Build Failed')){
+      if((this.state.containerStatus === 'RUNNING') || (containerStatusStore.status === 'Stopped') || (containerStatusStore.status === 'Build Failed') || (containerStatusStore.status === 'Rebuild Required')){
 
-        this.setState({containerMenuRunning: containerStatusStore.containerMenuRunning}); //triggers  re-render when store updates
+        this.setState({containerMenuOpen: containerStatusStore.containerMenuOpen, containerMenuWarning: containerStatusStore.containerMenuWarning}); //triggers  re-render when store updates
       }
     }
   }
@@ -150,11 +150,11 @@ export default class ContainerStatus extends Component {
       (evt.target.className.indexOf('CustomDependencies__button') > -1)
 
     if(!containerMenuClicked &&
-    this.state.containerMenuRunning){
+    this.state.containerMenuOpen){
       store.dispatch({
         type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
         payload: {
-          containerMenuRunning: false
+          containerMenuOpen: false
         }
       })
     }
@@ -221,7 +221,7 @@ export default class ContainerStatus extends Component {
     status = (containerStatus === 'NOT_RUNNING') ? 'Stopped' : status;
     status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
     status = (imageStatus === "BUILD_FAILED") ? 'Build Failed' : status;
-    status = (imageStatus === "DOES_NOT_EXIST") ? 'Does Not Exist' : status;
+    status = (imageStatus === "DOES_NOT_EXIST") ? 'Rebuild Required' : status;
 
     status = ((status === 'Stopped') && (this.state.status === "Starting")) ? "Starting" : status;
     status = ((status === 'Running') && (this.state.status === "Stopping")) ? "Stopping" : status;
@@ -254,7 +254,7 @@ export default class ContainerStatus extends Component {
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
-        containerMenuRunning: false
+        containerMenuOpen: false
       }
     })
 
@@ -303,7 +303,7 @@ export default class ContainerStatus extends Component {
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
-        containerMenuRunning: false
+        containerMenuOpen: false
       }
     })
     StartContainerMutation(
@@ -412,7 +412,7 @@ export default class ContainerStatus extends Component {
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
-        containerMenuRunning: false
+        containerMenuOpen: false
       }
     })
     let {labbookName, owner} = this.state
@@ -448,7 +448,7 @@ export default class ContainerStatus extends Component {
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
-        containerMenuRunning: !this.state.containerMenuRunning
+        containerMenuOpen: !this.state.containerMenuOpen
       }
     })
   }
@@ -471,7 +471,7 @@ export default class ContainerStatus extends Component {
     newStatus = this.state.isMouseOver && (status === 'Running') ? 'Stop' : newStatus
     newStatus = this.state.isMouseOver && (status === 'Stopped') ? 'Run' : newStatus
     newStatus = this.state.isMouseOver && (status === 'Build Failed') ? 'Rebuild' : newStatus
-    newStatus = this.state.isMouseOver && (status === 'Does Not Exist') ? 'Rebuild' : newStatus
+    newStatus = this.state.isMouseOver && (status === 'Rebuild Required') ? 'Rebuild' : newStatus
 
     newStatus = this.state.isBuilding ? 'Building' : newStatus
 
@@ -479,8 +479,9 @@ export default class ContainerStatus extends Component {
   }
 
   /**
-   *
-   *
+    @param {string} status
+    trigger mutatuion to stop or start container depdending on the state
+    @return {string} newStatus
    */
 
   _containerAction(status, evt){
@@ -492,15 +493,15 @@ export default class ContainerStatus extends Component {
       this._openCloseContainer(evt, status)
     }
 
-    if((status === "Build Failed") || (status === "Does Not Exist")){
+    if((status === "Build Failed") || (status === "Rebuild Required")){
       this._rebuildContainer(evt, status)
     }
   }
 
   _containerStatus(status, key){
     const containerStatusCss = classNames({
-      'ContainerStatus__container-state--menu-open': this.state.containerMenuRunning,
-      'ContainerStatus__container-state': !this.state.containerMenuRunning,
+      'ContainerStatus__container-state--menu-open': this.state.containerMenuOpen,
+      'ContainerStatus__container-state': !this.state.containerMenuOpen,
       'Building': this.props.isBuilding,
       [status]: !this.props.isBuilding,
       'ContainerStatus__container-state--expanded': this.state.isMouseOver
@@ -566,13 +567,13 @@ export default class ContainerStatus extends Component {
           {this._getStatusText(status)}
         </div>
         {
-          this.state.containerMenuRunning &&
+          this.state.containerMenuOpen &&
           <div className="ContainerStatus__menu-pointer"></div>
         }
         {
-          this.state.containerMenuRunning &&
+          this.state.containerMenuOpen &&
           <div className="ContainerStatus__button-menu">
-
+            {this.state.containerMenuWarning}
           </div>
         }
       </div>)

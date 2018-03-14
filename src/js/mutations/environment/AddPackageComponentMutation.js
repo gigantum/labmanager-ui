@@ -104,8 +104,8 @@ export default function AddPackageComponentMutation(
       },
       onError: err => console.error(err),
       updater: (store, response) => {
-      
-        if(response.addPackageComponent && clientMutationId){
+
+        if(response.addPackageComponent && response.addPackageComponent.newPackageComponentEdge && clientMutationId){
           let deletedId = 'client:newPackageManager:' + tempID
           sharedDeleteUpdater(store, environmentId, deletedId)
           const {
