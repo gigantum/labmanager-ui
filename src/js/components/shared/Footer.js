@@ -192,9 +192,9 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
     'Footer__expand-messages-button': true,
     'Footer__expand-messages-button--expanded': self.state.messageListOpen
   })
-  
+
   let footerDeleteButtonCSS = classNames({
-    'hidden': mostRecentMessage.messageBody.length < 1,
+    'hidden': mostRecentMessage.messageBody && (mostRecentMessage.messageBody.length < 1),
     'Footer__message-dismiss fa': true
   })
 
