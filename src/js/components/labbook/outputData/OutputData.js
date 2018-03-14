@@ -23,7 +23,9 @@ class OutputData extends Component {
   }
 
   _loadStatus(res) {
-    if(res !== this.state.loadingStatus) this.setState({'loadingStatus': res});
+    if(res !== this.state.loadingStatus) {
+      this.setState({'loadingStatus': res});
+    }
   }
 
   render(){
