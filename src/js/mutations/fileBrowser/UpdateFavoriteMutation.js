@@ -104,7 +104,8 @@ export default function UpdateFavoriteMutation(
 
       updater: (store, response)=>{
 
-        const node = store.get(favorite.id)
+        const node = store.get(response.updateFavorite.updatedFavoriteEdge
+.node.id)
 
         node.setValue(updatedDescription, 'description')
         node.setValue(updatedIndex, 'index')

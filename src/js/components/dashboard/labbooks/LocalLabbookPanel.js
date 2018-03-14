@@ -28,7 +28,6 @@ export default class LocalLabbookPanel extends Component {
 
   componentWillMount() {
     const {environment} = this.props.edge.node
-
     let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
 
     this.setState({status: status, textStatus: status})
