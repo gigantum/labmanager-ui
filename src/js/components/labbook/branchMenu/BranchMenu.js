@@ -251,7 +251,6 @@ export default class UserNote extends Component {
             'remoteURL': ''
           })
         } else {
-          document.getElementById('modal__cover').classList.remove('hidden')
 
           self.setState({
             showLoginPrompt: true
@@ -277,11 +276,11 @@ export default class UserNote extends Component {
   _sync() {
     const status = store.getState().containerStatus.status
 
-    if((status === 'Stopped') || (status === 'Build Failed')){
+    if((status === 'Stopped') || (status === 'Build Failed') || (status === 'Does Not Exist')){
       let id = uuidv4()
       let self = this;
       this._checkSessionIsValid().then((response) => {
-        console.log(response)
+
         if (response.data) {
 
           if (response.data.userIdentity.isSessionValid) {
@@ -387,13 +386,17 @@ export default class UserNote extends Component {
   *  @return {}
   */
   _showCollaboratorsWarning(){
-    let {owner} = store.getState().routes
-    store.dispatch({
-      type: 'WARNING_MESSAGE',
-      payload: {
-        message: `Only ${owner} can add and remove collaborators in the labbook.`,
-      }
-    })
+    const {owner} = store.getState().routes
+    const username = localStorage.getItem('username')
+
+    if(owner !== username){
+      store.dispatch({
+        type: 'WARNING_MESSAGE',
+        payload: {
+          message: `Only ${owner} can add and remove collaborators in this labbook.`,
+        }
+      })
+    }
   }
   /**
   *  @param {}
@@ -401,23 +404,27 @@ export default class UserNote extends Component {
   *  @return {}
   */
   _toggleCollaborators() {
-    let self = this;
-    this._checkSessionIsValid().then((response) => {
-      if (response.data) {
+    if(this.state.canManageCollaborators){
+      let self = this;
+      this._checkSessionIsValid().then((response) => {
+        if (response.data) {
 
-        if (response.data.userIdentity.isSessionValid) {
+          if (response.data.userIdentity.isSessionValid) {
 
-          this.setState({ showCollaborators: !this.state.showCollaborators, newCollaborator: '' })
-          this.inputTitle.value = ''
-        } else {
+            this.setState({ showCollaborators: !this.state.showCollaborators, newCollaborator: '' })
+            this.inputTitle.value = ''
+          } else {
 
-          //auth.login()
-          self.setState({
-            showLoginPrompt: true
-          })
+            //auth.login()
+            self.setState({
+              showLoginPrompt: true
+            })
+          }
         }
-      }
-    })
+      })
+    }else{
+      this._showCollaboratorsWarning()
+    }
 
   }
   /**
@@ -719,13 +726,11 @@ export default class UserNote extends Component {
           <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
 
           <ul className="BranchMenu__list">
-            <li className="BranchMenu__item--collaborators">
+            <li className="BranchMenu__item--collaborators"
+              >
               <button
-                disabled={!this.state.canManageCollaborators}
                 onClick={() => this._toggleCollaborators()}
-                onMouseUp={() => this.showCollaboratorsWarning()}
-                className='BranchMenu__item--collaborators-button'>Collaborators</button>
-
+                className='BranchMenu__item--collaborators-button disabled'>Collaborators</button>
               <hr />
             </li>
             <li className="BranchMenu__item--new-branch">
