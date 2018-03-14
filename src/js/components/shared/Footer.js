@@ -208,9 +208,8 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
           {` (and ${otherMessages} other notifications)`}
         </div>
       }
-
-      {mostRecentMessage.error && mostRecentMessage.messageBody &&
         <div className="Footer__main-detatails">
+        {mostRecentMessage.error && mostRecentMessage.messageBody &&
           <ul>
             {
               mostRecentMessage.messageBody.map((error) => {
@@ -218,13 +217,12 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
               })
             }
           </ul>
+        }
           <i
             onClick={()=>{self._removeMessage(mostRecentMessage)}}
             className="Footer__message-dismiss fa">
           </i>
-      </div>
-      }
-
+        </div>
     </div>
   )
 }
