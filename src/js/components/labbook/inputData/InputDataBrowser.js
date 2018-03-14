@@ -16,6 +16,7 @@ class InputDataBrowser extends Component {
       'show': false,
       'message': '',
       'files': [],
+      'moreLoading': false,
       owner,
       labbookName
     }
@@ -28,6 +29,8 @@ class InputDataBrowser extends Component {
     if(this.props.input.allFiles &&
       this.props.input.allFiles.pageInfo.hasNextPage) {
         this._loadMore()
+    } else {
+      this.setState({'moreLoading': false});
     }
   }
 
@@ -39,6 +42,7 @@ class InputDataBrowser extends Component {
   */
 
   _loadMore() {
+    this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
      50, // Fetch the next 50 feed items
@@ -51,13 +55,15 @@ class InputDataBrowser extends Component {
          self.props.input.allFiles.pageInfo.hasNextPage) {
 
          self._loadMore()
-       }
+       } else {
+        this.setState({'moreLoading': false});
+      }
      }
    );
   }
 
   render(){
-
+    this.props.loadStatus(this.state.moreLoading);
     if(this.props.input && this.props.input.allFiles){
       let inputFiles = this.props.input.allFiles
       if(this.props.input.allFiles.edges.length === 0){

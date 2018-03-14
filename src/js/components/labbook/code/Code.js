@@ -11,6 +11,8 @@ class Code extends Component {
   	this.state = {selectedFiles: []};
     this._setSelectedFiles = this._setSelectedFiles.bind(this)
     this._clearSelectedFiles =  this._clearSelectedFiles.bind(this)
+    this._loadStatus = this._loadStatus.bind(this)
+
   }
   _setSelectedFiles(evt){
     let files = [...evt.target.files]
@@ -20,6 +22,13 @@ class Code extends Component {
   _clearSelectedFiles(){
     this.setState({'selectedFiles':[]})
   }
+
+  _loadStatus(res) {
+    if(res !== this.state.loadingStatus){
+      this.setState({'loadingStatus': res});
+    }
+  }
+
   render(){
 
     if(this.props.labbook){
@@ -41,6 +50,9 @@ class Code extends Component {
           </div>
           <div className="Code__header">
             <h5 className="Code__subtitle">Code Browser</h5>
+            {this.state.loadingStatus &&
+              <div className="Code__loading"></div>
+            }
             <div className="Code__toolbar">
               <p className="Code__import-text" id="Code__">
                 <label
@@ -65,6 +77,7 @@ class Code extends Component {
               labbookId={this.props.labbookId}
               codeId={this.props.labbook.code.id}
               code={this.props.labbook.code}
+              loadStatus={this._loadStatus}
             />
           </div>
         </div>

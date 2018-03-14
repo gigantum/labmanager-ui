@@ -14,6 +14,7 @@ class OutputDataBrowser extends Component {
       'show': false,
       'message': '',
       'files': [],
+      'moreLoading': false,
       owner,
       labbookName
     }
@@ -27,6 +28,8 @@ class OutputDataBrowser extends Component {
     if(this.props.output.allFiles &&
       this.props.output.allFiles.pageInfo.hasNextPage) {
         this._loadMore()
+    } else {
+      this.setState({'moreLoading': false});
     }
   }
 
@@ -37,18 +40,20 @@ class OutputDataBrowser extends Component {
     logs callback
   */
   _loadMore() {
+    this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
      50, // Fetch the next 50 feed items
      (response, error) => {
        if(error){
          console.error(error)
-         if(self.props.output.allFiles &&
-           self.props.output.allFiles.pageInfo.hasNextPage) {
-
-           self._loadMore()
-         }
        }
+       if(self.props.output.allFiles &&
+        self.props.output.allFiles.pageInfo.hasNextPage) {
+          self._loadMore()
+      } else {
+        this.setState({'moreLoading': false})
+      }
      }
    );
   }
@@ -60,6 +65,7 @@ class OutputDataBrowser extends Component {
 
   render(){
 
+    this.props.loadStatus(this.state.moreLoading);
     if(this.props.output && this.props.output.allFiles){
       let outputFiles = this.props.output.allFiles
       if(this.props.output.allFiles.edges.length === 0){
@@ -68,7 +74,6 @@ class OutputDataBrowser extends Component {
           pageInfo: this.props.output.allFiles.pageInfo
         }
       }
-
       return(
         <FileBrowserWrapper
           ref="OutputBrowser"
