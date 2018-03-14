@@ -202,8 +202,8 @@ export default class WizardModal extends React.Component {
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload: {
-              message: error[0] && error[0].message,
-              messageList: error
+              message: `An error occured while trying to create Labbook '${name}'.`,
+              messagesList: error
             }
           })
           this.setState({ modalBlur: false })

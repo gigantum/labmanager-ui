@@ -45,7 +45,6 @@
   flex: 1;
   align-items: center;
   @include flex(space-around, row);
-  justify-content: flex-end;
 }
 .Foooter__message-body {
   flex: 1;
