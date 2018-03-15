@@ -25,7 +25,7 @@ class OutputDataBrowser extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    if(this.props.output.allFiles &&
+    if(this.props.output && this.props.output.allFiles &&
       this.props.output.allFiles.pageInfo.hasNextPage) {
         this._loadMore()
     } else {
@@ -65,8 +65,8 @@ class OutputDataBrowser extends Component {
 
   render(){
 
-    this.props.loadStatus(this.state.moreLoading);
     if(this.props.output && this.props.output.allFiles){
+      this.props.loadStatus(this.state.moreLoading);
       let outputFiles = this.props.output.allFiles
       if(this.props.output.allFiles.edges.length === 0){
         outputFiles = {
@@ -89,7 +89,61 @@ class OutputDataBrowser extends Component {
         />
       )
     }else {
-      return(<div>No Files Found</div>)
+      return(
+        <div className="Code flex flex-row justify-center">
+          <div className="rendered-react-keyed-file-browser">
+            <div className="rendered-file-browser">
+              <div className="action-bar">
+                <input type="search" placeholder="Filter files" value="" />
+                <ul className="item-actions">
+                  <li>
+                    <a className="btn btn-primary btn-sm" href="#" role="button">
+                      <i className="fa fa-folder-o" aria-hidden="true" />
+                      Add Folder</a>
+                  </li>
+                </ul>
+              </div>
+              <div id="CodeBrowser_allFiles" className="files">
+                <table cellSpacing="0" cellPadding="0">
+                  <thead>
+                    <tr className="folder">
+                      <th>File</th>
+                      <th></th>
+                      <th className="size">Size</th>
+                      <th className="modified">Last Modified</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="file modified" draggable="true">
+                      <td className="name">
+                        <div>
+                          <div>
+                            <a href="#" download="download">
+                              <span className="FileBrowser__icon null" />
+                              No files
+                          </a>
+                          </div>
+                        </div>
+                      </td>
+                      <td width="30">
+                        <div className="Favorite__star--empty"></div>
+                      </td>
+                      <td className="size">0 B</td>
+                      <td className="modified">-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div className="DetailPanel hidden">
+            <div className="DetailPanel--close">X</div>
+            <p></p>
+            <p></p>
+          </div>
+        </div>
+      )
     }
   }
 }

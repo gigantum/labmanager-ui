@@ -103,7 +103,42 @@ class InputData extends Component {
         </div>
       )
     }else{
-      return(<Loader />)
+      return(
+        <div className="Code">
+        <div className="Code__header">
+          <h5 className="Code__subtitle">Input Files</h5>
+          <div className="Code__toolbar">
+            <a className="Code__filter">Favorites</a>
+            <a className="Code__filter">Most Recent</a>
+          </div>
+        </div>
+        <div className="Code__favorites loading">
+          <InputFavorites />
+        </div>
+        <div className="Code__header">
+          <h5 className="Code__subtitle">Input Browser</h5>
+          <div className="Code__toolbar loading">
+            <p className="Code__import-text" id="Code__">
+              <label
+                className="Code__import-file"
+                htmlFor="file__input">
+                Upload File
+              </label>
+              <input
+                id="file__input"
+                className="hidden"
+                type="file"
+                onChange={(evt)=>{this._setSelectedFiles(evt)}}
+              />
+              or Drag and Drop File Below
+            </p>
+          </div>
+        </div>
+        <div className="Code__file-browser loading">
+          <InputDataBrowser />
+        </div>
+      </div>
+      )
     }
   }
 }
