@@ -48,7 +48,7 @@ export default function AddCollaboratorMutation(
             type: 'ERROR_MESSAGE',
             payload:{
               message: `ERROR: Could not add Collaborator ${username}`,
-              messagesList: error
+              messageBody: error
             }
           })
         }

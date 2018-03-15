@@ -1,4 +1,3 @@
-
 export default {
     "code[class*=\"language-\"]": {
         "color": "#f3f5f7",

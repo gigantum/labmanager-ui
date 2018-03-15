@@ -89,7 +89,7 @@ export default function MoveLabbookFileMutation(
             type: 'ERROR_MESSAGE',
             payload:{
               message: `ERROR: Could not Move labbook file ${srcPath}`,
-              messagesList: error,
+              messageBody: error,
             }
           })
 

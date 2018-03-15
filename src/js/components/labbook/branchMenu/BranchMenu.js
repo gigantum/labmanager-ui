@@ -114,7 +114,7 @@ export default class UserNote extends Component {
                   type: 'ERROR_MESSAGE',
                   payload: {
                     message: "Problem Creating new branch, make sure you have a valid session and internet connection",
-                    messagesList: error
+                    messageBody: error
                   }
                 })
               }
@@ -305,7 +305,7 @@ export default class UserNote extends Component {
                     payload: {
                       id: id,
                       message: `Could not sync ${this.state.labbookName}`,
-                      messagesList: error,
+                      messageBody: error,
                       isLast: true,
                       error: true
                     }
@@ -449,7 +449,7 @@ export default class UserNote extends Component {
               type: 'ERROR_MESSAGE',
               payload: {
                 message: `Could not add collaborator`,
-                messagesList: error
+                messageBody: error
               }
             })
           } else {
@@ -478,7 +478,7 @@ export default class UserNote extends Component {
             type: 'ERROR_MESSAGE',
             payload: {
               message: `Could not remove collaborator`,
-              messagesList: error
+              messageBody: error
             }
           })
         }
@@ -561,7 +561,7 @@ export default class UserNote extends Component {
               type: 'ERROR_MESSAGE',
               payload: {
                 message: `${this.state.labbookName} failed to export `,
-                messagesList: errorArray
+                messageBody: errorArray
               }
             })
           }
@@ -573,7 +573,7 @@ export default class UserNote extends Component {
           type: 'ERROR_MESSAGE',
           payload: {
             message: 'Export Failed',
-            messagesList: error
+            messageBody: error
           }
         })
       }

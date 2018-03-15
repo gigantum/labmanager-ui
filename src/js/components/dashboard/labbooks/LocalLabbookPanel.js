@@ -91,7 +91,7 @@ export default class LocalLabbookPanel extends Component {
             type: 'ERROR_MESSAGE',
             payload:{
               message: `There was a problem starting ${this.state.labbookName}, go to LabBook and try again`,
-              messagesList: error
+              messageBody: error
             }
           })
           self.setState({textStatus: "Stopped", status: "Stopped"})
@@ -128,7 +128,7 @@ export default class LocalLabbookPanel extends Component {
             type: 'ERROR_MESSAGE',
             payload:{
               message: `There was a problem stopping ${this.state.labbookName} container`,
-              messagesList: error
+              messageBody: error
             }
           })
 

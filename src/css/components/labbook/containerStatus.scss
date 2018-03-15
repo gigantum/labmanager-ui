@@ -138,7 +138,7 @@
   border-radius: 12px 0 0 12px;
   position: absolute;
   bottom: 3px;
-  transition: bottom 0.5s;
+  transition: left 0.125s;
   left: -129px;
   color: white;
   text-align: center;
@@ -203,5 +203,5 @@
 }
 
 .ContainerStatus__button--bottom{
-  bottom: 5px
+  left: -128px;
 }
