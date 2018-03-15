@@ -4,6 +4,8 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import OutputDataBrowser from './OutputDataBrowser'
 import OutputFavorites from './OutputFavorites'
+import Loader from 'Components/shared/Loader'
+
 
 class OutputData extends Component {
   constructor(props){
@@ -92,7 +94,7 @@ class OutputData extends Component {
         </div>
       )
     }else{
-      return(<div>No Files Found</div>)
+      return(<Loader />)
     }
   }
 }

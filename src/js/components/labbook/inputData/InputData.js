@@ -4,6 +4,7 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import InputDataBrowser from './InputDataBrowser'
 import InputFavorites from './InputFavorites'
+import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
 
@@ -102,7 +103,7 @@ class InputData extends Component {
         </div>
       )
     }else{
-      return(<div>No Files Found</div>)
+      return(<Loader />)
     }
   }
 }

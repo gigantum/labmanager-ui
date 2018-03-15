@@ -13,6 +13,7 @@ import SideBar from 'Components/shared/SideBar';
 import Footer from 'Components/shared/Footer';
 import Prompt from 'Components/shared/Prompt';
 import Labbook from 'Components/labbook/Labbook';
+import Labbook2 from 'Components/labbook/Labbook2';
 import Loader from 'Components/shared/Loader'
 //
 import store from 'JS/redux/store'
@@ -185,7 +186,13 @@ export default class Routes extends Component {
                             }
                           }
                           else{
-                            return (<Loader />)
+                            return (<Labbook2
+                              key={labbookName}
+                              auth={auth}
+                              labbookName={labbookName}
+                              owner={owner}
+                              {...parentProps}
+                            />)
                           }
                         }
                       }

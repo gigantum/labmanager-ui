@@ -1,5 +1,6 @@
 .Overview {
   height: auto;
+  width: 100%;
   color: $romanSilver;
   font-weight: 100;
 
@@ -33,6 +34,15 @@
   white-space: pre-line;
   padding: 20px 0;
 }
+
+.Overview__description--loading {
+  @extend .Overview__description;
+  user-select: none;
+  color: transparent;
+  text-shadow: 0 0 10px #000;
+  margin-left: 5px;
+}
+
 
 .Overview__jupyter-button {
 

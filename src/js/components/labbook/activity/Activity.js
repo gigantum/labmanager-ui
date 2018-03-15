@@ -47,18 +47,19 @@ class Activity extends Component {
   *   add interval to poll for new activityRecords
   */
   componentDidMount() {
+    if(this.props.labbook){
+      let activityRecords = this.props.labbook.activityRecords
 
-    let activityRecords = this.props.labbook.activityRecords
+      window.addEventListener('scroll', this._handleScroll)
 
-    window.addEventListener('scroll', this._handleScroll)
+      if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
+        this._loadMore()
+      }
 
-    if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
-      this._loadMore()
-    }
+      if(activityRecords.edges && activityRecords.edges.length){
+        this._refetch()
 
-    if(activityRecords.edges && activityRecords.edges.length){
-      this._refetch()
-
+      }
     }
   }
 
@@ -175,13 +176,13 @@ class Activity extends Component {
   }
 
   render(){
-    let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
-
-    if(!this.props.labbook.activityRecords.pageInfo.hasNextPage){
-      isLoadingMore = false;
-    }
 
     if(this.props.labbook){
+      let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
+
+      if(!this.props.labbook.activityRecords.pageInfo.hasNextPage){
+        isLoadingMore = false;
+      }
       return(
         <div key={this.props.labbook} className='Activity'>
 

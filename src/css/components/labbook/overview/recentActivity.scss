@@ -47,20 +47,8 @@
   max-height: 100%;
 }
 
-@keyframes fluxuateLoad {
-    0% {
-      opacity: 0.1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    100% {
-      opacity: 0.1;
-    }
-
-}
 .RecentActivity__card--loading{
   @extend .RecentActivity__card;
-  opacity: 0.1;
-  animation: fluxuateLoad 3s infinite;
+  @extend .loading;
+  height: 200px;
 }

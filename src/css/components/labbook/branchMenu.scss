@@ -92,12 +92,13 @@
   background-size: 30px 30px;
 }
 
-.BranchMenu__button:hover {
+.BranchMenu__button:enabled:hover {
   border: 3px solid $romanSilver;
   color: $romanSilver;
   background: $white url('./../images/icons/ellipsis.svg') no-repeat no-repeat calc(100% - 10px) center;
   background-size: 30px 30px;
 }
+
 
 .BranchMenu__menu {
   position: absolute;

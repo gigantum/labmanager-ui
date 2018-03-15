@@ -4,6 +4,8 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import CodeBrowser from './CodeBrowser'
 import CodeFavorites from './CodeFavorites'
+import Loader from 'Components/shared/Loader'
+
 
 class Code extends Component {
   constructor(props){
@@ -83,7 +85,7 @@ class Code extends Component {
         </div>
       )
     }else{
-      return(<div>No Files Found</div>)
+      return(<Loader />)
     }
   }
 }

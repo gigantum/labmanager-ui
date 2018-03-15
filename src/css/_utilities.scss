@@ -175,3 +175,20 @@
   border-left: 1px solid $romanSilver;
   border-right: 1px solid $romanSilver;
 }
+
+@keyframes fluxuateLoad {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 5;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+
+.loading {
+  animation: fluxuateLoad 3s infinite;
+  opacity: 0.1;
+}

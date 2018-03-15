@@ -31,7 +31,7 @@ import Config from 'JS/config'
 
 let unsubscribe;
 
-class Labbook extends Component {
+export default class Labbook extends Component {
   constructor(props){
   	super(props);
 
@@ -210,7 +210,7 @@ class Labbook extends Component {
     updates branchOpen state
   */
   _toggleBranchesView(){
-    if(!this.state.isSticky){
+    if(!this.state.isSticky && this.props.labbook){
     store.dispatch({
       type: 'UPDATE_BRANCHES_VIEW',
       payload: {
@@ -225,9 +225,9 @@ class Labbook extends Component {
     const { isAuthenticated } = this.props.auth;
     const {labbookName} = this.props;
 
-    if(this.props.labbook){
+    if(isAuthenticated()){
 
-      const name = this.props.labbook.activeBranch ? this.props.labbook.activeBranch.name.replace(/-/g, ' ') : 'temp'
+      const name = this.props.labbook && this.props.labbook.activeBranch ? this.props.labbook.activeBranch.name.replace(/-/g, ' ') : labbookName.replace(/-/g, ' ')
 
       return(
         <div
@@ -241,7 +241,7 @@ class Labbook extends Component {
                 <div className="Labbook__row-container">
                  <div className="Labbook__column-container--flex-1">
                    <div className="Labbook__name-title">
-                     {this.props.labbook.owner + '/' + labbookName}
+                     {this.props.owner + '/' + labbookName}
                    </div>
 
                    <div className={(this.state.branchesOpen) ? 'Labbook__branch-title Labbook__branch-title--open' : 'Labbook__branch-title Labbook__branch-title--closed'}>
@@ -258,19 +258,11 @@ class Labbook extends Component {
 
                    <BranchMenu
                      history={this.props.history}
-                     collaborators={this.props.labbook.collaborators}
-                     canManageCollaborators={this.props.labbook.canManageCollaborators}
-                     defaultRemote={this.props.labbook.defaultRemote}
-                     labbookId={this.props.labbook.id}
-                     remoteUrl={this.props.labbook.overview.remoteUrl}
                     />
 
                    <ContainerStatus
                      ref="ContainerStatus"
-                     base={this.props.labbook.environment.base}
-                     containerStatus={this.props.labbook.environment.containerStatus}
-                     imageStatus={this.props.labbook.environment.imageStatus}
-                     labbookId={this.props.labbook.id}
+                     containerStatus='Loading'
                      setBuildingState={this._setBuildingState}
                      isBuilding={this.state.isBuilding}
                    />
@@ -281,11 +273,8 @@ class Labbook extends Component {
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
 
                 <Branches
-                  defaultRemote={this.props.labbook.defaultRemote}
                   branchesOpen={this.state.branchesOpen}
                   labbook={this.props.labbook}
-                  labbookId={this.props.labbook.id}
-                  activeBranch={this.props.labbook.activeBranch}
                 />
 
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
@@ -315,8 +304,6 @@ class Labbook extends Component {
                         return (<Overview
                           key={this.state.labbookName + '_overview'}
                           labbook={this.props.labbook}
-                          description={this.props.labbook.description}
-                          labbookId={this.props.labbook.id}
                           setBuildingState={this._setBuildingState}
                         />)
                       }}
@@ -330,8 +317,6 @@ class Labbook extends Component {
                             return (<Overview
                               key={this.state.labbookName + '_overview'}
                               labbook={this.props.labbook}
-                              description={this.props.labbook.description}
-
                             />)
                           }}
                         />
@@ -344,7 +329,6 @@ class Labbook extends Component {
                               key={this.state.labbookName + '_activity'}
                               labbook={this.props.labbook}
                               activityRecords={this.props.activityRecords}
-                              labbookId={this.props.labbook.id}
                               {...this.props}
 
                             />)
@@ -357,10 +341,9 @@ class Labbook extends Component {
                               <Environment
                                 key={this.state.labbookName + '_environment'}
                                 labbook={this.props.labbook}
-                                labbookId={this.props.labbook.id}
+                                containerStatus="Loading"
                                 setBuildingState={this._setBuildingState}
                                 containerStatus={this.refs.ContainerStatus}
-                                overview={this.props.labbook.overview}
                                 {...this.props}
                               />)
                           }}
@@ -370,7 +353,6 @@ class Labbook extends Component {
                           return (
                             <Code
                               labbook={this.props.labbook}
-                              labbookId={this.props.labbook.id}
                               setContainerState={this._setContainerState}
                             />)
                         }} />
@@ -379,7 +361,6 @@ class Labbook extends Component {
                           return (
                             <InputData
                               labbook={this.props.labbook}
-                              labbookId={this.props.labbook.id}
                             />)
                         }} />
 
@@ -387,7 +368,6 @@ class Labbook extends Component {
                           return (
                             <OutputData
                               labbook={this.props.labbook}
-                              labbookId={this.props.labbook.id}
                             />)
                         }} />
                       </Switch>
@@ -402,87 +382,8 @@ class Labbook extends Component {
         </div>
       )
 
-    }else{
-      if(isAuthenticated()){
-        return (<Loader />)
-      }else{
-        return (<Login auth={this.props.auth}/>)
-      }
+    } else{
+      return (<Login auth={this.props.auth}/>)
     }
   }
 }
-
-
-const LabbookFragmentContainer = createFragmentContainer(
-  Labbook,
-  {
-    labbook: graphql`
-      fragment Labbook_labbook on Labbook{
-          id
-          description
-          updatesAvailableCount
-          isRepoClean
-          defaultRemote
-          owner
-          activeBranch{
-            id
-            name
-            prefix
-            commit{
-              hash
-              shortHash
-              committedOn
-              id
-            }
-          }
-          environment{
-            containerStatus
-            imageStatus
-            base{
-              developmentTools
-            }
-          }
-
-          overview{
-            remoteUrl
-            numAptPackages
-            numConda2Packages
-            numConda3Packages
-            numPipPackages
-            numCustomDependencies
-          }
-
-          collaborators
-          canManageCollaborators
-
-          ...Environment_labbook
-          ...Overview_labbook
-          ...Activity_labbook
-          ...Code_labbook
-          ...InputData_labbook
-          ...OutputData_labbook
-          ...Branches_labbook
-
-      }`
-  }
-
-)
-
-const backend = (manager: Object) => {
-    const backend = HTML5Backend(manager),
-        orgTopDropCapture = backend.handleTopDropCapture;
-
-    backend.handleTopDropCapture = (e) => {
-
-        let datatransfer = e.dataTransfer.getData('data');
-
-        if(backend.currentNativeSource){
-          orgTopDropCapture.call(backend, e);
-          backend.currentNativeSource.item.dirContent = getFilesFromDragEvent(e, {recursive: true}); //returns a promise
-        }
-    };
-
-    return backend;
-}
-
-export default DragDropContext(backend)(LabbookFragmentContainer);

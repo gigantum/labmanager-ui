@@ -108,14 +108,6 @@ export default class FilePreview extends Component {
                     />
                   }
                 </div>
-
-
-
-
-
-
-
-
               </div>
               <div className="FilePreview__section">
                 <div className="FilePreview__title-container">
@@ -129,6 +121,7 @@ export default class FilePreview extends Component {
                 </div>
                 <p>Favorite Input Files</p>
                 <div className="FilePreview__list">
+                {console.log(props.labbook.input.favorites.edges)}
                   {
                     props.labbook.input.favorites &&
                     props.labbook.input.favorites.edges.length ? props.labbook.input.favorites.edges.map(edge =>{
@@ -173,7 +166,62 @@ export default class FilePreview extends Component {
 
           return(<div>{error.message}</div>)
         }else{
-          return(<Loader />)
+          return(
+            <div className="FilePreview">
+            <div className="FilePreview__section">
+              <div className="FilePreview__title-container">
+                <h5>Code</h5>
+                <Link
+                  to={{pathname: `../../../../labbooks/${owner}/${labbookName}/code`}}
+                  replace
+                >
+                  Code Details >
+                </Link>
+              </div>
+              <p>Favorite Code Files</p>
+              <div className="FilePreview__list--loading">
+                <FileEmpty
+                  icon="code"
+                  mainText="Loading Code Favorites"
+                  subText="View LabBook Code Details"
+                />
+              </div>
+            </div>
+            <div className="FilePreview__section">
+              <div className="FilePreview__title-container">
+                <h5>Input Data</h5>
+                <Link
+                  to={{pathname: `../../../../labbooks/${owner}/${labbookName}/inputData`}}
+                  replace
+                >
+                  Input Data Details >
+                </Link>
+              </div>
+              <p>Favorite Input Files</p>
+              <div className="FilePreview__list--loading">
+                <FileEmpty
+                  icon="inputData"
+                  mainText="Loading Input Favorites"
+                  subText="View LabBook Input Data Details"
+                />
+              </div>
+            </div>
+            <div className="FilePreview__section">
+              <div className="FilePreview__title-container">
+                <h5>Ouput Data</h5>
+                <Link
+                  to={{pathname: `../../../../labbooks/${owner}/${labbookName}/outputData`}}
+                  replace
+                >
+                  Output Data Details >
+                </Link>
+              </div>
+              <p>Favorite Output Files</p>
+              <div className="FilePreview__list--loading">
+              </div>
+            </div>
+          </div>
+          )
         }
       }}
 
