@@ -7,17 +7,18 @@ export default class ActivityDefaultList extends Component {
   	super(props);
 
     let show = true;
+    if(props.edge) {
+      props.edge.node.detailObjects.forEach((detail) => {
+        if(detail.show){
+          show = false;
+        }
+      });
 
-    props.edge.node.detailObjects.forEach((detail) => {
-      if(detail.show){
-        show = false;
+      this.state = {
+        show: props.categorizedDetails.detailObjects[this.props.itemKey][0].show,
+        showEllipsis: show,
+        showDetails: this.props.show
       }
-    });
-
-    this.state = {
-      show: props.categorizedDetails.detailObjects[this.props.itemKey][0].show,
-      showEllipsis: show,
-      showDetails: this.props.show
     }
     this._toggleDetailsList =  this._toggleDetailsList.bind(this)
   }
@@ -70,41 +71,52 @@ export default class ActivityDefaultList extends Component {
     return title + ' (' + this.props.categorizedDetails.detailObjects[this.props.itemKey].length + ')'
   }
 
-  render(){
-
-    let keys = this.props.categorizedDetails.detailKeys[this.props.itemKey],
+  render() {
+    if (this.props.edge) {
+      let keys = this.props.categorizedDetails.detailKeys[this.props.itemKey],
         type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase();
-    return(
+      return (
 
         <div className="ActivityDetail__details">
           {
             this.state.showDetails &&
             <div
-              onClick={() => {this._toggleDetailsList()}}
+              onClick={() => { this._toggleDetailsList() }}
               className={this.state.show ? 'ActivityDetail__details-title ActivityDetail__details-title--open' : 'ActivityDetail__details-title ActivityDetail__details-title--closed'}>
-
               <div className="ActivityDetail__header">
-                <div className={'fa ActivityDetail__badge ActivityDetail__badge--' + type }>
+                <div className={'fa ActivityDetail__badge ActivityDetail__badge--' + type}>
                 </div>
                 <div className="ActivityDetail__content">
                   <p>{this._formatTitle(this.props.itemKey)}</p>
                 </div>
               </div>
-
             </div>
           }
           {this.state.show &&
             <div className="ActivtyDetail_list">
-                <DetailRecords keys={keys}/>
+              <DetailRecords keys={keys} />
             </div>
           }
-
           {this.props.showEllipsis &&
-
-            <div className="ActivityCard__ellipsis ActivityCard__ellipsis-detail" onClick={()=>{this._toggleDetailsView()}}></div>
-
+            <div className="ActivityCard__ellipsis ActivityCard__ellipsis-detail" onClick={() => { this._toggleDetailsView() }}></div>
           }
         </div>
-    )
+      )
+    } else {
+      return (
+        <div className="ActivityDetail__details">
+          <div
+            className={'ActivityDetail__details-title ActivityDetail__details-title--closed'}>
+            <div className="ActivityDetail__header">
+              <div className={'fa ActivityDetail__badge ActivityDetail__badge--' + this.props.iconKey }>
+              </div>
+              <div className="ActivityDetail__content">
+                <p>{this.props.itemKey}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
   }
 }

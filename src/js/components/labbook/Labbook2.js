@@ -250,7 +250,7 @@ export default class Labbook extends Component {
                      </div>
                      <div
                        onClick={()=> this._toggleBranchesView()}
-                      className="Labbook__branch-toggle"></div>
+                      className="Labbook__branch-toggle loading"></div>
                    </div>
 
                 </div>
@@ -262,7 +262,7 @@ export default class Labbook extends Component {
 
                    <ContainerStatus
                      ref="ContainerStatus"
-                     containerStatus='Loading'
+                     containerStatus='loading'
                      setBuildingState={this._setBuildingState}
                      isBuilding={this.state.isBuilding}
                    />
@@ -341,9 +341,8 @@ export default class Labbook extends Component {
                               <Environment
                                 key={this.state.labbookName + '_environment'}
                                 labbook={this.props.labbook}
-                                containerStatus="Loading"
+                                containerStatus="loading"
                                 setBuildingState={this._setBuildingState}
-                                containerStatus={this.refs.ContainerStatus}
                                 {...this.props}
                               />)
                           }}

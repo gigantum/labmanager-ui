@@ -614,6 +614,9 @@ export default class UserNote extends Component {
     let syncModalCSS = classNames({
       'hidden': !this.state.forceSyncModalVisible
     })
+    let loadingCSS = classNames({
+      ' loading': !this.props.labbookId
+    })
 
     return (
       <div className="BranchMenu flex flex--column">
@@ -721,7 +724,7 @@ export default class UserNote extends Component {
               </button>
           </div>
         </div>
-          <button disabled={!this.props.labbookId} onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
+          <button onClick={()=>{this._openMenu()}} className={'BranchMenu__button' + loadingCSS}>Actions</button>
           <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
           <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
 

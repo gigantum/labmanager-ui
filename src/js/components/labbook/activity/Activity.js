@@ -266,7 +266,35 @@ class Activity extends Component {
       )
     }else{
       return(
-        <Loader />
+        <div className='Activity loading'>
+          <div className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
+            <div className="Activity__sizer flex-1-0-auto">
+              <div>
+                <div className="Activity__date-tab flex flex--column justify--space-around">
+                  <div className="Activity__date-day"></div>
+                  <div className="Activity__date-month"></div>
+                </div>
+                <div className="UserActivity__container">
+                  <div className="Activity__user-note">
+                    <div className={this.state.modalVisible ? 'Activity__user-note--remove' : 'Activity__user-note--add'}></div>
+                    <h5>Add Note</h5>
+                  </div>
+                  <div className={this.state.modalVisible ? 'Activity__add ActivityCard' : 'hidden'}>
+                    {
+                      (this.state.modalVisible) &&
+                      <UserNote
+                        key="UserNote"
+                      />
+                    }
+                  </div>
+                </div>
+                <div>
+                  <ActivityCard />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )
     }
   }

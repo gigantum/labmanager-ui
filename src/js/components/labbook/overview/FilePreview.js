@@ -121,7 +121,6 @@ export default class FilePreview extends Component {
                 </div>
                 <p>Favorite Input Files</p>
                 <div className="FilePreview__list">
-                {console.log(props.labbook.input.favorites.edges)}
                   {
                     props.labbook.input.favorites &&
                     props.labbook.input.favorites.edges.length ? props.labbook.input.favorites.edges.map(edge =>{
@@ -179,12 +178,10 @@ export default class FilePreview extends Component {
                 </Link>
               </div>
               <p>Favorite Code Files</p>
-              <div className="FilePreview__list--loading">
-                <FileEmpty
-                  icon="code"
-                  mainText="Loading Code Favorites"
-                  subText="View LabBook Code Details"
-                />
+              <div className="FilePreview__list loading">
+                <FileCard />
+                <FileCard />
+                <FileCard />
               </div>
             </div>
             <div className="FilePreview__section">
@@ -198,12 +195,10 @@ export default class FilePreview extends Component {
                 </Link>
               </div>
               <p>Favorite Input Files</p>
-              <div className="FilePreview__list--loading">
-                <FileEmpty
-                  icon="inputData"
-                  mainText="Loading Input Favorites"
-                  subText="View LabBook Input Data Details"
-                />
+              <div className="FilePreview__list loading">
+                <FileCard />
+                <FileCard />
+                <FileCard />
               </div>
             </div>
             <div className="FilePreview__section">
@@ -217,7 +212,10 @@ export default class FilePreview extends Component {
                 </Link>
               </div>
               <p>Favorite Output Files</p>
-              <div className="FilePreview__list--loading">
+              <div className="FilePreview__list loading">
+                <FileCard />
+                <FileCard />
+                <FileCard />
               </div>
             </div>
           </div>

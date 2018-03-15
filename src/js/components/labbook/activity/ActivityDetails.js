@@ -6,10 +6,12 @@ import ActivityDetailList from './ActivityDetailList'
 export default class ActivityCard extends Component {
   constructor(props){
 
-  	super(props);
-    this.state = {
-      showExtraInfo: props.node.show,
-      showEllispsis: !props.node.show
+    super(props);
+    if (props.node) {
+      this.state = {
+        showExtraInfo: props.node.show,
+        showEllispsis: !props.node.show
+      }
     }
 
     this._toggleExtraInfo = this._toggleExtraInfo.bind(this)
@@ -64,27 +66,52 @@ export default class ActivityCard extends Component {
     this.setState({'showEllispsis': false})
   }
   render(){
-
-    const categorizedDetails = this._catagorizeDetails(this.props.node);
-    return(
-      <div className="ActivityDetail">
-        {
-          Object.keys(categorizedDetails.detailObjects).map((key, index) => {
-            return(
-              <ActivityDetailList
-                hideElipsis={this._hideElipsis}
-                edge={this.props.edge}
-                categorizedDetails={categorizedDetails}
-                itemKey={key}
-                key={key + index}
-                siblingCount={this.props.node.detailObjects.length}
-                show={this.props.show}
-                showEllispsis={this.state.showEllispsis}
-              />
-            )
-          })
-        }
-      </div>
-    )
+    if (this.props.node) {
+      const categorizedDetails = this._catagorizeDetails(this.props.node);
+      // console.log(categorizedDetails.detailKeys)
+      return(
+        <div className="ActivityDetail">
+          {
+            Object.keys(categorizedDetails.detailObjects).map((key, index) => {
+              return(
+                <ActivityDetailList
+                  hideElipsis={this._hideElipsis}
+                  edge={this.props.edge}
+                  categorizedDetails={categorizedDetails}
+                  itemKey={key}
+                  key={key + index}
+                  siblingCount={this.props.node.detailObjects.length}
+                  show={this.props.show}
+                  showEllispsis={this.state.showEllispsis}
+                />
+              )
+            })
+          }
+        </div>
+      )
+    } else {
+      return(
+        <div className="ActivityDetail">
+          <ActivityDetailList
+            iconKey="result"
+            hideElipsis={this._hideElipsis}
+            itemKey="Result (2)"
+            showEllispsis={false}
+          />
+          <ActivityDetailList
+            iconKey="code_executed"
+            hideElipsis={this._hideElipsis}
+            itemKey="Code Executed (1)"
+            showEllispsis={false}
+          />
+          <ActivityDetailList
+            iconKey="output_data"
+            hideElipsis={this._hideElipsis}
+            itemKey="Output data (2)"
+            showEllispsis={false}
+          />
+        </div>
+      )
+    }
   }
 }

@@ -9,10 +9,6 @@
   .FilePreview__list {
     @include flex(space-between,row);
   }
-  .FilePreview__list--loading {
-    @include flex(space-between,row);
-    @extend .loading;
-  }
 
   .FileCard {
     @extend .card;

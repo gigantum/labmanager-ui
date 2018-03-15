@@ -42,15 +42,16 @@ class CustomDependencies extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-
-    if(this.props.environment.customDependencies.pageInfo.hasNextPage){
-      this._loadMore() //routes query only loads 2, call loadMore
+    if(this.props.environment) {
+      if(this.props.environment.customDependencies.pageInfo.hasNextPage){
+        this._loadMore() //routes query only loads 2, call loadMore
+      }
     }
+      unsubscribe = store.subscribe(() =>{
 
-    unsubscribe = store.subscribe(() =>{
+        this.storeDidUpdate(store.getState().environment)
+      })
 
-      this.storeDidUpdate(store.getState().environment)
-    })
   }
 
   /**
@@ -265,11 +266,8 @@ class CustomDependencies extends Component {
 
 
   render(){
-
-    const {customDependencies} = this.props.environment;
-
-
-    if (customDependencies) {
+    if (this.props.environment && this.props.environment.customDependencies) {
+      const {customDependencies} = this.props.environment;
       const viewContainerCss = classNames({
         'CustomDependencies__view-container': true,
         'CustomDependencies__view-container--no-height': !this.state.viewContainerVisible
@@ -365,9 +363,76 @@ class CustomDependencies extends Component {
         </div>
 
       )
-    }
-  }
+    } else {
+      return(
+        <div className="CustomDependencies">
 
+          <div className="Environment__header-container">
+            <h4 className="CustomDependencies__header">
+              Custom Dependencies
+              </h4>
+          </div>
+          <div className="CustomDependencies__card loading">
+            <div className="CustomDependencies__add-dependencies">
+              <button
+                onClick={() => { this._toggleViewContainer() }}
+                className={'CustomDependencies__button--flat'}>
+                Add Dependencies</button>
+              <div className={'CustomDependencies__view-container--no-height'}>
+                <CustomDependenciesDropdown
+                  addDependency={this._addDependency}
+                  removeDependency={this._removeDependency}
+                />
+              </div>
+            </div>
+
+            <div className="CustomDependencies__table--container">
+              <table className="CustomDependencies__table">
+                <thead>
+                  <tr>
+                    <th>Dependency Name</th>
+                    <th>Current</th>
+                    <th>Latest</th>
+                    <th>Installed By</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    className="CustomDependencies__table-row loading-text">
+                    <td>matplotlib</td>
+                    <td>v.2.0.0</td>
+                    <td>v2.2.0rc1</td>
+                    <td>User</td>
+                    <td width="60">
+                      <button
+                        className="CustomDependencies__button--round CustomDependencies__button--remove"
+                      >
+                    </button>
+                    </td>
+                  </tr>
+                  <tr
+                    className="CustomDependencies__table-row loading-text">
+                    <td>networkx</td>
+                    <td>v.2.1</td>
+                    <td>v2.1</td>
+                    <td>User</td>
+                    <td width="60">
+                      <button
+                        className="CustomDependencies__button--round CustomDependencies__button--remove"
+                      >
+                    </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+  }
 
 }
 
