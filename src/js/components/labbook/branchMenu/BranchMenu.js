@@ -29,11 +29,9 @@ export default class UserNote extends Component {
     const { owner, labbookName } = store.getState().routes
     this.state = {
       'addNoteEnabled': false,
-      'remoteURL': '',
       'newBranchName': '',
       'isValid': true,
       'createBranchVisible': false,
-      'addRemoteVisible': false,
       'addedRemoteThisSession': !(this.props.defaultRemote === null),
       'showCollaborators': false,
       'newCollaborator': '',
@@ -177,22 +175,11 @@ export default class UserNote extends Component {
   }
 
   /**
-  *  @param {event} evt
-  *  toggles open menu state
-  *  @return {string}
-  */
-  _updateRemote(evt) {
-    this.setState({
-      remoteURL: evt.target.value
-    })
-  }
-
-  /**
   *  @param {}
   *  adds remote url to labbook
   *  @return {string}
   */
-  _addRemote() {
+  _publishLabbook() {
     let id = uuidv4()
     let self = this;
     this._checkSessionIsValid().then((response) => {
@@ -212,13 +199,13 @@ export default class UserNote extends Component {
             }
           })
 
-          if (self.state.remoteURL.length > -1) {
+          if (self.state.remoteUrl) {
             PublishLabbookMutation(
               self.state.owner,
               self.state.labbookName,
               self.props.labbookId,
               (response, error) => {
-              
+
                 if (response.publishLabbook && !response.publishLabbook.success) {
                   if(error){
                     store.dispatch({
@@ -257,7 +244,7 @@ export default class UserNote extends Component {
           }
 
           self.setState({
-            'remoteURL': ''
+            'remoteUrl': ''
           })
         } else {
 
@@ -630,7 +617,7 @@ export default class UserNote extends Component {
           <div
             onClick={() => { this._closeLoginPromptModal() }}
             className="BranchModal--close"></div>
-          <LoginPrompt closeModal={this._closeLoginPromptModal} />
+            <LoginPrompt closeModal={this._closeLoginPromptModal} />
         </div>
 
         <div className={deleteModalCSS}>
@@ -685,51 +672,28 @@ export default class UserNote extends Component {
 
         </div>
         <div
-
-          className={this.state.createBranchVisible ? 'BranchModal' : 'hidden'}>
-          <div
-            onClick={() => { this._toggleModal('createBranchVisible') }}
-            className="BranchModal--close">
-          </div>
-          <h4 className="BranchModal__header--new-branch">New Branch</h4>
-          <hr />
-          <input
-            className="BranchCard__name-input"
-            onKeyUp={(evt) => { this._setNewBranchName(evt) }}
-            type="text"
-            placeholder="Branch name"
-          />
-          <p className={!this.state.isValid ? 'Branch__error error' : 'Branch__error visibility-hidden'}> Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. my-branch-name)</p>
-          <button
+            className={this.state.createBranchVisible ? 'BranchModal' : 'hidden'}>
+            <div
+              onClick={() => { this._toggleModal('createBranchVisible') }}
+              className="BranchModal--close">
+            </div>
+            <h4 className="BranchModal__header--new-branch">New Branch</h4>
+            <hr />
+            <input
+              className="BranchCard__name-input"
+              onKeyUp={(evt) => { this._setNewBranchName(evt) }}
+              type="text"
+              placeholder="Branch name"
+            />
+            <p className={!this.state.isValid ? 'Branch__error error' : 'Branch__error visibility-hidden'}> Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. my-branch-name)</p>
+            <button
             className="BranchCard__create-branch"
             disabled={(this.state.newBranchName.length === 0) && this.state.isValid}
             onClick={() => { this._createNewBranch(this.state.newBranchName) }}>
             Create Branch
             </button>
-        </div>
-
-        <div
-          className={this.state.addRemoteVisible ? 'BranchModal' : 'hidden'}>
-          <div className="BranchMenu__add-remote-container">
-            <div
-              onClick={() => { this._toggleModal('addRemoteVisible') }}
-              className="BranchModal--close">
-            </div>
-            <input
-              type="text"
-              placeholder="Paste remote address here"
-              onKeyUp={(evt) => { this._updateRemote(evt) }}
-              onChange={(evt) => { this._updateRemote(evt) }}
-            />
-            <button
-              disabled={(this.state.remoteURL.length === 0)}
-              onClick={() => this._addRemote()}
-
-            >
-              Add Remote
-            </button>
           </div>
-        </div>
+
           <button onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
           <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
           <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
@@ -772,7 +736,7 @@ export default class UserNote extends Component {
               <button
                 disabled={this.state.publishDisabled}
                 className="BranchMenu__remote-button"
-                onClick={() => { this._addRemote() }}
+                onClick={() => { this._publishLabbook() }}
               >
                 Publish
                 </button>
@@ -791,7 +755,6 @@ export default class UserNote extends Component {
             }
 
             {
-
               this.state.remoteUrl &&
               <div>
                 <hr className="BranchMenu__line"/>
