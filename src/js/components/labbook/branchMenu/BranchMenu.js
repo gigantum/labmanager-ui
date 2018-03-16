@@ -42,6 +42,8 @@ export default class UserNote extends Component {
       'exporting': false,
       'deleteModalVisible': false,
       'forceSyncModalVisible': false,
+      'remoteUrl': this.props.remoteUrl,
+      'publishDisabled': false,
       owner,
       labbookName
     }
@@ -198,7 +200,7 @@ export default class UserNote extends Component {
 
         if (response.data.userIdentity.isSessionValid) {
 
-          self.setState({ menuOpen: false })
+          self.setState({ menuOpen: false, 'publishDisabled': true})
 
           store.dispatch({
             type: 'MULTIPART_INFO_MESSAGE',
@@ -215,17 +217,22 @@ export default class UserNote extends Component {
               self.state.owner,
               self.state.labbookName,
               self.props.labbookId,
-              (error) => {
-                if (error) {
-
-                  store.dispatch({
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                      id: id,
-                      message: 'Publish failed',
-                      messageList: error,
-                      error: true
-                    }
+              (response, error) => {
+              
+                if (response.publishLabbook && !response.publishLabbook.success) {
+                  if(error){
+                    store.dispatch({
+                      type: 'MULTIPART_INFO_MESSAGE',
+                      payload: {
+                        id: id,
+                        message: 'Publish failed',
+                        messageList: error,
+                        error: true
+                      }
+                    })
+                  }
+                  self.setState({
+                    publishDisabled: false
                   })
                 } else {
 
@@ -240,7 +247,9 @@ export default class UserNote extends Component {
                   })
                   self.setState({
                     addedRemoteThisSession: true,
-                    canManageCollaborators: true
+                    canManageCollaborators: true,
+                    remoteUrl: `https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`
+
                   })
                 }
               }
@@ -718,7 +727,7 @@ export default class UserNote extends Component {
 
             >
               Add Remote
-              </button>
+            </button>
           </div>
         </div>
           <button onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
@@ -761,6 +770,7 @@ export default class UserNote extends Component {
           {!this.state.addedRemoteThisSession &&
             <div className="BranchMenu__publish">
               <button
+                disabled={this.state.publishDisabled}
                 className="BranchMenu__remote-button"
                 onClick={() => { this._addRemote() }}
               >
@@ -782,11 +792,15 @@ export default class UserNote extends Component {
 
             {
 
-              this.props.remoteUrl &&
+              this.state.remoteUrl &&
               <div>
                 <hr className="BranchMenu__line"/>
                 <div className="BranchMenu__copy-remote">
-                  <input id="BranchMenu-copy" className="BranchMenu__input" defaultValue={this.props.remoteUrl} type="text" />
+                  <input
+                    id="BranchMenu-copy"
+                    className="BranchMenu__input"
+                    defaultValue={this.state.remoteUrl}
+                    type="text" />
                   <button onClick={()=> this._copyRemote()} className="BranchMenu__copy-button fa fa-clone"></button>
                 </div>
               </div>

@@ -224,9 +224,9 @@ class Labbook extends Component {
 
   render(){
 
-    const { isAuthenticated } = this.props.auth;
-    const {labbookName} = this.props;
-    console.trace('render labbook')
+    const { isAuthenticated } = this.props.auth
+    const {labbookName} = this.props
+
     if(this.props.labbook){
 
       const name = this.props.labbook.activeBranch ? this.props.labbook.activeBranch.name.replace(/-/g, ' ') : 'temp'

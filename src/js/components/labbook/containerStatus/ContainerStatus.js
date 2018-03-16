@@ -53,13 +53,6 @@ export default class ContainerStatus extends Component {
     window.removeEventListener("click", this._closePopupMenus)
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    // console.log(nextProps)
-    // this.setState({
-    //   'containerStatus': nextProps.containerStatus,
-    //   'imageStatus': nextProps.imageStatus
-    // })
-  }
 
   componentDidUpdate(prevProps, prevState) {
     if(prevState.secondsElapsed !== this.state.secondsElapsed){
