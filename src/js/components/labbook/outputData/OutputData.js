@@ -104,7 +104,9 @@ class OutputData extends Component {
             </div>
           </div>
           <div className="Code__favorites loading">
-            <OutputFavorites />
+            <OutputFavorites
+              output={null}
+            />
           </div>
           <div className="Code__header">
             <h5 className="Code__subtitle">Output Browser</h5>
@@ -126,7 +128,9 @@ class OutputData extends Component {
             </div>
           </div>
           <div className="Code__file-browser loading">
-            <OutputDataBrowser/>
+            <OutputDataBrowser
+              output={null}
+            />
           </div>
         </div>
       )

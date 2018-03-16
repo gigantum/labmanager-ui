@@ -113,7 +113,9 @@ class InputData extends Component {
           </div>
         </div>
         <div className="Code__favorites loading">
-          <InputFavorites />
+          <InputFavorites
+            input={null}
+          />
         </div>
         <div className="Code__header">
           <h5 className="Code__subtitle">Input Browser</h5>
@@ -135,7 +137,9 @@ class InputData extends Component {
           </div>
         </div>
         <div className="Code__file-browser loading">
-          <InputDataBrowser />
+          <InputDataBrowser
+            input={null}
+          />
         </div>
       </div>
       )

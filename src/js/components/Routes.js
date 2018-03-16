@@ -190,6 +190,7 @@ export default class Routes extends Component {
                               key={labbookName}
                               auth={auth}
                               labbookName={labbookName}
+                              labbook={null}
                               owner={owner}
                               {...parentProps}
                             />)

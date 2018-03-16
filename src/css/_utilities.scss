@@ -188,6 +188,27 @@
   }
 }
 
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spin-square {
+  25% { border-top: 3px solid $romanSilver;
+        border-right: 3px solid $turquise
+      }
+  50% { border-right: 3px solid $romanSilver;
+        border-bottom: 3px solid $turquise
+      }
+  75% { border-bottom: 3px solid $romanSilver;
+        border-left: 3px solid $turquise
+      }
+  100% { border-left: 3px solid $romanSilver;
+        border-top: 3px solid $turquise
+  }
+}
+
+
 .loading {
   animation: fluxuateLoad 3s infinite;
   opacity: 0.1;

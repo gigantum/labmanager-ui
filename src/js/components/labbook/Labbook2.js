@@ -262,7 +262,7 @@ export default class Labbook extends Component {
 
                    <ContainerStatus
                      ref="ContainerStatus"
-                     containerStatus='loading'
+                     containerStatus='Loading'
                      setBuildingState={this._setBuildingState}
                      isBuilding={this.state.isBuilding}
                    />
@@ -341,7 +341,7 @@ export default class Labbook extends Component {
                               <Environment
                                 key={this.state.labbookName + '_environment'}
                                 labbook={this.props.labbook}
-                                containerStatus="loading"
+                                containerStatus="Loading"
                                 setBuildingState={this._setBuildingState}
                                 {...this.props}
                               />)

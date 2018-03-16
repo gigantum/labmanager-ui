@@ -54,11 +54,13 @@ class Overview extends Component {
     window.open('http://localhost:8888', '_blank')
   }
   render(){
-    let recentActivity, environment, overview;
+    let recentActivity = null,
+        environment = null,
+        overview = null;
     let placeholderText = 'At macroscopic scales, the human connectome comprises anatomically distinct brain areas, the structural pathways connecting them and their functional interactions. Annotation of phenotypic associations with variation in the connectome and cataloging of neurophenotypes promise to transform our understanding of the human brain. In this Review, we provide a survey of magnetic resonance imaging–based measurements of functional and structural connectivity. We highlight emerging areas of development and inquiry and emphasize the importance of integrating structural and functional perspectives on brain architecture.'
     let textCSS = classNames({
       'Overview__description': this.props.description,
-      'Overview__description loading-text': !this.props.description
+      'Overview__description loading-text loading': !this.props.description
     });
     if(this.props.labbook){
       recentActivity = this.props.labbook.overview.recentActivity;

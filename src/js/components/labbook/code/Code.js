@@ -96,7 +96,9 @@ class Code extends Component {
             </div>
           </div>
           <div className="Code__favorites loading">
-            <CodeFavorites />
+            <CodeFavorites
+              code={null}
+            />
           </div>
           <div className="Code__header">
             <h5 className="Code__subtitle">Code Browser</h5>
@@ -118,7 +120,9 @@ class Code extends Component {
             </div>
           </div>
           <div className="Code__file-browser loading">
-            <CodeBrowser />
+            <CodeBrowser
+              code={null}
+            />
           </div>
         </div>
       )
