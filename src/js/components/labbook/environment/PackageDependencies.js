@@ -163,30 +163,40 @@ class PackageDependencies extends Component {
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
 
-    if(canEditEnvironment){
-      const {labbookName, owner} = store.getState().routes
-      const {environmentId} = this.props
-      const clinetMutationId = uuidv4()
-      let self = this
+    if(navigator.onLine){
+      if(canEditEnvironment){
+        const {labbookName, owner} = store.getState().routes
+        const {environmentId} = this.props
+        const clinetMutationId = uuidv4()
+        let self = this
 
-      RemovePackageComponentMutation(
-        labbookName,
-        owner,
-        node.manager,
-        node.package,
-        node.id,
-        clinetMutationId,
-        environmentId,
-        'PackageDependencies_packageDependencies',
-        (response, error) => {
-          if(error){
-            console.log(error)
+        RemovePackageComponentMutation(
+          labbookName,
+          owner,
+          node.manager,
+          node.package,
+          node.id,
+          clinetMutationId,
+          environmentId,
+          'PackageDependencies_packageDependencies',
+          (response, error) => {
+            if(error){
+              console.log(error)
+            }
+            self.props.buildCallback()
           }
-          self.props.buildCallback()
+        )
+      }else{
+        this._promptUserToCloseContainer()
+      }
+    } else {
+      store.dispatch({
+        type: 'ERROR_MESSAGE',
+        payload:{
+          message: `Cannot remove package at this time.`,
+          messageBody: [{message: 'An internet connection is required to modify the environment.'}]
         }
-      )
-    }else{
-      this._promptUserToCloseContainer()
+      })
     }
   }
   /**
@@ -234,6 +244,7 @@ class PackageDependencies extends Component {
   *  updates packages in state
   */
   _addStatePackage(){
+    if(navigator.onLine){
       let packages = this.state.packages
       const {packageName, version} = this.state
       const manager = this.state.selectedTab
@@ -283,7 +294,22 @@ class PackageDependencies extends Component {
 
       this.inputPackageName.value = ""
       this.inputVersion.value = ""
+    } else {
+      this._toggleAddPackageMenu();
+      this.setState({
+        packageName: '',
+        version: '',
 
+      });
+      store.dispatch({
+        type: 'ERROR_MESSAGE',
+        payload:{
+          message: `Cannot add package at this time.`,
+          messageBody: [{message: 'An internet connection is required to modify the environment.'}]
+        }
+      })
+
+    }
   }
 
   /**

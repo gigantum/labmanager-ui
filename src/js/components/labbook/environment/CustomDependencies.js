@@ -36,6 +36,7 @@ class CustomDependencies extends Component {
     this._addDependency = this._addDependency.bind(this)
     this._addCustomDepenedenciesMutation = this._addCustomDepenedenciesMutation.bind(this)
     this._removeDependencyMuation = this._removeDependencyMuation.bind(this)
+    this._toggleViewContainer = this._toggleViewContainer.bind(this)
   }
 
   /*
@@ -301,6 +302,7 @@ class CustomDependencies extends Component {
                 <CustomDependenciesDropdown
                   addDependency={this._addDependency}
                   removeDependency={this._removeDependency}
+                  toggleContainer={this._toggleViewContainer}
                 />
 
                 <div className="CustomDependencies__table-container">
