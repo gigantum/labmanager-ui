@@ -1,5 +1,6 @@
 //vendor
 import React, { Component } from 'react'
+import classNames from 'classnames'
 //images
 import userSVG from 'Images/icons/user.svg'
 //components
@@ -52,8 +53,12 @@ export default class ActivityCard extends Component {
         node: node
       }
     }
+    let activityCardCSS = classNames({
+      'ActivityCard card' : this.state.showExtraInfo,
+      'ActivityCard--collapsed card': !this.state.showExtraInfo
+    })
     return(
-      <div className={this.state.showExtraInfo ? 'ActivityCard card': 'ActivityCard--collapsed card'}>
+      <div className={activityCardCSS}>
         <div className={'fa ActivityCard__badge ActivityCard__badge--' + type}>
         </div>
         <div className="ActivityCard__content">
