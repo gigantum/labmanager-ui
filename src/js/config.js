@@ -38,6 +38,7 @@ const CONFIG = {
       'gitkeep'
     ]
   },
+  'placeholderText': 'At macroscopic scales, the human connectome comprises anatomically distinct brain areas, the structural pathways connecting them and their functional interactions. Annotation of phenotypic associations with variation in the connectome and cataloging of neurophenotypes promise to transform our understanding of the human brain. In this Review, we provide a survey of magnetic resonance imaging–based measurements of functional and structural connectivity. We highlight emerging areas of development and inquiry and emphasize the importance of integrating structural and functional perspectives on brain architecture.',
 
   containerStatus:{
     canEditEnvironment: (status)=> {

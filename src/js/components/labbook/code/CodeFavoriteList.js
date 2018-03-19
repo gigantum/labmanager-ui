@@ -52,7 +52,7 @@ class CodeFavoriteList extends Component {
     const { favorites } = this.state
     let newFavoritesList = this._arrayMove(favorites, dragIndex, hoverIndex)
 
-    this.setState(favorites: newFavoritesList)
+    this.setState({favorites: newFavoritesList})
   }
 
   _arrayMove(arr, oldIndex, newIndex) {
@@ -71,15 +71,12 @@ class CodeFavoriteList extends Component {
     const {
       favorites
     } = this.state
-
-    return(
-
-      <div className="Favorite__list">
-        {
-          favorites.map((edge, index)=>{
-
-            return(
-
+    if (favorites) {
+      return(
+        <div className="Favorite__list">
+          {
+            favorites.map((edge, index)=>{
+              return(
                 <FavoriteCard
                   key={edge.node.key}
                   id={edge.node.id}
@@ -92,10 +89,49 @@ class CodeFavoriteList extends Component {
                   owner={this.props.owner}
                   moveCard={this.moveCard}
                 />)
-          })
-        }
-      </div>
-    )
+            })
+          }
+        </div>
+      )
+    } else {
+      return(
+        <div className="Favorite__list">
+            <div className="Favorite__card-wrapper" draggable="true">
+                <div className="Favorite__card card">
+                    <div className="Favorite__star"></div>
+                    <div className="Favorite__header-section">
+                        <h6 className="Favorite__card-header"></h6>
+                    </div>
+                    <div className="Favorite__path-section">
+                        <p className="Favorite__path"></p>
+                    </div>
+                    <div className="Favorite__description-section">
+                        <p className="Favorite__description">
+                        <button className="Favorite__edit-button"></button></p>
+                        <div className="Favorite__mask hidden"></div>
+                    </div>
+                </div>
+            </div>
+            <div className="Favorite__card-wrapper" draggable="true">
+                <div className="Favorite__card card">
+                    <div className="Favorite__star"></div>
+                    <div className="Favorite__header-section">
+                        <h6 className="Favorite__card-header"></h6>
+                    </div>
+                    <div className="Favorite__path-section">
+                        <p className="Favorite__path"></p>
+                    </div>
+                    <div className="Favorite__description-section">
+                        <p className="Favorite__description">
+                        <button className="Favorite__edit-button"></button></p>
+                        <div className="Favorite__mask hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      )
+    }
+
 
   }
 }

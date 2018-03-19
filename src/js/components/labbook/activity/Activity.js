@@ -47,18 +47,19 @@ class Activity extends Component {
   *   add interval to poll for new activityRecords
   */
   componentDidMount() {
+    if(this.props.labbook){
+      let activityRecords = this.props.labbook.activityRecords
 
-    let activityRecords = this.props.labbook.activityRecords
+      window.addEventListener('scroll', this._handleScroll)
 
-    window.addEventListener('scroll', this._handleScroll)
+      if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
+        this._loadMore()
+      }
 
-    if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
-      this._loadMore()
-    }
+      if(activityRecords.edges && activityRecords.edges.length){
+        this._refetch()
 
-    if(activityRecords.edges && activityRecords.edges.length){
-      this._refetch()
-
+      }
     }
   }
 
@@ -175,13 +176,13 @@ class Activity extends Component {
   }
 
   render(){
-    let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
-
-    if(!this.props.labbook.activityRecords.pageInfo.hasNextPage){
-      isLoadingMore = false;
-    }
 
     if(this.props.labbook){
+      let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
+
+      if(!this.props.labbook.activityRecords.pageInfo.hasNextPage){
+        isLoadingMore = false;
+      }
       return(
         <div key={this.props.labbook} className='Activity'>
 
@@ -265,7 +266,35 @@ class Activity extends Component {
       )
     }else{
       return(
-        <Loader />
+        <div className='Activity loading'>
+          <div className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
+            <div className="Activity__sizer flex-1-0-auto">
+              <div>
+                <div className="Activity__date-tab flex flex--column justify--space-around">
+                  <div className="Activity__date-day"></div>
+                  <div className="Activity__date-month"></div>
+                </div>
+                <div className="UserActivity__container">
+                  <div className="Activity__user-note">
+                    <div className={this.state.modalVisible ? 'Activity__user-note--remove' : 'Activity__user-note--add'}></div>
+                    <h5>Add Note</h5>
+                  </div>
+                  <div className={this.state.modalVisible ? 'Activity__add ActivityCard' : 'hidden'}>
+                    {
+                      (this.state.modalVisible) &&
+                      <UserNote
+                        key="UserNote"
+                      />
+                    }
+                  </div>
+                </div>
+                <div>
+                  <ActivityCard />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )
     }
   }

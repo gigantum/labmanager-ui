@@ -610,6 +610,9 @@ export default class UserNote extends Component {
     let syncModalCSS = classNames({
       'hidden': !this.state.forceSyncModalVisible
     })
+    let loadingCSS = classNames({
+      ' loading': !this.props.labbookId
+    })
 
     return (
       <div className="BranchMenu flex flex--column">

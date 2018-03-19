@@ -45,21 +45,22 @@ class PackageDependencies extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    if(this.props.environment.packageDependencies.pageInfo.hasNextPage){
+    if (this.props.environment) {
+      if(this.props.environment.packageDependencies.pageInfo.hasNextPage){
 
-      this._loadMore() //routes query only loads 2, call loadMore
-    }else{
-      this._refetch()
+        this._loadMore() //routes query only loads 2, call loadMore
+      }else{
+        this._refetch()
+      }
+
+      if(this.state.selectedTab === ''){
+        this.setState({selectedTab: this.props.base.packageManagers[0]})
+      }
     }
+      unsubscribe = store.subscribe(() =>{
 
-    if(this.state.selectedTab === ''){
-      this.setState({selectedTab: this.props.base.packageManagers[0]})
-    }
-
-    unsubscribe = store.subscribe(() =>{
-
-      this.storeDidUpdate(store.getState().environment)
-    })
+        this.storeDidUpdate(store.getState().environment)
+      })
   }
 
   /**
@@ -407,150 +408,222 @@ class PackageDependencies extends Component {
 
 
   render(){
+    if (this.props.environment) {
+      const {packageDependencies} = this.props.environment
+      const {blockClass} = this.props
 
-    const {packageDependencies} = this.props.environment
-    const {blockClass} = this.props
+      const  packageManagersTabs = this._getPackmanagerTabs()
 
-    const  packageManagersTabs = this._getPackmanagerTabs()
+      if(packageDependencies) {
 
-    if(packageDependencies) {
+        let filteredPackageDependencies = this._filterPackageDependencies(packageDependencies)
+        let packageMenu = classNames({
+          'PackageDependencies__menu': true,
+          'PackageDependencies__menu--min-height':!this.state.packageMenuVisible
+        })
+        let packagesProcessing = this.state.packages.filter(packageItem =>{
+          return packageItem.validity === 'checking'
+        })
 
-      let filteredPackageDependencies = this._filterPackageDependencies(packageDependencies)
-      let packageMenu = classNames({
-        'PackageDependencies__menu': true,
-        'PackageDependencies__menu--min-height':!this.state.packageMenuVisible
-      })
-      let packagesProcessing = this.state.packages.filter(packageItem =>{
-        return packageItem.validity === 'checking'
-      })
+        let addPackageCSS = classNames({
+          'PackageDependencies__button': true, 'PackageDependencies__button--line-18': true,
+          'PackageDependencies__button--open': this.state.packageMenuVisible
+        })
 
-      let addPackageCSS = classNames({
-        'PackageDependencies__button': true, 'PackageDependencies__button--line-18': true,
-        'PackageDependencies__button--open': this.state.packageMenuVisible
-      })
+        let disableInstall = this.state.disableInstall || ((this.state.packages.length === 0) || (packagesProcessing.length > 0))
+        return(
+        <div className="PackageDependencies">
 
-      let disableInstall = this.state.disableInstall || ((this.state.packages.length === 0) || (packagesProcessing.length > 0))
-      return(
-      <div className="PackageDependencies">
-
-        <div className={blockClass + '__header-container'}>
-          <h4 className="PackageDependencies__header">Packages</h4>
-        </div>
-
-        <div className="PackageDependencies__card">
-          <div className="PackageDependencies__tabs">
-            <ul className="PackageDependencies__tabs-list">
-            {
-              packageManagersTabs.map((tab, index) => {
-                let packageTab = classNames({
-                  'PackageDependencies__tab': true,
-                  'PackageDependencies__tab--selected': (this.state.selectedTab === tab.tabName)
-                })
-
-                return(<li
-                  key={tab + index}
-                  className={packageTab}
-                  onClick={() => this._setSelectedTab(tab.tabName)}>{`${tab.tabName} (${tab.count})`}
-                </li>)
-              })
-            }
-          </ul>
-
+          <div className={blockClass + '__header-container'}>
+            <h4 className="PackageDependencies__header">Packages</h4>
           </div>
-          <div className="PackageDependencies__add-package">
-            <button
-              onClick={()=> this._toggleAddPackageMenu()}
-              className={addPackageCSS}>
-              Add Packages
-            </button>
-            <div className={packageMenu}>
-              <div className="PackageDependencies__package-menu">
-                <input
-                  ref={el => this.inputPackageName = el}
-                  className="PackageDependencies__input-text"
-                  placeholder="Enter Dependency Name"
-                  type="text"
-                  onKeyUp={(evt)=>this._updatePackageName(evt)} />
-                <input
-                  ref={el => this.inputVersion = el}
-                  className="PackageDependencies__input-text--version"
-                  placeholder="Version (Optional)"
-                  disabled={this.state.selectedTab === 'apt'}
-                  type="text"
-                  onKeyUp={(evt)=>this._updateVersion(evt)} />
-                <button
-                  disabled={(this.state.packageName.lenght === 0)}
-                  onClick={()=>this._addStatePackage()}
-                  className="PackageDependencies__button--round PackageDependencies__button--add"></button>
+
+          <div className="PackageDependencies__card">
+            <div className="PackageDependencies__tabs">
+              <ul className="PackageDependencies__tabs-list">
+              {
+                packageManagersTabs.map((tab, index) => {
+                  let packageTab = classNames({
+                    'PackageDependencies__tab': true,
+                    'PackageDependencies__tab--selected': (this.state.selectedTab === tab.tabName)
+                  })
+
+                  return(<li
+                    key={tab + index}
+                    className={packageTab}
+                    onClick={() => this._setSelectedTab(tab.tabName)}>{`${tab.tabName} (${tab.count})`}
+                  </li>)
+                })
+              }
+            </ul>
+
+            </div>
+            <div className="PackageDependencies__add-package">
+              <button
+                onClick={()=> this._toggleAddPackageMenu()}
+                className={addPackageCSS}>
+                Add Packages
+              </button>
+              <div className={packageMenu}>
+                <div className="PackageDependencies__package-menu">
+                  <input
+                    ref={el => this.inputPackageName = el}
+                    className="PackageDependencies__input-text"
+                    placeholder="Enter Dependency Name"
+                    type="text"
+                    onKeyUp={(evt)=>this._updatePackageName(evt)} />
+                  <input
+                    ref={el => this.inputVersion = el}
+                    className="PackageDependencies__input-text--version"
+                    placeholder="Version (Optional)"
+                    disabled={this.state.selectedTab === 'apt'}
+                    type="text"
+                    onKeyUp={(evt)=>this._updateVersion(evt)} />
+                  <button
+                    disabled={(this.state.packageName.lenght === 0)}
+                    onClick={()=>this._addStatePackage()}
+                    className="PackageDependencies__button--round PackageDependencies__button--add"></button>
+                </div>
+
+                <div className="PackageDependencies__table--border">
+                  <table>
+                    <tbody>
+                      {
+                        this.state.packages.map((node, index)=>{
+
+                          const version = node.version === '' ? 'latest' : `v${node.version}`
+                          return (
+                            <tr
+                              className={`PackageDependencies__table-row--${node.validity}` }
+                              key={node.packageName + node.version}>
+                              <td>{`${node.packageName}`}</td>
+                              <td>{version}</td>
+                              <td className="PackageDependencies__table--no-right-padding" width="30">
+                                <button className="PackageDependencies__button--round PackageDependencies__button--remove"
+                                  onClick={()=>this._removeStatePackages(node, index)}>
+                                </button>
+                              </td>
+                            </tr>)
+                        })
+                      }
+                    </tbody>
+                  </table>
+                  <button
+                    className="PackageDependencies__button--absolute"
+                    onClick={()=> this._addPackageComponentMutation()}
+                    disabled={disableInstall}>
+                    Install Selected Packages
+                  </button>
               </div>
-
-              <div className="PackageDependencies__table--border">
-                <table>
-                  <tbody>
-                    {
-                      this.state.packages.map((node, index)=>{
-
-                        const version = node.version === '' ? 'latest' : `v${node.version}`
-                        return (
-                          <tr
-                            className={`PackageDependencies__table-row--${node.validity}` }
-                            key={node.packageName + node.version}>
-                            <td>{`${node.packageName}`}</td>
-                            <td>{version}</td>
-                            <td className="PackageDependencies__table--no-right-padding" width="30">
-                              <button className="PackageDependencies__button--round PackageDependencies__button--remove"
-                                onClick={()=>this._removeStatePackages(node, index)}>
-                              </button>
-                            </td>
-                          </tr>)
-                      })
-                    }
-                  </tbody>
-                </table>
-                <button
-                  className="PackageDependencies__button--absolute"
-                  onClick={()=> this._addPackageComponentMutation()}
-                  disabled={disableInstall}>
-                  Install Selected Packages
-                </button>
             </div>
           </div>
-        </div>
-        <div className="PackageDependencies__table-container">
-          {
-          //Awaiting new UI design due to user confusion
-          /* <input
-            type="text"
-            className="full--border"
-            placeholder="Filter dependencies by keyword"
-            onKeyUp={(evt)=> this._setSearchValue(evt)}
-          /> */
-          }
-          <table className="PackageDependencies__table">
-            <thead>
-              <tr>
-                <th>Package Name</th>
-                <th>Current</th>
-                <th>Latest</th>
-                <th>Installed By</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
+          <div className="PackageDependencies__table-container">
             {
-              filteredPackageDependencies.filter(edge => edge.node).map((edge, index) => {
-                  return(
-                    this._packageRow(edge, index)
-                  )
-              })
+            //Awaiting new UI design due to user confusion
+            /* <input
+              type="text"
+              className="full--border"
+              placeholder="Filter dependencies by keyword"
+              onKeyUp={(evt)=> this._setSearchValue(evt)}
+            /> */
             }
-            </tbody>
-          </table>
-      </div>
-      </div>
-    </div>)
+            <table className="PackageDependencies__table">
+              <thead>
+                <tr>
+                  <th>Package Name</th>
+                  <th>Current</th>
+                  <th>Latest</th>
+                  <th>Installed By</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+              {
+                filteredPackageDependencies.filter(edge => edge.node).map((edge, index) => {
+                    return(
+                      this._packageRow(edge, index)
+                    )
+                })
+              }
+              </tbody>
+            </table>
+        </div>
+        </div>
+      </div>)
+    }
     }else{
-      return(<Loader />)
+      return(
+        <div className="PackageDependencies">
+          <div className={ 'Environment__header-container'}>
+            <h4 className="PackageDependencies__header">Packages</h4>
+          </div>
+          <div className="PackageDependencies__card loading">
+            <div className="PackageDependencies__tabs">
+              <ul className="PackageDependencies__tabs-list">
+                <li
+                  className="PackageDependencies__tab PackageDependencies__tab--selected loading-text">
+                  apt ( )
+                </li>
+                <li
+                  className="PackageDependencies__tab loading-text">
+                  pip ( )
+                </li>
+                <li
+                  className="PackageDependencies__tab loading-text">
+                  conda ( )
+                </li>
+              </ul>
+
+            </div>
+            <div className="PackageDependencies__add-package">
+              <button
+                className="PackageDependencies__button PackageDependencies__button--line-18">
+                Add Packages
+              </button>
+            </div>
+            <div className="PackageDependencies__table-container">
+              <table className="PackageDependencies__table">
+                <thead>
+                  <tr>
+                    <th>Package Name</th>
+                    <th>Current</th>
+                    <th>Latest</th>
+                    <th>Installed By</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    className="CustomDependencies__table-row loading-text">
+                    <td>matplotlib</td>
+                    <td>v.2.0.0</td>
+                    <td>v2.2.0rc1</td>
+                    <td>User</td>
+                    <td width="60">
+                      <button
+                        className="CustomDependencies__button--round CustomDependencies__button--remove"
+                      >
+                    </button>
+                    </td>
+                  </tr>
+                  <tr
+                    className="CustomDependencies__table-row loading-text">
+                    <td>networkx</td>
+                    <td>v.2.1</td>
+                    <td>v2.1</td>
+                    <td>User</td>
+                    <td width="60">
+                      <button
+                        className="CustomDependencies__button--round CustomDependencies__button--remove"
+                      >
+                    </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>)
     }
   }
 

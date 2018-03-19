@@ -27,11 +27,13 @@ class Branches extends Component {
     subscribe to store to update state
   */
   componentDidMount() {
-    if(this.props.labbook.branches.pageInfo.hasNextPage){
-      this._loadMore()
+    if(this.props.labbook){
+      if(this.props.labbook.branches.pageInfo.hasNextPage){
+        this._loadMore()
+      }
+      const width = this.refs.Branches__branchesList.offsetWidth
+      this.setState({width: width})
     }
-    const width = this.refs.Branches__branchesList.offsetWidth
-    this.setState({width: width})
   }
   /**
   *  @param {object} overview
@@ -98,9 +100,9 @@ class Branches extends Component {
   }
 
   render(){
-    let showRightBumper = (-this.state.listPosition < (25 * (this.props.labbook.branches.edges.length - 4)))
-
     if(this.props.labbook){
+      let showRightBumper = (-this.state.listPosition < (25 * (this.props.labbook.branches.edges.length - 4)))
+
       const branches = this._filterBranches(this.props.labbook.branches.edges);
 
       const branchesCSS = classNames({
@@ -157,7 +159,7 @@ class Branches extends Component {
         </div>
       )
     } else{
-      return (<Loader />)
+      return (<div/>)
     }
   }
 }

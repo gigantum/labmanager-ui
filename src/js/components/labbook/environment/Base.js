@@ -53,19 +53,20 @@ class Base extends Component {
   }
 
   render(){
-    const {base} = this.props.environment;
+    let base
+    if (this.props.environment) {
+      base = this.props.environment.base;
+    }
+    return(
+      <div className="Base">
+        <div className="Base__header-container">
+          <h4 className="Base__header">Base</h4>
+        </div>
 
-    if (base) {
-  
-      return(
-        <div className="Base">
-          <div className="Base__header-container">
-            <h4 className="Base__header">Base</h4>
-          </div>
-
-          <div className="Base__info">
+        <div className="Base__info">
+          {
+            base ?
             <div className="Base__card">
-
               <div className="Base__image-container">
                 <img height="70" width="70" src={base.icon} alt={base.name} />
 
@@ -113,18 +114,16 @@ class Base extends Component {
                 </div>
 
               </div>
-
             </div>
-
-          </div>
+            :
+            <div className="Base__card-loading">
+            </div>
+          }
 
         </div>
-      )
-    }else{
-      return(
-          <Loader />
-        )
-    }
+
+      </div>
+    )
   }
 }
 

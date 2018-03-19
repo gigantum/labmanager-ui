@@ -101,7 +101,9 @@ class CodeFavorites extends Component {
         )
       }
     }else{
-      return(<div>No Files Found</div>)
+      return(
+        <CodeFavoriteList />
+    )
     }
   }
 }

@@ -11,6 +11,7 @@ import ReactMarkdown from 'react-markdown'
 import Moment from 'moment'
 //components
 import CodeBlock from 'Components/labbook/renderers/CodeBlock'
+import Loader from 'Components/shared/loader'
 //utilites
 import environment from 'JS/createRelayEnvironment'
 //store
@@ -107,8 +108,8 @@ export default class RecentActivity extends Component {
     return Moment((date)).format('hh:mm a, MMMM Do, YYYY')
   }
   render(){
+    const {owner, labbookName} = store.getState().routes
     if(this.props.recentActivity){
-      const {owner, labbookName} = store.getState().routes
       const recentActivity = this.props.recentActivity.slice(0,3)
       return(
         <div className="RecentActivity">
@@ -147,7 +148,10 @@ export default class RecentActivity extends Component {
     }else{
       return(
       <div className="RecentActivity">
-        <h5 className="RecentActivity__header">Activity</h5>
+        <div className="RecentActivity__title-container">
+          <h5 className="RecentActivity__header">Activity</h5>
+          <Link to={`../../../../labbooks/${owner}/${labbookName}/activity`}>Activity Details ></Link>
+        </div>
         <div className="RecentActivity__list">
           <div className="RecentActivity__card--loading"></div>
           <div className="RecentActivity__card--loading"></div>

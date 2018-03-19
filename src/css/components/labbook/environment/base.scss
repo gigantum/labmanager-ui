@@ -19,6 +19,15 @@
   padding: 30px;
 }
 
+.Base__card-loading{
+  color: $romanSilver;
+  @extend .card;
+  @include flex(space-between, row);
+  @extend .loading;
+  height: 200px;
+  padding: 30px;
+}
+
 
 .Base__image-container{
   width: 250px;

@@ -85,7 +85,9 @@ class InputFavorites extends Component {
         )
       }
     }else{
-      return(<div>No Files Found</div>)
+      return(
+        <InputFavoriteList />
+      )
     }
   }
 }

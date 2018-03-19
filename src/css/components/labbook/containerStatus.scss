@@ -88,6 +88,20 @@
   border: 3px solid $goldenLemon;
   background-size: 20px;
 }
+
+.ContainerStatus__button-container{
+  position:relative;
+}
+
+.ContainerStatus__container-state.Loading {
+  background: $background-color url('./../images/icons/rings.svg') no-repeat 90% center;
+  border: 3px solid $romanSilver;
+  background-size: 25px;
+  @extend .loading;
+  @extend .box-shadow;
+}
+
+
 .ContainerStatus__container-state.Stopped {
   background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
   border: 3px solid $romanSilver;

@@ -108,14 +108,6 @@ export default class FilePreview extends Component {
                     />
                   }
                 </div>
-
-
-
-
-
-
-
-
               </div>
               <div className="FilePreview__section">
                 <div className="FilePreview__title-container">
@@ -173,7 +165,61 @@ export default class FilePreview extends Component {
 
           return(<div>{error.message}</div>)
         }else{
-          return(<Loader />)
+          return(
+            <div className="FilePreview">
+            <div className="FilePreview__section">
+              <div className="FilePreview__title-container">
+                <h5>Code</h5>
+                <Link
+                  to={{pathname: `../../../../labbooks/${owner}/${labbookName}/code`}}
+                  replace
+                >
+                  Code Details >
+                </Link>
+              </div>
+              <p>Favorite Code Files</p>
+              <div className="FilePreview__list loading">
+                <FileCard />
+                <FileCard />
+                <FileCard />
+              </div>
+            </div>
+            <div className="FilePreview__section">
+              <div className="FilePreview__title-container">
+                <h5>Input Data</h5>
+                <Link
+                  to={{pathname: `../../../../labbooks/${owner}/${labbookName}/inputData`}}
+                  replace
+                >
+                  Input Data Details >
+                </Link>
+              </div>
+              <p>Favorite Input Files</p>
+              <div className="FilePreview__list loading">
+                <FileCard />
+                <FileCard />
+                <FileCard />
+              </div>
+            </div>
+            <div className="FilePreview__section">
+              <div className="FilePreview__title-container">
+                <h5>Ouput Data</h5>
+                <Link
+                  to={{pathname: `../../../../labbooks/${owner}/${labbookName}/outputData`}}
+                  replace
+                >
+                  Output Data Details >
+                </Link>
+              </div>
+              <p>Favorite Output Files</p>
+              <div className="FilePreview__list loading">
+                <FileCard />
+                <FileCard />
+                <FileCard />
+              </div>
+            </div>
+          </div>
+          )
         }
       }}
 

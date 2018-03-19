@@ -161,7 +161,27 @@ class Environment extends Component {
       )
     }else{
       return(
-          <Loader />
+        <div className="Environment">
+
+            <Base
+              environment={null}
+              ref="base"
+              blockClass="Environment"
+
+             />
+
+            <PackageDependencies
+              environment={null}
+              ref="packageDependencies"
+              blockClass="Environment"
+            />
+
+            <CustomDependencies
+              environment={null}
+              ref="CustomDependencies"
+              blockClass="Environment"
+            />
+          </div>
         )
     }
   }
