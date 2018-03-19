@@ -68,7 +68,7 @@ export default class ActivityCard extends Component {
   render(){
     if (this.props.node) {
       const categorizedDetails = this._catagorizeDetails(this.props.node);
-      // console.log(categorizedDetails.detailKeys)
+
       return(
         <div className="ActivityDetail">
           {

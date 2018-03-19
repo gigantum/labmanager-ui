@@ -318,6 +318,7 @@ export default class Labbook extends Component {
                             return (<Overview
                               key={this.state.labbookName + '_overview'}
                               labbook={this.props.labbook}
+                              description={null}
                             />)
                           }}
                         />
