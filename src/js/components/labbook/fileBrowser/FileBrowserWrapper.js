@@ -131,7 +131,7 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFiles(files, prefix) {
     let self = this;
-
+    console.log(files)
     let totalFiles = getTotalFileLength(files)
     if(totalFiles > 0){
 
@@ -397,7 +397,7 @@ export default class FileBrowserWrapper extends Component {
                       }
                     })
                   }else{
-                    
+
                     AddFavoriteMutation(
                       this.props.favoriteConnection,
                       this.props.connection,

@@ -478,6 +478,7 @@ const backend = (manager: Object) => {
 
         if(backend.currentNativeSource){
           orgTopDropCapture.call(backend, e);
+
           backend.currentNativeSource.item.dirContent = getFilesFromDragEvent(e, {recursive: true}); //returns a promise
         }
     };
