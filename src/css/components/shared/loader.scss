@@ -6,7 +6,7 @@
 }
 
 .Loader__logo-border {
-  box-sizing: content-box;
+  box-sizing: content-box !important;
   z-index: 1001;
   position: absolute;
   width: 150px;
