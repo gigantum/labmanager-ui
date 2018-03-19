@@ -132,7 +132,7 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
     accessToken,
     section,
     (result, error)=>{
-  
+
       if(result && (error === undefined)){
         getChunkCallback(file, result)
         if(store.getState().footer.totalFiles > 1){
@@ -209,7 +209,6 @@ const ChunkUploader = {
               data.accessToken,
               getChunk
             )
-
 
             postMessage(chunkData) //post progress back to worker instantiator file
 
