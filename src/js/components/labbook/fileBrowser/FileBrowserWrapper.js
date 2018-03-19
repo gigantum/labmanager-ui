@@ -1,6 +1,7 @@
 // vendor
 import React, { Component } from 'react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
+import classNames from 'classnames'
 //components
 import DetailPanel from './../detail/DetailPanel'
 //mutations
@@ -52,13 +53,15 @@ export default class FileBrowserWrapper extends Component {
   constructor(props){
   	super(props);
     const {owner, labbookName} = store.getState().routes
+    const {uploading} = store.getState().fileBrowser
     this.state = {
       'show': false,
       'selectedFile': null,
       'message': '',
       'files': this._formatFileJson(props.files),
       'labbookName': labbookName,
-      'owner': owner
+      'owner': owner,
+      uploading
     }
 
     //bind functions here
@@ -71,6 +74,16 @@ export default class FileBrowserWrapper extends Component {
     this.openDetailPanel = this.openDetailPanel.bind(this)
     this.handleFileFavoriting = this.handleFileFavoriting.bind(this)
 
+  }
+
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() =>{
+      this.setState({uploading: store.getState().fileBrowser.uploading})
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -130,105 +143,111 @@ export default class FileBrowserWrapper extends Component {
   *  creates a file using AddLabbookFileMutation by passing a blob
   */
   handleCreateFiles(files, prefix) {
-    let self = this;
-
-    let totalFiles = getTotalFileLength(files)
-    if(totalFiles > 0){
-
+    if (!this.state.uploading) {
       store.dispatch({
-        type: 'UPLOAD_MESSAGE_SETTER',
-        payload:{
-          uploadMessage: `Preparing Upload for ${totalFiles} files`,
-          id: Math.random() * 10000,
-          totalFiles: totalFiles
-        }
+        type: 'STARTED_UPLOADING',
       })
-    }else{
-      store.dispatch({
-        type: 'UPLOAD_MESSAGE_SETTER',
-        payload:{
-          uploadMessage: `Cannot upload these file types`,
-          id: `nofiles`,
-          totalFiles: totalFiles
-        }
-      })
-    }
 
-    let folderFiles = []
-    files.forEach((file, index) => {
-      if(file.isDirectory){
-        folderFiles.push(file)
-      }else if(file.name){
-        const batchUpload = (files.length > 1)
+      let self = this;
 
-        let newKey = prefix;
+      let totalFiles = getTotalFileLength(files)
+      if(totalFiles > 0){
 
-        if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
-          newKey += '/';
-        }
+        store.dispatch({
+          type: 'UPLOAD_MESSAGE_SETTER',
+          payload:{
+            uploadMessage: `Preparing Upload for ${totalFiles} files`,
+            id: Math.random() * 10000,
+            totalFiles: totalFiles
+          }
+        })
+      }else{
+        store.dispatch({
+          type: 'UPLOAD_MESSAGE_SETTER',
+          payload:{
+            uploadMessage: `Cannot upload these file types`,
+            id: `nofiles`,
+            totalFiles: totalFiles
+          }
+        })
+      }
 
-        newKey += file.name;
+      let folderFiles = []
+      files.forEach((file, index) => {
+        if(file.isDirectory){
+          folderFiles.push(file)
+        }else if(file.name){
+          const batchUpload = (files.length > 1)
+
+          let newKey = prefix;
+
+          if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
+            newKey += '/';
+          }
+
+          newKey += file.name;
 
 
-        let fileReader = new FileReader();
+          let fileReader = new FileReader();
 
-        fileReader.onloadend = function (evt) {
-            let filepath = newKey
+          fileReader.onloadend = function (evt) {
+              let filepath = newKey
 
-            let data = {
-              file: file,
-              filepath: filepath,
-              username: self.state.owner,
-              accessToken: localStorage.getItem('access_token'),
-              connectionKey: self.props.connection,
-              labbookName: self.state.labbookName,
-              parentId: self.props.parentId,
-              section: self.props.section
+              let data = {
+                file: file,
+                filepath: filepath,
+                username: self.state.owner,
+                accessToken: localStorage.getItem('access_token'),
+                connectionKey: self.props.connection,
+                labbookName: self.state.labbookName,
+                parentId: self.props.parentId,
+                section: self.props.section
+              }
+
+              self._chunkLoader(filepath, file, data, batchUpload, files, index)
             }
 
-            self._chunkLoader(filepath, file, data, batchUpload, files, index)
-          }
+            fileReader.readAsArrayBuffer(file);
+        }else{
+          folderFiles.push(file)
+        }
 
-          fileReader.readAsArrayBuffer(file);
-      }else{
-        folderFiles.push(file)
-      }
-
-    })
-    let flattenedFiles = []
-
-    if(folderFiles.length > 0){
-
-      function flattenFiles(filesArray){
-
-          if(Array.isArray(filesArray)){
-            filesArray.forEach(filesSubArray => {
-              flattenFiles(filesSubArray)
-            })
-          }else if(filesArray.entry){
-            flattenedFiles.push(filesArray)
-          }
-      }
-
-      flattenFiles(folderFiles)
-
-      let filterFiles = flattenedFiles.filter((fileItem) => {
-        let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.file.name.replace(/.*\./, '');
-
-        return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
       })
+      let flattenedFiles = []
 
-      FolderUpload.uploadFiles(
-        filterFiles,
-        prefix,
-        self.state.labbookName,
-        self.state.owner,
-        self.props.section,
-        this.props.connection,
-        this.props.parentId,
-        self._chunkLoader
-      )
+      if(folderFiles.length > 0){
 
+        function flattenFiles(filesArray){
+
+            if(Array.isArray(filesArray)){
+              filesArray.forEach(filesSubArray => {
+                flattenFiles(filesSubArray)
+              })
+            }else if(filesArray.entry){
+              flattenedFiles.push(filesArray)
+            }
+        }
+
+        flattenFiles(folderFiles)
+
+        let filterFiles = flattenedFiles.filter((fileItem) => {
+          let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.file.name.replace(/.*\./, '');
+
+          return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
+        })
+
+        FolderUpload.uploadFiles(
+          filterFiles,
+          prefix,
+          self.state.labbookName,
+          self.state.owner,
+          self.props.section,
+          this.props.connection,
+          this.props.parentId,
+          self._chunkLoader
+        )
+
+      }
     }
   }
   /**
@@ -397,7 +416,7 @@ export default class FileBrowserWrapper extends Component {
                       }
                     })
                   }else{
-                    
+
                     AddFavoriteMutation(
                       this.props.favoriteConnection,
                       this.props.connection,
@@ -634,6 +653,15 @@ export default class FileBrowserWrapper extends Component {
             onFileFavoriting={this.handleFileFavoriting}
             owner={this.state.owner}
           />
+
+
+          {
+            this.state.uploading &&
+            <div className="Code--uploading flex">
+              Uploading Files...
+              <span className="Code__loading--browser" />
+            </div>
+          }
 
           <DetailPanel
             {...this.state.selectedFile}

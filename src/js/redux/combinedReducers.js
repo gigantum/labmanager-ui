@@ -8,8 +8,10 @@ import detailView from './reducers/labbook/detail';
 import containerStatus from './reducers/labbook/containerStatus';
 //labbooks/overview reducers
 import overview from './reducers/labbook/overview/overview';
-//labbooks/overview reducers
+//labbooks/environment reducers
 import environment from './reducers/labbook/environment/environment';
+//labbooks/fileBrowser reducers
+import fileBrowser from './reducers/labbook/fileBrowser/fileBrowserWrapper';
 
 export default combineReducers({
   footer,
@@ -19,5 +21,6 @@ export default combineReducers({
   routes,
   containerStatus,
   environment,
-  login
+  login,
+  fileBrowser
 });
