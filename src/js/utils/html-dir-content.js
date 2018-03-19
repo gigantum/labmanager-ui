@@ -30,6 +30,7 @@ var getFileFromFileEntry = function getFileFromFileEntry(entry) {
 };
 
 var isItemFileEntry = function isItemFileEntry(item) {
+		console.log(item.kind)
     return item.kind === "file";
 };
 
@@ -38,6 +39,7 @@ var getAsEntry = function getAsEntry(item) {
 };
 
 var getListAsArray = function getListAsArray(list) {
+	console.log(list)
     return (//returns a flat array
         arrayConcat.apply([], list)
     );
@@ -66,7 +68,7 @@ var getFileList = function getFileList(root, options) {
     return root && level < options.bail && root.isDirectory && root.createReader ? new Promise(function (resolve) {
         root.createReader().readEntries(function (entries) {
             return Promise.all(entries.map(function (entry) {
-
+							console.log(entry)
 								var file = getEntryData(entry, options, level)
 
                 return file;
@@ -101,7 +103,7 @@ var getDataTransferItemFiles = function getDataTransferItemFiles(item, options) 
             var file = item.getAsFile();
             files = file ? [file] : files;
         }
-
+				console.log(files, item)
         return files;
     });
 };
@@ -121,12 +123,16 @@ var getFilesFromDragEvent = function getFilesFromDragEvent(evt) {
     options = initOptions(options);
 
     return new Promise(function (resolve) {
+				console.log(evt)
         if (evt.dataTransfer.items) {
             Promise.all(getListAsArray(evt.dataTransfer.items).filter(function (item) {
-                return isItemFileEntry(item);
+
+							  return isItemFileEntry(item);
             }).map(function (item) {
+
                 return getDataTransferItemFiles(item, options);
             })).then(function (files) {
+
                 return resolve(getListAsArray(files));
             });
         } else if (evt.dataTransfer.files) {

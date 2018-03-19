@@ -205,7 +205,7 @@ export default class UserNote extends Component {
               self.state.labbookName,
               self.props.labbookId,
               (response, error) => {
-
+                console.log(error)
                 if (response.publishLabbook && !response.publishLabbook.success) {
                   if(error){
                     store.dispatch({

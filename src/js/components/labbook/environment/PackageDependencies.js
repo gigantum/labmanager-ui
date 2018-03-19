@@ -255,7 +255,12 @@ class PackageDependencies extends Component {
 
 
       PackageLookup.query(manager, packageName, version).then((response)=>{
-
+        let packageIndex;
+        packages.forEach((packageItem, index)=>{
+          if(packageItem.packageName === packageName){
+            packageIndex = index;
+          }
+        })
         packages.splice(packageIndex, 1);
         if(response.errors){
             store.dispatch({

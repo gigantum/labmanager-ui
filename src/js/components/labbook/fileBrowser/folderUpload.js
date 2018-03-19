@@ -301,7 +301,7 @@ const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, co
                 section)
                 .then((result)=>{
                   index++
-    
+
                   if(labbooks[index]){
                     createFolder(labbooks[index])
                   }else{
@@ -343,11 +343,12 @@ const FolderUpload = {
     *  @return {boolean}
     */
 
-
+    console.log(files)
     CreateFolders(files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck)
 
 
     function fileCheck(fileItem){
+
       filePaths.push(fileItem)
       count++
 
