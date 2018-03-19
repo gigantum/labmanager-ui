@@ -32,7 +32,7 @@ export default class LoginPrompt extends Component {
             payload: {
               id: id,
               message: `Could not 'force' sync ${labbookName}`,
-              messagesList: error,
+              messageBody: error,
               isLast: true,
               error: true
             }

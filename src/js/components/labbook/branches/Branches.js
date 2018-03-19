@@ -4,6 +4,7 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
+import classNames from 'classnames'
 //componenets
 import Loader from 'Components/shared/Loader'
 import BranchCard from './BranchCard'
@@ -34,20 +35,31 @@ class Branches extends Component {
       this.setState({width: width})
     }
   }
-
   /**
-    loads more edges via pagination
+  *  @param {object} overview
+  *  updates components state
+  *  @return
+  */
+  storeDidUpdate = (overview) => {
+    if(this.state !== overview){
+      this.setState(overview);//triggers re-render when store updates
+    }
+  }
+  /**
+  * @param {}
+  * loads more edges via pagination
+  * @return{}
   */
   _loadMore() {
-
+    const {relay} = this.props
     let self = this;
-    this.props.relay.loadMore(
+
+    relay.loadMore(
      5, // Fetch the next 5 feed items
      (response, error) => {
        if(error){
          console.error(error)
        }
-
        if(self.props.labbook.branches &&
          self.props.labbook.branches.pageInfo.hasNextPage) {
 
@@ -57,48 +69,71 @@ class Branches extends Component {
    );
   }
   /**
-    @param {object} overview
-    updates components state
+  * @param {number} value
+  * updates list position in state
+  * @return{}
   */
-  storeDidUpdate = (overview) => {
-    if(this.state !== overview){
-      this.setState(overview);//triggers re-render when store updates
-    }
-  }
   _updatePosition(value){
-      //if((-this.state.listPosition > 0) && (270*(this.props.labbook.branches.edges.length))){
-        this.setState({listPosition: (this.state.listPosition + value)})
-    //  }
+
+    this.setState({listPosition: (this.state.listPosition + value)})
+
+  }
+  /**
+  * @param {array} branches
+  * updates list position in state
+  * @return{array} filteredBranches
+  */
+  _filterBranches(branches){
+    let activeBranch
+    let filteredBranches = branches.filter((branch) => {
+
+      if(branch.node.name === this.props.labbook.activeBranch.name){
+        activeBranch = branch;
+      }
+      return (branch.node.name !== this.props.labbook.activeBranch.name)
+    });
+
+    if(activeBranch){
+      filteredBranches.unshift(activeBranch);
+    }
+    return filteredBranches
   }
 
   render(){
-
     if(this.props.labbook){
-      let showRightBumper = (-this.state.listPosition < (25*(this.props.labbook.branches.edges.length - 4)))
-      let branches = this.props.labbook.branches.edges;
-      let activeBranch;
+      let showRightBumper = (-this.state.listPosition < (25 * (this.props.labbook.branches.edges.length - 4)))
 
-      branches = branches.filter((branch) => {
+      const branches = this._filterBranches(this.props.labbook.branches.edges);
 
-        if(branch.node.name === this.props.labbook.activeBranch.name){
-          activeBranch = branch;
-        }
-        return (branch.node.name !== this.props.labbook.activeBranch.name)
-      });
+      const branchesCSS = classNames({
+        'Branches': this.props.branchesOpen,
+        'Branches--closed': !this.props.branchesOpe
+      })
 
-      if(activeBranch){
-        branches.unshift(activeBranch);
-      }
+      const leftBumperCSS = classNames({
+        'Brances__slider-button--left': (-this.state.listPosition > 0),
+        'hidden': !(-this.state.listPosition > 0)
+      })
+
+      const branchesListCSS = classNames({
+        'Branches__branches-list': true,
+        'Branches__branches-list--collapsed': !this.props.branchesOpen
+      })
+
+      const rightBumperCSS = classNames({
+        'Brances__slider-button--left': this.props.branchesOpen && (showRightBumper),
+        'hidden': !(this.props.branchesOpen && (showRightBumper))
+      })
 
       return(
-        <div className={this.props.branchesOpen ? 'Branches': 'Branches--closed' }>
+        <div className={branchesCSS}>
 
           <button
             onClick={() => {this._updatePosition(25)}}
-            className={(-this.state.listPosition > 0) ? 'Brances__slider-button--left' : 'hidden'}></button>
+            className={leftBumperCSS}></button>
           <div
             ref="Branches__branchesList"
-            className={this.props.branchesOpen ? 'Branches__branches-list' : 'Branches__branches-list Branches__branches-list--collapsed'}
+            className={branchesListCSS}
             style={{left: (this.state.listPosition < 0) ? ' calc(' + this.state.listPosition + 'vw - 200px)' : ' 0vw'}}>
 
             {
@@ -119,7 +154,7 @@ class Branches extends Component {
           </div>
           <button
             onClick={() => {this._updatePosition(-25)}}
-            className={ this.props.branchesOpen && (showRightBumper)  ? 'Brances__slider-button--right' : 'hidden'}></button>
+            className={rightBumperCSS}></button>
 
         </div>
       )

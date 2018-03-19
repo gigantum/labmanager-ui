@@ -2,6 +2,8 @@
 import React, { Component } from 'react'
 //Mutations
 import DeleteLabbookMutation from 'Mutations/DeleteLabbookMutation'
+//components
+import Loader from 'Components/shared/loader'
 //store
 import store from 'JS/redux/store'
 
@@ -9,7 +11,8 @@ export default class DeleteLabbook extends Component {
   constructor(props){
   	super(props);
   	this.state = {
-      'labbookName': ''
+      'labbookName': '',
+      deletePending: false
     };
   }
   /**
@@ -26,11 +29,13 @@ export default class DeleteLabbook extends Component {
   _deleteLabbook(){
     const {labbookName, owner} = store.getState().routes
     if(labbookName === this.state.labbookName){
+      this.setState({deletePending: true})
       DeleteLabbookMutation(
         labbookName,
         owner,
         true,
         (response, error)=>{
+          this.setState({deletePending: false})
           if(error){
             store.dispatch({
               'type': "ERROR_MESSAGE",
@@ -86,10 +91,15 @@ export default class DeleteLabbook extends Component {
         <input
           placeholder={`Enter ${labbookName} to delete`}
           onKeyUp={(evt)=>{this._setLabbookName(evt)}}
+          onChange={(evt)=>{this._setLabbookName(evt)}}
           type="text"
         />
 
-        <button onClick={()=> this._deleteLabbook()}>Delete Labbook</button>
+        <button disabled={this.state.deletePending} onClick={()=> this._deleteLabbook()}>Delete Labbook</button>
+        {
+          this.state.deletePending &&
+          <Loader />
+        }
       </div>
     )
   }

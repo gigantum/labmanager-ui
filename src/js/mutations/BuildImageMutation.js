@@ -44,7 +44,7 @@ export default function BuildImageMutation(
             type: 'ERROR_MESSAGE',
             payload:{
               message: 'ERROR: LabBook failed to build:',
-              messagesList: error
+              messageBody: error
             }
           })
         }

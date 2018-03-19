@@ -104,7 +104,7 @@ export default class FileBrowserWrapper extends Component {
             type: 'ERROR_MESSAGE',
             payload: {
               message: `ERROR: could not create ${key}`,
-              messagesList: error
+              messageBody: error
             }
           })
         }
@@ -255,7 +255,7 @@ export default class FileBrowserWrapper extends Component {
             type: 'ERROR_MESSAGE',
             payload: {
               message: `ERROR: could not make ${newKey}`,
-              messagesList: error
+              messageBody: error
             }
           })
         }
@@ -288,7 +288,7 @@ export default class FileBrowserWrapper extends Component {
                           type: 'ERROR_MESSAGE',
                           payload: {
                             message: `ERROR: could not move ${edge.node.key}`,
-                            messagesList: error
+                            messageBody: error
                           }
                         })
                         reject(response)
@@ -327,7 +327,7 @@ export default class FileBrowserWrapper extends Component {
                   type: 'ERROR_MESSAGE',
                   payload: {
                     message: `ERROR: could node delete file ${oldKey}`,
-                    messagesList: error
+                    messageBody: error
                   }
                 })
               }
@@ -368,7 +368,7 @@ export default class FileBrowserWrapper extends Component {
               type: 'ERROR_MESSAGE',
               payload: {
                 message: `ERROR: could not move file ${oldKey}`,
-                messagesList: error
+                messageBody: error
               }
             })
           }else{
@@ -393,7 +393,7 @@ export default class FileBrowserWrapper extends Component {
                       type: 'ERROR_MESSAGE',
                       payload: {
                         message: `ERROR: could not remove favorite ${oldKey}`,
-                        messagesList: error
+                        messageBody: error
                       }
                     })
                   }else{
@@ -416,7 +416,7 @@ export default class FileBrowserWrapper extends Component {
                             type: 'ERROR_MESSAGE',
                             payload: {
                               message: `ERROR: could not add favorite ${newKey}`,
-                              messagesList: error
+                              messageBody: error
                             }
                           })
                         }
@@ -464,7 +464,7 @@ export default class FileBrowserWrapper extends Component {
               type: 'ERROR_MESSAGE',
               payload: {
                 message: `ERROR: could not delete folder ${folderKey}`,
-                messagesList: error
+                messageBody: error
               }
             })
           }
@@ -498,7 +498,7 @@ export default class FileBrowserWrapper extends Component {
             type: 'ERROR_MESSAGE',
             payload: {
               message: `ERROR: could not delete file ${fileKey}`,
-              messagesList: error
+              messageBody: error
             }
           })
         }
@@ -562,7 +562,7 @@ export default class FileBrowserWrapper extends Component {
               type: 'ERROR_MESSAGE',
               payload: {
                 message: `ERROR: could not add favorite ${key}`,
-                messagesList: error
+                messageBody: error
               }
             })
           }

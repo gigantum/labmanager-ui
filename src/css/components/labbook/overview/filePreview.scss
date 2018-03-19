@@ -7,16 +7,17 @@
   }
 
   .FilePreview__list {
-    @include flex(space-between,row);
+    @include flex(flex-start,row);
   }
 
   .FileCard {
     @extend .card;
     position: relative;
-    width: calc(33.33333% - 25px);
+    width: calc(33.33333% - 20px);
     padding: 15px 10px;
     height: 200px;
     overflow: hidden;
+    margin: 0 10px;
 
 
     .FileCard__key {
@@ -44,5 +45,13 @@
       background-size: 16px;
     }
   }
-}
 
+
+  .FileCard:nth-child(3n + 1) {
+
+    margin: 0 20px 0 0;
+  }
+  .FileCard:nth-child(3n + 3) {
+    margin: 0 0 0 20px;
+  }
+}

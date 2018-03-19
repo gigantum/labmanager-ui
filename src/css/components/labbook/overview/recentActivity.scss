@@ -1,5 +1,5 @@
 .RecentActivity__list{
-  @include flex(space-between, row);
+  @include flex(flex-start, row);
 }
 
 .RecentActivity__title-container{
@@ -12,6 +12,15 @@
   padding: 20px 20px 60px 20px;
   @extend .card;
   width: calc(33.333% - 20px);
+  margin: 0 10px;
+}
+
+.RecentActivity__card:nth-child(3n + 1) {
+
+  margin: 0 20px 0 0;
+}
+.RecentActivity__card:nth-child(3n + 3) {
+  margin: 0 0 0 20px;
 }
 
 .RecentActivity__card-date {

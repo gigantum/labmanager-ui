@@ -48,7 +48,7 @@ export default function DeleteCollaboratorMutation(
             type: 'ERROR_MESSAGE',
             payload:{
               message: `Error: Could not add Collaborator ${username}`,
-              messagesList: error
+              messageBody: error
             }
           })
         }
