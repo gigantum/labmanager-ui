@@ -262,7 +262,7 @@ class PackageDependencies extends Component {
               type:"ERROR_MESSAGE",
               payload: {
                 message: `Error occured looking up ${packageName}`,
-                messagesList: response.errors
+                messageBody: response.errors
               }
             })
 
@@ -360,7 +360,7 @@ class PackageDependencies extends Component {
               type: 'ERROR_MESSAGE',
               payload: {
                 message: `Error adding ${packageItem.packageName}`,
-                messagesList: error
+                messageBody: error
               }
             })
 

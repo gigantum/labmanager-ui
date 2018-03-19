@@ -118,7 +118,7 @@ const makeDirectory = (
               type: 'ERROR_MESSAGE',
               payload: {
                 message: `ERROR: could not make ${path}`,
-                messagesList: error
+                messageBody: error
               }
             })
             reject(error)

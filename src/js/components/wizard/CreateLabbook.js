@@ -87,7 +87,7 @@ export default class CreateLabbook extends React.Component {
                     payload: {
                       id: id,
                       message: 'ERROR: Could not import remote LabBook',
-                      messagesList: error,
+                      messageBody: error,
                       error: true
                   }
                 })

@@ -20,20 +20,24 @@ export default class BranchCard extends Component {
 
   */
   _checkoutBranch(){
-    const branchName = this.props.edge.node.name
+    const {branchName} = this.props.edge.node
+    const {labbookId} = this.props
+    const {owner, labbookName} = this.state
+
     CheckoutBranchMutation(
-      this.state.owner,
-      this.state.labbookName,
+      owner,
+      labbookName,
       branchName,
-      this.props.labbookId,
+      labbookId,
       (error)=>{
+
         if(error){
           console.error(error);
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
               message: "Problem Checking out Branch, check you have a valid session and connection",
-              messagesList: error,
+              messageBody: error,
             }
           })
         }else{

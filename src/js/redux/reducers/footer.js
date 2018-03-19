@@ -51,7 +51,7 @@ export default (
      id: id,
      error: true,
      className: 'Footer__message--error',
-     messageBody: action.payload.messagesList
+     messageBody: action.payload.messageBody ? action.payload.messageBody : [],
    })
 
    return {
@@ -72,7 +72,7 @@ export default (
       id: id,
       error: false,
       className: 'Footer__message',
-      messageBody: action.payload.messagesList ? action.payload.messagesList : [],
+      messageBody: action.payload.messageBody ? action.payload.messageBody : [],
       isMultiPart: false
   })
 
@@ -95,7 +95,7 @@ export default (
      id: id,
      error: false,
      className: 'Footer__message--warning',
-     messageBody: action.payload.messagesList ? action.payload.messagesList : []
+     messageBody: action.payload.messageBody ? action.payload.messageBody : [],
  })
 
  return {
@@ -257,7 +257,7 @@ export default (
     className: action.payload.error ? 'Footer__message--error' : 'Footer__message',
     isLast: action.payload.isLast,
     isMultiPart: true,
-    messageBody: action.payload.messageList,
+    messageBody: action.payload.messageBody ? action.payload.messageBody : [],
     error: action.payload.error
   })
 

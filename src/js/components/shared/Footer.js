@@ -14,7 +14,7 @@ export default class Footer extends Component {
     this.state = store.getState().footer
 
     this._clearState = this._clearState.bind(this)
-    this._toggleMessagesList = this._toggleMessagesList.bind(this)
+    this._toggleMessageList = this._toggleMessageList.bind(this)
   }
   /**
     subscribe to store to update state
@@ -119,7 +119,7 @@ export default class Footer extends Component {
   @return {}
  */
 
- _toggleMessagesList(){
+ _toggleMessageList(){
    store.dispatch({
      type: 'TOGGLE_MESSAGE_LIST',
      payload:{
@@ -209,7 +209,7 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
         (otherMessages > 0) &&
         <div
           className={footerExpandMessages}
-          onClick={()=>{self._toggleMessagesList()}}>
+          onClick={()=>{self._toggleMessageList()}}>
           {` (and ${otherMessages} other notifications)`}
         </div>
       }

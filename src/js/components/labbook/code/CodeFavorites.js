@@ -89,7 +89,7 @@ class CodeFavorites extends Component {
                 Load More
               </button>
             </div>
-        </div>
+          </div>
 
         )
       }else{

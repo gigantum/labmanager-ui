@@ -46,11 +46,12 @@ class Environment extends Component {
         'clientMutationId',
         (error) =>{
           if(error){
+            console.log(error)
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload:{
                 message: `Problem stopping ${labbookName}`,
-                messagesList: error
+                messageBody: error
               }
             })
           }else{
@@ -66,7 +67,7 @@ class Environment extends Component {
                     type: 'ERROR_MESSAGE',
                     payload:{
                       message: `${labbookName} failed to build`,
-                      messagesList: error
+                      messageBody: error
                     }
                   })
                 }
@@ -89,7 +90,7 @@ class Environment extends Component {
               type: 'ERROR_MESSAGE',
               payload:{
                 message: `${labbookName} failed to build`,
-                messagesList: error
+                messageBody: error
               }
             })
           }

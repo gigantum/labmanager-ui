@@ -58,6 +58,7 @@ class Labbook extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
       payload: {
@@ -88,8 +89,9 @@ class Labbook extends Component {
     updates history prop
   */
   storeDidUpdate = (labbook) => {
-    let stateString = JSON.stringify(this.state)
-    let labbookString = JSON.stringify(labbook)
+    let stateString = JSON.stringify(this.state).replace(/\s/g, '')
+    let labbookString = JSON.stringify(labbook).replace(/\s/g, '')
+
     if(stateString !== labbookString){
 
       this.setState(labbook);//triggers re-render when store updates
@@ -222,11 +224,11 @@ class Labbook extends Component {
 
   render(){
 
-    const { isAuthenticated } = this.props.auth;
-    const {labbookName} = this.props;
+    const { isAuthenticated } = this.props.auth
+    const {labbookName} = this.props
 
     if(this.props.labbook){
-    
+
       const name = this.props.labbook.activeBranch ? this.props.labbook.activeBranch.name.replace(/-/g, ' ') : 'temp'
 
       return(
@@ -473,8 +475,6 @@ const backend = (manager: Object) => {
         orgTopDropCapture = backend.handleTopDropCapture;
 
     backend.handleTopDropCapture = (e) => {
-
-        let datatransfer = e.dataTransfer.getData('data');
 
         if(backend.currentNativeSource){
           orgTopDropCapture.call(backend, e);

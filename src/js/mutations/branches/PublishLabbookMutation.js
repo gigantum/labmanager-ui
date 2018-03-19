@@ -43,7 +43,7 @@ export default function PublishLabbookMutation(
           console.log(error)
         }
 
-        callback(error)
+        callback(response, error)
       },
       onError: err => {console.error(err)},
       updater: (store, response) => {
