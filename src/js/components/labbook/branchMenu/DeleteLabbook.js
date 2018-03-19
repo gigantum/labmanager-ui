@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 //Mutations
 import DeleteLabbookMutation from 'Mutations/DeleteLabbookMutation'
 //components
-import Loader from 'Components/shared/loader'
+import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
 
