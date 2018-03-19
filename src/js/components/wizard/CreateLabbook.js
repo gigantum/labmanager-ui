@@ -46,129 +46,140 @@ export default class CreateLabbook extends React.Component {
   *   triggers setComponent to proceed to next view
   **/
   continueSave = (evt) => {
-    const {name, description} = this.state;
-    const id = uuidv4()
+    if(navigator.onLine) {
+      const {name, description} = this.state;
+      const id = uuidv4()
 
-    let self = this;
+      let self = this;
 
-    if(this.state.remoteURL.length > 0){
-      const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
-      const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
-      const remote = this.state.remoteURL.indexOf('https://') > -1 ? this.state.remoteURL + '.git' : 'https://' + this.state.remoteURL + '.git'
+      if(this.state.remoteURL.length > 0){
+        const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
+        const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
+        const remote = this.state.remoteURL.indexOf('https://') > -1 ? this.state.remoteURL + '.git' : 'https://' + this.state.remoteURL + '.git'
 
-      UserIdentity.getUserIdentity().then(response => {
+        UserIdentity.getUserIdentity().then(response => {
 
-      if(response.data){
+        if(response.data){
 
-        if(response.data.userIdentity.isSessionValid){
-
-          store.dispatch(
-            {
-              type: "MULTIPART_INFO_MESSAGE",
-              payload: {
-                id: id,
-                message: 'Importing LabBook please wait',
-                isLast: false,
-                error: false
-              }
-            })
-          ImportRemoteLabbookMutation(
-            owner,
-            labbookName,
-            remote,
-            (response, error) => {
-
-
-              if(error){
-                console.error(error)
-                store.dispatch(
-                  {
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                      id: id,
-                      message: 'ERROR: Could not import remote LabBook',
-                      messageBody: error,
-                      error: true
-                  }
-                })
-
-              }else if(response){
-
-                store.dispatch(
-                  {
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                      id: id,
-                      message: `Successfully imported remote LabBook ${labbookName}`,
-                      isLast: true,
-                      error: false
-                    }
-                  })
-                BuildImageMutation(
-                labbookName,
-                owner,
-                false,
-                (error)=>{
-                  if(error){
-                    console.error(error)
-                    store.dispatch(
-                      {
-                        type: 'MULTIPART_INFO_MESSAGE',
-                        payload: {
-                          id: id,
-                          message: `ERROR: Failed to build ${labbookName}`,
-                          messsagesList: error,
-                          error: true
-                      }
-                    })
-                  }
-                })
-                document.getElementById('modal__cover').classList.add('hidden')
-                self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
-              }else{
-
-                BuildImageMutation(
-                labbookName,
-                localStorage.getItem('username'),
-                false,
-                (error)=>{
-                  if(error){
-                    console.error(error)
-                    store.dispatch(
-                      {
-                        type: 'MULTIPART_INFO_MESSAGE',
-                        payload: {
-                          id: id,
-                          message: `ERROR: Failed to build ${labbookName}`,
-                          messsagesList: error,
-                          error: true
-                      }
-                    })
-                  }
-                })
-              }
-            }
-          )
-        }else{
+          if(response.data.userIdentity.isSessionValid){
 
             store.dispatch(
               {
                 type: "MULTIPART_INFO_MESSAGE",
                 payload: {
                   id: id,
-                  message: 'ERROR: User session not valid for remote import',
-                  messsagesList: [{message:'User must be authenticated to perform this action.'}],
-                  error: true
+                  message: 'Importing LabBook please wait',
+                  isLast: false,
+                  error: false
                 }
               })
+            ImportRemoteLabbookMutation(
+              owner,
+              labbookName,
+              remote,
+              (response, error) => {
 
-            this.setState({'showLoginPrompt': true})
-        }
+
+                if(error){
+                  console.error(error)
+                  store.dispatch(
+                    {
+                      type: 'MULTIPART_INFO_MESSAGE',
+                      payload: {
+                        id: id,
+                        message: 'ERROR: Could not import remote LabBook',
+                        messageBody: error,
+                        error: true
+                    }
+                  })
+
+                }else if(response){
+
+                  store.dispatch(
+                    {
+                      type: 'MULTIPART_INFO_MESSAGE',
+                      payload: {
+                        id: id,
+                        message: `Successfully imported remote LabBook ${labbookName}`,
+                        isLast: true,
+                        error: false
+                      }
+                    })
+                  BuildImageMutation(
+                  labbookName,
+                  owner,
+                  false,
+                  (error)=>{
+                    if(error){
+                      console.error(error)
+                      store.dispatch(
+                        {
+                          type: 'MULTIPART_INFO_MESSAGE',
+                          payload: {
+                            id: id,
+                            message: `ERROR: Failed to build ${labbookName}`,
+                            messsagesList: error,
+                            error: true
+                        }
+                      })
+                    }
+                  })
+                  document.getElementById('modal__cover').classList.add('hidden')
+                  self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
+                }else{
+
+                  BuildImageMutation(
+                  labbookName,
+                  localStorage.getItem('username'),
+                  false,
+                  (error)=>{
+                    if(error){
+                      console.error(error)
+                      store.dispatch(
+                        {
+                          type: 'MULTIPART_INFO_MESSAGE',
+                          payload: {
+                            id: id,
+                            message: `ERROR: Failed to build ${labbookName}`,
+                            messsagesList: error,
+                            error: true
+                        }
+                      })
+                    }
+                  })
+                }
+              }
+            )
+          }else{
+
+              store.dispatch(
+                {
+                  type: "MULTIPART_INFO_MESSAGE",
+                  payload: {
+                    id: id,
+                    message: 'ERROR: User session not valid for remote import',
+                    messsagesList: [{message:'User must be authenticated to perform this action.'}],
+                    error: true
+                  }
+                })
+
+              this.setState({'showLoginPrompt': true})
+          }
+          }
+        })
+      }
+      else{
+        this.props.createLabbookCallback(name, description)
+      }
+    } else {
+      this.props.hideModal();
+      store.dispatch({
+        type: 'ERROR_MESSAGE',
+        payload:{
+          message: `Cannot create a labbook at this time.`,
+          messageBody: [{message: 'An internet connection is required to create a Labbook.'}]
         }
       })
-    }
-    else{
-      this.props.createLabbookCallback(name, description)
     }
   }
   /**
