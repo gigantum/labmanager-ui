@@ -267,11 +267,12 @@ const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, co
       const fullPath = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
 
       let r = /[^\/]*$/;
-      const tempPath = fullPath.replace(r, '');
+      const tempPath =  fileItem.entry.isDirectory ? fullPath : fullPath.replace(r, '');
+
       const path = (tempPath.indexOf(tempPath.length - 1)) === '/' ? tempPath.replace(tempPath.length -1, 1) : tempPath;
 
       const folderNames = path.split('/')
-
+      console.log(folderNames)
       folderPaths = folderPaths.concat(getFolderPaths(folderNames, prefix));
     })
 
@@ -348,7 +349,7 @@ const FolderUpload = {
 
     CreateFolders(files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck)
 
-
+    console.log(files)
     let addFilePromises = []
 
     function fileCheck(fileItem){
@@ -365,9 +366,9 @@ const FolderUpload = {
 
         let folderPaths = getFolderPaths(folderNames, prefix);
         let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, section)
-        batchCount++
-        if(fileItem.entry.isFile){
 
+        if(fileItem.entry.isFile){
+          batchCount++
           let addPromise = new Promise(function(resolve, reject){
             addFiles([fileItem],
               connectionKey,

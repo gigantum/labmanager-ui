@@ -33,11 +33,11 @@ var initOptions = function initOptions(options) {
 
 var getFileFromFileEntry = function getFileFromFileEntry(entry) {
     return new Promise(function (resolve, reject) {
-			console.log(entry)
+
         if (entry.file) {
             entry.file(resolve, reject);
         }else if (entry.isDirectory) {
-            resolve(entry)
+						readEntries(entry, resolve)
         } else {
             resolve(null);
         }
@@ -48,7 +48,7 @@ var getFileFromFileEntry = function getFileFromFileEntry(entry) {
 };
 
 var isItemFileEntry = function isItemFileEntry(item) {
-		console.log(item, item.kind)
+
     return item.kind === "file";
 };
 
@@ -65,13 +65,11 @@ var getListAsArray = function getListAsArray(list) {
 
 var getEntryData = function getEntryData(entry, options, level) {
     var promise = void 0;
-		console.log(entry)
-    if (entry.isDirectory) {
 
-        // promise = options.recursive ? getFileList(entry, options, level + 1) : Promise.resolve([]);
-				promise = getFileFromFileEntry(entry).then(function (file) {
-						return file ? [{file:file, entry: entry}] : [];
-				});
+    if (entry.isDirectory) {
+			promise = getFileList(entry, options, level + 1).then(function (file) {
+					return file ? [{file:file, entry: entry}] : [{file:entry, entry: entry}];
+			});
 
     } else {
         promise = getFileFromFileEntry(entry).then(function (file) {
@@ -111,7 +109,7 @@ var getFileList = function getFileList(root, options) {
 				new Promise(function(resolveEntries){
 					readEntries(reader, resolveEntries)
 				}).then(function(entries) {
-					console.log(entries)
+
             return Promise.all(entries.map(function (entry) {
 
 								var file = getEntryData(entry, options, level)
@@ -144,7 +142,7 @@ var getFiles = function getFiles(item) {
 var getDataTransferItemFiles = function getDataTransferItemFiles(item, options) {
 
     return getFiles(item, options).then(function (files) {
-				console.log(item, files, item.getAsFile(), item.webkitGetAsEntry())
+
         if (!files.length) {
             //perhaps its a regular file
 						//
@@ -171,16 +169,16 @@ var getFilesFromDragEvent = function getFilesFromDragEvent(evt) {
     options = initOptions(options);
 
     return new Promise(function (resolve) {
-				console.log(evt, evt.dataTransfer, evt.dataTransfer.items)
+
         if (evt.dataTransfer.items) {
             Promise.all(getListAsArray(evt.dataTransfer.items).filter(function (item) {
-							console.log(item)
+
 							  return isItemFileEntry(item);
             }).map(function (item) {
-								console.log(item)
+
                 return getDataTransferItemFiles(item, options);
             })).then(function (files) {
-							console.log(files)
+					
                 return resolve(getListAsArray(files));
             });
         } else if (evt.dataTransfer.files) {

@@ -198,8 +198,8 @@ export default class UserNote extends Component {
               error: false
             }
           })
-
-          if (self.state.remoteUrl) {
+          console.log(self.state.remoteUrl)
+          if (!self.state.remoteUrl) {
             PublishLabbookMutation(
               self.state.owner,
               self.state.labbookName,
@@ -243,11 +243,11 @@ export default class UserNote extends Component {
             )
           }
 
+
+        } else {
           self.setState({
             'remoteUrl': ''
           })
-        } else {
-
           self.setState({
             showLoginPrompt: true
           })

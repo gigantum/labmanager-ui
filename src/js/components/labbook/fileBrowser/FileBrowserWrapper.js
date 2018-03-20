@@ -27,16 +27,26 @@ import store from 'JS/redux/store'
 */
 const getTotalFileLength = (files) => {
   let fileCount = 0;
-
+  let hasDirectoryUpload = false;
+  console.log(files)
   function filesRecursionCount(file){
+      console.log(file)
       if(Array.isArray(file)){
         file.forEach((nestedFile)=>{
           filesRecursionCount(nestedFile)
         })
+      }else if( file.file && Array.isArray(file.file) && (file.file.length > 0)){
+        file.file.forEach((nestedFile)=>{
+          filesRecursionCount(nestedFile)
+        })
       }else{
-        let extension =  file.name ? file.name.replace(/.*\./, '') : file.file.name.replace(/.*\./, '');
-
-        if(config.fileBrowser.excludedFiles.indexOf(extension) < 0){
+        console.log(file)
+        let extension = file.name ? file.name.replace(/.*\./, '') : file.entry.fullPath.replace(/.*\./, '');
+        console.log(extension)
+        if(file.entry.isDirectory){
+          hasDirectoryUpload = true
+        }
+        if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && file.entry.isFile){
           fileCount++
         }
       }
@@ -45,7 +55,7 @@ const getTotalFileLength = (files) => {
 
   filesRecursionCount(files)
 
-  return fileCount;
+  return {fileCount: fileCount, hasDirectoryUpload: hasDirectoryUpload}
 }
 
 export default class FileBrowserWrapper extends Component {
@@ -131,7 +141,9 @@ export default class FileBrowserWrapper extends Component {
   handleCreateFiles(files, prefix) {
     let self = this;
 
-    let totalFiles = getTotalFileLength(files)
+    let fileMetaData =  getTotalFileLength(files),
+    totalFiles = fileMetaData.fileCount,
+    hasDirectoryUpload = fileMetaData.hasDirectoryUpload
     if(totalFiles > 0){
 
       store.dispatch({
@@ -142,13 +154,18 @@ export default class FileBrowserWrapper extends Component {
           totalFiles: totalFiles
         }
       })
+    }else if(hasDirectoryUpload && (totalFiles === 0)){
+      store.dispatch({
+        type: 'INFO_MESSAGE',
+        payload:{
+          message: `Uploading Directories`,
+        }
+      })
     }else{
       store.dispatch({
-        type: 'UPLOAD_MESSAGE_SETTER',
+        type: 'INFO_MESSAGE',
         payload:{
-          uploadMessage: `Cannot upload these file types`,
-          id: `nofiles`,
-          totalFiles: totalFiles
+          message: `Cannot upload these file types`,
         }
       })
     }
@@ -197,7 +214,7 @@ export default class FileBrowserWrapper extends Component {
 
     })
     let flattenedFiles = []
-
+    console.log(folderFiles)
     if(folderFiles.length > 0){
 
       function flattenFiles(filesArray){
@@ -206,7 +223,10 @@ export default class FileBrowserWrapper extends Component {
             filesArray.forEach(filesSubArray => {
               flattenFiles(filesSubArray)
             })
-          }else if(filesArray.entry){
+          }else if(Array.isArray(filesArray.file) && (filesArray.file.length > 0)){
+            flattenFiles(filesArray.file)
+          }
+          else if(filesArray.entry){
             flattenedFiles.push(filesArray)
           }
       }
@@ -214,7 +234,7 @@ export default class FileBrowserWrapper extends Component {
       flattenFiles(folderFiles)
 
       let filterFiles = flattenedFiles.filter((fileItem) => {
-        let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.file.name.replace(/.*\./, '');
+        let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.entry.fullPath.replace(/.*\./, '');
 
         return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
       })
