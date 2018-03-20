@@ -169,6 +169,20 @@ class LocalLabbooks extends Component {
     this.refs.wizardModal._showModal()
   }
 
+  _sortAlphabetically(labbooks) {
+    return labbooks.slice().sort((a, b) => {
+      a = a.node.name.toLowerCase();
+      b = b.node.name.toLowerCase();
+      if(a < b) {
+        return -1
+      }
+      if(a > b) {
+        return 1;
+      }
+      return 0;
+    })
+  }
+
   render(){
 
       let {props} = this;
@@ -177,7 +191,7 @@ class LocalLabbooks extends Component {
       if(props.feed.localLabbooks){
 
         let labbooks = this._filterLabbooks(props.feed.localLabbooks.edges, this.state.filter)
-
+        labbooks = this._sortAlphabetically(labbooks)
         return(
 
           <div className="LocalLabbooks">
@@ -223,7 +237,7 @@ class LocalLabbooks extends Component {
                 {
 
                   labbooks.map((edge) => {
-              
+
                     return (
                       <LocalLabbookPanel
                         key={edge.node.name}
