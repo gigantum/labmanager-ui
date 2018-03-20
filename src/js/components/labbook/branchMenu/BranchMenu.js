@@ -199,7 +199,7 @@ export default class UserNote extends Component {
             }
           })
 
-          if (self.state.remoteUrl) {
+          if (!self.state.remoteUrl) {
             PublishLabbookMutation(
               self.state.owner,
               self.state.labbookName,
