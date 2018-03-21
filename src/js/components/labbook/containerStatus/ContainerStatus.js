@@ -52,18 +52,6 @@ export default class ContainerStatus extends Component {
     //memory clean up
     window.removeEventListener("click", this._closePopupMenus)
   }
-
-
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.secondsElapsed !== this.state.secondsElapsed){
-      let self = this
-      let intervalInSeconds = 3 * 1000
-
-      setTimeout(function(){
-        self._fetchStatus()
-      }, intervalInSeconds);
-    }
-  }
   /**
     @param {object} footer
     unsubscribe from redux store
@@ -130,6 +118,7 @@ export default class ContainerStatus extends Component {
       }
 
       setTimeout(()=>{
+
         self._fetchStatus()
       }, 3 * 1000)
     })

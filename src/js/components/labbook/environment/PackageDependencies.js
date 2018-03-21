@@ -274,28 +274,35 @@ class PackageDependencies extends Component {
     })
 
 
-    PackageLookup.query(manager, packageName, version).then((response)=>{
+      PackageLookup.query(manager, packageName, version).then((response)=>{
+        let packageIndex;
+        packages.forEach((packageItem, index)=>{
+          if(packageItem.packageName === packageName){
+            packageIndex = index;
+          }
+        })
+        packages.splice(packageIndex, 1);
+        if(response.errors){
+            store.dispatch({
+              type:"ERROR_MESSAGE",
+              payload: {
+                message: `Error occured looking up ${packageName}`,
+                messageBody: response.errors
+              }
+            })
 
-      packages.splice(packageIndex, 1);
-      if(response.errors){
-          store.dispatch({
-            type:"ERROR_MESSAGE",
-            payload: {
-              message: `Error occured looking up ${packageName}`,
-              messageBody: response.errors
-            }
+        }
+        else{
+          packages.push({
+            packageName,
+            version: response.data.package.version,
+            latestVersion: response.data.package.latestVersion,
+            manager,
+            validity: 'valid'
           })
 
-      }
-      else{
-        packages.push({
-          packageName,
-          version: response.data.package.version,
-          latestVersion: response.data.package.latestVersion,
-          manager,
-          validity: 'valid'
-        })
-      }
+        }
+
       this.setState({
         packages
       })

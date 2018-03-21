@@ -144,6 +144,7 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFiles(files, prefix) {
     if (!this.state.uploading) {
+
       store.dispatch({
         type: 'STARTED_UPLOADING',
       })
