@@ -163,30 +163,40 @@ class PackageDependencies extends Component {
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
 
-    if(canEditEnvironment){
-      const {labbookName, owner} = store.getState().routes
-      const {environmentId} = this.props
-      const clinetMutationId = uuidv4()
-      let self = this
+    if(navigator.onLine){
+      if(canEditEnvironment){
+        const {labbookName, owner} = store.getState().routes
+        const {environmentId} = this.props
+        const clinetMutationId = uuidv4()
+        let self = this
 
-      RemovePackageComponentMutation(
-        labbookName,
-        owner,
-        node.manager,
-        node.package,
-        node.id,
-        clinetMutationId,
-        environmentId,
-        'PackageDependencies_packageDependencies',
-        (response, error) => {
-          if(error){
-            console.log(error)
+        RemovePackageComponentMutation(
+          labbookName,
+          owner,
+          node.manager,
+          node.package,
+          node.id,
+          clinetMutationId,
+          environmentId,
+          'PackageDependencies_packageDependencies',
+          (response, error) => {
+            if(error){
+              console.log(error)
+            }
+            self.props.buildCallback()
           }
-          self.props.buildCallback()
+        )
+      }else{
+        this._promptUserToCloseContainer()
+      }
+    } else {
+      store.dispatch({
+        type: 'ERROR_MESSAGE',
+        payload:{
+          message: `Cannot remove package at this time.`,
+          messageBody: [{message: 'An internet connection is required to modify the environment.'}]
         }
-      )
-    }else{
-      this._promptUserToCloseContainer()
+      })
     }
   }
   /**
@@ -197,15 +207,25 @@ class PackageDependencies extends Component {
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
 
-    if(canEditEnvironment){
+    if(navigator.onLine){
+      if(canEditEnvironment){
+        store.dispatch({
+          type: 'TOGGLE_PACKAGE_MENU',
+          payload:{
+            packageMenuVisible: !this.state.packageMenuVisible
+          }
+        })
+      }else{
+        this._promptUserToCloseContainer()
+      }
+    } else {
       store.dispatch({
-        type: 'TOGGLE_PACKAGE_MENU',
+        type: 'ERROR_MESSAGE',
         payload:{
-          packageMenuVisible: !this.state.packageMenuVisible
+          message: `Cannot add package at this time.`,
+          messageBody: [{message: 'An internet connection is required to modify the environment.'}]
         }
       })
-    }else{
-      this._promptUserToCloseContainer()
     }
   }
   /**
@@ -234,56 +254,55 @@ class PackageDependencies extends Component {
   *  updates packages in state
   */
   _addStatePackage(){
-      let packages = this.state.packages
-      const {packageName, version} = this.state
-      const manager = this.state.selectedTab
-      let packageIndex = packages.length;
+    let packages = this.state.packages
+    const {packageName, version} = this.state
+    const manager = this.state.selectedTab
+    let packageIndex = packages.length;
 
-      packages.push({
-        packageName,
-        version,
-        manager,
-        validity: 'checking'
-      })
+    packages.push({
+      packageName,
+      version,
+      manager,
+      validity: 'checking'
+    })
 
-      this.setState({
-        packages,
-        packageName: '',
-        version: '',
+    this.setState({
+      packages,
+      packageName: '',
+      version: '',
 
-      })
+    })
 
 
-      PackageLookup.query(manager, packageName, version).then((response)=>{
+    PackageLookup.query(manager, packageName, version).then((response)=>{
 
-        packages.splice(packageIndex, 1);
-        if(response.errors){
-            store.dispatch({
-              type:"ERROR_MESSAGE",
-              payload: {
-                message: `Error occured looking up ${packageName}`,
-                messageBody: response.errors
-              }
-            })
-
-        }
-        else{
-          packages.push({
-            packageName,
-            version: response.data.package.version,
-            latestVersion: response.data.package.latestVersion,
-            manager,
-            validity: 'valid'
+      packages.splice(packageIndex, 1);
+      if(response.errors){
+          store.dispatch({
+            type:"ERROR_MESSAGE",
+            payload: {
+              message: `Error occured looking up ${packageName}`,
+              messageBody: response.errors
+            }
           })
-        }
-        this.setState({
-          packages
+
+      }
+      else{
+        packages.push({
+          packageName,
+          version: response.data.package.version,
+          latestVersion: response.data.package.latestVersion,
+          manager,
+          validity: 'valid'
         })
+      }
+      this.setState({
+        packages
       })
+    })
 
-      this.inputPackageName.value = ""
-      this.inputVersion.value = ""
-
+    this.inputPackageName.value = ""
+    this.inputVersion.value = ""
   }
 
   /**
