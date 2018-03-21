@@ -183,6 +183,7 @@ export default class FileBrowserWrapper extends Component {
           message: `Cannot upload these file types`,
         }
       })
+    }
 
       let self = this;
 
@@ -223,12 +224,6 @@ export default class FileBrowserWrapper extends Component {
 
           newKey += file.name;
 
-
-            self._chunkLoader(filepath, file, data, batchUpload, files, index, (data)=>{
-
-            })
-          }
-
           fileReader.onloadend = function (evt) {
               let filepath = newKey
 
@@ -268,7 +263,7 @@ export default class FileBrowserWrapper extends Component {
           }
       }
 
-        flattenFiles(folderFiles)
+      flattenFiles(folderFiles)
 
       let filterFiles = flattenedFiles.filter((fileItem) => {
         let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.entry.fullPath.replace(/.*\./, '');
@@ -289,7 +284,7 @@ export default class FileBrowserWrapper extends Component {
 
       }
     }
-  }
+  
   /**
   *  @param {string, string} oldKey,newKey  file key, prefix is root folder -
   *  renames folder by creating new folder, moving files to the folder and deleting the old folder

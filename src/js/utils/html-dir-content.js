@@ -68,8 +68,9 @@ var getEntryData = function getEntryData(entry, options, level) {
 
 
     if (entry.isDirectory) {
+
 			promise = getFileList(entry, options, level + 1).then(function (file) {
-					console.log(entry, file)
+
 					return file ? [{file:file, entry: entry}] : [{file:entry, entry: entry}];
 			});
 
