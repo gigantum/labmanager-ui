@@ -166,7 +166,7 @@ export default class FileBrowserWrapper extends Component {
         let fileMetaData =  getTotalFileLength(files),
         totalFiles = fileMetaData.fileCount,
         hasDirectoryUpload = fileMetaData.hasDirectoryUpload
-        console.log(totalFiles)
+
         if(totalFiles > 0){
 
           store.dispatch({
@@ -560,17 +560,20 @@ export default class FileBrowserWrapper extends Component {
   _formatFileJson(files){
 
       let formatedArray = []
+      let idExists = []
       if(files){
         files.edges.forEach((edge) => {
           if(edge && edge.node){
-
-            formatedArray.push({
-              key: edge.node.key,
-              modified: edge.node.modifiedAt,
-              size: edge.node.size,
-              isFavorite: edge.node.isFavorite,
-              id: edge.node.id
-            })
+            if(idExists.indexOf(edge.node.id) === -1){
+              formatedArray.push({
+                key: edge.node.key,
+                modified: edge.node.modifiedAt,
+                size: edge.node.size,
+                isFavorite: edge.node.isFavorite,
+                id: edge.node.id
+              })
+              idExists.push(edge.node.id)
+            }
           }
         })
       }

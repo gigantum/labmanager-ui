@@ -271,7 +271,7 @@ export default class UserNote extends Component {
   */
   _sync() {
     const status = store.getState().containerStatus.status
-
+    this.setState({ menuOpen: false });
     if((status === 'Stopped') || (status === 'Build Failed') || (status === 'Rebuild Required')){
       let id = uuidv4()
       let self = this;
@@ -335,7 +335,7 @@ export default class UserNote extends Component {
       })
     } else {
       this.setState({ menuOpen: false });
-  
+
       store.dispatch({
         type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
         payload: {

@@ -143,17 +143,27 @@ export default function AddLabbookFileMutation(
       },
       updater: (store, response) => {
         deleteEdge(store, labbookId, optimisticId, connectionKey)
-        const id = uuidv4()
-        const node = store.create(id, 'LabbookFile')
+
+
 
         if(response.addLabbookFile && response.addLabbookFile.newLabbookFileEdge && response.addLabbookFile.newLabbookFileEdge.node){
-          node.setValue(response.addLabbookFile.newLabbookFileEdge.node.id, "id")
-          node.setValue(false, 'isDir')
-          node.setValue(response.addLabbookFile.newLabbookFileEdge.node.key, 'key')
-          node.setValue(response.addLabbookFile.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
-          node.setValue(response.addLabbookFile.newLabbookFileEdge.node.size, 'size')
 
-          //sharedUpdater(store, labbookId, connectionKey, node)
+          const {id} = response.addLabbookFile.newLabbookFileEdge.node
+
+          let nodeExists = store.get(id)
+    
+          if(!nodeExists){
+            const node = store.create(id, 'LabbookFile')
+
+
+            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.id, "id")
+            node.setValue(false, 'isDir')
+            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.key, 'key')
+            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
+            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.size, 'size')
+
+            sharedUpdater(store, labbookId, connectionKey, node)
+          }
         }
 
       },
