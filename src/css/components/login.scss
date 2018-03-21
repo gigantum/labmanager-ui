@@ -56,3 +56,13 @@
   @extend .fa-exclamation-circle;
   margin-right: 10px;
 }
+
+.Login__error-unauthorized {
+  color: $lightGrey;
+  font-size: 20px;
+  margin-top: -100px;
+
+  a {
+    color: $lightBlue;
+  }
+}

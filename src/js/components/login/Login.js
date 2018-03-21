@@ -1,19 +1,15 @@
 //vendor
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import store from 'JS/redux/store'
 //assets
 import gigantumLogo from 'Images/logos/gigantum.svg'
 
-import Callback from 'JS/Callback/Callback';
-
-
-
 let unsubscribe;
 //import CreatePage from './components/CreatePage';
 export default class Login extends Component {
-  constructor(props){
-  	super(props);
-  	this.state = store.getState().login
+  constructor(props) {
+    super(props);
+    this.state = store.getState().login
   }
 
   /**
@@ -21,7 +17,7 @@ export default class Login extends Component {
   */
   componentDidMount() {
 
-    unsubscribe = store.subscribe(() =>{
+    unsubscribe = store.subscribe(() => {
 
       this.storeDidUpdate(store.getState().login)
     })
@@ -55,32 +51,46 @@ export default class Login extends Component {
     this.props.auth.logout();
   }
 
-  render(){
+  render() {
     const { isAuthenticated } = this.props.auth;
 
     const errorType = sessionStorage.getItem('LOGIN_ERROR_TYPE'),
-    errorDescription = sessionStorage.getItem('LOGIN_ERROR_DESCRIPTION')
-
-    return(
+      errorDescription = sessionStorage.getItem('LOGIN_ERROR_DESCRIPTION')
+    const isUnauthorized = errorDescription === 'Gigantum is currently in a limited Beta. Access will be expanded soon!';
+    return (
       <div className="Login">
 
-      {
-        !isAuthenticated() && (
+        {
+          !isAuthenticated() && (
             <div className="Login__panel">
-                {
-                  errorType &&
-                  <div className="LoginError">
-                    <div className="Login__error">
-                      <div className="Login__error-type">
-                        <div className="Login__error-exclamation"></div>
-                        <div>{errorType}</div>
+              {
+                errorType &&
+                <div className="LoginError">
+                  {
+                    !isUnauthorized ?
+                      <div className="Login__error">
+                        <div className="Login__error-type">
+                          <div className="Login__error-exclamation"></div>
+                          <div>{errorType}</div>
+                        </div>
+                        <div className="Login__error-description">
+                          {errorDescription}
+                        </div>
                       </div>
-                      <div className="Login__error-description">
-                        {errorDescription}
-                      </div>
+                      :
+                      <div className="Login__error-unauthorized">
+                        <p>
+                          Gigantum is currently in a limited Beta and you must have received an invite to log in.
+                        </p>
+                        <p>
+                          You can sign up <a href="http://gigantum.io/#sign-up" rel="noopener noreferrer" target="_blank">here</a>.
+                        </p>
+                        <p>We are constantly adding users and you will receive an email when your account is ready!
+                        </p>
                     </div>
-                  </div>
-                }
+                  }
+                </div>
+              }
               <img
                 alt="gigantum"
                 className="Login__logo"
@@ -93,7 +103,7 @@ export default class Login extends Component {
               </button>
             </div>
           )
-      }
+        }
 
 
       </div>
