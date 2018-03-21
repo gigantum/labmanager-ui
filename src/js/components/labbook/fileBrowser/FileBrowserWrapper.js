@@ -47,7 +47,8 @@ const getTotalFileLength = (files) => {
         if(file.entry && file.entry.isDirectory){
           hasDirectoryUpload = true
         }
-        if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && ((file.entry && file.entry.isFile) || file.type)){
+
+        if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && ((file.entry && file.entry.isFile) || (typeof file.type === 'string'))){
           fileCount++
         }
       }
@@ -165,6 +166,7 @@ export default class FileBrowserWrapper extends Component {
         let fileMetaData =  getTotalFileLength(files),
         totalFiles = fileMetaData.fileCount,
         hasDirectoryUpload = fileMetaData.hasDirectoryUpload
+        console.log(totalFiles)
         if(totalFiles > 0){
 
           store.dispatch({

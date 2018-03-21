@@ -206,7 +206,7 @@ class PackageDependencies extends Component {
   _toggleAddPackageMenu(){
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
-
+  
     if(navigator.onLine){
       if(canEditEnvironment){
         store.dispatch({
@@ -379,7 +379,7 @@ class PackageDependencies extends Component {
         environmentId,
         'PackageDependencies_packageDependencies',
         (response, error) => {
-          self.setState({disableInstall: false})
+
           if(error){
             console.log(error)
             store.dispatch({
@@ -396,7 +396,8 @@ class PackageDependencies extends Component {
             if(packages[index]){
               addPackage(packages[index])
             }else{
-              self.setState({packages: []})
+              self.setState({disableInstall: false, packages: []})
+
               self.props.buildCallback()
             }
           }

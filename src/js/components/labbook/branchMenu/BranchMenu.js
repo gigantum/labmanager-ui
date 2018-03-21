@@ -335,6 +335,13 @@ export default class UserNote extends Component {
       })
     } else {
       this.setState({ menuOpen: false });
+  
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
+        }
+      })
       store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
