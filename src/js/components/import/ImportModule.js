@@ -460,8 +460,18 @@ export default class ImportModule extends Component {
   }
 
   _showModal(evt){
-    if(evt.target.id !== 'file__input-label'){
-      this.props.showModal()
+    if (navigator.onLine){
+      if(evt.target.id !== 'file__input-label'){
+        this.props.showModal()
+      }
+    } else {
+      store.dispatch({
+        type: 'ERROR_MESSAGE',
+        payload:{
+          message: `Cannot create a labbook at this time.`,
+          messageBody: [{message: 'An internet connection is required to create a Labbook.'}]
+        }
+      })
     }
   }
 
