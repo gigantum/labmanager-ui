@@ -125,15 +125,14 @@ export default class FileBrowserWrapper extends Component {
     )
   }
 
-  _chunkLoader(filepath, file, data, batchUpload, files, index){
+  /**
+  *  @param {string, file, object, boolean, array, number} key,prefix  file key, prefix is root folder -
+  *  creates a file using AddLabbookFileMutation by passing a blob
+  */
+  _chunkLoader(filepath, file, data, batchUpload, files, index, callback){
 
 
-    const postMessage = (workerData) => {
-
-      //TODO handle single large file upload in footer
-    }
-
-   ChunkUploader.chunkFile(data, postMessage)
+   ChunkUploader.chunkFile(data, callback)
  }
 
 
@@ -189,7 +188,14 @@ export default class FileBrowserWrapper extends Component {
           newKey += file.name;
 
 
+<<<<<<< HEAD
           let fileReader = new FileReader();
+=======
+            self._chunkLoader(filepath, file, data, batchUpload, files, index, (data)=>{
+
+            })
+          }
+>>>>>>> added empty folder upload handling
 
           fileReader.onloadend = function (evt) {
               let filepath = newKey

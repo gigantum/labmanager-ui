@@ -216,7 +216,6 @@ const ChunkUploader = {
               getChunk
             )
 
-
             postMessage(chunkData) //post progress back to worker instantiator file
 
           }
