@@ -272,7 +272,7 @@ const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, co
       const path = (tempPath.indexOf(tempPath.length - 1)) === '/' ? tempPath.replace(tempPath.length -1, 1) : tempPath;
 
       const folderNames = path.split('/')
-      console.log(folderNames)
+
       folderPaths = folderPaths.concat(getFolderPaths(folderNames, prefix));
     })
 
@@ -289,7 +289,7 @@ const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, co
 
       let index = 0;
       function createFolder(response){
-          console.log(response)
+
           if(response && ((response.labbook[section].files === null) || (directoryExists.indexOf(response.variables.path) < -1))){
             directoryExists.push(response.variables.path)
 
@@ -349,7 +349,7 @@ const FolderUpload = {
 
     CreateFolders(files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck)
 
-    console.log(files)
+
     let addFilePromises = []
 
     function fileCheck(fileItem){
