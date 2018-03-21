@@ -28,16 +28,26 @@ import store from 'JS/redux/store'
 */
 const getTotalFileLength = (files) => {
   let fileCount = 0;
-
+  let hasDirectoryUpload = false;
+  console.log(files)
   function filesRecursionCount(file){
+      console.log(file)
       if(Array.isArray(file)){
         file.forEach((nestedFile)=>{
           filesRecursionCount(nestedFile)
         })
+      }else if( file.file && Array.isArray(file.file) && (file.file.length > 0)){
+        file.file.forEach((nestedFile)=>{
+          filesRecursionCount(nestedFile)
+        })
       }else{
-        let extension =  file.name ? file.name.replace(/.*\./, '') : file.file.name.replace(/.*\./, '');
-
-        if(config.fileBrowser.excludedFiles.indexOf(extension) < 0){
+        console.log(file)
+        let extension = file.name ? file.name.replace(/.*\./, '') : file.entry.fullPath.replace(/.*\./, '');
+        console.log(extension)
+        if(file.entry.isDirectory){
+          hasDirectoryUpload = true
+        }
+        if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && file.entry.isFile){
           fileCount++
         }
       }
@@ -46,7 +56,7 @@ const getTotalFileLength = (files) => {
 
   filesRecursionCount(files)
 
-  return fileCount;
+  return {fileCount: fileCount, hasDirectoryUpload: hasDirectoryUpload}
 }
 
 export default class FileBrowserWrapper extends Component {
@@ -144,8 +154,32 @@ export default class FileBrowserWrapper extends Component {
   handleCreateFiles(files, prefix) {
     if (!this.state.uploading) {
 
+    let fileMetaData =  getTotalFileLength(files),
+    totalFiles = fileMetaData.fileCount,
+    hasDirectoryUpload = fileMetaData.hasDirectoryUpload
+    if(totalFiles > 0){
+
       store.dispatch({
-        type: 'STARTED_UPLOADING',
+        type: 'UPLOAD_MESSAGE_SETTER',
+        payload:{
+          uploadMessage: `Preparing Upload for ${totalFiles} files`,
+          id: Math.random() * 10000,
+          totalFiles: totalFiles
+        }
+      })
+    }else if(hasDirectoryUpload && (totalFiles === 0)){
+      store.dispatch({
+        type: 'INFO_MESSAGE',
+        payload:{
+          message: `Uploading Directories`,
+        }
+      })
+    }else{
+      store.dispatch({
+        type: 'INFO_MESSAGE',
+        payload:{
+          message: `Cannot upload these file types`,
+        }
       })
 
       let self = this;
@@ -214,6 +248,7 @@ export default class FileBrowserWrapper extends Component {
               self._chunkLoader(filepath, file, data, batchUpload, files, index)
             }
 
+<<<<<<< HEAD
             fileReader.readAsArrayBuffer(file);
         }else{
           folderFiles.push(file)
@@ -221,9 +256,16 @@ export default class FileBrowserWrapper extends Component {
 
       })
       let flattenedFiles = []
+=======
+    })
+    let flattenedFiles = []
+    console.log(folderFiles)
+    if(folderFiles.length > 0){
+>>>>>>> fixed file upload and status messsages associated with file upload
 
       if(folderFiles.length > 0){
 
+<<<<<<< HEAD
         function flattenFiles(filesArray){
 
             if(Array.isArray(filesArray)){
@@ -234,11 +276,29 @@ export default class FileBrowserWrapper extends Component {
               flattenedFiles.push(filesArray)
             }
         }
+=======
+          if(Array.isArray(filesArray)){
+            filesArray.forEach(filesSubArray => {
+              flattenFiles(filesSubArray)
+            })
+          }else if(Array.isArray(filesArray.file) && (filesArray.file.length > 0)){
+            flattenFiles(filesArray.file)
+          }
+          else if(filesArray.entry){
+            flattenedFiles.push(filesArray)
+          }
+      }
+>>>>>>> fixed file upload and status messsages associated with file upload
 
         flattenFiles(folderFiles)
 
+<<<<<<< HEAD
         let filterFiles = flattenedFiles.filter((fileItem) => {
           let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.file.name.replace(/.*\./, '');
+=======
+      let filterFiles = flattenedFiles.filter((fileItem) => {
+        let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.entry.fullPath.replace(/.*\./, '');
+>>>>>>> fixed file upload and status messsages associated with file upload
 
           return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
         })
