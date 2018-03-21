@@ -256,7 +256,7 @@ const onlyUnique = (value, index, self) =>  {
     return isUnique;
 }
 
-const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck) => {
+const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck, totalFiles) => {
     let folderPaths = []
     let directoryExists = []
 
@@ -307,6 +307,11 @@ const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, co
                     createFolder(labbooks[index])
                   }else{
                     fileCheck(files[0])
+                    if(totalFiles === 0){
+                      store.dispatch({
+                        type: 'FINISHED_UPLOADING',
+                      })
+                    }
                   }
               })
 
@@ -317,6 +322,11 @@ const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, co
             createFolder(labbooks[index])
           }else{
             fileCheck(files[0])
+            if(totalFiles === 0){
+              store.dispatch({
+                type: 'FINISHED_UPLOADING',
+              })
+            }
           }
         }
       }
@@ -333,7 +343,7 @@ const FolderUpload = {
   *  uploads file and folder if checks pass
   *  @return {boolean}
   */
-  uploadFiles: (files, prefix, labbookName, owner, section, connectionKey, sectionId, chunkLoader) =>{
+  uploadFiles: (files, prefix, labbookName, owner, section, connectionKey, sectionId, chunkLoader, totalFiles) =>{
     let count = 0;//
     let existingPaths = []
     let filePaths = []
@@ -347,7 +357,7 @@ const FolderUpload = {
     */
 
 
-    CreateFolders(files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck)
+    CreateFolders(files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck, totalFiles)
 
 
     let addFilePromises = []

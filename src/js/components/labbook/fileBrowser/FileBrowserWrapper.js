@@ -44,10 +44,10 @@ const getTotalFileLength = (files) => {
 
         let extension = file.name ? file.name.replace(/.*\./, '') : file.entry.fullPath.replace(/.*\./, '');
 
-        if(file.entry.isDirectory){
+        if(file.entry && file.entry.isDirectory){
           hasDirectoryUpload = true
         }
-        if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && file.entry.isFile){
+        if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && ((file.entry && file.entry.isFile) || file.type)){
           fileCount++
         }
       }
@@ -268,7 +268,8 @@ export default class FileBrowserWrapper extends Component {
             self.props.section,
             this.props.connection,
             this.props.parentId,
-            self._chunkLoader
+            self._chunkLoader,
+            totalFiles
           )
 
         }
