@@ -205,7 +205,7 @@ export default class UserNote extends Component {
               self.state.labbookName,
               self.props.labbookId,
               (response, error) => {
-
+                console.log(error)
                 if (response.publishLabbook && !response.publishLabbook.success) {
                   if(error){
                     store.dispatch({
@@ -243,11 +243,11 @@ export default class UserNote extends Component {
             )
           }
 
+
+        } else {
           self.setState({
             'remoteUrl': ''
           })
-        } else {
-
           self.setState({
             showLoginPrompt: true
           })
@@ -271,7 +271,7 @@ export default class UserNote extends Component {
   */
   _sync() {
     const status = store.getState().containerStatus.status
-
+    this.setState({ menuOpen: false });
     if((status === 'Stopped') || (status === 'Build Failed') || (status === 'Rebuild Required')){
       let id = uuidv4()
       let self = this;
@@ -335,6 +335,13 @@ export default class UserNote extends Component {
       })
     } else {
       this.setState({ menuOpen: false });
+
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
+        }
+      })
       store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
