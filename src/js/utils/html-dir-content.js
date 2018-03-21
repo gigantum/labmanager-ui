@@ -65,11 +65,11 @@ var getListAsArray = function getListAsArray(list) {
 
 var getEntryData = function getEntryData(entry, options, level) {
     var promise = void 0;
-		console.log(entry)
+
     if (entry.isDirectory) {
-			console.log(entry)
+
 			promise = getFileList(entry, options, level + 1).then(function (file) {
-					console.log(entry, file)
+
 					return file ? [{file:file, entry: entry}] : [{file:entry, entry: entry}];
 			});
 
@@ -83,7 +83,7 @@ var getEntryData = function getEntryData(entry, options, level) {
 };
 
 var readEntries = function(reader, resolve){
-		console.log(reader)
+
 		let allEntries = []
 		function readEntriesRecursive(){
 			reader.readEntries(function (entries) {
@@ -113,7 +113,7 @@ var getFileList = function getFileList(root, options) {
 					readEntries(reader, resolveEntries)
 
 				}).then(function(entries) {
-						console.log(entries, 'entry')
+
             return Promise.all(entries.map(function (entry) {
 
 								var file = getEntryData(entry, options, level)
@@ -168,7 +168,7 @@ var getDataTransferItemFiles = function getDataTransferItemFiles(item, options) 
  *  {options.bail} (default: 1000) - how many levels to follow recursively before bailing
  */
 var getFilesFromDragEvent = function getFilesFromDragEvent(evt) {
-	console.log(evt)
+
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     options = initOptions(options);
