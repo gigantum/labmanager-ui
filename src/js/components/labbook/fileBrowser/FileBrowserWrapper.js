@@ -31,7 +31,7 @@ const getTotalFileLength = (files) => {
   let hasDirectoryUpload = false;
   console.log(files)
   function filesRecursionCount(file){
-      console.log(file)
+
       if(Array.isArray(file)){
         file.forEach((nestedFile)=>{
           filesRecursionCount(nestedFile)
@@ -41,9 +41,9 @@ const getTotalFileLength = (files) => {
           filesRecursionCount(nestedFile)
         })
       }else{
-        console.log(file)
+
         let extension = file.name ? file.name.replace(/.*\./, '') : file.entry.fullPath.replace(/.*\./, '');
-        console.log(extension)
+
         if(file.entry.isDirectory){
           hasDirectoryUpload = true
         }
