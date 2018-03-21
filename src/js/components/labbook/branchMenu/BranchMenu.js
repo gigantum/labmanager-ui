@@ -14,6 +14,7 @@ import PushActiveBranchToRemoteMutation from 'Mutations/branches/PushActiveBranc
 import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
 import AddCollaboratorMutation from 'Mutations/AddCollaboratorMutation'
 import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
 //store
@@ -322,6 +323,27 @@ export default class UserNote extends Component {
                       error: false
                     }
                   })
+                  BuildImageMutation(
+                    this.state.labbookName,
+                    this.state.owner,
+                    false,
+                    (error) => {
+                      if (error) {
+                        console.error(error)
+                        store.dispatch(
+                          {
+                            type: 'MULTIPART_INFO_MESSAGE',
+                            payload: {
+                              id: id,
+                              message: `ERROR: Failed to build ${this.state.labookName}`,
+                              messsagesList: error,
+                              error: true
+                            }
+                          })
+                      }
+                      this.props.setBuildingState(false)
+                      return "finished"
+                    })
                 }
               }
             )
