@@ -84,18 +84,7 @@ export default class CustomDependenciesDropdown extends Component {
   * shows menu by setting state
   */
   _showMenu(){
-    if(navigator.onLine){
-      this.setState({'menuVisible': true})
-    } else {
-      this.props.toggleContainer();
-      store.dispatch({
-        type: 'ERROR_MESSAGE',
-        payload:{
-          message: `Cannot add package at this time.`,
-          messageBody: [{message: 'An internet connection is required to modify the environment.'}]
-        }
-      })
-    }
+    this.setState({'menuVisible': true})
   }
   /*
   * @param {}
