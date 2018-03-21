@@ -113,7 +113,7 @@ var getFileList = function getFileList(root, options) {
 					readEntries(reader, resolveEntries)
 
 				}).then(function(entries) {
-						console.log(entries)
+						console.log(entries, 'entry')
             return Promise.all(entries.map(function (entry) {
 
 								var file = getEntryData(entry, options, level)
