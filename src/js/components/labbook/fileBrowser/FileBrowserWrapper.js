@@ -153,18 +153,18 @@ export default class FileBrowserWrapper extends Component {
   */
   handleCreateFiles(files, prefix) {
 
+
     if (!this.state.uploading) {
 
         store.dispatch({
           type: 'STARTED_UPLOADING',
         })
-        
+
         let self = this;
 
         let fileMetaData =  getTotalFileLength(files),
         totalFiles = fileMetaData.fileCount,
         hasDirectoryUpload = fileMetaData.hasDirectoryUpload
-
         if(totalFiles > 0){
 
           store.dispatch({
