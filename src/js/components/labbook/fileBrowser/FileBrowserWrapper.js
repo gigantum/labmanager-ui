@@ -152,11 +152,13 @@ export default class FileBrowserWrapper extends Component {
   *  creates a file using AddLabbookFileMutation by passing a blob
   */
   handleCreateFiles(files, prefix) {
+
     if (!this.state.uploading) {
 
     let fileMetaData =  getTotalFileLength(files),
     totalFiles = fileMetaData.fileCount,
     hasDirectoryUpload = fileMetaData.hasDirectoryUpload
+
     if(totalFiles > 0){
 
       store.dispatch({
@@ -222,14 +224,10 @@ export default class FileBrowserWrapper extends Component {
           newKey += file.name;
 
 
-<<<<<<< HEAD
-          let fileReader = new FileReader();
-=======
             self._chunkLoader(filepath, file, data, batchUpload, files, index, (data)=>{
 
             })
           }
->>>>>>> added empty folder upload handling
 
           fileReader.onloadend = function (evt) {
               let filepath = newKey
@@ -248,7 +246,6 @@ export default class FileBrowserWrapper extends Component {
               self._chunkLoader(filepath, file, data, batchUpload, files, index)
             }
 
-<<<<<<< HEAD
             fileReader.readAsArrayBuffer(file);
         }else{
           folderFiles.push(file)
@@ -256,27 +253,9 @@ export default class FileBrowserWrapper extends Component {
 
       })
       let flattenedFiles = []
-=======
-    })
-    let flattenedFiles = []
-
-    if(folderFiles.length > 0){
->>>>>>> fixed file upload and status messsages associated with file upload
 
       if(folderFiles.length > 0){
 
-<<<<<<< HEAD
-        function flattenFiles(filesArray){
-
-            if(Array.isArray(filesArray)){
-              filesArray.forEach(filesSubArray => {
-                flattenFiles(filesSubArray)
-              })
-            }else if(filesArray.entry){
-              flattenedFiles.push(filesArray)
-            }
-        }
-=======
           if(Array.isArray(filesArray)){
             filesArray.forEach(filesSubArray => {
               flattenFiles(filesSubArray)
@@ -288,17 +267,11 @@ export default class FileBrowserWrapper extends Component {
             flattenedFiles.push(filesArray)
           }
       }
->>>>>>> fixed file upload and status messsages associated with file upload
 
         flattenFiles(folderFiles)
 
-<<<<<<< HEAD
-        let filterFiles = flattenedFiles.filter((fileItem) => {
-          let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.file.name.replace(/.*\./, '');
-=======
       let filterFiles = flattenedFiles.filter((fileItem) => {
         let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.entry.fullPath.replace(/.*\./, '');
->>>>>>> fixed file upload and status messsages associated with file upload
 
           return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
         })

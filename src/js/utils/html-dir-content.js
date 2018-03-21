@@ -58,6 +58,7 @@ var getAsEntry = function getAsEntry(item) {
 };
 
 var getListAsArray = function getListAsArray(list) {
+	console.log(list)
     return (//returns a flat array
         arrayConcat.apply([], list)
     );
@@ -115,7 +116,7 @@ var getFileList = function getFileList(root, options) {
 				}).then(function(entries) {
 
             return Promise.all(entries.map(function (entry) {
-
+							console.log(entry)
 								var file = getEntryData(entry, options, level)
 
                 return file;
@@ -153,7 +154,7 @@ var getDataTransferItemFiles = function getDataTransferItemFiles(item, options) 
             var file = item.getAsFile();
             files = file ? [file] : files;
         }
-
+				console.log(files, item)
         return files;
     });
 };
