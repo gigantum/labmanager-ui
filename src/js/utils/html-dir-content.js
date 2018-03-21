@@ -67,6 +67,7 @@ var getEntryData = function getEntryData(entry, options, level) {
     var promise = void 0;
 
     if (entry.isDirectory) {
+			console.log(entry)
 			promise = getFileList(entry, options, level + 1).then(function (file) {
 					return file ? [{file:file, entry: entry}] : [{file:entry, entry: entry}];
 			});
@@ -178,7 +179,7 @@ var getFilesFromDragEvent = function getFilesFromDragEvent(evt) {
 
                 return getDataTransferItemFiles(item, options);
             })).then(function (files) {
-					
+
                 return resolve(getListAsArray(files));
             });
         } else if (evt.dataTransfer.files) {
