@@ -243,11 +243,11 @@ export default class UserNote extends Component {
             )
           }
 
+
+        } else {
           self.setState({
             'remoteUrl': ''
           })
-        } else {
-
           self.setState({
             showLoginPrompt: true
           })
