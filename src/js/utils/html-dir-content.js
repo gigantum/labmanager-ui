@@ -65,11 +65,10 @@ var getListAsArray = function getListAsArray(list) {
 
 var getEntryData = function getEntryData(entry, options, level) {
     var promise = void 0;
-		console.log(entry)
+
+
     if (entry.isDirectory) {
-
 			promise = getFileList(entry, options, level + 1).then(function (file) {
-
 					return file ? [{file:file, entry: entry}] : [{file:entry, entry: entry}];
 			});
 
@@ -177,13 +176,13 @@ var getFilesFromDragEvent = function getFilesFromDragEvent(evt) {
 
         if (evt.dataTransfer.items) {
             Promise.all(getListAsArray(evt.dataTransfer.items).filter(function (item) {
-							console.log(item)
+
 							  return isItemFileEntry(item);
             }).map(function (item) {
-								console.log(item)
+
                 return getDataTransferItemFiles(item, options);
             })).then(function (files) {
-							console.log(files)
+
                 return resolve(getListAsArray(files));
             });
         } else if (evt.dataTransfer.files) {
