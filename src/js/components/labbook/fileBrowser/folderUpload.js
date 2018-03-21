@@ -346,7 +346,7 @@ const FolderUpload = {
     *  @return {boolean}
     */
 
-    console.log(files)
+
     CreateFolders(files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck)
 
 
