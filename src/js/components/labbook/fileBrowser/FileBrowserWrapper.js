@@ -29,7 +29,7 @@ import store from 'JS/redux/store'
 const getTotalFileLength = (files) => {
   let fileCount = 0;
   let hasDirectoryUpload = false;
-  console.log(files)
+
   function filesRecursionCount(file){
 
       if(Array.isArray(file)){
@@ -259,7 +259,7 @@ export default class FileBrowserWrapper extends Component {
 =======
     })
     let flattenedFiles = []
-    console.log(folderFiles)
+
     if(folderFiles.length > 0){
 >>>>>>> fixed file upload and status messsages associated with file upload
 
