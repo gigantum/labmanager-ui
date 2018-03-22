@@ -29,41 +29,45 @@ const mutation = graphql`
 function sharedUpdater(store, labbookId, connectionKey, node) {
 
   const labbookProxy = store.get(labbookId);
-
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    labbookProxy,
-    connectionKey
-  );
-
-  if(conn){
-    const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-      store,
-      conn,
-      node,
-      "newLabbookFileEdge"
-    )
-
-    RelayRuntime.ConnectionHandler.insertEdgeAfter(
-      conn,
-      newEdge
+  if(labbookProxy){
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      labbookProxy,
+      connectionKey
     );
+
+    if(conn){
+      const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+        store,
+        conn,
+        node,
+        "newLabbookFileEdge"
+      )
+
+      RelayRuntime.ConnectionHandler.insertEdgeAfter(
+        conn,
+        newEdge
+      );
+    }
   }
 }
 
 
   function deleteEdge(store, labbookID, deletedID, connectionKey) {
 
-    const userProxy = store.get(labbookID);
-    const conn = RelayRuntime.ConnectionHandler.getConnection(
-      userProxy,
-      connectionKey,
-    );
+    const labbookProxy = store.get(labbookID);
+    if(labbookProxy){
 
-    if(conn){
-      RelayRuntime.ConnectionHandler.deleteNode(
-        conn,
-        deletedID,
+      const conn = RelayRuntime.ConnectionHandler.getConnection(
+        labbookProxy,
+        connectionKey,
       );
+
+      if(conn){
+        RelayRuntime.ConnectionHandler.deleteNode(
+          conn,
+          deletedID,
+        );
+      }
     }
   }
 
@@ -81,6 +85,7 @@ export default function AddLabbookFileMutation(
 ) {
 
   let uploadables = [chunk.blob, accessToken]
+
   const id = uuidv4()
   const optimisticId = uuidv4()
   const variables = {
@@ -138,16 +143,27 @@ export default function AddLabbookFileMutation(
       },
       updater: (store, response) => {
         deleteEdge(store, labbookId, optimisticId, connectionKey)
-        const id = uuidv4()
-        const node = store.create(id, 'LabbookFile')
+
+
 
         if(response.addLabbookFile && response.addLabbookFile.newLabbookFileEdge && response.addLabbookFile.newLabbookFileEdge.node){
-          node.setValue(response.addLabbookFile.newLabbookFileEdge.node.id, "id")
-          node.setValue(false, 'isDir')
-          node.setValue(response.addLabbookFile.newLabbookFileEdge.node.key, 'key')
-          node.setValue(response.addLabbookFile.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
-          node.setValue(response.addLabbookFile.newLabbookFileEdge.node.size, 'size')
 
+          const {id} = response.addLabbookFile.newLabbookFileEdge.node
+
+          let nodeExists = store.get(id)
+
+          if(!nodeExists){
+            const node = store.create(id, 'LabbookFile')
+
+
+            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.id, "id")
+            node.setValue(false, 'isDir')
+            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.key, 'key')
+            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
+            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.size, 'size')
+
+            sharedUpdater(store, labbookId, connectionKey, node)
+          }
         }
 
       },

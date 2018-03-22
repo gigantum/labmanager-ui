@@ -15,10 +15,10 @@ const mutation = graphql`
 `;
 
 function sharedUpdater(store, parentID, deletedId, connectionKey) {
-  const userProxy = store.get(parentID);
+  const environmentProxy = store.get(parentID);
 
   const conn = RelayRuntime.ConnectionHandler.getConnection(
-    userProxy,
+    environmentProxy,
     connectionKey,
   );
 

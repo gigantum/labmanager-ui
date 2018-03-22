@@ -206,7 +206,7 @@ class PackageDependencies extends Component {
   _toggleAddPackageMenu(){
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
-
+  
     if(navigator.onLine){
       if(canEditEnvironment){
         store.dispatch({
@@ -274,28 +274,35 @@ class PackageDependencies extends Component {
     })
 
 
-    PackageLookup.query(manager, packageName, version).then((response)=>{
+      PackageLookup.query(manager, packageName, version).then((response)=>{
+        let packageIndex;
+        packages.forEach((packageItem, index)=>{
+          if(packageItem.packageName === packageName){
+            packageIndex = index;
+          }
+        })
+        packages.splice(packageIndex, 1);
+        if(response.errors){
+            store.dispatch({
+              type:"ERROR_MESSAGE",
+              payload: {
+                message: `Error occured looking up ${packageName}`,
+                messageBody: response.errors
+              }
+            })
 
-      packages.splice(packageIndex, 1);
-      if(response.errors){
-          store.dispatch({
-            type:"ERROR_MESSAGE",
-            payload: {
-              message: `Error occured looking up ${packageName}`,
-              messageBody: response.errors
-            }
+        }
+        else{
+          packages.push({
+            packageName,
+            version: response.data.package.version,
+            latestVersion: response.data.package.latestVersion,
+            manager,
+            validity: 'valid'
           })
 
-      }
-      else{
-        packages.push({
-          packageName,
-          version: response.data.package.version,
-          latestVersion: response.data.package.latestVersion,
-          manager,
-          validity: 'valid'
-        })
-      }
+        }
+
       this.setState({
         packages
       })
@@ -372,7 +379,7 @@ class PackageDependencies extends Component {
         environmentId,
         'PackageDependencies_packageDependencies',
         (response, error) => {
-          self.setState({disableInstall: false})
+
           if(error){
             console.log(error)
             store.dispatch({
@@ -389,7 +396,8 @@ class PackageDependencies extends Component {
             if(packages[index]){
               addPackage(packages[index])
             }else{
-              self.setState({packages: []})
+              self.setState({disableInstall: false, packages: []})
+
               self.props.buildCallback()
             }
           }

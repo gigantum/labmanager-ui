@@ -29,9 +29,11 @@ export default class UserNote extends Component {
     const { owner, labbookName } = store.getState().routes
     this.state = {
       'addNoteEnabled': false,
+      'remoteURL': '',
       'newBranchName': '',
       'isValid': true,
       'createBranchVisible': false,
+      'addRemoteVisible': false,
       'addedRemoteThisSession': !(this.props.defaultRemote === null),
       'showCollaborators': false,
       'newCollaborator': '',
@@ -40,8 +42,6 @@ export default class UserNote extends Component {
       'exporting': false,
       'deleteModalVisible': false,
       'forceSyncModalVisible': false,
-      'remoteUrl': this.props.remoteUrl,
-      'publishDisabled': false,
       owner,
       labbookName
     }
@@ -114,7 +114,7 @@ export default class UserNote extends Component {
                   type: 'ERROR_MESSAGE',
                   payload: {
                     message: "Problem Creating new branch, make sure you have a valid session and internet connection",
-                    messageBody: error
+                    messagesList: error
                   }
                 })
               }
@@ -175,11 +175,22 @@ export default class UserNote extends Component {
   }
 
   /**
+  *  @param {event} evt
+  *  toggles open menu state
+  *  @return {string}
+  */
+  _updateRemote(evt) {
+    this.setState({
+      remoteURL: evt.target.value
+    })
+  }
+
+  /**
   *  @param {}
   *  adds remote url to labbook
   *  @return {string}
   */
-  _publishLabbook() {
+  _addRemote() {
     let id = uuidv4()
     let self = this;
     this._checkSessionIsValid().then((response) => {
@@ -187,7 +198,7 @@ export default class UserNote extends Component {
 
         if (response.data.userIdentity.isSessionValid) {
 
-          self.setState({ menuOpen: false, 'publishDisabled': true})
+          self.setState({ menuOpen: false })
 
           store.dispatch({
             type: 'MULTIPART_INFO_MESSAGE',
@@ -199,27 +210,22 @@ export default class UserNote extends Component {
             }
           })
 
-          if (!self.state.remoteUrl) {
+          if (self.state.remoteURL.length > -1) {
             PublishLabbookMutation(
               self.state.owner,
               self.state.labbookName,
               self.props.labbookId,
-              (response, error) => {
-                console.log(error)
-                if (response.publishLabbook && !response.publishLabbook.success) {
-                  if(error){
-                    store.dispatch({
-                      type: 'MULTIPART_INFO_MESSAGE',
-                      payload: {
-                        id: id,
-                        message: 'Publish failed',
-                        messageList: error,
-                        error: true
-                      }
-                    })
-                  }
-                  self.setState({
-                    publishDisabled: false
+              (error) => {
+                if (error) {
+
+                  store.dispatch({
+                    type: 'MULTIPART_INFO_MESSAGE',
+                    payload: {
+                      id: id,
+                      message: 'Publish failed',
+                      messageList: error,
+                      error: true
+                    }
                   })
                 } else {
 
@@ -234,20 +240,18 @@ export default class UserNote extends Component {
                   })
                   self.setState({
                     addedRemoteThisSession: true,
-                    canManageCollaborators: true,
-                    remoteUrl: `https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`
-
+                    canManageCollaborators: true
                   })
                 }
               }
             )
           }
 
-
-        } else {
           self.setState({
-            'remoteUrl': ''
+            'remoteURL': ''
           })
+        } else {
+
           self.setState({
             showLoginPrompt: true
           })
@@ -271,7 +275,7 @@ export default class UserNote extends Component {
   */
   _sync() {
     const status = store.getState().containerStatus.status
-    this.setState({ menuOpen: false });
+
     if((status === 'Stopped') || (status === 'Build Failed') || (status === 'Rebuild Required')){
       let id = uuidv4()
       let self = this;
@@ -301,7 +305,7 @@ export default class UserNote extends Component {
                     payload: {
                       id: id,
                       message: `Could not sync ${this.state.labbookName}`,
-                      messageBody: error,
+                      messagesList: error,
                       isLast: true,
                       error: true
                     }
@@ -335,13 +339,6 @@ export default class UserNote extends Component {
       })
     } else {
       this.setState({ menuOpen: false });
-
-      store.dispatch({
-        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-        payload: {
-          containerMenuOpen: true
-        }
-      })
       store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
@@ -452,7 +449,7 @@ export default class UserNote extends Component {
               type: 'ERROR_MESSAGE',
               payload: {
                 message: `Could not add collaborator`,
-                messageBody: error
+                messagesList: error
               }
             })
           } else {
@@ -481,7 +478,7 @@ export default class UserNote extends Component {
             type: 'ERROR_MESSAGE',
             payload: {
               message: `Could not remove collaborator`,
-              messageBody: error
+              messagesList: error
             }
           })
         }
@@ -564,7 +561,7 @@ export default class UserNote extends Component {
               type: 'ERROR_MESSAGE',
               payload: {
                 message: `${this.state.labbookName} failed to export `,
-                messageBody: errorArray
+                messagesList: errorArray
               }
             })
           }
@@ -576,7 +573,7 @@ export default class UserNote extends Component {
           type: 'ERROR_MESSAGE',
           payload: {
             message: 'Export Failed',
-            messageBody: error
+            messagesList: error
           }
         })
       }
@@ -624,7 +621,7 @@ export default class UserNote extends Component {
           <div
             onClick={() => { this._closeLoginPromptModal() }}
             className="BranchModal--close"></div>
-            <LoginPrompt closeModal={this._closeLoginPromptModal} />
+          <LoginPrompt closeModal={this._closeLoginPromptModal} />
         </div>
 
         <div className={deleteModalCSS}>
@@ -679,28 +676,51 @@ export default class UserNote extends Component {
 
         </div>
         <div
-            className={this.state.createBranchVisible ? 'BranchModal' : 'hidden'}>
-            <div
-              onClick={() => { this._toggleModal('createBranchVisible') }}
-              className="BranchModal--close">
-            </div>
-            <h4 className="BranchModal__header--new-branch">New Branch</h4>
-            <hr />
-            <input
-              className="BranchCard__name-input"
-              onKeyUp={(evt) => { this._setNewBranchName(evt) }}
-              type="text"
-              placeholder="Branch name"
-            />
-            <p className={!this.state.isValid ? 'Branch__error error' : 'Branch__error visibility-hidden'}> Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. my-branch-name)</p>
-            <button
+
+          className={this.state.createBranchVisible ? 'BranchModal' : 'hidden'}>
+          <div
+            onClick={() => { this._toggleModal('createBranchVisible') }}
+            className="BranchModal--close">
+          </div>
+          <h4 className="BranchModal__header--new-branch">New Branch</h4>
+          <hr />
+          <input
+            className="BranchCard__name-input"
+            onKeyUp={(evt) => { this._setNewBranchName(evt) }}
+            type="text"
+            placeholder="Branch name"
+          />
+          <p className={!this.state.isValid ? 'Branch__error error' : 'Branch__error visibility-hidden'}> Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. my-branch-name)</p>
+          <button
             className="BranchCard__create-branch"
             disabled={(this.state.newBranchName.length === 0) && this.state.isValid}
             onClick={() => { this._createNewBranch(this.state.newBranchName) }}>
             Create Branch
             </button>
-          </div>
+        </div>
 
+        <div
+          className={this.state.addRemoteVisible ? 'BranchModal' : 'hidden'}>
+          <div className="BranchMenu__add-remote-container">
+            <div
+              onClick={() => { this._toggleModal('addRemoteVisible') }}
+              className="BranchModal--close">
+            </div>
+            <input
+              type="text"
+              placeholder="Paste remote address here"
+              onKeyUp={(evt) => { this._updateRemote(evt) }}
+              onChange={(evt) => { this._updateRemote(evt) }}
+            />
+            <button
+              disabled={(this.state.remoteURL.length === 0)}
+              onClick={() => this._addRemote()}
+
+            >
+              Add Remote
+              </button>
+          </div>
+        </div>
           <button onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
           <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
           <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
@@ -741,9 +761,8 @@ export default class UserNote extends Component {
           {!this.state.addedRemoteThisSession &&
             <div className="BranchMenu__publish">
               <button
-                disabled={this.state.publishDisabled}
                 className="BranchMenu__remote-button"
-                onClick={() => { this._publishLabbook() }}
+                onClick={() => { this._addRemote() }}
               >
                 Publish
                 </button>
@@ -762,15 +781,12 @@ export default class UserNote extends Component {
             }
 
             {
-              this.state.remoteUrl &&
+
+              this.props.remoteUrl &&
               <div>
                 <hr className="BranchMenu__line"/>
                 <div className="BranchMenu__copy-remote">
-                  <input
-                    id="BranchMenu-copy"
-                    className="BranchMenu__input"
-                    defaultValue={this.state.remoteUrl}
-                    type="text" />
+                  <input id="BranchMenu-copy" className="BranchMenu__input" defaultValue={this.props.remoteUrl} type="text" />
                   <button onClick={()=> this._copyRemote()} className="BranchMenu__copy-button fa fa-clone"></button>
                 </div>
               </div>

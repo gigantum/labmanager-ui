@@ -28,16 +28,27 @@ import store from 'JS/redux/store'
 */
 const getTotalFileLength = (files) => {
   let fileCount = 0;
+  let hasDirectoryUpload = false;
 
   function filesRecursionCount(file){
+
       if(Array.isArray(file)){
         file.forEach((nestedFile)=>{
           filesRecursionCount(nestedFile)
         })
+      }else if( file.file && Array.isArray(file.file) && (file.file.length > 0)){
+        file.file.forEach((nestedFile)=>{
+          filesRecursionCount(nestedFile)
+        })
       }else{
-        let extension =  file.name ? file.name.replace(/.*\./, '') : file.file.name.replace(/.*\./, '');
 
-        if(config.fileBrowser.excludedFiles.indexOf(extension) < 0){
+        let extension = file.name ? file.name.replace(/.*\./, '') : file.entry.fullPath.replace(/.*\./, '');
+
+        if(file.entry && file.entry.isDirectory){
+          hasDirectoryUpload = true
+        }
+
+        if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && ((file.entry && file.entry.isFile) || (typeof file.type === 'string'))){
           fileCount++
         }
       }
@@ -46,7 +57,7 @@ const getTotalFileLength = (files) => {
 
   filesRecursionCount(files)
 
-  return fileCount;
+  return {fileCount: fileCount, hasDirectoryUpload: hasDirectoryUpload}
 }
 
 export default class FileBrowserWrapper extends Component {
@@ -125,15 +136,14 @@ export default class FileBrowserWrapper extends Component {
     )
   }
 
-  _chunkLoader(filepath, file, data, batchUpload, files, index){
+  /**
+  *  @param {string, file, object, boolean, array, number} key,prefix  file key, prefix is root folder -
+  *  creates a file using AddLabbookFileMutation by passing a blob
+  */
+  _chunkLoader(filepath, file, data, batchUpload, files, index, callback){
 
 
-    const postMessage = (workerData) => {
-
-      //TODO handle single large file upload in footer
-    }
-
-   ChunkUploader.chunkFile(data, postMessage)
+   ChunkUploader.chunkFile(data, callback)
  }
 
 
@@ -143,113 +153,131 @@ export default class FileBrowserWrapper extends Component {
   *  creates a file using AddLabbookFileMutation by passing a blob
   */
   handleCreateFiles(files, prefix) {
+
+
     if (!this.state.uploading) {
-      store.dispatch({
-        type: 'STARTED_UPLOADING',
-      })
-
-      let self = this;
-
-      let totalFiles = getTotalFileLength(files)
-      if(totalFiles > 0){
 
         store.dispatch({
-          type: 'UPLOAD_MESSAGE_SETTER',
-          payload:{
-            uploadMessage: `Preparing Upload for ${totalFiles} files`,
-            id: Math.random() * 10000,
-            totalFiles: totalFiles
-          }
+          type: 'STARTED_UPLOADING',
         })
-      }else{
-        store.dispatch({
-          type: 'UPLOAD_MESSAGE_SETTER',
-          payload:{
-            uploadMessage: `Cannot upload these file types`,
-            id: `nofiles`,
-            totalFiles: totalFiles
-          }
-        })
-      }
 
-      let folderFiles = []
-      files.forEach((file, index) => {
-        if(file.isDirectory){
-          folderFiles.push(file)
-        }else if(file.name){
-          const batchUpload = (files.length > 1)
+        let self = this;
 
-          let newKey = prefix;
+        let fileMetaData =  getTotalFileLength(files),
+        totalFiles = fileMetaData.fileCount,
+        hasDirectoryUpload = fileMetaData.hasDirectoryUpload
 
-          if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
-            newKey += '/';
-          }
+        if(totalFiles > 0){
 
-          newKey += file.name;
+          store.dispatch({
+            type: 'UPLOAD_MESSAGE_SETTER',
+            payload:{
+              uploadMessage: `Preparing Upload for ${totalFiles} files`,
+              id: Math.random() * 10000,
+              totalFiles: totalFiles
+            }
+          })
+        }else if(hasDirectoryUpload && (totalFiles === 0)){
+          store.dispatch({
+            type: 'INFO_MESSAGE',
+            payload:{
+              message: `Uploading Directories`,
+            }
+          })
+        }else{
+          store.dispatch({
+            type: 'INFO_MESSAGE',
+            payload:{
+              message: `Cannot upload these file types`,
+            }
+          })
+        }
+
+        let folderFiles = []
+        files.forEach((file, index) => {
+          if(file.isDirectory){
+            folderFiles.push(file)
+          }else if(file.name){
+            const batchUpload = (files.length > 1)
+
+            let newKey = prefix;
+
+            if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
+              newKey += '/';
+            }
+
+            newKey += file.name;
 
 
-          let fileReader = new FileReader();
+            let fileReader = new FileReader();
 
-          fileReader.onloadend = function (evt) {
-              let filepath = newKey
+            fileReader.onloadend = function (evt) {
+                let filepath = newKey
 
-              let data = {
-                file: file,
-                filepath: filepath,
-                username: self.state.owner,
-                accessToken: localStorage.getItem('access_token'),
-                connectionKey: self.props.connection,
-                labbookName: self.state.labbookName,
-                parentId: self.props.parentId,
-                section: self.props.section
+                let data = {
+                  file: file,
+                  filepath: filepath,
+                  username: self.state.owner,
+                  accessToken: localStorage.getItem('access_token'),
+                  connectionKey: self.props.connection,
+                  labbookName: self.state.labbookName,
+                  parentId: self.props.parentId,
+                  section: self.props.section
+                }
+
+                self._chunkLoader(filepath, file, data, batchUpload, files, index, (data)=>{
+
+                })
               }
 
-              self._chunkLoader(filepath, file, data, batchUpload, files, index)
-            }
+              fileReader.readAsArrayBuffer(file);
+          }else{
+            folderFiles.push(file)
+          }
 
-            fileReader.readAsArrayBuffer(file);
-        }else{
-          folderFiles.push(file)
-        }
-
-      })
-      let flattenedFiles = []
-
-      if(folderFiles.length > 0){
-
-        function flattenFiles(filesArray){
-
-            if(Array.isArray(filesArray)){
-              filesArray.forEach(filesSubArray => {
-                flattenFiles(filesSubArray)
-              })
-            }else if(filesArray.entry){
-              flattenedFiles.push(filesArray)
-            }
-        }
-
-        flattenFiles(folderFiles)
-
-        let filterFiles = flattenedFiles.filter((fileItem) => {
-          let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.file.name.replace(/.*\./, '');
-
-          return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
         })
+        let flattenedFiles = []
 
-        FolderUpload.uploadFiles(
-          filterFiles,
-          prefix,
-          self.state.labbookName,
-          self.state.owner,
-          self.props.section,
-          this.props.connection,
-          this.props.parentId,
-          self._chunkLoader
-        )
+        if(folderFiles.length > 0){
 
+          function flattenFiles(filesArray){
+
+              if(Array.isArray(filesArray)){
+                filesArray.forEach(filesSubArray => {
+                  flattenFiles(filesSubArray)
+                })
+              }else if(Array.isArray(filesArray.file) && (filesArray.file.length > 0)){
+                flattenFiles(filesArray.file)
+              }
+              else if(filesArray.entry){
+                flattenedFiles.push(filesArray)
+              }
+          }
+
+          flattenFiles(folderFiles)
+
+          let filterFiles = flattenedFiles.filter((fileItem) => {
+            let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.entry.fullPath.replace(/.*\./, '');
+
+            return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
+          })
+
+          FolderUpload.uploadFiles(
+            filterFiles,
+            prefix,
+            self.state.labbookName,
+            self.state.owner,
+            self.props.section,
+            this.props.connection,
+            this.props.parentId,
+            self._chunkLoader,
+            totalFiles
+          )
+
+        }
       }
     }
-  }
+
   /**
   *  @param {string, string} oldKey,newKey  file key, prefix is root folder -
   *  renames folder by creating new folder, moving files to the folder and deleting the old folder
@@ -532,17 +560,20 @@ export default class FileBrowserWrapper extends Component {
   _formatFileJson(files){
 
       let formatedArray = []
+      let idExists = []
       if(files){
         files.edges.forEach((edge) => {
           if(edge && edge.node){
-
-            formatedArray.push({
-              key: edge.node.key,
-              modified: edge.node.modifiedAt,
-              size: edge.node.size,
-              isFavorite: edge.node.isFavorite,
-              id: edge.node.id
-            })
+            if(idExists.indexOf(edge.node.id) === -1){
+              formatedArray.push({
+                key: edge.node.key,
+                modified: edge.node.modifiedAt,
+                size: edge.node.size,
+                isFavorite: edge.node.isFavorite,
+                id: edge.node.id
+              })
+              idExists.push(edge.node.id)
+            }
           }
         })
       }
