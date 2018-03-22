@@ -138,14 +138,30 @@ class Labbook extends Component {
     @param {object} item
     returns nav jsx
   */
-  _getNavItem(item){
+
+  _changeSlider() {
+    let pathArray = this.props.location.pathname.split('/')
+    let selectedPath = (pathArray.length > 4 ) ? pathArray[pathArray.length - 1] : 'overview'
+    let defaultOrder = ['overview', 'activity', 'environment', 'code', 'inputData', 'outputData'];
+    let selectedIndex = defaultOrder.indexOf(selectedPath);
+    return (
+      <hr className={'Labbook__navigation-slider--' + selectedIndex}/>
+    )
+  }
+
+  _getNavItem(item, index){
     let pathArray = this.props.location.pathname.split('/')
     let selectedPath = (pathArray.length > 4 ) ? pathArray[pathArray.length - 1] : 'overview' // sets avtive nav item to overview if there is no menu item in the url
+    let liCSS = classNames({
+      'selected': selectedPath === item.id,
+      ['Labbook__navigation-item Labbook__navigation-item--' + item.id]: !selectedPath !== item.id,
+      ['Labbook__navigation-item--' + index]: true,
+    });
     return (
-      <div
+      <li
         id={item.id}
         key={item.id}
-        className={(selectedPath === item.id) ? 'selected' : ' Labbook__navigation-item Labbook__navigation-item--' + item.id}
+        className={liCSS}
         onClick={()=> this._setSelectedComponent(item.id)}
         >
         <Link
@@ -154,7 +170,7 @@ class Labbook extends Component {
         >
           {item.name}
         </Link>
-      </div>
+      </li>
     )
   }
   /**
@@ -294,13 +310,16 @@ class Labbook extends Component {
               </div>
               </div>}>
               <div className="Labbook__navigation-container mui-container flex-0-0-auto">
-                 <nav className="Labbook__navigation flex flex--row">
+                 <ul className="Labbook__navigation flex flex--row">
                    {
-                     Config.navigation_items.map((item) => {
-                       return (this._getNavItem(item))
+                     Config.navigation_items.map((item, index) => {
+                       return (this._getNavItem(item, index))
                      })
                    }
-                 </nav>
+                   {
+                    (this._changeSlider())
+                   }
+                 </ul>
                </div>
 
 
