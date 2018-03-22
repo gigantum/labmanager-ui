@@ -33,6 +33,7 @@ class LocalLabbooks extends Component {
     this._goToLabbook = this._goToLabbook.bind(this)
     this._loadMore = this._loadMore.bind(this)
     this._showModal = this._showModal.bind(this)
+    this._captureScroll = this._captureScroll.bind(this)
   }
 
   componentWillMount() {
@@ -44,6 +45,11 @@ class LocalLabbooks extends Component {
 
     document.title =  `Gigantum`
 
+  }
+
+  componentWillUnmount() {
+
+    window.removeEventListener("scroll", this._captureScroll)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -59,20 +65,24 @@ class LocalLabbooks extends Component {
   * adds a scoll listener to trigger pagination
   */
   componentDidMount() {
-    let that = this;
-    window.addEventListener('scroll', function(e){
-      let root = document.getElementById('root')
-      let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
-          expandOn = root.offsetHeight;
 
-      if(that.props.feed.localLabbooks){
-
-        if ((distanceY > expandOn) && !isLoadingMore && that.props.feed.localLabbooks.pageInfo.hasNextPage) {
-            that._loadMore(e);
-        }
-      }
-    });
+    window.addEventListener('scroll', this._captureScroll);
   }
+/**
+*  @param {}
+*  captures scrolling event
+*/
+_captureScroll = () => {
+  let root = document.getElementById('root')
+  let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
+      expandOn = root.offsetHeight;
+
+  if(this.props.feed.localLabbooks){
+    if ((distanceY > expandOn) && !isLoadingMore && this.props.feed.localLabbooks.pageInfo.hasNextPage) {
+        this._loadMore();
+    }
+  }
+}
   /**
   *  @param {string} labbookName - inputs a labbook name
   *  routes to that labbook
@@ -84,18 +94,17 @@ class LocalLabbooks extends Component {
   }
 
   /**
-  *  @param {event} e
+  *  @param {}
   *  loads more labbooks using the relay pagination container
   */
-  _loadMore = (e) => {
+  _loadMore = () => {
     isLoadingMore = true
-    if(e){
-      e.preventDefault();
-    }
+
     if(this.props.feed.localLabbooks.pageInfo.hasNextPage){
       this.props.relay.loadMore(
         10, // Fetch the next 10 feed items
         (ev) => {
+    
           isLoadingMore = false;
         }
       );
@@ -223,7 +232,7 @@ class LocalLabbooks extends Component {
                 {
 
                   labbooks.map((edge) => {
-              
+
                     return (
                       <LocalLabbookPanel
                         key={edge.node.name}
