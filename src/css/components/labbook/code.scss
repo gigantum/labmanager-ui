@@ -179,3 +179,12 @@
   background-color: $lightGrey;
   color: $romanSilver;
 }
+
+.FileBrowser__large-dropzone{
+  height: 200px;
+  background-color: $white !important;
+  border: 1px dashed $azure;
+  td{
+    text-align: center !important;
+  }
+}
