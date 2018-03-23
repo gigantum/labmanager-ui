@@ -313,16 +313,6 @@ export default class UserNote extends Component {
                     self._toggleSyncModal()
                   }
                 } else {
-
-                  store.dispatch({
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                      id: id,
-                      message: `Successfully synced ${this.state.labbookName}`,
-                      isLast: true,
-                      error: false
-                    }
-                  })
                   BuildImageMutation(
                     this.state.labbookName,
                     this.state.owner,
@@ -341,9 +331,16 @@ export default class UserNote extends Component {
                             }
                           })
                       }
-                      this.props.setBuildingState(false)
-                      return "finished"
                     })
+                  store.dispatch({
+                    type: 'MULTIPART_INFO_MESSAGE',
+                    payload: {
+                      id: id,
+                      message: `Successfully synced ${this.state.labbookName}`,
+                      isLast: true,
+                      error: false
+                    }
+                  })
                 }
               }
             )
