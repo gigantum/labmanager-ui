@@ -348,11 +348,6 @@
   }
 }
 
-@media screen and (max-width: 1120px) and (min-width: 300px) {
-  .Labbook__navigation-item {
-    margin: 0 15px !important;
-  }
-}
 
 .Labbook__navigation-container {
   margin-top: 90px;
@@ -363,7 +358,7 @@
   white-space: nowrap;
 
   li {
-    width: 16%;
+    width: 14%;
     text-align: center;
 
     a {
@@ -389,18 +384,18 @@
 
   @for $i from 0 through 5 {
     li.Labbook__navigation-item--#{$i}:hover ~ hr {
-      margin-left: $i * 16%;
+      margin-left: $i * 14% + 2%;
     }
     .Labbook__navigation-slider--#{$i} {
       height: 3px;
-      width: 16%;
+      width: 10%;
       margin: 0;
       background: $turquise;
       border: none;
       transition: .3s ease-in-out;
       position: absolute;
       bottom: 0;
-      margin-left: $i * 16%;
+      margin-left: $i * 14% + 2%;
     }
   }
 }
