@@ -3,7 +3,12 @@
   position: absolute;
   top: calc(50% - 75px);
   left: calc(50% - 75px);
+  background: url(../images/logos/logo-circle-cyan.png) no-repeat 50% 50%;
+  background-size: 150px;
+  height: 150px;
+  width: 150px;
 }
+
 
 .Loader__logo-border {
   box-sizing: content-box !important;

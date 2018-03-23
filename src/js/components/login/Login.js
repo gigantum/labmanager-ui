@@ -1,12 +1,8 @@
 //vendor
 import React, {Component} from 'react';
 import store from 'JS/redux/store'
-//assets
-import gigantumLogo from 'Images/logos/gigantum.svg'
-
+//components
 import Callback from 'JS/Callback/Callback';
-
-
 
 let unsubscribe;
 //import CreatePage from './components/CreatePage';
@@ -81,11 +77,11 @@ export default class Login extends Component {
                     </div>
                   </div>
                 }
-              <img
-                alt="gigantum"
-                className="Login__logo"
-                src={gigantumLogo}
-              />
+
+              <div
+                className="Login__logo">
+              </div>
+
               <button
                 className="Login__button"
                 onClick={this.login.bind(this)}>

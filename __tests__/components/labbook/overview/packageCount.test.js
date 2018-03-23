@@ -7,7 +7,7 @@ import {MemoryRouter } from 'react-router-dom'
 
 
 
-const variables = {first:20, name: 'demo-lab-book', owner: 'default'}
+const variables = {first:20, name: 'ui-test-labbook', owner: 'default'}
 export default variables
 
 let _setBuildingState = ((state) => {

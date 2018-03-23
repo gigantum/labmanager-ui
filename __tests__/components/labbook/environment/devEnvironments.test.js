@@ -10,7 +10,7 @@ let _setComponent = (comp) => {
    devEnvironments.comp = comp;
 };
 
-const variables = {first:20, name: 'demo-lab-book', cursor: 'MA==', owner: 'default'}
+const variables = {first:20, name: 'ui-test-labbook', cursor: 'MA==', owner: 'default'}
 export default variables
 
 test('Test DevEnvironments rendering', () => {

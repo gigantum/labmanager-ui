@@ -21,6 +21,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 500px;
+    height: 130px;
+    background: url(../images/logos/gigantum-cyan.png) no-repeat 50% 50%;
+    background-size: 100%;
 }
 
 .Prompt__logo--raised {
@@ -29,6 +33,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
     transition: top 2s ease 0s;
+
+    width: 500px;
+    height: 130px;
+    background: url(../images/logos/gigantum-cyan.png) no-repeat 50% 50%;
+    background-size: 100%;
 }
 
 .Prompt__logo--final {
@@ -37,6 +46,10 @@
     left: 50%;
     transform: translate(-50%, -50%);
     transition: top 2s ease 0s;
+    width: 500px;
+    height: 130px;
+    background: url(../images/logos/gigantum-cyan.png) no-repeat 50% 50%;
+    background-size: 100%;
 }
 
 .Prompt__loading-text {
@@ -47,6 +60,7 @@
     opacity: 0;
     animation: fade-in-out 13s linear;
     animation-delay: 2s;
+
 }
 
 .Prompt__failure-container{
@@ -84,6 +98,11 @@
 
     animation: fade-in 3s forwards;
     animation-delay: 2s;
+
+    background: url(../images/logos/cli.png) no-repeat 50% 50%;
+    background-size: 100%;
+    height: 300px;
+    width: 600px;
 }
 
 @keyframes fade-in {
