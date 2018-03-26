@@ -115,7 +115,7 @@ export default class MostRecent extends Component {
       }else{
         return(
           <FileEmpty
-            icon={this.state.fullPathName}
+            section={this.state.fullPathName}
             mainText="This LabBook has No Recent Files"
           />
         )

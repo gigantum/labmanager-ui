@@ -79,7 +79,7 @@ class InputFavorites extends Component {
       }else{
         return(
           <FileEmpty
-            icon="inputData"
+            section="inputData"
             mainText="This LabBook has No Input Favorites"
           />
         )
