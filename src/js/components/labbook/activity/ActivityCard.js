@@ -1,7 +1,6 @@
 //vendor
 import React, { Component } from 'react'
-//images
-import userSVG from 'Images/icons/user.svg'
+
 //components
 import ActivityDetails from 'Components/labbook/activity/ActivityDetails'
 
@@ -59,7 +58,7 @@ export default class ActivityCard extends Component {
               <p className="ActivityCard__time">
                 {this._getTimeOfDay(this.props.edge.node.timestamp)}
               </p>
-              <img alt='User' src={userSVG} className="ActivityCard__user" />
+              <div className="ActivityCard__user"></div>
             </div>
             <h6 className="ActivityCard__commit-message">{this.props.edge.node.username + ': ' + this.props.edge.node.message}</h6>
 

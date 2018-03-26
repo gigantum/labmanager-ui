@@ -151,7 +151,7 @@ export default function AddLabbookFileMutation(
           const {id} = response.addLabbookFile.newLabbookFileEdge.node
 
           let nodeExists = store.get(id)
-    
+
           if(!nodeExists){
             const node = store.create(id, 'LabbookFile')
 

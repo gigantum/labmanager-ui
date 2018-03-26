@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import GigantumCyanPNG from 'Images/logos/gigantum-cyan.png'
-import GigantumCLI from 'Images/logos/cli.png'
 
 const pingServer = () => {
   return fetch(window.location.protocol + '//' + window.location.hostname + `${process.env.GIGANTUM_API}`, {
@@ -51,12 +49,10 @@ export default class Prompt extends Component {
     return (
       <div className="Prompt">
         <div className={this.state.promptState ? "hidden" : "Prompt__info"}>
-          <img
-            alt="gigantum"
+          <div
             className={this.state.failureCount >= 2 ? this.state.failureCount >= 8 ? "Prompt__logo--final" : "Prompt__logo--raised" : "Prompt__logo"}
-            src={GigantumCyanPNG}
           >
-          </img>
+          </div>
           <div className={this.state.failureCount >= 2 && this.state.failureCount < 8 ? "Prompt__loading-text" : "hidden"}>
             Loading Please Wait...
           </div>
@@ -66,11 +62,9 @@ export default class Prompt extends Component {
               <p>Are you sure Gigantum is running?</p>
               <p>Use the 'gigantum start' command to run the application.</p>
             </div>
-            <img
-                alt="cli"
-                className="Prompt__cli"
-                src={GigantumCLI}
-            />
+            <div
+              className="Prompt__cli">
+            </div>
           </div>
         </div>
       </div>

@@ -102,19 +102,12 @@ export default class FilePreview extends Component {
                       return <FileCard key={edge.node.id} edge={edge} />
                     }) :
                     <FileEmpty
-                      icon="code"
+                      section="code"
                       mainText="This LabBook has No Code Favorites"
                       subText="View LabBook Code Details"
                     />
                   }
                 </div>
-
-
-
-
-
-
-
 
               </div>
               <div className="FilePreview__section">
@@ -135,7 +128,7 @@ export default class FilePreview extends Component {
                       return <FileCard key={edge.node.id} edge={edge} />
                     }) :
                     <FileEmpty
-                      icon="inputData"
+                      section="inputData"
                       mainText="This LabBook has No Input Favorites"
                       subText="View LabBook Input Data Details"
                     />
@@ -160,7 +153,7 @@ export default class FilePreview extends Component {
                       return <FileCard key={edge.node.id} edge={edge} />
                     }) :
                     <FileEmpty
-                      icon="outputData"
+                      section="outputData"
                       mainText="This LabBook has No Output Favorites"
                       subText="View LabBook Output Data Details"
                     />

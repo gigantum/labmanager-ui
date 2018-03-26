@@ -12,8 +12,12 @@
 
 .SideBar__logo {
   max-width: 80%;
-  height: auto;
+  height: 30px;
+  width: 120px;
   margin: 10px auto;
+  background: url(../images/logos/gigantum.svg) no-repeat 50% 50%;
+  background-size: 100%;
+
 }
 
 .SideBar__inner-container {

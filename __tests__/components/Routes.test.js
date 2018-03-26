@@ -9,7 +9,7 @@ import relayTestingUtils from 'relay-testing-utils'
 import config from './__relaydata__/Routes.json'
 import { MemoryRouter } from 'react-router'
 
-const variables = {first:20, owner: 'default', name: 'demo-lab-book'}
+const variables = {first:20, owner: 'default', name: 'ui-test-labbook'}
 export default variables
 
 test('Test Routes Rendering', () => {
