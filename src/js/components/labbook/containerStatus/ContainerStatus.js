@@ -208,7 +208,8 @@ export default class ContainerStatus extends Component {
     status = (containerStatus === 'NOT_RUNNING') ? 'Stopped' : status;
     status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
     status = (imageStatus === "BUILD_FAILED") ? 'Build Failed' : status;
-    status = (imageStatus === "DOES_NOT_EXIST") && (timeDifferenceMS > 15000) ? 'Rebuild Required' : status;
+    status = (imageStatus === "DOES_NOT_EXIST") ? 'Rebuild Required' : status;
+    status = (timeDifferenceMS < 15000) ? "Building" : status;
 
     status = ((status === 'Stopped') && (this.state.status === "Starting")) ? "Starting" : status;
     status = ((status === 'Running') && (this.state.status === "Stopping")) ? "Stopping" : status;
