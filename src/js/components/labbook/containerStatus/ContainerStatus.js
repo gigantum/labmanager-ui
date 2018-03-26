@@ -199,11 +199,16 @@ export default class ContainerStatus extends Component {
   */
   _getContainerStatusText = ({containerStatus, imageStatus}) => {
 
+    const labbookCreationDate = Date.parse(this.props.creationDateUtc + 'Z')
+    const timeNow = Date.parse(new Date())
+
+    let timeDifferenceMS =  timeNow - labbookCreationDate
+
     let status = (containerStatus === 'RUNNING') ? 'Running' : containerStatus;
     status = (containerStatus === 'NOT_RUNNING') ? 'Stopped' : status;
     status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
     status = (imageStatus === "BUILD_FAILED") ? 'Build Failed' : status;
-    status = (imageStatus === "DOES_NOT_EXIST") ? 'Rebuild Required' : status;
+    status = (imageStatus === "DOES_NOT_EXIST") && (timeDifferenceMS > 15000) ? 'Rebuild Required' : status;
 
     status = ((status === 'Stopped') && (this.state.status === "Starting")) ? "Starting" : status;
     status = ((status === 'Running') && (this.state.status === "Stopping")) ? "Stopping" : status;
@@ -216,7 +221,6 @@ export default class ContainerStatus extends Component {
         }
       })
     }
-
 
     if((status !== 'Stopped') && (status !== 'Build Failed')){
       store.dispatch({

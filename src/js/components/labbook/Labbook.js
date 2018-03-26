@@ -228,7 +228,7 @@ class Labbook extends Component {
     const {labbookName} = this.props
 
     if(this.props.labbook){
-
+      const {labbook} = this.props
       const name = this.props.labbook.activeBranch ? this.props.labbook.activeBranch.name.replace(/-/g, ' ') : 'temp'
 
       return(
@@ -243,7 +243,7 @@ class Labbook extends Component {
                 <div className="Labbook__row-container">
                  <div className="Labbook__column-container--flex-1">
                    <div className="Labbook__name-title">
-                     {this.props.labbook.owner + '/' + labbookName}
+                     {labbook.owner + '/' + labbookName}
                    </div>
 
                    <div className={(this.state.branchesOpen) ? 'Labbook__branch-title Labbook__branch-title--open' : 'Labbook__branch-title Labbook__branch-title--closed'}>
@@ -260,21 +260,22 @@ class Labbook extends Component {
 
                    <BranchMenu
                      history={this.props.history}
-                     collaborators={this.props.labbook.collaborators}
-                     canManageCollaborators={this.props.labbook.canManageCollaborators}
-                     defaultRemote={this.props.labbook.defaultRemote}
-                     labbookId={this.props.labbook.id}
-                     remoteUrl={this.props.labbook.overview.remoteUrl}
+                     collaborators={labbook.collaborators}
+                     canManageCollaborators={labbook.canManageCollaborators}
+                     defaultRemote={labbook.defaultRemote}
+                     labbookId={labbook.id}
+                     remoteUrl={labbook.overview.remoteUrl}
                     />
 
                    <ContainerStatus
                      ref="ContainerStatus"
-                     base={this.props.labbook.environment.base}
-                     containerStatus={this.props.labbook.environment.containerStatus}
-                     imageStatus={this.props.labbook.environment.imageStatus}
-                     labbookId={this.props.labbook.id}
+                     base={labbook.environment.base}
+                     containerStatus={labbook.environment.containerStatus}
+                     imageStatus={labbook.environment.imageStatus}
+                     labbookId={labbook.id}
                      setBuildingState={this._setBuildingState}
                      isBuilding={this.state.isBuilding}
+                     creationDateUtc={labbook.creationDateUtc}
                    />
                 </div>
               </div>
@@ -283,11 +284,11 @@ class Labbook extends Component {
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
 
                 <Branches
-                  defaultRemote={this.props.labbook.defaultRemote}
+                  defaultRemote={labbook.defaultRemote}
                   branchesOpen={this.state.branchesOpen}
-                  labbook={this.props.labbook}
-                  labbookId={this.props.labbook.id}
-                  activeBranch={this.props.labbook.activeBranch}
+                  labbook={labbook}
+                  labbookId={labbook.id}
+                  activeBranch={labbook.activeBranch}
                 />
 
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
@@ -316,9 +317,9 @@ class Labbook extends Component {
 
                         return (<Overview
                           key={this.state.labbookName + '_overview'}
-                          labbook={this.props.labbook}
-                          description={this.props.labbook.description}
-                          labbookId={this.props.labbook.id}
+                          labbook={labbook}
+                          description={labbook.description}
+                          labbookId={labbook.id}
                           setBuildingState={this._setBuildingState}
                         />)
                       }}
@@ -331,9 +332,8 @@ class Labbook extends Component {
                           render={() => {
                             return (<Overview
                               key={this.state.labbookName + '_overview'}
-                              labbook={this.props.labbook}
-                              description={this.props.labbook.description}
-
+                              labbook={labbook}
+                              description={labbook.description}
                             />)
                           }}
                         />
@@ -344,9 +344,9 @@ class Labbook extends Component {
                           return (
                             <Activity
                               key={this.state.labbookName + '_activity'}
-                              labbook={this.props.labbook}
+                              labbook={labbook}
                               activityRecords={this.props.activityRecords}
-                              labbookId={this.props.labbook.id}
+                              labbookId={labbook.id}
                               {...this.props}
 
                             />)
@@ -358,11 +358,11 @@ class Labbook extends Component {
                             return (
                               <Environment
                                 key={this.state.labbookName + '_environment'}
-                                labbook={this.props.labbook}
-                                labbookId={this.props.labbook.id}
+                                labbook={labbook}
+                                labbookId={labbook.id}
                                 setBuildingState={this._setBuildingState}
                                 containerStatus={this.refs.ContainerStatus}
-                                overview={this.props.labbook.overview}
+                                overview={labbook.overview}
                                 {...this.props}
                               />)
                           }}
@@ -371,8 +371,8 @@ class Labbook extends Component {
                         <Route path={`${this.props.match.url}/code`} render={() => {
                           return (
                             <Code
-                              labbook={this.props.labbook}
-                              labbookId={this.props.labbook.id}
+                              labbook={labbook}
+                              labbookId={labbook.id}
                               setContainerState={this._setContainerState}
                             />)
                         }} />
@@ -380,16 +380,16 @@ class Labbook extends Component {
                         <Route path={`${this.props.match.url}/inputData`} render={() => {
                           return (
                             <InputData
-                              labbook={this.props.labbook}
-                              labbookId={this.props.labbook.id}
+                              labbook={labbook}
+                              labbookId={labbook.id}
                             />)
                         }} />
 
                         <Route path={`${this.props.match.url}/outputData`} render={() => {
                           return (
                             <OutputData
-                              labbook={this.props.labbook}
-                              labbookId={this.props.labbook.id}
+                              labbook={labbook}
+                              labbookId={labbook.id}
                             />)
                         }} />
                       </Switch>
