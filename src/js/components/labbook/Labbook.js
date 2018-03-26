@@ -426,6 +426,7 @@ const LabbookFragmentContainer = createFragmentContainer(
           isRepoClean
           defaultRemote
           owner
+          creationDateUtc
           activeBranch{
             id
             name
