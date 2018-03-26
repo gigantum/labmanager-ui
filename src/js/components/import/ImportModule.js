@@ -1,11 +1,17 @@
 // vendor
 import React, { Component } from 'react'
+import classNames from 'classnames'
+import uuidv4 from 'uuid/v4'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
 import ChunkUploader from 'JS/utils/ChunkUploader'
 
 import store from 'JS/redux/store'
-
+//queries
+import UserIdentity from 'JS/Auth/UserIdentity'
+//mutations
+import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 
 /**
   @param {number} bytes
@@ -117,7 +123,10 @@ export default class ImportModule extends Component {
       'type': 'info',
       'error': false,
       'isImporting': false,
-      'stopPropagation': false
+      'stopPropagation': false,
+      'importingScreen': false,
+      'importTransition': null,
+      'remoteURL': '',
     }
 
 
@@ -129,14 +138,19 @@ export default class ImportModule extends Component {
     this._fileUpload = this._fileUpload.bind(this)
     this._importingState = this._importingState.bind(this)
     this._clearState = this._clearState.bind(this)
+    this._showImportScreen = this._showImportScreen.bind(this)
+    this._hideImportScreen = this._hideImportScreen.bind(this)
+
 
 
 
     const dropzoneIds = ['dropZone', 'dropZone__subtext', 'dropZone__title', 'dropZone__create'];
-
+    let counter = 0;
     //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
-    window.addEventListener('dragenter', function(evt) { //use evt, event is a reserved word in chrome
+    window.addEventListener('dragenter', (evt) => { //use evt, event is a reserved word in chrome
+      counter++;
       if(document.getElementById('dropZone')){
+        this._showImportScreen();
         document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
       }
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
@@ -147,17 +161,21 @@ export default class ImportModule extends Component {
       }
     }, false);
 
-    window.addEventListener('dragleave', function(evt) { //use evt, event is a reserved word in chrome
-
+    window.addEventListener('dragleave', (evt) => { //use evt, event is a reserved word in chrome
+      counter--;
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
         if(document.getElementById('dropZone')){
-          document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+          if (counter === 0) {
+            this._hideImportScreen();
+            document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+          }
         }
       }
     }, false);
 
-    window.addEventListener('dragover', function(evt) {  //use evt, event is a reserved word in chrome
+    window.addEventListener('dragover', (evt) => {  //use evt, event is a reserved word in chrome
       if(document.getElementById('dropZone')){
+        this._showImportScreen();
         document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
       }
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
@@ -167,9 +185,10 @@ export default class ImportModule extends Component {
       }
     });
 
-    window.addEventListener('drop', function(evt) { //use evt, event is a reserved word in chrome
+    window.addEventListener('drop', (evt) => { //use evt, event is a reserved word in chrome
 
       if(document.getElementById('dropZone')){
+        this._hideImportScreen();
         document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
       }
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
@@ -181,14 +200,14 @@ export default class ImportModule extends Component {
     });
   }
   componentDidMount() {
-    let fileInput = document.getElementById('file__input')
-    let evt = new MouseEvent("click", {"bubbles":false, "cancelable":true});
+    // let fileInput = document.getElementById('file__input')
+    // let evt = new MouseEvent("click", {"bubbles":false, "cancelable":true});
 
-    fileInput.onclick = (evt) =>{
-      evt.cancelBubble = true;
-      //stopPropagation(evt)
-      evt.stopPropagation(evt)
-    }
+    // fileInput.onclick = (evt) =>{
+    //   evt.cancelBubble = true;
+    //   //stopPropagation(evt)
+    //   evt.stopPropagation(evt)
+    // }
   }
   /**
   *  @param {object} dataTransfer
@@ -474,50 +493,234 @@ export default class ImportModule extends Component {
       })
     }
   }
+  _showImportScreen() {
+    if(!this.state.importTransition && !this.state.importingScreen) {
+      this.setState({importTransition: true});
+      setTimeout(()=>{
+        this.setState({importingScreen: true});
+      }, 250)
+    }
+  }
+  _hideImportScreen() {
+    if(this.state.importingScreen) {
+      this.setState({importTransition: false});
+      setTimeout(()=>{
+        this.setState({importingScreen: false});
+      }, 250)
+    }
+  }
+
+  _updateRemoteUrl(evt){
+    this.setState({
+      remoteURL: evt.target.value
+    })
+  }
+
+  importLabbook = (evt) => {
+    const id = uuidv4()
+
+    let self = this;
+    const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
+    const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
+    const remote = this.state.remoteURL.indexOf('https://') > -1 ? this.state.remoteURL + '.git' : 'https://' + this.state.remoteURL + '.git'
+
+    UserIdentity.getUserIdentity().then(response => {
+
+    if(response.data){
+
+      if(response.data.userIdentity.isSessionValid){
+        this._importingState()
+        store.dispatch(
+          {
+            type: "MULTIPART_INFO_MESSAGE",
+            payload: {
+              id: id,
+              message: 'Importing LabBook please wait',
+              isLast: false,
+              error: false
+            }
+          })
+        ImportRemoteLabbookMutation(
+          owner,
+          labbookName,
+          remote,
+          (response, error) => {
+            this._clearState();
+
+            if(error){
+              console.error(error)
+              store.dispatch(
+                {
+                  type: 'MULTIPART_INFO_MESSAGE',
+                  payload: {
+                    id: id,
+                    message: 'ERROR: Could not import remote LabBook',
+                    messageBody: error,
+                    error: true
+                }
+              })
+
+            }else if(response){
+
+              store.dispatch(
+                {
+                  type: 'MULTIPART_INFO_MESSAGE',
+                  payload: {
+                    id: id,
+                    message: `Successfully imported remote LabBook ${labbookName}`,
+                    isLast: true,
+                    error: false
+                  }
+                })
+              BuildImageMutation(
+              labbookName,
+              owner,
+              false,
+              (error)=>{
+                if(error){
+                  console.error(error)
+                  store.dispatch(
+                    {
+                      type: 'MULTIPART_INFO_MESSAGE',
+                      payload: {
+                        id: id,
+                        message: `ERROR: Failed to build ${labbookName}`,
+                        messsagesList: error,
+                        error: true
+                    }
+                  })
+                }
+              })
+              document.getElementById('modal__cover').classList.add('hidden')
+              self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
+            }else{
+
+              BuildImageMutation(
+              labbookName,
+              localStorage.getItem('username'),
+              false,
+              (error)=>{
+                if(error){
+                  console.error(error)
+                  store.dispatch(
+                    {
+                      type: 'MULTIPART_INFO_MESSAGE',
+                      payload: {
+                        id: id,
+                        message: `ERROR: Failed to build ${labbookName}`,
+                        messsagesList: error,
+                        error: true
+                    }
+                  })
+                }
+              })
+            }
+          }
+        )
+      }else{
+
+          store.dispatch(
+            {
+              type: "MULTIPART_INFO_MESSAGE",
+              payload: {
+                id: id,
+                message: 'ERROR: User session not valid for remote import',
+                messsagesList: [{message:'User must be authenticated to perform this action.'}],
+                error: true
+              }
+            })
+
+          this.setState({'showLoginPrompt': true})
+      }
+      }
+    })
+  }
 
   render(){
+    let importCSS = classNames({
+      'LocalLabbooks__labbook-button-import': this.state.importTransition === null,
+      'LocalLabbooks__labbook-button-import--expanding': this.state.importTransition,
+      'LocalLabbooks__labbook-button-import--collapsing': !this.state.importTransition && this.state.importTransition !== null
+    })
 
     return(
       <div
         id="dropZone"
         type="file"
         className="ImportModule LocalLabbooks__panel LocalLabbooks__panel--add LocalLabbooks__panel--import"
-        ref={(div)=> this.dropZone = div}
-        onClick={(evt)=>{this._showModal(evt)}}
-        onDragEnd={(evt)=> this._dragendHandler(evt)}
+        ref={(div) => this.dropZone = div}
+        onDragEnd={(evt) => this._dragendHandler(evt)}
         onDrop={(evt) => this._dropHandler(evt)}
-        onDragOver={(evt)=> this._dragoverHandler(evt)}
+        onDragOver={(evt) => this._dragoverHandler(evt)}
         key={'addLabbook'}>
-            <div
-              id="dropZone__title"
-              className="LocalLabbooks__labbook-icon">
+        { !this.state.importingScreen ?
+          <div className="LocalLabbooks__labbook-main">
+            <div className="LocalLabbooks__labbook-header">
+              <div
+                className="LocalLabbooks__labbook-icon">
                 <div className="LocalLabbooks__title-add"></div>
-            </div>
-            <div
-              id="dropZone__create"
-              className="LocalLabbooks__add-text">
+              </div>
+              <div
+                className="LocalLabbooks__add-text">
                 <h4>Add LabBook</h4>
+              </div>
             </div>
-
+            <div className="LocalLabbooks__labbook-button"
+              onClick={(evt) => { this._showModal(evt) }}>
+              Create New
+            </div>
+            <div className={importCSS}
+              onClick={()=>{this._showImportScreen()}}>
+              Import Existing
+            </div>
+          </div>
+          :
+          <div id="dropZone__title" className="LocalLabbooks__labbook-importing">
+            <div
+              className="Locallabbook__import-close"
+              onClick={() => this._hideImportScreen()}>
+            </div>
+            <div className="LocalLabbooks__labbook-import-header">
+              <h4 id="dropZone__create">
+                Import Existing
+              </h4>
+              <p>
+                to import, do one of the following
+              </p>
+            </div>
             <p id="dropZone__subtext">
-              Or drag and drop .lbk or
-              <label
-                className="LocalLabbooks__file-system"
-                id="file__input-label"
-                htmlFor="file__input">
-                click here
-              </label>
+              Drag .lbk File Here
             </p>
+            <label
+              className="LocalLabbooks__file-system"
+              id="file__input-label"
+              htmlFor="file__input">
+              Browse & Upload .lbk File
+            </label>
             <input
               id="file__input"
               className='hidden'
               type="file"
-              onChange={(evt)=>{this._fileSelected(evt.files)}}
+              onChange={(evt) => { this._fileSelected(evt.files) }}
             />
+            <div className="LocalLabbooks__labbook-paste">
+              <input
+                type="text"
+                placeholder="Paste LabBook URL"
+                onChange={(evt) => this._updateRemoteUrl(evt)}
+              />
+              <button
+                onClick={() => this.importLabbook()}
+                disabled={!this.state.remoteURL.length && !this.state.isImporting}
+              >
+                Go
+              </button>
+            </div>
+          </div>
+        }
+        <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
 
-            <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
-
-        </div>
+      </div>
       )
   }
 }
