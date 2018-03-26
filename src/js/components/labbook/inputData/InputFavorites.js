@@ -18,7 +18,7 @@ class InputFavorites extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    if(this.props.input && this.props.input.favorites && this.props.input.favorites.pageInfo.hasNextPage){
+    if(this.props.input && this.props.input.favorites && this.props.input.favorites.pageInfo.hasNextPage && this.props.input.favorites.edges.length < 3){
       this.props.relay.loadMore(
        1, // Fetch the next 10 feed items
        (response, error) => {

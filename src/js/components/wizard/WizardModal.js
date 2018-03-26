@@ -11,8 +11,7 @@ import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
-//assets
-import logoCirlce from 'Images/logos/logo-circle-cyan.png'
+
 
 
 

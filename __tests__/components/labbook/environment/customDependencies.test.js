@@ -8,7 +8,7 @@ import sinon from 'sinon';
 //import data from './__relaydata__/CustomDependencies.json'
 
 
-const variables = {first:20, name: 'demo-lab-book', cursor: 'MA==', owner: 'default'}
+const variables = {first:20, name: 'ui-test-labbook', cursor: 'MA==', owner: 'default'}
 export default variables
 
 let _setBaseImage = () => ({});

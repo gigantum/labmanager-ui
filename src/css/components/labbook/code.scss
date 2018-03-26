@@ -18,7 +18,7 @@
   color: $jet;
 }
 
-.Code__favorites {
+.Code__files {
 
   width: 100%;
 }
@@ -178,4 +178,13 @@
   padding: 3px 5px;
   background-color: $lightGrey;
   color: $romanSilver;
+}
+
+.FileBrowser__large-dropzone{
+  height: 200px;
+  background-color: $white !important;
+  border: 1px dashed $azure;
+  td{
+    text-align: center !important;
+  }
 }

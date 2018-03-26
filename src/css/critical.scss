@@ -11,6 +11,7 @@
 @import 'vendor/fileIcons/fileIcons.scss';
 @import 'vendor/font-awesome/fontawesome.scss';
 @import 'vendor/carousel.scss';
+@import 'vendor/react-sticky-header.scss';
 
 //generic
 @import '_variables';
@@ -52,6 +53,7 @@
 @import 'components/labbook/activity_markdown.scss';
 @import 'components/labbook/detailPanel.scss';
 @import 'components/labbook/favorite.scss';
+@import 'components/labbook/recent.scss';
 @import 'components/labbook/branches.scss';
 @import 'components/labbook/branchMenu.scss';
 @import 'components/labbook/codeBlock.scss';

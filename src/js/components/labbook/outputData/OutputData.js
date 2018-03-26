@@ -4,15 +4,30 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import OutputDataBrowser from './OutputDataBrowser'
 import OutputFavorites from './OutputFavorites'
+import MostRecent from 'Components/labbook/filesShared/MostRecentOutput';
 
 class OutputData extends Component {
   constructor(props){
     super(props);
-    this.state = {selectedFiles: []};
+    this.state = {
+      selectedFiles: [],
+      selectedFilter: 'favorites'
+    };
     this._setSelectedFiles = this._setSelectedFiles.bind(this)
     this._clearSelectedFiles =  this._clearSelectedFiles.bind(this)
     this._loadStatus = this._loadStatus.bind(this)
+    this._selectFilter = this._selectFilter.bind(this)
   }
+
+  componentDidUpdate() {
+    this.refs[this.state.selectedFilter].classList.add('Code__filter--selected')
+    for (let key in this.refs) {
+      if (key !== this.state.selectedFilter) {
+        this.refs[key].classList.remove('Code__filter--selected')
+      }
+    }
+  }
+
   _setSelectedFiles(evt){
     let files = [...evt.target.files]
     this.setState({'selectedFiles': files})
@@ -26,6 +41,10 @@ class OutputData extends Component {
     if(res !== this.state.loadingStatus) {
       this.setState({'loadingStatus': res});
     }
+  }
+
+  _selectFilter(filterName) {
+    this.setState({selectedFilter: filterName});
   }
 
   render(){
@@ -46,16 +65,26 @@ class OutputData extends Component {
           <div className="Code__header">
             <h5 className="Code__subtitle">Output Files</h5>
             <div className="Code__toolbar">
-              <a className="Code__filter">Favorites</a>
-              <a className="Code__filter">Most Recent</a>
+              <a ref="favorites" className="Code__filter" onClick={()=> this._selectFilter('favorites')}>Favorites</a>
+              <a ref="recent" className="Code__filter" onClick={()=> this._selectFilter('recent')}>Most Recent</a>
             </div>
           </div>
-          <div className="Code__favorites">
+          <div className="Code__files">
+          {
+            this.state.selectedFilter === 'favorites' &&
             <OutputFavorites
-              outputId={this.props.labbook.output.id}
-              labbookId={this.props.labbookId}
+            outputId={this.props.labbook.output.id}
+            labbookId={this.props.labbookId}
+            output={this.props.labbook.output}
+            />
+          }
+          {
+            this.state.selectedFilter === 'recent' &&
+            <MostRecent
+              edgeId={this.props.labbook.output.id}
               output={this.props.labbook.output}
             />
+          }
           </div>
           <div className="Code__header">
             <h5 className="Code__subtitle">Output Browser</h5>
@@ -107,6 +136,7 @@ export default createFragmentContainer(
         id
         ...OutputDataBrowser_output
         ...OutputFavorites_output
+        ...MostRecentOutput_output
         isUntracked
       }
     }

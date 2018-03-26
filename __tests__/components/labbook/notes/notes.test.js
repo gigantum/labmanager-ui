@@ -6,7 +6,7 @@ import {mount} from 'enzyme'
 import environment from 'JS/createRelayEnvironment'
 
 
-const variables = {first:20, name: 'demo-lab-book', owner: 'default'}
+const variables = {first:20, name: 'ui-test-labbook', owner: 'default'}
 export default variables
 
 test('Test Notes rendering', () => {

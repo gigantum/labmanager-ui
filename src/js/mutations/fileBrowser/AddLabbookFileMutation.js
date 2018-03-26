@@ -106,6 +106,9 @@ export default function AddLabbookFileMutation(
     }
   }
 
+  let recentConnectionKey = section === 'code' ? 'MostRecentCode_allFiles' :
+    section === 'input' ? 'MostRecentInput_allFiles' :
+      'MostRecentOutput_allFiles'
   commitMutation(
     environment,
     {
@@ -118,7 +121,15 @@ export default function AddLabbookFileMutation(
         connectionInfo: [{
           key: connectionKey,
           rangeBehavior: 'append'
-        }],
+        },],
+        edgeName: 'newLabbookFileEdge'
+      },{
+        type: 'RANGE_ADD',
+        parentID: labbookId,
+        connectionInfo: [{
+        key: recentConnectionKey,
+        rangeBehavior: 'append'
+        },],
         edgeName: 'newLabbookFileEdge'
       }],
       onCompleted: (response, error ) => {
@@ -139,11 +150,12 @@ export default function AddLabbookFileMutation(
         node.setValue(chunk.chunkSize, 'size')
 
         sharedUpdater(store, labbookId, connectionKey, node)
+        sharedUpdater(store, labbookId, recentConnectionKey, node)
 
       },
       updater: (store, response) => {
         deleteEdge(store, labbookId, optimisticId, connectionKey)
-
+        deleteEdge(store, labbookId, optimisticId, recentConnectionKey)
 
 
         if(response.addLabbookFile && response.addLabbookFile.newLabbookFileEdge && response.addLabbookFile.newLabbookFileEdge.node){
@@ -163,6 +175,7 @@ export default function AddLabbookFileMutation(
             node.setValue(response.addLabbookFile.newLabbookFileEdge.node.size, 'size')
 
             sharedUpdater(store, labbookId, connectionKey, node)
+            sharedUpdater(store, labbookId, recentConnectionKey, node)
           }
         }
 

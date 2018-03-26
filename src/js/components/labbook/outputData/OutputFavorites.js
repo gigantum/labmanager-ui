@@ -15,7 +15,7 @@ class OutputFavorites extends Component {
   */
   componentDidMount() {
     //this._loadMore() //routes query only loads 2, call loadMore
-    if(this.props.output && this.props.output.favorites && this.props.output.favorites.pageInfo.hasNextPage){
+    if(this.props.output && this.props.output.favorites && this.props.output.favorites.pageInfo.hasNextPage && this.props.input.favorites.edges.length < 3){
       this.props.relay.loadMore(
        1, // Fetch the next 10 feed items
        (response, error) => {

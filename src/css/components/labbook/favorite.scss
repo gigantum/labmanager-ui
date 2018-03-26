@@ -123,6 +123,11 @@
   background-size: 24px;
 }
 
+.Favorite__star--off {
+  @extend .Favorite__star;
+}
+
+.Favorite__star--off,
 .Favorite__star--empty{
   height: 30px;
   width: 30px;
