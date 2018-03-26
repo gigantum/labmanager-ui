@@ -200,14 +200,16 @@ export default class ImportModule extends Component {
     });
   }
   componentDidMount() {
-    // let fileInput = document.getElementById('file__input')
-    // let evt = new MouseEvent("click", {"bubbles":false, "cancelable":true});
+    let fileInput = document.getElementById('file__input')
+    if(fileInput) {
+      let evt = new MouseEvent("click", {"bubbles":false, "cancelable":true});
 
-    // fileInput.onclick = (evt) =>{
-    //   evt.cancelBubble = true;
-    //   //stopPropagation(evt)
-    //   evt.stopPropagation(evt)
-    // }
+      fileInput.onclick = (evt) =>{
+        evt.cancelBubble = true;
+        //stopPropagation(evt)
+        evt.stopPropagation(evt)
+      }
+    }
   }
   /**
   *  @param {object} dataTransfer
@@ -493,6 +495,7 @@ export default class ImportModule extends Component {
       })
     }
   }
+
   _showImportScreen() {
     if(!this.state.importTransition && !this.state.importingScreen) {
       this.setState({importTransition: true});
@@ -501,6 +504,7 @@ export default class ImportModule extends Component {
       }, 250)
     }
   }
+
   _hideImportScreen() {
     if(this.state.importingScreen) {
       this.setState({importTransition: false});
@@ -516,6 +520,11 @@ export default class ImportModule extends Component {
     })
   }
 
+  /**
+  *  @param {Object} evt
+  *  imports labbook from remote url, builds the image, and redirects to imported labbook
+  *  @return {}
+  */
   importLabbook = (evt) => {
     const id = uuidv4()
 
