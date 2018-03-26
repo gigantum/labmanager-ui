@@ -1,4 +1,4 @@
-import ContainerStatus from 'Components/labbook/ContainerStatus';
+import ContainerStatus from 'Components/labbook/containerStatus/ContainerStatus';
 import React from 'react';
 import config from './config'
 import json from './__relaydata__/ContainerStatus.json'

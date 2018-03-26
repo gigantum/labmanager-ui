@@ -32,9 +32,11 @@
 }
 
 .ActivityCard__user {
-  height: 20px;
-  width: 20px;
+  height: 24px;
+  width: 24px;
   align-self: center;
+  background: url('../images/icons/user.svg') no-repeat 50% 50%;
+  background-size: 24px;
 }
 
 .ActivityCard__time {

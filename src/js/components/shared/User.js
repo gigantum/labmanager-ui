@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import userSVG from 'Images/icons/user.svg'
 
 export default class User extends Component {
 
@@ -63,7 +62,7 @@ export default class User extends Component {
       <div
         id="user"
         className="User">
-        <img alt="user" className="User__image" src={userSVG}/>
+        <div className="User__image"> </div>
         <h6
           id="username"
           onClick={() => { this._toggleDropdown()}}
