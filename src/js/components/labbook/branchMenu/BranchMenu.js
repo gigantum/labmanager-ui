@@ -14,6 +14,7 @@ import PushActiveBranchToRemoteMutation from 'Mutations/branches/PushActiveBranc
 import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
 import AddCollaboratorMutation from 'Mutations/AddCollaboratorMutation'
 import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
 //store
@@ -199,13 +200,13 @@ export default class UserNote extends Component {
             }
           })
 
-          if (self.state.remoteUrl) {
+          if (!self.state.remoteUrl) {
             PublishLabbookMutation(
               self.state.owner,
               self.state.labbookName,
               self.props.labbookId,
               (response, error) => {
-
+                console.log(error)
                 if (response.publishLabbook && !response.publishLabbook.success) {
                   if(error){
                     store.dispatch({
@@ -243,11 +244,11 @@ export default class UserNote extends Component {
             )
           }
 
+
+        } else {
           self.setState({
             'remoteUrl': ''
           })
-        } else {
-
           self.setState({
             showLoginPrompt: true
           })
@@ -271,7 +272,7 @@ export default class UserNote extends Component {
   */
   _sync() {
     const status = store.getState().containerStatus.status
-
+    this.setState({ menuOpen: false });
     if((status === 'Stopped') || (status === 'Build Failed') || (status === 'Rebuild Required')){
       let id = uuidv4()
       let self = this;
@@ -312,7 +313,25 @@ export default class UserNote extends Component {
                     self._toggleSyncModal()
                   }
                 } else {
-
+                  BuildImageMutation(
+                    this.state.labbookName,
+                    this.state.owner,
+                    false,
+                    (error) => {
+                      if (error) {
+                        console.error(error)
+                        store.dispatch(
+                          {
+                            type: 'MULTIPART_INFO_MESSAGE',
+                            payload: {
+                              id: id,
+                              message: `ERROR: Failed to build ${this.state.labookName}`,
+                              messsagesList: error,
+                              error: true
+                            }
+                          })
+                      }
+                    })
                   store.dispatch({
                     type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
@@ -335,6 +354,13 @@ export default class UserNote extends Component {
       })
     } else {
       this.setState({ menuOpen: false });
+
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
+        }
+      })
       store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {

@@ -36,6 +36,7 @@ class CustomDependencies extends Component {
     this._addDependency = this._addDependency.bind(this)
     this._addCustomDepenedenciesMutation = this._addCustomDepenedenciesMutation.bind(this)
     this._removeDependencyMuation = this._removeDependencyMuation.bind(this)
+    this._toggleViewContainer = this._toggleViewContainer.bind(this)
   }
 
   /*
@@ -126,19 +127,29 @@ class CustomDependencies extends Component {
   *  toggle state and view of container
   */
   _toggleViewContainer(){
-    const {status} = store.getState().containerStatus;
-    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+    if (navigator.onLine) {
+      const {status} = store.getState().containerStatus;
+      const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
 
-    if(canEditEnvironment){
+      if(canEditEnvironment){
+        store.dispatch({
+          type: 'TOGGLE_CUSTOM_MENU',
+          payload: {
+            viewContainerVisible: !this.state.viewContainerVisible
+          }
+        })
+
+      }else{
+        this._promptUserToCloseContainer()
+      }
+    } else {
       store.dispatch({
-        type: 'TOGGLE_CUSTOM_MENU',
-        payload: {
-          viewContainerVisible: !this.state.viewContainerVisible
+        type: 'ERROR_MESSAGE',
+        payload:{
+          message: `Cannot add package at this time.`,
+          messageBody: [{message: 'An internet connection is required to modify the environment.'}]
         }
       })
-
-    }else{
-      this._promptUserToCloseContainer()
     }
   }
 
@@ -192,29 +203,39 @@ class CustomDependencies extends Component {
   *  remove dependency from list
   */
   _removeDependencyMuation(customDependency){
-    const {labbookName, owner} = store.getState().routes
-    const {repository, componentId} = customDependency.node
-    const nodeID = customDependency.node.id
-    const {environmentId} = this.props
-    const uid = uuidv4()
-    let self = this
+    if (navigator.onLine){
+      const {labbookName, owner} = store.getState().routes
+      const {repository, componentId} = customDependency.node
+      const nodeID = customDependency.node.id
+      const {environmentId} = this.props
+      const uid = uuidv4()
+      let self = this
 
-    RemoveCustomComponentMutation(
-      labbookName,
-      owner,
-      repository,
-      componentId,
-      nodeID,
-      uid,
-      environmentId,
-      "CustomDependencies_customDependencies",
-      (response, error)=>{
-        self.props.buildCallback()
-        if(error){
+      RemoveCustomComponentMutation(
+        labbookName,
+        owner,
+        repository,
+        componentId,
+        nodeID,
+        uid,
+        environmentId,
+        "CustomDependencies_customDependencies",
+        (response, error)=>{
+          self.props.buildCallback()
+          if(error){
 
+          }
         }
-      }
-    )
+      )
+    } else {
+      store.dispatch({
+        type: 'ERROR_MESSAGE',
+        payload:{
+          message: `Cannot remove package at this time.`,
+          messageBody: [{message: 'An internet connection is required to modify the environment.'}]
+        }
+      })
+    }
   }
   /**
   *  @param {evt}

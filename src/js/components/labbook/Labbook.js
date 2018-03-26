@@ -5,7 +5,7 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
-import 'react-sticky-header/styles.css';
+
 import StickyHeader from 'react-sticky-header';
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -478,6 +478,7 @@ const backend = (manager: Object) => {
 
         if(backend.currentNativeSource){
           orgTopDropCapture.call(backend, e);
+
           backend.currentNativeSource.item.dirContent = getFilesFromDragEvent(e, {recursive: true}); //returns a promise
         }
     };

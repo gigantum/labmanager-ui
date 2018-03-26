@@ -41,6 +41,9 @@ export default function DeleteLabbookFileMutation(
       clientMutationId: '' + tempID++
     }
   }
+  let recentConnectionKey = section === 'code' ? 'MostRecentCode_allFiles' :
+  section === 'input' ? 'MostRecentInput_allFiles' :
+    'MostRecentOutput_allFiles'
 
   function sharedUpdater(store, labbookID, deletedID, connectionKey) {
 
@@ -59,7 +62,6 @@ export default function DeleteLabbookFileMutation(
     }
   }
 
-
   commitMutation(
     environment,
     {
@@ -70,10 +72,12 @@ export default function DeleteLabbookFileMutation(
         deletedIDFieldName: deleteLabbookFileId,
         connectionKeys: [{
           key: connectionKey
+        }, {
+          key: recentConnectionKey
         }],
         parentId: labbookId,
         pathToConnection: ['labbook', 'allFiles']
-      }],
+      },],
       onCompleted: (response, error ) => {
         if(error){
           console.log(error)
@@ -84,19 +88,19 @@ export default function DeleteLabbookFileMutation(
 
       updater: (store) => {
         sharedUpdater(store, labbookId, deleteLabbookFileId, connectionKey);
+        sharedUpdater(store, labbookId, deleteLabbookFileId, recentConnectionKey);
         if(Array.isArray(edgesToDelete)){
           edgesToDelete.forEach((edge) => {
             if(edge){
               sharedUpdater(store, labbookId, edge.node.id, connectionKey);
+              sharedUpdater(store, labbookId, deleteLabbookFileId, recentConnectionKey);
             }
           })
         }
       },
       optimisticUpdater: (store) => {
         sharedUpdater(store, labbookId, deleteLabbookFileId, connectionKey);
-
-
-
+        sharedUpdater(store, labbookId, deleteLabbookFileId, recentConnectionKey);
       },
     },
   )

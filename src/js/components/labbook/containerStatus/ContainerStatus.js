@@ -52,18 +52,6 @@ export default class ContainerStatus extends Component {
     //memory clean up
     window.removeEventListener("click", this._closePopupMenus)
   }
-
-
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.secondsElapsed !== this.state.secondsElapsed){
-      let self = this
-      let intervalInSeconds = 3 * 1000
-
-      setTimeout(function(){
-        self._fetchStatus()
-      }, intervalInSeconds);
-    }
-  }
   /**
     @param {object} footer
     unsubscribe from redux store
@@ -130,6 +118,7 @@ export default class ContainerStatus extends Component {
       }
 
       setTimeout(()=>{
+
         self._fetchStatus()
       }, 3 * 1000)
     })
@@ -144,7 +133,8 @@ export default class ContainerStatus extends Component {
     let containerMenuClicked = (evt.target.className.indexOf('ContainerStatus__container-state') > -1) ||
       (evt.target.className.indexOf('ContainerStatus__button-menu') > -1) ||
       (evt.target.className.indexOf('PackageDependencies__button') > -1) ||
-      (evt.target.className.indexOf('CustomDependencies__button') > -1)
+      (evt.target.className.indexOf('CustomDependencies__button') > -1) ||
+      (evt.target.className.indexOf('BranchMenu') > -1)
 
     if(!containerMenuClicked &&
     this.state.containerMenuOpen){

@@ -1,0 +1,336 @@
+.Recent__list {
+    flex-wrap: wrap;
+
+    position: relative;
+    @include flex(left, row)
+  }
+
+  .Recent__card-wrapper {
+    flex: 1 0;
+    height: 240px;
+    min-width: 33.333%;
+    width: 33.333%;
+    max-width: 33.333%;
+    color: $romanSilver;
+  }
+
+  /* Standard syntax */
+  @keyframes fluxuateLoad {
+      0% {
+        opacity: 0.1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+      100% {
+        opacity: 0.1;
+      }
+
+  }
+
+  .Recent__card--opaque {
+    opacity: 0.1;
+    animation: fluxuateLoad 3s infinite;
+  }
+
+  .Recent__card,
+  .Recent__card--opaque {
+
+    width: calc(100% - 20px);
+    height: 220px;
+    min-width: 300px;
+    max-width: 400px;
+    position: relative;
+    text-align: left;
+    padding: 20px;
+
+    P {
+      font-size: 14px;
+      padding: 2px 0;
+    }
+  }
+
+  .Recent__edit-button,
+  .Recent__edit-button:hover,
+  .Recent__edit-button:focus {
+    font-weight: light;
+    color: $romanSilver;
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    padding: 5px;
+    border: 0px;
+    background: url('./../images/icons/edit.svg') no-repeat center center;
+    background-size: 22px;
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+  }
+  .Recent__description-section{
+      p{
+        margin: 0;
+      }
+  }
+
+  .Recent__description-editor {
+    resize: none;
+    height: 90px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+
+  .Recent__description-filler {
+    background-color: #fff;
+    line-height: 30px;
+    height: 90px;
+    background: linear-gradient(#eee 0.1em, transparent 0.1em) repeat 30px 34px;
+    background-size: 100% 38px;
+    color: $romanSilver;
+  }
+  .Recent__header-section{
+    height: 50px;
+  }
+  .Recent__path-section{
+    height: 30px;
+    .Recent__path{
+      margin: 0;
+    }
+  }
+
+  .Recent__card-header {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px 0;
+    color: $slateBlue;
+    word-break: break-all;
+    width: calc(100% - 35px);
+  }
+
+  .Recent__star {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+
+  .Recent__star,
+  .Recent__star--file {
+    height: 30px;
+    width: 30px;
+
+    background: url('../images/icons/star__on.svg') no-repeat center center;
+    background-size: 24px;
+  }
+
+  .Recent__star--empty{
+    height: 30px;
+    width: 30px;
+
+    background: url('../images/icons/star__off.svg') no-repeat center center;
+    background-size: 24px;
+  }
+
+
+  .Recent__star:hover {
+    background-size: 34px;
+  }
+
+  .Recent__load-more {
+    position: absolute;
+    top: -31px;
+  }
+
+  .Recent__load-more,
+  .Recent__action-bar--loading,
+  .Recent__load-more:hover,
+  .Recent__load-more:focus {
+    background: none;
+    color: $slateBlue;
+    border: 0px;
+  }
+
+  .Recent__load-more:hover {
+    color: $turquise;
+  }
+
+  .Recent__action-bar,
+  .Recent__action-bar--loading {
+    margin: 30px 0 15px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+
+  /* Standard syntax */
+  @keyframes loadingBar {
+      0% {background-color: $slateBlue;}
+      50% {background-color: $turquise;}
+      100% {background-color: $slateBlue;}
+  }
+  @keyframes Gradient {
+      0% {
+          background-position: 0% 50%;
+      }
+      50% {
+          background-position: 100% 50%;
+      }
+      100% {
+          background-position-y: 0% 50%;
+      }
+  }
+
+  .Recent__action-bar:after {
+    border-top: 1px solid $slateBlue;
+    content:"";
+    position: absolute;
+    bottom: 3px;
+    left: 0;
+    height: 0.5em;
+    z-index: -1;
+    text-align: center;
+    width: calc(50% - 50px);
+
+  }
+
+
+  .Recent__action-bar:before {
+    border-top: 1px solid $slateBlue;
+    content:"";
+    position: absolute;
+    bottom: 3px;
+    right: 0;
+    height: 0.5em;
+    z-index: -1;
+    text-align: center;
+    width: calc(50% - 50px);
+
+  }
+  .Recent__action-bar:hover:after,
+  .Recent__action-bar:hover:before {
+    border-top: 1px solid $turquise;
+  }
+
+
+  .Recent__action-bar--loading:after {
+    border-top: 0px solid $lightGrey;
+    content:"";
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    height: 1px;
+    z-index: -1;
+    text-align: center;
+    width: calc(50% - 50px);
+    background: linear-gradient(-45deg, $slateBlue, $purple, $turquise, $goldenLemon);
+    background-size: 200% 200%;
+    animation: Gradient 7s ease infinite;
+  }
+
+
+  .Recent__action-bar--loading:before {
+    border-top: 0px solid $lightGrey;
+    content:"";
+    position: absolute;
+    bottom: 8px;
+    right: 0;
+    height: 1px;
+    z-index: -1;
+    text-align: center;
+    width: calc(50% - 50px);
+    background: linear-gradient(45deg, $goldenLemon, $turquise, $purple, $slateBlue);
+    background-size: 200% 200%;
+    animation: Gradient 7s ease infinite;
+  }
+
+  .Recent__mask {
+    position: absolute;
+
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+  }
+
+  @media screen and (max-width: 50000px) and (min-width: 1240px) {
+    .Recent__card-wrapper {
+      min-width: 33%;
+      width: 33%;
+      max-width: 33%;
+    }
+
+    .Recent__card-wrapper:nth-child(3n+1) {
+      @include flex(flex-start, row);
+    }
+
+    .Recent__card-wrapper:nth-child(3n+2) {
+      @include flex(center, row);
+    }
+
+    .Recent__card-wrapper:nth-child(3n+3) {
+      @include flex(flex-end, row);
+    }
+  }
+
+
+  @media screen and (max-width: 1239px) and (min-width: 960px) {
+    .Recent__card-wrapper {
+      min-width: 50%;
+      width: 50%;
+      max-width: 50%;
+    }
+
+    .Recent__card-wrapper:nth-child(2n+1) {
+      @include flex(flex-start, row);
+    }
+
+    .Recent__card-wrapper:nth-child(2n+2) {
+      @include flex(flex-end, row);
+    }
+  }
+  @media screen and (max-width: 1179px) and (min-width: 0px) {
+    .Recent__card-wrapper {
+      min-width: 50%;
+      width: 50%;
+      max-width: 50%;
+    }
+    .Recent__card-wrapper:nth-child(2n+0) {
+      @include flex(flex-end, row);
+    }
+
+    .Recent__card-wrapper:nth-child(2n+1) {
+      @include flex(left, row);
+    }
+  }
+
+  @media screen and (max-width: 1440px) and (min-width: 1130px) {
+    .Labbook--detail-mode {
+      .Recent__card-wrapper {
+        min-width: 50%;
+        width: 50%;
+        max-width: 50%;
+      }
+
+      .Recent__card-wrapper:nth-child(2n+0) {
+        @include flex(flex-end, row);
+      }
+
+      .Recent__card-wrapper:nth-child(2n+1) {
+        @include flex(left, row);
+      }
+    }
+  }
+  @media screen and (max-width: 1229px) and (min-width: 0px) {
+    .Labbook--detail-mode {
+      .Recent__card-wrapper {
+        min-width: 100%;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .Recent__card-wrapper {
+        @include flex(space-around, row);
+      }
+    }
+  }

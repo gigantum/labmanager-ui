@@ -11,7 +11,7 @@ import store from 'JS/redux/store'
   @param {number} bytes
   converts bytes into suitable units
 */
-const humanFileSize = (bytes)=>{
+export const humanFileSize = (bytes)=>{
 
   let thresh = 1000;
 
@@ -44,7 +44,7 @@ const uploadLabbookChunk = (file, chunk, accessToken, getChunkCallback) => {
 
 }
 
-const updateTotalStatus = (file, result) =>{
+const updateTotalStatus = (file) =>{
 
   let fileCount = store.getState().footer.fileCount + 1
   let totalFiles = store.getState().footer.totalFiles
@@ -62,6 +62,9 @@ const updateTotalStatus = (file, result) =>{
 
   if(fileCount === totalFiles){
     setTimeout(()=>{
+      store.dispatch({
+        type: 'FINISHED_UPLOADING',
+      })
       store.dispatch({
         type: 'UPLOAD_MESSAGE_REMOVE',
         payload:{
@@ -104,6 +107,9 @@ const updateChunkStatus = (file, chunkData) =>{
   })
 
   if((chunkSize * chunkIndex ) >= (fileSizeKb * 1000)){
+    store.dispatch({
+      type: 'FINISHED_UPLOADING',
+    })
     setTimeout(()=>{
       store.dispatch({
         type: 'UPLOAD_MESSAGE_REMOVE',
@@ -132,7 +138,7 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
     accessToken,
     section,
     (result, error)=>{
-  
+
       if(result && (error === undefined)){
         getChunkCallback(file, result)
         if(store.getState().footer.totalFiles > 1){
@@ -209,7 +215,6 @@ const ChunkUploader = {
               data.accessToken,
               getChunk
             )
-
 
             postMessage(chunkData) //post progress back to worker instantiator file
 

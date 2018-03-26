@@ -43,7 +43,6 @@ function sharedDeleteUpdater(store, labbookID, deletedID, connectionKey) {
 }
 
 
-
 export default function MoveLabbookFileMutation(
   connectionKey,
   owner,
@@ -66,7 +65,9 @@ export default function MoveLabbookFileMutation(
       clientMutationId: '' + tempID++
     }
   }
-
+  let recentConnectionKey = section === 'code' ? 'MostRecentCode_allFiles' :
+  section === 'input' ? 'MostRecentInput_allFiles' :
+  'MostRecentOutput_allFiles'
   commitMutation(
     environment,
     {
@@ -77,6 +78,14 @@ export default function MoveLabbookFileMutation(
         parentID: labbookId,
         connectionInfo: [{
           key: connectionKey,
+          rangeBehavior: 'prepend'
+        }],
+        edgeName: 'newLabbookFileEdge'
+      },{
+        type: 'RANGE_ADD',
+        parentID: labbookId,
+        connectionInfo: [{
+          key: recentConnectionKey,
           rangeBehavior: 'prepend'
         }],
         edgeName: 'newLabbookFileEdge'
@@ -133,6 +142,7 @@ export default function MoveLabbookFileMutation(
       },
       updater: (store, response) => {
         sharedDeleteUpdater(store, labbookId, edge.node.id, connectionKey);
+        sharedDeleteUpdater(store, labbookId, edge.node.id, recentConnectionKey);
       }
 
     },

@@ -20,8 +20,7 @@ class CodeFavorites extends Component {
   */
   componentDidMount() {
     //this._loadMore() //routes query only loads 2, call loadMore
-
-    if(this.props.code && this.props.code.favorites && this.props.code.favorites.pageInfo.hasNextPage){
+    if(this.props.code && this.props.code.favorites && this.props.code.favorites.pageInfo.hasNextPage && this.props.code.favorites.edges.length < 3){
       this.props.relay.loadMore(
        1, // Fetch the next 10 feed items
        (response, error) => {
