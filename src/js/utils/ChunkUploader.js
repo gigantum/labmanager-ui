@@ -11,7 +11,7 @@ import store from 'JS/redux/store'
   @param {number} bytes
   converts bytes into suitable units
 */
-const humanFileSize = (bytes)=>{
+export const humanFileSize = (bytes)=>{
 
   let thresh = 1000;
 

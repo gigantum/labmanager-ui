@@ -195,6 +195,7 @@
   background: $white;
   background-size: 50px;
   line-height: 50px;
+  transition: box-shadow 0.5s;
   @include card(300px, 320px);
 
   &:empty {
