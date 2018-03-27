@@ -443,3 +443,49 @@
   background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
   background-size: 20px;
 }
+
+.LocalLabbooks__sort {
+  position: relative;
+  color: $font-grey;
+  margin: 10px;
+  margin: 20px 0 10px 0;
+  display: flex;
+  justify-content: flex-end;
+
+  span {
+    display: inline-block;
+    width: 200px;
+    margin-left: 20px;
+    border-bottom: 1px solid $font-grey;
+    cursor: pointer;
+    user-select: none;
+  }
+  .LocalLabbooks__sort-collapsed {
+    background: url('./../images/icons/down-arrow-silver.svg') no-repeat right;
+    background-size: 15px;
+  }
+  .LocalLabbooks__sort-expanded {
+    background: url('./../images/icons/up-arrow-silver.svg') no-repeat right;
+    background-size: 15px;
+  }
+  ul {
+    position: absolute;
+    background: $background-color;
+    width: 200px;
+    right: 0;
+    z-index: 101;
+    text-align: left;
+    border: 1px solid $grey;
+    margin-top: 23px;
+    cursor: pointer;
+    li {
+      height: 30px;
+      user-select: none;
+      border-bottom: 1px solid $grey;
+      padding-top: 2px;
+    }
+    li:hover {
+      background: $grey;
+    }
+  }
+}

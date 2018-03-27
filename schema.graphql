@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Fri Mar 09 2018 18:11:26 GMT-0500 (EST)
+# timestamp: Mon Mar 26 2018 15:34:42 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -465,6 +465,7 @@ type JobStatus implements Node {
   id: ID!
   jobKey: String
   status: String
+  jobMetadata: String
   failureMessage: String
   startedAt: String
   finishedAt: String
@@ -472,7 +473,7 @@ type JobStatus implements Node {
 }
 
 """
-A Connection for paging through all background jobs the system is aware of. 
+A Connection for paging through all background jobs the system is aware of.
 """
 type JobStatusConnection {
   pageInfo: PageInfo!
@@ -499,8 +500,10 @@ type Labbook implements Node & GitRepository {
   name: String!
   description: String
   schemaVersion: Int
+  sizeBytes: String
   activeBranch: LabbookRef
   defaultRemote: String
+  creationDateUtc: DateTime
   branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   collaborators: [String]
   canManageCollaborators: Boolean
@@ -514,6 +517,7 @@ type Labbook implements Node & GitRepository {
   activityRecords(before: String, after: String, first: Int, last: Int): ActivityConnection
   detailRecord(key: String): ActivityDetailObject
   detailRecords(keys: [String]): [ActivityDetailObject]
+  backgroundJobs: [JobStatus]
 }
 
 """An object representing a commit to a LabBook"""
@@ -699,7 +703,7 @@ type LabbookRefEdge {
 
 """
 A type representing a section within a LabBook (i.e., code, input, output)
-    
+
 """
 type LabbookSection implements Node & GitRepository {
   """The ID of the object."""

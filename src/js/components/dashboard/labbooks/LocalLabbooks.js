@@ -27,9 +27,12 @@ class LocalLabbooks extends Component {
       'newLabbookName':'',
       'renameError': '',
       'showNamingError': false,
-      'filter': 'all'
+      'filter': 'all',
+      'selectedSort': 'Creation Date',
+      'sortMenuOpen': false,
     }
 
+    this._closeSortMenu = this._closeSortMenu.bind(this);
     this._goToLabbook = this._goToLabbook.bind(this)
     this._loadMore = this._loadMore.bind(this)
     this._showModal = this._showModal.bind(this)
@@ -44,12 +47,20 @@ class LocalLabbooks extends Component {
     this.setState({'filter': filterRoute})
 
     document.title =  `Gigantum`
+    window.addEventListener('click', this._closeSortMenu)
 
   }
 
   componentWillUnmount() {
-
+    window.removeEventListener('click', this._closeSortMenu)
     window.removeEventListener("scroll", this._captureScroll)
+  }
+  _closeSortMenu(evt) {
+    let isSortMenu = evt.target.className.indexOf('LocalLabbooks__sort') > -1
+
+    if(!isSortMenu && this.state.sortMenuOpen) {
+      this.setState({sortMenuOpen: false});
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -67,6 +78,7 @@ class LocalLabbooks extends Component {
   componentDidMount() {
 
     window.addEventListener('scroll', this._captureScroll);
+    this._loadMore();
   }
 /**
 *  @param {}
@@ -104,8 +116,11 @@ _captureScroll = () => {
       this.props.relay.loadMore(
         10, // Fetch the next 10 feed items
         (ev) => {
-    
-          isLoadingMore = false;
+          if (this.props.feed.localLabbooks.pageInfo.hasNextPage) {
+            this._loadMore();
+          } else {
+            isLoadingMore = false;
+          }
         }
       );
     }
@@ -191,6 +206,24 @@ _captureScroll = () => {
       return 0;
     })
   }
+  _sortCreationDate(labbooks) {
+    return labbooks.slice().sort((a, b) => {
+      a = Date.parse(a.node.creationDateUtc + 'Z');
+      b = Date.parse(b.node.creationDateUtc + 'Z');
+      if (!a) {
+        a = 0;
+      }
+      if (!b) {
+        b = 0;
+      }
+      return b - a;
+    })
+  }
+
+  _setSortFilter(selected) {
+    this.setState({sortMenuOpen: false, selectedSort: selected});
+  }
+
 
   render(){
 
@@ -200,7 +233,16 @@ _captureScroll = () => {
       if(props.feed.localLabbooks){
 
         let labbooks = this._filterLabbooks(props.feed.localLabbooks.edges, this.state.filter)
-        labbooks = this._sortAlphabetically(labbooks)
+        switch(this.state.selectedSort){
+          case 'Creation Date':
+            labbooks = this._sortCreationDate(labbooks);
+            break;
+          case 'Alphabetically':
+            labbooks = this._sortAlphabetically(labbooks);
+            break;
+          default:
+            break;
+        }
         return(
 
           <div className="LocalLabbooks">
@@ -232,6 +274,31 @@ _captureScroll = () => {
                   <a onClick={()=> this._setFilter('others')}>Shared With Me</a>
                 </div>
               </nav>
+            </div>
+            <div className="LocalLabbooks__sort">
+              Sort by:
+              <span
+                className={this.state.sortMenuOpen ? 'LocalLabbooks__sort-expanded' : 'LocalLabbooks__sort-collapsed'}
+                onClick={()=>this.setState({sortMenuOpen: !this.state.sortMenuOpen})}
+              >
+                {this.state.selectedSort}
+              </span>
+              <ul
+                className={this.state.sortMenuOpen ? 'LocalLabbooks__sort-menu' : 'hidden'}
+              >
+                <li
+                  className={'LocalLabbooks__sort-item'}
+                  onClick={()=>this._setSortFilter('Creation Date')}
+                >
+                  Creation Date {this.state.selectedSort === 'Creation Date' ?  '✓ ' : ''}
+                </li>
+                <li
+                  className="LocalLabbooks__sort-item"
+                  onClick={()=>this._setSortFilter('Alphabetically')}
+                >
+                  Alphabetically {this.state.selectedSort === 'Alphabetically' ?  '✓ ' : ''}
+                </li>
+              </ul>
             </div>
             <div className='LocalLabbooks__labbooks'>
               <div className="LocalLabbooks__sizer">
@@ -281,6 +348,7 @@ export default createPaginationContainer(
               name
               description
               owner
+              creationDateUtc
               environment{
                 id
                 imageStatus
