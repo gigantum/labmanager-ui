@@ -358,11 +358,12 @@
   border: 3px solid $romanSilver;
   background-size: 20px;
   @extend .box-shadow;
+  transition: box-shadow 0.5s;
 }
 
 .LocalLabbooks__containerStatus--state.Stopped:hover {
-  width: 155px;
-  height: 35px;
+  transition: box-shadow 0.5s;
+  box-shadow: 0 0px 12px 0 rgba(0, 0, 0, 0.5);
   background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
   border: 3px solid $turquise;
   background-size: 20px;
@@ -373,11 +374,12 @@
   border: 3px solid $turquise;
   background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
   background-size: 20px;
+  transition: box-shadow 0.5s;
 }
 
 .LocalLabbooks__containerStatus--state.Running:hover {
-  width: 155px;
-  height: 35px;
+  transition: box-shadow 0.5s;
+  box-shadow: 0 0px 12px 0 rgba(0, 0, 0, 0.5);
   border: 3px solid $romanSilver;
   background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
   background-size: 20px;
@@ -393,17 +395,20 @@
   border: 3px solid $goldenLemon;
   opacity: 0.75;
   background: none;
+  transition: box-shadow 0.5s;
 }
 
 .LocalLabbooks__containerStatus--state.Stopping {
   border: 3px solid $goldenLemon;
   opacity: 0.75;
   background: none;
+  transition: box-shadow 0.5s;
 }
 
 .LocalLabbooks__containerStatus--state.Building{
   border: 3px solid $goldenLemon;
   background-size: 20px;
+  transition: box-shadow 0.5s;
 }
 
 .LocalLabbooks__containerStatus--state.Build.Failed,
@@ -425,20 +430,14 @@
   right: 5px;
 }
 
-.LocalLabbooks__container-state--expanded{
-  width: 155px;
-  height: 35px;
-  box-shadow: 0 0px 12px 0 rgba(0,0,0,.80) !important;
-}
-
 .LocalLabbooks__container-stat--menu-open {
   @extend .ContainerStatus__container-state;
   background: $background-color url('./../images/icons/up-arrow-silver.svg') no-repeat 90% center;
 }
 
 .LocalLabbooks__container-state.Running:hover {
-  width: 155px;
-  height: 35px;
+  transition: box-shadow 0.5s;
+  box-shadow: 0 0px 12px 0 rgba(0, 0, 0, 0.5);
   border: 3px solid $romanSilver;
   background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
   background-size: 20px;
