@@ -9,7 +9,6 @@ export default class FileEmpty extends Component {
         const {owner, labbookName} = store.getState().routes
         let mainText = this.props.mainText;
         let subText = this.props.subText;
-        console.log(this.props)
         return(
             <div className="FileEmpty">
                 <div className={`FileEmpty__container FileEmpty__container--${this.props.section}`}>

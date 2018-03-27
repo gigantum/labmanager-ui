@@ -75,7 +75,7 @@ class OutputFavorites extends Component {
       }else{
         return(
           <FileEmpty
-            icon="outputData"
+            section="outputData"
             mainText="This LabBook has No Output Favorites"
           />
         )
