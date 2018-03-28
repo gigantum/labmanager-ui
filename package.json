@@ -75,6 +75,7 @@
     "bourbon-neat": "^1.9.0",
     "classnames": "^2.2.5",
     "dateformat": "^2.0.0",
+    "fetch": "^1.1.0",
     "file-icons-js": "^1.0.3",
     "graphql": "^0.10.5",
     "graphql-cli": "^2.15.8",

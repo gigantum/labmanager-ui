@@ -49,7 +49,7 @@ function fetchQuery(
     body.append('variables', JSON.stringify(variables))
     body.append('uploadChunk', uploadables[0])
   }
-
+  console.log(fetch)
   return fetch(window.location.protocol + '//' + window.location.hostname + `${process.env.GIGANTUM_API}`, {
     'method': 'POST',
     'headers': headers,

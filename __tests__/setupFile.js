@@ -2,6 +2,11 @@ import {JSDOM} from 'jsdom';
 
 const window = new JSDOM('<!DOCTYPE html><html><body><div id="root"></div></body></html>').window;
 
+window.location.hostname = 'localhost'
+window.location.protocol = 'https:'
+process.env.GIGANTUM_API = ':10001/labbook/'
+
+
 global.document = window.document;
 
 global.window = window;
