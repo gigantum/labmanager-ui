@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Awful Intersections</title>
+	<link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,600" rel="stylesheet">
+	<style type="text/css">
+		* {
+			box-sizing: border-box;
+		}
+
+		html, body {
+			background: #364454;
+			font-family: 'Titillium Web', sans-serif;
+		}
+
+		#container {
+			width: 90%;
+			min-width: 70em;
+			margin: auto;
+			text-align: center;
+			vertical-align: top;
+		}
+
+		.item {
+			display: inline-block;
+            width: 20em;
+			text-align: center;
+			margin: 1em;
+		}
+		.item .image {
+            width: auto;
+            max-height: 15em;
+            max-width: 15em;
+		}
+		.item .title {
+			color: #9B9C9E;
+			font-size: 1em;
+            font-weight: 500;
+		}
+
+		.page-title {
+		    color: #F3F5F7;
+		    font-size: 1.5em;
+		    text-align: center;
+            font-weight: 200;
+		    padding-top: 40px;
+
+		}
+
+		.page-title-big {
+			color: #F3F5F7;
+			font-size: 2em;	
+			text-align: center;
+            font-weight: 600;
+		}
+
+        .city-title-section{
+            width: 100%;
+            height: auto;
+        }
+
+        .city-title{
+		    color: #F3F5F7;
+		    font-size: 1.5em;
+		    text-align: left;
+		    padding-top: 40px;
+            padding-left: 40px;
+            font-weight: 600;
+        }
+	</style>
+</head>
+<body>
+	<div id="container">
+        {% for item in intersection_list %}
+          <div class="item">
+            <img 
+              src="./images/{{ item[0] }}.png" 
+              class="image" 
+            />
+            <div class="title">{{ item[1] }}</div>
+          </div>
+        {% endfor %}
+        
+        <div class="page-title"><strong>awful</strong> intersections of</div>
+        <div class="page-title-big">{{ location_name }}</div>
+
+	</div>
+</body>
+</html>

@@ -71,6 +71,7 @@
     "worker-loader": "^1.1.0"
   },
   "dependencies": {
+    "blob": "0.0.4",
     "bourbon": "^4.3.4",
     "bourbon-neat": "^1.9.0",
     "classnames": "^2.2.5",
@@ -110,7 +111,7 @@
   "scripts": {
     "start": "node scripts/start.js NODE_ENV='development'",
     "build": "node scripts/build.js",
-    "test": "jest",
+    "test": "jest createLabbookMutation && jest components",
     "relay": "relay-compiler --src ./src --schema ./schema.graphql",
     "relay-test": "relay-compiler --src ./__tests__ --schema ./schema.graphql",
     "update-schema": "graphql get-schema -p labbook",
