@@ -94,7 +94,7 @@ class CodeFavorites extends Component {
       }else{
         return(
           <FileEmpty
-            icon="code"
+            section="code"
             mainText="This LabBook has No Code Favorites"
           />
         )

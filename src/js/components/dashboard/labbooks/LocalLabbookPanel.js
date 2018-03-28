@@ -145,8 +145,9 @@ export default class LocalLabbookPanel extends Component {
   * stops labbbok conatainer
   ***/
   _updateTextStatusOver(evt, status){
-    let newStatus = (status === "Running") ? 'Stop' : status;
-    newStatus = (status === "Stopped") ? 'Run' : status;
+    let newStatus = status;
+    newStatus = (status === "Running") ? 'Stop' : newStatus;
+    newStatus = (status === "Stopped") ? 'Run' : newStatus;
     this.setState({textStatus: newStatus})
   }
   /***

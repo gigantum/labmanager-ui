@@ -212,19 +212,18 @@
 .LocalLabbooks__panel--add {
   height: 300px !important;
   color: $lightBlue;
+  cursor: auto;
   @include flex(center, column);
+  align-items: center;
+
 
   .LocalLabbooks__labbook-icon {
-    align-self: center;
-    align-content: center;
-    align-items: center;
-    position: relative;
 
     .LocalLabbooks__title-add {
-      top: 80px;
-      left: 80px;
-      height: 30px;
-      width: 30px;
+      top: 93px;
+      left: 72px;
+      height: 20px;
+      width: 20px;
       border-radius: 15px;
       border: 0px solid $romanSilver;
     }
@@ -232,6 +231,11 @@
 
   .LocalLabbooks__add-text {
     h4 {
+      margin-left: 10px;
+      white-space: nowrap;
+      width: 70%;
+      font-size: 28px;
+      font-weight: 300;
       padding: 5px 0;
       margin: 0;
     }
@@ -272,12 +276,13 @@
 }
 
 .LocalLabbooks__labbook-icon {
-  height: 100px;
-  width: 100px;
+  height: 50px;
+  width: 50px;
   background: url('../images/icons/labbooks-blue.svg') no-repeat center center;
-  background-size: 100px;
+  background-size: 50px;
   transition: 0.25s all;
   opacity: 0.4;
+  margin: 0 10px 0 -10px;
 }
 
 .LocalLabbooks__text-row {
@@ -358,11 +363,12 @@
   border: 3px solid $romanSilver;
   background-size: 20px;
   @extend .box-shadow;
+  transition: box-shadow 0.5s;
 }
 
 .LocalLabbooks__containerStatus--state.Stopped:hover {
-  width: 155px;
-  height: 35px;
+  transition: box-shadow 0.5s;
+  box-shadow: 0 0px 12px 0 rgba(0, 0, 0, 0.5);
   background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
   border: 3px solid $turquise;
   background-size: 20px;
@@ -373,11 +379,12 @@
   border: 3px solid $turquise;
   background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
   background-size: 20px;
+  transition: box-shadow 0.5s;
 }
 
 .LocalLabbooks__containerStatus--state.Running:hover {
-  width: 155px;
-  height: 35px;
+  transition: box-shadow 0.5s;
+  box-shadow: 0 0px 12px 0 rgba(0, 0, 0, 0.5);
   border: 3px solid $romanSilver;
   background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
   background-size: 20px;
@@ -393,17 +400,20 @@
   border: 3px solid $goldenLemon;
   opacity: 0.75;
   background: none;
+  transition: box-shadow 0.5s;
 }
 
 .LocalLabbooks__containerStatus--state.Stopping {
   border: 3px solid $goldenLemon;
   opacity: 0.75;
   background: none;
+  transition: box-shadow 0.5s;
 }
 
 .LocalLabbooks__containerStatus--state.Building{
   border: 3px solid $goldenLemon;
   background-size: 20px;
+  transition: box-shadow 0.5s;
 }
 
 .LocalLabbooks__containerStatus--state.Build.Failed,
@@ -425,20 +435,14 @@
   right: 5px;
 }
 
-.LocalLabbooks__container-state--expanded{
-  width: 155px;
-  height: 35px;
-  box-shadow: 0 0px 12px 0 rgba(0,0,0,.80) !important;
-}
-
 .LocalLabbooks__container-stat--menu-open {
   @extend .ContainerStatus__container-state;
   background: $background-color url('./../images/icons/up-arrow-silver.svg') no-repeat 90% center;
 }
 
 .LocalLabbooks__container-state.Running:hover {
-  width: 155px;
-  height: 35px;
+  transition: box-shadow 0.5s;
+  box-shadow: 0 0px 12px 0 rgba(0, 0, 0, 0.5);
   border: 3px solid $romanSilver;
   background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
   background-size: 20px;
@@ -470,7 +474,7 @@
   }
   ul {
     position: absolute;
-    background: $background-color;
+    background: $white;
     width: 200px;
     right: 0;
     z-index: 101;
@@ -478,15 +482,163 @@
     border: 1px solid $grey;
     margin-top: 23px;
     cursor: pointer;
+    @extend .box-shadow;
+
     li {
+      padding: 5px !important;
       height: 30px;
       user-select: none;
       border-bottom: 1px solid $grey;
       padding-top: 2px;
     }
     li:hover {
-      background: $grey;
+      background: $background-color;
       transition: background-color 0.25s ease-in-out
     }
   }
+}
+.LocalLabbooks__labbook-button {
+  margin: 5px;
+  height: 60px;
+  width: 85%;
+  border: 3px solid $lightBlue;
+  color: $lightBlue;
+  font-size: 22px;
+  background: $white;
+  cursor: pointer;
+  position: relative;
+  align-self: center;
+}
+
+.LocalLabbooks__labbook-button-import {
+  @extend .LocalLabbooks__labbook-button;
+}
+
+.LocalLabbooks__labbook-button-import--collapsing {
+  @extend .LocalLabbooks__labbook-button-import;
+  animation: collapse 0.25s linear forwards;
+
+}
+
+.LocalLabbooks__labbook-button-import--expanding {
+  @extend .LocalLabbooks__labbook-button-import;
+  cursor: default;
+  animation: expand 0.25s linear forwards;
+}
+
+@keyframes expand {
+  100% {
+    font-size: 26px;
+    color: $white;
+    margin: 0;
+    height: 100%;
+    top: 0;
+    background: $azure;
+    border: none;
+    width: 100%;
+    margin-top: -65%;
+  }
+}
+
+@keyframes collapse {
+  0% {
+    font-size: 26px;
+    color: $white;
+    margin: 0;
+    height: 100%;
+    top: 0;
+    background: $azure;
+    border: none;
+    width: 100%;
+    margin-top: -65%;
+  }
+}
+
+
+.LocalLabbooks__labbook-button:hover {
+  color: $white;
+  background: $lightBlue;
+}
+
+.LocalLabbooks__labbook-header {
+  width: 100%;
+  height: 125px;
+  padding-top: 20px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.LocalLabbooks__labbook-main {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  @include flex(center, column)
+}
+
+.LocalLabbooks__labbook-importing {
+  background: $azure;
+  width: 100%;
+  height: 100%;
+  color: $white;
+}
+
+.LocalLabbooks__labbook-paste {
+  position: relative;
+  margin-top: 5px;
+}
+
+.LocalLabbooks__labbook-importing {
+  color: $white;
+  font-size: 18px;
+  label {
+    color: $white;
+    font-size: 18px;
+  }
+  input {
+    background: $lightBlue !important;
+    color: $azure !important;
+    border-radius: 20px !important;
+    width: 83% !important;
+    height: 2.5rem !important;
+    font-size: 20px;
+    left: 25px;
+    box-sizing: border-box !important;
+  }
+  input[type="text"] {
+    padding-right: 27% !important;
+  }
+
+  input::placeholder {
+    color: $azure;
+  }
+  button {
+    position: absolute;
+    right: 29px;
+    top: 10px;
+    height: 2.1rem;
+    border-radius: 20px;
+  }
+}
+
+.LocalLabbooks__labbook-import-header {
+  margin-bottom: 15px;
+  h4 {
+    color: $white;
+    font-size: 26px;
+    margin-bottom: 0px;
+    font-weight: 400;
+  }
+  p {
+    color: $grey;
+    font-size: 16px;
+    line-height: 2;
+  }
+}
+
+.Locallabbook__import-close {
+  position: absolute;
+  top: 15px !important;
+  right: 15px !important;
+  cursor: pointer;
+  @include close();
 }
