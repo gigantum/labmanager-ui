@@ -102,6 +102,7 @@
     "showdown": "^1.7.3",
     "simplemde": "^1.11.2",
     "sweetalert-react": "^0.4.10",
+    "tunnel": "0.0.5",
     "uuid": "^3.1.0",
     "ws": "^3.1.0",
     "xmlhttprequest": "^1.8.0"
