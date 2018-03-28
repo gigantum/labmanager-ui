@@ -366,6 +366,7 @@ class Labbook extends Component {
                               labbook={labbook}
                               activityRecords={this.props.activityRecords}
                               labbookId={labbook.id}
+                              activeBranch={labbook.activeBranch}
                               {...this.props}
 
                             />)

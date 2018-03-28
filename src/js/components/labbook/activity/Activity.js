@@ -4,13 +4,17 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
+import store from 'JS/redux/store'
 //Components
 import ActivityCard from './ActivityCard'
 import Loader from 'Components/shared/Loader'
 import UserNote from './UserNote'
 import PaginationLoader from './ActivityLoaders/PaginationLoader'
+import CreateBranch from '../branches/CreateBranch';
 //utilities
 import Config from 'JS/config'
+//config
+import config from 'JS/config'
 
 //lacoal variables
 let pagination = false;
@@ -25,7 +29,7 @@ class Activity extends Component {
   	this.state = {
       'modalVisible': false,
       'isPaginating': false,
-      'visibleId': '',
+      'selectedNode': null,
     };
 
     //bind functions here
@@ -38,7 +42,7 @@ class Activity extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      'isPaginating': false
+      'isPaginating': false,
     })
   }
 
@@ -66,10 +70,6 @@ class Activity extends Component {
   componentWillUnmount() {
     clearInterval(this.interval);
     window.removeEventListener('scroll', this._handleScroll)
-  }
-
-  componentDidUpdate() {
-    console.log(this.refs)
   }
 
   /**
@@ -179,8 +179,28 @@ class Activity extends Component {
     })
   }
 
-  _toggleRollbackMenu(id) {
-    this.setState({visibleId: id});
+  _toggleRollbackMenu(node) {
+    const {status} = store.getState().containerStatus;
+    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+    if(canEditEnvironment) {
+      this.setState({selectedNode: node})
+      document.getElementById('modal__cover').classList.remove('hidden')
+      this.refs.createBranch._showModal();
+    } else {
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
+        }
+      })
+
+      store.dispatch({
+        type: 'CONTAINER_MENU_WARNING',
+        payload: {
+          message: 'Stop LabBook before editing the environment. \n Be sure to save your changes.'
+        }
+      })
+    }
   }
 
   render(){
@@ -197,13 +217,16 @@ class Activity extends Component {
           <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
 
             <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Activity__sizer flex-1-0-auto">
-
+              <CreateBranch
+                ref="createBranch"
+                selected={this.state.selectedNode}
+                activeBranch={this.props.activeBranch}
+              />
               {
                 Object.keys(activityRecordsTime).map((k, i) => {
 
                   return (
                     <div key={k}>
-
 
                       <div className="Activity__date-tab flex flex--column justify--space-around">
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
@@ -247,13 +270,12 @@ class Activity extends Component {
                                 <div className="Activity__submenu-container">
                                   <div
                                     className="Activity__submenu-circle"
-                                    ref={obj.edge.node.id}
                                   >
                                   </div>
                                   <div className="Activity__submenu-subcontainer">
                                     <h5
                                       className="Activity__rollback-text"
-                                      onClick={() => this._toggleRollbackMenu(obj.edge.node.id)}
+                                      onClick={() => this._toggleRollbackMenu(obj.edge.node)}
                                     >
                                       Rollback to previous state
                                     </h5>
