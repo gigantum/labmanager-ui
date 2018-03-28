@@ -25,6 +25,7 @@ class Activity extends Component {
   	this.state = {
       'modalVisible': false,
       'isPaginating': false,
+      'visibleId': '',
     };
 
     //bind functions here
@@ -65,6 +66,10 @@ class Activity extends Component {
   componentWillUnmount() {
     clearInterval(this.interval);
     window.removeEventListener('scroll', this._handleScroll)
+  }
+
+  componentDidUpdate() {
+    console.log(this.refs)
   }
 
   /**
@@ -174,6 +179,10 @@ class Activity extends Component {
     })
   }
 
+  _toggleRollbackMenu(id) {
+    this.setState({visibleId: id});
+  }
+
   render(){
     let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
 
@@ -228,14 +237,30 @@ class Activity extends Component {
                       }
 
                       <div key={k + 'card'}>
-
                         {
                           activityRecordsTime[k].map((obj) => {
-                          return(<ActivityCard
-                              key={obj.edge.node.id}
-                              edge={obj.edge}
-                            />)
-
+                            return (
+                              [<ActivityCard
+                                key={obj.edge.node.id}
+                                edge={obj.edge}
+                              />,
+                                <div className="Activity__submenu-container">
+                                  <div
+                                    className="Activity__submenu-circle"
+                                    ref={obj.edge.node.id}
+                                  >
+                                  </div>
+                                  <div className="Activity__submenu-subcontainer">
+                                    <h5
+                                      className="Activity__rollback-text"
+                                      onClick={() => this._toggleRollbackMenu(obj.edge.node.id)}
+                                    >
+                                      Rollback to previous state
+                                    </h5>
+                                  </div>
+                                </div>
+                              ]
+                            )
                           })
                         }
 
