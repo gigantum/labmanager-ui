@@ -8,7 +8,7 @@ const window = new JSDOM('<!DOCTYPE html><html><body><div id="root"></div></body
 
 window.location.hostname = 'localhost'
 window.location.protocol = 'https:'
-console.log(process.env)
+
 process.env.GIGANTUM_API =  process.env['USE_PROXY'] ? ':10010/labbook/' : ':10001/labbook/'
 
 global.document = window.document;

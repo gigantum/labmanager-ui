@@ -12,7 +12,7 @@ let owner = JSON.parse(fs.readFileSync(os.homedir() + testData.ownerLocation, "u
 const labbookName = uuidv4()
 
 let labbookId
-describe('Add labbook file', () => {
+describe('Make Labbook Directory', () => {
   test('Test Create Labbook Mutation untracked', done => {
     const isUntracked = true;
 

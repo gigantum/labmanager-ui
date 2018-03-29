@@ -2,7 +2,7 @@ import fs from 'fs'
 import DeleteLabbook from './../deleteLabbook';
 import CreateLabbook from './../createLabbook';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
-import MoveLabbookFileMutation from 'Mutations/fileBrowser/MoveLabbookFileMutation'
+import DeleteLabbookFileMutation from 'Mutations/fileBrowser/DeleteLabbookFileMutation'
 import {
   testData
 } from './../config.js'
@@ -10,14 +10,13 @@ import os from 'os'
 import uuidv4 from 'uuid/v4'
 
 const directory = 'test_directory'
-const moveDirectory = 'test_directory_move'
 const labbookName = uuidv4()
 const owner = JSON.parse(fs.readFileSync(os.homedir() + testData.ownerLocation, "utf8")).username
 let edge
 
 let labbookId
 
-describe('Move Labbook File', () => {
+describe('delete labbook file', () => {
   test('Test Create Labbook Mutation untracked', done => {
     const isUntracked = true;
 
@@ -51,7 +50,7 @@ describe('Move Labbook File', () => {
         (response, error) => {
 
           if(response){
-
+            edge = response.makeLabbookDirectory.newLabbookFileEdge
             expect(response.makeLabbookDirectory.newLabbookFileEdge.node.key).toEqual(directory + '/');
             done()
           }else{
@@ -62,45 +61,23 @@ describe('Move Labbook File', () => {
     )
   })
 
-  test('Test Make Directory to move', done => {
-    MakeLabbookDirectoryMutation(
+  test('Test Delete Directory', done => {
+
+
+    DeleteLabbookFileMutation(
       "Code_allFiles",
       owner,
       labbookName,
       labbookId,
-      moveDirectory,
-      "code",
-        (response, error) => {
-
-          if(response){
-            edge = response.makeLabbookDirectory.newLabbookFileEdge
-            expect(response.makeLabbookDirectory.newLabbookFileEdge.node.key).toEqual(moveDirectory + '/');
-            done()
-          }else{
-            console.log(error)
-            done.fail(new Error(error))
-          }
-        }
-    )
-
-  })
-
-  test('Test Move Directory', done => {
-    const  newPath = `${directory}/${moveDirectory}`
-    MoveLabbookFileMutation(
-      "Code_allFiles",
-      owner,
-      labbookName,
-      labbookId,
+      edge.node.id,
+      directory,
+      'code',
       edge,
-      moveDirectory,
-      newPath,
-      "code",
-        (response, error) => {
+      (response, error) => {
 
           if(response){
 
-            expect(response.moveLabbookFile.newLabbookFileEdge.node.key).toEqual(newPath + '/');
+            expect(response.deleteLabbookFile.success).toEqual(true);
             done()
           }else{
             console.log(error)
