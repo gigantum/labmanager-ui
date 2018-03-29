@@ -56,7 +56,7 @@ export default function CreateLabbookMutation(
       mutation,
       variables,
       onCompleted: (response, error) => {
-    
+
         if(error){
           console.log(error)
         }

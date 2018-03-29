@@ -1,30 +1,35 @@
+//vendor
 import fs from 'fs'
+import os from 'os'
+import uuidv4 from 'uuid/v4'
+//mutations
 import DeleteLabbook from './../deleteLabbook';
 import CreateLabbook from './../createLabbook';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
 import MoveLabbookFileMutation from 'Mutations/fileBrowser/MoveLabbookFileMutation'
-import {
-  testData
-} from './../config.js'
-import os from 'os'
-import uuidv4 from 'uuid/v4'
+//config
+import testConfig from './../config'
+
 
 const directory = 'test_directory'
 const moveDirectory = 'test_directory_move'
 const labbookName = uuidv4()
-const owner = JSON.parse(fs.readFileSync(os.homedir() + testData.ownerLocation, "utf8")).username
-let edge
+const owner = JSON.parse(fs.readFileSync(os.homedir() + testConfig.ownerLocation, 'utf8')).username
+const section = 'code'
+const connectionKey = 'Code_allFiles'
 
+let edge
 let labbookId
 
-describe('Move Labbook File', () => {
-  test('Test Create Labbook Mutation untracked', done => {
+describe('Test Suite: Move Labbook File', () => {
+  test('Test: CreateLabbookMutation - Create Labbook Mutation untracked', done => {
     const isUntracked = true;
 
     CreateLabbook.createLabbook(
         labbookName,
         isUntracked,
         (response, error) => {
+
           if(response){
             labbookId = response.createLabbook.labbook.id
             expect(response.createLabbook.labbook.name).toEqual(labbookName);
@@ -39,15 +44,15 @@ describe('Move Labbook File', () => {
   })
 
 
-  test('Test Make Directory', done => {
+  test('Test: MakeLabbookDirectoryMutation - Make Directory', done => {
 
     MakeLabbookDirectoryMutation(
-      "Code_allFiles",
+      connectionKey,
       owner,
       labbookName,
       labbookId,
       directory,
-      "code",
+      section,
         (response, error) => {
 
           if(response){
@@ -62,70 +67,76 @@ describe('Move Labbook File', () => {
     )
   })
 
-  test('Test Make Directory to move', done => {
+
+  test('Test: MakeLabbookDirectoryMutation - Make Directory to move', done => {
+
     MakeLabbookDirectoryMutation(
-      "Code_allFiles",
+      connectionKey,
       owner,
       labbookName,
       labbookId,
       moveDirectory,
-      "code",
-        (response, error) => {
+      section,
+      (response, error) => {
 
-          if(response){
-            edge = response.makeLabbookDirectory.newLabbookFileEdge
-            expect(response.makeLabbookDirectory.newLabbookFileEdge.node.key).toEqual(moveDirectory + '/');
-            done()
-          }else{
-            console.log(error)
-            done.fail(new Error(error))
-          }
+        if(response){
+          edge = response.makeLabbookDirectory.newLabbookFileEdge
+          expect(response.makeLabbookDirectory.newLabbookFileEdge.node.key).toEqual(moveDirectory + '/');
+          done()
+        }else{
+          console.log(error)
+          done.fail(new Error(error))
         }
+      }
     )
 
   })
 
-  test('Test Move Directory', done => {
+
+  test('Test: MoveLabbookFileMutation - Move Directory', done => {
+
     const  newPath = `${directory}/${moveDirectory}`
+
     MoveLabbookFileMutation(
-      "Code_allFiles",
+      connectionKey,
       owner,
       labbookName,
       labbookId,
       edge,
       moveDirectory,
       newPath,
-      "code",
-        (response, error) => {
+      section,
+      (response, error) => {
 
-          if(response){
+        if(response){
 
-            expect(response.moveLabbookFile.newLabbookFileEdge.node.key).toEqual(newPath + '/');
-            done()
-          }else{
-            console.log(error)
-            done.fail(new Error(error))
-          }
+          expect(response.moveLabbookFile.newLabbookFileEdge.node.key).toEqual(newPath + '/');
+          done()
+        }else{
+          console.log(error)
+          done.fail(new Error(error))
         }
+      }
     )
-
   })
 
-  test('Test Delete Labbook Mutation confirm', done => {
-    const confirm = true
-    DeleteLabbook.deleteLabbook(
-        labbookName,
-        confirm,
-        (response, error) => {
-          if(response){
+  test('Test: DeleteLabbookMutation - Delete Labbook Mutation confirm', done => {
 
-            expect(response.deleteLabbook.success).toEqual(true);
-            done()
-          }else{
-            console.log(error)
-            done.fail(new Error(error))
-          }
+    const confirm = true
+
+    DeleteLabbook.deleteLabbook(
+      labbookName,
+      confirm,
+      (response, error) => {
+        if(response){
+
+          expect(response.deleteLabbook.success).toEqual(true);
+          done()
+        }else{
+          console.log(error)
+          done.fail(new Error(error))
         }
+      }
     )
   })
 })

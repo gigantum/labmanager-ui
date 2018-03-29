@@ -1,19 +1,23 @@
+//vendor
 import fs from 'fs'
+import os from 'os'
+import uuidv4 from 'uuid/v4'
+//mutations
 import DeleteLabbook from './../deleteLabbook';
 import CreateLabbook from './../createLabbook';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
-import {
-  testData
-} from './../config.js'
-import os from 'os'
-import uuidv4 from 'uuid/v4'
+//config
+import testConfig from './../config'
 
-let owner = JSON.parse(fs.readFileSync(os.homedir() + testData.ownerLocation, "utf8")).username
+
+const owner = JSON.parse(fs.readFileSync(os.homedir() + testConfig.ownerLocation, 'utf8')).username
 const labbookName = uuidv4()
+const section = 'code'
+const connectionKey = 'Code_allFiles'
 
 let labbookId
-describe('Make Labbook Directory', () => {
-  test('Test Create Labbook Mutation untracked', done => {
+describe('Test Suite: Make Labbook Directory', () => {
+  test('Test: CreateLabbookMuation - Create Labbook Mutation untracked', done => {
     const isUntracked = true;
 
     CreateLabbook.createLabbook(
@@ -34,17 +38,17 @@ describe('Make Labbook Directory', () => {
   })
 
 
-  test('Test Make Directory', done => {
+  test('Test: MakeLabbookDirectoryMutation - Make Directory', done => {
 
     const directory = 'test_directory'
 
     MakeLabbookDirectoryMutation(
-      "Code_allFiles",
+      connectionKey,
       owner,
       labbookName,
       labbookId,
       directory,
-      "code",
+      section,
         (response, error) => {
 
           if(response){

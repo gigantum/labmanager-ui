@@ -6,21 +6,21 @@ import uuidv4 from 'uuid/v4'
 import DeleteLabbook from './../deleteLabbook';
 import CreateLabbook from './../createLabbook';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
-import DeleteLabbookFileMutation from 'Mutations/fileBrowser/DeleteLabbookFileMutation'
+import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
 //config
 import testConfig from './../config'
 
-
-const directory = 'test_directory'
-const labbookName = uuidv4()
-const owner = JSON.parse(fs.readFileSync(os.homedir() + testConfig.ownerLocation, 'utf8')).username
 const section = 'code'
 const connectionKey = 'Code_allFiles'
-let edge
-let labbookId
+const labbookName = uuidv4()
 
-describe('Test Suite: Delete labbook file', () => {
-  test('Test: CreateLabbookMuation - Create Labbook Mutation untracked', done => {
+let edge
+let owner = JSON.parse(fs.readFileSync(os.homedir() + testConfig.ownerLocation, "utf8")).username
+
+
+let labbookId
+describe('Test Suite: Add Favorite', () => {
+  test('Test: CreateLabbookMuation - Create Untracked Labbook', done => {
     const isUntracked = true;
 
     CreateLabbook.createLabbook(
@@ -41,7 +41,9 @@ describe('Test Suite: Delete labbook file', () => {
   })
 
 
-  test('Test: MakeLabbookDirectoryMutation - Make Directory', done => {
+  test('Test: MakeLabbookDirectoryMutation - Upload Directory', done => {
+
+    const directory = 'test_directory'
 
     MakeLabbookDirectoryMutation(
       connectionKey,
@@ -50,38 +52,46 @@ describe('Test Suite: Delete labbook file', () => {
       labbookId,
       directory,
       section,
-      (response, error) => {
+        (response, error) => {
 
-        if(response){
-          edge = response.makeLabbookDirectory.newLabbookFileEdge
-          expect(response.makeLabbookDirectory.newLabbookFileEdge.node.key).toEqual(directory + '/');
-          done()
-        }else{
-          console.log(error)
-          done.fail(new Error(error))
+          if(response){
+            edge = response.makeLabbookDirectory.newLabbookFileEdge
+            expect(response.makeLabbookDirectory.newLabbookFileEdge.node.key).toEqual(directory + '/');
+            done()
+          }else{
+            console.log(error)
+            done.fail(new Error(error))
+          }
         }
-      }
     )
+
   })
 
-  test('Test: DeleteLabbookFileMutation - Delete Directory', done => {
+  test('Test: AddFavoriteMutation - Add Favorite Directory', done => {
 
+    const directory = 'test_directory'
+    const favoriteKey = 'Code_favorites'
+    const description = 'this is a directory favorite'
+    const isDir = true
 
-    DeleteLabbookFileMutation(
+    AddFavoriteMutation(
+      favoriteKey,
       connectionKey,
+      labbookId,
       owner,
       labbookName,
-      labbookId,
-      edge.node.id,
       directory,
-      section,
+      description,
+      isDir,
       edge,
+      section,
       (response, error) => {
 
           if(response){
 
-            expect(response.deleteLabbookFile.success).toEqual(true);
+            expect(response.addFavorite.newFavoriteEdge.node.key).toEqual(directory + '/');
             done()
+
           }else{
             console.log(error)
             done.fail(new Error(error))

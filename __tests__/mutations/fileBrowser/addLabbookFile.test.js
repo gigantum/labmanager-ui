@@ -1,20 +1,24 @@
-import fs from 'fs'
-import DeleteLabbook from './../deleteLabbook';
-import CreateLabbook from './../createLabbook';
-import AddLabbookFileMutation from 'Mutations/fileBrowser/AddLabbookFileMutation'
-import {
-  testData
-} from './../config.js'
+//vendor
 import os from 'os'
 import Blob from 'blob'
 import uuidv4 from 'uuid/v4'
+import fs from 'fs'
+//mutations
+import DeleteLabbook from './../deleteLabbook';
+import CreateLabbook from './../createLabbook';
+import AddLabbookFileMutation from 'Mutations/fileBrowser/AddLabbookFileMutation'
+//config
+import testConfig from './../config'
 
-let owner = JSON.parse(fs.readFileSync(os.homedir() + testData.ownerLocation, "utf8")).username
+
+const owner = JSON.parse(fs.readFileSync(os.homedir() + testConfig.ownerLocation, 'utf8')).username
 const labbookName = uuidv4()
-
-const awfulCitiesCheckpointNotebook = fs.readFileSync(__dirname + '/data/awful-cities-checkpoint.ipynb', "utf8")
+const awfulCitiesCheckpointNotebook = fs.readFileSync(__dirname + '/data/awful-cities-checkpoint.ipynb', 'utf8')
 const blob = new Blob([awfulCitiesCheckpointNotebook], {type : 'text/plain'})
 const size = blob.size
+const section = 'code'
+const connectionKey = 'Code_allFiles'
+
 //create chunk for uploading
 const chunk = {
   blob: blob,
@@ -27,8 +31,9 @@ const chunk = {
 }
 
 let labbookId
-describe('Add labbook file', () => {
-  test('Test Create Labbook Mutation untracked', done => {
+
+describe('Test Suite: Add labbook file', () => {
+  test('Test: Create Labbook Mutation ', done => {
     const isUntracked = true;
 
     CreateLabbook.createLabbook(
@@ -49,16 +54,19 @@ describe('Add labbook file', () => {
   })
   //this fails because of and issue with formdata and node-fetch
   // TODO: fix file uploads
-  test('Test adding small file to file', done => {
+  test('Test: AddLabbookFileMutation - Add small file to code section', done => {
+
+    const filename = 'awful-cities-checkpoint.ipynb'
+
     AddLabbookFileMutation(
-      "Code_allFiles",
+      connectionKey,
       owner,
       labbookName,
-      'TGFiYm9vazpjYnV0bGVyJmhlcmVoZXJl',
-      'awful-cities-checkpoint.ipynb',
+      labbookId,
+      filename,
       chunk,
-      testData.accessToken,
-      "code",
+      testConfig.accessToken,
+      section,
         (response, error) => {
           console.log(response, error)
           if(response){
@@ -74,8 +82,10 @@ describe('Add labbook file', () => {
 
   })
 
-  test('Test Delete Labbook Mutation confirm', done => {
+  test('Test: DeleteLabbookMutation - Delete Labbook Mutation confirm', done => {
+
     const confirm = true
+
     DeleteLabbook.deleteLabbook(
         labbookName,
         confirm,

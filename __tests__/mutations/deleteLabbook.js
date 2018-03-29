@@ -1,11 +1,11 @@
+//vendor
 import fs from 'fs'
-import DeleteLabbookMutation from 'Mutations/DeleteLabbookMutation';
-import {
-  testData
-} from './config.js'
 import os from 'os'
+//mutations
+import DeleteLabbookMutation from 'Mutations/DeleteLabbookMutation';
+import testConfig from './config'
 
-let owner = JSON.parse(fs.readFileSync(os.homedir() + testData.ownerLocation, "utf8")).username
+let owner = JSON.parse(fs.readFileSync(os.homedir() + testConfig.ownerLocation, 'utf8')).username
 
 const DeleteLabbook = {
 

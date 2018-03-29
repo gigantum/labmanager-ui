@@ -4,6 +4,7 @@ import fetch from 'node-fetch'
 import FormData from 'form-data'
 
 
+
 const window = new JSDOM('<!DOCTYPE html><html><body><div id="root"></div></body></html>').window;
 
 window.location.hostname = 'localhost'
