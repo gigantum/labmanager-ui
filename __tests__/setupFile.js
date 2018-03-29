@@ -1,6 +1,7 @@
 import {JSDOM} from 'jsdom';
 import fs from 'fs'
-import fetch from 'node-fetch'
+import fetch from 'node-fetch-polyfill'
+import FormData from 'form-data'
 
 
 const window = new JSDOM('<!DOCTYPE html><html><body><div id="root"></div></body></html>').window;
@@ -20,3 +21,7 @@ global.window.resizeTo = (width, height) => {
 };
 
 global.fetch = fetch
+
+//global.FormData = FormData
+const File = window.File
+global.File = window.File

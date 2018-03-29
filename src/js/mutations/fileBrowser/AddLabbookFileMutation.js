@@ -106,7 +106,7 @@ export default function AddLabbookFileMutation(
       clientMutationId: id
     }
   }
-
+  debugger
   let recentConnectionKey = section === 'code' ? 'MostRecentCode_allFiles' :
     section === 'input' ? 'MostRecentInput_allFiles' :
       'MostRecentOutput_allFiles'

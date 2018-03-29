@@ -13,20 +13,21 @@ let owner = JSON.parse(fs.readFileSync(os.homedir() + testData.ownerLocation, "u
 const labbookName = uuidv4()
 
 
-const awfulCitiesCheckpointNotebook = new Blob(fs.readFileSync(__dirname + '/data/awful-cities-checkpoint.ipynb'))
-const size = awfulCitiesCheckpointNotebook.size
+const awfulCitiesCheckpointNotebook = fs.readFileSync(__dirname + '/data/awful-cities-checkpoint.ipynb', "utf8")
+const blob = new Blob([awfulCitiesCheckpointNotebook], {type : 'text/plain'})
+console.log(blob, blob.size)
+const size = blob.size
 
 const chunk = {
-  blob: awfulCitiesCheckpointNotebook,
-  fileSizeKb: size,
-  chunkSize: size,
+  blob: blob,
+  fileSizeKb: Math.round(size/1000, 10),
+  chunkSize: 1000 * 1000 * 48,
   totalChunks: 1,
-  chunkIndex: 1,
+  chunkIndex: 0,
   filename: 'awful-cities-checkpoint.ipynb',
-  id: uuidv4()
+  uploadId: uuidv4()
 }
 let labbookId
-
 describe('Add labbook file', () => {
   test('Test Create Labbook Mutation untracked', done => {
     const isUntracked = true;
@@ -51,6 +52,14 @@ describe('Add labbook file', () => {
 
   test('Test adding small file to file', done => {
     console.log(labbookId)
+    console.log("Code_allFiles",
+      owner,
+      testData.name,
+      labbookId,
+      'awful-cities-checkpoint.ipynb',
+      chunk,
+      testData.accessToken,
+      "code")
     AddLabbookFileMutation(
       "Code_allFiles",
       owner,
@@ -61,6 +70,7 @@ describe('Add labbook file', () => {
       testData.accessToken,
       "code",
         (response, error) => {
+          console.log(response, error)
           if(response){
 
             expect(response.createLabbook.labbook.name).toEqual(testData.name);
@@ -74,21 +84,21 @@ describe('Add labbook file', () => {
 
   })
 
-  test('Test Delete Labbook Mutation confirm', done => {
-    const confirm = true
-    DeleteLabbook.deleteLabbook(
-        labbookName,
-        confirm,
-        (response, error) => {
-          if(response){
-
-            expect(response.deleteLabbook.success).toEqual(true);
-            done()
-          }else{
-
-            done.fail(new Error(error))
-          }
-        }
-    )
-  })
+  // test('Test Delete Labbook Mutation confirm', done => {
+  //   const confirm = true
+  //   DeleteLabbook.deleteLabbook(
+  //       labbookName,
+  //       confirm,
+  //       (response, error) => {
+  //         if(response){
+  //
+  //           expect(response.deleteLabbook.success).toEqual(true);
+  //           done()
+  //         }else{
+  //
+  //           done.fail(new Error(error))
+  //         }
+  //       }
+  //   )
+  // })
 })

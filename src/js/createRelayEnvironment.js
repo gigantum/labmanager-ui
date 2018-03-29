@@ -43,7 +43,9 @@ function fetchQuery(
       variables
     })
   }else{
+  
     body = new FormData()
+
     body.append('query', queryString)
     body.append('variables', JSON.stringify(variables))
     body.append('uploadChunk', uploadables[0])
