@@ -1,6 +1,6 @@
 import {JSDOM} from 'jsdom';
 import fs from 'fs'
-import fetch from 'node-fetch-polyfill'
+import fetch from 'node-fetch'
 import FormData from 'form-data'
 
 
@@ -8,7 +8,8 @@ const window = new JSDOM('<!DOCTYPE html><html><body><div id="root"></div></body
 
 window.location.hostname = 'localhost'
 window.location.protocol = 'https:'
-process.env.GIGANTUM_API = ':10001/labbook/'
+console.log(process.env)
+process.env.GIGANTUM_API =  process.env['USE_PROXY'] ? ':10010/labbook/' : ':10001/labbook/'
 
 global.document = window.document;
 
@@ -22,6 +23,6 @@ global.window.resizeTo = (width, height) => {
 
 global.fetch = fetch
 
-//global.FormData = FormData
+global.FormData = FormData
 const File = window.File
 global.File = window.File

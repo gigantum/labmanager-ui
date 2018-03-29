@@ -1,4 +1,4 @@
-
+import FormData from 'multi-part'
 const {
   Environment,
   Network,
@@ -43,7 +43,7 @@ function fetchQuery(
       variables
     })
   }else{
-  
+
     body = new FormData()
 
     body.append('query', queryString)
@@ -51,13 +51,13 @@ function fetchQuery(
     body.append('uploadChunk', uploadables[0])
   }
 
-  console.log(body, headers)
-  return fetch(window.location.protocol + '//' + window.location.hostname + `${process.env.GIGANTUM_API}`, {
+  const apiURL = `${window.location.protocol}//${window.location.hostname}${process.env.GIGANTUM_API}`
+  return fetch(apiURL, {
     'method': 'POST',
     'headers': headers,
     'body': body,
   }).then(response => response.json())
-    .catch(error => error);
+    .catch(error => error)
 
 }
 

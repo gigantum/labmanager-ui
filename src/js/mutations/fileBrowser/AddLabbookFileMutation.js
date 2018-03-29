@@ -71,8 +71,7 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
       }
     }
   }
-
-
+  
 export default function AddLabbookFileMutation(
   connectionKey,
   owner,
@@ -89,6 +88,7 @@ export default function AddLabbookFileMutation(
 
   const id = uuidv4()
   const optimisticId = uuidv4()
+
   const variables = {
     input: {
       owner,
@@ -106,7 +106,8 @@ export default function AddLabbookFileMutation(
       clientMutationId: id
     }
   }
-  debugger
+
+  console.log(JSON.stringify(variables))
   let recentConnectionKey = section === 'code' ? 'MostRecentCode_allFiles' :
     section === 'input' ? 'MostRecentInput_allFiles' :
       'MostRecentOutput_allFiles'
@@ -116,24 +117,25 @@ export default function AddLabbookFileMutation(
       mutation,
       variables,
       uploadables,
-      configs: [{ //commented out until nodes are returned
-        type: 'RANGE_ADD',
-        parentID: labbookId,
-        connectionInfo: [{
-          key: connectionKey,
-          rangeBehavior: 'append'
-        },],
-        edgeName: 'newLabbookFileEdge'
-      },{
-        type: 'RANGE_ADD',
-        parentID: labbookId,
-        connectionInfo: [{
-        key: recentConnectionKey,
-        rangeBehavior: 'append'
-        },],
-        edgeName: 'newLabbookFileEdge'
-      }],
+      // configs: [{ //commented out until nodes are returned
+      //   type: 'RANGE_ADD',
+      //   parentID: labbookId,
+      //   connectionInfo: [{
+      //     key: connectionKey,
+      //     rangeBehavior: 'append'
+      //   },],
+      //   edgeName: 'newLabbookFileEdge'
+      // },{
+      //   type: 'RANGE_ADD',
+      //   parentID: labbookId,
+      //   connectionInfo: [{
+      //   key: recentConnectionKey,
+      //   rangeBehavior: 'append'
+      //   },],
+      //   edgeName: 'newLabbookFileEdge'
+      // }],
       onCompleted: (response, error ) => {
+        console.log(response, error)
         if(error){
           console.log(error)
         }
