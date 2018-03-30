@@ -369,7 +369,7 @@ class PackageDependencies extends Component {
         }
       })
 
-      const skipValidation = (packageItem.packageName.indexOf('conda') > -1)
+      const skipValidation = (packageItem.manager.indexOf('conda') > -1)
 
       AddPackageComponentMutation(
         labbookName,
@@ -379,8 +379,8 @@ class PackageDependencies extends Component {
         version,
         index+1,
         environmentId,
-        skipValidation,
         'PackageDependencies_packageDependencies',
+        skipValidation,
         (response, error) => {
 
           if(error){
@@ -592,7 +592,7 @@ class PackageDependencies extends Component {
     let trCSS = classNames({
       'PackageDependencies__optimistic-updating': edge.node.id === undefined
     })
-    console.log(edge.node)
+
     return(
       <tr
         className={trCSS}
