@@ -206,7 +206,7 @@ class PackageDependencies extends Component {
   _toggleAddPackageMenu(){
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
-  
+
     if(navigator.onLine){
       if(canEditEnvironment){
         store.dispatch({
@@ -369,6 +369,8 @@ class PackageDependencies extends Component {
         }
       })
 
+      const skipValidation = (packageItem.packageName.indexOf('conda') > -1)
+
       AddPackageComponentMutation(
         labbookName,
         owner,
@@ -377,6 +379,7 @@ class PackageDependencies extends Component {
         version,
         index+1,
         environmentId,
+        skipValidation,
         'PackageDependencies_packageDependencies',
         (response, error) => {
 
