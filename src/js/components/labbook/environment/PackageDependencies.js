@@ -400,7 +400,7 @@ class PackageDependencies extends Component {
               addPackage(packages[index])
             }else{
               self.setState({disableInstall: false, packages: []})
-
+              self._refetch()
               self.props.buildCallback()
             }
           }
