@@ -189,3 +189,21 @@
 .PackageDependencies__input-text--version:disabled {
   opacity: 0.3;
 }
+
+@keyframes fluxuateLoad {
+    0% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 0.1;
+    }
+
+}
+
+.PackageDependencies__optimistic-updating{
+  opacity: 0.1;
+  animation: fluxuateLoad 3s infinite;
+}
