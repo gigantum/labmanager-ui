@@ -30,7 +30,7 @@ describe('Test Suite: Move Labbook File', () => {
         isUntracked,
         (response, error) => {
 
-          if(response){
+          if(response && response.createLabbook){
             labbookId = response.createLabbook.labbook.id
             expect(response.createLabbook.labbook.name).toEqual(labbookName);
             done()
@@ -107,14 +107,69 @@ describe('Test Suite: Move Labbook File', () => {
       newPath,
       section,
       (response, error) => {
-
-        if(response){
+    
+        if(response && response.moveLabbookFile){
 
           expect(response.moveLabbookFile.newLabbookFileEdge.node.key).toEqual(newPath + '/');
           done()
         }else{
           console.log(error)
           done.fail(new Error(error))
+        }
+      }
+    )
+  })
+
+  test('Test: MoveLabbookFileMutation - Rename', done => {
+    const oldPath = `${directory}/${moveDirectory}`
+    const newPath = `${directory}/renamed_folder`
+
+    MoveLabbookFileMutation(
+      connectionKey,
+      owner,
+      labbookName,
+      labbookId,
+      edge,
+      oldPath,
+      newPath,
+      section,
+      (response, error) => {
+
+        if(response && response.moveLabbookFile){
+
+          expect(response.moveLabbookFile.newLabbookFileEdge.node.key).toEqual(newPath + '/');
+          done()
+        }else{
+          console.log(error)
+          done.fail(new Error(error))
+        }
+      }
+    )
+  })
+
+  test('Test: MoveLabbookFileMutation - Move Directory: Fail folder does not exist', done => {
+    const fakeFolder = 'doesn_not_exist'
+    const newPath = `${fakeFolder}/${moveDirectory}`
+
+    MoveLabbookFileMutation(
+      connectionKey,
+      owner,
+      labbookName,
+      labbookId,
+      edge,
+      moveDirectory,
+      newPath,
+      section,
+      (response, error) => {
+
+        if(response && response.moveLabbookFile){
+
+          expect(response.moveLabbookFile).toEqual(undefined);
+          done.fail(new Error('Mutation Should Fail'))
+        }else{
+          console.log(error)
+          expect(error[0].message).toMatch(/No src file exists at/);
+          done()
         }
       }
     )

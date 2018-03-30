@@ -43,18 +43,22 @@ export default function RemoveFavoriteMutation(
   }
 
   function sharedUpdater(store, parentID, deletedId, connectionKey) {
-    const userProxy = store.get(parentID);
-    const conn = RelayRuntime.ConnectionHandler.getConnection(
-      userProxy,
-      connectionKey
-    );
+    const labbookProxy = store.get(parentID);
 
-    if(conn){
+    if(labbookProxy){
 
-      RelayRuntime.ConnectionHandler.deleteNode(
-        conn,
-        deletedId,
+      const conn = RelayRuntime.ConnectionHandler.getConnection(
+        labbookProxy,
+        connectionKey
       );
+
+      if(conn){
+
+        RelayRuntime.ConnectionHandler.deleteNode(
+          conn,
+          deletedId,
+        );
+      }
     }
   }
   commitMutation(
@@ -89,14 +93,11 @@ export default function RemoveFavoriteMutation(
         if(fileNode){
           fileNode.setValue(false, 'isFavorite')
         }
-
-
+        if(response.removeFavorite || fileItem.fileItem){
           const removeId = fileItem.associatedLabbookFileId && fileItem.fileItem ? fileItem.fileItem.node.id  : response.removeFavorite.removedNodeId
 
-
           sharedUpdater(store, parentId, removeId, connectionKey)
-      
-
+        }
 
       }
     },

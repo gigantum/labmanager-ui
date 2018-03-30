@@ -7,6 +7,7 @@ import DeleteLabbook from './../deleteLabbook';
 import CreateLabbook from './../createLabbook';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
 import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
+import RemoveFavoriteMutation from 'Mutations/fileBrowser/RemoveFavoriteMutation'
 //config
 import testConfig from './../config'
 
@@ -14,12 +15,15 @@ const section = 'code'
 const connectionKey = 'Code_allFiles'
 const labbookName = uuidv4()
 
+let removeFavoriteId
 let edge
+let favoriteEdge
 let owner = JSON.parse(fs.readFileSync(os.homedir() + testConfig.ownerLocation, "utf8")).username
-
-
 let labbookId
-describe('Test Suite: Add Favorite', () => {
+
+const directory = 'directory'
+
+describe('Test Suite: Remove Favorite', () => {
   test('Test: CreateLabbookMuation - Create Untracked Labbook', done => {
     const isUntracked = true;
 
@@ -40,10 +44,8 @@ describe('Test Suite: Add Favorite', () => {
 
   })
 
-
   test('Test: MakeLabbookDirectoryMutation - Upload Directory', done => {
 
-    const directory = 'test_directory'
 
     MakeLabbookDirectoryMutation(
       connectionKey,
@@ -59,7 +61,7 @@ describe('Test Suite: Add Favorite', () => {
             expect(response.makeLabbookDirectory.newLabbookFileEdge.node.key).toEqual(directory + '/');
             done()
           }else{
-            console.log(error)
+
             done.fail(new Error(error))
           }
         }
@@ -69,7 +71,6 @@ describe('Test Suite: Add Favorite', () => {
 
   test('Test: AddFavoriteMutation - Add Favorite Directory', done => {
 
-    const directory = 'test_directory'
     const favoriteKey = 'Code_favorites'
     const description = 'this is a directory favorite'
     const isDir = true
@@ -88,8 +89,10 @@ describe('Test Suite: Add Favorite', () => {
       (response, error) => {
 
           if(response){
-
+            favoriteEdge = response.addFavorite.newFavoriteEdge
+            removeFavoriteId = response.addFavorite.newFavoriteEdge.node.id
             expect(response.addFavorite.newFavoriteEdge.node.key).toEqual(directory + '/');
+
             done()
 
           }else{
@@ -102,40 +105,65 @@ describe('Test Suite: Add Favorite', () => {
   })
 
 
-  test('Test: AddFavoriteMutation - Add Favorite Directory: Fail: directory not added', done => {
+    test('Test: RemoveFavoriteMutation - Remove Favorite Directory', done => {
 
-    const directory = 'not_a_directory'
-    const favoriteKey = 'Code_favorites'
-    const description = 'this is a directory favorite'
-    const isDir = true
+      const favorites = [favoriteEdge]
 
-    AddFavoriteMutation(
-      favoriteKey,
-      connectionKey,
-      labbookId,
-      owner,
-      labbookName,
-      directory,
-      description,
-      isDir,
-      edge,
-      section,
-      (response, error) => {
+      RemoveFavoriteMutation(
+        connectionKey,
+        labbookId,
+        owner,
+        labbookName,
+        section,
+        directory + '/',
+        removeFavoriteId,
+        favoriteEdge,
+        favorites,
+        (response, error) => {
 
-          if(response && response.addFavorite){
-
-            expect(response.addFavorite).toEqual(undefined);
-            done.fail(new Error('Mutation should fail'))
-
-          }else{
+            if(response && response.removeFavorite){
           
-            expect(error[0].message).toMatch(/does not exist/);
-            done()
-          }
-        }
-    )
+              expect(response.removeFavorite.success).toEqual(true);
+              done()
 
-  })
+            }else{
+              console.log(error)
+              done.fail(new Error(error))
+            }
+          }
+      )
+
+    })
+
+    test('Test: RemoveFavoriteMutation - Remove Favorite Directory: Fail', done => {
+
+      const favorites = [favoriteEdge]
+
+      RemoveFavoriteMutation(
+        connectionKey,
+        labbookId,
+        owner,
+        labbookName,
+        section,
+        directory + '/',
+        removeFavoriteId,
+        favoriteEdge,
+        favorites,
+        (response, error) => {
+
+            if(response && response.removeFavorite){
+
+              expect(response.removeFavorite).toEqual(undefined);
+              done.fail(new Error('Mutations should fail'))
+
+            }else{
+              expect(error[0].message).toMatch(/not found in/);
+              done()
+            }
+          }
+      )
+
+    })
 
   test('Test: DeleteLabbookMutation - Delete Labbook Mutation confirm', done => {
     const confirm = true

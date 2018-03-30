@@ -82,6 +82,37 @@ describe('Test Suite: Add labbook file', () => {
 
   })
 
+  test('Test: AddLabbookFileMutation - Add small file to code section: Fail section=null', done => {
+
+    const filename = 'awful-cities-checkpoint.ipynb'
+
+    AddLabbookFileMutation(
+      connectionKey,
+      owner,
+      labbookName,
+      labbookId,
+      filename,
+      chunk,
+      testConfig.accessToken,
+      null,
+        (response, error) => {
+
+          if(response && response.createLabbook){
+
+            expect(response.createLabbook).toEqual(undefined);
+            done.fail(new Error('Mutation should have failed'))
+
+          }else{
+            console.log(error)
+            expect(error).toMatch(/Must provide query string/);
+            done()
+
+          }
+        }
+    )
+
+  })
+
   test('Test: DeleteLabbookMutation - Delete Labbook Mutation confirm', done => {
 
     const confirm = true

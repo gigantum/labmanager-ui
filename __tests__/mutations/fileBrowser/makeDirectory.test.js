@@ -64,6 +64,37 @@ describe('Test Suite: Make Labbook Directory', () => {
 
   })
 
+
+    test('Test: MakeLabbookDirectoryMutation - Make Directory: Fail - Labbook does not exist', done => {
+
+      const directory = 'test_directory'
+      const fakeLabbookName = 'does-not-exist-labbook'
+
+      MakeLabbookDirectoryMutation(
+        connectionKey,
+        owner,
+        fakeLabbookName,
+        labbookId,
+        directory,
+        section,
+          (response, error) => {
+
+            if(response && response.makeLabbookDirectory){
+
+              expect(response.makeLabbookDirectory.newLabbookFileEdge.node.key).toEqual(directory + '/');
+
+              done.fail(new Error('Mutation Should fail'))
+            }else{
+    
+              expect(error[0].message).toMatch(/labbooks\/does-not-exist-labbook/);
+              done()
+
+            }
+          }
+      )
+
+    })
+
   test('Test Delete Labbook Mutation confirm', done => {
     const confirm = true
     DeleteLabbook.deleteLabbook(

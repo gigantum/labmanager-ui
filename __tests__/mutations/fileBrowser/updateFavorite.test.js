@@ -7,6 +7,7 @@ import DeleteLabbook from './../deleteLabbook';
 import CreateLabbook from './../createLabbook';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
 import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
+import UpdateFavoriteMutation from 'Mutations/fileBrowser/UpdateFavoriteMutation'
 //config
 import testConfig from './../config'
 
@@ -14,12 +15,15 @@ const section = 'code'
 const connectionKey = 'Code_allFiles'
 const labbookName = uuidv4()
 
+let removeFavoriteId
 let edge
+let favoriteEdge
 let owner = JSON.parse(fs.readFileSync(os.homedir() + testConfig.ownerLocation, "utf8")).username
-
-
 let labbookId
-describe('Test Suite: Add Favorite', () => {
+
+const directory = 'directory'
+
+describe('Test Suite: Update Favorite', () => {
   test('Test: CreateLabbookMuation - Create Untracked Labbook', done => {
     const isUntracked = true;
 
@@ -40,10 +44,8 @@ describe('Test Suite: Add Favorite', () => {
 
   })
 
-
   test('Test: MakeLabbookDirectoryMutation - Upload Directory', done => {
 
-    const directory = 'test_directory'
 
     MakeLabbookDirectoryMutation(
       connectionKey,
@@ -59,7 +61,7 @@ describe('Test Suite: Add Favorite', () => {
             expect(response.makeLabbookDirectory.newLabbookFileEdge.node.key).toEqual(directory + '/');
             done()
           }else{
-            console.log(error)
+
             done.fail(new Error(error))
           }
         }
@@ -69,7 +71,6 @@ describe('Test Suite: Add Favorite', () => {
 
   test('Test: AddFavoriteMutation - Add Favorite Directory', done => {
 
-    const directory = 'test_directory'
     const favoriteKey = 'Code_favorites'
     const description = 'this is a directory favorite'
     const isDir = true
@@ -88,8 +89,10 @@ describe('Test Suite: Add Favorite', () => {
       (response, error) => {
 
           if(response){
-
+            favoriteEdge = response.addFavorite.newFavoriteEdge
+            removeFavoriteId = response.addFavorite.newFavoriteEdge.node.id
             expect(response.addFavorite.newFavoriteEdge.node.key).toEqual(directory + '/');
+
             done()
 
           }else{
@@ -102,40 +105,76 @@ describe('Test Suite: Add Favorite', () => {
   })
 
 
-  test('Test: AddFavoriteMutation - Add Favorite Directory: Fail: directory not added', done => {
+    test('Test: UpdateFavoriteMutation - Update Favorite', done => {
 
-    const directory = 'not_a_directory'
-    const favoriteKey = 'Code_favorites'
-    const description = 'this is a directory favorite'
-    const isDir = true
+      const updatedDescription = 'my favorite file'
+      const key = directory + '/'
+      const deleteId = edge.node.id
+      const updatedIndex = 0
+      const favorite = favoriteEdge
 
-    AddFavoriteMutation(
-      favoriteKey,
-      connectionKey,
-      labbookId,
-      owner,
-      labbookName,
-      directory,
-      description,
-      isDir,
-      edge,
-      section,
-      (response, error) => {
+      UpdateFavoriteMutation(
+        connectionKey,
+        labbookId,
+        owner,
+        labbookName,
+        deleteId,
+        key,
+        updatedDescription,
+        updatedIndex,
+        favorite,
+        section,
+        (response, error) => {
+            console.log(response)
+            if(response && response.updateFavorite){
 
-          if(response && response.addFavorite){
+              expect(response.updateFavorite.updatedFavoriteEdge.node.description).toMatch(updatedDescription);
+              done()
 
-            expect(response.addFavorite).toEqual(undefined);
-            done.fail(new Error('Mutation should fail'))
-
-          }else{
-          
-            expect(error[0].message).toMatch(/does not exist/);
-            done()
+            }else{
+              console.log(error)
+              done.fail(new Error(error))
+            }
           }
-        }
-    )
+      )
 
-  })
+    })
+
+    test('Test: UpdateFavoriteMutation - Upate favorite : Fail bad index', done => {
+
+      const updatedDescription = 'my favorite file'
+      const key = directory + '/'
+      const deleteId = edge.node.id
+      const updatedIndex = 3
+      const favorite = favoriteEdge
+
+      UpdateFavoriteMutation(
+        connectionKey,
+        labbookId,
+        owner,
+        labbookName,
+        deleteId,
+        key,
+        updatedDescription,
+        updatedIndex,
+        favorite,
+        section,
+        (response, error) => {
+
+            if(response && response.updateFavorite){
+
+              expect(response.updateFavorite).toEqual(undefined);
+              done.fail(new Error('Mutations should fail'))
+
+            }else{
+              console.log(error)
+              expect(error[0].message).toMatch(/Invalid index/);
+              done()
+            }
+          }
+      )
+
+    })
 
   test('Test: DeleteLabbookMutation - Delete Labbook Mutation confirm', done => {
     const confirm = true
@@ -143,7 +182,7 @@ describe('Test Suite: Add Favorite', () => {
         labbookName,
         confirm,
         (response, error) => {
-          if(response){
+          if(response && response.deleteLabbook){
 
             expect(response.deleteLabbook.success).toEqual(true);
             done()

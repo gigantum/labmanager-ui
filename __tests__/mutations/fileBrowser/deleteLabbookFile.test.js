@@ -78,13 +78,41 @@ describe('Test Suite: Delete labbook file', () => {
       edge,
       (response, error) => {
 
-          if(response){
+          if(response && response.deleteLabbookFile){
 
             expect(response.deleteLabbookFile.success).toEqual(true);
             done()
           }else{
             console.log(error)
             done.fail(new Error(error))
+          }
+        }
+    )
+
+  })
+
+  test('Test: DeleteLabbookFileMutation - Delete Directory', done => {
+
+
+    DeleteLabbookFileMutation(
+      connectionKey,
+      owner,
+      labbookName,
+      labbookId,
+      edge.node.id,
+      directory,
+      section,
+      edge,
+      (response, error) => {
+
+          if(response && response.deleteLabbookFile){
+
+            expect(response.deleteLabbookFile).toEqual(undefined);
+            done.fail(new Error('Mutation should fail'))
+          }else{
+            console.log(error)
+            expect(error[0].message).toMatch(/Attempted to delete non-existent path/);
+            done()
           }
         }
     )
