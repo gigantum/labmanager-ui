@@ -105,7 +105,7 @@ class Branches extends Component {
 
       const branchesCSS = classNames({
         'Branches': this.props.branchesOpen,
-        'Branches--closed': !this.props.branchesOpe
+        'Branches--closed': !this.props.branchesOpen
       })
 
       const leftBumperCSS = classNames({
@@ -122,7 +122,7 @@ class Branches extends Component {
         'Brances__slider-button--left': this.props.branchesOpen && (showRightBumper),
         'hidden': !(this.props.branchesOpen && (showRightBumper))
       })
-
+      console.log(this.props.labbook)
       return(
         <div className={branchesCSS}>
 
@@ -178,11 +178,14 @@ export default createPaginationContainer(
               id
               name
               prefix
+              refName
               commit{
                 hash
                 shortHash
                 committedOn
                 id
+                name
+                owner
               }
             }
             cursor
@@ -197,12 +200,15 @@ export default createPaginationContainer(
         activeBranch{
           id
           name
+          refName
           prefix
           commit{
             hash
             shortHash
             committedOn
             id
+            name
+            owner
           }
         }
       }`
