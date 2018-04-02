@@ -246,10 +246,14 @@ class Labbook extends Component {
     if(this.props.labbook){
       const {labbook} = this.props
       const name = this.props.labbook.activeBranch ? this.props.labbook.activeBranch.name.replace(/-/g, ' ') : 'temp'
-
+      const labbookCSS = classNames({
+        'Labbook': true,
+        'Labbook--detail-mode': this.state.detailMode,
+        'Labbook-branch-mode': this.state.branchesOpen
+      })
       return(
         <div
-          className={this.state.detailMode ? "Labbook Labbook--detail-mode" : "Labbook"}>
+          className={labbookCSS}>
 
            <div className="Labbook__inner-container flex flex--row">
              <div className="Labbook__component-container flex flex--column">
