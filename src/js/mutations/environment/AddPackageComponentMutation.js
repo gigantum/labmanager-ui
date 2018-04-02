@@ -15,7 +15,6 @@ const mutation = graphql`
           manager
           package
           version
-          latestVersion
           fromBase
         }
       }
@@ -68,6 +67,7 @@ export default function AddPackageComponentMutation(
   clientMutationId,
   environmentId,
   connection,
+  skipValidation,
   callback
 ) {
 
@@ -79,6 +79,7 @@ export default function AddPackageComponentMutation(
       manager,
       package: packageName,
       version,
+      skipValidation,
       clientMutationId: tempID++
     }
   }
@@ -122,7 +123,6 @@ export default function AddPackageComponentMutation(
           node.setValue(packageName, 'package')
           node.setValue(version, 'version')
           node.setValue(schema, 'schema')
-          node.setValue(latestVersion, 'latestVersion')
           node.setValue(fromBase, 'fromBase')
           node.setValue(response.addPackageComponent.newPackageComponentEdge.node.id, 'id')
 
@@ -144,7 +144,9 @@ export default function AddPackageComponentMutation(
           const node = store.create(id, 'PackageManager');
 
           node.setValue(manager, 'manager')
-          node.setValue(packageName, 'packageName')
+          node.setValue(packageName, 'package')
+
+          node.setValue(version, 'version')
           node.setValue(labbookName, 'labbookName')
           node.setValue(owner, 'owner')
           const newEdge = store.create(
