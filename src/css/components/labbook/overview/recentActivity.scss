@@ -1,0 +1,75 @@
+.RecentActivity__list{
+  @include flex(flex-start, row);
+}
+
+.RecentActivity__title-container{
+  align-items: center;
+  @include flex(space-between, row);
+}
+
+.RecentActivity__card {
+  min-height: 150px;
+  padding: 20px 20px 60px 20px;
+  @extend .card;
+  width: calc(33.333% - 20px);
+  margin: 0 10px;
+}
+
+.RecentActivity__card:nth-child(3n + 1) {
+
+  margin: 0 20px 0 0;
+}
+.RecentActivity__card:nth-child(3n + 3) {
+  margin: 0 0 0 20px;
+}
+
+.RecentActivity__card-date {
+  color: $jet;
+  padding-bottom: 10px;
+}
+
+.RecentActivity__card-link {
+  position: absolute;
+  margin-top: 10px;
+  right: 30px;
+  color: $jet;
+}
+
+.RecentActivity__card-detail .ReactMarkdown * {
+  line-height: 22px;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  white-space: pre-line;
+  overflow: hidden;
+  word-break: break-word;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+}
+
+.RecentActivity__card-detail .ReactMarkdown {
+  max-height: 240px;
+  overflow: hidden;
+}
+
+.RecentActivity__card-detail *{
+  max-width: 100%;
+  max-height: 100%;
+}
+
+@keyframes fluxuateLoad {
+    0% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 0.1;
+    }
+
+}
+.RecentActivity__card--loading{
+  @extend .RecentActivity__card;
+  opacity: 0.1;
+  animation: fluxuateLoad 3s infinite;
+}

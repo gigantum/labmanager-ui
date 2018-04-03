@@ -4,14 +4,14 @@
 //@import "neat";
 @import '../../node_modules/normalize-sass/normalize';
 @import  'vendor/materialize.scss';
-@import  'vendor/sweetAlert.scss';
-@import  'vendor/flexboxGrid.scss';
 
 @import 'vendor/fileBrowser/browser.scss';
 @import 'vendor/fileBrowser/list-style.scss';
 @import 'vendor/fileBrowser/table-style.scss';
 @import 'vendor/fileIcons/fileIcons.scss';
 @import 'vendor/font-awesome/fontawesome.scss';
+@import 'vendor/carousel.scss';
+@import 'vendor/react-sticky-header.scss';
 
 //generic
 @import '_variables';
@@ -19,90 +19,60 @@
 @import '_utilities';
 @import '_layout';
 @import '_fonts';
+@import '_base';
 //atoms
 @import 'atoms/button.scss';
 @import 'atoms/loader.scss';
 @import 'atoms/download.scss';
 @import 'atoms/_input-text.scss';
 @import 'atoms/textarea.scss';
+@import 'atoms/table.scss';
 
 //shared components
 @import 'components/shared/sideBar';
 @import 'components/shared/footer';
+@import 'components/shared/prompt';
 @import 'components/shared/loader';
 @import 'components/shared/user';
 //
-@import  'components/breadCrumbs.scss';
-@import  'components/routes.scss';
-@import  'components/login.scss';
-@import  'components/home.scss';
+@import 'components/routes.scss';
+@import 'components/login.scss';
+@import 'components/home.scss';
 //dashboard components
-@import  'components/dashboard/dashboard';
-@import  'components/dashboard/localLabBooks.scss';
+@import 'components/dashboard/dashboard';
+@import 'components/dashboard/localLabBooks.scss';
 //import
-@import  'components/import/importModules.scss';
+@import 'components/import/importModules.scss';
 //labbook components
-@import  'components/labbook/labbook.scss';
-@import  'components/labbook/activity.scss';
-@import  'components/labbook/detail.scss';
-@import  'components/labbook/environment.scss';
-@import  'components/labbook/overview.scss';
-@import  'components/labbook/userNote.scss';
-@import  'components/labbook/code.scss';
-@import  'components/labbook/containerStatus.scss';
+@import 'components/labbook/labbook.scss';
+@import 'components/labbook/activity.scss';
+@import 'components/labbook/detail.scss';
+@import 'components/labbook/userNote.scss';
+@import 'components/labbook/code.scss';
+@import 'components/labbook/containerStatus.scss';
 @import 'components/labbook/activity_markdown.scss';
 @import 'components/labbook/detailPanel.scss';
 @import 'components/labbook/favorite.scss';
+@import 'components/labbook/recent.scss';
 @import 'components/labbook/branches.scss';
 @import 'components/labbook/branchMenu.scss';
+@import 'components/labbook/codeBlock.scss';
+//environment
+@import 'components/labbook/environment/environment.scss';
+@import 'components/labbook/environment/packageDependencies.scss';
+@import 'components/labbook/environment/base.scss';
+@import 'components/labbook/environment/customDependencies.scss';
+//overview
+@import 'components/labbook/overview/overview.scss';
+@import 'components/labbook/overview/filePreview.scss';
+@import 'components/labbook/overview/fileEmpty.scss';
+@import 'components/labbook/overview/recentActivity.scss';
 //wizard components
-@import  'components/wizard/wizardModal';
-@import  'components/wizard/selectBaseImage';
-@import  'components/wizard/createLabbook';
-@import  'components/wizard/addEnvironmentPackages';
-@import  'components/wizard/addCustomDependencies';
-@import  'components/wizard/successMessage';
-@import  'components/wizard/selectDevelopmentEnvironment';
-@import  'components/wizard/importCode';
-@import  'components/wizard/addDatasets';
-
-html, body, .root{
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  color: $charcoal;
-  font-family: arial;
-  position: relative;
-}
-
-body{
-  overflow-y: auto;
-  overflow-x: hidden;
-  background-color: $background-color;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  padding: 20px 0;
-  margin: 0;
-  font-weight: 100;
-}
-
-h1 { font-size: $h1-fontsize; line-height: 110%;}
-h2 { font-size: $h2-fontsize; line-height: 110%;}
-h3 { font-size: $h3-fontsize; line-height: 110%;}
-h4 { font-size: $h4-fontsize; line-height: 110%;}
-h5 { font-size: $h5-fontsize; line-height: 110%;}
-h6 { font-size: $h6-fontsize; line-height: 110%;}
-
-h6{
-  font-size: 1.2rem;
-}
+@import 'components/wizard/wizardModal';
+@import 'components/wizard/selectBase';
+@import 'components/wizard/createLabbook';
+@import 'components/wizard/baseDetails';
+@import 'components/wizard/trackingToggle';
 
 .modal__cover{
   position: fixed;
@@ -115,28 +85,12 @@ h6{
   z-index: 900;
 }
 
-.ApiDown{
-  position: fixed;
-  z-index: 200;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.5);
-  color: white;
-  font-size: 20px;
-  text-align: center;
-  line-height: 300px;
-}
-
-
-
 .rendered-react-keyed-file-browser{
   width: 100%;
 }
 
 .btn{
-  background-color: $datasets;
+  background-color: $slateBlue;
   border-radius: 20px;
   font-weight: 100;
 }

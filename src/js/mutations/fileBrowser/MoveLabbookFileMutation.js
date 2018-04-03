@@ -42,33 +42,6 @@ function sharedDeleteUpdater(store, labbookID, deletedID, connectionKey) {
   }
 }
 
-function sharedUpdater(store, labbookId, connectionKey, node) {
-  const labbookProxy = store.get(labbookId);
-
-
-  if(labbookProxy){
-    const conn = RelayRuntime.ConnectionHandler.getConnection(
-      labbookProxy,
-      connectionKey
-    );
-
-
-    if(conn){
-      const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-        store,
-        conn,
-        node,
-        "newLabbookFileEdge"
-      )
-
-      RelayRuntime.ConnectionHandler.insertEdgeAfter(
-        conn,
-        newEdge
-      );
-    }
-  }
-}
-
 
 export default function MoveLabbookFileMutation(
   connectionKey,
@@ -92,7 +65,9 @@ export default function MoveLabbookFileMutation(
       clientMutationId: '' + tempID++
     }
   }
-
+  let recentConnectionKey = section === 'code' ? 'MostRecentCode_allFiles' :
+  section === 'input' ? 'MostRecentInput_allFiles' :
+  'MostRecentOutput_allFiles'
   commitMutation(
     environment,
     {
@@ -106,19 +81,24 @@ export default function MoveLabbookFileMutation(
           rangeBehavior: 'prepend'
         }],
         edgeName: 'newLabbookFileEdge'
+      },{
+        type: 'RANGE_ADD',
+        parentID: labbookId,
+        connectionInfo: [{
+          key: recentConnectionKey,
+          rangeBehavior: 'prepend'
+        }],
+        edgeName: 'newLabbookFileEdge'
       }],
       onCompleted: (response, error ) => {
 
         if(error){
           console.log(error)
           reduxStore.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'ERROR_MESSAGE',
             payload:{
-              error: true,
-              uploadMessage: error[0].message,
-              showProgressBar: false,
-              open: true,
-              success: false
+              message: `ERROR: Could not Move labbook file ${srcPath}`,
+              messageBody: error,
             }
           })
 
@@ -162,6 +142,7 @@ export default function MoveLabbookFileMutation(
       },
       updater: (store, response) => {
         sharedDeleteUpdater(store, labbookId, edge.node.id, connectionKey);
+        sharedDeleteUpdater(store, labbookId, edge.node.id, recentConnectionKey);
       }
 
     },

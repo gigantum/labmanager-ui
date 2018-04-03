@@ -9,68 +9,59 @@
 *
 **********************/
 $turquise: #1ad8c1;
-$slateBlue: #334156;
+$slateBlue: #364454;
 $jet: #1f2733;
-
-$slateBlueOpaque: rgba(51,65,86, 0.6);
+$azure: #007ea8;
+$slateBlueOpaque: rgba(54,68,84, 0.6);
 /*********************
 *
 * seconday colors
 *
 **********************/
-$purple: #65329b;
 $crimson: #ef2231;
-$flame: #ff7300;
 $goldenLemon: #fcd430;
-$kellyGreen: #acf932;
-$azure: #007ea8;
+
 $romanSilver: #9b9c9e;
-$lightGrey: #e3e4e5;
+$grey: #b9babc;
+$lightGrey: #f3f5f7;
 $lightBlue: #97c0d5;
 $backgroundGrey: rgb(196, 199, 201);
-// $topBlue: rgb(14, 105, 149);
-// $bottomBlue: rgb(14, 105, 149);
+$lightblue: #74a4bc;
+$selected-blue: #53667C;
 
 
-
-/*********************
+/***********************
 *
 * temporary colors
 *
-**********************/
-$labbooks: #a63945;
-$datasets: #5b7b8e;
-$activity: #a8cf48;
+***********************/
 
 $grey-light: rgb(244,244,244);
-$grey: rgb(213,213,213);
 $grey-background: rgb(227,225,226);
+$grey-border: #E3E4E5;
 $font-grey: #9c9b9b;
 
 $background-color: rgb(240, 241, 245);
 
-$charcoal: #3B3738;
-$charcoals: #6B3738;
-
-
-$fresh: #4abdac;
-$vermillion: #fc4a1a;
-$sunchine: #f78733;
-$clean: #dfdce3;
 
 $white: #fefefe;
-$cream: #FDF3E7;
 
-$lightblue: #74a4bc;
-$teal: #b6d6cc;
-$yellow: #f1fec6;
-$red: #ff3a20;
-$orange: #C63D0F;
-
-//typography
+/*********************
+*
+* font sizes
+*
+***********************/
 $h1-fontsize: 4.2rem !default;
 $h2-fontsize: 3.56rem !default;
 $h3-fontsize: 2.92rem !default;
 $h4-fontsize: 2.28rem !default;
 $h5-fontsize: 1.64rem !default;
 $h6-fontsize: 1rem !default;
+
+/*****************************
+*
+* width
+*
+********************************/
+
+$sideBarWidth: 140px;

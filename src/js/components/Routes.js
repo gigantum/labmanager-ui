@@ -1,5 +1,6 @@
 //vendor
 import React, {Component} from 'react';
+import classNames from 'classnames';
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
 import Auth from 'JS/Auth/Auth';
@@ -10,6 +11,7 @@ import environment from 'JS/createRelayEnvironment'
 import Home from 'Components/home/Home';
 import SideBar from 'Components/shared/SideBar';
 import Footer from 'Components/shared/Footer';
+import Prompt from 'Components/shared/Prompt';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
 //
@@ -17,7 +19,7 @@ import store from 'JS/redux/store'
 
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
-  query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+  query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String, $hasNext: Boolean!){
     labbook(name: $name, owner: $owner){
       id
       description
@@ -26,6 +28,7 @@ export const LabbookQuery =  graphql`
   }`
 
 const auth = new Auth();
+
 
 const handleAuthentication = (nextState, replace) => {
   if (/access_token|id_token|error/.test(nextState.location.hash)) {
@@ -51,6 +54,7 @@ export default class Routes extends Component {
     sets owner and labbookName in store for use in labbook queriesß
   */
   setRouteStore(owner, labbookName){
+
     store.dispatch({
       type: 'UPDATE_ALL',
       payload:{
@@ -75,12 +79,19 @@ export default class Routes extends Component {
   }
 
   render(){
-
+    let authed = auth.isAuthenticated();
     let self = this
-
+    let headerCSS = classNames({
+      'Header': authed,
+      'hidden': !authed
+    })
+    let routesCSS = classNames({
+      'Routes__main': authed,
+      'Routes__main-no-auth': !authed
+    })
     return(
 
-        <Router history={history}>
+        <Router>
 
           <Switch>
 
@@ -88,11 +99,11 @@ export default class Routes extends Component {
               path=""
               render={(location) => {return(
               <div className="Routes">
-                <div className="Header"></div>
+                <div className={headerCSS}></div>
                 <SideBar
                   auth={auth} history={history}
                 />
-                <div className="Routes__main">
+                <div className={routesCSS}>
 
                 <Route
                   exact
@@ -118,12 +129,24 @@ export default class Routes extends Component {
                 />
 
                 <Route
+                  exact
+                  path="/:id/:labbookFilter"
+                  render={(props) =>
+                    <Home
+                      history={history}
+                      auth={auth}
+                      {...props}
+                    />
+                  }
+                />
+
+                <Route
                   path="/labbooks/:owner/:labbookName"
+                  auth={auth}
                   render={(parentProps) =>{
 
-                      const username = localStorage.getItem('username')
-                      let labbookName = parentProps.match.params.labbookName;
-                      let owner = parentProps.match.params.owner;
+                      const labbookName = parentProps.match.params.labbookName;
+                      const owner = parentProps.match.params.owner;
 
                       self.setRouteStore(owner, labbookName)
 
@@ -134,7 +157,8 @@ export default class Routes extends Component {
                           {
                             name: parentProps.match.params.labbookName,
                             owner: parentProps.match.params.owner,
-                            first: 2
+                            first: 2,
+                            hasNext: false
                           }
                         }
                         render={({error, props}) => {
@@ -182,7 +206,9 @@ export default class Routes extends Component {
                     )
                   }}
                 />
-
+                <Prompt
+                  ref="prompt"
+                />
                 <Footer
                   ref="footer"
                   history={history}

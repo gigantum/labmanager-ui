@@ -1,0 +1,171 @@
+.CustomDependencies {
+  position: relative;
+}
+
+.CustomDependencies__header {
+  color: $romanSilver;
+}
+
+.CustomDependencies__card {
+  padding: 20px;
+  @extend .card;
+}
+
+.CustomDependencies__add-dependencies {
+  border: 1px solid $romanSilver;
+  background-color: $grey-light;
+  border-radius: 8px;
+  padding: 20px 20px;
+  height: auto;
+  margin: 20px 0;
+}
+
+input.CustomDependenciesDropdown__input[type="text"]::placeholder {
+  color: $romanSilver;
+}
+
+input.CustomDependenciesDropdown__input[type="text"] {
+  border: 1px solid $romanSilver;
+  border-radius: 8px;
+  padding: 0 15px;
+  width: calc(100% - 30px);
+  background: url(../images/icons/down-arrow-silver.svg) no-repeat calc(100% - 25px) 50%;
+  background-size: 20px;
+  cursor: pointer;
+}
+input.CustomDependenciesDropdown__input[type="text"]:focus {
+  cursor: text;
+}
+
+.CustomDependenciesDropdown__menu {
+  padding: 20px;
+  top: 158px;
+  position: absolute;
+  overflow: hidden;
+  height: auto;
+  max-height: 210px;
+  transition: height 0.5s;
+
+  z-index: 200;
+
+  background: $white;
+  width: calc(100% - 118px);
+  @extend .box-shadow;
+}
+
+.CustomDependenciesDropdown__menu-row {
+  width: 100%;
+  height: 40px;
+  border-bottom: 1px solid $romanSilver;
+  align-items: center;
+  @include flex(space-between, row);
+}
+
+
+.CustomDependenciesDropdown__menu--no-height {
+  position: absolute;
+  height: 0px;
+  padding: 0px;
+}
+
+.CustomDependenciesDropdown__button--round,
+.CustomDependencies__button--round {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  padding: 0;
+}
+.CustomDependenciesDropdown__button--add,
+.CustomDependencies__button--add {
+  background: $azure url('../images/icons/add.svg') no-repeat 50% 50%;
+  background-size: 16px;
+}
+.CustomDependenciesDropdown__button--add:hover,
+.CustomDependencies__button--add:hover {
+  background: $turquise url('../images/icons/add.svg') no-repeat 50% 50%;
+  background-size: 16px;
+}
+
+.CustomDependencies__button--remove {
+  background: $azure url('../images/icons/close-white.svg') no-repeat 50% 50%;
+  background-size: 14px;
+}
+.CustomDependencies__button--remove:hover {
+  background: $turquise url('../images/icons/close-white.svg') no-repeat 50% 50%;
+  background-size: 14px;
+}
+
+.CustomDependencies__table-container {
+  position: relative;
+  padding: 20px 20px 60px;
+  border: 1px solid $romanSilver;
+
+  .CustomDependencies__button {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    width: 270px;
+    height: 40px;
+    margin: 0 0 0 -135px;
+  }
+}
+
+.CustomDependencies__item {
+  height: 40px;
+  border-bottom: 1px solid $romanSilver;
+  @include flex(space-between, row);
+}
+
+.CustomDependencies__view-container {
+  padding: 20px 20px 40px;
+  height: auto;
+  overflow: hidden;
+}
+
+.CustomDependencies__view-container--no-height {
+  height: 0px;
+  max-height: 0px;
+  padding: 0px;
+}
+
+// .CustomDependencies__button--flat{
+//   padding: 5px 0;
+//   font-weight: bold;
+//   background-color: $grey-light;
+//   border: 0;
+//   color: $azure;
+//   width: 100%;
+// }
+
+.CustomDependencies__button--flat:hover,
+.CustomDependencies__button--flat:focus {
+  width: 100%;
+  background-color: $grey-light;
+  border: 0;
+  color: $turquise !important;
+  background: url('../images/icons/down-arrow-turquise.svg') no-repeat calc(50% + 107px) 50%;
+  background-size: 25px;
+}
+
+
+.CustomDependencies__button--flat {
+    border: 0;
+    color: $azure;
+    width: 100%;
+    font-size: 20px;
+    line-height: 18px;
+    font-weight: bold;
+    background: url('../images/icons/down-arrow-azure.svg') no-repeat calc(50% + 107px) 50%;
+    background-size: 25px;
+}
+
+.CustomDependencies__button--open {
+  background: url('../images/icons/up-arrow-azure.svg') no-repeat calc(50% + 107px) 50%;
+  background-size: 25px;
+}
+
+.CustomDependencies__button--open:hover,
+.CustomDependencies__button--open:focus {
+  background: url('../images/icons/up-arrow-turquise.svg') no-repeat calc(50% + 107px) 50%;
+  background-size: 25px;
+}

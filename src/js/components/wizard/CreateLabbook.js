@@ -1,12 +1,16 @@
 //vendor
 import React from 'react'
-import SweetAlert from 'sweetalert-react';
+import classNames from 'classnames'
+import uuidv4 from 'uuid/v4'
 //utilities
 import validation from 'JS/utils/Validation'
+//components
+import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 //mutations
-import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
+//queries
+import UserIdentity from 'JS/Auth/UserIdentity'
 //store
 import store from 'JS/redux/store'
 
@@ -16,175 +20,168 @@ export default class CreateLabbook extends React.Component {
   	super(props);
 
   	this.state = {
-      'modal_visible': false,
       'name': '',
       'description': '',
       'showError': false,
-      'show': false,
-      'message': '',
       'errorType': '',
-      'remoteURL': ''
+      'remoteURL': '',
+      'textWarning': 'hidden',
+      'textLength': 0,
+      'isUserValid': false,
+      'showLoginPrompt': false
     };
+
 
     this.continueSave = this.continueSave.bind(this)
     this._updateTextState = this._updateTextState.bind(this)
     this._updateRemoteUrl =  this._updateRemoteUrl.bind(this)
+    this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
 
   }
-   /**
-     @param {Object} evt
-     takes and event input
-     creates a labbook mutation sets labbook name on parent component
-     triggers setComponent to proceed to next view
-   */
 
+  /**
+  *   @param {Object} evt
+  *   takes an event input
+  *   creates a labbook mutation sets labbook name on parent component
+  *   triggers setComponent to proceed to next view
+  **/
   continueSave = (evt) => {
-    let viewerId = 'localLabbooks';//Todo: figure out what to do with viewerId in the mutation context
-    let name = this.state.name;
+    const {name, description} = this.state;
+    const id = uuidv4()
+
     let self = this;
 
     if(this.state.remoteURL.length > 0){
       const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
       const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
-      let remote = this.state.remoteURL + '.git'
+      const remote = this.state.remoteURL.indexOf('https://') > -1 ? this.state.remoteURL + '.git' : 'https://' + this.state.remoteURL + '.git'
 
-      store.dispatch(
-        {
-          type: "UPLOAD_MESSAGE",
-          payload: {
-            error: false,
-            open: true,
-            success: false,
-            uploadMessage: 'Importing LabBook please wait'
-          }
-        })
+      UserIdentity.getUserIdentity().then(response => {
 
-      ImportRemoteLabbookMutation(
-        owner,
-        labbookName,
-        remote,
-        (response, error) => {
+      if(response.data){
 
+        if(response.data.userIdentity.isSessionValid){
 
-          if(error){
-            console.error(error)
-            store.dispatch(
-              {
-                type:"UPLOAD_MESSAGE",
-                payload: {
-                error: true,
-                open: true,
-                success: false,
-                uploadMessage: 'Could not import remote LabBook'
+          store.dispatch(
+            {
+              type: "MULTIPART_INFO_MESSAGE",
+              payload: {
+                id: id,
+                message: 'Importing LabBook please wait',
+                isLast: false,
+                error: false
               }
             })
+          ImportRemoteLabbookMutation(
+            owner,
+            labbookName,
+            remote,
+            (response, error) => {
 
-          }else if(response){
+
+              if(error){
+                console.error(error)
+                store.dispatch(
+                  {
+                    type: 'MULTIPART_INFO_MESSAGE',
+                    payload: {
+                      id: id,
+                      message: 'ERROR: Could not import remote LabBook',
+                      messageBody: error,
+                      error: true
+                  }
+                })
+
+              }else if(response){
+
+                store.dispatch(
+                  {
+                    type: 'MULTIPART_INFO_MESSAGE',
+                    payload: {
+                      id: id,
+                      message: `Successfully imported remote LabBook ${labbookName}`,
+                      isLast: true,
+                      error: false
+                    }
+                  })
+                BuildImageMutation(
+                labbookName,
+                owner,
+                false,
+                (error)=>{
+                  if(error){
+                    console.error(error)
+                    store.dispatch(
+                      {
+                        type: 'MULTIPART_INFO_MESSAGE',
+                        payload: {
+                          id: id,
+                          message: `ERROR: Failed to build ${labbookName}`,
+                          messsagesList: error,
+                          error: true
+                      }
+                    })
+                  }
+                })
+                document.getElementById('modal__cover').classList.add('hidden')
+                self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
+              }else{
+
+                BuildImageMutation(
+                labbookName,
+                localStorage.getItem('username'),
+                false,
+                (error)=>{
+                  if(error){
+                    console.error(error)
+                    store.dispatch(
+                      {
+                        type: 'MULTIPART_INFO_MESSAGE',
+                        payload: {
+                          id: id,
+                          message: `ERROR: Failed to build ${labbookName}`,
+                          messsagesList: error,
+                          error: true
+                      }
+                    })
+                  }
+                })
+              }
+            }
+          )
+        }else{
 
             store.dispatch(
               {
-                type: "UPLOAD_MESSAGE",
+                type: "MULTIPART_INFO_MESSAGE",
                 payload: {
-                  error: false,
-                  open: true,
-                  success: false,
-                  uploadMessage: 'Successfully imported remote LabBook'
+                  id: id,
+                  message: 'ERROR: User session not valid for remote import',
+                  messsagesList: [{message:'User must be authenticated to perform this action.'}],
+                  error: true
                 }
               })
-            BuildImageMutation(
-            labbookName,
-            owner,
-            (error)=>{
-              if(error){
-                console.error(error)
-                store.dispatch(
-                  {
-                    type:"UPLOAD_MESSAGE",
-                    payload: {
-                    error: true,
-                    open: true,
-                    success: false,
-                    uploadMessage: 'Build failed'
-                  }
-                })
-              }
-            })
-            document.getElementById('modal__cover').classList.add('hidden')
-            this.props.history.replace(`/labbooks/${labbookName}`)
-          }else{
 
-            BuildImageMutation(
-            labbookName,
-            localStorage.getItem('username'),
-            (error)=>{
-              if(error){
-                console.error(error)
-                store.dispatch(
-                  {
-                    type:"UPLOAD_MESSAGE",
-                    payload: {
-                    error: true,
-                    open: true,
-                    success: false,
-                    uploadMessage: 'Build failed'
-                  }
-                })
-              }
-            })
-          }
+            this.setState({'showLoginPrompt': true})
         }
-      )
+        }
+      })
     }
     else{
-      //create new labbook
-      let isMatch = validation.labookNameSend(name);
-      if(isMatch){
-        CreateLabbookMutation(
-          this.state.description,
-          name,
-          viewerId,
-          (error) => {
-
-            store.dispatch({
-              type: 'UPDATE_ALL',
-              payload:{
-                labbookName: name,
-                owner: localStorage.getItem('username')
-              }
-            })
-
-            let showAlert = (error !== null)
-
-            if(!showAlert){
-              let message = showAlert ? error[0].message : '';
-              this.setState({
-                'show': showAlert,
-                'message': message,
-              })
-            }
-
-            this.props.setLabbookName(this.state.name)
-
-            if(this.props.nextWindow){
-              this.props.toggleDisabledContinue(true)
-              this.props.setComponent(this.props.nextWindow)
-            } else{
-
-              this._hideModal();
-            }
-
-          }//route to new labbook on callback
-        )
-      }
-      else{
-        this.setState({
-        'showError': true,
-        'errorType': 'send'
-        })
-      }
+      this.props.createLabbookCallback(name, description)
     }
   }
-
+  /**
+  *  @param {}
+  *  closes login prompt modal
+  *  @return {}
+  */
+  _closeLoginPromptModal(){
+    this.setState({
+      'showLoginPrompt': false
+    })
+    document.getElementById('modal__cover').classList.add('hidden')
+  }
   /**
     @param {Object, string} evt,field
     updates text in a state object and passes object to setState method
@@ -203,17 +200,29 @@ export default class CreateLabbook extends React.Component {
       this.props.toggleDisabledContinue((evt.target.value === "") || (isMatch === false));
 
     }
+    let textLength = 1024 - evt.target.value.length
+    if(textLength >= 100){
+      state['textWarning'] = 'CreateLabbook__warning--hidden'
+    }else if((textLength <= 100) && (textLength > 50)){
+      state['textWarning'] = 'CreateLabbook__warning--green'
+    }else if((textLength <= 50) && (textLength > 20)){
+      state['textWarning'] = 'CreateLabbook__warning--yellow'
+    }else{
+      state['textWarning'] = 'CreateLabbook__warning--red'
+    }
+    state['textLength'] = textLength;
+
     this.setState(state)
   }
 
 
-    /**
-      @param {}
-      returns error message
-      @return {string} errorMessage
-    */
+  /**
+    @param {}
+    returns error message
+    @return {string} errorMessage
+  */
   _getErrorText(){
-    return this.state.errorType === 'send' ? 'Error: Last character cannot be a hyphen.' : 'Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)'
+    return this.state.errorType === 'send' ? 'Error: Last character cannot be a hyphen.' : 'Error: Title may only contain lowercase alphanumeric and `-`. (e.g. lab-book-title)'
   }
 
   /**
@@ -231,9 +240,22 @@ export default class CreateLabbook extends React.Component {
       this.props.toggleDisabledContinue(true);
     }
   }
+
   render(){
+
+    let loginPromptModalCss = classNames({
+      'CreateLabbook--login-prompt': this.state.showLoginPrompt,
+      'hidden': !this.state.showLoginPrompt
+    })
     return(
       <div className="CreateLabbook">
+          <div className={loginPromptModalCss}>
+            <div
+              onClick={()=>{this._closeLoginPromptModal()}}
+              className="BranchModal--close"></div>
+            <LoginPrompt closeModal={this._closeLoginPromptModal}/>
+          </div>
+          <h4 className="CreateLabbook__header">Create LabBook</h4>
           <div className='CreateLabbook__modal-inner-container flex flex--column justify--space-between'>
 
             <div>
@@ -249,12 +271,15 @@ export default class CreateLabbook extends React.Component {
 
             <div>
               <label>Description</label>
-              <textarea className="CreateLabbook__description-input"
+              <textarea
+                maxLength="1024"
+                className="CreateLabbook__description-input"
                 type="text"
                 onChange={(evt) => this._updateTextState(evt, 'description')}
 
                 placeholder="Briefly describe this LabBook, its purpose and any other key details. "
               />
+              <p className={'CreateLabbook__warning ' + this.state.textWarning}>{`${this.state.textLength} characters remaining`}</p>
             </div>
             <div className="CreateLabbook__text-divider-container">
               <span className="CreateLabbook__text-divider">or</span>
@@ -268,13 +293,6 @@ export default class CreateLabbook extends React.Component {
               />
             </div>
 
-            <SweetAlert
-              className="sa-error-container"
-              show={this.state.show}
-              type="error"
-              title="Error"
-              text={this.state.message}
-              onConfirm={() => {this.state.reject(); this.setState({ show: false, message: ''})}} />
           </div>
         </div>
       )

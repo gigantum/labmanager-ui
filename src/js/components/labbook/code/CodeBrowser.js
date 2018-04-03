@@ -7,14 +7,14 @@ import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrappe
 import store from 'JS/redux/store'
 
 let totalCount = 2
-let codeRootFolder;
 
 class CodeBrowser extends Component {
   constructor(props){
   	super(props);
 
     this.state = {
-      rootFolder: ''
+      rootFolder: '',
+      moreLoading: 'false'
     }
 
     this.setRootFolder = this.setRootFolder.bind(this)
@@ -24,7 +24,12 @@ class CodeBrowser extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore() //routes query only loads 2, call loadMore
+    if(this.props.code.allFiles &&
+      this.props.code.allFiles.pageInfo.hasNextPage) {
+        this._loadMore() //routes query only loads 2, call loadMore
+    } else {
+      this.setState({'moreLoading': false});
+    }
   }
   /*
     @param
@@ -34,6 +39,7 @@ class CodeBrowser extends Component {
   */
 
   _loadMore() {
+    this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
      50, // Fetch the next 50 feed items
@@ -46,7 +52,9 @@ class CodeBrowser extends Component {
          self.props.code.allFiles.pageInfo.hasNextPage) {
 
          self._loadMore()
-       }
+       } else {
+        this.setState({'moreLoading': false});
+      }
      }
    );
   }
@@ -57,11 +65,10 @@ class CodeBrowser extends Component {
   */
   setRootFolder(key){
     this.setState({rootFolder: key})
-    codeRootFolder = key.replace('code/', '')
   }
 
   render(){
-
+    this.props.loadStatus(this.state.moreLoading);
     if(this.props.code && this.props.code.allFiles){
 
       let codeFiles = this.props.code.allFiles
@@ -75,11 +82,14 @@ class CodeBrowser extends Component {
           <FileBrowserWrapper
             ref='codeBrowser'
             section="code"
+            selectedFiles={this.props.selectedFiles}
+            clearSelectedFiles={this.props.clearSelectedFiles}
             setRootFolder={this.setRootFolder}
             files={codeFiles}
             parentId={this.props.codeId}
             connection="CodeBrowser_allFiles"
             favoriteConnection="CodeFavorites_favorites"
+            favorites={this.props.favorites}
             {...this.props}
           />
       )
@@ -153,7 +163,8 @@ export default createPaginationContainer(
              id
             # You could reference the fragment defined previously.
             ...CodeBrowser_code
-            }
+
+          }
         }
       }
     `

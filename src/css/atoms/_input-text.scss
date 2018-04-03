@@ -1,10 +1,28 @@
-input[type="text"]{
+input[type="text"] {
 //  height: 20px !important;
   line-height: 20px;
   margin: 5px;
   border-bottom: 1px solid $romanSilver !important;
+  padding: 0 20px !important;
+  width: calc(100% - 40px) !important;
 }
-input[type="text"]:focus{
+input[type="text"]:focus {
   border-bottom: 1px solid $turquise !important;
   box-shadow: 0 1px 0 0 $turquise !important;
+  padding: 0 20px;
+}
+
+
+input[type="text"].full--border {
+//  height: 20px !important;
+  line-height: 20px;
+  margin: 5px;
+  border: 1px solid $romanSilver !important;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+input[type="text"].full--border:focus {
+  border: 1px solid $turquise !important;
+  box-shadow: 0 1px 0 0 $turquise !important;
+  border-radius: 8px;
 }

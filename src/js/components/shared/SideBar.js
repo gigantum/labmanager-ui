@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
+import classNames from 'classnames'
 import {Link} from 'react-router-dom'
 //components
 import User from './User'
-import GigantumPNG from 'Images/logos/gigantum.png'
-
 
 export default class SideBar extends Component {
-  constructor(props){
-  	super(props);
-  }
   /**
     @param {}
     logout through Auth0
@@ -19,10 +15,15 @@ export default class SideBar extends Component {
   render() {
     const { isAuthenticated } = this.props.auth;
     const isLabbooks = (window.location.href.indexOf('labbooks') > 0) || (window.location.href.indexOf('datsets') === -1);
+    let authed = isAuthenticated();
+    let sidebarCSS = classNames({
+      'SideBar col-sm-1': authed,
+      'hidden': !authed
+    })
     return (
-      <div className="SideBar col-sm-1">
-        <div className={'SideBar__inner-container'}>
-          <img className="SideBar__logo" src={GigantumPNG}></img>
+      <div className={sidebarCSS}>
+        <div className="SideBar__inner-container">
+          <div className="SideBar__logo"></div>
           <ul className='SideBar__nav'>
             <li className={isLabbooks ? 'SideBar__list-item--selected' : 'SideBar__list-item'}>
               <Link

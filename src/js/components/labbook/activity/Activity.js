@@ -9,11 +9,8 @@ import ActivityCard from './ActivityCard'
 import Loader from 'Components/shared/Loader'
 import UserNote from './UserNote'
 import PaginationLoader from './ActivityLoaders/PaginationLoader'
-
 //utilities
 import Config from 'JS/config'
-
-import store from 'JS/redux/store'
 
 //lacoal variables
 let pagination = false;
@@ -35,6 +32,7 @@ class Activity extends Component {
     this._toggleActivity = this._toggleActivity.bind(this)
     this._hideAddActivity = this._hideAddActivity.bind(this)
     this._handleScroll = this._handleScroll.bind(this)
+    this._refetch = this._refetch.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,33 +56,47 @@ class Activity extends Component {
       this._loadMore()
     }
 
-    let relay = this.props.relay
-
     if(activityRecords.edges && activityRecords.edges.length){
+      this._refetch()
 
-      let cursor =  activityRecords.edges[ activityRecords.edges.length - 1].node.cursor
-
-      pagination = false
-
-      setInterval(function(){
-        relay.refetchConnection(
-          counter,
-          (response) =>{
-            if(!activityRecords.pageInfo.hasNextPage){
-              isLoadingMore = false
-            }
-          },
-          {
-            cursor: cursor
-          }
-        )
-      }, 3000)
     }
   }
 
   componentWillUnmount() {
-
+    clearInterval(this.interval);
     window.removeEventListener('scroll', this._handleScroll)
+  }
+
+  /**
+   * @param {}
+   * refetches component looking for new edges to insert at the top of the activity feed
+   *
+   */
+  _refetch(){
+    let self = this
+    let relay = this.props.relay
+    let activityRecords = this.props.labbook.activityRecords
+
+
+    let cursor =  activityRecords.edges[ activityRecords.edges.length - 1].node.cursor
+
+    relay.refetchConnection(
+      counter,
+      (response) =>{
+        if(!activityRecords.pageInfo.hasNextPage){
+          isLoadingMore = false
+        }
+
+        setTimeout(function(){
+
+            self._refetch()
+        },5000)
+      },
+      {
+        cursor: cursor
+      }
+    )
+
   }
   /**
   *  @param {}
@@ -186,7 +198,7 @@ class Activity extends Component {
 
                       <div className="Activity__date-tab flex flex--column justify--space-around">
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
-                        <div className="Activity__date-month">{ Config.months[parseInt(k.split('_')[1])] }</div>
+                        <div className="Activity__date-month">{ Config.months[parseInt(k.split('_')[1], 10)] }</div>
                       </div>
 
                       {
@@ -204,6 +216,7 @@ class Activity extends Component {
                               {
                                 (this.state.modalVisible) &&
                                 <UserNote
+                                  key="UserNote"
                                   labbookId={this.props.labbook.id}
                                   hideLabbookModal={this._hideAddActivity}
                                   {...this.props}
@@ -220,7 +233,7 @@ class Activity extends Component {
                           activityRecordsTime[k].map((obj) => {
                           return(<ActivityCard
                               key={obj.edge.node.id}
-                              edge={obj.edge}  
+                              edge={obj.edge}
                             />)
 
                           })
@@ -279,6 +292,7 @@ export default createPaginationContainer(
               tags
               message
               timestamp
+              username
               detailObjects{
                 id
                 key

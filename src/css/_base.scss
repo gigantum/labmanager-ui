@@ -1,0 +1,62 @@
+html, body, .root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: $jet;
+  font-family: arial;
+  position: relative;
+}
+
+body {
+  overflow-y: auto;
+  overflow-x: auto;
+  background-color: $background-color;
+}
+
+a {
+  color: $romanSilver;
+}
+
+a:hover {
+  color: $turquise;
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  padding: 0px 0;
+  margin: 20px 0;
+  font-weight: 100;
+}
+h6 {
+  padding: 0px 0;
+  margin: 0;
+  font-weight: 100;
+}
+
+ul {
+  margin: 0;
+}
+
+h1 { font-size: $h1-fontsize; line-height: 110%;}
+h2 { font-size: $h2-fontsize; line-height: 110%;}
+h3 { font-size: $h3-fontsize; line-height: 110%;}
+h4 { font-size: $h4-fontsize; line-height: 110%;}
+h5 { font-size: $h5-fontsize; line-height: 110%;}
+h6 { font-size: $h6-fontsize; line-height: 110%;}
+
+h6 {
+  font-size: 1.2rem;
+}
+
+li > code,
+p > code {
+  // color: $jet;
+  display: inline !important;
+  padding: 0px 3px !important;
+  white-space: pre-wrap !important;
+}

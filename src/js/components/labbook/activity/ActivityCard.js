@@ -1,7 +1,6 @@
 //vendor
 import React, { Component } from 'react'
-//images
-import userSVG from 'Images/icons/user.svg'
+
 //components
 import ActivityDetails from 'Components/labbook/activity/ActivityDetails'
 
@@ -42,48 +41,43 @@ export default class ActivityCard extends Component {
 
   render(){
 
-    let tags = (typeof this.props.edge.node.tags === 'string') ? JSON.parse(this.props.edge.node.tags) : this.props.edge.node.tags
-
     const node = this.props.edge.node;
     const type = this.props.edge.node.type.toLowerCase()
+
     return(
-        <div className={this.state.showExtraInfo ? 'ActivityCard card': 'ActivityCard--collapsed card'}>
+      <div className={this.state.showExtraInfo ? 'ActivityCard card': 'ActivityCard--collapsed card'}>
 
-            <div className={'fa ActivityCard__badge ActivityCard__badge--' + type}>
+        <div className={'fa ActivityCard__badge ActivityCard__badge--' + type}>
+        </div>
+
+        <div className="ActivityCard__content">
+
+          <div className="ActivityCard__title flex flex--row justify--space-between">
+
+            <div className="ActivityCard__stack">
+              <p className="ActivityCard__time">
+                {this._getTimeOfDay(this.props.edge.node.timestamp)}
+              </p>
+              <div className="ActivityCard__user"></div>
             </div>
+            <h6 className="ActivityCard__commit-message">{this.props.edge.node.username + ': ' + this.props.edge.node.message}</h6>
 
-            <div className="ActivityCard__content">
-              <div className="ActivityCard__title flex flex--row justify--space-between">
+          </div>
 
-                  <div className="ActivityCard__stack">
-                    <p className="ActivityCard__time">
-                      {this._getTimeOfDay(this.props.edge.node.timestamp)}
-                    </p>
-                    <img src={userSVG} className="ActivityCard__user" />
-                  </div>
-                  <h6 className="ActivityCard__commit-message">{this.props.edge.node.message}</h6>
+          { !this.state.showExtraInfo &&
 
-                </div>
+            <div className="ActivityCard__ellipsis" onClick={()=>{this._toggleExtraInfo()}}></div>
 
-                { !this.state.showExtraInfo &&
-
-                  <div className="ActivityCard__ellipsis" onClick={()=>{this._toggleExtraInfo()}}></div>
-
-                }
-                { this.state.showExtraInfo &&
-                  <ActivityDetails
-                    edge={this.props.edge}
-                    show={this.state.showExtraInfo}
-                    key={node.id + '_activity-details'}
-                    node={node}
-                  />
-                }
-              </div>
-
-
-
-
-
+          }
+          { this.state.showExtraInfo &&
+            <ActivityDetails
+              edge={this.props.edge}
+              show={this.state.showExtraInfo}
+              key={node.id + '_activity-details'}
+              node={node}
+            />
+          }
+        </div>
       </div>
     )
   }

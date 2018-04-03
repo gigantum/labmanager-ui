@@ -1,8 +1,15 @@
-.ContainerStatus{
+.ContainerStatus {
   align-self: center;
   position: relative;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  margin-left: 135px;
 }
-.ContainerStatus__button-menu{
+
+.ContainerStatus__button-menu {
+  white-space: pre-line;
+  font-size: 15px;
   top: 42px;
   right: 0px;
   position: absolute;
@@ -11,10 +18,11 @@
   padding: 15px;
   border-radius: 8px;
   @extend .box-shadow;
-  width: 200px;
+  width: 350px;
+  text-align: center;
 }
 
-.ContainerStatus__menu-pointer{
+.ContainerStatus__menu-pointer {
   top: 30px;
   right: 75px;
   position: absolute;
@@ -22,89 +30,153 @@
   @include triangle('up', 14px, $white);
 }
 
-.ContainerStatus__container-state{
-  width: 120px;
+.ContainerStatus__plugins-list-item {
+  padding: 5px 0;
+}
+
+.ContainerStatus__button--flat {
+    @extend .button--flat;
+    transition: bottom, 05s;
+}
+
+.ContainerStatus__container-state {
+  @extend .box-shadow;
+  transition: all 0.125s;
+  width: 141px;
   text-align: center;
-  height: 30px;
-  border-radius: 15px;
+  height: 31px;
+  font-size: 16px;
+  border-radius: 20px;
   color: $romanSilver;
   line-height: 26px;
   cursor: pointer;
   border: 2px solid rgba(0,0,0,0);
   z-index: 100;
   padding-right: 10px;
-  background: $background-color url('./../images/icons/down-arrow-silver.svg') no-repeat 90% center;
+
+  @extend .box-shadow;
 }
 
-.ContainerStatus__container-state--menu-open{
+.ContainerStatus__container-state--expanded{
+  width: 149px;
+  height: 33px;
+  box-shadow: 0 0px 12px 0 rgba(0,0,0,.50) !important;
+  margin: 0 -7px -1px 0;
+}
+
+.ContainerStatus__container-state--menu-open {
   @extend .ContainerStatus__container-state;
   background: $background-color url('./../images/icons/up-arrow-silver.svg') no-repeat 90% center;
 }
 
-.ContainerStatus__container-state.Open{
+.ContainerStatus__container-state.Running {
   border: 3px solid $turquise;
+  background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
   background-size: 20px;
 }
-.ContainerStatus__container-state.Building{
+.ContainerStatus__container-state.Running:hover {
+  width: 149px;
+  height: 33px;
+  border: 3px solid $romanSilver;
+  background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
+  background-size: 20px;
+  margin: 0 -7px -1px 0;
+  line-height: 31px;
+}
+
+.ContainerStatus__container-state.Building {
+  background: $background-color url('./../images/loaders/container-status-loader.svg') no-repeat 90% center;
   border: 3px solid $goldenLemon;
   background-size: 20px;
 }
-.ContainerStatus__container-state.Closed{
+.ContainerStatus__container-state.Stopped {
+  background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
+  border: 3px solid $romanSilver;
+  background-size: 20px;
+  @extend .box-shadow;
+}
+
+.ContainerStatus__container-state.Stopped:hover {
+  width: 149px;
+  height: 33px;
+  background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
+  border: 3px solid $turquise;
+  background-size: 20px;
+  margin: 0 -7px -1px 0;
+  line-height: 31px;
+}
+
+.ContainerStatus__container-state.Build.Failed,
+.ContainerStatus__container-state.Rebuild,
+.ContainerStatus__container-state.Rebuild.Required{
   border: 3px solid $crimson;
   background-size: 20px;
+  padding: 0px;
 }
-
-.ContainerStatus__container-state.Starting{
-  border: 1px solid $turquise;
+.ContainerStatus__container-state.Stopping,
+.ContainerStatus__container-state.Starting {
+  background: $background-color url('./../images/loaders/container-status-loader.svg') no-repeat 90% center;
+  background-size: 20px;
+  border: 3px solid $goldenLemon;
   opacity: 0.75;
-  background: none;
 }
 
-.ContainerStatus__container-state.Stopping{
-  border: 1px solid $jet;
-  opacity: 0.75;
-  background: none;
-}
-
-.ContainerStatus__plugins{
+.ContainerStatus__plugins {
   position: relative;
   overflow: visible;
 }
 
-.ContainerStatus__plugins-button{
+.ContainerStatus__plugins-button {
+
   height: 24px;
-  width: 30px;
+  width: 134px;
   background-color: #aaa;
   border-radius: 12px 0 0 12px;
   position: absolute;
-  top: 3px;
-  left: -25px;
+  bottom: 3px;
+  transition: left 0.125s;
+  left: -129px;
   color: white;
   text-align: center;
-  line-height: 25px;
+  line-height: 21px;
   cursor: pointer;
-  background: #aaa url('./../images/icons/rocket.svg') no-repeat center -3px;
+  font-size: 14px;
+  //@extend: .jupyter-icon;
   background-size: 30px;
+  &.jupyter-icon:before {
+    margin: 6px 5px 0px 0px;
+  }
 }
 
-.ContainerStatus__plugins-title{
+.ContainerStatus__plugins-button:hover{
+  background-color: rgba(237,97, 31, 0.8);
+}
+
+.ContainerStatus__plugins-title {
   text-align: center;
   width: 100%;
   border-bottom: 1px solid $romanSilver;
 }
 
-.ContainerStatus__plugins-list{
-  .jupyter-icon:before{
+.ContainerStatus__plugins-list {
+  .jupyter-icon{
+    font-size: 14px;
+    font-weight: 100;
+    font-family: 'NunitoSans' !important;
+  }
+  .jupyter-icon:before {
+    font-family: 'file-icons' !important;
     padding: 0 6px 0 0;
     font-size: 17px;
+    margin: 0 6px;
   }
 }
 
-.ContainerStatus__plugins-item:hover{
+.ContainerStatus__plugins-item:hover {
   color: $turquise;
 }
 
-.ContainerStatus__plugins-menu{
+.ContainerStatus__plugins-menu {
   position: absolute;
   top: 42px;
   right: -100px;
@@ -118,10 +190,14 @@
   padding: 15px;
 }
 
-.ContainerStatus__plugins-menu-arrow{
+.ContainerStatus__plugins-menu-arrow {
   z-index: 203;
   position: absolute;
   top: 29px;
   right: -3px;
   @include triangle('up', 14px, $white);
+}
+
+.ContainerStatus__button--bottom{
+  left: -128px;
 }

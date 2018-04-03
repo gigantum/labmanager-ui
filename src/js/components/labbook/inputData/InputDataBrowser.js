@@ -16,6 +16,7 @@ class InputDataBrowser extends Component {
       'show': false,
       'message': '',
       'files': [],
+      'moreLoading': false,
       owner,
       labbookName
     }
@@ -25,7 +26,12 @@ class InputDataBrowser extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore()
+    if(this.props.input.allFiles &&
+      this.props.input.allFiles.pageInfo.hasNextPage) {
+        this._loadMore()
+    } else {
+      this.setState({'moreLoading': false});
+    }
   }
 
   /*
@@ -36,6 +42,7 @@ class InputDataBrowser extends Component {
   */
 
   _loadMore() {
+    this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
      50, // Fetch the next 50 feed items
@@ -48,13 +55,15 @@ class InputDataBrowser extends Component {
          self.props.input.allFiles.pageInfo.hasNextPage) {
 
          self._loadMore()
-       }
+       } else {
+        this.setState({'moreLoading': false});
+      }
      }
    );
   }
 
   render(){
-
+    this.props.loadStatus(this.state.moreLoading);
     if(this.props.input && this.props.input.allFiles){
       let inputFiles = this.props.input.allFiles
       if(this.props.input.allFiles.edges.length === 0){
@@ -69,6 +78,8 @@ class InputDataBrowser extends Component {
           ref='inputBrowser'
           section="input"
           files={inputFiles}
+          selectedFiles={this.props.selectedFiles}
+          clearSelectedFiles={this.props.clearSelectedFiles}
           connection="InputDataBrowser_allFiles"
           parentId={this.props.inputId}
           favoriteConnection="InputFavorites_favorites"

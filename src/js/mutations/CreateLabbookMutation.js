@@ -10,6 +10,8 @@ const mutation = graphql`
     createLabbook(input: $input){
       labbook{
         id
+        name
+        owner
       }
     }
   }
@@ -21,20 +23,28 @@ const configs = [{
     key: 'LocalLabbooks_localLabbooks',
     rangeBehavior: 'append',
   }],
-  edgeName: 'newLabbookEdge',
+  edgeName: 'labbook',
 }];
 let tempID = 0;
 
 export default function CreateLabbookMutation(
-  description,
   name,
-  viewerId,
+  description,
+  repository,
+  componentId,
+  revision,
+  isUntracked,
   callback
 ) {
+
   const variables = {
     input: {
-      description,
       name,
+      description,
+      repository,
+      componentId,
+      revision,
+      isUntracked,
       clientMutationId: tempID++
     }
   }
@@ -43,14 +53,13 @@ export default function CreateLabbookMutation(
     {
       mutation,
       variables,
-      configs: configs,
       onCompleted: (response, error) => {
 
         if(error){
           console.log(error)
         }
 
-        callback(error)
+        callback(response, error)
       },
       onError: err => {console.error(err)},
       updater: (store) => {

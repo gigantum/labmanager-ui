@@ -1,10 +1,12 @@
-.Routes{
+.Routes {
   height: calc(100% - 10px);
   width: 100%;
-  @include flex(flex-start, row)
-
+  @include flex(flex-start, row);
+  max-width: 1440px;
+  min-width: 960px;
 }
-.Header{
+
+.Header {
   position: fixed;
   width: 100%;
   height: 10px;
@@ -13,8 +15,33 @@
   z-index: 800;
 }
 
-.Routes__main{
+.Routes__main {
   flex: 1 0;
-  margin-left: 120px;
+  margin-left: $sideBarWidth;
   max-width: calc(100%);
+}
+.Routes__main-no-auth {
+  flex: 1 0;
+  max-width: calc(100%);
+}
+
+.Callback {
+  margin-left: $sideBarWidth;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #f0f1f5;
+  z-index: 101;
+}
+
+.Callback__loader {
+  margin-left: -$sideBarWidth;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 102;
 }

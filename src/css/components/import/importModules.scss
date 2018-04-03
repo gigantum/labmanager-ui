@@ -1,8 +1,7 @@
-.ImportModule{
+.ImportModule {
   padding: 5px ;
 
-  @include flex(space-between, column);
-  h6{
+  h6 {
     align-self: center;
 
     padding: 0px 5px;
@@ -14,12 +13,11 @@
 
 }
 
-
-.ImportModule__close{
+.ImportModule__close {
   @include close();
 }
 
-.ImportModule__drop-area{
+.ImportModule__drop-area {
     overflow: hidden;
 
     width: calc(100% - 30px);
@@ -36,25 +34,25 @@
 
 }
 .ImportModule__instructions,
-.ImportModule__instructions--error{
+.ImportModule__instructions--error {
     word-break: keep-all;
 }
 
-.ImportModule__instructions--error{
+.ImportModule__instructions--error {
     color: $crimson;
 }
 
 
-.ImportModule__drop-area-highlight{
+.ImportModule__drop-area-highlight {
   //width: 300px;
 
   opacity: 1;
-  color: $datasets;
-  border: 2px dashed $datasets;
+  color: $azure;
+  border: 2px dashed $azure;
   background: white;
 }
 
-.ImportModule__animation{
+.ImportModule__animation {
   padding-left: 1000px !important;
 
   white-space: nowrap;
@@ -63,7 +61,7 @@
 
 }
 
-.ImportModule__upload-button{
+.ImportModule__upload-button {
   align-self: center;
 
   width: 220px;
@@ -99,7 +97,7 @@
 }
 
 .ImportModule__upload-button:hover,
-.ImportModule__upload-button:focus{
+.ImportModule__upload-button:focus {
   animation-name: oscilateImportIcon;
   animation-duration: 0.4s;
   animation-iteration-count: infinite;
@@ -114,7 +112,7 @@
 }
 
 .ImportModule__upload-button:disabled,
-.ImportModule__upload-button:disabled:hover{
+.ImportModule__upload-button:disabled:hover {
   color: black;
   border: 1px solid $grey-light;
   background: none;
@@ -125,7 +123,7 @@
   animation-direction: alternate;
 }
 
-.ImportModule__loading-mask{
+.ImportModule__loading-mask {
   position: absolute;
 
   background: rgba(0,0,0,0.3) url('../images/icons/rings.svg') no-repeat center center;

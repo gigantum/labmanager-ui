@@ -1,19 +1,22 @@
-.User{
+.User {
   height: 200px;
-  width: 120px;
+  width: 100%;
   position: relative;
-  border-top: 5px solid $jet;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 9px);
+  padding: 20px 0;
   @include flex(flex-start, column);
-  padding: 20px 0
 }
 
-.User__image{
+.User__image {
   height: 60px;
   width: 60px;
   align-self: center;
+
+  background: url(../images/icons/user.svg) no-repeat 50% 50%;
+  background-size: 100%;
 }
 
-.User__name{
+.User__name {
   height: 30px;
   line-height: 20px;
   font-size: 14px;
@@ -27,19 +30,21 @@
 
 }
 
-.User__name--active{
+.User__name--active {
   @extend .User__name;
   background: url('./../images/icons/up-arrow-white.svg') no-repeat center right;
     background-size: 16px;
 }
 
-.User__dropdown{
-  width: 120px;
+.User__dropdown {
+  border: 1px solid $white;
+  margin: auto;
+  width: 100px;
   padding: 5px;
-
+  border-radius: 8px;
 }
 
-// .User__dropdown--arrow{
+// .User__dropdown--arrow {
 //   position: absolute;
 //   top: 81px;
 //   right: 5px;
@@ -47,21 +52,18 @@
 // }
 
 
-.User__button{
+.User__button {
   width: 100%;
   align-self: center;
-  background-color: $jet;
-  border-top: 1px solid $turquise;
-  border-bottom: 1px solid $turquise;
-  border-left: 0px solid $turquise;
-  border-right: 0px solid $turquise;
   color: $white;
   border-radius: 0px;
   padding: 5px;
+  background-color: transparent !important;
+  border-width: 0px;
 
 }
 
-.User__button:hover{
+.User__button:hover {
   color: $turquise;
-  background: $jet;
+  border-width: 0px;
 }

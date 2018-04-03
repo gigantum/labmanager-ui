@@ -2,19 +2,17 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
-import FavoriteCard from './../fileBrowser/FavoriteCard'
-//mutations
-//
-let counter = 10;
-let owner;
+import CodeFavoriteList from './CodeFavoriteList'
+import FileEmpty from 'Components/labbook/overview/FileEmpty'
+//store
+import store from 'JS/redux/store'
+
 class CodeFavorites extends Component {
   constructor(props){
   	super(props);
     this.state = {
-      loading: false
+      loading: false,
     }
-
-    owner=this.props.owner
   }
 
   /**
@@ -22,14 +20,15 @@ class CodeFavorites extends Component {
   */
   componentDidMount() {
     //this._loadMore() //routes query only loads 2, call loadMore
-
-    this.props.relay.loadMore(
-     1, // Fetch the next 10 feed items
-     (response, error) => {
-       if(error){
-         console.error(error)
-      }
-    })
+    if(this.props.code && this.props.code.favorites && this.props.code.favorites.pageInfo.hasNextPage && this.props.code.favorites.edges.length < 3){
+      this.props.relay.loadMore(
+       1, // Fetch the next 10 feed items
+       (response, error) => {
+         if(error){
+           console.error(error)
+        }
+      })
+    }
   }
 
   /**
@@ -61,34 +60,25 @@ class CodeFavorites extends Component {
   render(){
 
     if(this.props.code && this.props.code.favorites){
-
       let loadingClass = (this.props.code.favorites.pageInfo.hasNextPage) ? 'Favorite__action-bar' : 'hidden'
       loadingClass = (this.state.loading) ? 'Favorite__action-bar--loading' : loadingClass
 
       if(this.props.code.favorites.edges.length > 0){
-        let favorites = this.props.code.favorites.edges.filter((edge)=>{if(edge){return (edge.node !== undefined)}})
-        return(
-          <div className="Favorite">
-            <div className="Favorite__list">
-              {
-                favorites.map((edge)=>{
+        const favorites = this.props.code.favorites.edges.filter((edge)=>{
+          return edge && (edge.node !== undefined)
+        })
 
-                    return(
-                      <div
-                        key={edge.node.key}
-                        className="Favorite__card-wrapper">
-                        <FavoriteCard
-                          labbookName={this.props.labbookName}
-                          parentId={this.props.codeId}
-                          section={'code'}
-                          connection={"CodeFavorites_favorites"}
-                          favorite={edge.node}
-                          owner={this.props.owner}
-                        />
-                      </div>)
-                })
-            }
-            </div>
+        return(
+
+          <div className="Favorite">
+            <CodeFavoriteList
+              labbookName={this.props.labbookName}
+              codeId={this.props.codeId}
+              section={'code'}
+              favorites={favorites}
+              owner={this.props.owner}
+            />
+
 
             <div className={loadingClass}>
               <button
@@ -98,11 +88,15 @@ class CodeFavorites extends Component {
                 Load More
               </button>
             </div>
-        </div>
+          </div>
+
         )
       }else{
         return(
-          <div> No Files Favorited</div>
+          <FileEmpty
+            section="code"
+            mainText="This LabBook has No Code Favorites"
+          />
         )
       }
     }else{
@@ -117,14 +111,18 @@ export default createPaginationContainer(
 
     code: graphql`
       fragment CodeFavorites_code on LabbookSection{
-        favorites(after: $cursor, first: $first)@connection(key: "CodeFavorites_favorites", filters: []){
+        favorites(after: $cursor, first: $first)@connection(key: "CodeFavorites_favorites"){
           edges{
             node{
               id
-              isDir
-              description
-              key
+              owner
+              name
               index
+              key
+              description
+              isDir
+              associatedLabbookFileId
+              section
             }
             cursor
           }
@@ -135,7 +133,6 @@ export default createPaginationContainer(
             endCursor
           }
         }
-
       }`
   },
   {
@@ -150,12 +147,12 @@ export default createPaginationContainer(
       };
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
-
+      const {owner, labbookName} = store.getState().routes
       return {
         first: count,
         cursor,
         owner: owner,
-        name: props.labbookName
+        name: labbookName
       };
     },
     query: graphql`

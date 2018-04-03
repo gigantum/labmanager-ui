@@ -6,8 +6,6 @@ import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrappe
 //store
 import store from 'JS/redux/store'
 
-let outputRootFolder = 'output'
-
 class OutputDataBrowser extends Component {
   constructor(props){
   	super(props);
@@ -16,6 +14,7 @@ class OutputDataBrowser extends Component {
       'show': false,
       'message': '',
       'files': [],
+      'moreLoading': false,
       owner,
       labbookName
     }
@@ -26,7 +25,12 @@ class OutputDataBrowser extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore()
+    if(this.props.output.allFiles &&
+      this.props.output.allFiles.pageInfo.hasNextPage) {
+        this._loadMore()
+    } else {
+      this.setState({'moreLoading': false});
+    }
   }
 
   /*
@@ -36,30 +40,32 @@ class OutputDataBrowser extends Component {
     logs callback
   */
   _loadMore() {
+    this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
      50, // Fetch the next 50 feed items
      (response, error) => {
        if(error){
          console.error(error)
-         if(self.props.output.allFiles &&
-           self.props.output.allFiles.pageInfo.hasNextPage) {
-
-           self._loadMore()
-         }
        }
+       if(self.props.output.allFiles &&
+        self.props.output.allFiles.pageInfo.hasNextPage) {
+          self._loadMore()
+      } else {
+        this.setState({'moreLoading': false})
+      }
      }
    );
   }
 
   setRootFolder(key){
     this.setState({rootFolder: key})
-    outputRootFolder = key
     this._loadMore()
   }
 
   render(){
 
+    this.props.loadStatus(this.state.moreLoading);
     if(this.props.output && this.props.output.allFiles){
       let outputFiles = this.props.output.allFiles
       if(this.props.output.allFiles.edges.length === 0){
@@ -68,12 +74,13 @@ class OutputDataBrowser extends Component {
           pageInfo: this.props.output.allFiles.pageInfo
         }
       }
-
       return(
         <FileBrowserWrapper
           ref="OutputBrowser"
           files={outputFiles}
           section="output"
+          selectedFiles={this.props.selectedFiles}
+          clearSelectedFiles={this.props.clearSelectedFiles}
           parentId={this.props.outputId}
           favoriteConnection="OutputFavorites_favorites"
           connection="OutputDataBrowser_allFiles"

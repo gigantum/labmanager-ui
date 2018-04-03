@@ -4,7 +4,7 @@ const CONFIG = {
     {id:'overview', name: 'Overview'},
     {id:'activity', name: 'Activity', 'fragment': '...Activity_labbook'},
     {id:'environment', name: 'Environment', 'fragment': '...Environment_labbook'},
-    {id:'code', name: 'Code File'},
+    {id:'code', name: 'Code'},
     {id:'inputData', name: 'Input Data'},
     {id:'outputData', name: 'Output Data'}
   ],
@@ -29,7 +29,21 @@ const CONFIG = {
     'Oct',
     'Nov',
     'Dec'
-  ]
+  ],
+  'fileBrowser':{
+    'excludedFiles': [
+      'DS_Store',
+      'lbk',
+      'pyc',
+      'gitkeep'
+    ]
+  },
+
+  containerStatus:{
+    canEditEnvironment: (status)=> {
+      return (status === 'Stopped') || (status === 'Build Failed') || (status === 'Rebuild Required')
+    }
+  }
 }
 
 export default CONFIG

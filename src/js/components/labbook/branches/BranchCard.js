@@ -20,22 +20,24 @@ export default class BranchCard extends Component {
 
   */
   _checkoutBranch(){
-    const branchName = this.props.edge.node.name
+    const {branchName} = this.props.edge.node
+    const {labbookId} = this.props
+    const {owner, labbookName} = this.state
+
     CheckoutBranchMutation(
-      this.state.owner,
-      this.state.labbookName,
+      owner,
+      labbookName,
       branchName,
-      this.props.labbookId,
+      labbookId,
       (error)=>{
+
         if(error){
           console.error(error);
           store.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'ERROR_MESSAGE',
             payload:{
-              uploadMessage: error[0].message,
-              error: true,
-              open: true,
-              success: false
+              message: "Problem Checking out Branch, check you have a valid session and connection",
+              messageBody: error,
             }
           })
         }else{
@@ -64,7 +66,7 @@ export default class BranchCard extends Component {
         <div className="BranchCard__button">
           <button
             onClick={()=>{this._checkoutBranch()}}
-            disabled={true}
+            disabled
             >
             Switch To Branch
           </button>

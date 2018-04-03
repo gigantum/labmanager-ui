@@ -1,46 +1,51 @@
-button{
-  padding: 5px 25px;
+button {
+  height: 26px;
+  line-height: 22px;
+  padding: 0px 20px;
   border: 2px solid $azure;
-  border-radius: 20px;
+  border-radius: 10px;
   color: $white;
   background: $azure;
   cursor: pointer;
   font-weight: 100;
+
 }
 
-button:hover{
-
+button:hover {
   color: $white;
   background: $turquise;
   border: 2px solid $turquise;
 }
 
-button:focus{
+button:focus {
   color: $white;
   background: $azure;
 }
 
 
-button:disabled{
+button:disabled {
   color: $grey;
   background: $grey-light;
   border: 2px solid $grey;
 }
 
-.flat--button{
-  padding: 10px 25px;
+.button--flat {
+  padding: 0px 20px;
   border: 0px solid $azure;
   border-radius: 0px;
   color: $font-grey;
   background: none;
   cursor: pointer;
+  text-decoration: underline;
 }
 
-.flat--button:hover{
-  color: $azure;
+.button--flat:hover {
+  color: $turquise;
   background: none;
+  border: 0px solid $turquise;
 }
-.flat--button:focus{
+.button--flat:focus {
   color: $azure;
   background: none;
+  border: 0px solid $azure;
 }

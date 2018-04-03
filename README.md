@@ -4,6 +4,18 @@ This kit includes an app server, a GraphQL server implementing a tiny example sc
 
 ## Installation
 
+Install python 3
+```
+https://www.python.org/downloads/
+```
+
+Install Docker
+```
+https://docs.docker.com/install/
+```
+
+Install node v8.9.3 & npm v5.5.5
+
 ```
 npm install
 ```

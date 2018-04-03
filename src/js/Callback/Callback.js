@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import Loader from 'Components/shared/Loader'
+import Loader from 'Components/shared/Loader';
 
-class Callback extends Component {
+export default class Callback extends Component {
   render() {
-    //this.props.history.replace(`/labbooks`)
-
-    return(<Loader />)
+    return(
+      <div className="Callback">
+        <div className="Callback__loader">
+          <Loader />
+        </div>
+      </div>)
   }
 }
 
-export default Callback;

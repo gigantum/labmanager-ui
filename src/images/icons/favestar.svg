@@ -1,1 +1,14 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 133.77 127.98"><defs><style>.cls-1{fill:#9a9b9d;}</style></defs><title>favestar</title><path class="cls-1" d="M149.06,172.41l-41.35-21.86L66.36,172.41l7.89-46.3L40.83,93.33,87,86.58l20.68-42.15L128.4,86.58l46.2,6.75-33.44,32.78ZM56.82,98.55l25.46,25-6,35.21,31.44-16.61,31.43,16.61-6-35.21,25.46-25-35.18-5.14-15.71-32L92,93.41Z" transform="translate(-40.83 -44.43)"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="12px" viewBox="0 0 20 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>icon/branch/favorite</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="icon/branch/favorite" stroke="#9B9C9E">
+            <g id="Document-&amp;-Folder_file-star" transform="translate(5.000000, 1.000000)">
+                <polygon id="Shape" points="5.0000005 0 6.18034096 3.82914021 10 3.82914021 6.90983106 6.1791334 8.09017151 10 5.0000005 7.62932535 1.9098295 9.99379664 3.09016995 6.18016693 0 3.82914021 3.81966005 3.82914021"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

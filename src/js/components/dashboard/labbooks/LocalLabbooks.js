@@ -22,18 +22,42 @@ class LocalLabbooks extends Component {
   	super(props);
 
     this.state = {
-      labbookModalVisible: false,
-      oldLabbookName: '',
-      newLabbookName:'',
-      renameError: '',
-      showNamingError: false,
-      filter: 'all'
+      'labbookModalVisible': false,
+      'oldLabbookName': '',
+      'newLabbookName':'',
+      'renameError': '',
+      'showNamingError': false,
+      'filter': 'all'
     }
 
     this._goToLabbook = this._goToLabbook.bind(this)
     this._loadMore = this._loadMore.bind(this)
-    this._renameLabbookModal = this._renameLabbookModal.bind(this)
+    this._showModal = this._showModal.bind(this)
+    this._captureScroll = this._captureScroll.bind(this)
+  }
 
+  componentWillMount() {
+
+    let paths = this.props.history.location.pathname.split('/')
+    let filterRoute = paths.length > 2 ?  paths[2] : 'all'
+
+    this.setState({'filter': filterRoute})
+
+    document.title =  `Gigantum`
+
+  }
+
+  componentWillUnmount() {
+
+    window.removeEventListener("scroll", this._captureScroll)
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+    let paths = nextProps.history.location.pathname.split('/')
+    let filterRoute = paths.length > 2 ?  paths[2] : 'all'
+
+    this.setState({'filter': filterRoute})
   }
 
   /**
@@ -41,19 +65,24 @@ class LocalLabbooks extends Component {
   * adds a scoll listener to trigger pagination
   */
   componentDidMount() {
-    let that = this;
-    window.addEventListener('scroll', function(e){
-      let root = document.getElementById('root')
-      let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
-          expandOn = root.offsetHeight;
 
-      if(that.props.feed.localLabbooks){
-        if ((distanceY > expandOn) && !isLoadingMore && that.props.feed.localLabbooks.pageInfo.hasNextPage) {
-            that._loadMore(e);
-        }
-      }
-    });
+    window.addEventListener('scroll', this._captureScroll);
   }
+/**
+*  @param {}
+*  captures scrolling event
+*/
+_captureScroll = () => {
+  let root = document.getElementById('root')
+  let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
+      expandOn = root.offsetHeight;
+
+  if(this.props.feed.localLabbooks){
+    if ((distanceY > expandOn) && !isLoadingMore && this.props.feed.localLabbooks.pageInfo.hasNextPage) {
+        this._loadMore();
+    }
+  }
+}
   /**
   *  @param {string} labbookName - inputs a labbook name
   *  routes to that labbook
@@ -65,33 +94,26 @@ class LocalLabbooks extends Component {
   }
 
   /**
-  *  @param {event} e
+  *  @param {}
   *  loads more labbooks using the relay pagination container
   */
-  _loadMore = (e) => {
+  _loadMore = () => {
     isLoadingMore = true
-    if(e){
-      e.preventDefault();
-    }
-    this.props.relay.loadMore(
-      10, // Fetch the next 10 feed items
-      (ev) => {
-        isLoadingMore = false;
-      }
-    );
-  }
 
-  _renameLabbookModal(labbookName){
-    this.setState({
-      labbookModalVisible: true,
-      oldLabbookName: labbookName
-    })
-
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.remove('hidden')
+    if(this.props.feed.localLabbooks.pageInfo.hasNextPage){
+      this.props.relay.loadMore(
+        10, // Fetch the next 10 feed items
+        (ev) => {
+    
+          isLoadingMore = false;
+        }
+      );
     }
   }
-
+  /**
+  *  @param {string} labbookName
+  *  closes labbook modal and resets state to initial state
+  */
   _closeLabbook(labbookName){
     this.setState({
       labbookModalVisible: false,
@@ -104,7 +126,10 @@ class LocalLabbooks extends Component {
       document.getElementById('modal__cover').classList.add('hidden')
     }
   }
-
+  /**
+  *  @param {event} evt
+  *  sets new labbook title to state
+  */
   _setLabbookTitle(evt){
 
     let isValid = Validation.labbookName(evt.target.value)
@@ -117,55 +142,30 @@ class LocalLabbooks extends Component {
       this.setState({showNamingError: true})
     }
   }
-
-  _renameMutation(){
-    const username = localStorage.getItem('username')
-    let self = this;
-    RenameLabbookMutation(
-      username,
-      this.state.oldLabbookName,
-      this.state.newLabbookName,
-      (response, error) =>{
-
-        if(error){
-          self.setState({renameError: error[0].message})
-        }
-        if(response.renameLabbook.success){
-          if(document.getElementById('modal__cover')){
-            document.getElementById('modal__cover').classList.add('hidden')
-          }
-          self.props.history.replace(`labbooks/${self.state.newLabbookName}`)
-        }
-      }
-    )
-  }
-
   /**
    * @param {string} filter
    sets state updates filter
   */
   _setFilter(filter){
-      this.setState({filter: filter})
+      //this.setState({filter: filter})
+       this.props.history.replace(`../labbooks/${filter}`)
   }
-
-
   /**
    * @param {array, string} localLabbooks.edges,filter
 
     @return {array} filteredLabbooks
   */
-
   _filterLabbooks(labbooks, filter){
     let filteredLabbooks = [];
     let username = localStorage.getItem('username')
-    if(filter === 'users'){
+    if(filter === username){
       filteredLabbooks = labbooks.filter((labbook)=>{
-          return (labbook.node.owner.username === username)
+          return (labbook.node.owner === username)
       })
 
     }else if(filter === "others"){
       filteredLabbooks = labbooks.filter((labbook)=>{
-          return (labbook.node.owner.username !== username)
+          return (labbook.node.owner !== username)
       })
     }else{
       filteredLabbooks = labbooks;
@@ -174,36 +174,22 @@ class LocalLabbooks extends Component {
     return filteredLabbooks
   }
 
+  _showModal(){
+    this.refs.wizardModal._showModal()
+  }
+
   render(){
+
       let {props} = this;
+      let owner = localStorage.getItem('username')
 
       if(props.feed.localLabbooks){
-        let labbooks = this._filterLabbooks(props.feed.localLabbooks.edges, this.state.filter)
-        return(
-          <div className="LocalLabbooks">
-            { this.state.labbookModalVisible &&
-              <div className="LocalLabbooks__rename-modal">
-                <div
-                  onClick={()=> this._closeLabbook()}
-                  className="LocalLabbooks__rename-close">
-                </div>
-                <h4 className="LocalLabbooks__modal-title">Rename Labbook</h4>
-                <input
-                  onKeyUp={(evt)=> this._setLabbookTitle(evt)}
-                  className="LocalLabbooks__rename-input"
-                  type="text"
-                  placeholder="New Labbook Name"></input>
-                {this.state.showNamingError && <p className="LocalLabbooks__rename-error">Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)</p>}
-                {this.state.renameError && <p className="LocalLabbooks__rename-error">{this.state.renameError}</p>}
-                <button
-                  disabled={(this.state.newLabbookName.length === 0) && !this.state.showNamingError}
-                  className="LocalLabbooks__rename-submit"
-                  onClick={()=> this._renameMutation()}>
-                  Rename LabBook
-                </button>
 
-              </div>
-            }
+        let labbooks = this._filterLabbooks(props.feed.localLabbooks.edges, this.state.filter)
+
+        return(
+
+          <div className="LocalLabbooks">
 
 
             <WizardModal
@@ -222,47 +208,42 @@ class LocalLabbooks extends Component {
             </div>
             <div className="LocalLabbooks__menu">
               <nav className="LocalLabbooks__nav">
-                <div className={this.state.filter === 'all' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('all')}>All</a></div>
-                <div className={this.state.filter === 'users' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('users')}>My LabBooks</a></div>
-                <div className={this.state.filter === 'others' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }><a onClick={()=> this._setFilter('others')}>Shared With Me</a></div>
+                <div className={this.state.filter === 'all' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }>
+                  <a onClick={()=> this._setFilter('all')}>All</a>
+                </div>
+                <div className={this.state.filter === owner ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }>
+                  <a onClick={()=> this._setFilter(owner)}>My LabBooks</a>
+                </div>
+                <div className={this.state.filter === 'others' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }>
+                  <a onClick={()=> this._setFilter('others')}>Shared With Me</a>
+                </div>
               </nav>
             </div>
             <div className='LocalLabbooks__labbooks'>
               <div className="LocalLabbooks__sizer">
-              <div
-                key={'addLabbook'}
-                onClick={()=> this.refs.wizardModal._showModal()}
-                className="LocalLabbooks__panel LocalLabbooks__panel--add">
-                <div
-                  className="LocalLabbooks__labbook-icon">
-                    <div className="LocalLabbooks__title-add"></div>
-                </div>
-                <div
-                  className="LocalLabbooks__add-text">
-                    <h4>Create LabBook</h4>
-                </div>
-              </div>
 
-              <ImportModule
-                  ref="ImportModule_localLabooks"
-                  {...props}
-                  className="LocalLabbooks__panel LocalLabbooks__panel--import" />
+                <ImportModule
+                    ref="ImportModule_localLabooks"
+                    {...props}
+                    showModal={this._showModal}
+                    className="LocalLabbooks__panel LocalLabbooks__panel--import"
+                />
 
-              {
+                {
 
-                labbooks.map((edge) => {
+                  labbooks.map((edge) => {
 
-                  return (
-                    <LocalLabbookPanel
-                      key={edge.node.name}
-                      ref={'LocalLabbookPanel' + edge.node.name}
-                      className="LocalLabbooks__panel"
-                      edge={edge}
-                      renameLabbookModal={this._renameLabbookModal}
-                      goToLabbook={this._goToLabbook}/>
-                  )
-                })
-              }
+                    return (
+                      <LocalLabbookPanel
+                        key={edge.node.name}
+                        ref={'LocalLabbookPanel' + edge.node.name}
+                        className="LocalLabbooks__panel"
+                        edge={edge}
+                        history={this.props.history}
+                        goToLabbook={this._goToLabbook}/>
+                    )
+                  })
+                }
             </div>
 
           </div>
@@ -279,16 +260,13 @@ class LocalLabbooks extends Component {
 export default createPaginationContainer(
   LocalLabbooks,
   {feed: graphql`
-      fragment LocalLabbooks_feed on Query{
+      fragment LocalLabbooks_feed on LabbookQuery{
         localLabbooks(first: $first, after:$cursor)@connection(key: "LocalLabbooks_localLabbooks"){
           edges {
             node {
               name
               description
-              owner{
-                id
-                username
-              }
+              owner
               environment{
                 id
                 imageStatus

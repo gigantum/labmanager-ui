@@ -2,28 +2,28 @@
 import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
-import FavoriteCard from './../fileBrowser/FavoriteCard'
+import OutputFavoriteList from './OutputFavoriteList'
+import FileEmpty from 'Components/labbook/overview/FileEmpty'
+
 //store
 import store from 'JS/redux/store'
 
 class OutputFavorites extends Component {
-  constructor(props){
-  	super(props);
-  }
 
   /*
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    this._loadMore() //routes query only loads 2, call loadMore
-
-    this.props.relay.loadMore(
-     1, // Fetch the next 10 feed items
-     (response, error) => {
-       if(error){
-         console.error(error)
-      }
-    })
+    //this._loadMore() //routes query only loads 2, call loadMore
+    if(this.props.output && this.props.output.favorites && this.props.output.favorites.pageInfo.hasNextPage && this.props.input.favorites.edges.length < 3){
+      this.props.relay.loadMore(
+       1, // Fetch the next 10 feed items
+       (response, error) => {
+         if(error){
+           console.error(error)
+        }
+      })
+    }
   }
 
   /*
@@ -49,26 +49,18 @@ class OutputFavorites extends Component {
   render(){
     if(this.props.output && this.props.output.favorites){
       if(this.props.output.favorites.edges.length > 0){
+        const favorites = this.props.output.favorites.edges.filter((edge)=>{
+          return edge && (edge.node !== undefined)
+        })
         return(
           <div className="Favorite">
-            <div className="Favorite__list">
-              {
-                this.props.output.favorites.edges.map((edge)=>{
-                    return(
-                      <div
-                        key={edge.node.key}
-                        className="Favorite__card-wrapper">
-
-                        <FavoriteCard
-                          parentId={this.props.outputId}
-                          section={'output'}
-                          connection={"OutputFavorites_favorites"}
-                          favorite={edge.node}
-                        />
-                      </div>)
-                })
-            }
-            </div>
+            <OutputFavoriteList
+              labbookName={this.props.labbookName}
+              outputId={this.props.outputId}
+              section={'output'}
+              favorites={favorites}
+              owner={this.props.owner}
+            />
 
             <div className={this.props.output.favorites.pageInfo.hasNextPage ? "Favorite__action-bar" : "hidden"}>
               <button
@@ -82,7 +74,10 @@ class OutputFavorites extends Component {
         )
       }else{
         return(
-          <div> No Files Favorited</div>
+          <FileEmpty
+            section="outputData"
+            mainText="This LabBook has No Output Favorites"
+          />
         )
       }
     }else{
@@ -101,10 +96,14 @@ export default createPaginationContainer(
           edges{
             node{
               id
-              isDir
-              description
-              key
+              owner
+              name
               index
+              key
+              description
+              isDir
+              associatedLabbookFileId
+              section
             }
             cursor
           }

@@ -20,12 +20,14 @@ let tempID = 0;
 export default function BuildImageMutation(
   labbookName,
   owner,
+  noCache,
   callback
 ) {
   const variables = {
     input: {
       labbookName,
       owner,
+      noCache,
       clientMutationId: tempID++
     }
   }
@@ -35,17 +37,14 @@ export default function BuildImageMutation(
       mutation,
       variables,
       onCompleted: (response, error) => {
-        console.log(error)
+
         if(error){
           console.log(error)
           reduxStore.dispatch({
-            type: 'UPLOAD_MESSAGE',
+            type: 'ERROR_MESSAGE',
             payload:{
-              error: true,
-              uploadMessage: 'LabBook failed to build',
-              showProgressBar: false,
-              open: true,
-              success: false
+              message: 'ERROR: LabBook failed to build:',
+              messageBody: error
             }
           })
         }

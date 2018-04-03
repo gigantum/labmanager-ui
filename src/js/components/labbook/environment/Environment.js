@@ -1,12 +1,10 @@
 //vendor
 import React, { Component } from 'react'
-import SweetAlert from 'sweetalert-react';
 import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import Loader from 'Components/shared/Loader'
-import BaseImage from './BaseImage'
-import DevEnvironments from './DevEnvironments'
-import PackageManagerDependencies from './PackageManagerDependencies'
+import Base from './Base'
+import PackageDependencies from './PackageDependencies'
 import CustomDependencies from './CustomDependencies'
 //mutations
 import BuildImageMutation from 'Mutations/BuildImageMutation'
@@ -29,7 +27,7 @@ class Environment extends Component {
     }
 
     this._buildCallback = this._buildCallback.bind(this)
-    this._setBaseImage = this._setBaseImage.bind(this)
+    this._setBase = this._setBase.bind(this)
   }
 
   /**
@@ -47,37 +45,56 @@ class Environment extends Component {
         owner,
         'clientMutationId',
         (error) =>{
-
+          if(error){
+            console.log(error)
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload:{
+                message: `Problem stopping ${labbookName}`,
+                messageBody: error
+              }
+            })
+          }else{
             BuildImageMutation(
             labbookName,
               owner,
+              false,
               (error) => {
 
-                let showAlert = ((error !== null) && (error !== undefined))
-                let message = showAlert ? error[0].message : '';
-                this.setState({
-                  'show': showAlert,
-                  'message': message
-                })
+
+                if(error){
+                  store.dispatch({
+                    type: 'ERROR_MESSAGE',
+                    payload:{
+                      message: `${labbookName} failed to build`,
+                      messageBody: error
+                    }
+                  })
+                }
                 this.props.setBuildingState(false)
                 return "finished"
               }
             )
           }
+        }
       )
     }else {
 
       BuildImageMutation(
         labbookName,
         owner,
+        false,
         (error) => {
+          if(error){
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload:{
+                message: `${labbookName} failed to build`,
+                messageBody: error
+              }
+            })
+          }
 
-          let showAlert = ((error !== null) && (error !== undefined))
-          let message = showAlert ? error[0].message : '';
-          this.setState({
-            'show': showAlert,
-            'message': message
-          })
           this.props.setBuildingState(false)
           return "finished"
         }
@@ -90,51 +107,43 @@ class Environment extends Component {
   *  @param {Obect}
   *  sets readyToBuild state to true
   */
-  _setBaseImage(baseImage){
+  _setBase(base){
       this.setState({"readyToBuild": true})
   }
 
   render(){
+
     if(this.props.labbook){
       const env = this.props.labbook.environment;
-      const {baseImage} = env;
-
+      const {base} = env;
       return(
         <div className="Environment">
 
-            <BaseImage
-              ref="baseImage"
+            <Base
+              ref="base"
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
-              editVisible={true}
+              editVisible
               containerStatus={this.props.containerStatus}
               setComponent={this._setComponent}
-              setBaseImage={this._setBaseImage}
+              setBase={this._setBase}
               buildCallback={this._buildCallback}
               blockClass="Environment"
-              baseImage={baseImage}
+              base={base}
 
              />
 
-            <DevEnvironments
-              ref="devEnvironments"
+            <PackageDependencies
+              ref="packageDependencies"
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
+              labbookId={this.props.labbook.id}
               containerStatus={this.props.containerStatus}
-              editVisible={true}
-              buildCallback={this._buildCallback}
-              blockClass="Environment"
-            />
-
-            <PackageManagerDependencies
-              ref="packageManagerDependencies"
-              environment={this.props.labbook.environment}
-              environmentId={this.props.labbook.environment.id}
-              containerStatus={this.props.containerStatus}
-              setBaseImage={this._setBaseImage}
+              setBase={this._setBase}
               setComponent={this._setComponent}
               buildCallback={this._buildCallback}
-              baseImage={baseImage}
+              overview={this.props.overview}
+              base={base}
               blockClass="Environment"
             />
 
@@ -143,18 +152,11 @@ class Environment extends Component {
               environment={this.props.labbook.environment}
               blockClass="Environment"
               buildCallback={this._buildCallback}
-              editVisible={true}
+              editVisible
+              labbookId={this.props.labbook.id}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
             />
-
-            <SweetAlert
-              className="sa-error-container"
-              show={this.state.show}
-              type="error"
-              title="Error"
-              text={this.state.message}
-              onConfirm={() => this.setState({ show: false })} />
           </div>
       )
     }else{
@@ -172,13 +174,13 @@ export default createFragmentContainer(
       id
       imageStatus
       containerStatus
-      baseImage{
-        availablePackageManagers
+      base{
+        developmentTools
+        packageManagers
       }
 
-      ...BaseImage_environment
-      ...DevEnvironments_environment
-      ...PackageManagerDependencies_environment
+      ...Base_environment
+      ...PackageDependencies_environment
       ...CustomDependencies_environment
     }
   }`

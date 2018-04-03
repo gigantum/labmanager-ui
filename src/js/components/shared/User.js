@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
-import userSVG from 'Images/icons/user.svg'
 
 export default class User extends Component {
 
@@ -60,12 +58,11 @@ export default class User extends Component {
 
 
   render() {
-    const { isAuthenticated } = this.props.auth;
     return (
       <div
         id="user"
         className="User">
-        <img className="User__image" src={userSVG}/>
+        <div className="User__image"> </div>
         <h6
           id="username"
           onClick={() => { this._toggleDropdown()}}
@@ -82,7 +79,7 @@ export default class User extends Component {
             className="User__button btn-margin"
             onClick={this.logout.bind(this)}
           >
-            Log Out
+            Logout
         </button>
 
         </div>

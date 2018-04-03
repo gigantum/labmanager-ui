@@ -1,10 +1,8 @@
 //vendor
 import React, { Component } from 'react'
-import SweetAlert from 'sweetalert-react'
-//mutations
-import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
-//utilities
-import JobStatus from 'JS/utils/JobStatus'
+//muations
+import StartContainerMutation from 'Mutations/StartContainerMutation'
+import StopContainerMutation from 'Mutations/StopContainerMutation'
 //store
 import store from 'JS/redux/store'
 
@@ -19,165 +17,186 @@ export default class LocalLabbookPanel extends Component {
 
     this.state = {
       'exportPath': '',
-      'show': false,
-      'message': '',
-      'title': 'Export Successful',
-      'type': 'success'
+      'status': '',
+      'textStatus': '',
+      'labbookName': props.edge.node.name,
+      'owner': props.edge.node.owner
     }
+    this._getContainerStatusText = this._getContainerStatusText.bind(this)
+    this._stopStartContainer = this._stopStartContainer.bind(this)
+  }
 
-    this._exportLabbook = this._exportLabbook.bind(this)
+  componentWillMount() {
+    const {environment} = this.props.edge.node
+    let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
+
+    this.setState({status: status, textStatus: status})
+
   }
 
   _getContainerStatusText(containerStatus, imageStatus){
 
-    let status = (containerStatus === 'RUNNING') ? 'Open' : containerStatus;
-    status = (containerStatus === 'NOT_RUNNING') ? 'Closed' : status;
+    let status = 'Running';
+    status = (containerStatus === 'NOT_RUNNING') ? 'Stopped' : status;
     status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
+    status = (imageStatus === "BUILD_FAILED") ? 'Build Failed' : status;
+    status = (imageStatus === "DOES_NOT_EXIST") ? 'Rebuild Required' : status;
 
     return status;
   }
-  /**
-  * @param {event, object} evt,edge
-  *  runs export mutation if export has not been downloaded
-  *
+  /***
+  * @param {string} status
+  * fires when a componet mounts
+  * adds a scoll listener to trigger pagination
   */
-  _exportLabbook = (evt, edge) => {
-
-    if(this.state.exportPath.length === 0){
-
-      let exportClassList = document.getElementById(evt.target.id).classList;
-
-      exportClassList.add('LocalLabbooks__export--downloading')
-      let username = localStorage.getItem('username')
-
+  _stopStartContainer(evt, status){
+    evt.preventDefault()
+    evt.stopPropagation();
+    evt.nativeEvent.stopImmediatePropagation();
+    if(status === "Stopped"){
+      this._startContainerMutation()
+    }else if(status === "Running"){
+      this._stopContainerMutation()
+    }else{
       store.dispatch({
-        type: 'UPLOAD_MESSAGE',
-        payload: {
-          uploadMessage: 'Exporting LabBook',
-          open: true,
-          success: false,
-          error: false
+        type: 'INFO_MESSAGE',
+        payload:{
+          message: `Container must be rebuilt. Open LabBook first and then try to run again.`
         }
       })
-
-      ExportLabbookMutation(username, edge.node.name, (response, error)=>{
-
-        if(response.exportLabbook){
-          JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data)=>{
-
-
-              if(data.jobStatus.result){
-                store.dispatch({
-                  type: 'UPLOAD_MESSAGE',
-                  payload: {
-                    uploadMessage: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-                    open: true,
-                    success: false,
-                    error: false
-                  }
-                })
-              }
-
-              exportClassList.remove('LocalLabbooks__export--downloading')
-          }).catch((error)=>{
-
-              if(error){
-                store.dispatch({
-                  type: 'UPLOAD_MESSAGE',
-                  payload: {
-                    uploadMessage: `Export failed`,
-                    open: true,
-                    success: false,
-                    error: true
-                  }
-                })
-              }
-              exportClassList.remove('LocalLabbooks__export--downloading')
-          })
-      }else{
-
-        store.dispatch({
-          type: 'UPLOAD_MESSAGE',
-          payload: {
-            uploadMessage: 'Export Failed: ' + error[0].message,
-            open: true,
-            success: false,
-            error: true
-          }
-        })
-
-        exportClassList.remove('LocalLabbooks__export--downloading')
+    }
+  }
+  /***
+  * @param {string} status
+  * starts labbook conatainer
+  */
+  _startContainerMutation(){
+    let self = this;
+    const {owner, labbookName} = this.state
+    store.dispatch({
+      type: 'INFO_MESSAGE',
+      payload:{
+        message: `Starting ${labbookName} container`
       }
     })
-  }
+    this.setState({'status': 'Starting', textStatus: 'Starting'})
+    StartContainerMutation(
+      labbookName,
+      owner,
+      'clientMutationId',
+      (response, error) =>{
 
+        if(error){
+          store.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload:{
+              message: `There was a problem starting ${this.state.labbookName}, go to LabBook and try again`,
+              messageBody: error
+            }
+          })
+          self.setState({textStatus: "Stopped", status: "Stopped"})
+        }else{
+          self.props.history.replace(`../../labbooks/${owner}/${labbookName}`)
+        }
+      }
+    )
   }
+  /***
+  * @param {string} status
+  * stops labbbok conatainer
+  */
+  _stopContainerMutation(){
+    const {owner, labbookName} = this.state
+    let self = this
+    store.dispatch({
+      type: 'INFO_MESSAGE',
+      payload:{
+        message: `Stopping ${labbookName} container`
+      }
+    })
+    this.setState({'status': 'Stopping', textStatus: 'Stopping'})
 
+    StopContainerMutation(
+      labbookName,
+      owner,
+      'clientMutationId',
+      (response, error) =>{
+
+        if(error){
+          console.log(error)
+          store.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload:{
+              message: `There was a problem stopping ${this.state.labbookName} container`,
+              messageBody: error
+            }
+          })
+
+          self.setState({textStatus: "Running", status: "Running"})
+        }else{
+          this.setState({'status': 'Stopped', textStatus: 'Stopped'})
+        }
+
+      }
+    )
+  }
+  /***
+  * @param {object,string} evt,status
+  * stops labbbok conatainer
+  ***/
+  _updateTextStatusOver(evt, status){
+    let newStatus = status;
+    newStatus = (status === "Running") ? 'Stop' : newStatus;
+    newStatus = (status === "Stopped") ? 'Run' : newStatus;
+    this.setState({textStatus: newStatus})
+  }
+  /***
+  * @param {objectstring} evt,status
+  * stops labbbok conatainer
+  ***/
+  _updateTextStatusOut(evt, status){
+    this.setState({textStatus: status})
+  }
 
   render(){
     let edge = this.props.edge;
-    let status = this._getContainerStatusText(edge.node.environment.containerStatus, edge.node.environment.imageStatus)
-    let exportFile = this.state.exportPath.split('/')[this.state.exportPath.split('/').length - 1]
+    let status = this.state.status
+    let textStatus = this.state.textStatus
 
     return (
       <div
+        onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}
         key={edge.node.name}
         className='LocalLabbooks__panel flex flex--column justify--space-between'>
 
         <div className="LocalLabbooks__icon-row">
 
           <div className="LocalLabbooks__containerStatus">
-            <div className={'LocalLabbooks__containerStatus--state ' + status}>
-              {status}
-            </div>
+            <button
+              onClick={(evt)=> this._stopStartContainer(evt, status)}
+              onMouseOver={(evt)=> this._updateTextStatusOver(evt, status)}
+              onMouseOut={(evt)=> this._updateTextStatusOut(evt, status)}
+              className={`LocalLabbooks__containerStatus--state ${status}`}>
+              {textStatus}
+            </button>
           </div>
         </div>
 
         <div className="LocalLabbooks__text-row">
           <div className="LocalLabbooks__title-row">
-            <h4
+            <h6
               className="LocalLabbooks__panel-title"
-              onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner.username)}>
+              onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}>
               {edge.node.name}
-            </h4>
-            <div className="LocalLabbooks__edit-button" onClick={() => this.props.renameLabbookModal(edge.node.name)}>
-            </div>
+            </h6>
+
           </div>
-          <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner.username}</p>
+          <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner}</p>
           <p
-            onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner.username)} className="LocalLabbooks__description">
+            className="LocalLabbooks__description">
             {edge.node.description}
           </p>
         </div>
-
-        <div className="LocalLabbooks__info-row flex flex--row justify--space-between">
-          <div className="LocalLabbooks__owner flex flex--row">
-              {/* <div> {owner.username}</div> */}
-
-          </div>
-          <div className="LocalLabbooks__status">
-            <div
-              id={'Export__localLabbooks' + edge.node.name}
-              ref={'Export__localLabbooks' + edge.node.name}
-              onMouseDown={(evt) => this._exportLabbook(evt, edge)} className="LocalLabbooks__export">
-              Export
-            </div>
-            <SweetAlert
-              className="sa-error-container"
-              show={this.state.show}
-              type={this.state.type}
-              title={this.state.title}
-              text={ this.state.message }
-              onConfirm={() => {
-                this.setState({ show: false})
-              }}
-              />
-
-          </div>
-
-        </div>
-
-
     </div>)
   }
 }

@@ -1,45 +1,30 @@
-$circle-count: 13;
-$loader-proportion: 60px;
-$animation_config: (
-  name: spin,
-  duration: 1s,
-  timing: ease-in-out,
-  iteration: infinite,
-  direction: alternate,
-  fill-mode: both
-);
+.Loader__logo {
+  z-index: 1002;
+  position: absolute;
+  top: calc(50% - 75px);
+  left: calc(50% - 75px);
+  background: url(../images/logos/logo-circle-cyan.png) no-repeat 50% 50%;
+  background-size: 150px;
+  height: 150px;
+  width: 150px;
+}
 
-@function sh-setup($config) {
-  @return zip(map-values($config)...);
+
+.Loader__logo-border {
+  box-sizing: content-box !important;
+  z-index: 1001;
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  top: calc(50% - 90px);
+  left: calc(50% - 90px);
+  border: 16px solid $grey;
+  border-top: 16px solid $turquise;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.Loader {
-  animation: sh-setup($animation_config);
-  height: $loader-proportion;
-  width: $loader-proportion;
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -50px 0 0 -50px;
-
-  svg:not(#circle-middle) {
-    animation: sh-setup($animation_config);
-    position: absolute;
-    top: -50%;
-    left: 0;
-    transform-origin: bottom center;
-  }
-}
-
-@for $i from 1 through $circle-count {
-  .Loader svg:nth-of-type(#{$i}):not(#circle-middle) {
-    transform: rotate(($i * (360/($circle-count - 1))) + deg);
-  }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

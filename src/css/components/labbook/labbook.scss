@@ -1,105 +1,118 @@
-.Labbook{
+.Labbook {
   margin-bottom: 100px;
   min-height: calc(100% - 230px);
   height: auto;
-  width: 100%;
+  width: auto;
+  max-width: 1240px;
+  min-width: 760px;
   transition: width 0.25s;
 }
-
+.Labbook__name {
+  cursor: pointer;
+  font-weight: 100;
+  font-size: 48px;
+  word-break: break-all;
+  line-height: 1em;
+  padding-top: 9px;
+  overflow: hidden;
+}
 .Labbook__branch-title{
-  h2{
+  opacity: 1;
+
+  h2 {
       margin: 2px 0;
       padding: 0 0 10px 0;
       cursor: pointer;
       font-weight: 100;
   }
-  h2:hover{
+
+  h2:hover {
     color: $turquise;
   }
-  height: 65px;
 
   @include flex(flex-start, row)
 }
 
-.Labbook__branch-toggle{
+.Labbook__branch-toggle {
   height: 24px;
   width: 24px;
+  min-width: 24px;
   border: 2px solid $romanSilver;
   border-radius: 12px;
-  margin: 0 15px;
+  margin: 20px 15px 0;
   cursor: pointer;
   align-self: center;
 }
 
-.Labbook__branches-shadow{
+
+.Labbook__branches-shadow {
   position: absolute;
   width: 100%;
   height: 5px;
 }
 
-.Labbook__branches-shadow--upper{
+.Labbook__branches-shadow--upper {
   top: 0px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 6px 2px;
 }
 
-.Labbook__branches-shadow--lower{
+.Labbook__branches-shadow--lower {
   bottom: 0px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px -5px 6px 2px;
 }
 
-.Labbook__branch-title--open{
-  .Labbook__branch-toggle{
+.Labbook__branch-title--open {
+  .Labbook__branch-toggle {
     background: $white url('./../images/icons/up-arrow-silver.svg') no-repeat center center;
     background-size: 16px;
   }
 }
 
-.Labbook__branch-title--closed{
-  .Labbook__branch-toggle{
+.Labbook__branch-title--closed {
+  .Labbook__branch-toggle {
     background: $white url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
     background-size: 16px;
+
   }
+
 
 }
 
-.Labbook__header-conatiner{
+.Labbook__header-conatiner {
   min-height: 30px;
 
   @include flex(space-between, row);
 }
 
-.Labbook__name-title{
-  width: 50%;
+.Labbook__name-title {
+  flex: 1;
   margin: 0;
+  font-size: 14px;
 }
 
-.Labbook--detail-mode{
+.Labbook--detail-mode {
   width: calc(100% - 350px);
-
-  .Labbook__navigation div {
-    transition: padding 0.25s;
-    padding: 5px 10px;
-    white-space: nowrap;
-  }
 }
 
 
-.Labbook__header{
-  min-height: 80px;
+.Labbook__header {
+  flex: 1 0 auto;
+  min-height: 90px;
   height: auto;
-  .Labbook__name-title{
+  min-width: 700px;
+  .Labbook__name-title {
     padding: 0px;
     color: $romanSilver;
     font-size: 16px;
   }
 }
 
-.Labbook__title{
+.Labbook__title {
   text-align: left;
   padding: 20px 0 0 40px;
 }
 
-.Labbook__inner-container{
+.Labbook__inner-container {
   max-width: calc(100% - 80px);
   margin: 20px 40px;
   padding: 0 40px;
@@ -107,63 +120,30 @@
   height: auto;
   //background: $grey-light;
 }
-.Labbook__branches-container{
-  max-width: calc(100% + 160px);
+.Labbook__branches-container {
+  max-width: calc(100% + $sideBarWidth);
   padding: 20px 0;
   margin: 0px -80px;
   height: 310px;
   position: relative;
   transition: height 0.6s;
+  background-color: $background-color;
 }
 
-.Labbook__branches-container--collapsed{
+.Labbook__branches-container--collapsed {
   height: 0px;
   transition: height 0.6s;
   padding: 0px;
 }
-.Labbook__navigation{
-  border-bottom: 1px solid $lightGrey;
-  position: relative;
-  box-shadow: none;
-  height: 34px;
-  background-color: inherit;
-  line-height: normal;
-  white-space: nowrap;
-  div{
-    a{
-      color: $romanSilver;
-      font-size: 16px;
-    }
-    padding: 5px 5px;
-    margin: 0 25px;
-    cursor: pointer;
-    bottom: -2px;
-  }
-  .Labbook__navigation-item--overview{
-    padding: 5px 5px;
-  }
-  div:hover a{
-    color: $turquise;
-  }
 
-  div.selected{
-    border-bottom: 3px solid $turquise;
-    z-index: 100;
-    position: relative;
-    bottom: -2px;
-    line-height: 15px;
-
-  }
-}
-
-.Labbook__view{
+.Labbook__view {
   height: calc(100% - 0px);
   overflow: hidden;
   padding: 20px 0;
 
 }
 
-.Labbook__container-state{
+.Labbook__container-state {
   width: 120px;
   text-align: center;
   height: 30px;
@@ -173,19 +153,18 @@
 
 }
 
-.Labbook__user-note{
+.Labbook__user-note {
   color: $azure;
   position: relative;
   font-size: 14px;
   cursor: pointer;
 
-  h5{
+  h5 {
     padding: 0px;
   }
 }
 
-.Labbook__user-note--add{
-
+.Labbook__user-note--add {
   background: $azure url('../images/icons/add.svg') no-repeat center center;
   background-size: 10px;
   height: 16px;
@@ -197,8 +176,8 @@
   transition: all 0.3s;
 
 }
-.Labbook__user-note:hover{
-  .Labbook__user-note--add{
+.Labbook__user-note:hover {
+  .Labbook__user-note--add {
     height: 20px;
     width: 20px;
     top: -8px;
@@ -208,26 +187,26 @@
 }
 
 
-.Labbook__container-state.Open{
+.Labbook__container-state.Open {
   background: $turquise;
 }
-.Labbook__container-state.Building{
+.Labbook__container-state.Building {
   background: $azure;
 }
-.Labbook__container-state.Closed{
+.Labbook__container-state.Closed {
   background: $jet;
 }
 
-.Labbook__component-container{
+.Labbook__component-container {
   width: calc(100% - 0px);
 }
 
-.Labbook__info{
+.Labbook__info {
   width: 250px;
 
 }
 
-.Labbook__info-card{
+.Labbook__info-card {
   width: 200px;
   height: 300px;
   border: 1px solid $romanSilver;
@@ -236,7 +215,7 @@
   padding: 20px;
 }
 
-.Labbook__modal{
+.Labbook__modal {
   position: fixed;
   left: 50%;
   top: 50%;
@@ -250,4 +229,237 @@
   background-color: $grey-light;
   box-shadow: 10px 10px 5px #888888;
 
+}
+
+.Labbook__row-container{
+  height: 90px;
+  @include flex(space-between, row);
+  flex-wrap: nowrap;
+  padding: 5px 0;
+}
+
+.Labbook__column-container{
+  height: transition 0.5s;
+  @include flex(space-between, column);
+}
+.Labbook__column-container--flex-1{
+  @extend .Labbook__column-container;
+  flex: 1;
+}
+
+.Labbook__component-container{
+  .ReactStickyHeader_background-bg,
+  .ReactStickyHeader_foreground{
+    display: none;
+  }
+  .ReactStickyHeader_root{
+    .ReactStickyHeader_fixed{
+      z-index: 2000;
+      transition: height 0.5s, padding 0.5s, margin 0.5s;
+      height: 90px;
+      margin: 10px 0px 0px $sideBarWidth;
+      padding: 5px 80px 0;
+      background-color: $background-color;
+    }
+  }
+
+  .ReactStickyHeader_root.is-sticky{
+    .ReactStickyHeader_fixed{
+      height: 60px;
+      padding: 5px 20px 0;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 6px 2px;
+    }
+
+    .Labbook__name,
+    .Labbook__branches-container{
+      display: none;
+    }
+
+    .Labbook__branches-container {
+      max-width: calc(100% + 40px);
+      margin: 0px -20px;
+
+    }
+
+    .Labbook__branches-container--collapsed{
+      padding: 0px;
+    }
+    .Labbook__row-container{
+      height: 60px;
+    }
+
+    .Labbook__column-container{
+      @include flex(flex-end, row-reverse);
+      align-content: center;
+      align-items: center;
+      height: 40px;
+    }
+    .Labbook__column-container--flex-1{
+      @include flex(flex-end, row);
+    }
+
+    .BranchMenu{
+        margin: 10px 0 0 30px;
+    }
+    .ContainerStatus{
+      .ContainerStatus__plugins-button{
+        width: 32px;
+        font-size: 0px;
+        left: -25px;
+        padding: 3px 0 0 5px;
+      }
+    }
+    .BranchMenu__button{
+      font-size: 0px;
+      width: 60px;
+    }
+
+    .Labbook__branch-title{
+        height: 0px;
+    }
+
+    .Labbook__column-container--flex-1 > div{
+        margin: 0 30px 0 10px;
+    }
+
+    .Labbook__column-container--flex-1{
+      justify-content: flex-start;
+
+
+
+      .Labbook__name-title{
+        flex: 0 1;
+        white-space: nowrap;
+      }
+
+      .Labbook__branch-title{
+        flex: 1;
+        opacity: 0;
+        cursor: default;
+
+        .Labbook__name{
+          cursor: default;
+        }
+      }
+    }
+
+
+
+  }
+}
+
+
+.Labbook__navigation-container {
+  margin-top: 90px;
+}
+
+.Labbook__navigation {
+  border-bottom: 1px solid $grey;
+  white-space: nowrap;
+
+  li {
+    width: 14%;
+    text-align: center;
+
+    a {
+      display: inline-block;
+      padding: .75rem 0;
+      margin: 0;
+      text-decoration: none;
+      color: $grey;
+    }
+
+    a:hover {
+      color: $selected-blue;
+    }
+  }
+
+  li.selected a {
+    color: $selected-blue;
+    z-index: 100;
+    position: relative;
+    bottom: -2px;
+    line-height: 15px;
+  }
+
+  @for $i from 0 through 5 {
+    li.Labbook__navigation-item--#{$i}:hover ~ hr {
+      margin-left: $i * 14% + 2%;
+    }
+    .Labbook__navigation-slider--#{$i} {
+      height: 3px;
+      width: 10%;
+      margin: 0;
+      background: $turquise;
+      border: none;
+      transition: .3s ease-in-out;
+      position: absolute;
+      bottom: 0;
+      margin-left: $i * 14% + 2%;
+    }
+  }
+  @media screen and (max-width: 1120px) and (min-width: 300px) {
+    @for $i from 0 through 5 {
+      li.Labbook__navigation-item--#{$i}:hover ~ hr {
+        @if $i == 0 {
+          width: 12%;
+          margin-left: $i * 14% + 1%;
+        }
+        @if $i == 1 {
+          width: 10%;
+          margin-left: 16%;
+        }
+        @if $i == 2 {
+          width: 14%;
+          margin-left: $i * 14%;
+        }
+        @if $i == 3 {
+          width: 8%;
+          margin-left: $i * 14% + 3%;
+        }
+        @if $i == 4 {
+          width: 12%;
+          margin-left: $i * 14% + 1%;
+        }
+        @if $i == 5 {
+          width: 13%;
+          margin-left: $i * 14% ;
+        }
+      }
+      .Labbook__navigation-slider--#{$i} {
+        height: 3px;
+        width: 12%;
+        margin: 0;
+        background: $turquise;
+        border: none;
+        transition: .3s ease-in-out;
+        position: absolute;
+        bottom: 0;
+        @if $i == 0 {
+          width: 12%;
+          margin-left: $i * 14% + 1%;
+        }
+        @if $i == 1 {
+          width: 10%;
+          margin-left: 16%;
+        }
+        @if $i == 2 {
+          width: 14%;
+          margin-left: $i * 14%;
+        }
+        @if $i == 3 {
+          width: 8%;
+          margin-left: $i * 14% + 3%;
+        }
+        @if $i == 4 {
+          width: 12%;
+          margin-left: $i * 14% + 1%;
+        }
+        @if $i == 5 {
+          width: 13%;
+          margin-left: $i * 14% ;
+        }
+      }
+    }
+  }
 }

@@ -1,7 +1,10 @@
 //vendor
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import {QueryRenderer, graphql} from 'react-relay'
 import ReactMarkdown from 'react-markdown'
+//Components
+import CodeBlock from 'Components/labbook/renderers/CodeBlock'
 //environment
 import environment from 'JS/createRelayEnvironment'
 //store
@@ -35,27 +38,85 @@ export default class UserNote extends Component {
       owner: owner,
       labbookName: labbookName
     }
+    this._setLinks = this._setLinks.bind(this);
+  }
+
+  _setLinks() {
+    let elements = Array.prototype.slice.call(document.getElementsByClassName('ReactMarkdown'));
+    let moreObj = {}
+    elements.forEach((elOuter, index) => {
+      if (this.checkOverflow(elOuter) === true) moreObj[index] = true;
+      if (this.checkOverflow(elOuter.childNodes[elOuter.childNodes.length - 1]) === true) moreObj[index] = true;
+    });
+    let pElements = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__link'));
+
+    for (let key in pElements) {
+      if(!moreObj[key]) {
+        pElements[key].className = 'hidden';
+      } else {
+        pElements[key].className = 'DetailsRecords__link';
+      }
+    }
+  }
+
+  checkOverflow(el) {
+    var curOverflow = el.style.overflow;
+    if ( !curOverflow || curOverflow === "visible" )
+       el.style.overflow = "hidden";
+
+    var isOverflowing = el.clientHeight < el.scrollHeight;
+    el.style.overflow = curOverflow;
+    return isOverflowing;
+   }
+
+  componentDidMount() {
+    let self = this;
+    setTimeout(function(){
+      self._setLinks();
+    }, 100)
+    window.addEventListener("resize", this._setLinks.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this._setLinks.bind(this));
   }
 
   _renderDetail(item){
     switch(item[0]){
       case 'text/plain':
-        return(<b>{item[1]}</b>)
+        return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
       case 'image/png':
-        return(<img src={item[1]} />)
+        return(<img alt="detail" src={item[1]} />)
       case 'image/jpg':
-        return(<img src={item[1]} />)
+        return(<img alt="detail" src={item[1]} />)
       case 'image/jpeg':
-        return(<img src={item[1]} />)
+        return(<img alt="detail" src={item[1]} />)
       case 'image/bmp':
-        return(<img src={item[1]} />)
+        return(<img alt="detail" src={item[1]} />)
       case 'image/gif':
-        return(<img src={item[1]} />)
+        return(<img alt="detail" src={item[1]} />)
       case 'text/markdown':
-        return(<ReactMarkdown source={item[1]} />)
+        return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
+      default:
+        return(<b>{item[1]}</b>)
     }
   }
 
+  _moreClicked(target) {
+    if (target.className !== "DetailsRecords__link-clicked") {
+      let elements = Array.prototype.slice.call(document.getElementsByClassName('ReactMarkdown'));
+      let index = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__link')).indexOf(target);
+      elements[index].className = "ReactMarkdown-long"
+      target.className = "DetailsRecords__link-clicked";
+      target.textContent = "Less...";
+    } else {
+      let elements = Array.prototype.slice.call(document.getElementsByClassName('ReactMarkdown-long'));
+      let index = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__link-clicked')).indexOf(target);
+      elements[index].className = "ReactMarkdown"
+      target.className = "DetailsRecords__link";
+      target.textContent = "More...";
+    }
+  }
 
   render(){
     let variables ={
@@ -63,6 +124,7 @@ export default class UserNote extends Component {
       owner: this.state.owner,
       name: this.state.labbookName
     }
+    this.items = {};
     return(
       <QueryRenderer
         environment={environment}
@@ -77,11 +139,16 @@ export default class UserNote extends Component {
                     <ul className="DetailsRecords__list">
                     {
                       props.labbook.detailRecords.map((detailRecord)=>{
+
                         return(
-                          detailRecord.data.map((item)=>{
+                          detailRecord.data.map((item, index)=>{
+
                             return(
-                              <li className="DetailsRecords__item">
+                              <li
+                                key={detailRecord.id + '_'+ index}
+                                className="DetailsRecords__item">
                                 {this._renderDetail(item)}
+                                <p className="DetailsRecords__link hidden" onClick={(e)=> this._moreClicked(e.target)}>More...</p>
                             </li>)
                           })
                         )
@@ -91,7 +158,13 @@ export default class UserNote extends Component {
                   </div>
                 )
             }else{
-                return(<div>Loading...</div>)
+                return(
+                  <div className="DetailsRecords__loader-group">
+                    <div className="DetailsRecords__loader"></div>
+                    <div className="DetailsRecords__loader"></div>
+                    <div className="DetailsRecords__loader"></div>
+                  </div>
+                )
             }
 
         }}

@@ -13,6 +13,14 @@ global.test = function(){}
 global.describe = function(){}
 global.it = function(){}
 
+window.matchMedia = window.matchMedia || function() {
+    return {
+        matches : false,
+        addListener : function() {},
+        removeListener: function() {}
+    };
+};
+
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
 
@@ -32,7 +40,15 @@ let genteratedFiles = sourcsJsFiles.filter((dirname) => {
   return((dirname.indexOf('__generated__') > -1) && (dirname.indexOf('_', (dirname.indexOf('__generated__') + 14)) < 0) && (dirname.indexOf('/mutations/') < 0))
 })
 
-let relayQueries = genteratedFiles.map((route) => {
+let relayQueries = genteratedFiles.filter((route) => {
+  let testFile = __dirname + '/../' + route.replace('src/js', '__tests__').replace('/__generated__/', '/').replace('.graphql.', '.test.').replace('Query', '').replace('Pagination', '')
+
+  const exists = fs.existsSync(testFile)
+  if(!exists){
+    console.log(`create test ${testFile}`)
+  }
+  return exists
+}).map((route) => {
   let testFile = __dirname + '/../' + route.replace('src/js', '__tests__').replace('/__generated__/', '/').replace('.graphql.', '.test.')
 
   relayFilePostfixes.forEach(function(postFix){
@@ -40,11 +56,9 @@ let relayQueries = genteratedFiles.map((route) => {
         testFile = testFile.replace(postFix, '')
       }
   })
-
-  //console.log(require(testFile).default)
+  console.log(`Fetching variables for ${route}...`)
   return {dirname: route, relay: require(__dirname + '/../' + route), variables:require(testFile).default, testFile: testFile}
 })
-
 
 relayQueries.forEach((queryData) => {
 
@@ -64,8 +78,7 @@ relayQueries.forEach((queryData) => {
 
       response.json().then(function(data){
           if(data.errors){
-            console.log(queryData.relay.text, variables)
-            console.log(data.errors[0].message, path.basename(queryData.testFile))
+            console.log(`Error: ${data.errors[0].message}`)
           }
           let relayDataField = path.dirname(queryData.testFile) + '/__relaydata__/' + path.basename(queryData.testFile).replace('.test.js', '.json')
 
@@ -81,8 +94,9 @@ relayQueries.forEach((queryData) => {
 
           ensureDirectoryExistence(relayDataField)
 
-
+          console.log('gets here')
           fs.exists(relayDataField, function(exists){
+            console.log(exists)
             if(exists){
               fs.open(relayDataField, 'w', (err, fd) => {
                 if (err) throw err;
@@ -90,7 +104,7 @@ relayQueries.forEach((queryData) => {
                 fs.write(fd, JSON.stringify(data), 0, JSON.stringify(data).length, null, function(err) {
                     if (err) throw 'error writing file: ' + err;
                     fs.close(fd, function() {
-                        console.log('file written');
+                        console.log(`${fd} updated`);
                     })
                 });
               });

@@ -58,9 +58,8 @@ export default function UpdateFavoriteMutation(
   owner,
   labbookName,
   deleteId,
-  updatedKey,
+  key,
   updatedDescription,
-  index,
   updatedIndex,
   favorite,
   section,
@@ -68,13 +67,13 @@ export default function UpdateFavoriteMutation(
 ) {
 
   const clientMutationId = uuidv4()
+
   const variables = {
     input: {
       owner,
+      key,
       labbookName,
-      updatedKey,
       updatedDescription,
-      index,
       updatedIndex,
       section,
       clientMutationId
@@ -98,13 +97,19 @@ export default function UpdateFavoriteMutation(
 
         const node = store.get(favorite.id)
 
-        node.setValue(favorite.id, "id")
-        node.setValue(false, 'isDir')
-        node.setValue(updatedKey, 'key')
         node.setValue(updatedDescription, 'description')
+        node.setValue(updatedIndex, 'index')
 
       },
 
+      updater: (store, response)=>{
+
+        const node = store.get(response.updateFavorite.updatedFavoriteEdge
+.node.id)
+
+        node.setValue(updatedDescription, 'description')
+        node.setValue(updatedIndex, 'index')
+      }
 
     },
   )

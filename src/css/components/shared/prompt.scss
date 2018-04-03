@@ -1,0 +1,120 @@
+.Prompt {
+    position: relative;
+}
+
+.Prompt__info {
+    position: fixed;
+    z-index: 1005;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $slateBlue;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    line-height: 300px;
+}
+
+.Prompt__logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 130px;
+    background: url(../images/logos/gigantum-cyan.png) no-repeat 50% 50%;
+    background-size: 100%;
+}
+
+.Prompt__logo--raised {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: top 2s ease 0s;
+
+    width: 500px;
+    height: 130px;
+    background: url(../images/logos/gigantum-cyan.png) no-repeat 50% 50%;
+    background-size: 100%;
+}
+
+.Prompt__logo--final {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: top 2s ease 0s;
+    width: 500px;
+    height: 130px;
+    background: url(../images/logos/gigantum-cyan.png) no-repeat 50% 50%;
+    background-size: 100%;
+}
+
+.Prompt__loading-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: fade-in-out 13s linear;
+    animation-delay: 2s;
+
+}
+
+.Prompt__failure-container{
+  position: absolute;
+  top: 35%;
+  left: calc(50% - 400px);
+  width: 800px;
+
+
+  @include flex(space-between, column);
+  align-items: center;
+
+  img{
+    margin-top: 20px;
+    width: 600px;
+    height: auto;
+  }
+}
+
+.Prompt__failure-text {
+    line-height: 1.5;
+    opacity: 0;
+    animation: fade-in 3s forwards;
+    animation-delay: 2s;
+
+    p {
+        margin: 0
+    }
+
+
+}
+
+.Prompt__cli {
+    opacity: 0;
+
+    animation: fade-in 3s forwards;
+    animation-delay: 2s;
+
+    background: url(../images/logos/cli.png) no-repeat 50% 50%;
+    background-size: 100%;
+    height: 300px;
+    width: 600px;
+}
+
+@keyframes fade-in {
+    0% { opacity: 0 }
+    100% { opacity: 1 }
+}
+
+@keyframes fade-in-out {
+    0%, 100% { opacity: 0 }
+    10%, 90% { opacity: 1 }
+}
+
+.hidden {
+    display: none;
+}

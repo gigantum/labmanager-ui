@@ -1,26 +1,24 @@
-.Dashboard{
+.Dashboard {
   height: 100%;
 }
 
-.Dashboard__view{
+.Dashboard__view {
   height: calc(100% - 200px);
   width: 100%;
 }
-.Dashboard__nav{
+
+.Dashboard__nav {
   width: 300px;
   list-style: none;
   font-size: 22px;
   font-weight: 200;
 }
 
-.Dashboard__nav-item{
+.Dashboard__nav-item {
   cursor: pointer;
-  color: $charcoal;
-}
-.Dashboard__nav-item.selected{
-  text-decoration: underline;
+  color: $jet;
 }
 
-.Dashboard__nav-item:hover{
-  color: $orange;
+.Dashboard__nav-item.selected {
+  text-decoration: underline;
 }
