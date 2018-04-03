@@ -252,6 +252,9 @@
   .ReactStickyHeader_foreground{
     display: none;
   }
+  .ReactStickyHeader_midground{
+    top: 90px !important;
+  }
   .ReactStickyHeader_root{
     transition: min-height 0.5s;
 
@@ -474,7 +477,25 @@
   }
 }
 
+.Labbook__veil{
+  opacity: 0;
+  transition: 0.25s opacity;
+  position: fixed;
+  width: 100%;
+  height: calc(100% - 410px);
+  top: 410px;
+  z-index: -1;
+  background: $jet;
+
+}
+
 .Labbook-branch-mode{
+  .Labbook__veil{
+    display: block;
+    opacity: 0.5;
+    z-index: 2100;
+
+  }
   .ReactStickyHeader_root {
     min-height: 437px;
   }
@@ -484,5 +505,9 @@
 
   .Labbook__navigation-container {
     margin-top: 389px;
+  }
+
+  .ReactStickyHeader_midground{
+    top: 90px !important;
   }
 }

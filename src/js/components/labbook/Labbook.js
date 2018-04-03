@@ -227,22 +227,23 @@ class Labbook extends Component {
     @param {}
     updates branchOpen state
   */
-  _toggleBranchesView(){
-    if(!this.state.isSticky){
+  _toggleBranchesView(isSticky){
+
+
     store.dispatch({
       type: 'UPDATE_BRANCHES_VIEW',
       payload: {
-        branchesOpen: !this.state.branchesOpen
+        branchesOpen: (isSticky === undefined) ? !this.state.branchesOpen : false
       }
     })
-    }
+
   }
 
   render(){
 
     const { isAuthenticated } = this.props.auth
     const {labbookName} = this.props
-
+    console.log(this.props.labbook)
     if(this.props.labbook){
       const {labbook} = this.props
       const name = this.props.labbook.activeBranch ? this.props.labbook.activeBranch.name.replace(/-/g, ' ') : 'temp'
@@ -258,6 +259,7 @@ class Labbook extends Component {
            <div className="Labbook__inner-container flex flex--row">
              <div className="Labbook__component-container flex flex--column">
               <StickyHeader
+                onSticky={(isSticky)=>{this._toggleBranchesView(isSticky)}}
                 header ={
               <div className="Labbook__header">
                 <div className="Labbook__row-container">
@@ -425,6 +427,7 @@ class Labbook extends Component {
             </div>
 
           </div>
+          <div className="Labbook__veil"></div>
         </div>
       )
 

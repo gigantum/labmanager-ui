@@ -8,7 +8,6 @@ import validation from 'JS/utils/Validation'
 import JobStatus from 'JS/utils/JobStatus'
 //mutations
 import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
-import CreateBranchMutation from 'Mutations/branches/CreateBranchMutation'
 import PublishLabbookMutation from 'Mutations/branches/PublishLabbookMutation'
 import PushActiveBranchToRemoteMutation from 'Mutations/branches/PushActiveBranchToRemoteMutation'
 import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
@@ -23,6 +22,7 @@ import store from 'JS/redux/store'
 import DeleteLabbook from './DeleteLabbook'
 import ForceSync from './ForceSync'
 import LoginPrompt from './LoginPrompt'
+import CreateBranch from 'Components/labbook/branches/CreateBranch'
 
 export default class UserNote extends Component {
   constructor(props) {
@@ -30,7 +30,6 @@ export default class UserNote extends Component {
     const { owner, labbookName } = store.getState().routes
     this.state = {
       'addNoteEnabled': false,
-      'newBranchName': '',
       'isValid': true,
       'createBranchVisible': false,
       'addedRemoteThisSession': !(this.props.defaultRemote === null),
@@ -50,7 +49,6 @@ export default class UserNote extends Component {
     this._openMenu = this._openMenu.bind(this)
     this._closeMenu = this._closeMenu.bind(this)
     this._toggleModal = this._toggleModal.bind(this)
-    this._createNewBranch = this._createNewBranch.bind(this)
     this._sync = this._sync.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
     this._exportLabbook = this._exportLabbook.bind(this)
@@ -86,56 +84,13 @@ export default class UserNote extends Component {
       this.setState({ menuOpen: false })
     }
   }
-  /**
-    @param {string} branchName
-    creates a new branch
-  */
-  _createNewBranch(branchName) {
-    let self = this;
 
-    this._checkSessionIsValid().then((response) => {
-      if (response.data) {
-
-        if (response.data.userIdentity.isSessionValid) {
-          this.setState({
-            branchesOpen: true,
-            newBranchName: '',
-            isValid: true,
-          })
-
-          CreateBranchMutation(
-            this.state.owner,
-            this.state.labbookName,
-            branchName,
-            this.props.labbookId,
-            (error, response) => {
-              self._toggleModal('createBranchVisible')
-              if (error) {
-                store.dispatch({
-                  type: 'ERROR_MESSAGE',
-                  payload: {
-                    message: "Problem Creating new branch, make sure you have a valid session and internet connection",
-                    messageBody: error
-                  }
-                })
-              }
-            })
-        } else {
-
-          //auth.login()
-          self.setState({
-            showLoginPrompt: true
-          })
-        }
-      }
-    })
-
-  }
   /**
     @param {string} value
     sets state on createBranchVisible and toggles modal cover
   */
   _toggleModal(value) {
+    console.log(value)
     this.setState({ menuOpen: false })
     if (!this.state[value]) {
       document.getElementById('modal__cover').classList.remove('hidden')
@@ -146,26 +101,6 @@ export default class UserNote extends Component {
       [value]: !this.state[value]
     })
   }
-  /**
-    @param {object} event
-    validates new branch name and sets state if it passes validation
-  */
-  _setNewBranchName(evt) {
-
-    let isValid = validation.labbookName(evt.target.value);
-
-    if (isValid) {
-      this.setState({
-        newBranchName: evt.target.value,
-        isValid: true
-      })
-    } else {
-      this.setState({
-        isValid: false
-      })
-    }
-  }
-
   /**
   *  @param {}
   *  toggles open menu state
@@ -629,13 +564,15 @@ export default class UserNote extends Component {
     })
 
     let modalCoverCSS = classNames({
-      'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt && !this.state.forceSyncModalVisible && !this.state.showCollaborators,
+      'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt && !this.state.forceSyncModalVisible && !this.state.showCollaborators && !this.state.createBranchVisible,
       'modal__cover': true
     })
 
     let syncModalCSS = classNames({
       'hidden': !this.state.forceSyncModalVisible
     })
+
+    console.log(this, this.props.createBranchVisible)
 
     return (
       <div className="BranchMenu flex flex--column">
@@ -659,6 +596,11 @@ export default class UserNote extends Component {
             className="BranchModal--close"></div>
             <ForceSync toggleSyncModal={this._toggleSyncModal}/>
         </div>
+
+        <CreateBranch
+          modalVisible={this.state.createBranchVisible}
+          toggleModal={this._toggleModal}
+        />
 
         <div className={collaboratorsModalCss}>
           <div
@@ -697,32 +639,10 @@ export default class UserNote extends Component {
           }
 
         </div>
-        <div
-            className={this.state.createBranchVisible ? 'BranchModal' : 'hidden'}>
-            <div
-              onClick={() => { this._toggleModal('createBranchVisible') }}
-              className="BranchModal--close">
-            </div>
-            <h4 className="BranchModal__header--new-branch">New Branch</h4>
-            <hr />
-            <input
-              className="BranchCard__name-input"
-              onKeyUp={(evt) => { this._setNewBranchName(evt) }}
-              type="text"
-              placeholder="Branch name"
-            />
-            <p className={!this.state.isValid ? 'Branch__error error' : 'Branch__error visibility-hidden'}> Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. my-branch-name)</p>
-            <button
-            className="BranchCard__create-branch"
-            disabled={(this.state.newBranchName.length === 0) && this.state.isValid}
-            onClick={() => { this._createNewBranch(this.state.newBranchName) }}>
-            Create Branch
-            </button>
-          </div>
 
-          <button onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
-          <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
-          <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
+        <button onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
+        <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
+        <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
 
           <ul className="BranchMenu__list">
             <li className="BranchMenu__item--collaborators"
@@ -733,7 +653,14 @@ export default class UserNote extends Component {
               <hr />
             </li>
             <li className="BranchMenu__item--new-branch">
-              New Branch
+              <button
+                onClick={() => { this._toggleModal('createBranchVisible') }}
+                disabled={!this.state.addedRemoteThisSession}
+                className="BranchMenu__item--new-branch-button"
+              >
+                New Branch
+              </button>
+
               </li>
             <li className="BranchMenu__item--merge">Merge</li>
             <li className={exportCSS}>

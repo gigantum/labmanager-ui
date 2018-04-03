@@ -122,7 +122,7 @@ class Branches extends Component {
         'Brances__slider-button--left': this.props.branchesOpen && (showRightBumper),
         'hidden': !(this.props.branchesOpen && (showRightBumper))
       })
-      console.log(this.props.labbook)
+      console.log(branches)
       return(
         <div className={branchesCSS}>
 
@@ -230,7 +230,7 @@ export default createPaginationContainer(
      const name = labbookName
      let first = count
      cursor = props.labbook.branches.edges[props.labbook.branches.edges.length - 1].cursor
-
+     console.log(props, cursor)
      return {
        first,
        cursor,

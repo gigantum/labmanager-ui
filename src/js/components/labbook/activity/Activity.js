@@ -83,7 +83,7 @@ class Activity extends Component {
     let activityRecords = this.props.labbook.activityRecords
 
 
-    let cursor =  activityRecords.edges[ activityRecords.edges.length - 1].node.cursor
+    let cursor = activityRecords.edges[ activityRecords.edges.length - 1].node.cursor
 
     relay.refetchConnection(
       counter,
@@ -159,7 +159,7 @@ class Activity extends Component {
     activityRecords.edges.forEach((edge) => {
 
       let date = (edge.node && edge.node.timestamp) ? new Date(edge.node.timestamp) : new Date()
-      let timeHash = date.getYear() + '_' + date.getMonth() + ' _' + date.getDate();
+      let timeHash = `${date.getYear()}_${date.getMonth()}_${date.getDate()}`;
       let newActivityObject = {edge: edge, date: date}
       activityTime[timeHash] ? activityTime[timeHash].push(newActivityObject) : activityTime[timeHash] = [newActivityObject];
     })
@@ -259,14 +259,16 @@ class Activity extends Component {
                         )
                       }
 
-                      <div key={k + 'card'}>
+                      <div key={`${k}__card`}>
                         {
                           activityRecordsTime[k].map((obj) => {
+
                             return (
-                              [<ActivityCard
-                                key={obj.edge.node.id}
-                                edge={obj.edge}
-                              />,
+                              <div key={obj.edge.node.id}>
+                                <ActivityCard
+                                  key={`${obj.edge.node.id}_activity-card`}
+                                  edge={obj.edge}
+                                />
                                 <div className="Activity__submenu-container">
                                   <div
                                     className="Activity__submenu-circle"
@@ -281,7 +283,8 @@ class Activity extends Component {
                                     </h5>
                                   </div>
                                 </div>
-                              ]
+                              </div>
+
                             )
                           })
                         }
@@ -376,12 +379,11 @@ export default createPaginationContainer(
 
     const {owner} = props.match.params;
     const name = props.match.params.labbookName
-    const first = counter;
+    const first = counter
 
     cursor = pagination ? props.labbook.activityRecords.edges[props.labbook.activityRecords.edges.length - 1].cursor : null
-
-    ;
-     return {
+  
+    return {
        first,
        cursor,
        name,
