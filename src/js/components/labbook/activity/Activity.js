@@ -180,6 +180,7 @@ class Activity extends Component {
   }
 
   _toggleRollbackMenu(node) {
+
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
     if(canEditEnvironment) {
@@ -261,28 +262,30 @@ class Activity extends Component {
 
                       <div key={`${k}__card`}>
                         {
-                          activityRecordsTime[k].map((obj) => {
+                          activityRecordsTime[k].map((obj, j) => {
 
                             return (
-                              <div key={obj.edge.node.id}>
+                              <div className="ActivtyCard__wrapper" key={obj.edge.node.id}>
+                                { ((i !== 0 )|| (j !== 0)) &&
+                                  <div className="Activity__submenu-container">
+                                    <div
+                                      className="Activity__submenu-circle"
+                                    >
+                                    </div>
+                                    <div className="Activity__submenu-subcontainer">
+                                      <h5
+                                        className="Activity__rollback-text"
+                                        onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+                                      >
+                                        Rollback to previous state
+                                      </h5>
+                                    </div>
+                                  </div>
+                                }
                                 <ActivityCard
                                   key={`${obj.edge.node.id}_activity-card`}
                                   edge={obj.edge}
                                 />
-                                <div className="Activity__submenu-container">
-                                  <div
-                                    className="Activity__submenu-circle"
-                                  >
-                                  </div>
-                                  <div className="Activity__submenu-subcontainer">
-                                    <h5
-                                      className="Activity__rollback-text"
-                                      onClick={() => this._toggleRollbackMenu(obj.edge.node)}
-                                    >
-                                      Rollback to previous state
-                                    </h5>
-                                  </div>
-                                </div>
                               </div>
 
                             )
@@ -382,7 +385,7 @@ export default createPaginationContainer(
     const first = counter
 
     cursor = pagination ? props.labbook.activityRecords.edges[props.labbook.activityRecords.edges.length - 1].cursor : null
-  
+
     return {
        first,
        cursor,

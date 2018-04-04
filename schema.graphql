@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Mon Mar 26 2018 15:34:42 GMT-0400 (EDT)
+# timestamp: Wed Apr 04 2018 10:22:14 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -156,10 +156,17 @@ input AddPackageComponentInput {
   manager: String!
   package: String!
   version: String
+  skipValidation: Boolean
   clientMutationId: String
 }
 
-"""Mutation to add a new package to labbook"""
+"""
+Mutation to add a new package to labbook
+
+The optional argument `skipValidation` will skip the validation step when adding the package.
+You MUST have previously validated the package information or errors can occur at build time.
+You MUST include a version, since auto-addition of a package version is done during validation.
+"""
 type AddPackageComponentPayload {
   newPackageComponentEdge: PackageComponentEdge
   clientMutationId: String
@@ -266,6 +273,20 @@ type CreateBranchPayload {
   clientMutationId: String
 }
 
+input CreateExperimentalBranchInput {
+  owner: String!
+  labbookName: String!
+  branchName: String!
+  revision: String
+  clientMutationId: String
+}
+
+"""Mutation to create a local experimental (or Rollback) branch. """
+type CreateExperimentalBranchPayload {
+  newBranchName: Boolean
+  clientMutationId: String
+}
+
 input CreateLabbookInput {
   name: String!
   description: String!
@@ -339,6 +360,19 @@ value as specified by
 [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 """
 scalar DateTime
+
+input DeleteExperimentalBranchInput {
+  owner: String!
+  labbookName: String!
+  branchName: String!
+  clientMutationId: String
+}
+
+"""Delete a feature/rollback branch. Fails for any other attempt."""
+type DeleteExperimentalBranchPayload {
+  success: Boolean
+  clientMutationId: String
+}
 
 input DeleteLabbookCollaboratorInput {
   owner: String!
@@ -501,10 +535,14 @@ type Labbook implements Node & GitRepository {
   description: String
   schemaVersion: Int
   sizeBytes: String
-  activeBranch: LabbookRef
+  activeBranchName: String
+  workspaceBranchName: String
+  availableBranchNames: [String]
+  mergeableBranchNames: [String]
+  activeBranch: LabbookRef @deprecated(reason: "Can use workspaceBranchName instead")
+  branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection @deprecated(reason: "Can use availableBranchNames instead")
   defaultRemote: String
   creationDateUtc: DateTime
-  branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   collaborators: [String]
   canManageCollaborators: Boolean
   updatesAvailableCount: Int
@@ -639,6 +677,10 @@ type LabbookMutations {
   removeFavorite(input: RemoveLabbookFavoriteInput!): RemoveLabbookFavoritePayload
   addCollaborator(input: AddLabbookCollaboratorInput!): AddLabbookCollaboratorPayload
   deleteCollaborator(input: DeleteLabbookCollaboratorInput!): DeleteLabbookCollaboratorPayload
+  createExperimentalBranch(input: CreateExperimentalBranchInput!): CreateExperimentalBranchPayload
+  deleteExperimentalBranch(input: DeleteExperimentalBranchInput!): DeleteExperimentalBranchPayload
+  mergeFromBranch(input: MergeFromBranchInput!): MergeFromBranchPayload
+  workonExperimentalBranch(input: WorkonBranchInput!): WorkonBranchPayload
 }
 
 """
@@ -727,6 +769,22 @@ input MakeLabbookDirectoryInput {
 
 type MakeLabbookDirectoryPayload {
   newLabbookFileEdge: LabbookFileEdge
+  clientMutationId: String
+}
+
+input MergeFromBranchInput {
+  owner: String!
+  labbookName: String!
+  otherBranchName: String!
+  force: Boolean
+  clientMutationId: String
+}
+
+"""
+Merge from another branch into the current active branch. Force if necessary. 
+"""
+type MergeFromBranchPayload {
+  success: Boolean
   clientMutationId: String
 }
 
@@ -977,4 +1035,18 @@ type UserIdentity implements Node & User {
   givenName: String
   familyName: String
   isSessionValid: Boolean
+}
+
+input WorkonBranchInput {
+  owner: String!
+  labbookName: String!
+  branchName: String!
+  revision: String
+  clientMutationId: String
+}
+
+"""Work on another branch (perform a git checkout)."""
+type WorkonBranchPayload {
+  currentBranchName: String
+  clientMutationId: String
 }

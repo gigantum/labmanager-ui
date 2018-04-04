@@ -58,13 +58,17 @@
 
 }
 
-.ActivityCard:before, .Activity__date-tab:before {
+.ActivtyCard__wrapper{
+    position: relative;
+}
+
+.ActivtyCard__wrapper:before, .Activity__date-tab:before {
   content: "";
   display: block;
   position: absolute;
   z-index: 1;
-  top: calc(100% + 10px);
-  left: 25px;
+  top: 100%;
+  left: 40px;
   border: 4px solid $romanSilver;
   border-width: 0 0 0 4px;
   width: 1px;
@@ -79,7 +83,7 @@
   left: 35px;
 }
 
-.ActivityCard:nth-last-child(1):before {
+.ActivtyCard__wrapper:nth-last-child(1):before {
   display: none !important;
 }
 

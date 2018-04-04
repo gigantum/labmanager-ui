@@ -1,7 +1,7 @@
 //vendor
 import React, { Component } from 'react'
 //mutations
-import CheckoutBranchMutation from 'Mutations/branches/CheckoutBranchMutation'
+import WorkonExperimentalBranchMutation from 'Mutations/branches/WorkonExperimentalBranchMutation'
 //store
 import store from 'JS/redux/store'
 
@@ -20,15 +20,15 @@ export default class BranchCard extends Component {
 
   */
   _checkoutBranch(){
-    const {branchName} = this.props.edge.node
-    const {labbookId} = this.props
+    const branchName = this.props.name
     const {owner, labbookName} = this.state
+    const revision = null
 
-    CheckoutBranchMutation(
+    WorkonExperimentalBranchMutation(
       owner,
       labbookName,
       branchName,
-      labbookId,
+      revision,
       (error)=>{
 
         if(error){
@@ -52,7 +52,8 @@ export default class BranchCard extends Component {
   }
   render(){
 
-    const isCurrentBranch = (this.props.edge.node.name === this.props.activeBranch.name)
+    const isCurrentBranch = (this.props.name === this.props.activeBranchName)
+
     return(
       <div className='BranchCard'>
         { isCurrentBranch &&
@@ -61,12 +62,12 @@ export default class BranchCard extends Component {
           </div>
 
         }
-        <h6 className="BranchCard__title">{this.props.edge.node.name}</h6>
+        <h6 className="BranchCard__title">{this.props.name}</h6>
 
         <div className="BranchCard__button">
           <button
             onClick={()=>{this._checkoutBranch()}}
-            disabled
+            disabled={this.props.name === this.props.activeBranchName}
             >
             Switch To Branch
           </button>

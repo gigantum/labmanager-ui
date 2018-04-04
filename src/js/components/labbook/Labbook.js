@@ -310,7 +310,7 @@ class Labbook extends Component {
                   branchesOpen={this.state.branchesOpen}
                   labbook={labbook}
                   labbookId={labbook.id}
-                  activeBranch={labbook.activeBranch}
+                  activeBranch={labbook.activeBranchName}
                 />
 
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
@@ -454,17 +454,7 @@ const LabbookFragmentContainer = createFragmentContainer(
           defaultRemote
           owner
           creationDateUtc
-          activeBranch{
-            id
-            name
-            prefix
-            commit{
-              hash
-              shortHash
-              committedOn
-              id
-            }
-          }
+
           environment{
             containerStatus
             imageStatus
@@ -485,13 +475,17 @@ const LabbookFragmentContainer = createFragmentContainer(
           collaborators
           canManageCollaborators
 
+          availableBranchNames
+          mergeableBranchNames
+          workspaceBranchName
+          activeBranchName
+
           ...Environment_labbook
           ...Overview_labbook
           ...Activity_labbook
           ...Code_labbook
           ...InputData_labbook
           ...OutputData_labbook
-          ...Branches_labbook
 
       }`
   }

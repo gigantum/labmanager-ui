@@ -3,7 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import dateFormat from 'dateformat';
 //Mutations
-import CreateBranchMutation from 'Mutations/branches/CreateBranchMutation'
+import CreateExperimentalBranchMutation from 'Mutations/branches/CreateExperimentalBranchMutation'
 //components
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 //utilities
@@ -103,15 +103,16 @@ export default class CreateBranchModal extends React.Component {
 
     const {owner, labbookName} = store.getState().routes
     const {branchName} = this.state
+    console.log(this.props.selected)
+    const revision = this.props.selected ? this.props.selected.commit : null
 
-    console.log(owner,
-    labbookName,
-    branchName)
 
-    CreateBranchMutation(
+
+    CreateExperimentalBranchMutation(
       owner,
       labbookName,
       branchName,
+      revision,
       (error, response) => {
 
         if(self.props.toggleModal){
@@ -180,7 +181,7 @@ export default class CreateBranchModal extends React.Component {
                           type="text"
                           onChange={(evt) => this._updateTextState(evt, 'branchDescription')}
                           placeholder="Briefly describe this branch, its purpose and any other key details. "
-                          defaultValue={this.props.selected ? `Rollback branch created on ${this._formattedISO(Date.now())} to export '${this.props.activeBranch.name}' on ${this._formattedISO(this.props.selected.timestamp)}` : ''}
+                          defaultValue={this.props.selected ? `Rollback branch created on ${this._formattedISO(Date.now())} to export '${this.props.activeBranchName}' on ${this._formattedISO(this.props.selected.timestamp)}` : ''}
                         />
                         <p className={'CreateBranch__warning ' + this.state.textWarning}>{`${this.state.textLength} characters remaining`}</p>
                       </div>

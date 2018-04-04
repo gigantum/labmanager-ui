@@ -12,7 +12,7 @@ import BranchCard from './BranchCard'
 import store from 'JS/redux/store'
 
 
-class Branches extends Component {
+export default class Branches extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -27,9 +27,9 @@ class Branches extends Component {
     subscribe to store to update state
   */
   componentDidMount() {
-    if(this.props.labbook.branches.pageInfo.hasNextPage){
-      this._loadMore()
-    }
+    // if(this.props.labbook.branches.pageInfo.hasNextPage){
+    //   this._loadMore()
+    // }
     const width = this.refs.Branches__branchesList.offsetWidth
     this.setState({width: width})
   }
@@ -82,26 +82,25 @@ class Branches extends Component {
   * @return{array} filteredBranches
   */
   _filterBranches(branches){
-    let activeBranch
-    let filteredBranches = branches.filter((branch) => {
 
-      if(branch.node.name === this.props.labbook.activeBranch.name){
-        activeBranch = branch;
-      }
-      return (branch.node.name !== this.props.labbook.activeBranch.name)
+    let activeBranchName
+
+    let filteredBranches = branches.filter((branchName) => {
+      return (branchName !== this.props.labbook.activeBranchName)
     });
 
-    if(activeBranch){
-      filteredBranches.unshift(activeBranch);
-    }
+
+    filteredBranches.unshift(this.props.labbook.activeBranchName);
+
     return filteredBranches
   }
 
   render(){
-    let showRightBumper = (-this.state.listPosition < (25 * (this.props.labbook.branches.edges.length - 4)))
+
+    let showRightBumper = (-this.state.listPosition < (25 * (this.props.labbook.availableBranchNames.length - 4)))
 
     if(this.props.labbook){
-      const branches = this._filterBranches(this.props.labbook.branches.edges);
+      const branches = this._filterBranches(this.props.labbook.availableBranchNames);
 
       const branchesCSS = classNames({
         'Branches': this.props.branchesOpen,
@@ -122,7 +121,7 @@ class Branches extends Component {
         'Brances__slider-button--left': this.props.branchesOpen && (showRightBumper),
         'hidden': !(this.props.branchesOpen && (showRightBumper))
       })
-      console.log(branches)
+
       return(
         <div className={branchesCSS}>
 
@@ -135,15 +134,15 @@ class Branches extends Component {
             style={{left: (this.state.listPosition < 0) ? ' calc(' + this.state.listPosition + 'vw - 200px)' : ' 0vw'}}>
 
             {
-              branches.map((edge)=>{
+              branches.map((name)=>{
                 return (
 
                   <div
-                    key={edge.node.id}
+                    key={name}
                     className="Branches__card-wrapper">
                       <BranchCard
-                        activeBranch={this.props.activeBranch}
-                        edge={edge}
+                        activeBranchName={this.props.labbook.activeBranchName}
+                        name={name}
                         labbookId={this.props.labbookId}
                       />
                   </div>)
@@ -167,88 +166,88 @@ class Branches extends Component {
   activity pagination container
   contains activity fragment and for query consumption
 */
-export default createPaginationContainer(
-  Branches,
-  {
-    labbook: graphql`
-      fragment Branches_labbook on Labbook{
-        branches(first: $first, after: $cursor) @connection(key: "Branches_branches"){
-          edges{
-            node{
-              id
-              name
-              prefix
-              refName
-              commit{
-                hash
-                shortHash
-                committedOn
-                id
-                name
-                owner
-              }
-            }
-            cursor
-          }
-          pageInfo{
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
-          }
-        }
-        activeBranch{
-          id
-          name
-          refName
-          prefix
-          commit{
-            hash
-            shortHash
-            committedOn
-            id
-            name
-            owner
-          }
-        }
-      }`
-  },
-  {
-    direction: 'forward',
-    getConnectionFromProps(props) {
-        return props.labbook && props.labbook.branches;
-    },
-    getFragmentVariables(prevVars, first, cursor) {
-
-      return {
-       ...prevVars,
-       first: first,
-     };
-   },
-   getVariables(props, {count, cursor}, fragmentVariables) {
-     const {owner, labbookName} = store.getState().routes
-     const name = labbookName
-     let first = count
-     cursor = props.labbook.branches.edges[props.labbook.branches.edges.length - 1].cursor
-     console.log(props, cursor)
-     return {
-       first,
-       cursor,
-       name,
-       owner
-       // in most cases, for variables other than connection filters like
-       // `first`, `after`, etc. you may want to use the previous values.
-       //orderBy: fragmentVariables.orderBy,
-     };
-   },
-   query: graphql`
-     query BranchesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
-       labbook(name: $name, owner: $owner){
-         id
-         description
-         ...Branches_labbook
-       }
-     }`
-
-  }
-)
+// export default createPaginationContainer(
+//   Branches,
+//   {
+//     labbook: graphql`
+//       fragment Branches_labbook on Labbook{
+//         branches(first: $first, after: $cursor) @connection(key: "Branches_branches"){
+//           edges{
+//             node{
+//               id
+//               name
+//               prefix
+//               refName
+//               commit{
+//                 hash
+//                 shortHash
+//                 committedOn
+//                 id
+//                 name
+//                 owner
+//               }
+//             }
+//             cursor
+//           }
+//           pageInfo{
+//             endCursor
+//             hasNextPage
+//             hasPreviousPage
+//             startCursor
+//           }
+//         }
+//         activeBranch{
+//           id
+//           name
+//           refName
+//           prefix
+//           commit{
+//             hash
+//             shortHash
+//             committedOn
+//             id
+//             name
+//             owner
+//           }
+//         }
+//       }`
+//   },
+//   {
+//     direction: 'forward',
+//     getConnectionFromProps(props) {
+//         return props.labbook && props.labbook.branches;
+//     },
+//     getFragmentVariables(prevVars, first, cursor) {
+//
+//       return {
+//        ...prevVars,
+//        first: first,
+//      };
+//    },
+//    getVariables(props, {count, cursor}, fragmentVariables) {
+//      const {owner, labbookName} = store.getState().routes
+//      const name = labbookName
+//      let first = count
+//      cursor = props.labbook.branches.edges[props.labbook.branches.edges.length - 1].cursor
+//      console.log(props, cursor)
+//      return {
+//        first,
+//        cursor,
+//        name,
+//        owner
+//        // in most cases, for variables other than connection filters like
+//        // `first`, `after`, etc. you may want to use the previous values.
+//        //orderBy: fragmentVariables.orderBy,
+//      };
+//    },
+//    query: graphql`
+//      query BranchesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
+//        labbook(name: $name, owner: $owner){
+//          id
+//          description
+//          ...Branches_labbook
+//        }
+//      }`
+//
+//   }
+// )

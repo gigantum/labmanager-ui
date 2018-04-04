@@ -655,7 +655,6 @@ export default class UserNote extends Component {
             <li className="BranchMenu__item--new-branch">
               <button
                 onClick={() => { this._toggleModal('createBranchVisible') }}
-                disabled={!this.state.addedRemoteThisSession}
                 className="BranchMenu__item--new-branch-button"
               >
                 New Branch
