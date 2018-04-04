@@ -49,7 +49,6 @@ export default function CreateLabbookMutation(
       clientMutationId: tempID++
     }
   }
-  debugger
   commitMutation(
     environment,
     {
