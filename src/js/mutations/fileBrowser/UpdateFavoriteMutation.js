@@ -97,18 +97,24 @@ export default function UpdateFavoriteMutation(
 
         const node = store.get(favorite.id)
 
-        node.setValue(updatedDescription, 'description')
-        node.setValue(updatedIndex, 'index')
+        if(node){
+          node.setValue(updatedDescription, 'description')
+          node.setValue(updatedIndex, 'index')
+        }
 
       },
 
       updater: (store, response)=>{
 
-        const node = store.get(response.updateFavorite.updatedFavoriteEdge
-.node.id)
+        if(response && response.updateFavorite){
 
-        node.setValue(updatedDescription, 'description')
-        node.setValue(updatedIndex, 'index')
+          const node = store.get(response.updateFavorite.updatedFavoriteEdge.node.id)
+
+          if(node){
+            node.setValue(updatedDescription, 'description')
+            node.setValue(updatedIndex, 'index')
+          }
+        }
       }
 
     },

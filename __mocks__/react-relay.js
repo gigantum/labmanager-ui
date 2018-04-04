@@ -1,6 +1,7 @@
 
 import { XMLHttpRequest } from 'xmlhttprequest';
 import relayTestingUtils from 'relay-testing-utils';
+import {commitMutation, graphql} from 'react-relay';
 import React,{Component} from 'react'
 global.XMLHttpRequest = XMLHttpRequest;
 
@@ -11,7 +12,8 @@ relay.createFragmentContainer = (c) => c;
 relay.createPaginationContainer = (c) => c;
 relay.createRefetchContainer = (c) => c;
 relay.Component = Component
-
+relay.commitMutation = commitMutation
+relay.graphql = graphql
 
 class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
 ;
