@@ -37,7 +37,6 @@ export default function BuildImageMutation(
       mutation,
       variables,
       onCompleted: (response, error) => {
-
         if(error){
           console.log(error)
           reduxStore.dispatch({
@@ -48,7 +47,7 @@ export default function BuildImageMutation(
             }
           })
         }
-        callback(error)
+        callback(response, error)
       },
       onError: err => console.error(err),
 

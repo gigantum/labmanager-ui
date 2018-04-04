@@ -3,10 +3,11 @@ import uuidv4 from 'uuid/v4'
 // mutations
 import DeleteLabbook from './../deleteLabbook';
 import CreateLabbook from './../createLabbook';
+import DeleteCollaborator from './../deleteCollaborator';
 
 const labbookName = uuidv4()
 
-describe('Test Suite: Create && delete labbook', () => {
+describe('Test Suite: Create User Note', () => {
 
   test('Test: CreateLabbookMuation - Create Labbook Mutation untracked', done => {
     const isUntracked = true;
@@ -31,12 +32,35 @@ describe('Test Suite: Create && delete labbook', () => {
     )
 
   })
-  test('Test: CreateLabbookMuation - Create Labbook that already exists = invalid', done => {
-    const isUntracked = false;
 
-    CreateLabbook.createLabbook(
+  // test('Test: DeleteCollaboratorMutation - Delete Collaborator', done => {
+  //   const username = '';
+  //   DeleteCollaborator.deleteCollaborator(
+  //       labbookName,
+  //       username,
+  //       (response, error) => {
+  //         console.log(response, error)
+  //         if(response){
+
+  //           expect(response.createUserNote).toBeTruthy();
+
+  //           done()
+
+  //         }else{
+
+  //           done.fail(new Error(error))
+  //         }
+
+  //       }
+  //   )
+
+  // })
+
+  test('Test: DeleteCollaboratorMutation - Delete Collaborator (error)', done => {
+    const username = ''
+    DeleteCollaborator.deleteCollaborator(
         labbookName,
-        isUntracked,
+        username,
         (response, error) => {
           if(error){
             expect(error).toBeTruthy();
@@ -48,6 +72,7 @@ describe('Test Suite: Create && delete labbook', () => {
     )
 
   })
+
 
 
   test('Test: DeleteLabbookMutation - Delete Labbook Mutation confirm', done => {
@@ -69,25 +94,6 @@ describe('Test Suite: Create && delete labbook', () => {
 
             done.fail(new Error(error))
 
-          }
-        }
-    )
-
-  })
-
-  test('Test: DeleteLabbookMutation - Delete invalid labbook', done => {
-
-    const confirm = true
-
-    DeleteLabbook.deleteLabbook(
-        'invalid',
-        confirm,
-        (response, error) => {
-          if(error){
-            expect(error).toBeTruthy();
-            done()
-          } else{
-            done.fail();
           }
         }
     )

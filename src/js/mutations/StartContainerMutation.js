@@ -27,6 +27,7 @@ export default function StartContainerMutation(
       clientMutationId: '' + tempID++
     }
   }
+  console.log(labbookName, owner, clientMutationId, callback)
   commitMutation(
     environment,
     {

@@ -59,7 +59,7 @@ class Environment extends Component {
             labbookName,
               owner,
               false,
-              (error) => {
+              (response, error) => {
 
 
                 if(error){
@@ -84,7 +84,7 @@ class Environment extends Component {
         labbookName,
         owner,
         false,
-        (error) => {
+        (response, error) => {
           if(error){
             store.dispatch({
               type: 'ERROR_MESSAGE',

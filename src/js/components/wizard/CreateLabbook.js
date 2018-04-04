@@ -108,7 +108,7 @@ export default class CreateLabbook extends React.Component {
                 labbookName,
                 owner,
                 false,
-                (error)=>{
+                (response, error)=>{
                   if(error){
                     console.error(error)
                     store.dispatch(
@@ -131,7 +131,7 @@ export default class CreateLabbook extends React.Component {
                 labbookName,
                 localStorage.getItem('username'),
                 false,
-                (error)=>{
+                (response, error)=>{
                   if(error){
                     console.error(error)
                     store.dispatch(
