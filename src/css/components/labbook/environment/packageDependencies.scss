@@ -203,7 +203,19 @@
 
 }
 
-.PackageDependencies__optimistic-updating{
+.PackageDependencies__optimistic-updating {
   opacity: 0.1;
   animation: fluxuateLoad 3s infinite;
+}
+
+.PackageDependencies__version-loading {
+  width: 20px;
+  height: 20px;
+  border: 3px solid $grey;
+  border-top: 3px solid $turquise;
+  border-radius: 50%;
+  position: absolute;
+  margin-left: 10px;
+  display: inline-block;
+  animation: spin 2s linear infinite;
 }
