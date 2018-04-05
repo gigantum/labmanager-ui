@@ -9,7 +9,7 @@ import testConfig from './config'
 let owner = JSON.parse(fs.readFileSync(os.homedir() + testConfig.ownerLocation, 'utf8')).username
 
 const StopContainer = {
-  stopContainer: (labbbookName, callback) => {
+  stopContainer: (labbbookName, clientMutationId, callback) => {
     StopContainerMutation(
       labbbookName,
       owner,

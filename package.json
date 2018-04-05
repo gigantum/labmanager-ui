@@ -128,8 +128,13 @@
   },
   "jest": {
     "collectCoverageFrom": [
+      "src/js/**.*js",
       "!src/js/**.*graphql.js",
-      "src/js/mutations/**/*.js"
+      "src/js/mutations/**/*.js",
+      "!src/js/mutations/branches/*.js",
+      "!src/js/mutations/fileBrowser/*.js",
+      "!src/js/mutations/ImportLabbookMutation.js",
+      "!src/js/mutations/RenameLabbookMutation.js"
     ],
     "setupFiles": [
       "<rootDir>/config/polyfills.js",

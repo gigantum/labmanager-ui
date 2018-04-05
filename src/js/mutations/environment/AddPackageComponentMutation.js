@@ -28,33 +28,34 @@ const mutation = graphql`
   gets a connection to the store and insets an edge if connection is Successful
 */
 function sharedUpdater(store, id, newEdge) {
+  const labbookProxy = store.get(id);
+  if(labbookProxy) {
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      labbookProxy,
+      'PackageDependencies_packageDependencies',
+      []
+    );
 
-  const userProxy = store.get(id);
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    userProxy,
-    'PackageDependencies_packageDependencies',
-    []
-  );
-
-  if(conn){
-    RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
+    if(conn){
+      RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
+    }
   }
-
 }
 
 function sharedDeleteUpdater(store, parentID, deletedId) {
-  const userProxy = store.get(parentID);
-
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    userProxy,
-    'PackageDependencies_packageDependencies',
-  );
-
-  if(conn){
-    RelayRuntime.ConnectionHandler.deleteNode(
-      conn,
-      deletedId,
+  const labbookProxy = store.get(parentID);
+  if(labbookProxy){
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      labbookProxy,
+      'PackageDependencies_packageDependencies',
     );
+
+    if(conn){
+      RelayRuntime.ConnectionHandler.deleteNode(
+        conn,
+        deletedId,
+      );
+    }
   }
 }
 
@@ -119,13 +120,14 @@ export default function AddPackageComponentMutation(
           const id = response.addPackageComponent.newPackageComponentEdge.node.id
           store.delete(id)
           const node = store.create(id, 'package');
-          node.setValue(manager, 'manager')
-          node.setValue(packageName, 'package')
-          node.setValue(version, 'version')
-          node.setValue(schema, 'schema')
-          node.setValue(fromBase, 'fromBase')
-          node.setValue(response.addPackageComponent.newPackageComponentEdge.node.id, 'id')
-
+          if(node) {
+            node.setValue(manager, 'manager')
+            node.setValue(packageName, 'package')
+            node.setValue(version, 'version')
+            node.setValue(schema, 'schema')
+            node.setValue(fromBase, 'fromBase')
+            node.setValue(response.addPackageComponent.newPackageComponentEdge.node.id, 'id')
+          }
           const newEdge = store.create(
             'client:newEdge:' + tempID,
             'PackageComponentEdge',
@@ -137,31 +139,35 @@ export default function AddPackageComponentMutation(
         }
       },
       optimisticUpdater: (store) => {
-
         if(clientMutationId){
 
           const id = 'client:newPackageManager:' + tempID++;
           const node = store.create(id, 'PackageManager');
+          if(node) {
+            node.setValue(manager, 'manager')
+            node.setValue(packageName, 'package')
 
-          node.setValue(manager, 'manager')
-          node.setValue(packageName, 'package')
-
-          node.setValue(version, 'version')
-          node.setValue(labbookName, 'labbookName')
-          node.setValue(owner, 'owner')
+            node.setValue(version, 'version')
+            node.setValue(labbookName, 'labbookName')
+            node.setValue(owner, 'owner')
+          }
           const newEdge = store.create(
             'client:newEdge:' + tempID,
             'PackageComponentEdge',
           );
-
-          newEdge.setLinkedRecord(node, 'node');
+          if(newEdge) {
+            newEdge.setLinkedRecord(node, 'node');
+          }
 
           sharedUpdater(store, environmentId, newEdge);
-          const userProxy = store.get(environmentId);
-          userProxy.setValue(
-            userProxy.getValue('first') + 1,
-            'first',
-          );
+
+          const labbookProxy = store.get(environmentId);
+          if(labbookProxy) {
+            labbookProxy.setValue(
+              labbookProxy.getValue('first') + 1,
+              'first',
+            );
+          }
         }
       },
     },

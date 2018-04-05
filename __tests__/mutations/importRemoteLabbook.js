@@ -6,10 +6,16 @@ import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation';
 //config
 import testConfig from './config'
 
-let owner = JSON.parse(fs.readFileSync(os.homedir() + testConfig.ownerLocation, 'utf8')).username
+
 
 const ImportRemoteLabbook = {
-  importRemoteLabbook: (labbbookName, callback) => {
+  importRemoteLabbook: (callback) => {
+    let {
+      remoteUrl
+    } = testConfig
+    const labbbookName = remoteUrl.split('/')[remoteUrl.split('/').length -1];
+    const owner = remoteUrl.split('/')[remoteUrl.split('/').length -2];
+    remoteUrl = remoteUrl.indexOf('https://') > -1 ? remoteUrl + '.git' : 'https://' + remoteUrl + '.git'
     ImportRemoteLabbookMutation(
       owner,
       labbbookName,

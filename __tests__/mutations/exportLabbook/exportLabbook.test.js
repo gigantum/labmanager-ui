@@ -7,7 +7,7 @@ import ExportLabbook from './../exportLabbook';
 
 const labbookName = uuidv4()
 
-describe('Test Suite: Create User Note', () => {
+describe('Test Suite: Export Labbook', () => {
 
   test('Test: CreateLabbookMuation - Create Labbook Mutation untracked', done => {
     const isUntracked = true;

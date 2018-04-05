@@ -9,7 +9,7 @@ import testConfig from './config'
 let owner = JSON.parse(fs.readFileSync(os.homedir() + testConfig.ownerLocation, 'utf8')).username
 
 const RenameLabbook = {
-  renameLabbook: (originalLabbookName, newLabbookName, callback) => {
+  renameLabbook: (originalLabbookName, newLabbookName, clientMutationId, callback) => {
     RenameLabbookMutation(
       owner,
       originalLabbookName,

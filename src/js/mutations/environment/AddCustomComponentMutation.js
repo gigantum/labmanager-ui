@@ -40,16 +40,17 @@ let tempID = 0;
   gets a connection to the store and insets an edge if connection is Successful
 */
 function sharedUpdater(store, id, newEdge) {
-  const userProxy = store.get(id);
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    userProxy,
-    'CustomDependencies_customDependencies'
-  );
+  const labbookProxy = store.get(id);
+  if(labbookProxy) {
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      labbookProxy,
+      'CustomDependencies_customDependencies'
+    );
 
-  if(conn){
-    RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
+    if(conn){
+      RelayRuntime.ConnectionHandler.insertEdgeAfter(conn, newEdge);
+    }
   }
-
 }
 
 
@@ -88,7 +89,7 @@ export default function AddEnvironmentPackageMutation(
 
       updater: (store, response) => {
 
-        if(response){
+        if(response && response.addCustomComponent && response.addCustomComponent.newCustomComponentEdge && response.addCustomComponent.newCustomComponentEdge.node){
           //TODO use edge from linked record
           const id = 'client:PackageManagerDependencies:' + tempID++;
           const node = store.create(id, 'customPackage');
@@ -107,27 +108,29 @@ export default function AddEnvironmentPackageMutation(
             url
           } = response.addCustomComponent.newCustomComponentEdge.node
 
-
-          node.setValue(componentId, 'componentId')
-          node.setValue(description, 'description')
-          node.setValue(dockerSnippet, 'dockerSnippet')
-          node.setValue(name, 'name')
-          node.setValue(license, 'license')
-          node.setValue(osBaseClass, 'osBaseClass')
-          node.setValue(repository, 'repository')
-          node.setValue(requiredPackageManagers, 'requiredPackageManagers')
-          node.setValue(revision, 'revision')
-          node.setValue(schema, 'schema')
-          node.setValue(tags, 'tags')
-          node.setValue(url, 'url')
-
+          if(node) {
+            node.setValue(componentId, 'componentId')
+            node.setValue(description, 'description')
+            node.setValue(dockerSnippet, 'dockerSnippet')
+            node.setValue(name, 'name')
+            node.setValue(license, 'license')
+            node.setValue(osBaseClass, 'osBaseClass')
+            node.setValue(repository, 'repository')
+            node.setValue(requiredPackageManagers, 'requiredPackageManagers')
+            node.setValue(revision, 'revision')
+            node.setValue(schema, 'schema')
+            node.setValue(tags, 'tags')
+            node.setValue(url, 'url')
+          }
 
           const newEdge = store.create(
             'client:newEdge:' + tempID,
             'PackageManagerEdge',
           );
 
-          newEdge.setLinkedRecord(node, 'node');
+          if(newEdge) {
+            newEdge.setLinkedRecord(node, 'node');
+          }
 
           sharedUpdater(store, environmentId, newEdge);
         }
@@ -137,19 +140,22 @@ export default function AddEnvironmentPackageMutation(
 
         const id = uuidv4()
         const node = store.create(id, 'PackageManager');
+        if(node) {
+          node.setValue(revision, 'revision')
+          node.setValue(componentId, 'componentId')
+          node.setValue(repository, 'repository')
+          node.setValue(labbookName, 'labbookName')
+          node.setValue(owner, 'owner')
+          node.setValue(componentId, 'name')
+        }
 
-        node.setValue(revision, 'revision')
-        node.setValue(componentId, 'componentId')
-        node.setValue(repository, 'repository')
-        node.setValue(labbookName, 'labbookName')
-        node.setValue(owner, 'owner')
-        node.setValue(componentId, 'name')
         const newEdge = store.create(
             uuidv4(),
           'PackageManagerEdge',
         );
-
-        newEdge.setLinkedRecord(node, 'node');
+        if(newEdge) {
+          newEdge.setLinkedRecord(node, 'node');
+        }
 
         sharedUpdater(store, environmentId, newEdge);
 

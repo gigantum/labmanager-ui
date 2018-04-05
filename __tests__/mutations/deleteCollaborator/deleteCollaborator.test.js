@@ -7,7 +7,7 @@ import DeleteCollaborator from './../deleteCollaborator';
 
 const labbookName = uuidv4()
 
-describe('Test Suite: Create User Note', () => {
+describe('Test Suite: Delete Collaborator', () => {
 
   test('Test: CreateLabbookMuation - Create Labbook Mutation untracked', done => {
     const isUntracked = true;
