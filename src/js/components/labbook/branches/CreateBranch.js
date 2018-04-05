@@ -20,7 +20,8 @@ export default class CreateBranchModal extends React.Component {
       'textWarning': 'hidden',
       'textLength': 0,
       'showError': false,
-      'branchName': props.selected ? this._formattedISO(this.props.selected.timestamp) : '',
+      'branchName': '',
+      'rollbackName': props.selected ? this._formattedISO(this.props.selected.timestamp) : '',
       'branchDescription': ''
     };
 
@@ -30,10 +31,21 @@ export default class CreateBranchModal extends React.Component {
     this._updateTextState = this._updateTextState.bind(this)
   }
 
+
   componentWillReceiveProps(nextProps) {
     if(nextProps.modalVisible !== this.state.modalVisible){
       this.setState({'modalVisible': nextProps.modalVisible})
     }
+
+    if(nextProps.selected){
+      let rollbackName =this._formattedISO(nextProps.selected.timestamp)
+      console.log(rollbackName, nextProps.selected)
+      this.setState({rollbackName})
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+
   }
 
   _showModal() {
@@ -105,8 +117,6 @@ export default class CreateBranchModal extends React.Component {
     const {branchName} = this.state
     const revision = this.props.selected ? this.props.selected.commit : null
 
-
-
     CreateExperimentalBranchMutation(
       owner,
       labbookName,
@@ -122,7 +132,7 @@ export default class CreateBranchModal extends React.Component {
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload: {
-              message: "Problem Creating new branch, make sure you have a valid session and internet connection",
+              message: "Problem Creating new branch",
               messageBody: error
             }
           })
@@ -167,7 +177,7 @@ export default class CreateBranchModal extends React.Component {
                           className={this.state.showError ? 'invalid' : ''}
                           onChange={(evt) => this._updateTextState(evt, 'branchName')}
                           placeholder="Enter a unique branch name"
-                          defaultValue={this.state.branchName}
+                          defaultValue={this.state.rollbackName}
                         />
                         <span className={this.state.showError ? 'error' : 'hidden'}>{this._getErrorText()}</span>
                       </div>

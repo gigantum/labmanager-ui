@@ -98,12 +98,14 @@ export default class Branches extends Component {
 
   render(){
 
-    let showRightBumper = (-this.state.listPosition < (25 * (this.props.labbook.availableBranchNames.length - 4)))
+
 
     if(this.props.labbook){
+
       const {labbook} = this.props
       const branchArrayToFilter = this.props.mergeFilter ?  labbook.mergeableBranchNames : labbook.availableBranchNames
       const branches = this._filterBranches(branchArrayToFilter);
+      const showRightBumper = (-this.state.listPosition < (25 * (labbook.availableBranchNames.length - 4)))
 
       const branchesCSS = classNames({
         'Branches': this.props.branchesOpen,
