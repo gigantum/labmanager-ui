@@ -89,8 +89,9 @@ export default class Branches extends Component {
       return (branchName !== this.props.labbook.activeBranchName)
     });
 
-
-    filteredBranches.unshift(this.props.labbook.activeBranchName);
+    if(!this.props.mergeFilter){
+      filteredBranches.unshift(this.props.labbook.activeBranchName);
+    }
 
     return filteredBranches
   }
@@ -100,7 +101,9 @@ export default class Branches extends Component {
     let showRightBumper = (-this.state.listPosition < (25 * (this.props.labbook.availableBranchNames.length - 4)))
 
     if(this.props.labbook){
-      const branches = this._filterBranches(this.props.labbook.availableBranchNames);
+      const {labbook} = this.props
+      const branchArrayToFilter = this.props.mergeFilter ?  labbook.mergeableBranchNames : labbook.availableBranchNames
+      const branches = this._filterBranches(branchArrayToFilter);
 
       const branchesCSS = classNames({
         'Branches': this.props.branchesOpen,
@@ -144,11 +147,14 @@ export default class Branches extends Component {
                         activeBranchName={this.props.labbook.activeBranchName}
                         name={name}
                         labbookId={this.props.labbookId}
+                        mergeFilter={this.props.mergeFilter}
+                        branchesOpen={this.props.branchesOpen}
                       />
                   </div>)
               })
             }
           </div>
+
           <button
             onClick={() => {this._updatePosition(-25)}}
             className={rightBumperCSS}></button>
@@ -160,94 +166,3 @@ export default class Branches extends Component {
     }
   }
 }
-
-
-/*
-  activity pagination container
-  contains activity fragment and for query consumption
-*/
-// export default createPaginationContainer(
-//   Branches,
-//   {
-//     labbook: graphql`
-//       fragment Branches_labbook on Labbook{
-//         branches(first: $first, after: $cursor) @connection(key: "Branches_branches"){
-//           edges{
-//             node{
-//               id
-//               name
-//               prefix
-//               refName
-//               commit{
-//                 hash
-//                 shortHash
-//                 committedOn
-//                 id
-//                 name
-//                 owner
-//               }
-//             }
-//             cursor
-//           }
-//           pageInfo{
-//             endCursor
-//             hasNextPage
-//             hasPreviousPage
-//             startCursor
-//           }
-//         }
-//         activeBranch{
-//           id
-//           name
-//           refName
-//           prefix
-//           commit{
-//             hash
-//             shortHash
-//             committedOn
-//             id
-//             name
-//             owner
-//           }
-//         }
-//       }`
-//   },
-//   {
-//     direction: 'forward',
-//     getConnectionFromProps(props) {
-//         return props.labbook && props.labbook.branches;
-//     },
-//     getFragmentVariables(prevVars, first, cursor) {
-//
-//       return {
-//        ...prevVars,
-//        first: first,
-//      };
-//    },
-//    getVariables(props, {count, cursor}, fragmentVariables) {
-//      const {owner, labbookName} = store.getState().routes
-//      const name = labbookName
-//      let first = count
-//      cursor = props.labbook.branches.edges[props.labbook.branches.edges.length - 1].cursor
-//      console.log(props, cursor)
-//      return {
-//        first,
-//        cursor,
-//        name,
-//        owner
-//        // in most cases, for variables other than connection filters like
-//        // `first`, `after`, etc. you may want to use the previous values.
-//        //orderBy: fragmentVariables.orderBy,
-//      };
-//    },
-//    query: graphql`
-//      query BranchesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
-//        labbook(name: $name, owner: $owner){
-//          id
-//          description
-//          ...Branches_labbook
-//        }
-//      }`
-//
-//   }
-// )

@@ -144,20 +144,17 @@
   @extend .BranchMenu__item;
   background: url('./../images/icons/new-branch.svg') no-repeat left center;
   background-size: 16px;
-  opacity: .3;
 }
 .BranchMenu__item--merge {
   @extend .BranchMenu__item;
   background: url('./../images/icons/merge.svg') no-repeat left center;
   background-size: 16px;
-  opacity: .3;
 }
 
 .BranchMenu__item--export {
   @extend .BranchMenu__item;
   background: url('./../images/icons/download.svg') no-repeat left 8px;
   background-size: 22px;
-  // opacity: .3;
 }
 
 
@@ -210,10 +207,7 @@
 }
 
 
-.BranchMenu__item--collaborators-button,
-.BranchMenu__item--export-button,
-.BranchMenu__item--new-branch-button,
-.BranchMenu__item--delete-button  {
+.BranchMenu__item--flat-button {
   background-size: 16px;
   width: 100%;
   cursor: pointer;
@@ -224,14 +218,8 @@
   padding: 0px;
   color: $romanSilver;
 }
-.BranchMenu__item--new-branch-button:hover,
-.BranchMenu__item--new-branch-button:focus,
-.BranchMenu__item--collaborators-button:hover,
-.BranchMenu__item--collaborators-button:focus,
-.BranchMenu__item--delete-button:hover,
-.BranchMenu__item--delete-button:focus,
-.BranchMenu__item--export-button:hover,
-.BranchMenu__item--export-button:focus {
+.BranchMenu__item--flat-button:hover,
+.BranchMenu__item--flat-button:focus, {
   background-size: 16px;
   color: $turquise;
   width: 100%;
@@ -242,12 +230,8 @@
   border: 0px solid $white;
 }
 
-.BranchMenu__item--collaborators-button.disabled,
-.BranchMenu__item--collaborators-button.disabled:hover,
-.BranchMenu__item--export-button:disabled,
-.BranchMenu__item--export-button:disabled:hover,
-.BranchMenu__item--delete-button:disabled,
-.BranchMenu__item--delete-button:disabled:hover{
+.BranchMenu__item--flat-button.disabled,
+.BranchMenu__item--flat-button.disabled:hover{
   background-size: 16px;
   width: 100%;
   cursor: pointer;

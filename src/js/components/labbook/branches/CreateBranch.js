@@ -103,7 +103,6 @@ export default class CreateBranchModal extends React.Component {
 
     const {owner, labbookName} = store.getState().routes
     const {branchName} = this.state
-    console.log(this.props.selected)
     const revision = this.props.selected ? this.props.selected.commit : null
 
 
@@ -113,7 +112,7 @@ export default class CreateBranchModal extends React.Component {
       labbookName,
       branchName,
       revision,
-      (error, response) => {
+      (response, error) => {
 
         if(self.props.toggleModal){
           self.props.toggleModal('createBranchVisible')

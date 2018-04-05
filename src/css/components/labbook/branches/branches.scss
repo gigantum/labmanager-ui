@@ -84,51 +84,6 @@
 
 }
 
-.BranchCard {
-  @extend .card;
-  padding: 5px 15px;
-  height: 200px;
-  width: calc(100% - 40px);
-  min-width: 100px;
-  margin: 20px;
-  opacity: 1;
-  transition: height 0.5s ease, opacity 0.5s ease;
-  align-self: center;
-  align-items: center;
-  align-content: center;
-  position: relative;
-  @include flex(space-around, column);
-}
-
-.BranchCard__title {
-  align-content: flex-start;
-  align-self: flex-start;
-  align-items: flex-start;
-  word-break: break-all;
-}
-
-.BranchCard__button {
-
-}
-
-.BranchCard--current-banner {
-  width: 100%;
-  background-color: $azure;
-  height: 24px;
-  color: white;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  line-height: 20px;
-  padding: 2px 10px;
-}
-
-// .BranchCard--active {
-//   height: 150px;
-//   border-top: 10px solid $azure;
-//   @extend .BranchCard;
-// }
-
 .Branches-shadow {
   position: absolute;
   width: 100%;
@@ -155,33 +110,9 @@
   }
 }
 
-.BranchCard--create-new {
-  @include flex(space-around, column);
-  @extend .BranchCard;
-}
-
 .Branch__error {
   font-size: 12px;
   margin: 5px 0;
   line-height: 14px;
   height: 42px;
-}
-
-.BranchCard__create-branch {
-  align-self: center;
-  margin: 0 auto;
-  padding: 5px 10px;
-  background: none;
-  border: 2px solid $azure;
-  border-radius: 20px;
-  color: $azure;
-}
-
-.BranchCard__create-branch:hover {
-  background: $azure;
-  color: $white;
-}
-
-.BranchCard__create-branch:disabled {
-  background: none;
 }

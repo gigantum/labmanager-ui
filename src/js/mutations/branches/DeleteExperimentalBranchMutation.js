@@ -19,6 +19,7 @@ export default function DeleteExperimentalBranchMutation(
   owner,
   labbookName,
   branchName,
+  labbookId,
   callback
 ) {
 
@@ -45,7 +46,28 @@ export default function DeleteExperimentalBranchMutation(
         callback(response, error)
       },
       onError: err => {console.error(err)},
+      optimisticUpdater(store){
+
+
+        let labbook = store.get(labbookId)
+        let availableBranchNames = labbook.getValue('availableBranchNames')
+
+        let newAvailableBranchNames = availableBranchNames.filter((listBranchName)=>{
+          return listBranchName !== branchName
+        })
+
+        labbook.setValue(newAvailableBranchNames, 'availableBranchNames')
+
+      },
       updater: (store, response) => {
+        let labbook = store.get(labbookId)
+        let availableBranchNames = labbook.getValue('availableBranchNames')
+
+        let newAvailableBranchNames = availableBranchNames.filter((listBranchName)=>{
+          return listBranchName !== branchName
+        })
+
+        labbook.setValue(newAvailableBranchNames, 'availableBranchNames')
       }
     },
   )

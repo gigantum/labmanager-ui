@@ -49,6 +49,7 @@ export default class UserNote extends Component {
     this._openMenu = this._openMenu.bind(this)
     this._closeMenu = this._closeMenu.bind(this)
     this._toggleModal = this._toggleModal.bind(this)
+    this._mergeFilter = this._mergeFilter.bind(this)
     this._sync = this._sync.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
     this._exportLabbook = this._exportLabbook.bind(this)
@@ -90,7 +91,7 @@ export default class UserNote extends Component {
     sets state on createBranchVisible and toggles modal cover
   */
   _toggleModal(value) {
-    console.log(value)
+
     this.setState({ menuOpen: false })
     if (!this.state[value]) {
       document.getElementById('modal__cover').classList.remove('hidden')
@@ -368,7 +369,10 @@ export default class UserNote extends Component {
 
           if (response.data.userIdentity.isSessionValid) {
 
-            this.setState({ showCollaborators: !this.state.showCollaborators, newCollaborator: '' })
+            this.setState({
+              showCollaborators: !this.state.showCollaborators,
+              newCollaborator: ''
+            })
             this.inputTitle.value = ''
           } else {
 
@@ -542,6 +546,10 @@ export default class UserNote extends Component {
     this.setState({deleteModalVisible: !this.state.deleteModalVisible})
   }
 
+  _mergeFilter(){
+    this.props.mergeCallback()
+    this.setState({ menuOpen: false })
+  }
 
   render() {
     let collaboratorsModalCss = classNames({
@@ -571,8 +579,6 @@ export default class UserNote extends Component {
     let syncModalCSS = classNames({
       'hidden': !this.state.forceSyncModalVisible
     })
-
-    console.log(this, this.props.createBranchVisible)
 
     return (
       <div className="BranchMenu flex flex--column">
@@ -649,24 +655,30 @@ export default class UserNote extends Component {
               >
               <button
                 onClick={() => this._toggleCollaborators()}
-                className='BranchMenu__item--collaborators-button disabled'>Collaborators</button>
+                className='BranchMenu__item--flat-button disabled'>Collaborators</button>
               <hr />
             </li>
             <li className="BranchMenu__item--new-branch">
               <button
                 onClick={() => { this._toggleModal('createBranchVisible') }}
-                className="BranchMenu__item--new-branch-button"
+                className="BranchMenu__item--flat-button"
               >
                 New Branch
               </button>
 
-              </li>
-            <li className="BranchMenu__item--merge">Merge</li>
+            </li>
+            <li className="BranchMenu__item--merge">
+              <button
+                onClick={() => { this._mergeFilter()}}
+                className="BranchMenu__item--flat-button"
+              >
+                Merge
+              </button></li>
             <li className={exportCSS}>
               <button
                 onClick={(evt) => this._exportLabbook(evt)}
                 disabled={this.state.exporting}
-                className="BranchMenu__item--export-button"
+                className="BranchMenu__item--flat-button"
               >
                 Export
               </button>
@@ -675,7 +687,7 @@ export default class UserNote extends Component {
             <li className="BranchMenu__item--delete">
               <button
                 onClick={() => this._toggleDeleteModal()}
-                className="BranchMenu__item--delete-button"
+                className="BranchMenu__item--flat-button"
               >
                 Delete Labbook
               </button>

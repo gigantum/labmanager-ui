@@ -7,9 +7,11 @@ import environment from 'JS/createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
-  mutation WorkonExperimentalBranchMutation($input: WorkonBranchInput!){
+  mutation WorkonExperimentalBranchMutation($input: WorkonBranchInput!, $first: Int, $cursor: String, $hasNext: Boolean!){
     workonExperimentalBranch(input: $input){
-      currentBranchName
+      labbook{
+        ...Labbook_labbook
+      }
       clientMutationId
     }
   }
@@ -30,7 +32,10 @@ export default function WorkonExperimentalBranchMutation(
       labbookName,
       branchName,
       clientMutationId
-    }
+    },
+    first: 2,
+    cursor: null,
+    hasNext: false
   }
   commitMutation(
     environment,

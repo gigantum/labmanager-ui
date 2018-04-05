@@ -43,6 +43,7 @@ class Labbook extends Component {
     this._showLabbookModal = this._showLabbookModal.bind(this)
     this._hideLabbookModal = this._hideLabbookModal.bind(this)
     this._toggleBranchesView = this._toggleBranchesView.bind(this)
+    this._mergeCallback = this._mergeCallback.bind(this)
 
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
@@ -229,24 +230,53 @@ class Labbook extends Component {
   */
   _toggleBranchesView(isSticky){
 
-
+    const branchesOpen = (isSticky === undefined) ? !this.state.branchesOpen : false,
+    mergeFilter = false
     store.dispatch({
-      type: 'UPDATE_BRANCHES_VIEW',
+      type: 'MERGE_MODE',
       payload: {
-        branchesOpen: (isSticky === undefined) ? !this.state.branchesOpen : false
+        branchesOpen,
+        mergeFilter
       }
     })
 
+  }
+  /**
+    @param {}
+    updates branchOpen state
+  */
+  _mergeCallback(mergeFilter){
+    store.dispatch(
+      {
+        type: 'MERGE_MODE',
+        payload:{
+          'mergeFilter': true,
+          'branchesOpen': true
+        }
+    })
+
+  }
+  /**
+    @param {branchName}
+    makes branch name pretty
+    @return {prettyBranchName}
+  */
+  _sanitizeBranchName(branchName){
+    const {owner} = this.props.labbook
+    const workspace = `gm.workspace-${owner}`
+    const prettyBranchName = (branchName === workspace) ? 'workspace' : branchName.replace(`${workspace}.`, '')
+
+    return prettyBranchName
   }
 
   render(){
 
     const { isAuthenticated } = this.props.auth
     const {labbookName} = this.props
-    console.log(this.props.labbook)
+
     if(this.props.labbook){
       const {labbook} = this.props
-      const name = this.props.labbook.activeBranch ? this.props.labbook.activeBranch.name.replace(/-/g, ' ') : 'temp'
+      const name = this._sanitizeBranchName(this.props.labbook.activeBranchName)
       const labbookCSS = classNames({
         'Labbook': true,
         'Labbook--detail-mode': this.state.detailMode,
@@ -287,6 +317,7 @@ class Labbook extends Component {
                      defaultRemote={labbook.defaultRemote}
                      labbookId={labbook.id}
                      remoteUrl={labbook.overview.remoteUrl}
+                     mergeCallback={this._mergeCallback}
                     />
 
                    <ContainerStatus
@@ -311,6 +342,8 @@ class Labbook extends Component {
                   labbook={labbook}
                   labbookId={labbook.id}
                   activeBranch={labbook.activeBranchName}
+                  mergeFilter={this.state.mergeFilter}
+
                 />
 
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>

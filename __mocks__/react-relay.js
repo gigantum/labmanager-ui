@@ -38,5 +38,6 @@ class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
     return this.props.render((this.state.readyState))
   }
 }
+
 relay.QueryRenderer = ReactRelayQueryRenderer
 module.exports = relay

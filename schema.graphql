@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Wed Apr 04 2018 10:22:14 GMT-0400 (EDT)
+# timestamp: Wed Apr 04 2018 17:43:29 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -283,7 +283,7 @@ input CreateExperimentalBranchInput {
 
 """Mutation to create a local experimental (or Rollback) branch. """
 type CreateExperimentalBranchPayload {
-  newBranchName: Boolean
+  labbook: Labbook
   clientMutationId: String
 }
 
@@ -1047,6 +1047,6 @@ input WorkonBranchInput {
 
 """Work on another branch (perform a git checkout)."""
 type WorkonBranchPayload {
-  currentBranchName: String
+  labbook: Labbook
   clientMutationId: String
 }
