@@ -17,7 +17,8 @@ export default class BranchCard extends Component {
       owner: owner,
       labbookName: labbookName,
       forceMerge: false,
-      deleteModalVisible: false
+      deleteModalVisible: false,
+      eneteredBranchName: ''
     }
 
     this._merge = this._merge.bind(this)
@@ -137,7 +138,8 @@ export default class BranchCard extends Component {
   */
   _toggleDeleteModal(){
     this.setState({
-      deleteModalVisible: !this.state.deleteModalVisible
+      'deleteModalVisible': !this.state.deleteModalVisible,
+      'eneteredBranchName': ''
     })
   }
   /**
@@ -147,7 +149,7 @@ export default class BranchCard extends Component {
   */
   _deleteBranch(){
     this.setState({
-      deleteModalVisible: false
+      'deleteModalVisible': false
     })
     const branchName = this.props.name
     const {owner, labbookName} = this.state
@@ -179,6 +181,16 @@ export default class BranchCard extends Component {
     )
 
   }
+  /**
+  *  @param {object} event
+  *  updates state of eneteredBranchName
+  *  @return {}
+  */
+  _updateBranchText(evt){
+    this.setState({
+      'eneteredBranchName': evt.target.value
+    })
+  }
 
   render(){
     const {owner} = this.state
@@ -195,15 +207,35 @@ export default class BranchCard extends Component {
         }
         <h6 className="BranchCard__title">{branchName}</h6>
         { this.state.deleteModalVisible &&
-          [<div className="BranchCard__delete-modal">
+          [<div
+            key="BranchDelete__modal"
+            className="BranchCard__delete-modal">
+              <div
+                onClick={() => this._toggleDeleteModal()}
+                className="BranchCard__close"></div>
               <h4 className="BranchCard__header">Delete Branch</h4>
-              <p className="BranchCard__text">Are you sure you want to delete {branchName}?</p>
+              <p className="BranchCard__text BranchCard__text--red">You are going to remove {owner}/{branchName}. Remove branches cannot be restored. Are you sure?</p>
+              <p className="BranchCard__text">This action can lead to data loss. To prevent accidental deletions we ask you to confirm your intention.</p>
+              <p>Please type {branchName} to procceed.</p>
+              <input
+                onChange={(evt) => {this._updateBranchText(evt)}}
+                onKeyUp={(evt) => {this._updateBranchText(evt)}}
+                className="BranchCard__text"
+                type="text"
+                placeholder={"Enter branch name here"}
+              />
               <div className="BranchCard__button-container">
-                <button onClick={() => this._deleteBranch()}>Yes</button>
-                <button onClick={()=> this._toggleDeleteModal()}>No</button>
+                <button
+                  disabled={branchName !== this.state.eneteredBranchName}
+                  onClick={() => this._deleteBranch()}>
+                  Confirm
+                </button>
               </div>
           </div>,
-          <div className="BranchCard__modal"></div>
+          <div
+            key="BranchDelete__modal-cover"
+            className="BranchCard__modal">
+          </div>
           ]
         }
         {showDelete &&

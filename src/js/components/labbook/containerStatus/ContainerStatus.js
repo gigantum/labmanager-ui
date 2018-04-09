@@ -107,7 +107,7 @@ export default class ContainerStatus extends Component {
     const state = this.state
     const self = this
     FetchContainerStatus.getContainerStatus(owner, labbookName).then((response, error)=>{
-
+      
       const {environment} = response.labbook
 
       if((state.containerStatus !== environment.containerStatus) || (state.imageStatus !== environment.imageStatus)){

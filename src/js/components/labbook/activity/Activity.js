@@ -30,6 +30,7 @@ class Activity extends Component {
       'modalVisible': false,
       'isPaginating': false,
       'selectedNode': null,
+      'createBranchVisible': false
     };
 
     //bind functions here
@@ -38,6 +39,7 @@ class Activity extends Component {
     this._hideAddActivity = this._hideAddActivity.bind(this)
     this._handleScroll = this._handleScroll.bind(this)
     this._refetch = this._refetch.bind(this)
+    this._toggleCreateModal = this._toggleCreateModal.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -166,19 +168,31 @@ class Activity extends Component {
 
     return activityTime
   }
-
+  /**
+  *   @param {}
+  *   toggles activity visibility
+  *   @return {}
+  */
   _toggleActivity(){
     this.setState({
       'modalVisible': !this.state.modalVisible
     })
   }
-
+  /**
+  *   @param {}
+  *   hides add activity
+  *   @return {}
+  */
   _hideAddActivity(){
     this.setState({
       'modalVisible': false
     })
   }
-
+  /**
+  *   @param {}
+  *   hides add activity
+  *   @return {}
+  */
   _toggleRollbackMenu(node) {
 
     const {status} = store.getState().containerStatus;
@@ -186,7 +200,7 @@ class Activity extends Component {
     if(canEditEnvironment) {
       this.setState({selectedNode: node})
       document.getElementById('modal__cover').classList.remove('hidden')
-      this.refs.createBranch._showModal();
+      this.setState({createBranchVisible: true})
     } else {
       store.dispatch({
         type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
@@ -202,6 +216,10 @@ class Activity extends Component {
         }
       })
     }
+  }
+
+  _toggleCreateModal(){
+    this.setState({createBranchVisible: !this.state.createBranchVisible})
   }
 
   render(){
@@ -222,6 +240,8 @@ class Activity extends Component {
                 ref="createBranch"
                 selected={this.state.selectedNode}
                 activeBranch={this.props.activeBranch}
+                modalVisible={this.state.createBranchVisible}
+                toggleModal={this._toggleCreateModal}
               />
               {
                 Object.keys(activityRecordsTime).map((k, i) => {

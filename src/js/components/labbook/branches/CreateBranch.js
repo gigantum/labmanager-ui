@@ -20,8 +20,7 @@ export default class CreateBranchModal extends React.Component {
       'textWarning': 'hidden',
       'textLength': 0,
       'showError': false,
-      'branchName': '',
-      'rollbackName': props.selected ? this._formattedISO(this.props.selected.timestamp) : '',
+      'branchName': props.selected ? this._formattedISO(this.props.selected.timestamp) : '',
       'branchDescription': ''
     };
 
@@ -33,25 +32,34 @@ export default class CreateBranchModal extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
+
     if(nextProps.modalVisible !== this.state.modalVisible){
       this.setState({'modalVisible': nextProps.modalVisible})
     }
 
     if(nextProps.selected){
-      let rollbackName =this._formattedISO(nextProps.selected.timestamp)
-      console.log(rollbackName, nextProps.selected)
-      this.setState({rollbackName})
+      let branchName =this._formattedISO(nextProps.selected.timestamp)
+
+      this.setState({branchName})
     }
   }
 
   componentWillUpdate(nextProps, nextState) {
 
   }
-
+  /**
+  *   @param {}
+  *   shows modal by setting state
+  *   @return {}
+  */
   _showModal() {
     this.setState({ 'modalVisible': true });
   }
-
+  /**
+  *   @param {}
+  *   hides modal by stetting state
+  *   @return {}
+  */
   _hideModal() {
 
     this.setState({ 'modalVisible': false });
@@ -63,20 +71,30 @@ export default class CreateBranchModal extends React.Component {
     }
 
   }
-
+  /**
+  *   @param {event,string} evt, key
+  *   returns error text when a branch name is invalid
+  *   @return {}
+  */
   _getErrorText(){
     return this.state.errorType === 'send' ? 'Error: Last character cannot be a hyphen.' : 'Error: Branch name may only contain lowercase alphanumeric and `-`. (e.g. new-branch-name)'
   }
-
-  _updateTextState = (evt, field) =>{
+  /**
+  *   @param {event,string} evt, key
+  *   sets state of text using a key
+  *   @return {}
+  */
+  _updateTextState = (evt, key) =>{
     let state = {}
 
 
-    if(field === 'branchName'){
+    if(key === 'branchName'){
       let isMatch = validation.labbookName(evt.target.value)
       if (isMatch) {
         this.setState({
-          branchName: evt.target.value,
+          'branchName': evt.target.value,
+          'errorType': '',
+          'showError': false
         })
       }else{
         this.setState({
@@ -85,10 +103,8 @@ export default class CreateBranchModal extends React.Component {
         })
       }
     }else{
-      state[field] = evt.target.value;
+      state[key] = evt.target.value;
     }
-
-
 
     let textLength = 240 - evt.target.value.length
     if(textLength >= 100){
@@ -104,12 +120,20 @@ export default class CreateBranchModal extends React.Component {
 
     this.setState(state)
   }
-
+  /**
+  *   @param {}
+  *   formats date for branch name
+  *   @return {}
+  */
   _formattedISO(date){
 
     return dateFormat(date, "isoDateTime").toLowerCase().replace(/:/g, '-')
   }
-
+  /**
+  *   @param {}
+  *   triggers CreateExperimentalBranchMutation
+  *   @return {}
+  */
   _createNewBranch() {
     let self = this;
 
@@ -124,8 +148,8 @@ export default class CreateBranchModal extends React.Component {
       revision,
       (response, error) => {
 
-        if(self.props.toggleModal){
-          self.props.toggleModal('createBranchVisible')
+        if(self._hideModal){
+          self._hideModal()
         }
 
         if (error) {
@@ -147,7 +171,6 @@ export default class CreateBranchModal extends React.Component {
         'CreateBranch--login-prompt': this.state.showLoginPrompt,
         'hidden': !this.state.showLoginPrompt
       })
-
 
       return (
         <div>
@@ -176,8 +199,9 @@ export default class CreateBranchModal extends React.Component {
                           maxLength="100"
                           className={this.state.showError ? 'invalid' : ''}
                           onChange={(evt) => this._updateTextState(evt, 'branchName')}
+                          onKeyUp={(evt) => this._updateTextState(evt, 'branchName')}
                           placeholder="Enter a unique branch name"
-                          defaultValue={this.state.rollbackName}
+                          defaultValue={this.state.branchName}
                         />
                         <span className={this.state.showError ? 'error' : 'hidden'}>{this._getErrorText()}</span>
                       </div>
@@ -189,6 +213,7 @@ export default class CreateBranchModal extends React.Component {
                           className="CreateBranch__description-input"
                           type="text"
                           onChange={(evt) => this._updateTextState(evt, 'branchDescription')}
+                          onKeyUp={(evt) => this._updateTextState(evt, 'branchDescription')}
                           placeholder="Briefly describe this branch, its purpose and any other key details. "
                           defaultValue={this.props.selected ? `Rollback branch created on ${this._formattedISO(Date.now())} to export '${this.props.activeBranchName}' on ${this._formattedISO(this.props.selected.timestamp)}` : ''}
                         />

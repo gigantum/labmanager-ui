@@ -4,6 +4,7 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
+import Slider from 'react-slick';
 import classNames from 'classnames'
 //componenets
 import Loader from 'Components/shared/Loader'
@@ -19,9 +20,11 @@ export default class Branches extends Component {
       newBranchName: '',
       isValid: true,
       listPosition: 0,
+      listPositionIndex: 0,
       width: 0,
     }
 
+    this._windowResize = this._windowResize.bind(this)
   }
   /**
     subscribe to store to update state
@@ -30,9 +33,17 @@ export default class Branches extends Component {
     // if(this.props.labbook.branches.pageInfo.hasNextPage){
     //   this._loadMore()
     // }
-    const width = this.refs.Branches__branchesList.offsetWidth
+    const width = this.refs.Branches__branchesList.offsetWidth - 30
     this.setState({width: width})
+
+    window.addEventListener('resize', this._windowResize)
   }
+
+  componentWillMount() {
+    window.removeEventListener('resize', this._windowResize)
+  }
+
+
   /**
   *  @param {object} overview
   *  updates components state
@@ -42,6 +53,16 @@ export default class Branches extends Component {
     if(this.state !== overview){
       this.setState(overview);//triggers re-render when store updates
     }
+  }
+  /**
+  *  @param {}
+  *  triggers on resize
+  * update width in state
+  *  @return
+  */
+  _windowResize(evt){
+    const width = this.refs.Branches__branchesList.offsetWidth - 30
+    this.setState({width: width})
   }
   /**
   * @param {}
@@ -71,10 +92,8 @@ export default class Branches extends Component {
   * updates list position in state
   * @return{}
   */
-  _updatePosition(value){
-
-    this.setState({listPosition: (this.state.listPosition + value)})
-
+  _updatePosition(index){
+    this.setState({listPositionIndex: (this.state.listPositionIndex + index)})
   }
   /**
   * @param {array} branches
@@ -82,8 +101,6 @@ export default class Branches extends Component {
   * @return{array} filteredBranches
   */
   _filterBranches(branches){
-
-    let activeBranchName
 
     let filteredBranches = branches.filter((branchName) => {
       return (branchName !== this.props.labbook.activeBranchName)
@@ -101,20 +118,19 @@ export default class Branches extends Component {
 
 
     if(this.props.labbook){
-
+      const listPositionIndex = this.state.listPositionIndex
       const {labbook} = this.props
       const branchArrayToFilter = this.props.mergeFilter ?  labbook.mergeableBranchNames : labbook.availableBranchNames
       const branches = this._filterBranches(branchArrayToFilter);
-      const showRightBumper = (-this.state.listPosition < (25 * (labbook.availableBranchNames.length - 4)))
-
+      const showRightBumper = (listPositionIndex < (labbook.availableBranchNames.length - 4))
       const branchesCSS = classNames({
         'Branches': this.props.branchesOpen,
         'Branches--closed': !this.props.branchesOpen
       })
 
       const leftBumperCSS = classNames({
-        'Brances__slider-button--left': (-this.state.listPosition > 0),
-        'hidden': !(-this.state.listPosition > 0)
+        'Brances__slider-button--left': (listPositionIndex > 0),
+        'hidden': !(listPositionIndex > 0)
       })
 
       const branchesListCSS = classNames({
@@ -123,20 +139,22 @@ export default class Branches extends Component {
       })
 
       const rightBumperCSS = classNames({
-        'Brances__slider-button--left': this.props.branchesOpen && (showRightBumper),
+        'Brances__slider-button--right': this.props.branchesOpen && (showRightBumper),
         'hidden': !(this.props.branchesOpen && (showRightBumper))
       })
+      const width = listPositionIndex * (this.state.width/branches.length)
+      const widthPX = `-${width}px`;
 
       return(
-        <div className={branchesCSS}>
+        <div ref="Branches__branchesList__cover" className={branchesCSS}>
 
           <button
-            onClick={() => {this._updatePosition(25)}}
+            onClick={() => {this._updatePosition(-1)}}
             className={leftBumperCSS}></button>
           <div
             ref="Branches__branchesList"
             className={branchesListCSS}
-            style={{left: (this.state.listPosition < 0) ? ' calc(' + this.state.listPosition + 'vw - 200px)' : ' 0vw'}}>
+            style={{left: (listPositionIndex > 0) ? widthPX : ' 0vw'}}>
 
             {
               branches.map((name)=>{
@@ -155,10 +173,11 @@ export default class Branches extends Component {
                   </div>)
               })
             }
+
           </div>
 
           <button
-            onClick={() => {this._updatePosition(-25)}}
+            onClick={() => {this._updatePosition(1)}}
             className={rightBumperCSS}></button>
 
         </div>

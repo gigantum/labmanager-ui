@@ -541,11 +541,19 @@ export default class UserNote extends Component {
     })
 
   }
-
+  /**
+  *  @param {}
+  *  toggle stat and modal visibility
+  *  @return {}
+  */
   _toggleDeleteModal(){
     this.setState({deleteModalVisible: !this.state.deleteModalVisible})
   }
-
+  /**
+  *  @param {}
+  *  sets menu
+  *  @return {}
+  */
   _mergeFilter(){
     this.props.mergeCallback()
     this.setState({ menuOpen: false })

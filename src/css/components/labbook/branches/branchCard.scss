@@ -32,6 +32,7 @@
   align-self: flex-start;
   align-items: flex-start;
   word-break: break-all;
+  width: 190px;
 }
 
 .BranchCard__delete-labbook{
@@ -78,7 +79,7 @@
 }
 
 .BranchCard__delete-modal{
-  @include modal(300px, 500px);
+  @include modal(440px, 660px);
   @include flex(flex-start, column);
   padding: 40px;
   z-index: 3000;
@@ -95,9 +96,12 @@
 }
 
 .BranchCard__text{
-  flex: 1;
   align-content: center;
   align-self: center;
+}
+
+.BranchCard__text--red{
+  color: $crimson;
 }
 
 .BranchCard__button-container{
@@ -114,4 +118,8 @@
   z-index: 2000;
   background-color: $white;
   opacity: 0.5;
+}
+
+.BranchCard__close{
+  @include close();
 }
