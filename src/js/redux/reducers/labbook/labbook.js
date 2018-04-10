@@ -43,6 +43,7 @@ export default (
      'isSticky': action.payload.isSticky //state.detailMode,
   };
 }else  if (action.type === MERGE_MODE) {
+    console.log(action)
     return {
       ...state,
       'mergeFilter': action.payload.mergeFilter,

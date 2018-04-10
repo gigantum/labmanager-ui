@@ -118,3 +118,8 @@
   line-height: 14px;
   height: 42px;
 }
+
+.Branhces__button--close{
+    @include close();
+    right: 80px;
+}

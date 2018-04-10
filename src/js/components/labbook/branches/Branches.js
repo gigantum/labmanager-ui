@@ -118,7 +118,9 @@ export default class Branches extends Component {
 
       return(
         <div ref="Branches__branchesList__cover" className={branchesCSS}>
-
+          <div
+            onClick={() => {this.props.toggleBranchesView(false, false)}}
+            className="Branhces__button--close"></div>
           <button
             onClick={() => {this._updatePosition(-1)}}
             className={leftBumperCSS}></button>

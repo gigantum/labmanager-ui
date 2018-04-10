@@ -43,7 +43,6 @@ class Labbook extends Component {
     this._showLabbookModal = this._showLabbookModal.bind(this)
     this._hideLabbookModal = this._hideLabbookModal.bind(this)
     this._toggleBranchesView = this._toggleBranchesView.bind(this)
-    this._mergeCallback = this._mergeCallback.bind(this)
 
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
@@ -228,31 +227,14 @@ class Labbook extends Component {
     @param {}
     updates branchOpen state
   */
-  _toggleBranchesView(isSticky){
-
-    const branchesOpen = (isSticky === undefined) ? !this.state.branchesOpen : false,
-    mergeFilter = false
+  _toggleBranchesView(branchesOpen, mergeFilter){
+    console.log(branchesOpen, mergeFilter)
     store.dispatch({
       type: 'MERGE_MODE',
       payload: {
         branchesOpen,
         mergeFilter
       }
-    })
-
-  }
-  /**
-    @param {}
-    updates branchOpen state
-  */
-  _mergeCallback(mergeFilter){
-    store.dispatch(
-      {
-        type: 'MERGE_MODE',
-        payload:{
-          'mergeFilter': true,
-          'branchesOpen': true
-        }
     })
 
   }
@@ -277,11 +259,19 @@ class Labbook extends Component {
     if(this.props.labbook){
       const {labbook} = this.props
       const name = this._sanitizeBranchName(this.props.labbook.activeBranchName)
+      const {branchesOpen} = this.state
       const labbookCSS = classNames({
         'Labbook': true,
         'Labbook--detail-mode': this.state.detailMode,
-        'Labbook-branch-mode': this.state.branchesOpen
+        'Labbook-branch-mode': branchesOpen
       })
+
+      const branchNameCSS = classNames({
+        'Labbook__branch-title': true,
+        'Labbook__branch-title--open': branchesOpen,
+        'Labbook__branch-title--closed': !branchesOpen
+      })
+
       return(
         <div
           className={labbookCSS}>
@@ -289,7 +279,7 @@ class Labbook extends Component {
            <div className="Labbook__inner-container flex flex--row">
              <div className="Labbook__component-container flex flex--column">
               <StickyHeader
-                onSticky={(isSticky)=>{this._toggleBranchesView(isSticky)}}
+                onSticky={(isSticky)=>{this._toggleBranchesView(false, false)}}
                 header ={
               <div className="Labbook__header">
                 <div className="Labbook__row-container">
@@ -298,12 +288,12 @@ class Labbook extends Component {
                      {labbook.owner + '/' + labbookName}
                    </div>
 
-                   <div className={(this.state.branchesOpen) ? 'Labbook__branch-title Labbook__branch-title--open' : 'Labbook__branch-title Labbook__branch-title--closed'}>
-                     <div className="Labbook__name" onClick={()=> this._toggleBranchesView()}>
+                   <div className={branchNameCSS}>
+                     <div className="Labbook__name" onClick={()=> this._toggleBranchesView(!branchesOpen, false)}>
                          {name}
                      </div>
                      <div
-                       onClick={()=> this._toggleBranchesView()}
+                       onClick={()=> this._toggleBranchesView(!branchesOpen, false)}
                       className="Labbook__branch-toggle"></div>
                    </div>
 
@@ -317,7 +307,7 @@ class Labbook extends Component {
                      defaultRemote={labbook.defaultRemote}
                      labbookId={labbook.id}
                      remoteUrl={labbook.overview.remoteUrl}
-                     mergeCallback={this._mergeCallback}
+                     toggleBranchesView={this._toggleBranchesView}
                     />
 
                    <ContainerStatus
@@ -342,6 +332,7 @@ class Labbook extends Component {
                   labbook={labbook}
                   labbookId={labbook.id}
                   activeBranch={labbook.activeBranchName}
+                  toggleBranchesView={this._toggleBranchesView}
                   mergeFilter={this.state.mergeFilter}
 
                 />

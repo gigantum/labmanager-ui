@@ -237,7 +237,7 @@ export default class CreateBranchModal extends React.Component {
                         onClick={() => { this._createNewBranch() }}
                         >
                           Create
-                        </button>
+                      </button>
                       </div>
                     </div>
                   </div>

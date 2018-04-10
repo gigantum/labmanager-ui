@@ -54,6 +54,7 @@ export default class UserNote extends Component {
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
     this._exportLabbook = this._exportLabbook.bind(this)
     this._toggleSyncModal = this._toggleSyncModal.bind(this)
+    this._switchBranch = this._switchBranch.bind(this)
   }
 
   /**
@@ -78,6 +79,11 @@ export default class UserNote extends Component {
 
     window.removeEventListener('click', this._closeMenu)
   }
+
+  /**
+    @param {event} evt
+    closes menu
+  */
   _closeMenu(evt) {
     let isBranchMenu = evt.target.className.indexOf('BranchMenu') > -1
 
@@ -192,7 +198,6 @@ export default class UserNote extends Component {
       }
     })
   }
-
   /**
   *  @param {}
   *  toggles sync modal
@@ -555,7 +560,17 @@ export default class UserNote extends Component {
   *  @return {}
   */
   _mergeFilter(){
-    this.props.mergeCallback()
+    this.props.toggleBranchesView(true, true)
+    this.setState({ menuOpen: false })
+  }
+  /**
+  *  @param {}
+  *  sets menu
+  *  @return {}
+  */
+  _switchBranch(){
+    console.log(this)
+    this.props.toggleBranchesView(true, false)
     this.setState({ menuOpen: false })
   }
 
@@ -666,6 +681,13 @@ export default class UserNote extends Component {
                 className='BranchMenu__item--flat-button disabled'>Collaborators</button>
               <hr />
             </li>
+            <li className="BranchMenu__item--merge">
+              <button
+                onClick={() => { this._switchBranch()}}
+                className="BranchMenu__item--flat-button"
+              >
+                Switch Branch
+              </button></li>
             <li className="BranchMenu__item--new-branch">
               <button
                 onClick={() => { this._toggleModal('createBranchVisible') }}
@@ -680,8 +702,9 @@ export default class UserNote extends Component {
                 onClick={() => { this._mergeFilter()}}
                 className="BranchMenu__item--flat-button"
               >
-                Merge
+                Merge Branch
               </button></li>
+
             <li className={exportCSS}>
               <button
                 onClick={(evt) => this._exportLabbook(evt)}
