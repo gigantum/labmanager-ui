@@ -34,3 +34,9 @@ global.FormData = FormData
 //add file api for uploads
 const File = window.File
 global.File = window.File
+
+global.window.matchMedia = window.matchMedia || (() => { return { matches: false, addListener: () => {}, removeListener: () => {}, }; });
+
+global.requestAnimationFrame = function(callback) {
+  setTimeout(callback, 0);
+};

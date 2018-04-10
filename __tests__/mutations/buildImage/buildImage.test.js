@@ -1,14 +1,15 @@
 //vendor
 import uuidv4 from 'uuid/v4'
 // mutations
-import DeleteLabbook from './../deleteLabbook';
+import BuildImage from './../buildImage';
 import CreateLabbook from './../createLabbook';
+import DeleteLabbook from './../deleteLabbook';
 
 const labbookName = uuidv4()
 
-describe('Test Suite: Create && delete labbook', () => {
+describe('Test Suite: Build Image', () => {
 
-  test('Test: CreateLabbookMuation - Create Labbook Mutation untracked', done => {
+  test('Test: CreateLabbookMutation - Create Labbook Mutation untracked', done => {
     const isUntracked = true;
 
     CreateLabbook.createLabbook(
@@ -31,12 +32,35 @@ describe('Test Suite: Create && delete labbook', () => {
     )
 
   })
-  test('Test: CreateLabbookMuation - Create Labbook that already exists = invalid', done => {
-    const isUntracked = false;
 
-    CreateLabbook.createLabbook(
+  test('Test: BuildImageMutation - Build Image', done => {
+    const noCache = true;
+
+    BuildImage.buildImage(
         labbookName,
-        isUntracked,
+        noCache,
+        (response, error) => {
+          if(response){
+
+            expect(response.buildImage.clientMutationId).toEqual('0');
+
+            done()
+
+          }else{
+            done.fail(new Error(error))
+          }
+
+        }
+    )
+
+  })
+
+  test('Test: BuildImageMutation - Build Image handles error', done => {
+    const noCache = true;
+
+    BuildImage.buildImage(
+        'invalid',
+        noCache,
         (response, error) => {
           if(error){
             expect(error).toBeTruthy();
@@ -44,13 +68,13 @@ describe('Test Suite: Create && delete labbook', () => {
           } else{
             done.fail();
           }
+
         }
     )
 
   })
 
-
-  test('Test: DeleteLabbookMutation - Delete Labbook Mutation confirm', done => {
+  test('Test: DeleteLabbookMutation - Delete Labbook Mutation', done => {
 
     const confirm = true
 
@@ -69,25 +93,6 @@ describe('Test Suite: Create && delete labbook', () => {
 
             done.fail(new Error(error))
 
-          }
-        }
-    )
-
-  })
-
-  test('Test: DeleteLabbookMutation - Delete invalid labbook', done => {
-
-    const confirm = true
-
-    DeleteLabbook.deleteLabbook(
-        'invalid',
-        confirm,
-        (response, error) => {
-          if(error){
-            expect(error).toBeTruthy();
-            done()
-          } else{
-            done.fail();
           }
         }
     )

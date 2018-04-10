@@ -52,7 +52,7 @@ export default function DeleteCollaboratorMutation(
             }
           })
         }
-        callback(error)
+        callback(response, error)
       },
       onError: err => console.error(err),
 

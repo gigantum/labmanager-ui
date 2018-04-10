@@ -3,10 +3,11 @@ import uuidv4 from 'uuid/v4'
 // mutations
 import DeleteLabbook from './../deleteLabbook';
 import CreateLabbook from './../createLabbook';
+import ExportLabbook from './../exportLabbook';
 
 const labbookName = uuidv4()
 
-describe('Test Suite: Create && delete labbook', () => {
+describe('Test Suite: Export Labbook', () => {
 
   test('Test: CreateLabbookMuation - Create Labbook Mutation untracked', done => {
     const isUntracked = true;
@@ -31,12 +32,32 @@ describe('Test Suite: Create && delete labbook', () => {
     )
 
   })
-  test('Test: CreateLabbookMuation - Create Labbook that already exists = invalid', done => {
-    const isUntracked = false;
 
-    CreateLabbook.createLabbook(
+  test('Test: ExportLabbookMutation - Export Labbook', done => {
+
+    ExportLabbook.exportLabbook(
         labbookName,
-        isUntracked,
+        (response, error) => {
+          if(response){
+
+            expect(response.exportLabbook).toBeTruthy();
+
+            done()
+
+          }else{
+
+            done.fail(new Error(error))
+          }
+
+        }
+    )
+
+  })
+
+  test('Test: ExportLabbookMutation - Export Labbook (error)', done => {
+
+    ExportLabbook.exportLabbook(
+        'invalid',
         (response, error) => {
           if(error){
             expect(error).toBeTruthy();
@@ -48,6 +69,7 @@ describe('Test Suite: Create && delete labbook', () => {
     )
 
   })
+
 
 
   test('Test: DeleteLabbookMutation - Delete Labbook Mutation confirm', done => {
@@ -69,25 +91,6 @@ describe('Test Suite: Create && delete labbook', () => {
 
             done.fail(new Error(error))
 
-          }
-        }
-    )
-
-  })
-
-  test('Test: DeleteLabbookMutation - Delete invalid labbook', done => {
-
-    const confirm = true
-
-    DeleteLabbook.deleteLabbook(
-        'invalid',
-        confirm,
-        (response, error) => {
-          if(error){
-            expect(error).toBeTruthy();
-            done()
-          } else{
-            done.fail();
           }
         }
     )
