@@ -228,7 +228,7 @@ class Labbook extends Component {
     updates branchOpen state
   */
   _toggleBranchesView(branchesOpen, mergeFilter){
-    console.log(branchesOpen, mergeFilter)
+  
     store.dispatch({
       type: 'MERGE_MODE',
       payload: {

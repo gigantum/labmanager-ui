@@ -57,8 +57,10 @@ export default class Branches extends Component {
   *  @return
   */
   _windowResize(evt){
-    const width = this.refs.Branches__branchesList.offsetWidth - 30
-    this.setState({width: width})
+    if(this.refs.Branches__branchesList){
+      const width = this.refs.Branches__branchesList.offsetWidth - 30
+      this.setState({width: width})
+    }
   }
   /**
   * @param {number} value
