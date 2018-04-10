@@ -1,9 +1,13 @@
 //vendor
 import React, { Component } from 'react'
+import classNames from 'classnames'
+//components
+import Loader from 'Components/shared/Loader'
 //mutations
 import WorkonExperimentalBranchMutation from 'Mutations/branches/WorkonExperimentalBranchMutation'
 import MergeFromBranchMutation from 'Mutations/branches/MergeFromBranchMutation'
 import DeleteExperimentalBranchMutation from 'Mutations/branches/DeleteExperimentalBranchMutation'
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
 
@@ -18,7 +22,8 @@ export default class BranchCard extends Component {
       labbookName: labbookName,
       forceMerge: false,
       deleteModalVisible: false,
-      eneteredBranchName: ''
+      eneteredBranchName: '',
+      showLoader: false
     }
 
     this._merge = this._merge.bind(this)
@@ -48,12 +53,16 @@ export default class BranchCard extends Component {
       }
     })
 
+    this.setState({showLoader: true})
+
     WorkonExperimentalBranchMutation(
       owner,
       labbookName,
       branchName,
       revision,
       (response, error)=>{
+
+        this.setState({showLoader: false})
 
         if(error){
           console.error(error);
@@ -65,12 +74,22 @@ export default class BranchCard extends Component {
             }
           })
         }else{
+
           store.dispatch({
             type: 'UPDATE_BRANCHES_VIEW',
             payload:{
               branchesOpen: false
             }
           })
+
+          BuildImageMutation(
+            labbookName,
+            owner,
+            false,
+            (response, error)=>{
+              console.log(error)
+            }
+          )
         }
       })
   }
@@ -93,12 +112,15 @@ export default class BranchCard extends Component {
       }
     })
 
+    this.setState({showLoader: true})
+
     MergeFromBranchMutation(
       owner,
       labbookName,
       otherBranchName,
       force,
       (response, error)=>{
+        this.setState({showLoader: false})
         if(error){
           store.dispatch({
             type: 'ERROR_MESSAGE',
@@ -107,8 +129,9 @@ export default class BranchCard extends Component {
               messageBody: error,
             }
           })
+
         }
-        if(response.succes){
+        if(response.success){
           store.dispatch({
             type: 'INFO_MESSAGE',
             payload:{
@@ -116,6 +139,15 @@ export default class BranchCard extends Component {
             }
           })
         }
+
+        BuildImageMutation(
+          labbookName,
+          owner,
+          false,
+          (response, error)=>{
+            console.log(error)
+          }
+        )
       }
     )
   }
@@ -193,12 +225,18 @@ export default class BranchCard extends Component {
   }
 
   render(){
-    const {owner} = this.state
+    const {owner, showLoader} = this.state
     const isCurrentBranch = (this.props.name === this.props.activeBranchName)
     const branchName = this._sanitizeBranchName(this.props.name)
     const showDelete = !isCurrentBranch && (this.props.name !== `gm.workspace-${owner}`)
+
+    const branchCardCSS = classNames({
+      'BranchCard': true,
+      'BranchCard--loading': showLoader
+    })
+
     return(
-      <div className='BranchCard'>
+      <div className={branchCardCSS}>
         { isCurrentBranch &&
           <div className="BranchCard--current-banner">
             CURRENT BRANCH
@@ -249,6 +287,7 @@ export default class BranchCard extends Component {
 
           {this.props.mergeFilter &&
             <button
+              disabled={showLoader}
               onClick={()=>{this._merge()}}
               >
               Merge
@@ -257,7 +296,7 @@ export default class BranchCard extends Component {
           {!this.props.mergeFilter &&
             <button
               onClick={()=>{this._checkoutBranch()}}
-              disabled={this.props.name === this.props.activeBranchName}
+              disabled={showLoader || (this.props.name === this.props.activeBranchName)}
               >
               Switch To Branch
             </button>

@@ -14,6 +14,11 @@
   @include flex(space-around, column);
 }
 
+.BranchCard--loading{
+  opacity: 0.1;
+  animation: fluxuateLoad 3s infinite;
+}
+
 
 .BranchCard--current-banner {
   width: 100%;

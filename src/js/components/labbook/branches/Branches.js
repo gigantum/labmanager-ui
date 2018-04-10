@@ -30,9 +30,7 @@ export default class Branches extends Component {
     subscribe to store to update state
   */
   componentDidMount() {
-    // if(this.props.labbook.branches.pageInfo.hasNextPage){
-    //   this._loadMore()
-    // }
+
     const width = this.refs.Branches__branchesList.offsetWidth - 30
     this.setState({width: width})
 
@@ -42,8 +40,6 @@ export default class Branches extends Component {
   componentWillMount() {
     window.removeEventListener('resize', this._windowResize)
   }
-
-
   /**
   *  @param {object} overview
   *  updates components state
@@ -63,29 +59,6 @@ export default class Branches extends Component {
   _windowResize(evt){
     const width = this.refs.Branches__branchesList.offsetWidth - 30
     this.setState({width: width})
-  }
-  /**
-  * @param {}
-  * loads more edges via pagination
-  * @return{}
-  */
-  _loadMore() {
-    const {relay} = this.props
-    let self = this;
-
-    relay.loadMore(
-     5, // Fetch the next 5 feed items
-     (response, error) => {
-       if(error){
-         console.error(error)
-       }
-       if(self.props.labbook.branches &&
-         self.props.labbook.branches.pageInfo.hasNextPage) {
-
-         self._loadMore()
-       }
-     }
-   );
   }
   /**
   * @param {number} value
@@ -114,8 +87,6 @@ export default class Branches extends Component {
   }
 
   render(){
-
-
 
     if(this.props.labbook){
       const listPositionIndex = this.state.listPositionIndex
