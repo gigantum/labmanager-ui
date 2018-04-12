@@ -28,17 +28,19 @@ const mutation = graphql`
 let tempID = 0;
 
 function sharedDeleteUpdater(store, labbookID, deletedID, connectionKey) {
-  const userProxy = store.get(labbookID);
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    userProxy,
-    connectionKey,
-  );
-
-  if(conn){
-    RelayRuntime.ConnectionHandler.deleteNode(
-      conn,
-      deletedID
+  const labbookProxy = store.get(labbookID);
+  if(labbookProxy){
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      labbookProxy,
+      connectionKey,
     );
+
+    if(conn){
+      RelayRuntime.ConnectionHandler.deleteNode(
+        conn,
+        deletedID
+      );
+    }
   }
 }
 
@@ -109,35 +111,38 @@ export default function MoveLabbookFileMutation(
       optimisticUpdater: (store) => {
 
         const id = 'client:newFileMove:'+ tempID++;
-        const userProxy = store.get(labbookId);
+        const labbookProxy = store.get(labbookId);
 
-        const conn = RelayRuntime.ConnectionHandler.getConnection(
-          userProxy,
-          connectionKey,
-        );
+        if(labbookProxy){
 
-        const node = store.create(id, 'MoveFile')
-
-        if(conn){
-
-          const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-            store,
-            conn,
-            node,
-            "newLabbookFileEdge"
-          )
-
-          node.setValue(id, "id")
-          node.setValue(false, 'isDir')
-          node.setValue(dstPath, 'key')
-          node.setValue(0, 'modifiedAt')
-          node.setValue(100, 'size')
-
-
-          RelayRuntime.ConnectionHandler.insertEdgeAfter(
-            conn,
-            newEdge
+          const conn = RelayRuntime.ConnectionHandler.getConnection(
+            labbookProxy,
+            connectionKey,
           );
+
+          const node = store.create(id, 'MoveFile')
+
+          if(conn){
+
+            const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+              store,
+              conn,
+              node,
+              "newLabbookFileEdge"
+            )
+
+            node.setValue(id, "id")
+            node.setValue(false, 'isDir')
+            node.setValue(dstPath, 'key')
+            node.setValue(0, 'modifiedAt')
+            node.setValue(100, 'size')
+
+
+            RelayRuntime.ConnectionHandler.insertEdgeAfter(
+              conn,
+              newEdge
+            );
+          }
         }
       },
       updater: (store, response) => {

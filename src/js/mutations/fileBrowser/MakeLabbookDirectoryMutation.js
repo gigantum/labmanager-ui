@@ -53,17 +53,21 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
 }
 
 function deleteOptimisticEdge(store, labbookID, deletedID, connectionKey) {
-  const userProxy = store.get(labbookID);
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    userProxy,
-    connectionKey,
-  );
 
-  if(conn){
-    RelayRuntime.ConnectionHandler.deleteNode(
-      conn,
-      deletedID,
+  const labbookProxy = store.get(labbookID);
+
+  if(labbookProxy){
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      labbookProxy,
+      connectionKey,
     );
+
+    if(conn){
+      RelayRuntime.ConnectionHandler.deleteNode(
+        conn,
+        deletedID,
+      );
+    }
   }
 }
 

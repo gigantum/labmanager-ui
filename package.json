@@ -67,19 +67,25 @@
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5",
     "webpack-manifest-plugin": "1.1.0",
-    "whatwg-fetch": "2.0.3",
+    "whatwg-fetch": "^2.0.3",
     "worker-loader": "^1.1.0"
   },
   "dependencies": {
+    "blob": "0.0.4",
     "bourbon": "^4.3.4",
     "bourbon-neat": "^1.9.0",
     "classnames": "^2.2.5",
     "dateformat": "^2.0.0",
+    "fetch": "^1.1.0",
+    "fetch-mock": "^6.3.0",
     "file-icons-js": "^1.0.3",
+    "form-data": "^2.3.2",
     "graphql": "^0.10.5",
     "graphql-cli": "^2.15.8",
     "inline-attachment": "^2.0.3",
     "moment": "^2.19.1",
+    "multi-part": "^2.0.0",
+    "node-fetch-polyfill": "^2.0.6",
     "normalize": "^0.3.1",
     "pretty-file-icons": "^2.2.1",
     "prop-types": "^15.6.0",
@@ -101,6 +107,7 @@
     "showdown": "^1.7.3",
     "simplemde": "^1.11.2",
     "sweetalert-react": "^0.4.10",
+    "tunnel": "0.0.5",
     "uuid": "^3.1.0",
     "ws": "^3.1.0",
     "xmlhttprequest": "^1.8.0"
@@ -109,6 +116,7 @@
     "start": "node scripts/start.js NODE_ENV='development'",
     "build": "node scripts/build.js",
     "test": "jest",
+    "test-proxy": "USE_PROXY=true jest",
     "relay": "relay-compiler --src ./src --schema ./schema.graphql",
     "relay-test": "relay-compiler --src ./__tests__ --schema ./schema.graphql",
     "update-schema": "graphql get-schema -p labbook",
@@ -122,7 +130,11 @@
     "collectCoverageFrom": [
       "src/js/**.*js",
       "!src/js/**.*graphql.js",
-      "!src/js/mutations/**/*.js"
+      "src/js/mutations/**/*.js",
+      "!src/js/mutations/branches/*.js",
+      "!src/js/mutations/fileBrowser/*.js",
+      "!src/js/mutations/ImportLabbookMutation.js",
+      "!src/js/mutations/RenameLabbookMutation.js"
     ],
     "setupFiles": [
       "<rootDir>/config/polyfills.js",

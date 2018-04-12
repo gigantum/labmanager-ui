@@ -194,7 +194,7 @@ const ChunkUploader = {
         fileLoadedSize = fileLoadedSize + chunkSize;
 
         chunkIndex++
-
+        console.log(blob)
         let chunkData =   {
             blob: blob,
             fileSizeKb: fileSizeKb,
