@@ -131,7 +131,7 @@ export default class BranchCard extends Component {
           })
 
         }
-        if(response.success){
+        if(response){
           store.dispatch({
             type: 'INFO_MESSAGE',
             payload:{
