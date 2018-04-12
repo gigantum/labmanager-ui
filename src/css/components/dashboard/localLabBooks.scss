@@ -448,6 +448,16 @@
   background-size: 20px;
 }
 
+.LocalLabbooks__sorting {
+  display: inline-block;
+  width: 200px;
+  margin-left: 20px;
+  border-bottom: 1px solid $font-grey;
+  pointer-events: none;
+  user-select: none;
+  background: $background-color;
+}
+
 .LocalLabbooks__sort {
   position: relative;
   color: $font-grey;

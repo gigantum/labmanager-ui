@@ -15,7 +15,7 @@ import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
 import Validation from 'JS/utils/Validation'
 
 let isLoadingMore = false;
-
+let refetchLoading = false;
 class LocalLabbooks extends Component {
 
   constructor(props){
@@ -28,8 +28,9 @@ class LocalLabbooks extends Component {
       'renameError': '',
       'showNamingError': false,
       'filter': 'all',
-      'selectedSort': 'Creation Date',
+      'selectedSort': 'Modified Date (Newest)',
       'sortMenuOpen': false,
+      'refetchLoading': false
     }
 
     this._closeSortMenu = this._closeSortMenu.bind(this);
@@ -78,7 +79,6 @@ class LocalLabbooks extends Component {
   componentDidMount() {
 
     window.addEventListener('scroll', this._captureScroll);
-    this._loadMore();
   }
 /**
 *  @param {}
@@ -116,11 +116,7 @@ _captureScroll = () => {
       this.props.relay.loadMore(
         10, // Fetch the next 10 feed items
         (ev) => {
-          if (this.props.feed.localLabbooks.pageInfo.hasNextPage) {
-            this._loadMore();
-          } else {
-            isLoadingMore = false;
-          }
+          isLoadingMore = false;
         }
       );
     }
@@ -193,61 +189,68 @@ _captureScroll = () => {
     this.refs.wizardModal._showModal()
   }
 
-  _sortAlphabetically(labbooks) {
-    return labbooks.slice().sort((a, b) => {
-      a = a.node.name.toLowerCase();
-      b = b.node.name.toLowerCase();
-      if(a < b) {
-        return -1
-      }
-      if(a > b) {
-        return 1;
-      }
-      return 0;
-    })
-  }
-  _sortCreationDate(labbooks) {
-    return labbooks.slice().sort((a, b) => {
-      a = Date.parse(a.node.creationDateUtc + 'Z');
-      b = Date.parse(b.node.creationDateUtc + 'Z');
-      if (!a) {
-        a = 0;
-      }
-      if (!b) {
-        b = 0;
-      }
-      return b - a;
-    })
-  }
 
   _setSortFilter(selected) {
     this.setState({sortMenuOpen: false, selectedSort: selected});
+    switch(selected){
+      case 'Modified Date (Newest)':
+        this._refetch('modified_on', false);
+        break;
+      case 'Modified Date (Oldest)':
+        this._refetch('modified_on', true);
+        break;
+      case 'Creation Date (Newest)':
+        this._refetch('created_on', false);
+        break;
+      case 'Creation Date (Oldest)':
+        this._refetch('created_on', true);
+        break;
+      case 'A-Z':
+        this._refetch('az', false);
+        break;
+      case 'Z-A':
+        this._refetch('az', true);
+        break;
+      default:
+        break;
+    }
   }
 
+  _refetch(sort, reverse){
+    let self = this;
+    let relay = self.props.relay;
+    this.setState({refetchLoading: true})
+
+    relay.refetchConnection(
+      20,
+      (res, err)=>{
+        if(err){
+          console.log(err)
+        }
+        this.setState({refetchLoading: false})
+
+      },
+      {first: 20,
+        cursor: null,
+        sort: sort,
+        reverse: reverse,
+      }
+    )
+  }
 
   render(){
-
       let {props} = this;
       let owner = localStorage.getItem('username')
-
       if(props.feed.localLabbooks){
 
         let labbooks = this._filterLabbooks(props.feed.localLabbooks.edges, this.state.filter)
-        switch(this.state.selectedSort){
-          case 'Creation Date':
-            labbooks = this._sortCreationDate(labbooks);
-            break;
-          case 'Alphabetically':
-            labbooks = this._sortAlphabetically(labbooks);
-            break;
-          default:
-            break;
-        }
         return(
 
           <div className="LocalLabbooks">
-
-
+          {
+            this.state.refetchLoading &&
+            <Loader />
+          }
             <WizardModal
               ref="wizardModal"
               handler={this.handler}
@@ -277,26 +280,55 @@ _captureScroll = () => {
             </div>
             <div className="LocalLabbooks__sort">
               Sort by:
-              <span
-                className={this.state.sortMenuOpen ? 'LocalLabbooks__sort-expanded' : 'LocalLabbooks__sort-collapsed'}
-                onClick={()=>this.setState({sortMenuOpen: !this.state.sortMenuOpen})}
-              >
-                {this.state.selectedSort}
-              </span>
+              {
+                this.state.refetchLoading ?
+                  <div className="LocalLabbooks__sorting">Sorting Labbooks...</div>
+                  :
+                  <span
+                    className={this.state.sortMenuOpen ? 'LocalLabbooks__sort-expanded' : 'LocalLabbooks__sort-collapsed'}
+                    onClick={() => !this.setState({ sortMenuOpen: !this.state.sortMenuOpen })}
+                  >
+                    {this.state.selectedSort}
+                  </span>
+              }
               <ul
                 className={this.state.sortMenuOpen ? 'LocalLabbooks__sort-menu' : 'hidden'}
               >
                 <li
                   className={'LocalLabbooks__sort-item'}
-                  onClick={()=>this._setSortFilter('Creation Date')}
+                  onClick={()=>this._setSortFilter('Modified Date (Newest)')}
                 >
-                  Creation Date {this.state.selectedSort === 'Creation Date' ?  '✓ ' : ''}
+                  Modified Date (Newest) {this.state.selectedSort === 'Modified Date (Newest)' ?  '✓ ' : ''}
+                </li>
+                <li
+                  className={'LocalLabbooks__sort-item'}
+                  onClick={()=>this._setSortFilter('Modified Date (Oldest)')}
+                >
+                  Modified Date (Oldest) {this.state.selectedSort === 'Modified Date (Oldest)' ?  '✓ ' : ''}
+                </li>
+                <li
+                  className={'LocalLabbooks__sort-item'}
+                  onClick={()=>this._setSortFilter('Creation Date (Newest)')}
+                >
+                  Creation Date (Newest) {this.state.selectedSort === 'Creation Date (Newest)' ?  '✓ ' : ''}
+                </li>
+                <li
+                  className={'LocalLabbooks__sort-item'}
+                  onClick={()=>this._setSortFilter('Creation Date (Oldest)')}
+                >
+                  Creation Date (Oldest) {this.state.selectedSort === 'Creation Date (Oldest)' ?  '✓ ' : ''}
                 </li>
                 <li
                   className="LocalLabbooks__sort-item"
-                  onClick={()=>this._setSortFilter('Alphabetically')}
+                  onClick={()=>this._setSortFilter('A-Z')}
                 >
-                  Alphabetically {this.state.selectedSort === 'Alphabetically' ?  '✓ ' : ''}
+                  A-Z {this.state.selectedSort === 'A-Z' ?  '✓ ' : ''}
+                </li>
+                <li
+                  className="LocalLabbooks__sort-item"
+                  onClick={()=>this._setSortFilter('Z-A')}
+                >
+                  Z-A {this.state.selectedSort === 'Z-A' ?  '✓ ' : ''}
                 </li>
               </ul>
             </div>
@@ -342,7 +374,7 @@ export default createPaginationContainer(
   LocalLabbooks,
   {feed: graphql`
       fragment LocalLabbooks_feed on LabbookQuery{
-        localLabbooks(first: $first, after:$cursor)@connection(key: "LocalLabbooks_localLabbooks"){
+        localLabbooks(first: $first, after: $cursor, sort: $sort, reverse: $reverse)@connection(key: "LocalLabbooks_localLabbooks"){
           edges {
             node {
               name
@@ -378,12 +410,14 @@ export default createPaginationContainer(
         first: first
       };
     },
-    getVariables(props, {first, cursor}, fragmentVariables) {
+    getVariables(props, {first, cursor, sort}, fragmentVariables) {
       first = 10;
       cursor = props.feed.localLabbooks.pageInfo.endCursor;
+      sort = 'modified_on'
       return {
         first,
-        cursor
+        cursor,
+        sort
         // in most cases, for variables other than connection filters like
         // `first`, `after`, etc. you may want to use the previous values.
       };
@@ -392,6 +426,8 @@ export default createPaginationContainer(
       query LocalLabbooksPaginationQuery(
         $first: Int!
         $cursor: String
+        $sort: String
+        $reverse: Boolean
       ) {
           ...LocalLabbooks_feed
       }
