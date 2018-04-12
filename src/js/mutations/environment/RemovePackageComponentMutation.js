@@ -16,17 +16,18 @@ const mutation = graphql`
 
 function sharedUpdater(store, parentID, deletedId, connectionKey) {
   const environmentProxy = store.get(parentID);
-
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    environmentProxy,
-    connectionKey,
-  );
-
-  if(conn){
-    RelayRuntime.ConnectionHandler.deleteNode(
-      conn,
-      deletedId,
+  if(environmentProxy) {
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      environmentProxy,
+      connectionKey,
     );
+
+    if(conn){
+      RelayRuntime.ConnectionHandler.deleteNode(
+        conn,
+        deletedId,
+      );
+    }
   }
 }
 

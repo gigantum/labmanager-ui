@@ -206,7 +206,7 @@ class PackageDependencies extends Component {
   _toggleAddPackageMenu(){
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
-  
+
     if(navigator.onLine){
       if(canEditEnvironment){
         store.dispatch({
@@ -369,6 +369,8 @@ class PackageDependencies extends Component {
         }
       })
 
+      const skipValidation = (packageItem.manager.indexOf('conda') > -1)
+
       AddPackageComponentMutation(
         labbookName,
         owner,
@@ -378,6 +380,7 @@ class PackageDependencies extends Component {
         index+1,
         environmentId,
         'PackageDependencies_packageDependencies',
+        skipValidation,
         (response, error) => {
 
           if(error){
@@ -397,7 +400,7 @@ class PackageDependencies extends Component {
               addPackage(packages[index])
             }else{
               self.setState({disableInstall: false, packages: []})
-
+              self._refetch()
               self.props.buildCallback()
             }
           }
@@ -586,18 +589,23 @@ class PackageDependencies extends Component {
     const {version, latestVersion} = edge.node
     const versionText = version ?  `v${version}` : ''
     const latestVersionText = latestVersion ?  `v${latestVersion}` : ''
+    let trCSS = classNames({
+      'PackageDependencies__optimistic-updating': edge.node.id === undefined
+    })
 
     return(
-      <tr key={edge.node.package + edge.node.manager + index}>
+      <tr
+        className={trCSS}
+         key={edge.node.package + edge.node.manager + index}>
         <td>{edge.node.package}</td>
         <td>{versionText}</td>
         <td>{latestVersionText}</td>
         <td>{installer}</td>
         <td width="60">
           <button
-          className="PackageDependencies__button--round PackageDependencies__button--remove"
-          disabled={edge.node.fromBase}
-          onClick={() => this._removePackage(edge.node)}>
+            className="PackageDependencies__button--round PackageDependencies__button--remove"
+            disabled={edge.node.fromBase || (edge.node.id === undefined)}
+            onClick={() => this._removePackage(edge.node)}>
           </button>
         </td>
       </tr>)

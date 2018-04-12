@@ -317,7 +317,7 @@ export default class UserNote extends Component {
                     this.state.labbookName,
                     this.state.owner,
                     false,
-                    (error) => {
+                    (response, error) => {
                       if (error) {
                         console.error(error)
                         store.dispatch(
@@ -463,7 +463,7 @@ export default class UserNote extends Component {
         this.state.labbookName,
         this.state.owner,
         this.state.newCollaborator,
-        (error) => {
+        (response, error) => {
           this.setState({ newCollaborator: '' })
           if (error) {
             console.log(error)
@@ -494,7 +494,7 @@ export default class UserNote extends Component {
       this.state.labbookName,
       this.state.owner,
       collaborator,
-      (error) => {
+      (response, error) => {
         if (error) {
           store.dispatch({
             type: 'ERROR_MESSAGE',

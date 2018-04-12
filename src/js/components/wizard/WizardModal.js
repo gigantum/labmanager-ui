@@ -230,7 +230,7 @@ export default class WizardModal extends React.Component {
       name,
       owner,
       false,
-      (error)=>{
+      (response, error)=>{
         if(error){
           console.error(error)
           store.dispatch(

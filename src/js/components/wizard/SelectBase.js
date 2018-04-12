@@ -167,6 +167,7 @@ export default class SelectBase extends React.Component {
 
                 if(props){
                   const sortedBaseItems = this._getTabStructure(props.availableBases);
+
                   const selecBaseImage = classNames({
                     'SelectBase__images': true,
                     'SelectBase__images--hidden': (this.state.selectedTab === 'none')
@@ -198,10 +199,13 @@ export default class SelectBase extends React.Component {
                           <Slider {...sliderSettings}>
                             {
                               (this.state.selectedTab !== 'none') && sortedBaseItems.bases[this.state.selectedTab].map((node) => {
+
                                   return(
-                                    <div className="BaseSlide__wrapper">
+                                    <div
+                                      key={node.id}
+                                      className="BaseSlide__wrapper">
                                       <BaseSlide
-                                        key={node.id}
+                                        key={`${node.id}_slide`}
                                         node={node}
                                         self={this}
                                       />
@@ -264,7 +268,7 @@ const BaseSlide = ({node, self}) =>{
     'SelectBase__image--selected': (self.state.selectedBaseId === node.id)
   })
   return(<div
-    key={node.id}
+
     className={"SelectBase__image-wrapper slick-slide"}>
     <div
       className={selectedBaseImage}
@@ -288,7 +292,7 @@ const BaseSlide = ({node, self}) =>{
             <ul>
             {
               node.languages.map((language)=>{
-                return(<li>{language}</li>)
+                return(<li key={language}>{language}</li>)
               })
             }
             </ul>
@@ -298,7 +302,7 @@ const BaseSlide = ({node, self}) =>{
             <ul>
             {
               node.developmentTools.map((tool)=>{
-                return(<li>{tool}</li>)
+                return(<li key={tool}>{tool}</li>)
               })
             }
             </ul>

@@ -585,7 +585,7 @@ export default class ImportModule extends Component {
               labbookName,
               owner,
               false,
-              (error)=>{
+              (response, error)=>{
                 if(error){
                   console.error(error)
                   store.dispatch(
