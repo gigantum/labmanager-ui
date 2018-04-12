@@ -30,6 +30,7 @@ const BaseQuery = graphql`query SelectBaseQuery($first: Int!, $cursor: String){
         url
         languages
         developmentTools
+        installedPackages
         packageManagers
         dockerImageServer
         dockerImageNamespace

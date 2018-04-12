@@ -5,7 +5,14 @@ export default class BaseDetails extends React.Component {
   render(){
     const {base} = this.props
     if(base){
-
+    let installedPackagesDictionary = {};
+    base.installedPackages.forEach(val =>{
+      let pkg = val.split('|')
+      let pkgManager = pkg[0]
+      let pkgName = pkg[1]
+      let pkgVersion = pkg[2]
+      installedPackagesDictionary[pkgManager] ? installedPackagesDictionary[pkgManager].push({pkgName, pkgVersion}): installedPackagesDictionary[pkgManager] =  [{pkgName, pkgVersion}]
+    })
     return(
       <div className="BaseDetails">
         <div className="BaseDetails__button">
@@ -53,6 +60,28 @@ export default class BaseDetails extends React.Component {
                     return(<li>{tool}</li>)
                   })
                 }
+                </ul>
+              </div>
+              <div className="Base__image-tools">
+                <h6>Packages</h6>
+                <ul>
+                  {
+                    Object.keys(installedPackagesDictionary).length ?
+                    Object.keys(installedPackagesDictionary).map(manager => {
+                      return(
+                        <React.Fragment>
+                          <li><b>{manager}</b></li>
+                          {
+                            installedPackagesDictionary[manager].map((pkg)=> {
+                              return(<li>{pkg.pkgName} - v{pkg.pkgVersion}</li>)
+                            })
+                          }
+                        </React.Fragment>
+                     )
+                    })
+                    :
+                    <li><b>No Packages Included</b></li>
+                  }
                 </ul>
               </div>
             </div>

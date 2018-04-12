@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Mon Mar 26 2018 15:34:42 GMT-0400 (EDT)
+# timestamp: Thu Apr 12 2018 17:45:56 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -156,10 +156,17 @@ input AddPackageComponentInput {
   manager: String!
   package: String!
   version: String
+  skipValidation: Boolean
   clientMutationId: String
 }
 
-"""Mutation to add a new package to labbook"""
+"""
+Mutation to add a new package to labbook
+
+The optional argument `skipValidation` will skip the validation step when adding the package.
+You MUST have previously validated the package information or errors can occur at build time.
+You MUST include a version, since auto-addition of a package version is done during validation.
+"""
 type AddPackageComponentPayload {
   newPackageComponentEdge: PackageComponentEdge
   clientMutationId: String
@@ -185,6 +192,7 @@ type BaseComponent implements Node {
   languages: [String]
   developmentTools: [String]
   packageManagers: [String]
+  installedPackages: [String]
   dockerImageServer: String
   dockerImageNamespace: String
   dockerImageRepository: String
@@ -266,6 +274,21 @@ type CreateBranchPayload {
   clientMutationId: String
 }
 
+input CreateExperimentalBranchInput {
+  owner: String!
+  labbookName: String!
+  branchName: String!
+  revision: String
+  description: String
+  clientMutationId: String
+}
+
+"""Mutation to create a local experimental (or Rollback) branch. """
+type CreateExperimentalBranchPayload {
+  labbook: Labbook
+  clientMutationId: String
+}
+
 input CreateLabbookInput {
   name: String!
   description: String!
@@ -339,6 +362,19 @@ value as specified by
 [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 """
 scalar DateTime
+
+input DeleteExperimentalBranchInput {
+  owner: String!
+  labbookName: String!
+  branchName: String!
+  clientMutationId: String
+}
+
+"""Delete a feature/rollback branch. Fails for any other attempt."""
+type DeleteExperimentalBranchPayload {
+  success: Boolean
+  clientMutationId: String
+}
 
 input DeleteLabbookCollaboratorInput {
   owner: String!
@@ -499,12 +535,17 @@ type Labbook implements Node & GitRepository {
   owner: String!
   name: String!
   description: String
+  readme: String
   schemaVersion: Int
   sizeBytes: String
-  activeBranch: LabbookRef
+  activeBranchName: String
+  workspaceBranchName: String
+  availableBranchNames: [String]
+  mergeableBranchNames: [String]
+  activeBranch: LabbookRef @deprecated(reason: "Can use workspaceBranchName instead")
+  branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection @deprecated(reason: "Can use availableBranchNames instead")
   defaultRemote: String
   creationDateUtc: DateTime
-  branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   collaborators: [String]
   canManageCollaborators: Boolean
   updatesAvailableCount: Int
@@ -613,6 +654,7 @@ type LabbookMutations {
   createLabbook(input: CreateLabbookInput!): CreateLabbookPayload
   deleteLabbook(input: DeleteLabbookInput!): DeleteLabbookPayload
   renameLabbook(input: RenameLabbookInput!): RenameLabbookPayload
+  setLabbookDescription(input: SetLabbookDescriptionInput!): SetLabbookDescriptionPayload
   publishLabbook(input: PublishLabbookInput!): PublishLabbookPayload
   syncLabbook(input: SyncLabbookInput!): SyncLabbookPayload
   createBranch(input: CreateBranchInput!): CreateBranchPayload
@@ -639,6 +681,11 @@ type LabbookMutations {
   removeFavorite(input: RemoveLabbookFavoriteInput!): RemoveLabbookFavoritePayload
   addCollaborator(input: AddLabbookCollaboratorInput!): AddLabbookCollaboratorPayload
   deleteCollaborator(input: DeleteLabbookCollaboratorInput!): DeleteLabbookCollaboratorPayload
+  writeReadme(input: WriteReadmeInput!): WriteReadmePayload
+  createExperimentalBranch(input: CreateExperimentalBranchInput!): CreateExperimentalBranchPayload
+  deleteExperimentalBranch(input: DeleteExperimentalBranchInput!): DeleteExperimentalBranchPayload
+  mergeFromBranch(input: MergeFromBranchInput!): MergeFromBranchPayload
+  workonExperimentalBranch(input: WorkonBranchInput!): WorkonBranchPayload
 }
 
 """
@@ -669,7 +716,7 @@ type LabbookQuery {
   currentLabbookSchemaVersion: Int
   jobStatus(jobId: String): JobStatus
   backgroundJobs(before: String, after: String, first: Int, last: Int): JobStatusConnection
-  localLabbooks(before: String, after: String, first: Int, last: Int): LabbookConnection
+  localLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): LabbookConnection
   availableBases(before: String, after: String, first: Int, last: Int): BaseComponentConnection
   availableCustomDependencies(before: String, after: String, first: Int, last: Int): CustomComponentConnection
   package(manager: String, package: String, version: String = ""): PackageComponent
@@ -727,6 +774,22 @@ input MakeLabbookDirectoryInput {
 
 type MakeLabbookDirectoryPayload {
   newLabbookFileEdge: LabbookFileEdge
+  clientMutationId: String
+}
+
+input MergeFromBranchInput {
+  owner: String!
+  labbookName: String!
+  otherBranchName: String!
+  force: Boolean
+  clientMutationId: String
+}
+
+"""
+Merge from another branch into the current active branch. Force if necessary. 
+"""
+type MergeFromBranchPayload {
+  labbook: Labbook
   clientMutationId: String
 }
 
@@ -896,6 +959,18 @@ type RenameLabbookPayload {
   clientMutationId: String
 }
 
+input SetLabbookDescriptionInput {
+  owner: String!
+  labbookName: String!
+  descriptionContent: String!
+  clientMutationId: String
+}
+
+type SetLabbookDescriptionPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
 input StartContainerInput {
   owner: String!
   labbookName: String!
@@ -977,4 +1052,30 @@ type UserIdentity implements Node & User {
   givenName: String
   familyName: String
   isSessionValid: Boolean
+}
+
+input WorkonBranchInput {
+  owner: String!
+  labbookName: String!
+  branchName: String!
+  revision: String
+  clientMutationId: String
+}
+
+"""Work on another branch (perform a git checkout)."""
+type WorkonBranchPayload {
+  labbook: Labbook
+  clientMutationId: String
+}
+
+input WriteReadmeInput {
+  owner: String!
+  labbookName: String!
+  content: String!
+  clientMutationId: String
+}
+
+type WriteReadmePayload {
+  updatedLabbook: Labbook
+  clientMutationId: String
 }
