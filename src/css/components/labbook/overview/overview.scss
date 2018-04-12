@@ -27,6 +27,7 @@
 
 .Overview__title {
   padding: 0px;
+  position: relative;
 }
 
 .Overview__description {
@@ -151,4 +152,203 @@
 
 .PackageCount__dependencies {
   margin: 0px;
+}
+
+
+.Overview__readme--editing {
+  @extend .card;
+  padding: 10px;
+  color: $romanSilver;
+  z-index: 200;
+  position: relative;
+  background: white;
+  min-height: 120px;
+  @include flex(center, column);
+  .fa {
+    font-family: FontAwesome !important;
+  }
+  .Overview__readme--editing-buttons {
+    @include flex(center, row);
+    button {
+      margin: 0 10px;
+    }
+  }
+}
+
+
+
+.Overview__readme--empty {
+  @extend .card;
+  text-align: center;
+  padding: 0 10px;
+  cursor: pointer;
+  opacity: 0.5;
+  color: $romanSilver;
+  z-index: 200;
+  position: relative;
+  background: white;
+  min-height: 120px;
+  @include flex(center, column);
+}
+
+.Overview__readme {
+  @extend .card;
+  padding: 10px 50px;
+  color: $romanSilver;
+  z-index: 200;
+  position: relative;
+  background: white;
+  min-height: 120px;
+  overflow: hidden;
+  h1 {
+    padding: 10px 0;
+    font-size: 2em;
+    color: $jet;
+    border-bottom: 1px solid $grey-light;
+    font-weight: 400;
+  }
+  h2 {
+    padding: 10px 0;
+    font-size: 1.5em;
+    color: $jet;
+    border-bottom: 1px solid $grey-light;
+    font-weight: 400;
+
+  }
+  h3 {
+    font-size: 1.17em;
+    color: $jet;
+    font-weight: 400;
+
+  }
+  h4 {
+    font-size: 1.12em;
+    color: $jet;
+    font-weight: 400;
+
+  }
+  h5 {
+    font-size: .83em;
+    font-weight: 400;
+    color: $jet;
+  }
+  h6 {
+    font-weight: 400;
+    font-size: .75em;
+    color: $jet;
+  }
+}
+
+.ReadmeMarkdown {
+  max-height: 330px;
+  overflow: hidden;
+}
+
+.ReadmeMarkdown *,
+.ReadmeMarkdown--expanded *,{
+  word-break: break-word;
+}
+
+.Overview__readme-buttons {
+  @include flex(center, row);
+}
+.Overview__readme-fadeout {
+  position: relative;
+  bottom: 2em;
+  height: 2em;
+  background: -webkit-linear-gradient(
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 1) 100%
+  );
+}
+
+
+.Overview__readme-bar-less{
+  margin: 30px 0 15px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.Overview__readme-bar-more{
+  @extend .Overview__readme-bar-less;
+  margin-top: 0;
+}
+
+.Overview__readme-bar-less:before,
+.Overview__readme-bar-more:before{
+  border-top: 1px solid $slateBlue;
+  content:"";
+  position: absolute;
+  bottom: 3px;
+  right: 0;
+  height: 0.5em;
+  z-index: -1;
+  text-align: center;
+  width: calc(50% - 50px);
+
+}
+.Overview__readme-bar-more:hover:after,
+.Overview__readme-bar-more:hover:before,
+.Overview__readme-bar-less:hover:after,
+.Overview__readme-bar-less:hover:before  {
+  border-top: 1px solid $turquise;
+}
+
+.Overview__readme-bar-more:after,
+.Overview__readme-bar-less:after {
+  border-top: 1px solid $slateBlue;
+  content:"";
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  height: 0.5em;
+  z-index: -1;
+  text-align: center;
+  width: calc(50% - 50px);
+}
+
+
+
+.Overview__readme-edit-button,
+.Overview__readme-edit-button:hover,
+.Overview__readme-edit-button:focus {
+  font-weight: light;
+  color: $romanSilver;
+  font-size: 14px;
+  height: 22px;
+  width: 22px;
+  padding: 5px;
+  border: 0px;
+  background: url('./../images/icons/edit.svg') no-repeat center center;
+  background-size: 22px;
+  position: absolute;
+  margin-left: 10px;
+  bottom: 0;
+}
+
+.Overview__readme-more,
+.Overview__readme-less{
+  position: absolute;
+  top: -26px;
+}
+
+.Overview__readme-more,
+.Overview__readme-more:hover,
+.Overview__readme-more:focus,
+.Overview__readme-less,
+.Overview__readme-less:hover,
+.Overview__readme-less:focus {
+  background: none;
+  color: $slateBlue;
+  border: 0px;
+}
+
+.Overview__readme-more:hover,
+.Overview__readme-less:hover {
+  color: $turquise;
+}
+
+.CodeMirror-lines * {
+  word-break: break-word;
 }
