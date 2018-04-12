@@ -33,6 +33,7 @@ class Overview extends Component {
       overflowExists: false,
       simpleExists: false,
     }, store.getState().overview);
+    this._toggleElements = this._toggleElements.bind(this);
   }
   /*
     subscribe to store to update state
@@ -53,8 +54,13 @@ class Overview extends Component {
         });
         simple.value(this.props.readme ? this.props.readme : '')
         this.setState({simpleExists: true})
+        let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0]
+        fullscreenButton && fullscreenButton.addEventListener('click', this._toggleElements)
       }
     }
+  }
+  _toggleElements() {
+    document.getElementsByClassName('ReactStickyHeader_fixed')[0].className.indexOf('hidden') === -1 ? document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.add('hidden'): document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.remove('hidden')
   }
   /*
     unsubscribe from redux store
@@ -88,7 +94,6 @@ class Overview extends Component {
       || el.clientHeight < el.scrollHeight;
 
     el.style.overflow = curOverflow;
-
     return isOverflowing;
   }
   _setExpand() {
@@ -171,7 +176,7 @@ class Overview extends Component {
                 }
                 <div className="Overview__readme-buttons">
                   {
-                    this.state.overflowExists && this.state.readmeExpanded ?
+                    this.state.overflowExists && (this.state.readmeExpanded ?
                     <div className="Overview__readme-bar-less">
                       <button
                         className="Overview__readme-less"
@@ -188,7 +193,7 @@ class Overview extends Component {
                         >
                           Expand
                         </button>
-                      </div>
+                      </div>)
                   }
                 </div>
               </div>
