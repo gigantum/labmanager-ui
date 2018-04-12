@@ -52,8 +52,30 @@ npm run start | yarn start
 ## Run Tests
 Jest runs snapshot tests
 ```
-jest
+npm run test || yarn test || jest
 ```
+
+#### To run tests with proxy
+
+Download (Charles)[https://www.charlesproxy.com/]
+
+Setup reverse proxy in charles
+
+Proxy > Reverse Proxy > Add
+```
+Local port: 10010
+Remote host: localhost:10001
+Remote port: 80
+[x] Rewrite redirects
+[ ] Preserve host in header fields
+[ ] Listen on a specific address
+```
+
+Run tests with proxy
+```
+npm run test-proxy || yarn test-proxy
+```
+
 
 ## Developing
 

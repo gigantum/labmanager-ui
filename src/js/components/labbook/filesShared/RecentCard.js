@@ -11,7 +11,6 @@ import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
 import store from 'JS/redux/store'
 //utils
 import {humanFileSize} from 'JS/utils/ChunkUploader'
-
 export default class RecentCard extends Component {
     constructor(props) {
         super(props);
