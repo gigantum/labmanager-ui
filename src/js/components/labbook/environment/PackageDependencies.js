@@ -519,13 +519,13 @@ class PackageDependencies extends Component {
                   <tbody>
                     {
                       this.state.packages.map((node, index)=>{
-                        const version = node.version === '' ? 'retrieving latest version' : `v${node.version}`
+                        const version = node.version === '' ? 'latest' : `v${node.version}`
                         return (
                           <tr
                             className={`PackageDependencies__table-row--${node.validity}` }
                             key={node.packageName + node.version}>
                             <td>{`${node.packageName}`}</td>
-                            <td>{node.validity === 'checking' ? `retrieving v${version}` : version}
+                            <td>{node.validity === 'checking' ? `retrieving ${version === 'latest'?'latest version': `v${version}`}` : version}
                             {
                               node.validity === 'checking' &&
                               <div className="PackageDependencies__version-loading"></div>
