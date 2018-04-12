@@ -410,14 +410,16 @@ export default createPaginationContainer(
         first: first
       };
     },
-    getVariables(props, {first, cursor, sort}, fragmentVariables) {
+    getVariables(props, {first, cursor, sort, reverse}, fragmentVariables) {
       first = 10;
       cursor = props.feed.localLabbooks.pageInfo.endCursor;
-      sort = 'modified_on'
+      sort = fragmentVariables.sort;
+      reverse = fragmentVariables.reverse
       return {
         first,
         cursor,
-        sort
+        sort,
+        reverse
         // in most cases, for variables other than connection filters like
         // `first`, `after`, etc. you may want to use the previous values.
       };
