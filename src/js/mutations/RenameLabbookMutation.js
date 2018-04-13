@@ -66,6 +66,6 @@ export default function RenameLabbookMutation(
       optimisticUpdater: (store) => {
         //sharedUpdater(store, labbookId, edge.node.id, connectionKey);
       }
-    },
+    }
   )
 }
