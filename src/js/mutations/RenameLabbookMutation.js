@@ -46,6 +46,7 @@ export default function RenameLabbookMutation(
       clientMutationId: '' + tempID++
     }
   }
+  console.log(owner, originalLabbookName, newLabbookName, callback)
   commitMutation(
     environment,
     {
@@ -60,12 +61,12 @@ export default function RenameLabbookMutation(
       },
       onError: err => console.error(err),
 
-      updater: (store) => {
+      // updater: (store) => {
         //sharedUpdater(store, labbookId, edge.node.id, connectionKey);
-      },
-      optimisticUpdater: (store) => {
+      // },
+      // optimisticUpdater: (store) => {
         //sharedUpdater(store, labbookId, edge.node.id, connectionKey);
-      }
+      // }
     },
   )
 }

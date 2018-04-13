@@ -1,5 +1,5 @@
 //mutations
-import CreateLabbookMutation from 'Mutations/createLabbookMutation';
+import CreateLabbookMutation from 'Mutations/CreateLabbookMutation';
 //config
 import testConfig from './config'
 

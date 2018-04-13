@@ -1,7 +1,7 @@
 
 import { XMLHttpRequest } from 'xmlhttprequest';
 import relayTestingUtils from 'relay-testing-utils';
-import {commitMutation, graphql} from 'react-relay';
+import {commitMutation, graphql, QueryRenderer} from 'react-relay';
 import React,{Component} from 'react'
 global.XMLHttpRequest = XMLHttpRequest;
 
@@ -40,5 +40,5 @@ class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
     return this.props.render((this.state.readyState))
   }
 }
-relay.QueryRenderer = ReactRelayQueryRenderer
+relay.QueryRenderer = QueryRenderer
 module.exports = relay
