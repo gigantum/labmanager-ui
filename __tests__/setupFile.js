@@ -19,7 +19,7 @@ global.document = window.document;
 //add window globally
 global.window = window;
 
-global.window.resizeTo = (width, height) => {
+global.window.resizeTo = function(width, height){
   global.window.innerWidth = width || global.window.innerWidth;
   global.window.innerHeight = width || global.window.innerHeight;
   global.window.dispatchEvent(new Event('resize'));
@@ -35,8 +35,8 @@ global.FormData = FormData
 const File = window.File
 global.File = window.File
 
-global.window.matchMedia = window.matchMedia || (() => { return { matches: false, addListener: () => {}, removeListener: () => {}, }; });
+global.window.matchMedia = window.matchMedia || function(){ return { matches: false, addListener: () => {}, removeListener: () => {}, }; }
 
-global.requestAnimationFrame = function(callback) {
+global.requestAnimationFrame = function(callback){
   setTimeout(callback, 0);
 };
