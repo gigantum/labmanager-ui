@@ -1,4 +1,5 @@
 //vendor
+import store from 'JS/redux/store'
 import React, { Component } from 'react'
 import {
   createPaginationContainer,
@@ -363,7 +364,16 @@ _captureScroll = () => {
 
         </div>
       )
-    }else{
+    } else if(props.feed.localLabbooks === null){
+      store.dispatch({
+        type: 'ERROR_MESSAGE',
+        payload:{
+          message: `Failed to fetch LabBooks.`,
+          messageBody: [{message: 'There was an error while fetching LabBooks. This likely means you have a corrupted LabBook file.'}]
+        }
+      })
+      return <div className="LocalLabbooks__fetch-error">There was an error attempting to fetch LabBooks. <br/>Try restarting Gigantum and refresh the page.<br/>If the problem persists <a target="_blank" href="https://docs.gigantum.io/discuss" rel="noopener noreferrer">request assistance here.</a></div>
+    } else{
       return(<Loader />)
     }
 

@@ -653,3 +653,13 @@
   cursor: pointer;
   @include close();
 }
+
+.LocalLabbooks__fetch-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  white-space: nowrap;
+  text-align: center;
+}

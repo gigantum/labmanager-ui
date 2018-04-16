@@ -70,17 +70,15 @@ export default class DashboardContainer extends Component {
             reverse: false,
           }}
           render={({error, props}) => {
-            if (props && props.localLabbooks === null) {
-              return <div>There was an error attempting to fetch LabBooks.</div>
+            if (error) {
+              console.log(error)
             } else if (props) {
-
                 return (
                   <LocalLabbooks
                     feed={props}
                     history={this.props.history}
                   />
                 )
-
             }else{
               return (
                 <Loader />
