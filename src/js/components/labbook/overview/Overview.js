@@ -13,6 +13,7 @@ import Base from 'Components/labbook/environment/Base'
 import FilePreview from './FilePreview'
 import RecentActivity from './RecentActivity'
 import Loader from 'Components/shared/Loader'
+import FileEmpty from 'Components/labbook/overview/FileEmpty'
 //mutations
 import WriteReadmeMutation from 'Mutations/WriteReadmeMutation'
 //store
@@ -34,6 +35,7 @@ class Overview extends Component {
       simpleExists: false,
     }, store.getState().overview);
     this._toggleElements = this._toggleElements.bind(this);
+    this._editReadme = this._editReadme.bind(this);
   }
   /*
     subscribe to store to update state
@@ -123,6 +125,9 @@ class Overview extends Component {
       }
     )
   }
+  _editReadme() {
+    this.setState({ editingReadme: true });
+  }
 
   render() {
     let readmeCSS = this.state.readmeExpanded ? 'ReadmeMarkdown--expanded' : 'ReadmeMarkdown';
@@ -139,7 +144,7 @@ class Overview extends Component {
           <div className="Overview__title-container">
             <h5 className="Overview__title">Readme
             <button
-              className={this.state.editingReadme ? 'hidden': 'Overview__readme-edit-button'}
+              className={this.state.editingReadme || !this.props.readme ? 'hidden': 'Overview__readme-edit-button'}
               onClick={()=>this.setState({ editingReadme: true })}
             >
             </button>
@@ -198,12 +203,13 @@ class Overview extends Component {
                 </div>
               </div>
               :
-              <div
-                className={this.state.editingReadme ? 'hidden' : 'Overview__readme--empty'}
-                onClick={() => this.setState({ editingReadme: true })}
-              >
-                Readme is empty. Click here to edit.
-            </div>
+              !this.state.editingReadme &&
+            <FileEmpty
+              section="edit"
+              mainText="This LabBook does not have a readme."
+              subText="Click here to create one"
+              callback ={this._editReadme}
+            />
           }
           <div>
             <RecentActivity recentActivity={this.props.labbook.overview.recentActivity} />

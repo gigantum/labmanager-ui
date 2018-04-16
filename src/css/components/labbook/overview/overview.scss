@@ -242,6 +242,41 @@
 .ReadmeMarkdown {
   max-height: 330px;
   overflow: hidden;
+  blockquote {
+    border-left: 5px solid $lightblue;
+  }
+  a {
+    color: $azure;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  ul {
+    padding-left: 40px;
+    list-style-type: disc;
+    li {
+      list-style-type: disc;
+    }
+  }
+}
+
+.ReadmeMarkdown--expanded {
+  blockquote {
+    border-left: 5px solid $lightblue;
+  }
+  a {
+    color: $azure;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  ul {
+    padding-left: 40px;
+    list-style-type: disc;
+    li {
+      list-style-type: disc;
+    }
+  }
 }
 
 .ReadmeMarkdown *,
@@ -324,7 +359,7 @@
   background-size: 22px;
   position: absolute;
   margin-left: 10px;
-  bottom: 0;
+  bottom: 2px;
 }
 
 .Overview__readme-more,
@@ -334,21 +369,45 @@
 }
 
 .Overview__readme-more,
-.Overview__readme-more:hover,
-.Overview__readme-more:focus,
-.Overview__readme-less,
-.Overview__readme-less:hover,
-.Overview__readme-less:focus {
-  background: none;
+.Overview__readme-more:focus {
   color: $slateBlue;
   border: 0px;
+  background: url('../images/icons/down-arrow-slate.svg') no-repeat 80px;
+  background-size: 15px;
+  padding-right: 40px;
 }
 
-.Overview__readme-more:hover,
+.Overview__readme-more:hover {
+  color: $turquise;
+  border: 0px;
+  background: url('../images/icons/down-arrow-turquise.svg') no-repeat 80px;
+  background-size: 15px;
+  padding-right: 40px;
+}
+
+.Overview__readme-less,
+.Overview__readme-less:focus {
+  color: $slateBlue;
+  border: 0px;
+  background: url('../images/icons/up-arrow-slate.svg') no-repeat 87px;
+  background-size: 15px;
+  padding-right: 40px;
+}
+
 .Overview__readme-less:hover {
   color: $turquise;
+  border: 0px;
+  background: url('../images/icons/up-arrow-turquise.svg') no-repeat 87px;
+  background-size: 15px;
+  padding-right: 40px;
 }
+
 
 .CodeMirror-lines * {
   word-break: break-word;
+}
+
+.CodeMirror-wrap {
+  height: 270px;
+  box-sizing: border-box;
 }
