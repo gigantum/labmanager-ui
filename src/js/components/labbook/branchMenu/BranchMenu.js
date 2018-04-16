@@ -569,7 +569,7 @@ export default class UserNote extends Component {
   *  @return {}
   */
   _switchBranch(){
-    console.log(this)
+  
     this.props.toggleBranchesView(true, false)
     this.setState({ menuOpen: false })
   }

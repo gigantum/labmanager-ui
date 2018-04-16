@@ -7,9 +7,11 @@ import environment from 'JS/createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
-  mutation MergeFromBranchMutation($input: MergeFromBranchInput!){
+  mutation MergeFromBranchMutation($input: MergeFromBranchInput!, $first: Int, $cursor: String, $hasNext: Boolean!){
     mergeFromBranch(input: $input){
-      success
+      labbook{
+        ...Labbook_labbook
+      }
       clientMutationId
     }
   }
@@ -31,7 +33,10 @@ export default function MergeFromBranchMutation(
       otherBranchName,
       force,
       clientMutationId
-    }
+    },
+    first: 2,
+    cursor: null,
+    hasNext: false
   }
   commitMutation(
     environment,

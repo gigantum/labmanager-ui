@@ -2,11 +2,11 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 //components
-import Loader from 'Components/shared/Loader'
+import DeleteLabbook from './DeleteLabbook'
+import ForceMerge from './ForceMerge'
 //mutations
 import WorkonExperimentalBranchMutation from 'Mutations/branches/WorkonExperimentalBranchMutation'
 import MergeFromBranchMutation from 'Mutations/branches/MergeFromBranchMutation'
-import DeleteExperimentalBranchMutation from 'Mutations/branches/DeleteExperimentalBranchMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
@@ -22,12 +22,13 @@ export default class BranchCard extends Component {
       labbookName: labbookName,
       forceMerge: false,
       deleteModalVisible: false,
-      eneteredBranchName: '',
-      showLoader: false
+      showLoader: false,
+      forceMergeVisible: false
     }
 
     this._merge = this._merge.bind(this)
     this._checkoutBranch = this._checkoutBranch.bind(this)
+    this._toggleModal = this._toggleModal.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,11 +46,11 @@ export default class BranchCard extends Component {
     const branchName = this.props.name
     const {owner, labbookName} = this.state
     const revision = null
-
+    const cleanActiveBranchName = this._sanitizeBranchName(branchName)
     store.dispatch({
       type: 'INFO_MESSAGE',
       payload:{
-        message: `Checking out ${branchName}`,
+        message: `Checking out ${cleanActiveBranchName}`,
       }
     })
 
@@ -97,12 +98,13 @@ export default class BranchCard extends Component {
     @param {}
     merge branch using WorkonExperimentalBranchMutation
   */
-  _merge(){
+  _merge(force){
+
     const otherBranchName = this.props.name
     const {owner, labbookName} = this.state
-    const force = false
     const {activeBranchName} =  this.props
-
+    const cleanActiveBranchName = this._sanitizeBranchName(activeBranchName)
+    const cleanOtherBranchName = this._sanitizeBranchName(otherBranchName)
     let self = this
 
     store.dispatch({
@@ -125,17 +127,23 @@ export default class BranchCard extends Component {
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
-              message: `There was a problem merging ${otherBranchName} into ${activeBranchName}`,
+              message: `There was a problem merging ${cleanOtherBranchName} into ${cleanActiveBranchName}`,
               messageBody: error,
             }
           })
 
+          if(error[0].message.indexOf('Cannot merge') > -1){
+            self.setState({
+              forceMergeVisible: true
+            })
+          }
+
         }
-        if(response){
+        if(response.mergeFromBranch && response.mergeFromBranch.labbook){
           store.dispatch({
             type: 'INFO_MESSAGE',
             payload:{
-              message: `${otherBranchName} merged into ${activeBranchName} successfully`,
+              message: `${cleanOtherBranchName} merged into ${cleanActiveBranchName} successfully`,
             }
           })
         }
@@ -165,62 +173,12 @@ export default class BranchCard extends Component {
   }
   /**
    * @param {}
-    opens delete branch confirnation modal
-
+   * opens delete branch confirnation modal
+   * @return{}
   */
-  _toggleDeleteModal(){
+  _toggleModal(name){
     this.setState({
-      'deleteModalVisible': !this.state.deleteModalVisible,
-      'eneteredBranchName': ''
-    })
-  }
-  /**
-  *  @param {}
-  *  triggers DeleteExperimentalBranchMutation
-  *  @return {}
-  */
-  _deleteBranch(){
-    this.setState({
-      'deleteModalVisible': false
-    })
-    const branchName = this.props.name
-    const {owner, labbookName} = this.state
-    const {labbookId} = this.props
-
-    DeleteExperimentalBranchMutation(
-      owner,
-      labbookName,
-      branchName,
-      labbookId,
-      (response, error) => {
-        if(error){
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload:{
-              message: `There was a problem deleting ${branchName}`,
-              messageBody: error,
-            }
-          })
-        }else{
-          store.dispatch({
-            type: 'INFO_MESSAGE',
-            payload:{
-              message: `Deleted ${branchName} successfully`
-            }
-          })
-        }
-      }
-    )
-
-  }
-  /**
-  *  @param {object} event
-  *  updates state of eneteredBranchName
-  *  @return {}
-  */
-  _updateBranchText(evt){
-    this.setState({
-      'eneteredBranchName': evt.target.value
+      [name]: !this.state[name]
     })
   }
 
@@ -245,31 +203,28 @@ export default class BranchCard extends Component {
         }
         <h6 className="BranchCard__title">{branchName}</h6>
         { this.state.deleteModalVisible &&
-          [<div
-            key="BranchDelete__modal"
-            className="BranchCard__delete-modal">
-              <div
-                onClick={() => this._toggleDeleteModal()}
-                className="BranchCard__close"></div>
-              <h4 className="BranchCard__header">Delete Branch</h4>
-              <p className="BranchCard__text BranchCard__text--red">You are going to remove {owner}/{branchName}. Remove branches cannot be restored. Are you sure?</p>
-              <p className="BranchCard__text">This action can lead to data loss. To prevent accidental deletions we ask you to confirm your intention.</p>
-              <p>Please type {branchName} to procceed.</p>
-              <input
-                onChange={(evt) => {this._updateBranchText(evt)}}
-                onKeyUp={(evt) => {this._updateBranchText(evt)}}
-                className="BranchCard__text"
-                type="text"
-                placeholder={"Enter branch name here"}
-              />
-              <div className="BranchCard__button-container">
-                <button
-                  disabled={branchName !== this.state.eneteredBranchName}
-                  onClick={() => this._deleteBranch()}>
-                  Confirm
-                </button>
-              </div>
-          </div>,
+          [
+            <DeleteLabbook
+              branchName={this.props.name}
+              cleanBranchName={branchName}
+              labbookName={this.state.labbookName}
+              labbookId={this.props.labbookId}
+              owner={owner}
+              toggleModal={this._toggleModal}
+            />,
+            <div
+              key="BranchDelete__modal-cover"
+              className="BranchCard__modal">
+            </div>
+          ]
+        }
+
+        { this.state.forceMergeVisible &&
+          [
+          <ForceMerge
+            merge={this._merge}
+            toggleModal={this._toggleModal}
+          />,
           <div
             key="BranchDelete__modal-cover"
             className="BranchCard__modal">
@@ -278,7 +233,7 @@ export default class BranchCard extends Component {
         }
         {showDelete &&
           <button
-            onClick={()=> {this._toggleDeleteModal()}}
+            onClick={()=> {this._toggleModal('deleteModalVisible')}}
             className="BranchCard__delete-labbook">
           </button>
         }
@@ -288,11 +243,12 @@ export default class BranchCard extends Component {
           {this.props.mergeFilter &&
             <button
               disabled={showLoader}
-              onClick={()=>{this._merge()}}
+              onClick={()=>{this._merge(false)}}
               >
               Merge
             </button>
           }
+
           {!this.props.mergeFilter &&
             <button
               onClick={()=>{this._checkoutBranch()}}
