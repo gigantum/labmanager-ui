@@ -401,7 +401,7 @@ export default createPaginationContainer(
   },
   {
     direction: 'forward',
-    getConnectionFromProps(props) {
+    getConnectionFromProps(props, error) {
       return props.feed.localLabbooks
     },
     getFragmentVariables(prevVars, first, cursor) {

@@ -70,10 +70,8 @@ export default class DashboardContainer extends Component {
             reverse: false,
           }}
           render={({error, props}) => {
-
-            if (error) {
-              console.log(error)
-              return <div>{error.message}</div>
+            if (props && props.localLabbooks === null) {
+              return <div>There was an error attempting to fetch LabBooks.</div>
             } else if (props) {
 
                 return (
@@ -84,7 +82,6 @@ export default class DashboardContainer extends Component {
                 )
 
             }else{
-
               return (
                 <Loader />
               )
