@@ -84,7 +84,9 @@
   line-height: 31px;
 }
 
-.ContainerStatus__container-state.Building {
+.ContainerStatus__container-state.Building,
+.ContainerStatus__container-state.Syncing,
+.ContainerStatus__container-state.Publishing {
   background: $background-color url('./../images/loaders/container-status-loader.svg') no-repeat 90% center;
   border: 3px solid $goldenLemon;
   background-size: 20px;
@@ -200,4 +202,9 @@
 
 .ContainerStatus__button--bottom{
   left: -128px;
+}
+
+
+.ContainerStatus__container-remove-pointer {
+  pointer-events: none;
 }

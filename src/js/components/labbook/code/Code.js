@@ -103,6 +103,7 @@ class Code extends Component {
               codeId={this.props.labbook.code.id}
               code={this.props.labbook.code}
               loadStatus={this._loadStatus}
+              isLocked={this.props.isLocked}
             />
           </div>
         </div>

@@ -201,14 +201,16 @@ export default class UserNote extends Component {
           })
 
           if (!self.state.remoteUrl) {
+            this.props.setPublishingState(true)
             PublishLabbookMutation(
               self.state.owner,
               self.state.labbookName,
               self.props.labbookId,
               (response, error) => {
-                console.log(error)
+                this.props.setPublishingState(true)
                 if (response.publishLabbook && !response.publishLabbook.success) {
                   if(error){
+                    console.log(error)
                     store.dispatch({
                       type: 'MULTIPART_INFO_MESSAGE',
                       payload: {
@@ -290,12 +292,13 @@ export default class UserNote extends Component {
                 error: false
               }
             })
-
+            this.props.setSyncingState(true);
             SyncLabbookMutation(
               this.state.owner,
               this.state.labbookName,
               false,
               (error) => {
+                this.props.setSyncingState(false);
                 if (error) {
                   store.dispatch({
                     type: 'MULTIPART_INFO_MESSAGE',

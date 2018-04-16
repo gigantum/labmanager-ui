@@ -22,6 +22,8 @@ export default class ContainerStatus extends Component {
     let state = {
       'status': "",
       'building': this.props.isBuilding,
+      'syncing': this.props.isSyncing,
+      'publishing': this.props.isPublishing,
       'secondsElapsed': 0,
       'containerStatus': props.containerStatus,
       'imageStatus': props.imageStatus,
@@ -378,7 +380,6 @@ export default class ContainerStatus extends Component {
     @return {string} newStatus
    */
   _containerAction(status, evt){
-
     if(status === "Stop"){
       this.setState({
         status: 'Stopping',
@@ -448,7 +449,7 @@ export default class ContainerStatus extends Component {
     newStatus = this.state.isMouseOver && (status === 'Build Failed') ? 'Rebuild' : newStatus
     newStatus = this.state.isMouseOver && (status === 'Rebuild Required') ? 'Rebuild' : newStatus
 
-    newStatus = this.state.isBuilding ? 'Building' : newStatus
+    newStatus = this.state.isBuilding? 'Building' : this.state.isSyncing ? 'Syncing' : this.state.isPublishing ? 'Publishing' : newStatus
 
     return newStatus;
   }
@@ -494,14 +495,18 @@ export default class ContainerStatus extends Component {
         this._containerStatusJSX(status, 'setStatus')
     )
   }
-
   _containerStatusJSX(status, key){
+    let excludeStatuses = ['Stopping', 'Starting', 'Building', 'Publishing', 'Syncing']
+    let notExcluded = excludeStatuses.indexOf(this.state.status) === -1
     const containerStatusCss = classNames({
       'ContainerStatus__container-state--menu-open': this.state.containerMenuOpen,
       'ContainerStatus__container-state': !this.state.containerMenuOpen,
       'Building': this.props.isBuilding,
-      [status]: !this.props.isBuilding,
-      'ContainerStatus__container-state--expanded': this.state.isMouseOver
+      'Syncing': this.props.isSyncing,
+      'Publishing': this.props.isPublishing,
+      [status]: !this.props.isBuilding && !this.props.isSyncing && !this.props.isPublishing,
+      'ContainerStatus__container-state--expanded': this.state.isMouseOver && notExcluded && !this.state.isBuilding && !(this.state.imageStatus === 'BUILD_IN_PROGRESS') ,
+      'ContainerStatus__container-remove-pointer': !notExcluded || this.state.isBuilding || (this.state.imageStatus === 'BUILD_IN_PROGRESS') || this.state.isSyncing ||this.state.isPublishing
     })
 
     const containerMenuIconCSS = classNames({

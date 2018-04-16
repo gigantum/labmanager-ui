@@ -84,6 +84,7 @@ class InputDataBrowser extends Component {
           parentId={this.props.inputId}
           favoriteConnection="InputFavorites_favorites"
           owner={this.state.owner}
+          isLocked={this.props.isLocked}
           {...this.props}
         />
       )

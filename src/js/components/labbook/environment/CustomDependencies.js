@@ -129,7 +129,7 @@ class CustomDependencies extends Component {
   _toggleViewContainer(){
     if (navigator.onLine) {
       const {status} = store.getState().containerStatus;
-      const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+      const canEditEnvironment = config.containerStatus.canEditEnvironment(status) && !this.props.isLocked
 
       if(canEditEnvironment){
         store.dispatch({

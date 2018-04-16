@@ -161,7 +161,7 @@ class PackageDependencies extends Component {
   */
   _removePackage(node){
     const {status} = store.getState().containerStatus;
-    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+    const canEditEnvironment = config.containerStatus.canEditEnvironment(status) && !this.props.isLocked
 
     if(navigator.onLine){
       if(canEditEnvironment){
@@ -205,7 +205,7 @@ class PackageDependencies extends Component {
   */
   _toggleAddPackageMenu(){
     const {status} = store.getState().containerStatus;
-    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+    const canEditEnvironment = config.containerStatus.canEditEnvironment(status) && !this.props.isLocked
 
     if(navigator.onLine){
       if(canEditEnvironment){

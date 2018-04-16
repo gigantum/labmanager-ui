@@ -90,6 +90,7 @@ class CodeBrowser extends Component {
             connection="CodeBrowser_allFiles"
             favoriteConnection="CodeFavorites_favorites"
             favorites={this.props.favorites}
+            isLocked={this.props.isLocked}
             {...this.props}
           />
       )

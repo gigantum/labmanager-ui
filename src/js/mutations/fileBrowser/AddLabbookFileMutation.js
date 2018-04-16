@@ -107,7 +107,6 @@ export default function AddLabbookFileMutation(
     }
   }
 
-  console.log(JSON.stringify(variables))
   let recentConnectionKey = section === 'code' ? 'MostRecentCode_allFiles' :
     section === 'input' ? 'MostRecentInput_allFiles' :
       'MostRecentOutput_allFiles'
@@ -135,7 +134,7 @@ export default function AddLabbookFileMutation(
         edgeName: 'newLabbookFileEdge'
       }],
       onCompleted: (response, error ) => {
-  
+
         if(error){
           console.log(error)
         }

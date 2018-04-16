@@ -5,6 +5,8 @@ export const INITIALIZE = 'INITIALIZE';
 export const UPDATE_DETAIL_VIEW = 'UPDATE_DETAIL_VIEW';
 export const RESET_LABBOOK_STORE = 'RESET_LABBOOK_STORE';
 export const IS_BUILDING = 'IS_BUILDING'
+export const IS_SYNCING = 'IS_SYNCING'
+export const IS_PUBLISHING = 'IS_PUBLISHING'
 export const MODAL_VISIBLE = 'MODAL_VISIBLE'
 export const SELECTED_COMPONENT = 'SELECTED_COMPONENT'
 export const UPDATE_BRANCHES_VIEW = 'UPDATE_BRANCHES_VIEW'
@@ -17,6 +19,8 @@ export default (
    'containerState': '',
    'imageStatus': '',
    'isBuilding': false,
+   'isSyncing': false,
+   'isPublishing': false,
    'containerStatus': '',
    'modalVisible': '',
    'detailMode': false,
@@ -54,6 +58,18 @@ export default (
      ...state,
      'isBuilding': action.payload.isBuilding,
    };
+  } else if(action.type === IS_SYNCING){
+
+    return {
+      ...state,
+      'isSyncing': action.payload.isSyncing,
+    };
+  } else if(action.type === IS_PUBLISHING){
+
+    return {
+      ...state,
+      'isPublishing': action.payload.isPublishing,
+    };
  }else if(action.type === SELECTED_COMPONENT){
 
    return {
@@ -79,6 +95,8 @@ export default (
      'containerState': '',
      'imageStatus': '',
      'isBuilding': false,
+     'isPublushing': false,
+     'isSyncing': false,
      'containerStatus': '',
      'modalVisible': '',
      'detailMode': false,

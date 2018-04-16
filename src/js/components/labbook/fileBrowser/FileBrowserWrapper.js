@@ -684,8 +684,6 @@ export default class FileBrowserWrapper extends Component {
             onFileFavoriting={this.handleFileFavoriting}
             owner={this.state.owner}
           />
-
-
           {
             this.state.uploading &&
             <div className="Code--uploading flex">
@@ -693,6 +691,12 @@ export default class FileBrowserWrapper extends Component {
               <span className="Code__loading--browser" />
             </div>
           }
+        {
+          this.props.isLocked.locked &&
+          <div className="Code--uploading flex">
+            Please wait for LabBook to finish {this.props.isLocked.isPublishing ? 'publishing' : 'syncing'}
+          </div>
+        }
 
           <DetailPanel
             {...this.state.selectedFile}
