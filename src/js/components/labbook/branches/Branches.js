@@ -102,7 +102,7 @@ export default class Branches extends Component {
       })
 
       const leftBumperCSS = classNames({
-        'Brances__slider-button--left': (listPositionIndex > 0),
+        'Branches__slider-button--left': (listPositionIndex > 0),
         'hidden': !(listPositionIndex > 0)
       })
 
@@ -112,7 +112,7 @@ export default class Branches extends Component {
       })
 
       const rightBumperCSS = classNames({
-        'Brances__slider-button--right': this.props.branchesOpen && (showRightBumper),
+        'Branches__slider-button--right': this.props.branchesOpen && (showRightBumper),
         'hidden': !(this.props.branchesOpen && (showRightBumper))
       })
       const width = listPositionIndex * (this.state.width/branches.length)

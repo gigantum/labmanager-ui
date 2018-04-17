@@ -18,7 +18,7 @@
   overflow: hidden;
 }
 
-.Brances__slider-button {
+.Branches__slider-button {
   height: 40px;
   width: 40px;
   position: absolute;
@@ -28,35 +28,35 @@
   border-width: 0px;
 }
 
-.Brances__slider-button:hover,
-.Brances__slider-button:focus {
+.Branches__slider-button:hover,
+.Branches__slider-button:focus {
   background-color: rgba(0,0,0,0);
   border-width: 0px;
 }
-.Brances__slider-button--left {
-  @extend .Brances__slider-button;
+.Branches__slider-button--left {
+  @extend .Branches__slider-button;
   left: 0px;
   background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
   background-size: 30px;
   transform: rotate(90deg);
 }
 
-.Brances__slider-button--left:hover,
-.Brances__slider-button--left:focus {
+.Branches__slider-button--left:hover,
+.Branches__slider-button--left:focus {
     background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
     background-size: 30px;
 }
 
-.Brances__slider-button--right {
-  @extend .Brances__slider-button;
+.Branches__slider-button--right {
+  @extend .Branches__slider-button;
   right: 0px;
   background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
   background-size: 30px;
   transform: rotate(270deg);
 }
 
-.Brances__slider-button--right:hover,
-.Brances__slider-button--right:focus {
+.Branches__slider-button--right:hover,
+.Branches__slider-button--right:focus {
     background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
     background-size: 30px;
 }

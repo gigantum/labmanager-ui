@@ -10,7 +10,6 @@
 .ActivityCard {
   margin: 0 15px;
   padding: 0 10px;
-  //border: 1px solid $romanSilver;
   color: $romanSilver;
   z-index: 200;
   position: relative;
@@ -540,28 +539,6 @@
   top: calc(50% - 5px);
 }
 
-
-// .Activity__rollback-text {
-//   position: relative;
-//   margin: 0 0 0 20px;
-//   color: $azure;
-//   padding: 0px 0 0 60px;
-//   font-size: 14px;
-//   display: none;
-// }
-
-// .Activity__submenu-circle:hover {
-//   background: $azure;
-//   height: 15px;
-//   width: 15px;
-//   margin-left: 34px;
-//   top: calc(50% - 7.5px);
-// }
-
-// .Activity__submenu-circle:hover + h5 {
-//   display: block;
-// }
-
 .Activity__submenu-container {
   height: 45px;
   @include flex(flex-start, row)
@@ -577,19 +554,6 @@
   left: 34px;
   top: calc(50% - 7.5px);
 }
-
-// .Activity__submenu-subcontainer {
-//   margin-left: 50px;
-//   display: none;
-//   background: $white;
-//   @include flex(center, column);
-//   h5 {
-//     display: none;
-//     font-size: 14px;
-//     color: $azure;
-//   }
-// }
-
 
 .Activity__submenu-subcontainer {
   margin: 10px 0 10px 50px;
@@ -626,31 +590,3 @@
   border-top: 12.5px solid transparent;
   border-bottom: 12.5px solid transparent;
 }
-
-
-// .Activity__submenu-container:hover {
-//   height: 45px;
-// }
-
-
-// .Activity__submenu-circle:before {
-//   content: "";
-//   display: block;
-//   position: absolute;
-//   z-index: -1;
-//   border: 4px solid $romanSilver;
-//   border-width: 0 0 0 4px;
-//   width: 1px;
-//   height: 15px;
-//   left: 5px;
-//   top: 15px;
-//   // transition: none;
-
-// }
-
-// .Activity__submenu-circle:hover::before {
-//   // transition: none;
-//   left: 8px;
-//   top: 20px;
-//   height: 15px;
-// }
