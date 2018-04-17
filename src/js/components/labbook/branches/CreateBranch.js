@@ -21,7 +21,8 @@ export default class CreateBranchModal extends React.Component {
       'textLength': 0,
       'showError': false,
       'branchName': props.selected ? this._formattedISO(this.props.selected.timestamp) : '',
-      'branchDescription': ''
+      'branchDescription': '',
+      'createButtonClicked': false
     };
 
     this._showModal = this._showModal.bind(this)
@@ -140,14 +141,14 @@ export default class CreateBranchModal extends React.Component {
     const {owner, labbookName} = store.getState().routes
     const {branchName} = this.state
     const revision = this.props.selected ? this.props.selected.commit : null
-
+    this.setState({createButtonClicked: true})
     CreateExperimentalBranchMutation(
       owner,
       labbookName,
       branchName,
       revision,
       (response, error) => {
-
+        self.setState({createButtonClicked: false})
         if(self._hideModal){
           self._hideModal()
         }
@@ -171,7 +172,7 @@ export default class CreateBranchModal extends React.Component {
         'CreateBranch--login-prompt': this.state.showLoginPrompt,
         'hidden': !this.state.showLoginPrompt
       })
-
+      const createDisabled = this.state.showError || (this.state.branchName.length === 0) || this.state.createButtonClicked
       return (
         <div>
           {this.state.modalVisible &&
@@ -233,7 +234,7 @@ export default class CreateBranchModal extends React.Component {
                         Cancel
                       </button>
                       <button
-                        disabled={this.state.showError || (this.state.branchName.length === 0)}
+                        disabled={createDisabled}
                         onClick={() => { this._createNewBranch() }}
                         >
                           Create
