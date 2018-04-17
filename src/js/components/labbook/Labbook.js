@@ -267,7 +267,7 @@ class Labbook extends Component {
     updates branchOpen state
   */
   _toggleBranchesView(branchesOpen, mergeFilter){
-  
+
     store.dispatch({
       type: 'MERGE_MODE',
       payload: {
@@ -522,9 +522,7 @@ const LabbookFragmentContainer = createFragmentContainer(
       fragment Labbook_labbook on Labbook{
           id
           description
-          updatesAvailableCount
           readme
-          isRepoClean
           defaultRemote
           owner
           creationDateUtc
