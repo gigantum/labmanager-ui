@@ -9,7 +9,7 @@ import Loader from 'Components/shared/Loader'
 import store from 'JS/redux/store'
 
 
-const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String){
+const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String, $sort: String $reverse: Boolean){
     ...LocalLabbooks_feed
 }`
 
@@ -18,7 +18,7 @@ export default class DashboardContainer extends Component {
 
     super(props);
     this.state = {
-      selectedComponent: props.match.params.id
+      selectedComponent: props.match.params.id,
     }
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
@@ -26,6 +26,7 @@ export default class DashboardContainer extends Component {
         'callbackRoute': props.history.location.pathname
       }
     })
+    // this._modifyQuery = this._modifyQuery.bind(this)
   }
   /**
   *  @param {Object} nextProps
@@ -64,24 +65,21 @@ export default class DashboardContainer extends Component {
           query={LabbookQuery}
           variables={{
             first: 20,
-            cursor: null
+            cursor: null,
+            sort: 'modified_on',
+            reverse: false,
           }}
           render={({error, props}) => {
-
             if (error) {
               console.log(error)
-              return <div>{error.message}</div>
             } else if (props) {
-
                 return (
                   <LocalLabbooks
                     feed={props}
                     history={this.props.history}
                   />
                 )
-
             }else{
-
               return (
                 <Loader />
               )

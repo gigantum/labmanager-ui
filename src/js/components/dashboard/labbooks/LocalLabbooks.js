@@ -1,4 +1,5 @@
 //vendor
+import store from 'JS/redux/store'
 import React, { Component } from 'react'
 import {
   createPaginationContainer,
@@ -15,7 +16,7 @@ import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
 import Validation from 'JS/utils/Validation'
 
 let isLoadingMore = false;
-
+let refetchLoading = false;
 class LocalLabbooks extends Component {
 
   constructor(props){
@@ -27,9 +28,13 @@ class LocalLabbooks extends Component {
       'newLabbookName':'',
       'renameError': '',
       'showNamingError': false,
-      'filter': 'all'
+      'filter': 'all',
+      'selectedSort': 'Modified Date (Newest)',
+      'sortMenuOpen': false,
+      'refetchLoading': false
     }
 
+    this._closeSortMenu = this._closeSortMenu.bind(this);
     this._goToLabbook = this._goToLabbook.bind(this)
     this._loadMore = this._loadMore.bind(this)
     this._showModal = this._showModal.bind(this)
@@ -44,12 +49,20 @@ class LocalLabbooks extends Component {
     this.setState({'filter': filterRoute})
 
     document.title =  `Gigantum`
+    window.addEventListener('click', this._closeSortMenu)
 
   }
 
   componentWillUnmount() {
-
+    window.removeEventListener('click', this._closeSortMenu)
     window.removeEventListener("scroll", this._captureScroll)
+  }
+  _closeSortMenu(evt) {
+    let isSortMenu = evt.target.className.indexOf('LocalLabbooks__sort') > -1
+
+    if(!isSortMenu && this.state.sortMenuOpen) {
+      this.setState({sortMenuOpen: false});
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -104,7 +117,6 @@ _captureScroll = () => {
       this.props.relay.loadMore(
         10, // Fetch the next 10 feed items
         (ev) => {
-    
           isLoadingMore = false;
         }
       );
@@ -178,20 +190,68 @@ _captureScroll = () => {
     this.refs.wizardModal._showModal()
   }
 
-  render(){
 
+  _setSortFilter(selected) {
+    this.setState({sortMenuOpen: false, selectedSort: selected});
+    switch(selected){
+      case 'Modified Date (Newest)':
+        this._refetch('modified_on', false);
+        break;
+      case 'Modified Date (Oldest)':
+        this._refetch('modified_on', true);
+        break;
+      case 'Creation Date (Newest)':
+        this._refetch('created_on', false);
+        break;
+      case 'Creation Date (Oldest)':
+        this._refetch('created_on', true);
+        break;
+      case 'A-Z':
+        this._refetch('az', false);
+        break;
+      case 'Z-A':
+        this._refetch('az', true);
+        break;
+      default:
+        break;
+    }
+  }
+
+  _refetch(sort, reverse){
+    let self = this;
+    let relay = self.props.relay;
+    this.setState({refetchLoading: true})
+
+    relay.refetchConnection(
+      20,
+      (res, err)=>{
+        if(err){
+          console.log(err)
+        }
+        this.setState({refetchLoading: false})
+
+      },
+      {first: 20,
+        cursor: null,
+        sort: sort,
+        reverse: reverse,
+      }
+    )
+  }
+
+  render(){
       let {props} = this;
       let owner = localStorage.getItem('username')
-
       if(props.feed.localLabbooks){
 
         let labbooks = this._filterLabbooks(props.feed.localLabbooks.edges, this.state.filter)
-
         return(
 
           <div className="LocalLabbooks">
-
-
+          {
+            this.state.refetchLoading &&
+            <Loader />
+          }
             <WizardModal
               ref="wizardModal"
               handler={this.handler}
@@ -218,6 +278,60 @@ _captureScroll = () => {
                   <a onClick={()=> this._setFilter('others')}>Shared With Me</a>
                 </div>
               </nav>
+            </div>
+            <div className="LocalLabbooks__sort">
+              Sort by:
+              {
+                this.state.refetchLoading ?
+                  <div className="LocalLabbooks__sorting">Sorting Labbooks...</div>
+                  :
+                  <span
+                    className={this.state.sortMenuOpen ? 'LocalLabbooks__sort-expanded' : 'LocalLabbooks__sort-collapsed'}
+                    onClick={() => !this.setState({ sortMenuOpen: !this.state.sortMenuOpen })}
+                  >
+                    {this.state.selectedSort}
+                  </span>
+              }
+              <ul
+                className={this.state.sortMenuOpen ? 'LocalLabbooks__sort-menu' : 'hidden'}
+              >
+                <li
+                  className={'LocalLabbooks__sort-item'}
+                  onClick={()=>this._setSortFilter('Modified Date (Newest)')}
+                >
+                  Modified Date (Newest) {this.state.selectedSort === 'Modified Date (Newest)' ?  '✓ ' : ''}
+                </li>
+                <li
+                  className={'LocalLabbooks__sort-item'}
+                  onClick={()=>this._setSortFilter('Modified Date (Oldest)')}
+                >
+                  Modified Date (Oldest) {this.state.selectedSort === 'Modified Date (Oldest)' ?  '✓ ' : ''}
+                </li>
+                <li
+                  className={'LocalLabbooks__sort-item'}
+                  onClick={()=>this._setSortFilter('Creation Date (Newest)')}
+                >
+                  Creation Date (Newest) {this.state.selectedSort === 'Creation Date (Newest)' ?  '✓ ' : ''}
+                </li>
+                <li
+                  className={'LocalLabbooks__sort-item'}
+                  onClick={()=>this._setSortFilter('Creation Date (Oldest)')}
+                >
+                  Creation Date (Oldest) {this.state.selectedSort === 'Creation Date (Oldest)' ?  '✓ ' : ''}
+                </li>
+                <li
+                  className="LocalLabbooks__sort-item"
+                  onClick={()=>this._setSortFilter('A-Z')}
+                >
+                  A-Z {this.state.selectedSort === 'A-Z' ?  '✓ ' : ''}
+                </li>
+                <li
+                  className="LocalLabbooks__sort-item"
+                  onClick={()=>this._setSortFilter('Z-A')}
+                >
+                  Z-A {this.state.selectedSort === 'Z-A' ?  '✓ ' : ''}
+                </li>
+              </ul>
             </div>
             <div className='LocalLabbooks__labbooks'>
               <div className="LocalLabbooks__sizer">
@@ -250,7 +364,16 @@ _captureScroll = () => {
 
         </div>
       )
-    }else{
+    } else if(props.feed.localLabbooks === null){
+      store.dispatch({
+        type: 'ERROR_MESSAGE',
+        payload:{
+          message: `Failed to fetch LabBooks.`,
+          messageBody: [{message: 'There was an error while fetching LabBooks. This likely means you have a corrupted LabBook file.'}]
+        }
+      })
+      return <div className="LocalLabbooks__fetch-error">There was an error attempting to fetch LabBooks. <br/>Try restarting Gigantum and refresh the page.<br/>If the problem persists <a target="_blank" href="https://docs.gigantum.io/discuss" rel="noopener noreferrer">request assistance here.</a></div>
+    } else{
       return(<Loader />)
     }
 
@@ -261,12 +384,13 @@ export default createPaginationContainer(
   LocalLabbooks,
   {feed: graphql`
       fragment LocalLabbooks_feed on LabbookQuery{
-        localLabbooks(first: $first, after:$cursor)@connection(key: "LocalLabbooks_localLabbooks"){
+        localLabbooks(first: $first, after: $cursor, sort: $sort, reverse: $reverse)@connection(key: "LocalLabbooks_localLabbooks"){
           edges {
             node {
               name
               description
               owner
+              creationDateUtc
               environment{
                 id
                 imageStatus
@@ -287,7 +411,7 @@ export default createPaginationContainer(
   },
   {
     direction: 'forward',
-    getConnectionFromProps(props) {
+    getConnectionFromProps(props, error) {
       return props.feed.localLabbooks
     },
     getFragmentVariables(prevVars, first, cursor) {
@@ -296,12 +420,16 @@ export default createPaginationContainer(
         first: first
       };
     },
-    getVariables(props, {first, cursor}, fragmentVariables) {
+    getVariables(props, {first, cursor, sort, reverse}, fragmentVariables) {
       first = 10;
       cursor = props.feed.localLabbooks.pageInfo.endCursor;
+      sort = fragmentVariables.sort;
+      reverse = fragmentVariables.reverse
       return {
         first,
-        cursor
+        cursor,
+        sort,
+        reverse
         // in most cases, for variables other than connection filters like
         // `first`, `after`, etc. you may want to use the previous values.
       };
@@ -310,6 +438,8 @@ export default createPaginationContainer(
       query LocalLabbooksPaginationQuery(
         $first: Int!
         $cursor: String
+        $sort: String
+        $reverse: Boolean
       ) {
           ...LocalLabbooks_feed
       }
