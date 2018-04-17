@@ -110,7 +110,7 @@ export default class BranchCard extends Component {
     store.dispatch({
       type: 'INFO_MESSAGE',
       payload:{
-        message: `Merging ${otherBranchName} into ${activeBranchName}`,
+        message: `Merging ${cleanOtherBranchName} into ${cleanActiveBranchName}`,
       }
     })
 
