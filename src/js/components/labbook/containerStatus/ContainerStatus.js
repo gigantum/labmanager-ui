@@ -60,7 +60,7 @@ export default class ContainerStatus extends Component {
   */
   storeDidUpdate = (containerStatusStore) => {
 
-    if(this.state.containerMenuOpen !== containerStatusStore.containerMenuOpen){
+    if(this.state.containerMenuOpen !== containerStatusStore.containerMenuOpen || this.state.containerMenuOpen !== containerStatusStore.containerMenuWarning){
         this.setState({containerMenuOpen: containerStatusStore.containerMenuOpen, containerMenuWarning: containerStatusStore.containerMenuWarning}); //triggers  re-render when store updates
     }
   }
@@ -131,12 +131,14 @@ export default class ContainerStatus extends Component {
    *
   */
   _closePopupMenus(evt){
-
     let containerMenuClicked = (evt.target.className.indexOf('ContainerStatus__container-state') > -1) ||
       (evt.target.className.indexOf('ContainerStatus__button-menu') > -1) ||
       (evt.target.className.indexOf('PackageDependencies__button') > -1) ||
       (evt.target.className.indexOf('CustomDependencies__button') > -1) ||
-      (evt.target.className.indexOf('BranchMenu') > -1)
+      (evt.target.className.indexOf('BranchMenu') > -1) ||
+      (evt.target.className.indexOf('BranchMenu__sync-button') > -1) ||
+      (evt.target.className.indexOf('BranchMenu__remote-button') > -1)
+
 
     if(!containerMenuClicked &&
     this.state.containerMenuOpen){
@@ -575,7 +577,7 @@ export default class ContainerStatus extends Component {
         {
           this.state.containerMenuOpen &&
           <div className="ContainerStatus__button-menu">
-            {this.state.containerMenuWarning}
+            {store.getState().environment.containerMenuWarning}
           </div>
         }
       </div>)

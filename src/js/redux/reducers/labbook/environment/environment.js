@@ -47,7 +47,7 @@ if (action.type === CLOSE_ENVIRONMENT_MENUS) {
     containerMenuWarning: action.payload.message
   }
 } else if (action.type === UPDATE_CONTAINER_MENU_VISIBILITY) {
-  
+
   return {
     ...state,
     containerMenuOpen: action.payload.containerMenuOpen
