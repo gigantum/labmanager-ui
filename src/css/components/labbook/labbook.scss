@@ -3,10 +3,18 @@
   min-height: calc(100% - 230px);
   height: auto;
   width: auto;
-  max-width: 1240px;
+  max-width: 1235px;
   min-width: 760px;
   transition: width 0.25s;
 }
+
+.Labbook__inner-container {
+  width: calc(100%);
+  margin: 20px 0 20px 35px;
+  min-height: 100%;
+  height: auto;
+}
+
 .Labbook__name {
   cursor: pointer;
   font-weight: 100;
@@ -112,14 +120,7 @@
   padding: 20px 0 0 40px;
 }
 
-.Labbook__inner-container {
-  max-width: calc(100% - 80px);
-  margin: 20px 40px;
-  padding: 0 40px;
-  min-height: 100%;
-  height: auto;
-  //background: $grey-light;
-}
+
 .Labbook__branches-container {
   max-width: calc(100% + $sideBarWidth);
   padding: 20px 0;
@@ -263,7 +264,7 @@
       transition: height 0.5s, padding 0.5s, margin 0.5s, min-height 0.5s;
       height: 90px;
       margin: 10px 0px 0px $sideBarWidth;
-      padding: 5px 80px 0;
+      padding: 5px 30px 0;
       background-color: $background-color;
     }
   }

@@ -2,7 +2,7 @@
   height: 100%;
   margin: auto;
   width: auto;
-  max-width: 1240px;
+  max-width: 1235px;
   @include flex(space-between, column);
   padding: 0 40px;
   min-width: 760px;
@@ -69,7 +69,7 @@
 
 @media screen and (max-width: 20000px) and (min-width: 1520px) {
   .LocalLabbooks__sizer {
-    width: 1240px !important;
+    width: 1235px !important;
   }
 }
 @media screen and (max-width: 1440px) and (min-width: 960px) {
