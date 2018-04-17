@@ -91,7 +91,7 @@ export default class WizardModal extends React.Component {
     hides modal window by update component state
   */
   _hideModal = () => {
-    this.setState({'modal_visible': false})
+    this.setState({'modal_visible': false, menuVisibility: true})
     if(document.getElementById('modal__cover')){
       document.getElementById('modal__cover').classList.add('hidden')
     }

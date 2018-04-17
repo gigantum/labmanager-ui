@@ -5,7 +5,14 @@ export default class BaseDetails extends React.Component {
   render(){
     const {base} = this.props
     if(base){
-
+    let installedPackagesDictionary = {};
+    base.installedPackages.forEach(val =>{
+      let pkg = val.split('|')
+      let pkgManager = pkg[0]
+      let pkgName = pkg[1]
+      let pkgVersion = pkg[2]
+      installedPackagesDictionary[pkgManager] ? installedPackagesDictionary[pkgManager].push({pkgName, pkgVersion}): installedPackagesDictionary[pkgManager] =  [{pkgName, pkgVersion}]
+    })
     return(
       <div className="BaseDetails">
         <div className="BaseDetails__button">
@@ -55,8 +62,56 @@ export default class BaseDetails extends React.Component {
                 }
                 </ul>
               </div>
+              <div className="Base__image-packages">
+                <h6>Packages</h6>
+                <ul>
+                  {
+                    Object.keys(installedPackagesDictionary).length ?
+                    Object.keys(installedPackagesDictionary).map(manager => {
+                      return(
+                        <React.Fragment>
+                          <li>{`${manager} (${installedPackagesDictionary[manager].length})`}</li>
+                        </React.Fragment>
+                     )
+                    })
+                    :
+                    <li>No Packages Included</li>
+                  }
+                </ul>
+              </div>
             </div>
           </div>
+          {
+            Object.keys(installedPackagesDictionary).length !== 0 &&
+
+            <table className="BaseDetails__table">
+            <thead>
+              <tr>
+                <th>Package Manager</th>
+                <th>Package Name</th>
+                <th>Version</th>
+              </tr>
+            </thead>
+            <tbody>
+                {
+                  Object.keys(installedPackagesDictionary).map((manager, index) => {
+                    return installedPackagesDictionary[manager].map((pkg) => {
+                      return (
+                        <tr
+                          key={manager + index}
+                          className="BaseDetails__table-row"
+                        >
+                          <td>{manager}</td>
+                          <td>{pkg.pkgName}</td>
+                          <td>{pkg.pkgVersion}</td>
+                        </tr>
+                      )
+                    })
+                  })
+                }
+            </tbody>
+          </table>
+          }
         </div>
       </div>
       )

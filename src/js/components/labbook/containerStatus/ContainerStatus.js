@@ -466,6 +466,7 @@ export default class ContainerStatus extends Component {
     })
     let {labbookName, owner} = this.state
     let self = this
+    this.setState({imageStatus: "BUILD_IN_PROGRESS"});
     BuildImageMutation(
       labbookName,
       owner,

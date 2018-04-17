@@ -519,14 +519,19 @@ class PackageDependencies extends Component {
                   <tbody>
                     {
                       this.state.packages.map((node, index)=>{
-
                         const version = node.version === '' ? 'latest' : `v${node.version}`
                         return (
                           <tr
                             className={`PackageDependencies__table-row--${node.validity}` }
                             key={node.packageName + node.version}>
                             <td>{`${node.packageName}`}</td>
-                            <td>{version}</td>
+                            <td>{node.validity === 'checking' ? `retrieving ${version === 'latest'?'latest version': `v${version}`}` : version}
+                            {
+                              node.validity === 'checking' &&
+                              <div className="PackageDependencies__version-loading"></div>
+                            }
+
+                            </td>
                             <td className="PackageDependencies__table--no-right-padding" width="30">
                               <button className="PackageDependencies__button--round PackageDependencies__button--remove"
                                 onClick={()=>this._removeStatePackages(node, index)}>
