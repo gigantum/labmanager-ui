@@ -62,7 +62,7 @@ export default class BaseDetails extends React.Component {
                 }
                 </ul>
               </div>
-              <div className="Base__image-tools">
+              <div className="Base__image-packages">
                 <h6>Packages</h6>
                 <ul>
                   {
@@ -70,22 +70,48 @@ export default class BaseDetails extends React.Component {
                     Object.keys(installedPackagesDictionary).map(manager => {
                       return(
                         <React.Fragment>
-                          <li><b>{manager}</b></li>
-                          {
-                            installedPackagesDictionary[manager].map((pkg)=> {
-                              return(<li>{pkg.pkgName} - v{pkg.pkgVersion}</li>)
-                            })
-                          }
+                          <li>{`${manager} (${installedPackagesDictionary[manager].length})`}</li>
                         </React.Fragment>
                      )
                     })
                     :
-                    <li><b>No Packages Included</b></li>
+                    <li>No Packages Included</li>
                   }
                 </ul>
               </div>
             </div>
           </div>
+          {
+            Object.keys(installedPackagesDictionary).length !== 0 &&
+
+            <table className="BaseDetails__table">
+            <thead>
+              <tr>
+                <th>Package Manager</th>
+                <th>Package Name</th>
+                <th>Version</th>
+              </tr>
+            </thead>
+            <tbody>
+                {
+                  Object.keys(installedPackagesDictionary).map((manager, index) => {
+                    return installedPackagesDictionary[manager].map((pkg) => {
+                      return (
+                        <tr
+                          key={manager + index}
+                          className="BaseDetails__table-row"
+                        >
+                          <td>{manager}</td>
+                          <td>{pkg.pkgName}</td>
+                          <td>{pkg.pkgVersion}</td>
+                        </tr>
+                      )
+                    })
+                  })
+                }
+            </tbody>
+          </table>
+          }
         </div>
       </div>
       )
