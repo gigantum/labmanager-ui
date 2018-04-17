@@ -4,13 +4,17 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
+import store from 'JS/redux/store'
 //Components
 import ActivityCard from './ActivityCard'
 import Loader from 'Components/shared/Loader'
 import UserNote from './UserNote'
 import PaginationLoader from './ActivityLoaders/PaginationLoader'
+import CreateBranch from '../branches/CreateBranch';
 //utilities
 import Config from 'JS/config'
+//config
+import config from 'JS/config'
 
 //lacoal variables
 let pagination = false;
@@ -25,6 +29,8 @@ class Activity extends Component {
   	this.state = {
       'modalVisible': false,
       'isPaginating': false,
+      'selectedNode': null,
+      'createBranchVisible': false
     };
 
     //bind functions here
@@ -33,11 +39,12 @@ class Activity extends Component {
     this._hideAddActivity = this._hideAddActivity.bind(this)
     this._handleScroll = this._handleScroll.bind(this)
     this._refetch = this._refetch.bind(this)
+    this._toggleCreateModal = this._toggleCreateModal.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      'isPaginating': false
+      'isPaginating': false,
     })
   }
 
@@ -78,7 +85,7 @@ class Activity extends Component {
     let activityRecords = this.props.labbook.activityRecords
 
 
-    let cursor =  activityRecords.edges[ activityRecords.edges.length - 1].node.cursor
+    let cursor = activityRecords.edges[ activityRecords.edges.length - 1].node.cursor
 
     relay.refetchConnection(
       counter,
@@ -154,24 +161,65 @@ class Activity extends Component {
     activityRecords.edges.forEach((edge) => {
 
       let date = (edge.node && edge.node.timestamp) ? new Date(edge.node.timestamp) : new Date()
-      let timeHash = date.getYear() + '_' + date.getMonth() + ' _' + date.getDate();
+      let timeHash = `${date.getYear()}_${date.getMonth()}_${date.getDate()}`;
       let newActivityObject = {edge: edge, date: date}
       activityTime[timeHash] ? activityTime[timeHash].push(newActivityObject) : activityTime[timeHash] = [newActivityObject];
     })
 
     return activityTime
   }
-
+  /**
+  *   @param {}
+  *   toggles activity visibility
+  *   @return {}
+  */
   _toggleActivity(){
     this.setState({
       'modalVisible': !this.state.modalVisible
     })
   }
-
+  /**
+  *   @param {}
+  *   hides add activity
+  *   @return {}
+  */
   _hideAddActivity(){
     this.setState({
       'modalVisible': false
     })
+  }
+  /**
+  *   @param {}
+  *   hides add activity
+  *   @return {}
+  */
+  _toggleRollbackMenu(node) {
+
+    const {status} = store.getState().containerStatus;
+    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+    if(canEditEnvironment) {
+      this.setState({selectedNode: node})
+      document.getElementById('modal__cover').classList.remove('hidden')
+      this.setState({createBranchVisible: true})
+    } else {
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
+        }
+      })
+
+      store.dispatch({
+        type: 'CONTAINER_MENU_WARNING',
+        payload: {
+          message: 'Stop LabBook before editing the environment. \n Be sure to save your changes.'
+        }
+      })
+    }
+  }
+
+  _toggleCreateModal(){
+    this.setState({createBranchVisible: !this.state.createBranchVisible})
   }
 
   render(){
@@ -188,13 +236,18 @@ class Activity extends Component {
           <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
 
             <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Activity__sizer flex-1-0-auto">
-
+              <CreateBranch
+                ref="createBranch"
+                selected={this.state.selectedNode}
+                activeBranch={this.props.activeBranch}
+                modalVisible={this.state.createBranchVisible}
+                toggleModal={this._toggleCreateModal}
+              />
               {
                 Object.keys(activityRecordsTime).map((k, i) => {
 
                   return (
                     <div key={k}>
-
 
                       <div className="Activity__date-tab flex flex--column justify--space-around">
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
@@ -227,15 +280,35 @@ class Activity extends Component {
                         )
                       }
 
-                      <div key={k + 'card'}>
-
+                      <div key={`${k}__card`}>
                         {
-                          activityRecordsTime[k].map((obj) => {
-                          return(<ActivityCard
-                              key={obj.edge.node.id}
-                              edge={obj.edge}
-                            />)
+                          activityRecordsTime[k].map((obj, j) => {
 
+                            return (
+                              <div className="ActivtyCard__wrapper" key={obj.edge.node.id}>
+                                { ((i !== 0 )|| (j !== 0)) &&
+                                  <div className="Activity__submenu-container">
+                                    <div
+                                      className="Activity__submenu-circle"
+                                    >
+                                    </div>
+                                    <div className="Activity__submenu-subcontainer">
+                                      <h5
+                                        className="Activity__rollback-text"
+                                        onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+                                      >
+                                        Rollback to previous state
+                                      </h5>
+                                    </div>
+                                  </div>
+                                }
+                                <ActivityCard
+                                  key={`${obj.edge.node.id}_activity-card`}
+                                  edge={obj.edge}
+                                />
+                              </div>
+
+                            )
                           })
                         }
 
@@ -329,12 +402,11 @@ export default createPaginationContainer(
 
     const {owner} = props.match.params;
     const name = props.match.params.labbookName
-    const first = counter;
+    const first = counter
 
     cursor = pagination ? props.labbook.activityRecords.edges[props.labbook.activityRecords.edges.length - 1].cursor : null
 
-    ;
-     return {
+    return {
        first,
        cursor,
        name,

@@ -29,6 +29,7 @@ function sharedUpdater(store, parentID, deletedId, connectionKey) {
       );
       store.delete(deletedId)
     }
+    
   }
 }
 

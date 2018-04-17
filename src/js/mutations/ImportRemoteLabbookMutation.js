@@ -47,8 +47,7 @@ export default function ImportRemoteLabbookMutation(
 
       updater: (store) => {
 
-
-      },
-    },
+      }
+    }
   )
 }

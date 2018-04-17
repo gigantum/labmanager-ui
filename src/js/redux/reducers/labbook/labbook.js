@@ -12,6 +12,7 @@ export const SELECTED_COMPONENT = 'SELECTED_COMPONENT'
 export const UPDATE_BRANCHES_VIEW = 'UPDATE_BRANCHES_VIEW'
 export const UPDATE_ALL = 'UPDATE_ALL'
 export const UPDATE_STICKY_STATE = "UPDATE_STICKY_STATE"
+export const MERGE_MODE = 'MERGE_MODE'
 
 export default (
  state = {
@@ -26,7 +27,8 @@ export default (
    'detailMode': false,
    'previousDetailMode': false,
    'branchesOpen': false,
-   'isSticky': false
+   'isSticky': false,
+   'mergeFilter': false
  },
  action
 ) => {
@@ -35,16 +37,23 @@ export default (
    //preventing detail mode from opening until feature has been fully implemented
    return {
      ...state,
-     previousDetailMode: false, //state.detailMode,
-     detailMode: false, //action.payload.detailMode
+     'previousDetailMode': false, //state.detailMode,
+     'detailMode': false, //action.payload.detailMode
   };
 }else  if (action.type === UPDATE_STICKY_STATE) {
    //preventing detail mode from opening until feature has been fully implemented
    return {
      ...state,
-     isSticky: action.payload.isSticky //state.detailMode,
+     'isSticky': action.payload.isSticky //state.detailMode,
   };
- }else if(action.type === INITIALIZE){
+}else  if (action.type === MERGE_MODE) {
+
+    return {
+      ...state,
+      'mergeFilter': action.payload.mergeFilter,
+      'branchesOpen': action.payload.branchesOpen
+   };
+  }else if(action.type === INITIALIZE){
 
    return {
      ...state,
@@ -106,8 +115,8 @@ export default (
 
    return {
      ...state,
-     labbookName: action.payload.labbookName,
-     owner: action.payload.owner
+     'labbookName': action.payload.labbookName,
+     'owner': action.payload.owner
    };
  }
 

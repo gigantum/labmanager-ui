@@ -56,7 +56,7 @@ class Base extends Component {
     const {base} = this.props.environment;
 
     if (base) {
-  
+
       return(
         <div className="Base">
           <div className="Base__header-container">
@@ -99,7 +99,7 @@ class Base extends Component {
                     <h6>Tools</h6>
                     <ul>
                       {
-                        base.developmentTools.map((tool, index)=>{
+                        base.developmentTools && base.developmentTools.map((tool, index)=>{
                           return(<li key={tool + index}>{tool}</li>)
                         })
                       }

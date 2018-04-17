@@ -266,15 +266,28 @@ class Labbook extends Component {
     @param {}
     updates branchOpen state
   */
-  _toggleBranchesView(){
-    if(!this.state.isSticky){
+  _toggleBranchesView(branchesOpen, mergeFilter){
+  
     store.dispatch({
-      type: 'UPDATE_BRANCHES_VIEW',
+      type: 'MERGE_MODE',
       payload: {
-        branchesOpen: !this.state.branchesOpen
+        branchesOpen,
+        mergeFilter
       }
     })
-    }
+
+  }
+  /**
+    @param {branchName}
+    makes branch name pretty
+    @return {prettyBranchName}
+  */
+  _sanitizeBranchName(branchName){
+    const {owner} = this.props.labbook
+    const workspace = `gm.workspace-${owner}`
+    const prettyBranchName = (branchName === workspace) ? 'workspace' : branchName.replace(`${workspace}.`, '')
+
+    return prettyBranchName
   }
 
   render(){
@@ -285,15 +298,28 @@ class Labbook extends Component {
     const isLockedEnvironment = this.state.isBuilding || this.state.isSyncing || this.state.isPublishing
     if(this.props.labbook){
       const {labbook} = this.props
-      const name = this.props.labbook.activeBranch ? this.props.labbook.activeBranch.name.replace(/-/g, ' ') : 'temp'
+      const name = this._sanitizeBranchName(this.props.labbook.activeBranchName)
+      const {branchesOpen} = this.state
+      const labbookCSS = classNames({
+        'Labbook': true,
+        'Labbook--detail-mode': this.state.detailMode,
+        'Labbook-branch-mode': branchesOpen
+      })
+
+      const branchNameCSS = classNames({
+        'Labbook__branch-title': true,
+        'Labbook__branch-title--open': branchesOpen,
+        'Labbook__branch-title--closed': !branchesOpen
+      })
 
       return(
         <div
-          className={this.state.detailMode ? "Labbook Labbook--detail-mode" : "Labbook"}>
+          className={labbookCSS}>
 
            <div className="Labbook__inner-container flex flex--row">
              <div className="Labbook__component-container flex flex--column">
               <StickyHeader
+                onSticky={(isSticky)=>{this._toggleBranchesView(false, false)}}
                 header ={
               <div className="Labbook__header">
                 <div className="Labbook__row-container">
@@ -302,12 +328,12 @@ class Labbook extends Component {
                      {labbook.owner + '/' + labbookName}
                    </div>
 
-                   <div className={(this.state.branchesOpen) ? 'Labbook__branch-title Labbook__branch-title--open' : 'Labbook__branch-title Labbook__branch-title--closed'}>
-                     <div className="Labbook__name" onClick={()=> this._toggleBranchesView()}>
+                   <div className={branchNameCSS}>
+                     <div className="Labbook__name" onClick={()=> this._toggleBranchesView(!branchesOpen, false)}>
                          {name}
                      </div>
                      <div
-                       onClick={()=> this._toggleBranchesView()}
+                       onClick={()=> this._toggleBranchesView(!branchesOpen, false)}
                       className="Labbook__branch-toggle"></div>
                    </div>
 
@@ -323,6 +349,7 @@ class Labbook extends Component {
                      remoteUrl={labbook.overview.remoteUrl}
                      setSyncingState={this._setSyncingState}
                      setPublishingState={this._setPublishingState}
+                     toggleBranchesView={this._toggleBranchesView}
                     />
 
                    <ContainerStatus
@@ -348,7 +375,10 @@ class Labbook extends Component {
                   branchesOpen={this.state.branchesOpen}
                   labbook={labbook}
                   labbookId={labbook.id}
-                  activeBranch={labbook.activeBranch}
+                  activeBranch={labbook.activeBranchName}
+                  toggleBranchesView={this._toggleBranchesView}
+                  mergeFilter={this.state.mergeFilter}
+
                 />
 
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
@@ -410,6 +440,7 @@ class Labbook extends Component {
                               labbook={labbook}
                               activityRecords={this.props.activityRecords}
                               labbookId={labbook.id}
+                              activeBranch={labbook.activeBranch}
                               {...this.props}
 
                             />)
@@ -468,6 +499,7 @@ class Labbook extends Component {
             </div>
 
           </div>
+          <div className="Labbook__veil"></div>
         </div>
       )
 
@@ -494,17 +526,7 @@ const LabbookFragmentContainer = createFragmentContainer(
           defaultRemote
           owner
           creationDateUtc
-          activeBranch{
-            id
-            name
-            prefix
-            commit{
-              hash
-              shortHash
-              committedOn
-              id
-            }
-          }
+
           environment{
             containerStatus
             imageStatus
@@ -525,13 +547,17 @@ const LabbookFragmentContainer = createFragmentContainer(
           collaborators
           canManageCollaborators
 
+          availableBranchNames
+          mergeableBranchNames
+          workspaceBranchName
+          activeBranchName
+
           ...Environment_labbook
           ...Overview_labbook
           ...Activity_labbook
           ...Code_labbook
           ...InputData_labbook
           ...OutputData_labbook
-          ...Branches_labbook
 
       }`
   }
