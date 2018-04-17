@@ -14,6 +14,7 @@ import FilePreview from './FilePreview'
 import RecentActivity from './RecentActivity'
 import Loader from 'Components/shared/Loader'
 import FileEmpty from 'Components/labbook/overview/FileEmpty'
+import CodeBlock from 'Components/labbook/renderers/CodeBlock'
 //mutations
 import WriteReadmeMutation from 'Mutations/WriteReadmeMutation'
 //store
@@ -64,7 +65,6 @@ class Overview extends Component {
     }
   }
   _toggleElements(evt) {
-    console.log(evt.target.className.indexOf('fa-columns'))
     if(evt.target.className.indexOf('fa-columns') !== -1){
       if(document.getElementsByClassName('ReactStickyHeader_fixed')[0].className.indexOf('hidden') === -1) {
         document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.add('hidden')
@@ -183,7 +183,7 @@ class Overview extends Component {
               <div
                 className={this.state.editingReadme ? 'hidden' : 'Overview__readme'}
               >
-                <ReactMarkdown className={readmeCSS} source={this.props.readme} />
+                <ReactMarkdown className={readmeCSS} source={this.props.readme}  renderers={{code: props => <CodeBlock  {...props }/>}} />
                 {
                   this.state.overflowExists && !this.state.readmeExpanded &&
                   <div className="Overview__readme-fadeout"></div>

@@ -261,6 +261,47 @@
 }
 
 .editor-preview,
+.editor-preview-side {
+  h1 {
+    padding: 10px 0;
+    font-size: 2em;
+    color: $jet;
+    border-bottom: 1px solid $grey-light;
+    font-weight: 400;
+  }
+  h2 {
+    padding: 10px 0;
+    font-size: 1.5em;
+    color: $jet;
+    border-bottom: 1px solid $grey-light;
+    font-weight: 400;
+
+  }
+  h3 {
+    font-size: 1.17em;
+    color: $jet;
+    font-weight: 400;
+
+  }
+  h4 {
+    font-size: 1.12em;
+    color: $jet;
+    font-weight: 400;
+
+  }
+  h5 {
+    font-size: .83em;
+    font-weight: 400;
+    color: $jet;
+  }
+  h6 {
+    font-weight: 400;
+    font-size: .75em;
+    color: $jet;
+  }
+}
+
+.editor-preview,
 .editor-preview-side,
 .ReadmeMarkdown--expanded {
   blockquote {
