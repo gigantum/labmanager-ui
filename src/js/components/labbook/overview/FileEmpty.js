@@ -14,13 +14,22 @@ export default class FileEmpty extends Component {
                 <div className={`FileEmpty__container FileEmpty__container--${this.props.section}`}>
 
                     <p className="FileEmpty__main-text">{mainText}</p>
-                    <Link
+                    {!this.props.callback ?
+                        <Link
+                            className="FileEmpty__sub-text"
+                            to={{pathname: `../../../../labbooks/${owner}/${labbookName}/${this.props.section}`}}
+                            replace
+                        >
+                            {subText}
+                        </Link>
+                    :
+                    <p
                         className="FileEmpty__sub-text"
-                        to={{pathname: `../../../../labbooks/${owner}/${labbookName}/${this.props.section}`}}
-                        replace
+                        onClick={()=>{this.props.callback()}}
                     >
                         {subText}
-                    </Link>
+                    </p>
+                    }
                 </div>
             </div>
         )

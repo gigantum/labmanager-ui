@@ -252,7 +252,6 @@ class Labbook extends Component {
   }
 
   render(){
-
     const { isAuthenticated } = this.props.auth
     const {labbookName} = this.props
 
@@ -370,6 +369,7 @@ class Labbook extends Component {
                           description={labbook.description}
                           labbookId={labbook.id}
                           setBuildingState={this._setBuildingState}
+                          readme={labbook.readme}
                         />)
                       }}
                     />
@@ -383,6 +383,7 @@ class Labbook extends Component {
                               key={this.state.labbookName + '_overview'}
                               labbook={labbook}
                               description={labbook.description}
+                              readme={labbook.readme}
                             />)
                           }}
                         />
@@ -474,6 +475,7 @@ const LabbookFragmentContainer = createFragmentContainer(
           id
           description
           updatesAvailableCount
+          readme
           isRepoClean
           defaultRemote
           owner
