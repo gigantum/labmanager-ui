@@ -58,11 +58,20 @@ class Overview extends Component {
         this.setState({simpleExists: true})
         let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0]
         fullscreenButton && fullscreenButton.addEventListener('click', this._toggleElements)
+        let sideBySideButton = document.getElementsByClassName('fa-columns')[0]
+        sideBySideButton && sideBySideButton.addEventListener('click', this._toggleElements)
       }
     }
   }
-  _toggleElements() {
-    document.getElementsByClassName('ReactStickyHeader_fixed')[0].className.indexOf('hidden') === -1 ? document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.add('hidden'): document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.remove('hidden')
+  _toggleElements(evt) {
+    console.log(evt.target.className.indexOf('fa-columns'))
+    if(evt.target.className.indexOf('fa-columns') !== -1){
+      if(document.getElementsByClassName('ReactStickyHeader_fixed')[0].className.indexOf('hidden') === -1) {
+        document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.add('hidden')
+      }
+    } else {
+      document.getElementsByClassName('ReactStickyHeader_fixed')[0].className.indexOf('hidden') === -1 ? document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.add('hidden'): document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.remove('hidden')
+    }
   }
   /*
     unsubscribe from redux store

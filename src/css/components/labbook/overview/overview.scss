@@ -162,7 +162,7 @@
   z-index: 200;
   position: relative;
   background: white;
-  min-height: 120px;
+  min-height: 200px;
   @include flex(center, column);
   .fa {
     font-family: FontAwesome !important;
@@ -198,7 +198,7 @@
   z-index: 200;
   position: relative;
   background: white;
-  min-height: 120px;
+  min-height: 200px;
   overflow: hidden;
   h1 {
     padding: 10px 0;
@@ -260,6 +260,8 @@
   }
 }
 
+.editor-preview,
+.editor-preview-side,
 .ReadmeMarkdown--expanded {
   blockquote {
     border-left: 5px solid $lightblue;
