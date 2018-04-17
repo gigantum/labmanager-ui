@@ -14,9 +14,11 @@
 .Branches--closed {
   height: 0px;
   transition: height 0.6s;
+  position: relative;
+  overflow: hidden;
 }
 
-.Brances__slider-button {
+.Branches__slider-button {
   height: 40px;
   width: 40px;
   position: absolute;
@@ -26,35 +28,35 @@
   border-width: 0px;
 }
 
-.Brances__slider-button:hover,
-.Brances__slider-button:focus {
+.Branches__slider-button:hover,
+.Branches__slider-button:focus {
   background-color: rgba(0,0,0,0);
   border-width: 0px;
 }
-.Brances__slider-button--left {
-  @extend .Brances__slider-button;
+.Branches__slider-button--left {
+  @extend .Branches__slider-button;
   left: 0px;
   background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
   background-size: 30px;
   transform: rotate(90deg);
 }
 
-.Brances__slider-button--left:hover,
-.Brances__slider-button--left:focus {
+.Branches__slider-button--left:hover,
+.Branches__slider-button--left:focus {
     background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
     background-size: 30px;
 }
 
-.Brances__slider-button--right {
-  @extend .Brances__slider-button;
+.Branches__slider-button--right {
+  @extend .Branches__slider-button;
   right: 0px;
   background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
   background-size: 30px;
   transform: rotate(270deg);
 }
 
-.Brances__slider-button--right:hover,
-.Brances__slider-button--right:focus {
+.Branches__slider-button--right:hover,
+.Branches__slider-button--right:focus {
     background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
     background-size: 30px;
 }
@@ -84,51 +86,6 @@
 
 }
 
-.BranchCard {
-  @extend .card;
-  padding: 5px 15px;
-  height: 200px;
-  width: calc(100% - 40px);
-  min-width: 100px;
-  margin: 20px;
-  opacity: 1;
-  transition: height 0.5s ease, opacity 0.5s ease;
-  align-self: center;
-  align-items: center;
-  align-content: center;
-  position: relative;
-  @include flex(space-around, column);
-}
-
-.BranchCard__title {
-  align-content: flex-start;
-  align-self: flex-start;
-  align-items: flex-start;
-  word-break: break-all;
-}
-
-.BranchCard__button {
-
-}
-
-.BranchCard--current-banner {
-  width: 100%;
-  background-color: $azure;
-  height: 24px;
-  color: white;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  line-height: 20px;
-  padding: 2px 10px;
-}
-
-// .BranchCard--active {
-//   height: 150px;
-//   border-top: 10px solid $azure;
-//   @extend .BranchCard;
-// }
-
 .Branches-shadow {
   position: absolute;
   width: 100%;
@@ -155,11 +112,6 @@
   }
 }
 
-.BranchCard--create-new {
-  @include flex(space-around, column);
-  @extend .BranchCard;
-}
-
 .Branch__error {
   font-size: 12px;
   margin: 5px 0;
@@ -167,21 +119,7 @@
   height: 42px;
 }
 
-.BranchCard__create-branch {
-  align-self: center;
-  margin: 0 auto;
-  padding: 5px 10px;
-  background: none;
-  border: 2px solid $azure;
-  border-radius: 20px;
-  color: $azure;
-}
-
-.BranchCard__create-branch:hover {
-  background: $azure;
-  color: $white;
-}
-
-.BranchCard__create-branch:disabled {
-  background: none;
+.Branhces__button--close{
+    @include close();
+    right: 80px;
 }

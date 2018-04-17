@@ -252,10 +252,15 @@
   .ReactStickyHeader_foreground{
     display: none;
   }
+  .ReactStickyHeader_midground{
+    top: 90px !important;
+  }
   .ReactStickyHeader_root{
+    transition: min-height 0.5s;
+
     .ReactStickyHeader_fixed{
       z-index: 2000;
-      transition: height 0.5s, padding 0.5s, margin 0.5s;
+      transition: height 0.5s, padding 0.5s, margin 0.5s, min-height 0.5s;
       height: 90px;
       margin: 10px 0px 0px $sideBarWidth;
       padding: 5px 80px 0;
@@ -264,7 +269,14 @@
   }
 
   .ReactStickyHeader_root.is-sticky{
+    .Labbook__navigation-container{
+      margin-top: 90px;
+    }
+    .ReactStickyHeader_root{
+      min-height: 0px !important;
+    }
     .ReactStickyHeader_fixed{
+      min-height: 0px !important;
       height: 60px;
       padding: 5px 20px 0;
       box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 6px 2px;
@@ -351,6 +363,7 @@
 
 .Labbook__navigation-container {
   margin-top: 90px;
+  transition: 0.5s all;
 }
 
 .Labbook__navigation {
@@ -461,5 +474,40 @@
         }
       }
     }
+  }
+}
+
+.Labbook__veil{
+  opacity: 0;
+  transition: 0.25s opacity;
+  position: fixed;
+  width: 100%;
+  height: calc(100% - 410px);
+  top: 410px;
+  z-index: -1;
+  background: $jet;
+
+}
+
+.Labbook-branch-mode{
+  .Labbook__veil{
+    display: block;
+    opacity: 0.5;
+    z-index: 1990;
+
+  }
+  .ReactStickyHeader_root {
+    min-height: 437px;
+  }
+  .ReactStickyHeader_fixed {
+    min-height: 380px;
+  }
+
+  .Labbook__navigation-container {
+    margin-top: 389px;
+  }
+
+  .ReactStickyHeader_midground{
+    top: 90px !important;
   }
 }
