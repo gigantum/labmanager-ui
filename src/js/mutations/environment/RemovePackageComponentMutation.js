@@ -27,6 +27,7 @@ function sharedUpdater(store, parentID, deletedId, connectionKey) {
         conn,
         deletedId,
       );
+      store.delete(deletedId)
     }
     
   }

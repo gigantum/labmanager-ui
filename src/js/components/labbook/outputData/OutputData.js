@@ -116,6 +116,7 @@ class OutputData extends Component {
               labbookId={this.props.labbookId}
               output={this.props.labbook.output}
               loadStatus={this._loadStatus}
+              isLocked={this.props.isLocked}
             />
           </div>
         </div>

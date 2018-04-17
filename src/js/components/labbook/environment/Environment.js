@@ -145,6 +145,7 @@ class Environment extends Component {
               overview={this.props.overview}
               base={base}
               blockClass="Environment"
+              isLocked={this.props.isLocked}
             />
 
             <CustomDependencies
@@ -156,6 +157,7 @@ class Environment extends Component {
               labbookId={this.props.labbook.id}
               environmentId={this.props.labbook.environment.id}
               containerStatus={this.props.containerStatus}
+              isLocked={this.props.isLocked}
             />
           </div>
       )

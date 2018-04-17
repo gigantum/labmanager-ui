@@ -85,6 +85,7 @@ class OutputDataBrowser extends Component {
           favoriteConnection="OutputFavorites_favorites"
           connection="OutputDataBrowser_allFiles"
           owner={this.props.owner}
+          isLocked={this.props.isLocked}
           {...this.props}
         />
       )

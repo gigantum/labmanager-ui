@@ -135,6 +135,45 @@ class Labbook extends Component {
   }
 
   /**
+  @param {boolean} isSyncing
+  updates container status state
+  updates labbook state
+*/
+  _setSyncingState = (isSyncing) => {
+    this.refs['ContainerStatus'].setState({ 'isSyncing': isSyncing })
+
+    if (this.state.isSyncing !== isSyncing) {
+      store.dispatch(
+        {
+          type: 'IS_SYNCING',
+          payload: {
+            'isSyncing': isSyncing
+          }
+        })
+    }
+  }
+
+  /**
+    @param {boolean} isPublishing
+    updates container status state
+    updates labbook state
+  */
+ _setPublishingState = (isPublishing) => {
+
+    this.refs['ContainerStatus'].setState({ 'isPublishing': isPublishing })
+
+    if (this.state.isPublishing !== isPublishing) {
+      store.dispatch(
+        {
+          type: 'IS_PUBLISHING',
+          payload: {
+            'isPublishing': isPublishing
+          }
+        })
+    }
+  }
+
+  /**
     @param {object} item
     returns nav jsx
   */
@@ -254,7 +293,8 @@ class Labbook extends Component {
   render(){
     const { isAuthenticated } = this.props.auth
     const {labbookName} = this.props
-
+    const isLockedBrowser = {locked: this.state.isPublishing || this.state.isSyncing, isPublishing: this.state.isPublishing}
+    const isLockedEnvironment = this.state.isBuilding || this.state.isSyncing || this.state.isPublishing
     if(this.props.labbook){
       const {labbook} = this.props
       const name = this._sanitizeBranchName(this.props.labbook.activeBranchName)
@@ -306,6 +346,8 @@ class Labbook extends Component {
                      defaultRemote={labbook.defaultRemote}
                      labbookId={labbook.id}
                      remoteUrl={labbook.overview.remoteUrl}
+                     setSyncingState={this._setSyncingState}
+                     setPublishingState={this._setPublishingState}
                      toggleBranchesView={this._toggleBranchesView}
                     />
 
@@ -317,6 +359,8 @@ class Labbook extends Component {
                      labbookId={labbook.id}
                      setBuildingState={this._setBuildingState}
                      isBuilding={this.state.isBuilding}
+                     isSyncing={this.state.isSyncing}
+                     isPublishing={this.state.isPublishing}
                      creationDateUtc={labbook.creationDateUtc}
                    />
                 </div>
@@ -414,6 +458,7 @@ class Labbook extends Component {
                                 setBuildingState={this._setBuildingState}
                                 containerStatus={this.refs.ContainerStatus}
                                 overview={labbook.overview}
+                                isLocked={isLockedEnvironment}
                                 {...this.props}
                               />)
                           }}
@@ -425,6 +470,7 @@ class Labbook extends Component {
                               labbook={labbook}
                               labbookId={labbook.id}
                               setContainerState={this._setContainerState}
+                              isLocked={isLockedBrowser}
                             />)
                         }} />
 
@@ -433,6 +479,7 @@ class Labbook extends Component {
                             <InputData
                               labbook={labbook}
                               labbookId={labbook.id}
+                              isLocked={isLockedBrowser}
                             />)
                         }} />
 
@@ -441,6 +488,7 @@ class Labbook extends Component {
                             <OutputData
                               labbook={labbook}
                               labbookId={labbook.id}
+                              isLocked={isLockedBrowser}
                             />)
                         }} />
                       </Switch>

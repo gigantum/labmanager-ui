@@ -143,14 +143,34 @@ export default class UserNote extends Component {
           })
 
           if (!self.state.remoteUrl) {
+            this.props.setPublishingState(true)
+            store.dispatch({
+              type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+              payload: {
+                containerMenuOpen: true
+              }
+            })
+            store.dispatch({
+              type: 'CONTAINER_MENU_WARNING',
+              payload: {
+                message: 'LabBook is publishing. \n Please do not refresh the page.'
+              }
+            })
             PublishLabbookMutation(
               self.state.owner,
               self.state.labbookName,
               self.props.labbookId,
               (response, error) => {
-                console.log(error)
+                this.props.setPublishingState(false)
+                store.dispatch({
+                  type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+                  payload: {
+                    containerMenuOpen: false
+                  }
+                })
                 if (response.publishLabbook && !response.publishLabbook.success) {
                   if(error){
+                    console.log(error)
                     store.dispatch({
                       type: 'MULTIPART_INFO_MESSAGE',
                       payload: {
@@ -232,11 +252,25 @@ export default class UserNote extends Component {
               }
             })
 
+            this.props.setSyncingState(true);
+            store.dispatch({
+              type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+              payload: {
+                containerMenuOpen: true
+              }
+            })
+            store.dispatch({
+              type: 'CONTAINER_MENU_WARNING',
+              payload: {
+                message: 'Sync in Progress. \n Please do not refresh the page.'
+              }
+            })
             SyncLabbookMutation(
               this.state.owner,
               this.state.labbookName,
               false,
               (error) => {
+                this.props.setSyncingState(false);
                 if (error) {
                   store.dispatch({
                     type: 'MULTIPART_INFO_MESSAGE',
@@ -273,6 +307,12 @@ export default class UserNote extends Component {
                           })
                       }
                     })
+                  store.dispatch({
+                    type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+                    payload: {
+                      containerMenuOpen: false
+                    }
+                  })
                   store.dispatch({
                     type: 'MULTIPART_INFO_MESSAGE',
                     payload: {

@@ -123,6 +123,7 @@ class InputData extends Component {
               labbookId={this.props.labbookId}
               input={this.props.labbook.input}
               loadStatus={this._loadStatus}
+              isLocked={this.props.isLocked}
             />
           </div>
         </div>
