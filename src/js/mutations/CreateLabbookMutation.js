@@ -62,7 +62,7 @@ export default function CreateLabbookMutation(
 
         callback(response, error)
       },
-      onError: err => {console.log(err)},
+      onError: err => console.error(err),
       updater: (store) => {
 
         const id = 'client:newLabbook:'+ tempID++;
