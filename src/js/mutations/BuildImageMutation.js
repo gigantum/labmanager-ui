@@ -23,6 +23,7 @@ export default function BuildImageMutation(
   noCache,
   callback
 ) {
+
   const variables = {
     input: {
       labbookName,
