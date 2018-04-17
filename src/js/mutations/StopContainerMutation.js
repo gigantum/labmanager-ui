@@ -41,9 +41,7 @@ export default function StopContainerMutation(
       onError: err => console.error(err),
 
       updater: (store) => {
-
-
-      },
+      }
     },
   )
 }

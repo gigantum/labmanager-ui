@@ -60,13 +60,12 @@ export default function RenameLabbookMutation(
         callback(response, error)
       },
       onError: err => console.error(err),
-
-      // updater: (store) => {
+      updater: (store) => {
         //sharedUpdater(store, labbookId, edge.node.id, connectionKey);
-      // },
-      // optimisticUpdater: (store) => {
+      },
+      optimisticUpdater: (store) => {
         //sharedUpdater(store, labbookId, edge.node.id, connectionKey);
-      // }
-    },
+      }
+    }
   )
 }
