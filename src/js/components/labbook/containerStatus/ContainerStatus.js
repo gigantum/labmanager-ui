@@ -60,7 +60,7 @@ export default class ContainerStatus extends Component {
   */
   storeDidUpdate = (containerStatusStore) => {
 
-    if(this.state.containerMenuOpen !== containerStatusStore.containerMenuOpen || this.state.containerMenuOpen !== containerStatusStore.containerMenuWarning){
+    if(this.state.containerMenuOpen !== containerStatusStore.containerMenuOpen || this.state.containerMenuWarning !== containerStatusStore.containerMenuWarning){
         this.setState({containerMenuOpen: containerStatusStore.containerMenuOpen, containerMenuWarning: containerStatusStore.containerMenuWarning}); //triggers  re-render when store updates
     }
   }
@@ -109,7 +109,7 @@ export default class ContainerStatus extends Component {
     const state = this.state
     const self = this
     FetchContainerStatus.getContainerStatus(owner, labbookName).then((response, error)=>{
-      
+
       const {environment} = response.labbook
 
       if((state.containerStatus !== environment.containerStatus) || (state.imageStatus !== environment.imageStatus)){
@@ -139,7 +139,7 @@ export default class ContainerStatus extends Component {
       (evt.target.className.indexOf('BranchMenu__sync-button') > -1) ||
       (evt.target.className.indexOf('BranchMenu__remote-button') > -1) ||
       (evt.target.className.indexOf('Activity__rollback-text') > -1)
-    
+
     if(!containerMenuClicked &&
     this.state.containerMenuOpen){
       store.dispatch({
