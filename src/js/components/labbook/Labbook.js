@@ -76,6 +76,8 @@ class Labbook extends Component {
     unsubscribe = store.subscribe(() =>{
         this.storeDidUpdate(store.getState().labbook)
     })
+
+    window.addEventListener('scroll', this._setStickHeader)
     window.addEventListener('click', this._branchViewClickedOff )
   }
   /**
@@ -84,13 +86,38 @@ class Labbook extends Component {
   */
   componentWillUnmount() {
     unsubscribe()
+
+
+    window.removeEventListener('scroll', this._setStickHeader)
+
     window.removeEventListener('click', this._branchViewClickedOff)
+
   }
+  /**
+    @param {event}
+    updates state of labbook when prompted ot by the store
+    updates history prop
+  */
   _branchViewClickedOff(evt) {
     if(evt.target.className.indexOf('Labbook__veil') > -1) {
       this._toggleBranchesView(false, false);
     }
   }
+
+  /**
+    @param {}
+    dispatches sticky state to redux to update state
+  */
+  _setStickHeader(){
+      let sticky = 50;
+
+      store.dispatch({
+        type: 'UPDATE_STICKY_STATE',
+        payload: {
+          'isSticky': window.pageYOffset >= sticky
+        }
+      })
+    }
   /**
     @param {object} labbook
     updates state of labbook when prompted ot by the store
@@ -192,7 +219,7 @@ class Labbook extends Component {
     let defaultOrder = ['overview', 'activity', 'environment', 'code', 'inputData', 'outputData'];
     let selectedIndex = defaultOrder.indexOf(selectedPath);
     return (
-      <hr className={'Labbook__navigation-slider--' + selectedIndex}/>
+      <hr className={' Labbook__navigation-slider Labbook__navigation-slider--' + selectedIndex}/>
     )
   }
 
@@ -293,7 +320,6 @@ class Labbook extends Component {
   _sanitizeBranchName(branchName){
     const username = localStorage.getItem('username')
     const workspace = `gm.workspace-${username}`
-    console.log(workspace, branchName)
     const prettyBranchName = (branchName === workspace) ? 'workspace' : branchName.replace(`${workspace}.`, '')
 
     return prettyBranchName
@@ -320,30 +346,33 @@ class Labbook extends Component {
         'Labbook__branch-title--closed': !branchesOpen
       })
 
+      const labbookHeaderCSS = classNames({
+        'Labbook__header': true,
+        'is-sticky': this.state.isSticky
+      })
+
       return(
         <div
           className={labbookCSS}>
 
            <div className="Labbook__inner-container flex flex--row">
              <div className="Labbook__component-container flex flex--column">
-              <StickyHeader
-                onSticky={(isSticky)=>{this._toggleBranchesView(false, false)}}
-                header ={
-              <div className="Labbook__header">
-                <div className="Labbook__row-container">
-                 <div className="Labbook__column-container--flex-1">
-                   <div className="Labbook__name-title">
-                     {labbook.owner + '/' + labbookName}
-                   </div>
-
-                   <div className={branchNameCSS}>
-                     <div className="Labbook__name" onClick={()=> this._toggleBranchesView(!branchesOpen, false)}>
-                         {name}
+              <div className="Labbook__header-container">
+                <div className={labbookHeaderCSS}>
+                  <div className="Labbook__row-container">
+                   <div className="Labbook__column-container--flex-1">
+                     <div className="Labbook__name-title">
+                       {labbook.owner + '/' + labbookName}
                      </div>
-                     <div
-                       onClick={()=> this._toggleBranchesView(!branchesOpen, false)}
-                      className="Labbook__branch-toggle"></div>
-                   </div>
+
+                     <div className={branchNameCSS}>
+                       <div className="Labbook__name" onClick={()=> this._toggleBranchesView(!branchesOpen, false)}>
+                           {name}
+                       </div>
+                       <div
+                         onClick={()=> this._toggleBranchesView(!branchesOpen, false)}
+                        className="Labbook__branch-toggle"></div>
+                     </div>
 
                 </div>
                 <div className="Labbook__column-container">
@@ -360,23 +389,23 @@ class Labbook extends Component {
                      isMainWorkspace={name === 'workspace' || name === `gm.workspace-${localStorage.getItem('username')}`}
                     />
 
-                   <ContainerStatus
-                     ref="ContainerStatus"
-                     base={labbook.environment.base}
-                     containerStatus={labbook.environment.containerStatus}
-                     imageStatus={labbook.environment.imageStatus}
-                     labbookId={labbook.id}
-                     setBuildingState={this._setBuildingState}
-                     isBuilding={this.state.isBuilding}
-                     isSyncing={this.state.isSyncing}
-                     isPublishing={this.state.isPublishing}
-                     creationDateUtc={labbook.creationDateUtc}
-                   />
+                     <ContainerStatus
+                       ref="ContainerStatus"
+                       base={labbook.environment.base}
+                       containerStatus={labbook.environment.containerStatus}
+                       imageStatus={labbook.environment.imageStatus}
+                       labbookId={labbook.id}
+                       setBuildingState={this._setBuildingState}
+                       isBuilding={this.state.isBuilding}
+                       isSyncing={this.state.isSyncing}
+                       isPublishing={this.state.isPublishing}
+                       creationDateUtc={labbook.creationDateUtc}
+                     />
+                  </div>
                 </div>
-              </div>
-              <div className={(this.state.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
+                <div className={(this.state.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
 
-                <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
+                  <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
 
                 <Branches
                   defaultRemote={labbook.defaultRemote}
@@ -389,26 +418,25 @@ class Labbook extends Component {
                   setBuildingState={this._setBuildingState}
                 />
 
-                <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
+                  <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
+                </div>
               </div>
-              </div>}>
-              <div className="Labbook__navigation-container mui-container flex-0-0-auto">
-                 <ul className="Labbook__navigation flex flex--row">
-                   {
-                     Config.navigation_items.map((item, index) => {
-                       return (this._getNavItem(item, index))
-                     })
-                   }
-                   {
-                    (this._changeSlider())
-                   }
-                 </ul>
-               </div>
+                <div className="Labbook__navigation-container mui-container flex-0-0-auto">
+                   <ul className="Labbook__navigation flex flex--row">
+                     {
+                       Config.navigation_items.map((item, index) => {
+                         return (this._getNavItem(item, index))
+                       })
+                     }
+                     {
+                      (this._changeSlider())
+                     }
+                   </ul>
+                 </div>
 
+             </div>
 
-              </StickyHeader>
-
-               <div className="Labbook__view mui-container flex flex-1-0-auto">
+             <div className="Labbook__view mui-container flex flex-1-0-auto">
 
                   <Switch>
                     <Route

@@ -60,7 +60,7 @@ class Base extends Component {
       return(
         <div className="Base">
           <div className="Base__header-container">
-            <h4 className="Base__header">Base</h4>
+            <h5 className="Base__header">Base</h5>
           </div>
 
           <div className="Base__info">

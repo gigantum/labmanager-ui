@@ -212,7 +212,6 @@ export default class BranchCard extends Component {
     const {owner, showLoader} = this.state
     const isCurrentBranch = (this.props.name === this.props.activeBranchName)
     const branchName = this._sanitizeBranchName(this.props.name)
-    console.log(branchName)
     const showDelete = !isCurrentBranch && (this.props.name !== `gm.workspace-${owner}`)
 
     const branchCardCSS = classNames({
