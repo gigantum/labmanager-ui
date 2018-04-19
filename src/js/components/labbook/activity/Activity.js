@@ -249,7 +249,7 @@ class Activity extends Component {
                   return (
                     <div key={k}>
 
-                      <div className="Activity__date-tab flex flex--column justify--space-around">
+                      <div className="Activity__date-tab column-1-span-1 flex flex--column justify--space-around">
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
                         <div className="Activity__date-month">{ Config.months[parseInt(k.split('_')[1], 10)] }</div>
                       </div>
@@ -303,6 +303,7 @@ class Activity extends Component {
                                   </div>
                                 }
                                 <ActivityCard
+
                                   key={`${obj.edge.node.id}_activity-card`}
                                   edge={obj.edge}
                                 />

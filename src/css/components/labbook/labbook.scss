@@ -3,14 +3,14 @@
   min-height: calc(100% - 230px);
   height: auto;
   width: auto;
-  max-width: 1235px;
-  min-width: 760px;
+  max-width: 1300px;
+  min-width: 820px;
   transition: width 0.25s;
 }
 
 .Labbook__inner-container {
-  width: calc(100%);
-  margin: 20px 0 20px 35px;
+  width: calc(100% - 50px);
+  margin: 20px 5px 20px 20px;
   min-height: 100%;
   height: auto;
 }
@@ -124,7 +124,7 @@
 .Labbook__branches-container {
   max-width: calc(100% + $sideBarWidth);
   padding: 20px 0;
-  margin: 0px -80px;
+  margin: 0px -20px;
   height: 310px;
   position: relative;
   transition: height 0.6s;
@@ -138,7 +138,7 @@
 }
 
 .Labbook__view {
-  height: calc(100% - 0px);
+  height: 100%;
   overflow: hidden;
   padding: 20px 0;
 
@@ -199,7 +199,7 @@
 }
 
 .Labbook__component-container {
-  width: calc(100% - 0px);
+  width: 100%;
 }
 
 .Labbook__info {
@@ -264,7 +264,7 @@
       transition: height 0.5s, padding 0.5s, margin 0.5s, min-height 0.5s;
       height: 90px;
       margin: 10px 0px 0px $sideBarWidth;
-      padding: 5px 30px 0;
+      padding: 5px 20px 0;
       background-color: $background-color;
     }
   }
@@ -329,10 +329,6 @@
 
     .Labbook__branch-title{
         height: 0px;
-    }
-
-    .Labbook__column-container--flex-1 > div{
-        margin: 0 30px 0 10px;
     }
 
     .Labbook__column-container--flex-1{
@@ -511,4 +507,14 @@
   .ReactStickyHeader_midground{
     top: 90px !important;
   }
+}
+
+@media screen and (max-width: 50000px) and (min-width: 1480px) {
+  .Labbook__inner-container{
+    margin: 20px 35px;
+  }
+  .ReactStickyHeader_fixed{
+    padding: 5px 35px 0px !important;
+  }
+
 }

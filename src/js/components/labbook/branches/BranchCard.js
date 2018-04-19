@@ -16,10 +16,11 @@ export default class BranchCard extends Component {
 
   	super(props);
     const {owner, labbookName} = store.getState().routes
-
+    const username = localStorage.getItem('username')
     this.state = {
-      owner: owner,
-      labbookName: labbookName,
+      owner,
+      labbookName,
+      username,
       forceMerge: false,
       deleteModalVisible: false,
       showLoader: false,
@@ -165,8 +166,9 @@ export default class BranchCard extends Component {
   *  @return {string} prettyBranchName
   */
   _sanitizeBranchName(branchName){
-    const {owner} = this.state
-    const workspace = `gm.workspace-${owner}`
+    const {username} = this.state
+    const workspace = `gm.workspace-${username}`
+
     const prettyBranchName = (branchName === workspace) ? 'workspace' : branchName.replace(`${workspace}.`, '')
 
     return prettyBranchName
@@ -186,6 +188,7 @@ export default class BranchCard extends Component {
     const {owner, showLoader} = this.state
     const isCurrentBranch = (this.props.name === this.props.activeBranchName)
     const branchName = this._sanitizeBranchName(this.props.name)
+    console.log(branchName)
     const showDelete = !isCurrentBranch && (this.props.name !== `gm.workspace-${owner}`)
 
     const branchCardCSS = classNames({

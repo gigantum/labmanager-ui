@@ -2,6 +2,7 @@
   height: auto;
   color: $romanSilver;
   font-weight: 100;
+  width: 100%;
 
   .Base__header-container {
     display: none;
@@ -33,6 +34,10 @@
 .Overview__description {
   white-space: pre-line;
   padding: 20px 0;
+  @include grid();
+  div{
+    @extend .column-1-span-9;
+  }
 }
 
 .Overview__jupyter-button {
