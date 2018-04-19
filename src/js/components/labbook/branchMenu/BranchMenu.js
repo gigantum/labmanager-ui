@@ -37,16 +37,18 @@ export default class UserNote extends Component {
       'showCollaborators': false,
       'newCollaborator': '',
       'canManageCollaborators': this.props.canManageCollaborators,
+      'canClickCollaborators': this.props.canManageCollaborators || (owner === localStorage.getItem('username') && this.props.remoteUrl),
       'showLoginPrompt': false,
       'exporting': false,
       'deleteModalVisible': false,
       'forceSyncModalVisible': false,
       'remoteUrl': this.props.remoteUrl,
       'publishDisabled': false,
+      'addCollaboratorButtonDisabled': false,
+      'collaboratorBeingRemoved': null,
       owner,
       labbookName
     }
-
     this._openMenu = this._openMenu.bind(this)
     this._closeMenu = this._closeMenu.bind(this)
     this._toggleModal = this._toggleModal.bind(this)
@@ -56,6 +58,7 @@ export default class UserNote extends Component {
     this._exportLabbook = this._exportLabbook.bind(this)
     this._toggleSyncModal = this._toggleSyncModal.bind(this)
     this._switchBranch = this._switchBranch.bind(this)
+    this._addCollaborator = this._addCollaborator.bind(this)
   }
 
   /**
@@ -408,30 +411,45 @@ export default class UserNote extends Component {
   *  @return {}
   */
   _toggleCollaborators() {
-    if(this.state.canManageCollaborators){
-      let self = this;
-      this._checkSessionIsValid().then((response) => {
-        if (response.data) {
+    let self = this;
+    this._checkSessionIsValid().then((response) => {
 
-          if (response.data.userIdentity.isSessionValid) {
+      if (response.data) {
 
-            this.setState({
-              showCollaborators: !this.state.showCollaborators,
-              newCollaborator: ''
+        if (response.data.userIdentity.isSessionValid) {
+          if (this.state.canManageCollaborators) {
+            let self = this;
+            this.setState({ menuOpen: false });
+            this._checkSessionIsValid().then((response) => {
+              if (response.data) {
+
+                if (response.data.userIdentity.isSessionValid) {
+
+                  this.setState({
+                    showCollaborators: !this.state.showCollaborators,
+                    newCollaborator: ''
+                  })
+                  this.inputTitle.value = ''
+                } else {
+
+                  //auth.login()
+                  self.setState({
+                    showLoginPrompt: true
+                  })
+                }
+              }
             })
-            this.inputTitle.value = ''
           } else {
-
-            //auth.login()
-            self.setState({
-              showLoginPrompt: true
-            })
+            this._showCollaboratorsWarning()
           }
+        } else {
+
+          self.setState({
+            showLoginPrompt: true
+          })
         }
-      })
-    }else{
-      this._showCollaboratorsWarning()
-    }
+      }
+    })
 
   }
   /**
@@ -440,16 +458,16 @@ export default class UserNote extends Component {
   *  @return {}
   */
   _addCollaborator(evt) {
-
-
-    if ((evt.type === 'click') || (evt.key === "ENTER")) {
+    if ((evt.type === 'click') || (evt.key === "Enter")) {
       //waiting for backend updates
+      this.setState({addCollaboratorButtonDisabled: true})
       AddCollaboratorMutation(
         this.state.labbookName,
         this.state.owner,
         this.state.newCollaborator,
         (response, error) => {
-          this.setState({ newCollaborator: '' })
+          this.setState({ newCollaborator: '', addCollaboratorButtonDisabled: false })
+          this.inputTitle.value = ''
           if (error) {
             console.log(error)
             store.dispatch({
@@ -474,12 +492,18 @@ export default class UserNote extends Component {
   *  sets state of Collaborators
   *  @return {}
   */
-  _removeCollaborator(collaborator) {
+  _removeCollaborator(collaborator, button) {
+    button.disabled = true;
+    this.refs[collaborator].classList.add('loading')
     DeleteCollaboratorMutation(
       this.state.labbookName,
       this.state.owner,
       collaborator,
       (response, error) => {
+        this.refs[collaborator] && this.refs[collaborator].classList.remove('loading');
+        if(button){
+          button.disabled = false;
+        }
         if (error) {
           store.dispatch({
             type: 'ERROR_MESSAGE',
@@ -617,11 +641,11 @@ export default class UserNote extends Component {
 
   render() {
     let lastParsedIndex
-    let collaboratorArr = this.props.collaborators.filter((name)=>{
+    let collaboratorArr = this.props.collaborators && this.props.collaborators.filter((name)=>{
       return name !== this.state.owner
     })
-    let collaboratorSubText = collaboratorArr.join(', ');
-    if(collaboratorSubText.length > 18){
+    let collaboratorSubText = collaboratorArr ? collaboratorArr.join(', ') : '';
+    if(collaboratorSubText.length > 18 && collaboratorSubText.length){
       collaboratorSubText = collaboratorSubText.slice(0,18)
       lastParsedIndex = collaboratorSubText.split(', ').length -1;
       let lastParsed = collaboratorSubText.split(', ')[lastParsedIndex];
@@ -662,7 +686,7 @@ export default class UserNote extends Component {
       'hidden': !this.state.forceSyncModalVisible
     })
     let collaboratorButtonCSS = classNames({
-      'disabled': !this.state.canManageCollaborators,
+      'disabled': !this.state.canClickCollaborators,
       'BranchMenu__item--flat-button':  true
     })
     return (
@@ -698,36 +722,46 @@ export default class UserNote extends Component {
             onClick={() => { this._toggleCollaborators() }}
             className="BranchModal--close"></div>
           <h4
-            className="BranchModal__header">Collaborators</h4>
+            className="BranchModal__header">Manage Collaborators</h4>
           <hr />
-          <div className="BranchMenu__add">
-            <input
-              ref={el => this.inputTitle = el}
-              onChange={(evt) => this._addCollaborator(evt)}
-              className="BranchMenu__add-collaborators"
-              type="text"
-              placeholder="Add Collaborators" />
-            <button
-              onClick={(evt) => this._addCollaborator(evt)}
-              className="BranchMenu__add-button">Add</button>
+
+          <div className="BranchMenu__collaborator-container">
+            <div className={this.state.addCollaboratorButtonDisabled ? 'BranchMenu__add loading' : "BranchMenu__add"}>
+              <input
+                ref={el => this.inputTitle = el}
+                onChange={(evt) => this._addCollaborator(evt)}
+                onKeyUp={(evt) => this._addCollaborator(evt)}
+                className="BranchMenu__add-collaborators"
+                type="text"
+                placeholder="Add Collaborator" />
+              <button
+                disabled={this.state.addCollaboratorButtonDisabled || !this.state.newCollaborator.length}
+                onClick={(evt) => this._addCollaborator(evt)}
+                className="BranchMenu__add-button"></button>
+            </div>
+
+            <div className="BranchMenu__collaborators">
+            <h5>Collaborators</h5>
+              <div className="BranchMenu__collaborators-list-container">
+                {this.props.collaborators &&
+                  <ul className="BranchMenu__collaborators-list">
+                    {
+                      this.props.collaborators.map((collaborator) => {
+                        return (
+                          <li
+                            key={collaborator}
+                            ref={collaborator}
+                            className={collaborator === localStorage.getItem('username') ? "BranchMenu__collaborator--item-me":"BranchMenu__collaborator--item"}>
+                            <div>{collaborator}</div>
+                            <button disabled={collaborator === localStorage.getItem('username')} onClick={() => this._removeCollaborator(collaborator, this)}></button>
+                          </li>)
+                      })
+                    }
+                  </ul>
+                }
+              </div>
+            </div>
           </div>
-
-
-          {this.props.collaborators &&
-            <ul className="BranchMenu__collaborators-list">
-              {
-                this.props.collaborators.map((collaborator) => {
-                  return (
-                    <li
-                      key={collaborator}
-                      className="BranchMenu__collaborator--item">
-                      <div>{collaborator}</div>
-                      <button disabled={collaborator === localStorage.getItem('username')} onClick={() => this._removeCollaborator(collaborator)}>Remove</button>
-                    </li>)
-                })
-              }
-            </ul>
-          }
 
         </div>
 
@@ -736,7 +770,7 @@ export default class UserNote extends Component {
         <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
 
           <ul className="BranchMenu__list">
-            <li className={this.state.canManageCollaborators ? "BranchMenu__item--collaborators" : "BranchMenu__item--collaborators disabled"}
+            <li className={this.state.canClickCollaborators ? "BranchMenu__item--collaborators" : "BranchMenu__item--collaborators disabled"}
               >
               <button
                 onClick={() => this._toggleCollaborators()}
