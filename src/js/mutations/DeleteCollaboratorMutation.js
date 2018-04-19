@@ -41,7 +41,6 @@ export default function DeleteCollaboratorMutation(
       mutation,
       variables,
       onCompleted: (response, error) => {
-        console.log(error)
         if(error){
           console.log(error)
           reduxStore.dispatch({

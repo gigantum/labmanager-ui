@@ -43,6 +43,7 @@ class Labbook extends Component {
     this._showLabbookModal = this._showLabbookModal.bind(this)
     this._hideLabbookModal = this._hideLabbookModal.bind(this)
     this._toggleBranchesView = this._toggleBranchesView.bind(this)
+    this._branchViewClickedOff = this._branchViewClickedOff.bind(this)
 
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
@@ -75,6 +76,7 @@ class Labbook extends Component {
     unsubscribe = store.subscribe(() =>{
         this.storeDidUpdate(store.getState().labbook)
     })
+    window.addEventListener('click', this._branchViewClickedOff )
   }
   /**
     @param {}
@@ -82,6 +84,12 @@ class Labbook extends Component {
   */
   componentWillUnmount() {
     unsubscribe()
+    window.removeEventListener('click', this._branchViewClickedOff)
+  }
+  _branchViewClickedOff(evt) {
+    if(evt.target.className.indexOf('Labbook__veil') > -1) {
+      this._toggleBranchesView(false, false);
+    }
   }
   /**
     @param {object} labbook
@@ -349,6 +357,7 @@ class Labbook extends Component {
                      setSyncingState={this._setSyncingState}
                      setPublishingState={this._setPublishingState}
                      toggleBranchesView={this._toggleBranchesView}
+                     isMainWorkspace={name === 'workspace'}
                     />
 
                    <ContainerStatus
@@ -377,7 +386,7 @@ class Labbook extends Component {
                   activeBranch={labbook.activeBranchName}
                   toggleBranchesView={this._toggleBranchesView}
                   mergeFilter={this.state.mergeFilter}
-
+                  setBuildingState={this._setBuildingState}
                 />
 
                 <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
@@ -442,8 +451,8 @@ class Labbook extends Component {
                               activityRecords={this.props.activityRecords}
                               labbookId={labbook.id}
                               activeBranch={labbook.activeBranch}
+                              isMainWorkspace={name === 'workspace'}
                               {...this.props}
-
                             />)
                         }} />
 

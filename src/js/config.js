@@ -41,7 +41,7 @@ const CONFIG = {
 
   containerStatus:{
     canEditEnvironment: (status)=> {
-      return (status === 'Stopped') || (status === 'Build Failed') || (status === 'Rebuild Required')
+      return (status === 'Stopped') || (status === 'Rebuild')
     }
   }
 }

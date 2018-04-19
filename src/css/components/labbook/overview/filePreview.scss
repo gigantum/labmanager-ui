@@ -4,6 +4,9 @@
   .FilePreview__title-container {
     align-items: center;
     @include flex(space-between, row);
+    a {
+      color: $dark-blue;
+    }
   }
 
   .FilePreview__list {

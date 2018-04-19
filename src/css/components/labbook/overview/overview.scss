@@ -22,6 +22,9 @@
 
 .Overview__title-container {
   align-items: center;
+  a {
+    color: $dark-blue;
+  }
   @include flex(space-between, row);
 }
 

@@ -2,6 +2,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import dateFormat from 'dateformat';
+import Moment from 'moment'
 //Mutations
 import CreateExperimentalBranchMutation from 'Mutations/branches/CreateExperimentalBranchMutation'
 //components
@@ -20,7 +21,7 @@ export default class CreateBranchModal extends React.Component {
       'textWarning': 'hidden',
       'textLength': 0,
       'showError': false,
-      'branchName': props.selected ? this._formattedISO(this.props.selected.timestamp) : '',
+      'branchName': '',
       'branchDescription': '',
       'createButtonClicked': false
     };
@@ -39,8 +40,7 @@ export default class CreateBranchModal extends React.Component {
     }
 
     if(nextProps.selected){
-      let branchName =this._formattedISO(nextProps.selected.timestamp)
-
+      let branchName = `rollback-to-${Moment(Date.parse(nextProps.selected.timestamp)).format("YYYYMMDD-HHmmss")}`
       this.setState({branchName})
     }
   }
@@ -127,7 +127,6 @@ export default class CreateBranchModal extends React.Component {
   *   @return {}
   */
   _formattedISO(date){
-
     return dateFormat(date, "isoDateTime").toLowerCase().replace(/:/g, '-')
   }
   /**
@@ -216,7 +215,7 @@ export default class CreateBranchModal extends React.Component {
                           onChange={(evt) => this._updateTextState(evt, 'branchDescription')}
                           onKeyUp={(evt) => this._updateTextState(evt, 'branchDescription')}
                           placeholder="Briefly describe this branch, its purpose and any other key details. "
-                          defaultValue={this.props.selected ? `Rollback branch created on ${this._formattedISO(Date.now())} to export '${this.props.activeBranchName}' on ${this._formattedISO(this.props.selected.timestamp)}` : ''}
+                          defaultValue={this.props.selected ? `Branch created on ${Moment().format("M/DD/YY h:mm:ss A")} to rollback workspace to ${Moment(Date.parse(this.props.selected.timestamp)).format("M/DD/YY h:mm:ss A")}.` : ''}
                         />
                         <p className={'CreateBranch__warning ' + this.state.textWarning}>{`${this.state.textLength} characters remaining`}</p>
                       </div>
