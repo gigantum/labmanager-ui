@@ -34,8 +34,10 @@
 .Overview__description {
   white-space: pre-line;
   padding: 20px 0;
-  @include grid();
   div{
+    /*
+      have to use extend as ReactMarkDown does not inherit classNames
+    */
     @extend .column-1-span-9;
   }
 }

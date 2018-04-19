@@ -6,14 +6,9 @@
     @include flex(space-between, row);
   }
 
-  .FilePreview__list {
-    @include grid();
-  }
-
   .FileCard {
     @extend .card;
     position: relative;
-    @include column(3);
     padding: 15px 10px;
     height: 200px;
     overflow: hidden;

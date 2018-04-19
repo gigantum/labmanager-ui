@@ -1,6 +1,4 @@
-.RecentActivity__list{
-  @include grid();
-}
+
 
 .RecentActivity__title-container{
   align-items: center;
@@ -11,7 +9,6 @@
   min-height: 150px;
   padding: 20px 20px 60px 20px;
   @extend .card;
-  @include column(3);
 }
 
 .RecentActivity__card-date {

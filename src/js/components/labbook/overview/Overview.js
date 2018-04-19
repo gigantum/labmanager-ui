@@ -147,8 +147,8 @@ class Overview extends Component {
           <div className="Overview__title-container">
             <h5 className="Overview__title">Overview</h5>
           </div>
-          <div className="Overview__description">
-            <ReactMarkdown className="column-1-span9" source={this.props.description} />
+          <div className="Overview__description grid">
+            <ReactMarkdown className="column-1-span-9" source={this.props.description} />
           </div>
           <div className="Overview__title-container">
             <h5 className="Overview__title">Readme

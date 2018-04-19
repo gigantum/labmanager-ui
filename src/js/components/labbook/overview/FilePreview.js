@@ -95,7 +95,7 @@ export default class FilePreview extends Component {
                   </Link>
                 </div>
                 <p>Favorite Code Files</p>
-                <div className="FilePreview__list">
+                <div className="FilePreview__list grid">
                   {
                     props.labbook.code.favorites && props.labbook.code.favorites.edges.length ?
                     props.labbook.code.favorites.edges.map(edge =>{
