@@ -32,12 +32,12 @@
 
 @mixin close() {
   position: absolute;
-  height: 20px;
-  width: 20px;
-  top: 5px;
-  right: 5px;
+  height: 28px;
+  width: 28px;
+  top: 7px;
+  right: 7px;
   background: url('./../images/icons/close.svg') no-repeat center center;
-  background-size: 22px;
+  background-size: 28px;
   cursor: pointer;
 }
 

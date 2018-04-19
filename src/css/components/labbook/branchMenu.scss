@@ -100,19 +100,33 @@
   top: 37px;
   background: $white;
   border-radius: 10px;
-  padding: 20px;
+  padding: 10px;
   z-index: 201;
-  width: 230px;
+  width: 200px;
   @extend .box-shadow;
 
   ul {
     margin-top: 0px;
+    li:hover button {
+      background-color: $background-color;
+    }
+    .BranchMenu__item--collaborators.disabled {
+      pointer-events: none;
+    }
+    .BranchMenu__item--collaborators.disabled:hover{
+      background-color: $white;
+    }
+    .BranchMenu__item--collaborators.disabled:hover button {
+      background-color: $white;
+    }
   }
 
   hr {
-    background-color: $lightGrey;
-    border-color: $lightGrey;
+    background-color: $background-color;
+    border-color: $background-color;
     border-width: 1px;
+    opacity: 0.3;
+    width: 85%;
   }
 }
 
@@ -124,7 +138,7 @@
   @include triangle('up', 14px, $white);
 }
 .BranchMenu__item {
-  padding: 2px 0 2px 30px;
+  padding: 0 0 0 40px;
   line-height: 24px;
   cursor: pointer;
   color: $romanSilver;
@@ -134,47 +148,72 @@
   }
 }
 
-.BranchMenu__item:hover {
-  color: $turquise;
-  .BranchMenu__item--new-branch {
-    color: $turquise
-  };
-}
 .BranchMenu__item--new-branch {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/new-branch.svg') no-repeat left center;
-  background-size: 16px;
+  background: url('./../images/icons/create.svg') no-repeat 7px center;
+  background-size: 24px;
+}
+.BranchMenu__item--new-branch:hover {
+  background: $background-color url('./../images/icons/create.svg') no-repeat 7px center;
+  background-size: 24px;
+
 }
 .BranchMenu__item--merge {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/merge.svg') no-repeat left center;
-  background-size: 16px;
+  background: url('./../images/icons/merge.svg') no-repeat 7px center;
+  background-size: 24px;
 }
+.BranchMenu__item--merge:hover {
+  background: $background-color url('./../images/icons/merge.svg') no-repeat 7px center;
+  background-size: 24px;
 
+}
+.BranchMenu__item--switch {
+  @extend .BranchMenu__item;
+  background: url('./../images/icons/switch.svg') no-repeat 7px center;
+  background-size: 24px;
+}
+.BranchMenu__item--switch:hover {
+  background: $background-color url('./../images/icons/switch.svg') no-repeat 7px center;
+  background-size: 24px;
+}
 .BranchMenu__item--export {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/download.svg') no-repeat left 8px;
-  background-size: 22px;
+  background: url('./../images/icons/export.svg') no-repeat 7px center;
+  background-size: 24px;
 }
+.BranchMenu__item--export:hover {
+  background: $background-color url('./../images/icons/export.svg') no-repeat 7px center;
+  background-size: 24px;
 
-
+}
 
 .BranchMenu__item--export--downloading {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/rings.svg') no-repeat left center;
-  background-size: 20px;
+  background: url('./../images/icons/rings.svg') no-repeat 7px center;
+  background-size: 24px;
+}
+.BranchMenu__item--export--downloading:hover {
+  background: $background-color url('./../images/icons/rings.svg') no-repeat 7px center;
+  background-size: 24px;
 }
 
 .BranchMenu__item--delete{
   @extend .BranchMenu__item;
-  background: url('./../images/icons/trash.svg') no-repeat left 8px;
-  background-size: 20px;
+  background: url('./../images/icons/trash.svg') no-repeat 7px center;
+  background-size: 24px;
+}
+.BranchMenu__item--delete:hover {
+  background: $background-color url('./../images/icons/trash.svg') no-repeat 7px center;
+  background-size: 24px;
+
 }
 
 .BranchMenu__item--collaborators {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/user.svg') no-repeat left 7px;
-  background-size: 16px;
+  background: url('./../images/icons/user.svg') no-repeat 7px center;
+  background-size: 24px;
+  height: 40px;
   @extend .BranchMenu__item;
 
   a {
@@ -184,7 +223,18 @@
 
   p {
     padding: 0px;
+    margin: -6px 0 0 0;
+    font-size: 12px;
   }
+}
+
+.BranchMenu__item--collaborators:hover {
+  background: $background-color url('./../images/icons/user.svg') no-repeat 7px center;
+  background-size: 24px;
+}
+.BranchMenu__item--collaborators.disabled:hover {
+  background: $white url('./../images/icons/user.svg') no-repeat 7px center;
+  background-size: 24px;
 }
 
 .BranchMenu__add-collaborators {
@@ -202,40 +252,34 @@
 .BranchMenu__publish {
   width: 100%;
   text-align: center;
-  height: 40px;
-  line-height: 40px;
 }
 
 
-.BranchMenu__item--flat-button {
-  background-size: 16px;
+.BranchMenu__item--flat-button,
+.BranchMenu__item--flat-button:focus {
   width: 100%;
   cursor: pointer;
-  margin: 0 0 5px 0;
+  margin: 1.5px 0;
   background-color: $white;
   border: 0px solid $white;
   text-align: left;
   padding: 0px;
   color: $romanSilver;
+  font-size: 15px;
 }
-.BranchMenu__item--flat-button:hover,
-.BranchMenu__item--flat-button:focus, {
-  background-size: 16px;
-  color: $turquise;
+.BranchMenu__item--flat-button:hover {
+  background-color: $background-color;
   width: 100%;
   cursor: pointer;
-
-  margin: 0 0 5px 0;
-  background-color: $white;
+  color: $romanSilver;
+  margin: 1.5px 0;
   border: 0px solid $white;
 }
 
 .BranchMenu__item--flat-button.disabled,
 .BranchMenu__item--flat-button.disabled:hover{
-  background-size: 16px;
   width: 100%;
-  cursor: pointer;
-  margin: 0 0 5px 0;
+  margin: 1.5px 0;
   background-color: $white;
   border: 0px solid $white;
   opacity: 0.3;
@@ -285,7 +329,7 @@
   @include flex(flex-start, row);
   flex-wrap: nowrap;
   align-items: center;
-  margin: 20px 0 0;
+  margin: 5px 0 0;
 }
 
 .BranchMenu__input[type="text"]{
@@ -293,12 +337,13 @@
   padding: 0px 5px !important;
   border: 1px solid $romanSilver !important;
   border-radius: 8px 0px 0px 8px !important;
-  height: 40px !important;
+  height: 30px !important;
   margin: 0px !important;
+  font-size: 15px !important;
 }
 
 .BranchMenu__copy-button{
-  height: 42px;
+  height: 32px;
   width: 40px;
   padding: 0px;
   border-radius: 0px 8px 8px 0px !important;
@@ -314,4 +359,10 @@
 .ForceSync__buttons{
   width: 200px;
   @include flex(space-between, row);
+}
+
+.BranchMenu__remote-button,
+.BranchMenu__sync-button {
+  width: 90%;
+  border-radius: 40px;
 }

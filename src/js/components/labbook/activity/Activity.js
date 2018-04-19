@@ -283,12 +283,17 @@ class Activity extends Component {
                       <div key={`${k}__card`}>
                         {
                           activityRecordsTime[k].map((obj, j) => {
-
+                            let isLastRecordObj = i === Object.keys(activityRecordsTime).length -1;
+                            let isLastRecordNode = j === activityRecordsTime[k].length -1;
+                            let isLastPage = !this.props.labbook.activityRecords.pageInfo.hasNextPage;
                             return (
                               <div className="ActivtyCard__wrapper" key={obj.edge.node.id}>
-                                { ((i !== 0 )|| (j !== 0)) &&
+                                { ((i !== 0 ) || (j !== 0)) &&
                                   <div className="Activity__submenu-container">
-                                    <div
+                                  {
+                                    (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace) &&
+                                  <React.Fragment>
+                                  <div
                                       className="Activity__submenu-circle"
                                     >
                                     </div>
@@ -300,6 +305,8 @@ class Activity extends Component {
                                         Rollback to previous state
                                       </h5>
                                     </div>
+                                    </React.Fragment>
+                                  }
                                   </div>
                                 }
                                 <ActivityCard

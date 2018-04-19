@@ -23,6 +23,7 @@ import DeleteLabbook from './DeleteLabbook'
 import ForceSync from './ForceSync'
 import LoginPrompt from './LoginPrompt'
 import CreateBranch from 'Components/labbook/branches/CreateBranch'
+import { calendarFormat } from 'moment';
 
 export default class UserNote extends Component {
   constructor(props) {
@@ -234,7 +235,7 @@ export default class UserNote extends Component {
   _sync() {
     const status = store.getState().containerStatus.status
     this.setState({ menuOpen: false });
-    if((status === 'Stopped') || (status === 'Build Failed') || (status === 'Rebuild Required')){
+    if((status === 'Stopped') || (status === 'Rebuild')){
       let id = uuidv4()
       let self = this;
       this._checkSessionIsValid().then((response) => {
@@ -609,12 +610,30 @@ export default class UserNote extends Component {
   *  @return {}
   */
   _switchBranch(){
-  
+
     this.props.toggleBranchesView(true, false)
     this.setState({ menuOpen: false })
   }
 
   render() {
+    let lastParsedIndex
+    let collaboratorArr = this.props.collaborators.filter((name)=>{
+      return name !== this.state.owner
+    })
+    let collaboratorSubText = collaboratorArr.join(', ');
+    if(collaboratorSubText.length > 18){
+      collaboratorSubText = collaboratorSubText.slice(0,18)
+      lastParsedIndex = collaboratorSubText.split(', ').length -1;
+      let lastParsed = collaboratorSubText.split(', ')[lastParsedIndex];
+      if(this.props.collaborators[lastParsedIndex] !== lastParsed){
+        lastParsedIndex--;
+        collaboratorSubText = collaboratorSubText.split(', ')
+        collaboratorSubText.pop();
+        collaboratorSubText = collaboratorSubText.join(', ')
+      }
+      collaboratorSubText += `...+${collaboratorArr.length - lastParsedIndex - 1}`
+    }
+
     let collaboratorsModalCss = classNames({
       'BranchModal--collaborators': this.state.showCollaborators,
       'hidden': !this.state.showCollaborators
@@ -642,7 +661,10 @@ export default class UserNote extends Component {
     let syncModalCSS = classNames({
       'hidden': !this.state.forceSyncModalVisible
     })
-
+    let collaboratorButtonCSS = classNames({
+      'disabled': !this.state.canManageCollaborators,
+      'BranchMenu__item--flat-button':  true
+    })
     return (
       <div className="BranchMenu flex flex--column">
         <div className={loginPromptModalCss}>
@@ -714,20 +736,13 @@ export default class UserNote extends Component {
         <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
 
           <ul className="BranchMenu__list">
-            <li className="BranchMenu__item--collaborators"
+            <li className={this.state.canManageCollaborators ? "BranchMenu__item--collaborators" : "BranchMenu__item--collaborators disabled"}
               >
               <button
                 onClick={() => this._toggleCollaborators()}
-                className='BranchMenu__item--flat-button disabled'>Collaborators</button>
-              <hr />
+                className={collaboratorButtonCSS}>Collaborators<p>{collaboratorSubText}</p></button>
             </li>
-            <li className="BranchMenu__item--merge">
-              <button
-                onClick={() => { this._switchBranch()}}
-                className="BranchMenu__item--flat-button"
-              >
-                Switch Branch
-              </button></li>
+            <hr />
             <li className="BranchMenu__item--new-branch">
               <button
                 onClick={() => { this._toggleModal('createBranchVisible') }}
@@ -737,12 +752,19 @@ export default class UserNote extends Component {
               </button>
 
             </li>
+            <li className="BranchMenu__item--switch">
+              <button
+                onClick={() => { this._switchBranch()}}
+                className="BranchMenu__item--flat-button"
+              >
+                Switch
+              </button></li>
             <li className="BranchMenu__item--merge">
               <button
                 onClick={() => { this._mergeFilter()}}
                 className="BranchMenu__item--flat-button"
               >
-                Merge Branch
+                Merge
               </button></li>
 
             <li className={exportCSS}>
@@ -765,13 +787,13 @@ export default class UserNote extends Component {
             </li>
           </ul>
           <hr className="BranchMenu__line" />
-          {/* <button>Publish</button> */}
           {!this.state.addedRemoteThisSession &&
             <div className="BranchMenu__publish">
               <button
-                disabled={this.state.publishDisabled}
+                disabled={this.state.publishDisabled || !this.props.isMainWorkspace}
                 className="BranchMenu__remote-button"
                 onClick={() => { this._publishLabbook() }}
+                title={this.props.isMainWorkspace ? null : 'Publishing is currently only available on the main branch'}
               >
                 Publish
                 </button>
@@ -783,6 +805,8 @@ export default class UserNote extends Component {
               <button
                 className="BranchMenu__sync-button"
                 onClick={() => this._sync()}
+                disabled={!this.props.isMainWorkspace}
+                title={this.props.isMainWorkspace ? null : 'Syncing is currently only available on the main branch'}
               >
                 Sync Branch
                 </button>
