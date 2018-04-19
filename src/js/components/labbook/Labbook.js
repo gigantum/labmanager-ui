@@ -291,8 +291,9 @@ class Labbook extends Component {
     @return {prettyBranchName}
   */
   _sanitizeBranchName(branchName){
-    const {owner} = this.props.labbook
-    const workspace = `gm.workspace-${owner}`
+    const username = localStorage.getItem('username')
+    const workspace = `gm.workspace-${username}`
+    console.log(workspace, branchName)
     const prettyBranchName = (branchName === workspace) ? 'workspace' : branchName.replace(`${workspace}.`, '')
 
     return prettyBranchName

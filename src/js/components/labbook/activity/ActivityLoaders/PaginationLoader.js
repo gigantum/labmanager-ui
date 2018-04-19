@@ -1,14 +1,19 @@
 //vendor
 import React, { Component } from 'react'
+import classNames from 'classnames'
 
-
-export default class ActivityCard extends Component {
+export default class PaginationLoader extends Component {
   render(){
-    
+    let PaginationLoaderCSS = classNames({
+      [`ActivityCard ActivityCard__loader ActivityCard__loader--${this.props.index} card`]: this.props.isLoadingMore,
+      'ActivityCard ActivityCard__loader-hidden': !this.props.isLoadingMore,
+      'column-1-span-9': true
+    })
+
     return(
       <div
-        key={'Activity-loader-card-' + this.props.index}
-        className={this.props.isLoadingMore ? 'ActivityCard ActivityCard__loader ActivityCard__loader--' + this.props.index + ' card': 'ActivityCard ActivityCard__loader-hidden'}>
+        key={`Activity-loader-card-${this.props.index}`}
+        className={PaginationLoaderCSS}>
       </div>
     )
   }

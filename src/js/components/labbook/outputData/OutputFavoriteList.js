@@ -74,7 +74,7 @@ class OutputFavoriteList extends Component {
 
     return(
 
-      <div className="Favorite__list">
+      <div className="Favorite__list grid">
         {
           favorites.map((edge, index)=>{
 

@@ -1,5 +1,6 @@
 //vendor
 import React, { Component } from 'react'
+import classNames from 'classnames'
 
 //components
 import ActivityDetails from 'Components/labbook/activity/ActivityDetails'
@@ -43,9 +44,13 @@ export default class ActivityCard extends Component {
 
     const node = this.props.edge.node;
     const type = this.props.edge.node.type.toLowerCase()
-
+    const activityCardCSS = classNames({
+      'ActivityCard card': this.state.showExtraInfo,
+      'ActivityCard--collapsed card': !this.state.showExtraInfo,
+      'column-1-span-9': true
+    })
     return(
-      <div className={this.state.showExtraInfo ? 'ActivityCard card': 'ActivityCard--collapsed card'}>
+      <div className={activityCardCSS}>
 
         <div className={'fa ActivityCard__badge ActivityCard__badge--' + type}>
         </div>

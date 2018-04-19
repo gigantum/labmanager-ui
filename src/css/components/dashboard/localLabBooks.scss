@@ -2,18 +2,11 @@
   height: 100%;
   margin: auto;
   width: auto;
-  max-width: 1240px;
-  @include flex(space-between, column);
-  padding: 0 40px;
+  max-width: 1285px;
+  padding: 0 25px;
   min-width: 760px;
 }
 
-.LocalLabbooks__sizer {
-  flex-shrink: 1;
-  width: 1100px !important;
-  flex-wrap: wrap;
-  @include flex(left, row);
-}
 
 .LocalLabbooks__menu {
   width: 100%;
@@ -69,7 +62,7 @@
 
 @media screen and (max-width: 20000px) and (min-width: 1520px) {
   .LocalLabbooks__sizer {
-    width: 1240px !important;
+    width: 1235px !important;
   }
 }
 @media screen and (max-width: 1440px) and (min-width: 960px) {
@@ -182,24 +175,26 @@
 
 .LocalLabbooks__panel {
   position: relative;
-  padding: 0 1px 1px 1px;
+
   height: 300px;
-  min-width: 320px;
-  flex: 1 1 320px;
-  max-width: 320px;
-  margin: 20px 10px;
-  word-break: break-all;
+  padding: 0 1px 1px 1px;
+
   cursor: pointer;
+  transition: box-shadow 0.5s;
   text-align: center;
+  word-break: break-all;
+
   color: $jet;
   background: $white;
   background-size: 50px;
+
   line-height: 50px;
-  transition: box-shadow 0.5s;
-  @include card(300px, 320px);
+
+  @extend .card;
 
   &:empty {
     height: 0;
+
     border: 0;
   };
 }

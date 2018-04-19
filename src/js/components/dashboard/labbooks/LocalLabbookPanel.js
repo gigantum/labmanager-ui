@@ -167,7 +167,7 @@ export default class LocalLabbookPanel extends Component {
       <div
         onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}
         key={edge.node.name}
-        className='LocalLabbooks__panel flex flex--column justify--space-between'>
+        className='LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between'>
 
         <div className="LocalLabbooks__icon-row">
 

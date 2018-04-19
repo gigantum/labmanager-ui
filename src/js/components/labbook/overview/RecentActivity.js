@@ -116,13 +116,13 @@ export default class RecentActivity extends Component {
             <h5 className="RecentActivity__header">Activity</h5>
             <Link to={`../../../../labbooks/${owner}/${labbookName}/activity`}>Activity Details ></Link>
           </div>
-          <div className="RecentActivity__list">
+          <div className="RecentActivity__list grid">
             {
               recentActivity.map((edge, index) =>{
                 return (
                   <div
                     key={edge.id}
-                    className="RecentActivity__card">
+                    className="RecentActivity__card column-3-span-4">
                     <div className="RecentActivity__card-date">{this._getDate(edge)}</div>
                     <div className="RecentActivity__card-detail">
                       {
@@ -148,7 +148,7 @@ export default class RecentActivity extends Component {
       return(
       <div className="RecentActivity">
         <h5 className="RecentActivity__header">Activity</h5>
-        <div className="RecentActivity__list">
+        <div className="RecentActivity__list grid">
           <div className="RecentActivity__card--loading"></div>
           <div className="RecentActivity__card--loading"></div>
           <div className="RecentActivity__card--loading"></div>

@@ -18,11 +18,11 @@
 .Routes__main {
   flex: 1 0;
   margin-left: $sideBarWidth;
-  max-width: calc(100%);
+  max-width: 100%;
 }
 .Routes__main-no-auth {
   flex: 1 0;
-  max-width: calc(100%);
+  max-width: 100%;
 }
 
 .Callback {

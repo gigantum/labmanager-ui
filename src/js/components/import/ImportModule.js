@@ -656,7 +656,7 @@ export default class ImportModule extends Component {
       <div
         id="dropZone"
         type="file"
-        className="ImportModule LocalLabbooks__panel LocalLabbooks__panel--add LocalLabbooks__panel--import"
+        className="ImportModule LocalLabbooks__panel LocalLabbooks__panel--add LocalLabbooks__panel--import column-4-span-3"
         ref={(div) => this.dropZone = div}
         onDragEnd={(evt) => this._dragendHandler(evt)}
         onDrop={(evt) => this._dropHandler(evt)}

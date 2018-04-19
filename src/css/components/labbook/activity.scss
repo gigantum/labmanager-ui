@@ -8,7 +8,7 @@
 }
 
 .ActivityCard {
-  margin: 0 15px;
+  margin: 0;
   padding: 0 10px;
   color: $romanSilver;
   z-index: 200;
@@ -49,12 +49,11 @@
 }
 
 .ActivityCard__loader {
+  margin: 20px 15px;
   height: 40px;
-  width: calc(100% - 30px);
   background: $white url('../images/icons/paragraph.svg') repeat-X 10px center;
   padding: 0 5px;
   background-size: 30px 30px;
-
 }
 
 .ActivtyCard__wrapper{
@@ -199,7 +198,6 @@
     position: relative;
     margin: 40px 1px -6px;
 
-    width: 80px;
     height: 80px;
 
     border: 4px solid $azure;
