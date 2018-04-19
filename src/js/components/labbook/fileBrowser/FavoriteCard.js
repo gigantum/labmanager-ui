@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { DragSource, DropTarget } from 'react-dnd'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
+import classNames from 'classnames'
 //Mutations
 import RemoveFavoriteMutation from 'Mutations/fileBrowser/RemoveFavoriteMutation'
 import UpdateFavoriteMutation from 'Mutations/fileBrowser/UpdateFavoriteMutation'
@@ -213,61 +214,64 @@ class FavoriteCard extends Component {
 	    connectDragSource,
 			connectDropTarget
   	} = this.props
+
+		const favoriteCardCSS = classNames({
+			'Favorite__card card': (this.props.favorite.index !== undefined),
+			'Favorite__card--opaque card': !(this.props.favorite.index !== undefined),
+			'column-3-span-4': true
+		})
     return(
       connectDragSource(
 				connectDropTarget(
-        <div
-        className="Favorite__card-wrapper">
-          <div
-            className={(this.props.favorite.index !== undefined) ? 'Favorite__card card' : 'Favorite__card--opaque card'}>
-            <div
-              onClick={()=>{ this._removeFavorite(this.props.favorite) }}
-              className="Favorite__star">
-            </div>
+	        <div
+	          className={favoriteCardCSS}>
+	          <div
+	            onClick={()=>{ this._removeFavorite(this.props.favorite) }}
+	            className="Favorite__star">
+	          </div>
 						<div className="Favorite__header-section">
-            <h6 className="Favorite__card-header">{filename}</h6>
+	          <h6 className="Favorite__card-header">{filename}</h6>
 						</div>
 
 						<div className="Favorite__path-section">
-            	<p className="Favorite__path">{path}</p>
+	          	<p className="Favorite__path">{path}</p>
 						</div>
 
-            <div className="Favorite__description-section">
+	          <div className="Favorite__description-section">
 
-              { !this.state.editMode && (this.props.favorite.description.length > 0) &&
+	            { !this.state.editMode && (this.props.favorite.description.length > 0) &&
 
-                  <p className="Favorite__description">{this.props.favorite.description} <button
-                      onClick={()=>this._editDescription(true)}
-                      className="Favorite__edit-button">
-                    </button></p>
-              }
+	                <p className="Favorite__description">{this.props.favorite.description} <button
+	                    onClick={()=>this._editDescription(true)}
+	                    className="Favorite__edit-button">
+	                  </button></p>
+	            }
 
-              { !this.state.editMode && (this.props.favorite.description.length < 1) &&
+	            { !this.state.editMode && (this.props.favorite.description.length < 1) &&
 
-                  <p
+	                <p
 										onDoubleClick={() => this._handleClickDescription()}
 										className="Favorite__description-filler">Enter a short description<button
-                      onClick={()=>this._editDescription(true)}
-                      className="Favorite__edit-button">
-                  </button></p>
-              }
+	                    onClick={()=>this._editDescription(true)}
+	                    className="Favorite__edit-button">
+	                </button></p>
+	            }
 
-              {
-                this.state.editMode &&
-                <textarea
-                  className="Favorite__description-editor"
-                  onKeyDown={(evt)=>this._updateDescription(evt, this.props.favorite)}
-                  placeholder={this.props.favorite.description}>
-                  {this.props.favorite.description}
-                </textarea>
-              }
+	            {
+	              this.state.editMode &&
+	              <textarea
+	                className="Favorite__description-editor"
+	                onKeyDown={(evt)=>this._updateDescription(evt, this.props.favorite)}
+	                placeholder={this.props.favorite.description}>
+	                {this.props.favorite.description}
+	              </textarea>
+	            }
 
-              <div className={(this.props.favorite.index !== undefined) ? 'Favorite__mask hidden' : 'Favorite__mask'}></div>
+	            <div className={(this.props.favorite.index !== undefined) ? 'Favorite__mask hidden' : 'Favorite__mask'}></div>
 
-            </div>
+	          </div>
 
-          </div>
-        </div>
+	        </div>
       )
     )
 	)

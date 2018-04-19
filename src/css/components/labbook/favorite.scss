@@ -1,18 +1,7 @@
 .Favorite__list {
-  flex-wrap: wrap;
-
   position: relative;
-  @include flex(left, row)
 }
 
-.Favorite__card-wrapper {
-  flex: 1 0;
-  height: 240px;
-  min-width: 33.333%;
-  width: 33.333%;
-  max-width: 33.333%;
-  color: $romanSilver;
-}
 
 /* Standard syntax */
 @keyframes fluxuateLoad {
@@ -36,10 +25,7 @@
 .Favorite__card,
 .Favorite__card--opaque {
 
-  width: calc(100% - 20px);
   height: 220px;
-  min-width: 300px;
-  max-width: 400px;
   position: relative;
   text-align: left;
   padding: 20px;

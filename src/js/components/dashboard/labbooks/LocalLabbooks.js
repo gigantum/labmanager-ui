@@ -334,13 +334,13 @@ _captureScroll = () => {
               </ul>
             </div>
             <div className='LocalLabbooks__labbooks'>
-              <div className="LocalLabbooks__sizer">
+              <div className="LocalLabbooks__sizer grid">
 
                 <ImportModule
                     ref="ImportModule_localLabooks"
                     {...props}
                     showModal={this._showModal}
-                    className="LocalLabbooks__panel LocalLabbooks__panel--import"
+                    className="LocalLabbooks__panel column-4-span-3 LocalLabbooks__panel--import"
                 />
 
                 {

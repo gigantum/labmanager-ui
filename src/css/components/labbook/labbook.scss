@@ -3,7 +3,7 @@
   min-height: calc(100% - 230px);
   height: auto;
   width: auto;
-  max-width: 1300px;
+  max-width: 1285px;
   min-width: 820px;
   transition: width 0.25s;
 }
@@ -515,6 +515,10 @@
   }
   .ReactStickyHeader_fixed{
     padding: 5px 35px 0px !important;
+  }
+
+  .Labbook__branches-container{
+    margin: 0 -35px;
   }
 
 }

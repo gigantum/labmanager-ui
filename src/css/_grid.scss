@@ -59,9 +59,6 @@
     $count: $count + 1;
     $columnSpan: ((80px * $span) + (25px * ($span - 1)));
     $minWidth: $minWidth - $columnSpan;
-    @debug $maxWidth;
-    @debug $minWidth;
-    @debug $columnSpan;
 
     @media screen and (max-width: $maxWidth - 1px) and (min-width: $maxWidth - 12.5px) {
       margin: 12.5px 12.5px 12.5px 0;
@@ -97,6 +94,7 @@
 
 @mixin removeColumns($width, $span, $columnsToRemove){
   $columnWidth: 130px;
+  $columnSpan: ((80px * $span) + (25px * ($span - 1)));
 
   $maxScreenWidth: ($width + 180px) - (($columnsToRemove - 1) * 130px);
 
@@ -122,36 +120,72 @@
   @include removeColumns($width, $span, 2);
 
 }
+
+.grid{
+  @include grid();
+}
+
 .column-1-span-1{
-  @include spanColumns(1)
+  @include spanColumns(1);
 }
+
 .column-1-span-2{
-  @include spanColumns(2)
+  @include spanColumns(2);
 }
+
 .column-1-span-3{
-  @include spanColumns(3)
+  @include spanColumns(3);
 }
+
 .column-1-span-4{
-  @include spanColumns(4)
+  @include spanColumns(4);
 }
+
 .column-1-span-5{
-  @include spanColumns(5)
+  @include spanColumns(5);
 }
+
 .column-1-span-6{
-  @include spanColumns(6)
+  @include spanColumns(6);
 }
+
 .column-1-span-7{
-  @include spanColumns(7)
+  @include spanColumns(7);
 }
+
 .column-1-span-8{
-  @include spanColumns(8)
+  @include spanColumns(8);
 }
+
 .column-1-span-9{
-  @include spanColumns(9)
+  @include spanColumns(9);
 }
+
 .column-1-span-10{
-  @include spanColumns(10)
+  @include spanColumns(10);
 }
+
 .column-1-span-11{
-  @include spanColumns(11)
+  @include spanColumns(11);
+}
+
+
+.column-2-span-6{
+  @include column(2);
+}
+
+.column-3-span-4{
+  @include column(3);
+}
+
+.column-4-span-3{
+  @include column(4);
+}
+
+.column-6-span-2{
+  @include column(6);
+}
+
+.column-12-span-1{
+  @include column(12);
 }
