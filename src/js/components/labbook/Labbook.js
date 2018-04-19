@@ -346,7 +346,6 @@ class Labbook extends Component {
 
                 </div>
                 <div className="Labbook__column-container">
-
                    <BranchMenu
                      history={this.props.history}
                      collaborators={labbook.collaborators}
@@ -357,7 +356,7 @@ class Labbook extends Component {
                      setSyncingState={this._setSyncingState}
                      setPublishingState={this._setPublishingState}
                      toggleBranchesView={this._toggleBranchesView}
-                     isMainWorkspace={name === 'workspace'}
+                     isMainWorkspace={name === 'workspace' || name === `gm.workspace-${localStorage.getItem('username')}`}
                     />
 
                    <ContainerStatus

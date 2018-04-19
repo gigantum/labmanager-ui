@@ -175,3 +175,9 @@
   border-left: 1px solid $romanSilver;
   border-right: 1px solid $romanSilver;
 }
+
+.loading {
+  opacity: 0.1;
+  animation: fluxuateLoad 3s infinite;
+  pointer-events: none;
+}
