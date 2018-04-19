@@ -21,8 +21,10 @@
   font-size: 48px;
   word-break: break-all;
   line-height: 48px;
-  height: 49px;
-  overflow: hidden;
+  height: 40px;
+  overflow: visible;
+  align-content: baseline;
+  align-self: flex-end;
 }
 .Labbook__branch-title{
   opacity: 1;
@@ -117,7 +119,7 @@
   .Labbook__name-title {
     padding: 0px;
     color: $romanSilver;
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
@@ -146,7 +148,7 @@
 .Labbook__view {
   height: 100%;
   overflow: hidden;
-  padding: 20px 0;
+  padding: 10px 0 20px;
 
 }
 
@@ -296,7 +298,7 @@
 
     .Labbook__branches-container {
       max-width: calc(100% + 40px);
-      margin: 0px -20px;
+      margin: 10px -20px;
 
     }
 
@@ -368,6 +370,7 @@
 .Labbook__navigation-container {
   margin-top: 154px;
   transition: 0.5s all;
+  position: relative;
 }
 
 .Labbook__navigation {
@@ -383,7 +386,7 @@
       padding: .75rem 0;
       margin: 0;
       text-decoration: none;
-      color: $grey;
+      color: $jet;
     }
 
     a:hover {
@@ -488,23 +491,21 @@
   transition: 0.25s opacity;
   position: fixed;
   width: 100%;
-  height: calc(100% - 410px);
-  top: 410px;
+  height: calc(100% - 450px);
+  top: 450px;
   z-index: -1;
   background: $jet;
 
 }
 
 .Labbook-branch-mode{
+
   .Labbook__veil{
     display: block;
     opacity: 0.5;
     z-index: 1990;
   }
 
-  .Labbook__navigation-slider{
-    top: 495px;
-  }
   .ReactStickyHeader_root {
     min-height: 437px;
   }
@@ -534,7 +535,7 @@
   }
 
   .Labbook__branches-container{
-    margin: 0 -35px;
+    margin: 10px -35px;
   }
 
 }

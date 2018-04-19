@@ -464,7 +464,7 @@ class PackageDependencies extends Component {
       <div className="PackageDependencies">
 
         <div className={blockClass + '__header-container'}>
-          <h4 className="PackageDependencies__header">Packages</h4>
+          <h5 className="PackageDependencies__header">Packages</h5>
         </div>
 
         <div className="PackageDependencies__card">

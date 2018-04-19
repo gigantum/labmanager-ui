@@ -3,6 +3,9 @@
 .RecentActivity__title-container{
   align-items: center;
   @include flex(space-between, row);
+  a {
+    color: $dark-blue;
+  }
 }
 
 .RecentActivity__card {
@@ -24,14 +27,81 @@
 }
 
 .RecentActivity__card-detail .ReactMarkdown * {
-  line-height: 22px;
+  // line-height: 22px;
   text-overflow: ellipsis;
   display: -webkit-box;
   white-space: pre-line;
   overflow: hidden;
   word-break: break-word;
-  -webkit-line-clamp: 10;
+  // -webkit-line-clamp: 10;
   -webkit-box-orient: vertical;
+}
+
+.ReactMarkdown,
+.ReactMarkdown-long {
+  h1 {
+    img {
+      width:max-content;
+      margin: 2px;
+    }
+  }
+}
+.ReactMarkdown,
+.ReactMarkdown-long {
+  color: $romanSilver;
+  h1 {
+    padding: 10px 0;
+    font-size: 2em;
+    color: $jet;
+    border-bottom: 1px solid $grey-light;
+    font-weight: 400;
+  }
+  h2 {
+    padding: 10px 0;
+    font-size: 1.5em;
+    color: $jet;
+    border-bottom: 1px solid $grey-light;
+    font-weight: 400;
+
+  }
+  h3 {
+    font-size: 1.17em;
+    color: $jet;
+    font-weight: 400;
+
+  }
+  h4 {
+    font-size: 1.12em;
+    color: $jet;
+    font-weight: 400;
+
+  }
+  h5 {
+    font-size: .83em;
+    font-weight: 400;
+    color: $jet;
+  }
+  h6 {
+    font-weight: 400;
+    font-size: .75em;
+    color: $jet;
+  }
+  blockquote {
+    border-left: 5px solid $lightblue;
+  }
+  a {
+    color: $azure;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  ul {
+    padding-left: 40px;
+    list-style-type: disc;
+    li {
+      list-style-type: disc;
+    }
+  }
 }
 
 .RecentActivity__card-detail .ReactMarkdown {

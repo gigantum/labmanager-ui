@@ -144,6 +144,7 @@ export default class Branches extends Component {
                         labbookId={this.props.labbookId}
                         mergeFilter={this.props.mergeFilter}
                         branchesOpen={this.props.branchesOpen}
+                        setBuildingState={this.props.setBuildingState}
                       />
                   </div>)
               })

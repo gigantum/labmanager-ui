@@ -78,7 +78,7 @@
 
 .Activity__date-tab:before {
   top: 76px;
-  left: 35px;
+  left: 34px;
 }
 
 .ActivtyCard__wrapper:nth-last-child(1):before {
@@ -587,4 +587,21 @@
   border-right: 12.5px solid $background-color;
   border-top: 12.5px solid transparent;
   border-bottom: 12.5px solid transparent;
+}
+
+.Activity__add {
+  margin-bottom: 45px;
+}
+
+.Activity__add:before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: calc(100% + 10px);
+  left: 40px;
+  border: 4px solid $romanSilver;
+  border-width: 0 0 0 4px;
+  width: 1px;
+  height: 45px;
 }

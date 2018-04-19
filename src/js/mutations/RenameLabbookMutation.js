@@ -46,7 +46,6 @@ export default function RenameLabbookMutation(
       clientMutationId: '' + tempID++
     }
   }
-  console.log(owner, originalLabbookName, newLabbookName, callback)
   commitMutation(
     environment,
     {

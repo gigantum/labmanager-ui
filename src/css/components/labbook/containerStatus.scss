@@ -87,7 +87,7 @@
 .ContainerStatus__container-state.Building,
 .ContainerStatus__container-state.Syncing,
 .ContainerStatus__container-state.Publishing {
-  background: $background-color url('./../images/loaders/container-status-loader.svg') no-repeat 90% center;
+  background: $background-color url('./../images/loaders/button-starting.svg') no-repeat 90% center;
   border: 3px solid $goldenLemon;
   background-size: 20px;
 }
@@ -108,16 +108,16 @@
   line-height: 31px;
 }
 
-.ContainerStatus__container-state.Build.Failed,
-.ContainerStatus__container-state.Rebuild,
-.ContainerStatus__container-state.Rebuild.Required{
-  border: 3px solid $crimson;
+.ContainerStatus__container-state.Rebuild{
+  background: $background-color url('./../images/icons/button-build.svg') no-repeat 85% center;
+  border: 3px solid $goldenLemon;
+  cursor: pointer;
+  padding: 0 15px 0 0;
   background-size: 20px;
-  padding: 0px;
 }
 .ContainerStatus__container-state.Stopping,
 .ContainerStatus__container-state.Starting {
-  background: $background-color url('./../images/loaders/container-status-loader.svg') no-repeat 90% center;
+  background: $background-color url('./../images/loaders/button-starting.svg') no-repeat 90% center;
   background-size: 20px;
   border: 3px solid $goldenLemon;
   opacity: 0.75;

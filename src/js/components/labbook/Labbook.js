@@ -43,6 +43,7 @@ class Labbook extends Component {
     this._showLabbookModal = this._showLabbookModal.bind(this)
     this._hideLabbookModal = this._hideLabbookModal.bind(this)
     this._toggleBranchesView = this._toggleBranchesView.bind(this)
+    this._branchViewClickedOff = this._branchViewClickedOff.bind(this)
 
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
@@ -77,6 +78,7 @@ class Labbook extends Component {
     })
 
     window.addEventListener('scroll', this._setStickHeader)
+    window.addEventListener('click', this._branchViewClickedOff )
   }
   /**
     @param {}
@@ -85,9 +87,27 @@ class Labbook extends Component {
   componentWillUnmount() {
     unsubscribe()
 
+
     window.removeEventListener('scroll', this._setStickHeader)
+
+    window.removeEventListener('click', this._branchViewClickedOff)
+
+  }
+  /**
+    @param {event}
+    updates state of labbook when prompted ot by the store
+    updates history prop
+  */
+  _branchViewClickedOff(evt) {
+    if(evt.target.className.indexOf('Labbook__veil') > -1) {
+      this._toggleBranchesView(false, false);
+    }
   }
 
+  /**
+    @param {}
+    dispatches sticky state to redux to update state
+  */
   _setStickHeader(){
       let sticky = 50;
 
@@ -300,7 +320,6 @@ class Labbook extends Component {
   _sanitizeBranchName(branchName){
     const username = localStorage.getItem('username')
     const workspace = `gm.workspace-${username}`
-    console.log(workspace, branchName)
     const prettyBranchName = (branchName === workspace) ? 'workspace' : branchName.replace(`${workspace}.`, '')
 
     return prettyBranchName
@@ -355,20 +374,21 @@ class Labbook extends Component {
                         className="Labbook__branch-toggle"></div>
                      </div>
 
-                  </div>
-                  <div className="Labbook__column-container">
+                </div>
+                <div className="Labbook__column-container">
 
-                     <BranchMenu
-                       history={this.props.history}
-                       collaborators={labbook.collaborators}
-                       canManageCollaborators={labbook.canManageCollaborators}
-                       defaultRemote={labbook.defaultRemote}
-                       labbookId={labbook.id}
-                       remoteUrl={labbook.overview.remoteUrl}
-                       setSyncingState={this._setSyncingState}
-                       setPublishingState={this._setPublishingState}
-                       toggleBranchesView={this._toggleBranchesView}
-                      />
+                   <BranchMenu
+                     history={this.props.history}
+                     collaborators={labbook.collaborators}
+                     canManageCollaborators={labbook.canManageCollaborators}
+                     defaultRemote={labbook.defaultRemote}
+                     labbookId={labbook.id}
+                     remoteUrl={labbook.overview.remoteUrl}
+                     setSyncingState={this._setSyncingState}
+                     setPublishingState={this._setPublishingState}
+                     toggleBranchesView={this._toggleBranchesView}
+                     isMainWorkspace={name === 'workspace'}
+                    />
 
                      <ContainerStatus
                        ref="ContainerStatus"
@@ -388,16 +408,16 @@ class Labbook extends Component {
 
                   <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
 
-                  <Branches
-                    defaultRemote={labbook.defaultRemote}
-                    branchesOpen={this.state.branchesOpen}
-                    labbook={labbook}
-                    labbookId={labbook.id}
-                    activeBranch={labbook.activeBranchName}
-                    toggleBranchesView={this._toggleBranchesView}
-                    mergeFilter={this.state.mergeFilter}
-
-                  />
+                <Branches
+                  defaultRemote={labbook.defaultRemote}
+                  branchesOpen={this.state.branchesOpen}
+                  labbook={labbook}
+                  labbookId={labbook.id}
+                  activeBranch={labbook.activeBranchName}
+                  toggleBranchesView={this._toggleBranchesView}
+                  mergeFilter={this.state.mergeFilter}
+                  setBuildingState={this._setBuildingState}
+                />
 
                   <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
                 </div>
@@ -460,8 +480,8 @@ class Labbook extends Component {
                               activityRecords={this.props.activityRecords}
                               labbookId={labbook.id}
                               activeBranch={labbook.activeBranch}
+                              isMainWorkspace={name === 'workspace'}
                               {...this.props}
-
                             />)
                         }} />
 
@@ -540,9 +560,7 @@ const LabbookFragmentContainer = createFragmentContainer(
       fragment Labbook_labbook on Labbook{
           id
           description
-          updatesAvailableCount
           readme
-          isRepoClean
           defaultRemote
           owner
           creationDateUtc

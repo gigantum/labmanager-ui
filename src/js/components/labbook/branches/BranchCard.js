@@ -10,6 +10,7 @@ import MergeFromBranchMutation from 'Mutations/branches/MergeFromBranchMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
+import FetchContainerStatus from 'Components/labbook/containerStatus/fetchContainerStatus'
 
 export default class BranchCard extends Component {
   constructor(props){
@@ -44,6 +45,7 @@ export default class BranchCard extends Component {
     checkout branch using WorkonExperimentalBranchMutation
   */
   _checkoutBranch(){
+    let self = this;
     const branchName = this.props.name
     const {owner, labbookName} = this.state
     const revision = null
@@ -83,13 +85,24 @@ export default class BranchCard extends Component {
               branchesOpen: false
             }
           })
-
+          this.props.setBuildingState(true)
           BuildImageMutation(
             labbookName,
             owner,
             false,
             (response, error)=>{
-              console.log(error)
+              if(error){
+                console.log(error)
+              }
+              let checkImage = setInterval(()=>{
+                FetchContainerStatus.getContainerStatus(this.state.owner, this.state.labbookName)
+                .then(res=>{
+                  if(res.labbook.environment.imageStatus !== 'BUILD_IN_PROGRESS'){
+                    this.props.setBuildingState(false)
+                    clearInterval(checkImage)
+                  }
+                })
+              }, 1000)
             }
           )
         }
@@ -148,13 +161,24 @@ export default class BranchCard extends Component {
             }
           })
         }
-
+        this.props.setBuildingState(true)
         BuildImageMutation(
           labbookName,
           owner,
           false,
           (response, error)=>{
-            console.log(error)
+            if(error){
+              console.log(error)
+            }
+            let checkImage = setInterval(()=>{
+              FetchContainerStatus.getContainerStatus(this.state.owner, this.state.labbookName)
+              .then(res=>{
+                if(res.labbook.environment.imageStatus !== 'BUILD_IN_PROGRESS'){
+                  this.props.setBuildingState(false)
+                  clearInterval(checkImage)
+                }
+              })
+            }, 1000)
           }
         )
       }
@@ -188,7 +212,6 @@ export default class BranchCard extends Component {
     const {owner, showLoader} = this.state
     const isCurrentBranch = (this.props.name === this.props.activeBranchName)
     const branchName = this._sanitizeBranchName(this.props.name)
-    console.log(branchName)
     const showDelete = !isCurrentBranch && (this.props.name !== `gm.workspace-${owner}`)
 
     const branchCardCSS = classNames({
