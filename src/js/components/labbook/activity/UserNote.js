@@ -14,13 +14,14 @@ export default class UserNote extends Component {
     this.state = {
       'tags': [],
       'userSummaryText': '',
-      'addNoteDisabled': false
+      'addNoteDisabled': true
     }
 
     this._addNote = this._addNote.bind(this)
     this._handleDelete = this._handleDelete.bind(this)
     this._handleAddition = this._handleAddition.bind(this)
     this._handleDrag= this._handleDrag.bind(this)
+    this._toggleElements = this._toggleElements.bind(this);
   }
   /**
     @param {}
@@ -32,6 +33,38 @@ export default class UserNote extends Component {
         element: document.getElementById('markDown'),
         spellChecker: true
       });
+      let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0]
+      fullscreenButton && fullscreenButton.addEventListener('click', this._toggleElements)
+      let sideBySideButton = document.getElementsByClassName('fa-columns')[0]
+      sideBySideButton && sideBySideButton.addEventListener('click', this._toggleElements)
+    }
+  }
+
+  _toggleElements(evt) {
+    let cardArr = Array.prototype.slice.call(document.getElementsByClassName('card'));
+    let circleArr = Array.prototype.slice.call(document.getElementsByClassName('Activity__submenu-circle'));
+    if(evt.target.className.indexOf('fa-columns') !== -1){
+      if(document.getElementsByClassName('ReactStickyHeader_fixed')[0].className.indexOf('hidden') === -1) {
+        document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.add('hidden')
+      }
+      cardArr.forEach((card)=>{
+        if(card.className.indexOf('hidden') === -1) {
+          card.classList.add('hidden');
+        }
+      })
+      circleArr.forEach((circle)=>{
+        if(circle.className.indexOf('hidden') === -1) {
+          circle.classList.add('hidden');
+        }
+      })
+    } else {
+      document.getElementsByClassName('ReactStickyHeader_fixed')[0].className.indexOf('hidden') === -1 ? document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.add('hidden'): document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.remove('hidden')
+      cardArr.forEach((card)=>{
+        card.className.indexOf('hidden') === -1 ? card.classList.add('hidden') : card.classList.remove('hidden')
+      })
+      circleArr.forEach((circle)=>{
+        circle.className.indexOf('hidden') === -1 ? circle.classList.add('hidden') : circle.classList.remove('hidden')
+      })
     }
   }
 
@@ -73,10 +106,9 @@ export default class UserNote extends Component {
   _setUserSummaryText(evt){
 
     const summaryText =  evt.target.value;
-
     this.setState({
       'userSummaryText': summaryText,
-      'addNoteEnabled': (summaryText.length > 0)
+      'addNoteDisabled': (summaryText.length === 0)
     })
   }
   /**

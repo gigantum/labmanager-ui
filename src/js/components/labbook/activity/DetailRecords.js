@@ -36,7 +36,7 @@ export default class UserNote extends Component {
 
     this.state = {
       owner: owner,
-      labbookName: labbookName
+      labbookName: labbookName,
     }
     this._setLinks = this._setLinks.bind(this);
   }
@@ -49,12 +49,19 @@ export default class UserNote extends Component {
       if (this.checkOverflow(elOuter.childNodes[elOuter.childNodes.length - 1]) === true) moreObj[index] = true;
     });
     let pElements = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__link'));
-
     for (let key in pElements) {
       if(!moreObj[key]) {
         pElements[key].className = 'hidden';
       } else {
         pElements[key].className = 'DetailsRecords__link';
+      }
+    }
+    let fadeElements = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__fadeout'));
+    for (let key in fadeElements) {
+      if(!moreObj[key]) {
+        fadeElements[key].className = 'hidden';
+      } else {
+        fadeElements[key].className = 'DetailsRecords__fadeout';
       }
     }
   }
@@ -79,6 +86,12 @@ export default class UserNote extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this._setLinks.bind(this));
+  }
+  componentDidUpdate() {
+    let self = this;
+    setTimeout(function(){
+      self._setLinks();
+    }, 100)
   }
 
   _renderDetail(item){
@@ -109,12 +122,14 @@ export default class UserNote extends Component {
       elements[index].className = "ReactMarkdown-long"
       target.className = "DetailsRecords__link-clicked";
       target.textContent = "Less...";
+      target.previousSibling.className = "hidden"
     } else {
       let elements = Array.prototype.slice.call(document.getElementsByClassName('ReactMarkdown-long'));
       let index = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__link-clicked')).indexOf(target);
       elements[index].className = "ReactMarkdown"
       target.className = "DetailsRecords__link";
       target.textContent = "More...";
+      target.previousSibling.className = "DetailsRecords__fadeout"
     }
   }
 
@@ -148,7 +163,9 @@ export default class UserNote extends Component {
                                 key={detailRecord.id + '_'+ index}
                                 className="DetailsRecords__item">
                                 {this._renderDetail(item)}
+                                <div className="DetailsRecords__fadeout"></div>
                                 <p className="DetailsRecords__link hidden" onClick={(e)=> this._moreClicked(e.target)}>More...</p>
+                                {this._setLinks()}
                             </li>)
                           })
                         )
