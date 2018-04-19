@@ -21,7 +21,7 @@ export default class CreateBranchModal extends React.Component {
       'textWarning': 'hidden',
       'textLength': 0,
       'showError': false,
-      'branchName': props.selected ? this._formattedISO(Date.now()) : '',
+      'branchName': '',
       'branchDescription': '',
       'createButtonClicked': false
     };
@@ -40,8 +40,7 @@ export default class CreateBranchModal extends React.Component {
     }
 
     if(nextProps.selected){
-      let branchName =this._formattedISO(Date.now())
-
+      let branchName = `rollback-to-${Moment(Date.parse(nextProps.selected.timestamp)).format("YYYYMMDD-HHmmss")}`
       this.setState({branchName})
     }
   }
