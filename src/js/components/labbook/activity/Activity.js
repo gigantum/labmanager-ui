@@ -90,14 +90,14 @@ class Activity extends Component {
     relay.refetchConnection(
       counter,
       (response) =>{
-        if(!activityRecords.pageInfo.hasNextPage){
-          isLoadingMore = false
-        }
+        // if(!activityRecords.pageInfo.hasNextPage){
+        //   isLoadingMore = false
+        // }
 
         setTimeout(function(){
 
             self._refetch()
-        },5000)
+        }, 5000)
       },
       {
         cursor: cursor
@@ -110,6 +110,7 @@ class Activity extends Component {
   *  pagination container loads more items
   */
   _loadMore() {
+    console.trace(this)
     pagination = true
     isLoadingMore = true
     pagination = true
@@ -139,12 +140,15 @@ class Activity extends Component {
   *
   */
   _handleScroll(evt){
-    let activityRecords = this.props.labbook.activityRecords,
+    const {isPaginating} = this.state
+    const activityRecords = this.props.labbook.activityRecords,
         root = document.getElementById('root'),
         distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
         expandOn = root.scrollHeight;
 
-    if ((distanceY > expandOn) && !isLoadingMore && activityRecords.pageInfo.hasNextPage) {
+    console.log(distanceY > expandOn, distanceY, expandOn, root)
+
+    if ((distanceY > expandOn) && !isPaginating && activityRecords.pageInfo.hasNextPage) {
         this._loadMore(evt);
 
     }
@@ -223,13 +227,14 @@ class Activity extends Component {
   }
 
   render(){
-    let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
 
-    if(!this.props.labbook.activityRecords.pageInfo.hasNextPage){
-      isLoadingMore = false;
-    }
 
     if(this.props.labbook){
+      let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
+
+      // if(!this.props.labbook.activityRecords.pageInfo.hasNextPage){
+      //   isLoadingMore = false;
+      // }
       return(
         <div key={this.props.labbook} className='Activity'>
 
@@ -334,7 +339,7 @@ class Activity extends Component {
                       <PaginationLoader
                         key={'Actvity_paginationLoader' + index}
                         index={index}
-                        isLoadingMore={isLoadingMore}
+                        isLoadingMore={this.state.isPaginating}
                       />
                   )
                 })

@@ -108,23 +108,31 @@ export default class ContainerStatus extends Component {
     const { owner, labbookName } = store.getState().routes
     const state = this.state
     const self = this
+
     if(owner === this.state.owner && labbookName === this.state.labbookName && store.getState().routes.callbackRoute.split('/').length > 3) {
+
       FetchContainerStatus.getContainerStatus(owner, labbookName).then((response, error) => {
-        const { environment } = response.labbook
-        if (state.imageStatus !== environment.imageStatus && environment.imageStatus === 'BUILD_FAILED') {
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: 'LabBook failed to build:',
-              messageBody: [{ message: 'Check for and remove invalid dependencies and try again.' }]
-            }
-          })
-        }
-        if ((state.containerStatus !== environment.containerStatus) || (state.imageStatus !== environment.imageStatus)) {
-          self.setState({
-            'imageStatus': environment.imageStatus,
-            'containerStatus': environment.containerStatus
-          })
+
+        if(response.labbook){
+          const { environment } = response.labbook
+
+          if (state.imageStatus !== environment.imageStatus && environment.imageStatus === 'BUILD_FAILED') {
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: 'LabBook failed to build:',
+                messageBody: [{ message: 'Check for and remove invalid dependencies and try again.' }]
+              }
+            })
+          }
+
+          if ((state.containerStatus !== environment.containerStatus) || (state.imageStatus !== environment.imageStatus)) {
+            self.setState({
+              'imageStatus': environment.imageStatus,
+              'containerStatus': environment.containerStatus
+            })
+          }
+          
         }
 
         setTimeout(() => {

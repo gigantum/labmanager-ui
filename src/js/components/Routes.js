@@ -1,7 +1,7 @@
 //vendor
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
+import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
 import Auth from 'JS/Auth/Auth';
 import history from 'JS/history';
@@ -116,21 +116,19 @@ export default class Routes extends Component {
                     />
                   }
                 />
+
+
                 <Route
                   exact
                   path="/:id"
                   render={(props) =>
-                    <Home
-                      history={history}
-                      auth={auth}
-                      {...props}
-                    />
+                    <Redirect to="/labbooks/all"/>
                   }
                 />
 
                 <Route
                   exact
-                  path="/:id/:labbookFilter"
+                  path="/labbooks/:labbookFilter"
                   render={(props) =>
                     <Home
                       history={history}
@@ -206,6 +204,7 @@ export default class Routes extends Component {
                     )
                   }}
                 />
+
                 <Prompt
                   ref="prompt"
                 />
