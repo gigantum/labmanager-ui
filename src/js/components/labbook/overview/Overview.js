@@ -17,6 +17,7 @@ import FileEmpty from 'Components/labbook/overview/FileEmpty'
 import CodeBlock from 'Components/labbook/renderers/CodeBlock'
 //mutations
 import WriteReadmeMutation from 'Mutations/WriteReadmeMutation'
+import SetLabbookDescriptionMutation from 'Mutations/SetLabbookDescriptionMutation'
 //store
 import store from 'JS/redux/store'
 
@@ -34,6 +35,10 @@ class Overview extends Component {
       readmeExpanded: false,
       overflowExists: false,
       simpleExists: false,
+      editingDescription: false,
+      descriptionText: this.props.description.replace(/\n/g,' '),
+      lastSavedDescription: this.props.description.replace(/\n/g,' '),
+      savingDescription: false,
     }, store.getState().overview);
     this._toggleElements = this._toggleElements.bind(this);
     this._editReadme = this._editReadme.bind(this);
@@ -128,6 +133,13 @@ class Overview extends Component {
       (res, error) => {
         if(error) {
           console.log(error)
+          store.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload: {
+              message: 'Readme was not set: ',
+              messageBody: error
+            }
+          })
         } else{
           this.setState({ editingReadme: false, simpleExists: false})
         }
@@ -138,17 +150,81 @@ class Overview extends Component {
     this.setState({ editingReadme: true });
   }
 
+  _saveDescription() {
+    const { owner, labbookName } = store.getState().routes
+    this.setState({savingDescription: true})
+    SetLabbookDescriptionMutation(
+      owner,
+      labbookName,
+      this.state.descriptionText.replace(/\n/g,' '),
+      (res, error) => {
+        if(error) {
+          console.log(error)
+          store.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload: {
+              message: 'Description was not set: ',
+              messageBody: error
+            }
+          })
+        } else{
+          this.setState({ editingDescription: false, lastSavedDescription: this.state.descriptionText.replace(/\n/g,' '), savingDescription: false})
+        }
+      }
+    )
+  }
+  _editingDescription() {
+    this.setState({ editingDescription: true });
+  }
+
   render() {
     let readmeCSS = this.state.readmeExpanded ? 'ReadmeMarkdown--expanded' : 'ReadmeMarkdown';
+    let descriptionCSS = this.state.descriptionText ? 'column-1-span-9' : 'column-1-span-9 empty'
     if (this.props.labbook) {
       const { owner, labbookName } = store.getState().routes
       return (
         <div className="Overview">
-          <div className="Overview__title-container">
-            <h5 className="Overview__title">Overview</h5>
-          </div>
-          <div className="Overview__description grid">
-            <ReactMarkdown className="column-1-span-9" source={this.props.description} />
+          <div className="Overview__description grid column-1-span-12">
+          {
+            this.state.editingDescription ?
+            <React.Fragment>
+              <textarea
+                maxLength="260"
+                className="Overview__description-input column-1-span-9"
+                type="text"
+                onChange={(evt)=>{this.setState({descriptionText: evt.target.value.replace(/\n/g,' ')})}}
+                placeholder="Short description of labbook"
+                defaultValue={this.state.descriptionText ? this.state.descriptionText: ''}
+              >
+              </textarea>
+              <div className="column-1-span-1">
+                <button
+                  disabled={this.state.savingDescription}
+                  onClick={()=> this._saveDescription()}
+                  className="Overview__description-save-button"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={()=> this.setState({editingDescription: false, descriptionText: this.state.lastSavedDescription })}
+                  className="Overview__description-cancel-button button--flat"
+                >
+                  Cancel
+                </button>
+              </div>
+            </React.Fragment>
+            :
+            <React.Fragment>
+              <ReactMarkdown className={descriptionCSS} source={this.state.descriptionText ? this.state.descriptionText : 'No description provided.'} />
+              <div className="column-1-span-1">
+                <button
+                  onClick={()=> this.setState({editingDescription: true})}
+                  className="Overview__description-edit-button"
+                >
+                </button>
+              </div>
+            </React.Fragment>
+          }
           </div>
           <div className="Overview__title-container">
             <h5 className="Overview__title">Readme

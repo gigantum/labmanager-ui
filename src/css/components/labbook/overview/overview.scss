@@ -35,14 +35,63 @@
 }
 
 .Overview__description {
+  color: $jet;
   white-space: pre-line;
-  padding: 20px 0;
-  div{
+  padding: 50px 0 0 0;
+  word-wrap: break-word;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+
+  p {
+    margin: 0
+  }
+
+  div:first-child {
+
     /*
       have to use extend as ReactMarkDown does not inherit classNames
     */
     @extend .column-1-span-9;
+    margin-bottom: 0;
   }
+  button {
+    margin-top: 2px;
+  }
+  .column-1-span-1 {
+    @include flex(flex-start, column);
+  }
+  .empty {
+    color: $romanSilver;
+    opacity: 0.5;
+    font-style: oblique;
+  }
+}
+
+.Overview__description-input {
+  height: 100px;
+  resize: none;
+}
+
+.Overview__description-input:focus {
+  border: 2px solid #26a69a;
+  box-shadow: 0 1px 0 0 #26a69a;
+  outline: none;
+}
+
+.Overview__description-edit-button,
+.Overview__description-edit-button:hover,
+.Overview__description-edit-button:focus {
+  height: 22px;
+  width: 22px;
+  border: 0px;
+  background: url('./../images/icons/edit.svg') no-repeat center center;
+  background-size: 22px;
+}
+
+.Overview__description-cancel-button,
+.Overview__description-cancel-button:hover,
+.Overview__description-cancel-button:focus {
+  padding: 0;
 }
 
 .Overview__jupyter-button {
