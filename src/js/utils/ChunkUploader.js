@@ -138,7 +138,9 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
     accessToken,
     section,
     (result, error)=>{
-
+      store.dispatch({
+        type: 'FINISHED_UPLOADING',
+      })
       if(result && (error === undefined)){
         getChunkCallback(file, result)
         if(store.getState().footer.totalFiles > 1){
@@ -147,7 +149,13 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
           updateChunkStatus(file, chunkData)
         }
       }else{
-        getChunkCallback(error)
+        let errorBody = error.length && error[0].message ? error[0].message: error
+        store.dispatch({
+          type: 'WARNING_MESSAGE',
+          payload: {
+            message: errorBody,
+          }
+        })
       }
 
   })
@@ -194,7 +202,7 @@ const ChunkUploader = {
         fileLoadedSize = fileLoadedSize + chunkSize;
 
         chunkIndex++
-  
+
         let chunkData =   {
             blob: blob,
             fileSizeKb: fileSizeKb,
