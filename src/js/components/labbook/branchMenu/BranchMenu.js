@@ -691,18 +691,24 @@ export default class UserNote extends Component {
     })
     return (
       <div className="BranchMenu flex flex--column">
+
         <div className={loginPromptModalCss}>
           <div
             onClick={() => { this._closeLoginPromptModal() }}
             className="BranchModal--close"></div>
+
             <LoginPrompt closeModal={this._closeLoginPromptModal} />
+
         </div>
 
         <div className={deleteModalCSS}>
           <div
             onClick={() => { this._toggleDeleteModal() }}
             className="BranchModal--close"></div>
-            <DeleteLabbook remoteAdded={this.state.addedRemoteThisSession} history={this.props.history}/>
+            <DeleteLabbook
+              remoteAdded={this.state.addedRemoteThisSession}
+              history={this.props.history}
+            />
         </div>
 
         <div className={syncModalCSS}>
@@ -791,14 +797,14 @@ export default class UserNote extends Component {
                 onClick={() => { this._switchBranch()}}
                 className="BranchMenu__item--flat-button"
               >
-                Switch
+                Switch Branch
               </button></li>
             <li className="BranchMenu__item--merge">
               <button
                 onClick={() => { this._mergeFilter()}}
                 className="BranchMenu__item--flat-button"
               >
-                Merge
+                Merge Branch
               </button></li>
 
             <li className={exportCSS}>

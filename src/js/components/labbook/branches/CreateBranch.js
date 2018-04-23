@@ -7,6 +7,7 @@ import Moment from 'moment'
 import CreateExperimentalBranchMutation from 'Mutations/branches/CreateExperimentalBranchMutation'
 //components
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
+import ButtonLoader from 'Components/shared/ButtonLoader'
 //utilities
 import validation from 'JS/utils/Validation'
 //store
@@ -140,17 +141,16 @@ export default class CreateBranchModal extends React.Component {
     const {owner, labbookName} = store.getState().routes
     const {branchName} = this.state
     const revision = this.props.selected ? this.props.selected.commit : null
-    this.setState({createButtonClicked: true})
+
+
+    this.setState({buttonLoaderCreateBranch: 'loading'})
     CreateExperimentalBranchMutation(
       owner,
       labbookName,
       branchName,
       revision,
       (response, error) => {
-        self.setState({createButtonClicked: false})
-        if(self._hideModal){
-          self._hideModal()
-        }
+
 
         if (error) {
           store.dispatch({
@@ -160,7 +160,25 @@ export default class CreateBranchModal extends React.Component {
               messageBody: error
             }
           })
+
+          setTimeout(()=> {
+            this.setState({buttonLoaderCreateBranch: 'error'})
+          }, 1000)
+
+        }else{
+
+          this.setState({buttonLoaderCreateBranch: 'finished'})
         }
+
+        setTimeout(()=> {
+          this.setState({buttonLoaderCreateBranch: ''})
+
+          if(self._hideModal){
+            self._hideModal()
+          }
+
+        }, 2000)
+
       })
 
     }
@@ -226,18 +244,26 @@ export default class CreateBranchModal extends React.Component {
                     <div>
                     </div>
                     <div className="CreateBranch__nav-group">
-                      <button
 
-                        onClick={() => { this._hideModal() }}
-                        className="CreateBranch__progress-button button--flat">
-                        Cancel
-                      </button>
-                      <button
-                        disabled={createDisabled}
-                        onClick={() => { this._createNewBranch() }}
-                        >
-                          Create
-                      </button>
+                      <div className="CreateBranch_nav-item">
+                        <button
+
+                          onClick={() => { this._hideModal() }}
+                          className="CreateBranch__progress-button button--flat">
+                          Cancel
+                        </button>
+                      </div>
+
+                      <div className="CreateBranch_nav-item">
+                        <ButtonLoader
+                          ref="buttonLoaderCreateBranch"
+                          buttonState={this.state.buttonLoaderCreateBranch}
+                          buttonText={"Create"}
+                          params={{}}
+                          buttonDisabled={createDisabled}
+                          clicked={this._createNewBranch}
+                        />
+                      </div>
                       </div>
                     </div>
                   </div>

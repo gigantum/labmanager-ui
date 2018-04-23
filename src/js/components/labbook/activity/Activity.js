@@ -60,6 +60,7 @@ class Activity extends Component {
     window.addEventListener('scroll', this._handleScroll)
 
     if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
+      console.log(this)
       this._loadMore()
     }
 
@@ -132,7 +133,9 @@ class Activity extends Component {
        name: 'labbook'
      }
    )
-   counter += 5
+   if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
+     counter += 5
+   }
   }
   /**
   *  @param {evt}
@@ -146,7 +149,7 @@ class Activity extends Component {
         distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
         expandOn = root.scrollHeight;
 
-    console.log(distanceY > expandOn, distanceY, expandOn, root)
+    console.log(distanceY > expandOn, this.props.labbook.activityRecords.pageInfo)
 
     if ((distanceY > expandOn) && !isPaginating && activityRecords.pageInfo.hasNextPage) {
         this._loadMore(evt);

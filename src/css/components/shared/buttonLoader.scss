@@ -1,0 +1,52 @@
+.ButtonLoader{
+  border: 2px solid $azure;
+  transition: all 0.5s;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.ButtonLoader--loading,
+.ButtonLoader--loading:focus,
+.ButtonLoader--loading:hover,
+.ButtonLoader--loading:disabled{
+  border: 2px solid $romanSilver;
+  height: 24px;
+  width: 24px;
+  padding: 0px;
+  background-color: transparent;
+  color: transparent;
+  border-radius: 12px;
+  border-left: 2px solid $azure;
+  animation: spin 1s infinite linear;
+}
+
+.ButtonLoader--finished,
+.ButtonLoader--finished:focus,
+.ButtonLoader--finished:hover,
+.ButtonLoader--finished:disabled{
+  border: 2px solid $azure;
+  height: 24px;
+  width: 24px;
+  padding: 0px;
+  background-color: $azure;
+  color: $white;
+  border-radius: 12px;
+}
+
+
+.ButtonLoader--error,
+.ButtonLoader--error:hover,
+.ButtonLoader--error:focus,
+.ButtonLoader--error:disabled{
+  border: 2px solid $crimson;
+  height: 24px;
+  width: 24px;
+  padding: 0px;
+  color: transparent;
+  border-radius: 12px;
+  background: $crimson url(../images/icons/close-white.svg) no-repeat 50% 50%;
+  background-size: 14px;
+}

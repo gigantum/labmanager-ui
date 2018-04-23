@@ -326,10 +326,12 @@ class Labbook extends Component {
   }
 
   render(){
+
     const { isAuthenticated } = this.props.auth
     const {labbookName} = this.props
     const isLockedBrowser = {locked: this.state.isPublishing || this.state.isSyncing, isPublishing: this.state.isPublishing}
     const isLockedEnvironment = this.state.isBuilding || this.state.isSyncing || this.state.isPublishing
+
     if(this.props.labbook){
       const {labbook} = this.props
       const name = this._sanitizeBranchName(this.props.labbook.activeBranchName)
