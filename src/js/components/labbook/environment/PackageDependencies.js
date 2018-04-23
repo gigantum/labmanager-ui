@@ -137,7 +137,7 @@ class PackageDependencies extends Component {
   *  hides packagemanager modal
   */
   _setSelectedTab(tab, isSelected){
-    this.setState({'selectedTab': tab, packageMenuVisible: isSelected ? this.state.packageMenuVisible : false})
+    this.setState({'selectedTab': tab, packageMenuVisible: isSelected ? this.state.packageMenuVisible : false, packages: isSelected ? this.state.packages : []})
   }
   /**
   *  @param {Object}
