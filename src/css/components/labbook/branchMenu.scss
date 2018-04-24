@@ -259,7 +259,6 @@
 }
 
 .BranchMenu__item--collaborators {
-  @extend .BranchMenu__item;
   background: url('./../images/icons/user.svg') no-repeat 7px center;
   background-size: 24px;
   height: 40px;
@@ -368,7 +367,9 @@
   padding: 0 10px;
   width: calc(33% - 33px);
   margin: 18px 25px 13px 0;
-  button {
+}
+
+.BranchMenu__collaborator-button {
     right: 0;
     bottom: 3px;
     cursor: pointer;
@@ -379,18 +380,23 @@
     background-size: 25px;
     border: none;
     padding: 0;
-  }
-  button:hover {
-    background: $white url('./../images/icons/x-close-turquise.svg');
-    background-size: 25px;
-  }
-  button:disabled,
-  button:disabled:hover {
-    cursor: default;
-    background: $white url('./../images/icons/x-close.svg');
-    background-size: 25px;
-  }
 }
+
+.BranchMenu__collaborator-button:hover,
+.BranchMenu__collaborator-button:focus {
+  background: $white url('./../images/icons/x-close-turquise.svg');
+  background-size: 25px;
+  border: 0;
+}
+
+.BranchMenu__collaborator-button:disabled,
+.BranchMenu__collaborator-button:disabled:hover {
+  cursor: default;
+  background: $white url('./../images/icons/x-close.svg');
+  background-size: 25px;
+  border: 0;
+}
+
 .BranchMenu__collaborator--item-me {
   @extend .BranchMenu__collaborator--item;
   order: 99999;

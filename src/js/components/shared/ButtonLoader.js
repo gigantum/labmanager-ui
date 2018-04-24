@@ -15,7 +15,8 @@ export default class ButtonLoader extends Component {
 
     const buttonLoaderCSS = classNames({
       'ButtonLoader': true,
-      [`ButtonLoader--${buttonState}`]:  buttonState !== ''
+      [`ButtonLoader--${buttonState}`]:  buttonState !== '',
+      [this.props.className]: (this.props.className !== null)
     })
 
     let buttonTestToDisplay = buttonState !== 'finished' ? buttonText : '✓'

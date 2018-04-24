@@ -12,14 +12,14 @@
 .ButtonLoader--loading:focus,
 .ButtonLoader--loading:hover,
 .ButtonLoader--loading:disabled{
-  border: 2px solid $romanSilver;
+  border: 2px solid $romanSilver !important;;
   height: 24px;
   width: 24px;
   padding: 0px;
-  background-color: transparent;
+  background: transparent url() !important;
   color: transparent;
   border-radius: 12px;
-  border-left: 2px solid $azure;
+  border-left: 2px solid $azure !important;
   animation: spin 1s infinite linear;
 }
 
@@ -31,7 +31,8 @@
   height: 24px;
   width: 24px;
   padding: 0px;
-  background-color: $azure;
+  background: none !important;
+  background-color: $azure !important;
   color: $white;
   border-radius: 12px;
 }
@@ -41,12 +42,12 @@
 .ButtonLoader--error:hover,
 .ButtonLoader--error:focus,
 .ButtonLoader--error:disabled{
-  border: 2px solid $crimson;
+  border: 2px solid $crimson !important;;
   height: 24px;
   width: 24px;
   padding: 0px;
-  color: transparent;
+  color: transparent !important;
   border-radius: 12px;
-  background: $crimson url(../images/icons/close-white.svg) no-repeat 50% 50%;
+  background: $crimson url(../images/icons/close-white.svg) no-repeat 50% 50% !important;;
   background-size: 14px;
 }
