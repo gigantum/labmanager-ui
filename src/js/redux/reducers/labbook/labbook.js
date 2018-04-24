@@ -6,6 +6,7 @@ export const UPDATE_DETAIL_VIEW = 'UPDATE_DETAIL_VIEW';
 export const RESET_LABBOOK_STORE = 'RESET_LABBOOK_STORE';
 export const IS_BUILDING = 'IS_BUILDING'
 export const IS_SYNCING = 'IS_SYNCING'
+export const IS_EXPORTING = 'IS_EXPORTING'
 export const IS_PUBLISHING = 'IS_PUBLISHING'
 export const MODAL_VISIBLE = 'MODAL_VISIBLE'
 export const SELECTED_COMPONENT = 'SELECTED_COMPONENT'
@@ -21,6 +22,7 @@ export default (
    'imageStatus': '',
    'isBuilding': false,
    'isSyncing': false,
+   'isExporting': false,
    'isPublishing': false,
    'containerStatus': '',
    'modalVisible': '',
@@ -73,6 +75,12 @@ export default (
       ...state,
       'isSyncing': action.payload.isSyncing,
     };
+  } else if(action.type === IS_EXPORTING){
+
+    return {
+      ...state,
+      'isExporting': action.payload.isExporting,
+    };
   } else if(action.type === IS_PUBLISHING){
 
     return {
@@ -106,6 +114,7 @@ export default (
      'isBuilding': false,
      'isPublushing': false,
      'isSyncing': false,
+     'isExporting': false,
      'containerStatus': '',
      'modalVisible': '',
      'detailMode': false,

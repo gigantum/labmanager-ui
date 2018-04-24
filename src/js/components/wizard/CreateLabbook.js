@@ -200,7 +200,7 @@ export default class CreateLabbook extends React.Component {
       this.props.toggleDisabledContinue((evt.target.value === "") || (isMatch === false));
 
     }
-    let textLength = 1024 - evt.target.value.length
+    let textLength = 260 - evt.target.value.length
     if(textLength >= 100){
       state['textWarning'] = 'CreateLabbook__warning--hidden'
     }else if((textLength <= 100) && (textLength > 50)){
@@ -272,7 +272,7 @@ export default class CreateLabbook extends React.Component {
             <div>
               <label>Description</label>
               <textarea
-                maxLength="1024"
+                maxLength="260"
                 className="CreateLabbook__description-input"
                 type="text"
                 onChange={(evt) => this._updateTextState(evt, 'description')}
