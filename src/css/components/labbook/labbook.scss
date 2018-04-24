@@ -530,12 +530,14 @@
   .Labbook__inner-container{
     margin: 20px 35px;
   }
-  .ReactStickyHeader_fixed{
-    padding: 5px 35px 0px !important;
-  }
+
 
   .Labbook__branches-container{
     margin: 10px -35px;
+  }
+
+  .Labbook__component-container .Labbook__header.is-sticky{
+    margin: -10px 0 0 -35px;
   }
 
 }
