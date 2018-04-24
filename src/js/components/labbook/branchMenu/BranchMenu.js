@@ -287,7 +287,7 @@ export default class UserNote extends Component {
                     }
                   })
 
-                  if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1)){
+                  if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1) || (error[0].message.indexOf('Merge conflict') > -1)){
 
                     self._toggleSyncModal()
                   }
@@ -503,12 +503,11 @@ export default class UserNote extends Component {
         message: `Exporting ${this.state.labbookName} LabBook`,
       }
     })
-
+    this.props.setExportingState(true);
     ExportLabbookMutation(this.state.owner, this.state.labbookName, (response, error) => {
-
       if (response.exportLabbook) {
         JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data) => {
-
+          this.props.setExportingState(false);
 
           if (data.jobStatus.result) {
             store.dispatch({
@@ -521,6 +520,7 @@ export default class UserNote extends Component {
 
           this.setState({ exporting: false });
         }).catch((error) => {
+          this.props.setExportingState(false);
           console.log(error)
           if (error) {
 
@@ -537,6 +537,7 @@ export default class UserNote extends Component {
         })
       } else {
         console.log(error)
+        this.props.setExportingState(false);
         store.dispatch({
           type: 'ERROR_MESSAGE',
           payload: {

@@ -136,8 +136,8 @@ class PackageDependencies extends Component {
   *  @param {Object}
   *  hides packagemanager modal
   */
-  _setSelectedTab(tab){
-    this.setState({'selectedTab': tab})
+  _setSelectedTab(tab, isSelected){
+    this.setState({'selectedTab': tab, packageMenuVisible: isSelected ? this.state.packageMenuVisible : false, packages: isSelected ? this.state.packages : []})
   }
   /**
   *  @param {Object}
@@ -480,7 +480,7 @@ class PackageDependencies extends Component {
                 return(<li
                   key={tab + index}
                   className={packageTab}
-                  onClick={() => this._setSelectedTab(tab.tabName)}>{`${tab.tabName} (${tab.count})`}
+                  onClick={() => this._setSelectedTab(tab.tabName, this.state.selectedTab === tab.tabName)}>{`${tab.tabName} (${tab.count})`}
                 </li>)
               })
             }

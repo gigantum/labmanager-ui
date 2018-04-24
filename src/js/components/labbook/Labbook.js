@@ -209,6 +209,27 @@ class Labbook extends Component {
   }
 
   /**
+    @param {boolean} isExporting
+    updates container status state
+    updates labbook state
+  */
+  _setExportingState = (isExporting) => {
+
+    this.refs['ContainerStatus'].setState({ 'isExporting': isExporting })
+
+    if (this.state.isExporting !== isExporting) {
+      store.dispatch(
+        {
+          type: 'IS_EXPORTING',
+          payload: {
+            'isExporting': isExporting
+          }
+        })
+    }
+  }
+
+
+  /**
     @param {object} item
     returns nav jsx
   */
@@ -329,7 +350,7 @@ class Labbook extends Component {
 
     const { isAuthenticated } = this.props.auth
     const {labbookName} = this.props
-    const isLockedBrowser = {locked: this.state.isPublishing || this.state.isSyncing, isPublishing: this.state.isPublishing}
+    const isLockedBrowser = {locked: (this.state.isPublishing || this.state.isSyncing || this.state.isExporting), isPublishing: this.state.isPublishing, isExporting: this.state.isExporting, isSyncing: this.state.isSyncing}
     const isLockedEnvironment = this.state.isBuilding || this.state.isSyncing || this.state.isPublishing
 
     if(this.props.labbook){
@@ -387,6 +408,7 @@ class Labbook extends Component {
                      remoteUrl={labbook.overview.remoteUrl}
                      setSyncingState={this._setSyncingState}
                      setPublishingState={this._setPublishingState}
+                     setExportingState={this._setExportingState}
                      toggleBranchesView={this._toggleBranchesView}
                      isMainWorkspace={name === 'workspace' || name === `gm.workspace-${localStorage.getItem('username')}`}
                     />

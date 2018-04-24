@@ -186,7 +186,7 @@ export default class FileBrowserWrapper extends Component {
           })
         }else{
           store.dispatch({
-            type: 'INFO_MESSAGE',
+            type: 'WARNING_MESSAGE',
             payload:{
               message: `Cannot upload these file types`,
             }
@@ -694,7 +694,8 @@ export default class FileBrowserWrapper extends Component {
         {
           this.props.isLocked.locked &&
           <div className="Code--uploading flex">
-            Please wait for LabBook to finish {this.props.isLocked.isPublishing ? 'publishing' : 'syncing'}.
+            Please wait for LabBook to finish {this.props.isLocked.isPublishing ? 'publishing' : this.props.isLocked.isExporting ? 'exporting': 'syncing'}.
+            <span className="Code__loading--browser" />
           </div>
         }
 

@@ -401,11 +401,24 @@
   @extend .BranchMenu__collaborator--item;
   order: 99999;
 }
+.BranchMenu__add.loading{
+  button {
+    border: 3px solid $grey;
+    border-top: 3px solid $turquise;
+    border-radius: 50%;
+    background: $white;
+    animation: spin 2s linear infinite;
+    cursor: default;
+  }
+}
 .BranchMenu__collaborator--item.loading{
   button {
+    border: 3px solid $grey;
+    border-top: 3px solid $turquise;
+    border-radius: 50%;
+    background: $white;
+    animation: spin 2s linear infinite;
     cursor: default;
-    background: $white url('./../images/icons/x-close.svg');
-    background-size: 25px;
   }
 }
 
