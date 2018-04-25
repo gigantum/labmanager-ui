@@ -63,14 +63,17 @@ export default class CreateBranchModal extends React.Component {
   *   hides modal by stetting state
   *   @return {}
   */
-  _hideModal() {
+  _hideModal(inputsDisabled) {
 
-    this.setState({ 'modalVisible': false });
+    if(!inputsDisabled){
 
-    document.getElementById('modal__cover').classList.add('hidden')
+      this.setState({ 'modalVisible': false });
 
-    if(this.props.toggleModal){
-      this.props.toggleModal('createBranchVisible')
+      document.getElementById('modal__cover').classList.add('hidden')
+
+      if(this.props.toggleModal){
+        this.props.toggleModal('createBranchVisible')
+      }
     }
 
   }
@@ -201,7 +204,7 @@ export default class CreateBranchModal extends React.Component {
               <div className="CreateBranch__modal">
                 <div
                   className="CreateBranch__modal-close"
-                  onClick={() => this._hideModal()}>
+                  onClick={() => this._hideModal(inputsDisabled)}>
                 </div>
 
                 <div className="CreateBranch">
@@ -254,6 +257,7 @@ export default class CreateBranchModal extends React.Component {
 
                       <div className="CreateBranch_nav-item">
                         <button
+                          disabled={inputsDisabled}
                           onClick={() => { this._hideModal() }}
                           className="CreateBranch__progress-button button--flat">
                           Cancel
