@@ -4,13 +4,13 @@ import classNames from 'classnames'
 //components
 import DeleteLabbook from './DeleteLabbook'
 import ForceMerge from './ForceMerge'
+import ButtonLoader from 'Components/shared/ButtonLoader'
 //mutations
 import WorkonExperimentalBranchMutation from 'Mutations/branches/WorkonExperimentalBranchMutation'
 import MergeFromBranchMutation from 'Mutations/branches/MergeFromBranchMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
-import FetchContainerStatus from 'Components/labbook/containerStatus/fetchContainerStatus'
 
 export default class BranchCard extends Component {
   constructor(props){
@@ -25,7 +25,9 @@ export default class BranchCard extends Component {
       forceMerge: false,
       deleteModalVisible: false,
       showLoader: false,
-      forceMergeVisible: false
+      forceMergeVisible: false,
+      buttonLoaderStateSwitch: '',
+      buttonLoaderStateMerge: ''
     }
 
     this._merge = this._merge.bind(this)
@@ -57,7 +59,13 @@ export default class BranchCard extends Component {
       }
     })
 
-    this.setState({showLoader: true})
+    requestAnimationFrame(() => {
+
+      this.setState({
+        showLoader: true,
+        buttonLoaderStateSwitch: 'loading'
+      })
+    });
 
     WorkonExperimentalBranchMutation(
       owner,
@@ -65,8 +73,6 @@ export default class BranchCard extends Component {
       branchName,
       revision,
       (response, error)=>{
-
-        this.setState({showLoader: false})
 
         if(error){
           console.error(error);
@@ -77,15 +83,27 @@ export default class BranchCard extends Component {
               messageBody: error,
             }
           })
+
+          self.setState({
+            showLoader: false,
+            buttonLoaderStateSwitch: 'error'
+          })
+
         }else{
 
-          store.dispatch({
-            type: 'UPDATE_BRANCHES_VIEW',
-            payload:{
-              branchesOpen: false
-            }
+          self.setState({
+            showLoader: false,
+            buttonLoaderStateSwitch: 'finished'
           })
+
+          setTimeout(() => {
+            self.setState({
+              buttonLoaderStateSwitch: ''
+            })
+          }, 3000)
+
           this.props.setBuildingState(true)
+
           BuildImageMutation(
             labbookName,
             owner,
@@ -94,29 +112,21 @@ export default class BranchCard extends Component {
               if(error){
                 console.log(error)
               }
-              let checkImage = setInterval(()=>{
-                FetchContainerStatus.getContainerStatus(this.state.owner, this.state.labbookName)
-                .then(res=>{
-                  if(res.labbook.environment.imageStatus !== 'BUILD_IN_PROGRESS'){
-                    this.props.setBuildingState(false)
-                    clearInterval(checkImage)
-                  }
-                })
-              }, 1000)
             }
           )
         }
       })
   }
   /**
-    @param {}
+    @param {object,Object}
     merge branch using WorkonExperimentalBranchMutation
   */
-  _merge(force){
+  _merge(evt, params){
 
     const otherBranchName = this.props.name
     const {owner, labbookName} = this.state
     const {activeBranchName} =  this.props
+    const {force} = params
     const cleanActiveBranchName = this._sanitizeBranchName(activeBranchName)
     const cleanOtherBranchName = this._sanitizeBranchName(otherBranchName)
     let self = this
@@ -128,7 +138,7 @@ export default class BranchCard extends Component {
       }
     })
 
-    this.setState({showLoader: true})
+    this.setState({showLoader: true, buttonLoaderStateMerge: 'loading'})
 
     MergeFromBranchMutation(
       owner,
@@ -136,7 +146,7 @@ export default class BranchCard extends Component {
       otherBranchName,
       force,
       (response, error)=>{
-        this.setState({showLoader: false})
+
         if(error){
           store.dispatch({
             type: 'ERROR_MESSAGE',
@@ -152,6 +162,8 @@ export default class BranchCard extends Component {
             })
           }
 
+          self.setState({showLoader: false, buttonLoaderStateMerge: 'error'})
+
         }
         if(response.mergeFromBranch && response.mergeFromBranch.labbook){
           store.dispatch({
@@ -160,8 +172,15 @@ export default class BranchCard extends Component {
               message: `${cleanOtherBranchName} merged into ${cleanActiveBranchName} successfully`,
             }
           })
+
+          self.setState({showLoader: false, buttonLoaderStateMerge: 'finished'})
         }
+        setTimeout(() => {
+          self.setState({buttonLoaderStateMerge: ''})
+        }, 3000)
+
         this.props.setBuildingState(true)
+
         BuildImageMutation(
           labbookName,
           owner,
@@ -170,15 +189,7 @@ export default class BranchCard extends Component {
             if(error){
               console.log(error)
             }
-            let checkImage = setInterval(()=>{
-              FetchContainerStatus.getContainerStatus(this.state.owner, this.state.labbookName)
-              .then(res=>{
-                if(res.labbook.environment.imageStatus !== 'BUILD_IN_PROGRESS'){
-                  this.props.setBuildingState(false)
-                  clearInterval(checkImage)
-                }
-              })
-            }, 1000)
+            self.setState({showLoader: false})
           }
         )
       }
@@ -215,8 +226,7 @@ export default class BranchCard extends Component {
     const showDelete = !isCurrentBranch && (this.props.name !== `gm.workspace-${owner}`)
 
     const branchCardCSS = classNames({
-      'BranchCard': true,
-      'BranchCard--loading': showLoader
+      'BranchCard': true
     })
 
     return(
@@ -267,21 +277,30 @@ export default class BranchCard extends Component {
         <div className="BranchCard__button">
 
           {this.props.mergeFilter &&
-            <button
-              disabled={showLoader}
-              onClick={()=>{this._merge(false)}}
-              >
-              Merge
-            </button>
+
+
+            <ButtonLoader
+              ref="buttonLoaderMerge"
+              buttonState={this.state.buttonLoaderStateMerge}
+              params={{force: false}}
+              buttonText={"Merge"}
+              buttonDisabled={showLoader}
+              clicked={this._merge}
+            />
+
           }
 
           {!this.props.mergeFilter &&
-            <button
-              onClick={()=>{this._checkoutBranch()}}
-              disabled={showLoader || (this.props.name === this.props.activeBranchName)}
-              >
-              Switch To Branch
-            </button>
+
+            <ButtonLoader
+              ref="buttonLoaderSwitch"
+              buttonState={this.state.buttonLoaderStateSwitch}
+              buttonText={"Switch To Branch"}
+              params={{}}
+              buttonDisabled={showLoader || (this.props.name === this.props.activeBranchName)}
+              clicked={this._checkoutBranch}
+            />
+
           }
         </div>
       </div>

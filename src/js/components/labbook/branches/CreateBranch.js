@@ -7,6 +7,7 @@ import Moment from 'moment'
 import CreateExperimentalBranchMutation from 'Mutations/branches/CreateExperimentalBranchMutation'
 //components
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
+import ButtonLoader from 'Components/shared/ButtonLoader'
 //utilities
 import validation from 'JS/utils/Validation'
 //store
@@ -23,7 +24,8 @@ export default class CreateBranchModal extends React.Component {
       'showError': false,
       'branchName': '',
       'branchDescription': '',
-      'createButtonClicked': false
+      'createButtonClicked': false,
+      'buttonLoaderCreateBranch': ''
     };
 
     this._showModal = this._showModal.bind(this)
@@ -61,14 +63,17 @@ export default class CreateBranchModal extends React.Component {
   *   hides modal by stetting state
   *   @return {}
   */
-  _hideModal() {
+  _hideModal(inputsDisabled) {
 
-    this.setState({ 'modalVisible': false });
+    if(!inputsDisabled){
 
-    document.getElementById('modal__cover').classList.add('hidden')
+      this.setState({ 'modalVisible': false });
 
-    if(this.props.toggleModal){
-      this.props.toggleModal('createBranchVisible')
+      document.getElementById('modal__cover').classList.add('hidden')
+
+      if(this.props.toggleModal){
+        this.props.toggleModal('createBranchVisible')
+      }
     }
 
   }
@@ -140,17 +145,16 @@ export default class CreateBranchModal extends React.Component {
     const {owner, labbookName} = store.getState().routes
     const {branchName} = this.state
     const revision = this.props.selected ? this.props.selected.commit : null
-    this.setState({createButtonClicked: true})
+
+
+    this.setState({buttonLoaderCreateBranch: 'loading'})
     CreateExperimentalBranchMutation(
       owner,
       labbookName,
       branchName,
       revision,
       (response, error) => {
-        self.setState({createButtonClicked: false})
-        if(self._hideModal){
-          self._hideModal()
-        }
+
 
         if (error) {
           store.dispatch({
@@ -160,7 +164,25 @@ export default class CreateBranchModal extends React.Component {
               messageBody: error
             }
           })
+
+          setTimeout(()=> {
+            this.setState({buttonLoaderCreateBranch: 'error'})
+          }, 1000)
+
+        }else{
+
+          this.setState({buttonLoaderCreateBranch: 'finished'})
         }
+
+        setTimeout(()=> {
+          this.setState({buttonLoaderCreateBranch: ''})
+
+          if(self._hideModal){
+            self._hideModal()
+          }
+
+        }, 2000)
+
       })
 
     }
@@ -172,6 +194,9 @@ export default class CreateBranchModal extends React.Component {
         'hidden': !this.state.showLoginPrompt
       })
       const createDisabled = this.state.showError || (this.state.branchName.length === 0) || this.state.createButtonClicked
+
+      const inputsDisabled = this.state.buttonLoaderCreateBranch !== '';
+
       return (
         <div>
           {this.state.modalVisible &&
@@ -179,7 +204,7 @@ export default class CreateBranchModal extends React.Component {
               <div className="CreateBranch__modal">
                 <div
                   className="CreateBranch__modal-close"
-                  onClick={() => this._hideModal()}>
+                  onClick={() => this._hideModal(inputsDisabled)}>
                 </div>
 
                 <div className="CreateBranch">
@@ -202,6 +227,7 @@ export default class CreateBranchModal extends React.Component {
                           onKeyUp={(evt) => this._updateTextState(evt, 'branchName')}
                           placeholder="Enter a unique branch name"
                           defaultValue={this.state.branchName}
+                          disabled={inputsDisabled}
                         />
                         <span className={this.state.showError ? 'error' : 'hidden'}>{this._getErrorText()}</span>
                       </div>
@@ -209,11 +235,13 @@ export default class CreateBranchModal extends React.Component {
                       <div>
                         <label>Description</label>
                         <textarea
-                          maxLength="240"
                           className="CreateBranch__description-input"
-                          type="text"
+                          disabled={inputsDisabled}
+
                           onChange={(evt) => this._updateTextState(evt, 'branchDescription')}
                           onKeyUp={(evt) => this._updateTextState(evt, 'branchDescription')}
+
+                          maxLength="240"
                           placeholder="Briefly describe this branch, its purpose and any other key details. "
                           defaultValue={this.props.selected ? `Branch created on ${Moment().format("M/DD/YY h:mm:ss A")} to rollback workspace to ${Moment(Date.parse(this.props.selected.timestamp)).format("M/DD/YY h:mm:ss A")}.` : ''}
                         />
@@ -226,18 +254,26 @@ export default class CreateBranchModal extends React.Component {
                     <div>
                     </div>
                     <div className="CreateBranch__nav-group">
-                      <button
 
-                        onClick={() => { this._hideModal() }}
-                        className="CreateBranch__progress-button button--flat">
-                        Cancel
-                      </button>
-                      <button
-                        disabled={createDisabled}
-                        onClick={() => { this._createNewBranch() }}
-                        >
-                          Create
-                      </button>
+                      <div className="CreateBranch_nav-item">
+                        <button
+                          disabled={inputsDisabled}
+                          onClick={() => { this._hideModal() }}
+                          className="CreateBranch__progress-button button--flat">
+                          Cancel
+                        </button>
+                      </div>
+
+                      <div className="CreateBranch_nav-item">
+                        <ButtonLoader
+                          ref="buttonLoaderCreateBranch"
+                          buttonState={this.state.buttonLoaderCreateBranch}
+                          buttonText={"Create"}
+                          params={{}}
+                          buttonDisabled={createDisabled}
+                          clicked={this._createNewBranch}
+                        />
+                      </div>
                       </div>
                     </div>
                   </div>
