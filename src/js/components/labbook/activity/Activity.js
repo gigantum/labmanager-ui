@@ -60,6 +60,7 @@ class Activity extends Component {
     window.addEventListener('scroll', this._handleScroll)
 
     if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
+
       this._loadMore()
     }
 
@@ -89,15 +90,13 @@ class Activity extends Component {
 
     relay.refetchConnection(
       counter,
-      (response) =>{
-        // if(!activityRecords.pageInfo.hasNextPage){
-        //   isLoadingMore = false
-        // }
+      (response) => {
 
         setTimeout(function(){
 
             self._refetch()
         }, 5000)
+
       },
       {
         cursor: cursor
@@ -132,7 +131,9 @@ class Activity extends Component {
        name: 'labbook'
      }
    )
-   counter += 5
+   if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
+     counter += 5
+   }
   }
   /**
   *  @param {evt}
@@ -145,8 +146,6 @@ class Activity extends Component {
         root = document.getElementById('root'),
         distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
         expandOn = root.scrollHeight;
-
-    console.log(distanceY > expandOn, distanceY, expandOn, root)
 
     if ((distanceY > expandOn) && !isPaginating && activityRecords.pageInfo.hasNextPage) {
         this._loadMore(evt);

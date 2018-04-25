@@ -11,8 +11,6 @@ import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
 import PublishLabbookMutation from 'Mutations/branches/PublishLabbookMutation'
 import PushActiveBranchToRemoteMutation from 'Mutations/branches/PushActiveBranchToRemoteMutation'
 import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
-import AddCollaboratorMutation from 'Mutations/AddCollaboratorMutation'
-import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
@@ -23,6 +21,7 @@ import DeleteLabbook from './DeleteLabbook'
 import ForceSync from './ForceSync'
 import LoginPrompt from './LoginPrompt'
 import CreateBranch from 'Components/labbook/branches/CreateBranch'
+import Collaborators from './Collaborators'
 import { calendarFormat } from 'moment';
 
 export default class UserNote extends Component {
@@ -49,6 +48,7 @@ export default class UserNote extends Component {
       owner,
       labbookName
     }
+
     this._openMenu = this._openMenu.bind(this)
     this._closeMenu = this._closeMenu.bind(this)
     this._toggleModal = this._toggleModal.bind(this)
@@ -58,7 +58,7 @@ export default class UserNote extends Component {
     this._exportLabbook = this._exportLabbook.bind(this)
     this._toggleSyncModal = this._toggleSyncModal.bind(this)
     this._switchBranch = this._switchBranch.bind(this)
-    this._addCollaborator = this._addCollaborator.bind(this)
+
   }
 
   /**
@@ -429,7 +429,7 @@ export default class UserNote extends Component {
                     showCollaborators: !this.state.showCollaborators,
                     newCollaborator: ''
                   })
-                  this.inputTitle.value = ''
+                  this.refs['collaborators'].inputTitle.value = ''
                 } else {
 
                   //auth.login()
@@ -452,70 +452,7 @@ export default class UserNote extends Component {
     })
 
   }
-  /**
-  *  @param {event} evt
-  *  sets state of Collaborators
-  *  @return {}
-  */
-  _addCollaborator(evt) {
-    if ((evt.type === 'click') || (evt.key === "Enter")) {
-      //waiting for backend updates
-      this.setState({addCollaboratorButtonDisabled: true})
-      AddCollaboratorMutation(
-        this.state.labbookName,
-        this.state.owner,
-        this.state.newCollaborator,
-        (response, error) => {
-          this.setState({ newCollaborator: '', addCollaboratorButtonDisabled: false })
-          this.inputTitle.value = ''
-          if (error) {
-            console.log(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `Could not add collaborator`,
-                messageBody: error
-              }
-            })
-          } else {
 
-          }
-        }
-
-      )
-    } else {
-      this.setState({ newCollaborator: evt.target.value })
-    }
-  }
-  /**
-  *  @param {string} collaborator
-  *  sets state of Collaborators
-  *  @return {}
-  */
-  _removeCollaborator(collaborator, button) {
-    button.disabled = true;
-    this.refs[collaborator].classList.add('loading')
-    DeleteCollaboratorMutation(
-      this.state.labbookName,
-      this.state.owner,
-      collaborator,
-      (response, error) => {
-        this.refs[collaborator] && this.refs[collaborator].classList.remove('loading');
-        if(button){
-          button.disabled = false;
-        }
-        if (error) {
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `Could not remove collaborator`,
-              messageBody: error
-            }
-          })
-        }
-      }
-    )
-  }
   /**
   *  @param {}
   *  returns UserIdentityQeury promise
@@ -645,7 +582,9 @@ export default class UserNote extends Component {
     let collaboratorArr = this.props.collaborators && this.props.collaborators.filter((name)=>{
       return name !== this.state.owner
     })
+
     let collaboratorSubText = collaboratorArr ? collaboratorArr.join(', ') : '';
+
     if(collaboratorSubText.length > 18 && collaboratorSubText.length){
       collaboratorSubText = collaboratorSubText.slice(0,18)
       lastParsedIndex = collaboratorSubText.split(', ').length -1;
@@ -692,18 +631,24 @@ export default class UserNote extends Component {
     })
     return (
       <div className="BranchMenu flex flex--column">
+
         <div className={loginPromptModalCss}>
           <div
             onClick={() => { this._closeLoginPromptModal() }}
             className="BranchModal--close"></div>
+
             <LoginPrompt closeModal={this._closeLoginPromptModal} />
+
         </div>
 
         <div className={deleteModalCSS}>
           <div
             onClick={() => { this._toggleDeleteModal() }}
             className="BranchModal--close"></div>
-            <DeleteLabbook remoteAdded={this.state.addedRemoteThisSession} history={this.props.history}/>
+            <DeleteLabbook
+              remoteAdded={this.state.addedRemoteThisSession}
+              history={this.props.history}
+            />
         </div>
 
         <div className={syncModalCSS}>
@@ -722,47 +667,12 @@ export default class UserNote extends Component {
           <div
             onClick={() => { this._toggleCollaborators() }}
             className="BranchModal--close"></div>
-          <h4
-            className="BranchModal__header">Manage Collaborators</h4>
-          <hr />
-
-          <div className="BranchMenu__collaborator-container">
-            <div className={this.state.addCollaboratorButtonDisabled ? 'BranchMenu__add loading' : "BranchMenu__add"}>
-              <input
-                ref={el => this.inputTitle = el}
-                onChange={(evt) => this._addCollaborator(evt)}
-                onKeyUp={(evt) => this._addCollaborator(evt)}
-                className="BranchMenu__add-collaborators"
-                type="text"
-                placeholder="Add Collaborator" />
-              <button
-                disabled={this.state.addCollaboratorButtonDisabled || !this.state.newCollaborator.length}
-                onClick={(evt) => this._addCollaborator(evt)}
-                className="BranchMenu__add-button"></button>
-            </div>
-
-            <div className="BranchMenu__collaborators">
-            <h5>Collaborators</h5>
-              <div className="BranchMenu__collaborators-list-container">
-                {this.props.collaborators &&
-                  <ul className="BranchMenu__collaborators-list">
-                    {
-                      this.props.collaborators.map((collaborator) => {
-                        return (
-                          <li
-                            key={collaborator}
-                            ref={collaborator}
-                            className={collaborator === localStorage.getItem('username') ? "BranchMenu__collaborator--item-me":"BranchMenu__collaborator--item"}>
-                            <div>{collaborator}</div>
-                            <button disabled={collaborator === localStorage.getItem('username')} onClick={() => this._removeCollaborator(collaborator, this)}></button>
-                          </li>)
-                      })
-                    }
-                  </ul>
-                }
-              </div>
-            </div>
-          </div>
+            <Collaborators
+              ref="collaborators"
+              collaborators={this.props.collaborators}
+              owner={this.state.owner}
+              labbookName={this.state.labbookName}
+            />
 
         </div>
 
@@ -792,14 +702,14 @@ export default class UserNote extends Component {
                 onClick={() => { this._switchBranch()}}
                 className="BranchMenu__item--flat-button"
               >
-                Switch
+                Switch Branch
               </button></li>
             <li className="BranchMenu__item--merge">
               <button
                 onClick={() => { this._mergeFilter()}}
                 className="BranchMenu__item--flat-button"
               >
-                Merge
+                Merge Branch
               </button></li>
 
             <li className={exportCSS}>

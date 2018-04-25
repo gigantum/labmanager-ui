@@ -34,6 +34,7 @@
 @import 'components/shared/footer';
 @import 'components/shared/prompt';
 @import 'components/shared/loader';
+@import 'components/shared/buttonLoader';
 @import 'components/shared/user';
 //
 @import 'components/routes.scss';
@@ -102,10 +103,6 @@
 .btn:hover{
   background-color: #8ea4b2;
 }
-
-// .Routes{
-//   filter: invert(1);
-// }
 
 code {
   color: $slateBlue !important;

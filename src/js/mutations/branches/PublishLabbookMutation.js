@@ -3,7 +3,6 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
   mutation PublishLabbookMutation($input: PublishLabbookInput!){
