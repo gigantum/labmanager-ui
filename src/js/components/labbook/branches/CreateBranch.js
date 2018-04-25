@@ -24,7 +24,8 @@ export default class CreateBranchModal extends React.Component {
       'showError': false,
       'branchName': '',
       'branchDescription': '',
-      'createButtonClicked': false
+      'createButtonClicked': false,
+      'buttonLoaderCreateBranch': ''
     };
 
     this._showModal = this._showModal.bind(this)
@@ -190,6 +191,9 @@ export default class CreateBranchModal extends React.Component {
         'hidden': !this.state.showLoginPrompt
       })
       const createDisabled = this.state.showError || (this.state.branchName.length === 0) || this.state.createButtonClicked
+
+      const inputsDisabled = this.state.buttonLoaderCreateBranch !== '';
+
       return (
         <div>
           {this.state.modalVisible &&
@@ -220,6 +224,7 @@ export default class CreateBranchModal extends React.Component {
                           onKeyUp={(evt) => this._updateTextState(evt, 'branchName')}
                           placeholder="Enter a unique branch name"
                           defaultValue={this.state.branchName}
+                          disabled={inputsDisabled}
                         />
                         <span className={this.state.showError ? 'error' : 'hidden'}>{this._getErrorText()}</span>
                       </div>
@@ -227,11 +232,13 @@ export default class CreateBranchModal extends React.Component {
                       <div>
                         <label>Description</label>
                         <textarea
-                          maxLength="240"
                           className="CreateBranch__description-input"
-                          type="text"
+                          disabled={inputsDisabled}
+
                           onChange={(evt) => this._updateTextState(evt, 'branchDescription')}
                           onKeyUp={(evt) => this._updateTextState(evt, 'branchDescription')}
+
+                          maxLength="240"
                           placeholder="Briefly describe this branch, its purpose and any other key details. "
                           defaultValue={this.props.selected ? `Branch created on ${Moment().format("M/DD/YY h:mm:ss A")} to rollback workspace to ${Moment(Date.parse(this.props.selected.timestamp)).format("M/DD/YY h:mm:ss A")}.` : ''}
                         />
@@ -247,7 +254,6 @@ export default class CreateBranchModal extends React.Component {
 
                       <div className="CreateBranch_nav-item">
                         <button
-
                           onClick={() => { this._hideModal() }}
                           className="CreateBranch__progress-button button--flat">
                           Cancel

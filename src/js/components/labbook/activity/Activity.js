@@ -92,11 +92,11 @@ class Activity extends Component {
       counter,
       (response) => {
 
-
         setTimeout(function(){
 
             self._refetch()
         }, 5000)
+
       },
       {
         cursor: cursor
