@@ -33,11 +33,9 @@ export default class DeleteLabbook extends Component {
   componentDidMount() {
     let buttonLoaderRemoveCollaborator = {}
 
-<<<<<<< HEAD
+
     this.props.collaborators.forEach((collaborator) => {
-=======
-    this.props.collaborators.map((collaborator) => {
->>>>>>> integration
+
       buttonLoaderRemoveCollaborator[collaborator] = ''
     })
 
@@ -151,30 +149,37 @@ export default class DeleteLabbook extends Component {
   render(){
 
     return(
-      <div className="">
-
+      <div className="CollaboratorModal">
+        <div
+          onClick={() => { this.props.toggleCollaborators() }}
+          className="CollaboratorModal__button--close">
+        </div>
         <h4
-          className="BranchModal__header">Manage Collaborators</h4>
+          className="CollaboratorModal__header">Manage Collaborators</h4>
         <hr />
 
-        <div className="BranchMenu__collaborator-container">
+        <div className="CollaboratorModal__container">
 
-          <div className="BranchMenu__add">
+          <div className="CollaboratorModal__add">
 
             <input
+              className="CollaboratorModal__input--collaborators"
               ref={el => this.inputTitle = el}
+
               onChange={(evt) => this._addCollaborator(evt)}
               onKeyUp={(evt) => this._addCollaborator(evt)}
-              className="BranchMenu__add-collaborators"
-              type="text"
-              placeholder="Add Collaborator" />
 
+              type="text"
+              placeholder="Add Collaborator"
+            />
 
             <ButtonLoader
+              className="CollaboratorModal__button--add"
               ref="addCollaborator"
+
               buttonState={this.state.buttonLoaderAddCollaborator}
               buttonText={""}
-              className="BranchMenu__add-button"
+
               params={{}}
               buttonDisabled={this.state.addCollaboratorButtonDisabled || !this.state.newCollaborator.length}
               clicked={this._addCollaborator}
@@ -182,21 +187,21 @@ export default class DeleteLabbook extends Component {
 
           </div>
 
-          <div className="BranchMenu__collaborators">
+          <div className="CollaboratorModal__collaborators">
 
-          <h5>Collaborators</h5>
+            <h5 className="CollaboratorModal__sub-header">Collaborators</h5>
 
-            <div className="BranchMenu__collaborators-list-container">
+            <div className="CollaboratorModal__list-container">
 
               {this.props.collaborators &&
 
-                <ul className="BranchMenu__collaborators-list">
+                <ul className="CollaboratorModal__list">
                   {
                     this.props.collaborators.map((collaborator) => {
 
                       const collaboratorItemCSS = classNames({
-                        "BranchMenu__collaborator--item-me": collaborator === localStorage.getItem('username'),
-                        "BranchMenu__collaborator--item": !(collaborator === localStorage.getItem('username'))
+                        "CollaboratorModal--item-me": collaborator === localStorage.getItem('username'),
+                        "CollaboratorModal--item": !(collaborator === localStorage.getItem('username'))
                       })
 
                       return (
@@ -212,7 +217,7 @@ export default class DeleteLabbook extends Component {
                               ref={collaborator}
                               buttonState={this.state.buttonLoaderRemoveCollaborator[collaborator]}
                               buttonText={""}
-                              className="BranchMenu__collaborator-button"
+                              className="CollaboratorModal__button"
                               params={{collaborator, button: this}}
                               buttonDisabled={collaborator === localStorage.getItem('username')}
                               clicked={this._removeCollaborator}
