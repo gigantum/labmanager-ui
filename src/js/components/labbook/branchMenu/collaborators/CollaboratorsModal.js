@@ -171,6 +171,8 @@ export default class DeleteLabbook extends Component {
 
               type="text"
               placeholder="Add Collaborator"
+
+              disabled={this.state.addCollaboratorButtonDisabled}
             />
 
             <ButtonLoader
