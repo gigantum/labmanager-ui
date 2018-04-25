@@ -33,7 +33,7 @@ export default class DeleteLabbook extends Component {
   componentDidMount() {
     let buttonLoaderRemoveCollaborator = {}
 
-    this.props.collaborators.map((collaborator) => {
+    this.props.collaborators.forEach((collaborator) => {
       buttonLoaderRemoveCollaborator[collaborator] = ''
     })
 

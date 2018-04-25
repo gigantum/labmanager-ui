@@ -16,9 +16,8 @@ import Config from 'JS/config'
 //config
 import config from 'JS/config'
 
-//lacoal variables
+//local variables
 let pagination = false;
-let isLoadingMore = false;
 
 let counter = 5;
 
@@ -59,7 +58,7 @@ class Activity extends Component {
 
     window.addEventListener('scroll', this._handleScroll)
 
-    if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
+    if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 2)){
 
       this._loadMore()
     }
@@ -109,21 +108,19 @@ class Activity extends Component {
   *  pagination container loads more items
   */
   _loadMore() {
-    console.trace(this)
-    pagination = true
-    isLoadingMore = true
+
     pagination = true
     this.setState({
       'isPaginating': true
     })
 
     this.props.relay.loadMore(
-     counter, // Fetch the next 10 feed items
+     5, // Fetch the next 5 feed items
      error => {
        if(error){
          console.error(error)
        }
-       isLoadingMore = false
+
        this.setState({
          'isPaginating': false
        })
@@ -141,15 +138,15 @@ class Activity extends Component {
   *
   */
   _handleScroll(evt){
-    const {isPaginating} = this.state
-    const activityRecords = this.props.labbook.activityRecords,
+    console.log(evt)
+    let {isPaginating} = this.state
+    let activityRecords = this.props.labbook.activityRecords,
         root = document.getElementById('root'),
         distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
         expandOn = root.scrollHeight;
 
     if ((distanceY > expandOn) && !isPaginating && activityRecords.pageInfo.hasNextPage) {
         this._loadMore(evt);
-
     }
   }
   /**
@@ -227,13 +224,10 @@ class Activity extends Component {
 
   render(){
 
-
     if(this.props.labbook){
+
       let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
 
-      // if(!this.props.labbook.activityRecords.pageInfo.hasNextPage){
-      //   isLoadingMore = false;
-      // }
       return(
         <div key={this.props.labbook} className='Activity'>
 

@@ -2,9 +2,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
-
 //utilities
-import validation from 'JS/utils/Validation'
 import JobStatus from 'JS/utils/JobStatus'
 //mutations
 import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
@@ -22,7 +20,7 @@ import ForceSync from './ForceSync'
 import LoginPrompt from './LoginPrompt'
 import CreateBranch from 'Components/labbook/branches/CreateBranch'
 import Collaborators from './Collaborators'
-import { calendarFormat } from 'moment';
+
 
 export default class UserNote extends Component {
   constructor(props) {
