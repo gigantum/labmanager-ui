@@ -138,7 +138,7 @@ class Activity extends Component {
   *
   */
   _handleScroll(evt){
-    console.log(evt)
+
     let {isPaginating} = this.state
     let activityRecords = this.props.labbook.activityRecords,
         root = document.getElementById('root'),
