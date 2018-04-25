@@ -8,7 +8,7 @@ import environment from 'JS/createRelayEnvironment'
 import CollaboratorsModal from './CollaboratorsModal'
 
 export const CollaboratorsQuery =  graphql`
-  query CollaboratorButtonQuery($name: String!, $owner: String!){
+  query CollaboratorsQuery($name: String!, $owner: String!){
     labbook(name: $name, owner: $owner){
       collaborators
       canManageCollaborators
