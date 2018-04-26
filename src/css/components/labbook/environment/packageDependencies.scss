@@ -98,6 +98,13 @@
   margin: 0 0 0 -117px;
 }
 
+.PackageDependencies__button--absolute.ButtonLoader--loading,
+.PackageDependencies__button--absolute.ButtonLoader--finished,
+.PackageDependencies__button--absolute.ButtonLoader--error{
+  margin: 0 0 0 -13px;
+  bottom: -13px;
+}
+
 .PackageDependencies__button--add {
   background: $azure url('../images/icons/add.svg') no-repeat 50% 50%;
   background-size: 16px;
@@ -202,6 +209,8 @@
     }
 
 }
+
+
 
 .PackageDependencies__optimistic-updating {
   opacity: 0.1;

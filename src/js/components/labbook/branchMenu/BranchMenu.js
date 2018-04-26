@@ -585,7 +585,7 @@ export default class UserNote extends Component {
   render() {
     const {labbookName, owner} = this.state
 
-    const loginPromptModalCss = classNames({
+    const loginPromptModalCSS = classNames({
       'BranchModal--login-prompt': this.state.showLoginPrompt,
       'hidden': !this.state.showLoginPrompt
     })
@@ -611,7 +611,7 @@ export default class UserNote extends Component {
     return (
       <div className="BranchMenu flex flex--column">
 
-        <div className={loginPromptModalCss}>
+        <div className={loginPromptModalCSS}>
           <div
             onClick={() => { this._closeLoginPromptModal() }}
             className="BranchModal--close"></div>
