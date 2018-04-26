@@ -2,9 +2,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
-
 //utilities
-import validation from 'JS/utils/Validation'
 import JobStatus from 'JS/utils/JobStatus'
 //mutations
 import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
@@ -21,8 +19,8 @@ import DeleteLabbook from './DeleteLabbook'
 import ForceSync from './ForceSync'
 import LoginPrompt from './LoginPrompt'
 import CreateBranch from 'Components/labbook/branches/CreateBranch'
-import Collaborators from './Collaborators'
-import { calendarFormat } from 'moment';
+import Collaborators from './collaborators/Collaborators'
+
 
 export default class UserNote extends Component {
   constructor(props) {
@@ -89,10 +87,11 @@ export default class UserNote extends Component {
     closes menu
   */
   _closeMenu(evt) {
-    let isBranchMenu = evt.target.className.indexOf('BranchMenu') > -1
+    let isBranchMenu = (evt.target.className.indexOf('modal__cover') > -1) || (evt.target.className.indexOf('BranchMenu') > -1) || (evt.target.className.indexOf('CollaboratorModal') > -1)
 
     if (!isBranchMenu && this.state.menuOpen) {
       this.setState({ menuOpen: false })
+      this.refs['collaborators'].setState({collaboratorModalVisible: false})
     }
   }
 
@@ -127,8 +126,10 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _publishLabbook() {
+
     let id = uuidv4()
     let self = this;
+
     this._checkSessionIsValid().then((response) => {
       if (response.data) {
 
@@ -237,10 +238,14 @@ export default class UserNote extends Component {
   */
   _sync() {
     const status = store.getState().containerStatus.status
+
     this.setState({ menuOpen: false });
+
     if((status === 'Stopped') || (status === 'Rebuild')){
+
       let id = uuidv4()
       let self = this;
+
       this._checkSessionIsValid().then((response) => {
 
         if (response.data) {
@@ -578,57 +583,31 @@ export default class UserNote extends Component {
   }
 
   render() {
-    let lastParsedIndex
-    let collaboratorArr = this.props.collaborators && this.props.collaborators.filter((name)=>{
-      return name !== this.state.owner
-    })
+    const {labbookName, owner} = this.state
 
-    let collaboratorSubText = collaboratorArr ? collaboratorArr.join(', ') : '';
-
-    if(collaboratorSubText.length > 18 && collaboratorSubText.length){
-      collaboratorSubText = collaboratorSubText.slice(0,18)
-      lastParsedIndex = collaboratorSubText.split(', ').length -1;
-      let lastParsed = collaboratorSubText.split(', ')[lastParsedIndex];
-      if(this.props.collaborators[lastParsedIndex] !== lastParsed){
-        lastParsedIndex--;
-        collaboratorSubText = collaboratorSubText.split(', ')
-        collaboratorSubText.pop();
-        collaboratorSubText = collaboratorSubText.join(', ')
-      }
-      collaboratorSubText += `...+${collaboratorArr.length - lastParsedIndex - 1}`
-    }
-
-    let collaboratorsModalCss = classNames({
-      'BranchModal--collaborators': this.state.showCollaborators,
-      'hidden': !this.state.showCollaborators
-    })
-
-    let loginPromptModalCss = classNames({
+    const loginPromptModalCss = classNames({
       'BranchModal--login-prompt': this.state.showLoginPrompt,
       'hidden': !this.state.showLoginPrompt
     })
-    let exportCSS = classNames({
+    const exportCSS = classNames({
       'BranchMenu__item--export': !this.state.exporting,
       'BranchMenu__item--export--downloading': this.state.exporting
     })
 
-    let deleteModalCSS = classNames({
+    const deleteModalCSS = classNames({
       'BranchModal--delete-modal': this.state.deleteModalVisible,
       'hidden': !this.state.deleteModalVisible
     })
 
-    let modalCoverCSS = classNames({
+    const modalCoverCSS = classNames({
       'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt && !this.state.forceSyncModalVisible && !this.state.showCollaborators && !this.state.createBranchVisible,
       'modal__cover': true
     })
 
-    let syncModalCSS = classNames({
+    const syncModalCSS = classNames({
       'hidden': !this.state.forceSyncModalVisible
     })
-    let collaboratorButtonCSS = classNames({
-      'disabled': !this.state.canClickCollaborators,
-      'BranchMenu__item--flat-button':  true
-    })
+
     return (
       <div className="BranchMenu flex flex--column">
 
@@ -645,10 +624,12 @@ export default class UserNote extends Component {
           <div
             onClick={() => { this._toggleDeleteModal() }}
             className="BranchModal--close"></div>
+
             <DeleteLabbook
               remoteAdded={this.state.addedRemoteThisSession}
               history={this.props.history}
             />
+
         </div>
 
         <div className={syncModalCSS}>
@@ -663,30 +644,16 @@ export default class UserNote extends Component {
           toggleModal={this._toggleModal}
         />
 
-        <div className={collaboratorsModalCss}>
-          <div
-            onClick={() => { this._toggleCollaborators() }}
-            className="BranchModal--close"></div>
-            <Collaborators
-              ref="collaborators"
-              collaborators={this.props.collaborators}
-              owner={this.state.owner}
-              labbookName={this.state.labbookName}
-            />
-
-        </div>
-
         <button onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
         <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
         <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
 
           <ul className="BranchMenu__list">
-            <li className={this.state.canClickCollaborators ? "BranchMenu__item--collaborators" : "BranchMenu__item--collaborators disabled"}
-              >
-              <button
-                onClick={() => this._toggleCollaborators()}
-                className={collaboratorButtonCSS}>Collaborators<p>{collaboratorSubText}</p></button>
-            </li>
+            <Collaborators
+              ref="collaborators"
+              owner={owner}
+              labbookName={labbookName}
+            />
             <hr />
             <li className="BranchMenu__item--new-branch">
               <button

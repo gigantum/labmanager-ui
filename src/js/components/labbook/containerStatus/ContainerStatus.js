@@ -568,6 +568,7 @@ export default class ContainerStatus extends Component {
       'ContainerStatus__button--bottom': this.state.isMouseOver
     })
     const textStatus = this._getStatusText(status)
+
     return(
       <div className="ContainerStatus flex flex--row">
         { (status === 'Running') &&
