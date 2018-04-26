@@ -44,7 +44,7 @@ class Environment extends Component {
         labbookName,
         owner,
         'clientMutationId',
-        (error) =>{
+        (response, error) =>{
           if(error){
             console.log(error)
             store.dispatch({
@@ -71,7 +71,7 @@ class Environment extends Component {
                     }
                   })
                 }
-                this.props.setBuildingState(false)
+  
                 return "finished"
               }
             )
@@ -95,7 +95,6 @@ class Environment extends Component {
             })
           }
 
-          this.props.setBuildingState(false)
           return "finished"
         }
       )

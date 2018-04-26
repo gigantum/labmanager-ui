@@ -38,6 +38,7 @@ export default function MergeFromBranchMutation(
     cursor: null,
     hasNext: false
   }
+
   commitMutation(
     environment,
     {
@@ -51,9 +52,7 @@ export default function MergeFromBranchMutation(
 
         callback(response, error)
       },
-      onError: err => {console.error(err)},
-      updater: (store, response) => {
-      }
+      onError: err => {console.error(err)}
     },
   )
 }

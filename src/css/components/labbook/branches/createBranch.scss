@@ -20,6 +20,13 @@
 
   .CreateBranch__nav-group {
     @include flex(flex-end, row);
+
+  }
+
+  .CreateBranch_nav-item{
+    width: 100px;
+    align-content: center;
+    text-align: center;
   }
 
   .CreateBranch__modalWrap-enter {
@@ -83,6 +90,8 @@
   .CreateBranch__progress-button {
     margin: 0 10px;
   }
+
+  
 
 
   .CreateBranch {

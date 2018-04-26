@@ -347,10 +347,12 @@ class Labbook extends Component {
   }
 
   render(){
+
     const { isAuthenticated } = this.props.auth
     const {labbookName} = this.props
     const isLockedBrowser = {locked: (this.state.isPublishing || this.state.isSyncing || this.state.isExporting), isPublishing: this.state.isPublishing, isExporting: this.state.isExporting, isSyncing: this.state.isSyncing}
     const isLockedEnvironment = this.state.isBuilding || this.state.isSyncing || this.state.isPublishing
+
     if(this.props.labbook){
       const {labbook} = this.props
       const name = this._sanitizeBranchName(this.props.labbook.activeBranchName)
@@ -602,9 +604,7 @@ const LabbookFragmentContainer = createFragmentContainer(
             numPipPackages
             numCustomDependencies
           }
-
-          collaborators
-          canManageCollaborators
+      
 
           availableBranchNames
           mergeableBranchNames

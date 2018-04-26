@@ -34,6 +34,7 @@
 @import 'components/shared/footer';
 @import 'components/shared/prompt';
 @import 'components/shared/loader';
+@import 'components/shared/buttonLoader';
 @import 'components/shared/user';
 //
 @import 'components/routes.scss';
@@ -59,6 +60,7 @@
 @import 'components/labbook/branches/branchCard.scss';
 @import 'components/labbook/branches/createBranch.scss';
 @import 'components/labbook/branches/forceMerge.scss';
+@import 'components/labbook/branches/collaborators.scss';
 @import 'components/labbook/createBranch.scss';
 @import 'components/labbook/branchMenu.scss';
 @import 'components/labbook/codeBlock.scss';
@@ -102,10 +104,6 @@
 .btn:hover{
   background-color: #8ea4b2;
 }
-
-// .Routes{
-//   filter: invert(1);
-// }
 
 code {
   color: $slateBlue !important;
