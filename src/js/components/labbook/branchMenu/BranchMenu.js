@@ -644,20 +644,6 @@ export default class UserNote extends Component {
           toggleModal={this._toggleModal}
         />
 
-        {/* <div className={collaboratorsModalCss}>
-          <div
-            onClick={() => { this._toggleCollaborators() }}
-            className="BranchModal--close"></div>
-            <Collaborators
-              ref="collaborators"
-              collaborators={this.props.collaborators}
-              owner={owner}
-              labbookName={labbookName}
-              toggleCollaborators={this._toggleCollaborators}
-            />
-
-        </div> */}
-
         <button onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
         <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
         <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>

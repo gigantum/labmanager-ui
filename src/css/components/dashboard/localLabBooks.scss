@@ -60,21 +60,6 @@
 
 }
 
-@media screen and (max-width: 20000px) and (min-width: 1520px) {
-  .LocalLabbooks__sizer {
-    width: 1235px !important;
-  }
-}
-@media screen and (max-width: 1440px) and (min-width: 960px) {
-  .LocalLabbooks__sizer {
-    width: auto !important;
-  }
-}
-@media screen and (max-width: 959px) and (min-width: 200px) {
-  .LocalLabbooks__sizer {
-    width: 760px !important;
-  }
-}
 
 .LocalLabbooks__rename-modal {
   padding: 20px;
