@@ -1,26 +1,29 @@
-.Loader__logo {
+.Loader {
   z-index: 1002;
   position: absolute;
   top: calc(50% - 75px);
   left: calc(50% - 75px);
   height: 150px;
   width: 150px;
-}
-
-
-.Loader__logo-border {
-  box-sizing: content-box !important;
-  z-index: 1001;
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  top: calc(50% - 90px);
-  left: calc(50% - 90px);
-  border: 6px solid $slateBlue;
-  border-top: 6px solid $turquise;
-  border-radius: 50%;
+  background: url(../images/loaders/load.svg) no-repeat 50% 50%;
+  background-size: 100px;
   animation: spin 2s linear infinite;
 }
+
+//
+// .Loader__logo-border {
+//   box-sizing: content-box !important;
+//   z-index: 1001;
+//   position: absolute;
+//   width: 100px;
+//   height: 100px;
+//   top: calc(50% - 90px);
+//   left: calc(50% - 90px);
+//   border: 6px solid $slateBlue;
+//   border-top: 6px solid $turquise;
+//   border-radius: 50%;
+//   animation: spin 2s linear infinite;
+// }
 
 
 
