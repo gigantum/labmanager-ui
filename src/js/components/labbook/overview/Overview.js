@@ -366,7 +366,6 @@ export default createFragmentContainer(
       imageStatus
       containerStatus
       ...Base_environment
-      ...CustomDependencies_environment
     }
   }`
 )

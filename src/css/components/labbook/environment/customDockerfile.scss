@@ -1,0 +1,84 @@
+.CustomDockerfile {
+  position: relative;
+  hr {
+    opacity: 0.5;
+    max-width: 85%;
+    margin: 0;
+  }
+}
+
+.CustomDockerfile__header {
+  color: $romanSilver;
+}
+
+.CustomDockerfile__sub-header {
+  padding-top: 0;
+  font-size: 14px;
+  color: $romanSilver;
+}
+
+.CustomDockerfile__content {
+  @extend .card;
+  padding: 10px !important;
+  color: $jet;
+  white-space: pre-line;
+  padding: 0;
+  word-wrap: break-word;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+
+  p {
+    margin: 0
+  }
+
+  div:first-child {
+
+    /*
+      have to use extend as ReactMarkDown does not inherit classNames
+    */
+    @extend .column-1-span-9;
+    margin-bottom: 0;
+  }
+  button {
+    margin-top: 2px;
+  }
+  .column-1-span-1 {
+    @include flex(flex-start, column);
+  }
+  .empty {
+    color: $romanSilver;
+    opacity: 0.5;
+    font-style: oblique;
+  }
+}
+
+.CustomDockerfile__content-input {
+  height: 100px;
+  resize: none;
+}
+
+.CustomDockerfile__content-input:focus {
+  border: 2px solid #26a69a;
+  box-shadow: 0 1px 0 0 #26a69a;
+  outline: none;
+}
+
+.CustomDockerfile__content-edit-button,
+.CustomDockerfile__content-edit-button:hover,
+.CustomDockerfile__content-edit-button:focus,
+.CustomDockerfile__content-edit-button:disabled {
+  height: 22px;
+  width: 22px;
+  border: 0px;
+  background: url('./../images/icons/edit.svg') no-repeat center center;
+  background-size: 22px;
+}
+.CustomDockerfile__content-edit-button:disabled {
+  opacity: 0.2;
+}
+
+.CustomDockerfile__content-cancel-button,
+.CustomDockerfile__content-cancel-button:hover,
+.CustomDockerfile__content-cancel-button:focus {
+  padding: 0;
+}

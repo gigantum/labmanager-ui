@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Mon Apr 16 2018 11:38:57 GMT-0400 (EDT)
+# timestamp: Mon Apr 30 2018 14:26:22 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -89,6 +89,18 @@ input AddCustomComponentInput {
 # Mutation to add a new environment component to a LabBook
 type AddCustomComponentPayload {
   newCustomComponentEdge: CustomComponentEdge
+  clientMutationId: String
+}
+
+input AddCustomDockerInput {
+  owner: String!
+  labbookName: String!
+  dockerContent: String!
+  clientMutationId: String
+}
+
+type AddCustomDockerPayload {
+  updatedEnvironment: Environment
   clientMutationId: String
 }
 
@@ -405,6 +417,19 @@ type DeleteLabbookPayload {
   clientMutationId: String
 }
 
+input DeleteRemoteLabbookInput {
+  owner: String!
+  labbookName: String!
+  confirm: Boolean!
+  clientMutationId: String
+}
+
+# Delete a labbook from the remote repository.
+type DeleteRemoteLabbookPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
 # A type that represents the Environment for a LabBook
 type Environment implements Node & GitRepository {
   # The ID of the object.
@@ -416,6 +441,7 @@ type Environment implements Node & GitRepository {
   base: BaseComponent
   packageDependencies(before: String, after: String, first: Int, last: Int): PackageComponentConnection
   customDependencies(before: String, after: String, first: Int, last: Int): CustomComponentConnection
+  dockerSnippet: String
 }
 
 input ExportLabbookInput {
@@ -607,7 +633,7 @@ type LabbookFile implements Node & GitRepository {
   isDir: Boolean
   isFavorite: Boolean
   modifiedAt: Int
-  size: Int
+  size: String
 }
 
 # A connection for paging through labbook files.
@@ -631,6 +657,7 @@ type LabbookMutations {
   exportLabbook(input: ExportLabbookInput!): ExportLabbookPayload
   createLabbook(input: CreateLabbookInput!): CreateLabbookPayload
   deleteLabbook(input: DeleteLabbookInput!): DeleteLabbookPayload
+  deleteRemoteLabbook(input: DeleteRemoteLabbookInput!): DeleteRemoteLabbookPayload
   renameLabbook(input: RenameLabbookInput!): RenameLabbookPayload
   setLabbookDescription(input: SetLabbookDescriptionInput!): SetLabbookDescriptionPayload
   publishLabbook(input: PublishLabbookInput!): PublishLabbookPayload
@@ -649,6 +676,8 @@ type LabbookMutations {
   removeCustomComponent(input: RemoveCustomComponentInput!): RemoveCustomComponentPayload
   addPackageComponent(input: AddPackageComponentInput!): AddPackageComponentPayload
   removePackageComponent(input: RemovePackageComponentInput!): RemovePackageComponentPayload
+  addCustomDocker(input: AddCustomDockerInput!): AddCustomDockerPayload
+  removeCustomDocker(input: RemoveCustomDockerInput!): RemoveCustomDockerPayload
   addLabbookFile(input: AddLabbookFileInput!): AddLabbookFilePayload
   moveLabbookFile(input: MoveLabbookFileInput!): MoveLabbookFilePayload
   deleteLabbookFile(input: DeleteLabbookFileInput!): DeleteLabbookFilePayload
@@ -693,6 +722,7 @@ type LabbookQuery {
   jobStatus(jobId: String): JobStatus
   backgroundJobs(before: String, after: String, first: Int, last: Int): JobStatusConnection
   localLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): LabbookConnection
+  remoteLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): RemoteLabbookConnection
   availableBases(before: String, after: String, first: Int, last: Int): BaseComponentConnection
   availableCustomDependencies(before: String, after: String, first: Int, last: Int): CustomComponentConnection
   package(manager: String, package: String, version: String = ""): PackageComponent
@@ -862,6 +892,49 @@ type PushActiveBranchToRemotePayload {
   clientMutationId: String
 }
 
+# A type representing a LabBook stored on a remote server
+#
+# RemoteLabbooks are uniquely identified by both the "owner" and the "name" of the LabBook
+#
+# NOTE: RemoteLabbooks require all fields to be explicitly set as there is no current way to asynchronously retrieve
+#       the data
+#
+# NOTE: Currently all description fields will return empty strings
+type RemoteLabbook implements Node & GitRepository {
+  # The ID of the object.
+  id: ID!
+  owner: String!
+  name: String!
+  description: String
+  creationDateUtc: String
+  modifiedDateUtc: String
+}
+
+# A Connection for paging through remote labbooks.
+#
+# This is a remote call, so should be fetched on its own and only when needed. The user must have a valid
+# session for data to be returned.
+#
+# It is recommended to use large page size (e.g. 50-100). This is due to how the remote server returns all the
+# available data at once, so it is more efficient to load a lot of records at a time.
+#
+# Supported sorting modes:
+#     - az: naturally sort
+#     - created_on: sort by creation date, newest first
+#     - modified_on: sort by modification date, newest first
+type RemoteLabbookConnection {
+  pageInfo: PageInfo!
+  edges: [RemoteLabbookEdge]!
+}
+
+type RemoteLabbookEdge {
+  # The item at the end of the edge
+  node: RemoteLabbook
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 input RemoveCustomComponentInput {
   owner: String!
   labbookName: String!
@@ -873,6 +946,17 @@ input RemoveCustomComponentInput {
 # Mutation to remove an environment component to a LabBook
 type RemoveCustomComponentPayload {
   success: Boolean
+  clientMutationId: String
+}
+
+input RemoveCustomDockerInput {
+  owner: String!
+  labbookName: String!
+  clientMutationId: String
+}
+
+type RemoveCustomDockerPayload {
+  updatedEnvironment: Environment
   clientMutationId: String
 }
 
@@ -985,6 +1069,7 @@ input SyncLabbookInput {
 
 type SyncLabbookPayload {
   updateCount: Int
+  updatedLabbook: Labbook
   clientMutationId: String
 }
 
