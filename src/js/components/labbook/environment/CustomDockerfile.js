@@ -40,6 +40,7 @@ export default class CustomDockerfile extends Component {
                   messageBody: error
                 }
               })
+              this.setState({savingDockerfile: false})
             } else {
               this.props.buildCallback();
               this.setState({ editingDockerfile: false, lastSavedDockerfileContent: this.state.dockerfileContent, savingDockerfile: false})
