@@ -5,7 +5,9 @@ import uuidv4 from 'uuid/v4'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
 import ChunkUploader from 'JS/utils/ChunkUploader'
-
+//components
+import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
+//store
 import store from 'JS/redux/store'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
@@ -140,6 +142,7 @@ export default class ImportModule extends Component {
     this._clearState = this._clearState.bind(this)
     this._showImportScreen = this._showImportScreen.bind(this)
     this._hideImportScreen = this._hideImportScreen.bind(this)
+    this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
 
 
 
@@ -627,22 +630,18 @@ export default class ImportModule extends Component {
           }
         )
       }else{
-
-          store.dispatch(
-            {
-              type: "MULTIPART_INFO_MESSAGE",
-              payload: {
-                id: id,
-                message: 'ERROR: User session not valid for remote import',
-                messsagesList: [{message:'User must be authenticated to perform this action.'}],
-                error: true
-              }
-            })
-
           this.setState({'showLoginPrompt': true})
+          document.getElementById('modal__cover').classList.remove('hidden')
       }
       }
     })
+  }
+
+  _closeLoginPromptModal(){
+    this.setState({
+      'showLoginPrompt': false
+    })
+    document.getElementById('modal__cover').classList.add('hidden')
   }
 
   render(){
@@ -650,6 +649,10 @@ export default class ImportModule extends Component {
       'LocalLabbooks__labbook-button-import': this.state.importTransition === null,
       'LocalLabbooks__labbook-button-import--expanding': this.state.importTransition,
       'LocalLabbooks__labbook-button-import--collapsing': !this.state.importTransition && this.state.importTransition !== null
+    })
+    let loginPromptModalCss = classNames({
+      'LocalLabbooks--login-prompt': this.state.showLoginPrompt,
+      'hidden': !this.state.showLoginPrompt
     })
 
     return(
@@ -727,6 +730,12 @@ export default class ImportModule extends Component {
             </div>
           </div>
         }
+        <div className={loginPromptModalCss}>
+          <div
+            onClick={() => { this._closeLoginPromptModal() }}
+            className="LocalLabbooks-login-prompt--close"></div>
+          <LoginPrompt closeModal={this._closeLoginPromptModal} />
+        </div>
         <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
 
       </div>

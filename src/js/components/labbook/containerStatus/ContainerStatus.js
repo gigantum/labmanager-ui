@@ -268,7 +268,7 @@ export default class ContainerStatus extends Component {
       })
     }
 
-    if((status !== 'Stopped') && (status !== 'Rebuild')){
+    if((status) && (status !== 'Stopped') && (status !== 'Rebuild')){
       store.dispatch({
         type: 'CLOSE_ENVIRONMENT_MENUS',
         payload:{

@@ -414,7 +414,7 @@
       margin: 0;
       background: $turquise;
       border: none;
-      transition: .3s ease-in-out;
+      transition: .1s ease-in-out;
       position: absolute;
       bottom: 0;
       margin-left: $i * 14% + 2%;
@@ -449,12 +449,13 @@
         }
       }
       .Labbook__navigation-slider--#{$i} {
+        pointer-events: none;
         height: 3px;
         width: 12%;
         margin: 0;
         background: $turquise;
         border: none;
-        transition: .3s ease-in-out;
+        transition: .1s ease-in-out;
         position: absolute;
         bottom: 0;
         @if $i == 0 {

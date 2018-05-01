@@ -43,15 +43,15 @@ export default class RecentActivity extends Component {
         case 'text/plain':
           return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
         case 'image/png':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/jpg':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/jpeg':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/bmp':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/gif':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'text/markdown':
           return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
         default:

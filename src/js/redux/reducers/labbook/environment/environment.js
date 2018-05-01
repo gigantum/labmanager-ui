@@ -26,7 +26,6 @@ if (action.type === CLOSE_ENVIRONMENT_MENUS) {
      viewContainerVisible: false
    };
  }else if (action.type === TOGGLE_PACKAGE_MENU) {
-
    return {
      ...state,
      packageMenuVisible: action.payload.packageMenuVisible

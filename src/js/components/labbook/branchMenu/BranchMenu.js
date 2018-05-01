@@ -126,102 +126,110 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _publishLabbook() {
+    if (!this.props.isMainWorkspace) {
+      store.dispatch({
+        type: 'WARNING_MESSAGE',
+        payload: {
+          message: 'Publishing is currently only available on the main workspace branch.',
+        }
+      })
+    } else {
+      let id = uuidv4()
+      let self = this;
 
-    let id = uuidv4()
-    let self = this;
+      this._checkSessionIsValid().then((response) => {
+        if (response.data) {
 
-    this._checkSessionIsValid().then((response) => {
-      if (response.data) {
+          if (response.data.userIdentity.isSessionValid) {
 
-        if (response.data.userIdentity.isSessionValid) {
+            self.setState({ menuOpen: false, 'publishDisabled': true})
 
-          self.setState({ menuOpen: false, 'publishDisabled': true})
-
-          store.dispatch({
-            type: 'MULTIPART_INFO_MESSAGE',
-            payload: {
-              id: id,
-              message: 'Publishing LabBook to Gigantum cloud ...',
-              isLast: false,
-              error: false
-            }
-          })
-
-          if (!self.state.remoteUrl) {
-            this.props.setPublishingState(true)
             store.dispatch({
-              type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+              type: 'MULTIPART_INFO_MESSAGE',
               payload: {
-                containerMenuOpen: true
+                id: id,
+                message: 'Publishing LabBook to Gigantum cloud ...',
+                isLast: false,
+                error: false
               }
             })
-            store.dispatch({
-              type: 'CONTAINER_MENU_WARNING',
-              payload: {
-                message: 'LabBook is publishing. \n Please do not refresh the page.'
-              }
-            })
-            PublishLabbookMutation(
-              self.state.owner,
-              self.state.labbookName,
-              self.props.labbookId,
-              (response, error) => {
-                this.props.setPublishingState(false)
-                store.dispatch({
-                  type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                  payload: {
-                    containerMenuOpen: false
-                  }
-                })
-                if (response.publishLabbook && !response.publishLabbook.success) {
-                  if(error){
-                    console.log(error)
+
+            if (!self.state.remoteUrl) {
+              this.props.setPublishingState(true)
+              store.dispatch({
+                type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+                payload: {
+                  containerMenuOpen: true
+                }
+              })
+              store.dispatch({
+                type: 'CONTAINER_MENU_WARNING',
+                payload: {
+                  message: 'LabBook is publishing. \n Please do not refresh the page.'
+                }
+              })
+              PublishLabbookMutation(
+                self.state.owner,
+                self.state.labbookName,
+                self.props.labbookId,
+                (response, error) => {
+                  this.props.setPublishingState(false)
+                  store.dispatch({
+                    type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+                    payload: {
+                      containerMenuOpen: false
+                    }
+                  })
+                  if (response.publishLabbook && !response.publishLabbook.success) {
+                    if(error){
+                      console.log(error)
+                      store.dispatch({
+                        type: 'MULTIPART_INFO_MESSAGE',
+                        payload: {
+                          id: id,
+                          message: 'Publish failed',
+                          messageList: error,
+                          error: true
+                        }
+                      })
+                    }
+                    self.setState({
+                      publishDisabled: false
+                    })
+                  } else {
+
                     store.dispatch({
                       type: 'MULTIPART_INFO_MESSAGE',
                       payload: {
                         id: id,
-                        message: 'Publish failed',
-                        messageList: error,
-                        error: true
+                        message: `Added remote https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`,
+                        isLast: true,
+                        error: false
                       }
                     })
+                    self.setState({
+                      addedRemoteThisSession: true,
+                      canManageCollaborators: true,
+                      remoteUrl: `https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`
+
+                    })
                   }
-                  self.setState({
-                    publishDisabled: false
-                  })
-                } else {
-
-                  store.dispatch({
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                      id: id,
-                      message: `Added remote https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`,
-                      isLast: true,
-                      error: false
-                    }
-                  })
-                  self.setState({
-                    addedRemoteThisSession: true,
-                    canManageCollaborators: true,
-                    remoteUrl: `https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`
-
-                  })
                 }
-              }
-            )
+              )
+            }
+
+
+          } else {
+            self.setState({
+              'remoteUrl': ''
+            })
+            self.setState({
+              showLoginPrompt: true
+            })
           }
-
-
-        } else {
-          self.setState({
-            'remoteUrl': ''
-          })
-          self.setState({
-            showLoginPrompt: true
-          })
         }
-      }
-    })
+      })
+    }
   }
   /**
   *  @param {}
@@ -237,126 +245,135 @@ export default class UserNote extends Component {
   *  @return {string}
   */
   _sync() {
-    const status = store.getState().containerStatus.status
-
-    this.setState({ menuOpen: false });
-
-    if((status === 'Stopped') || (status === 'Rebuild')){
-
-      let id = uuidv4()
-      let self = this;
-
-      this._checkSessionIsValid().then((response) => {
-
-        if (response.data) {
-
-          if (response.data.userIdentity.isSessionValid) {
-            store.dispatch({
-              type: 'MULTIPART_INFO_MESSAGE',
-              payload: {
-                id: id,
-                message: 'Syncing LabBook with Gigantum cloud ...',
-                isLast: false,
-                error: false
-              }
-            })
-
-            this.props.setSyncingState(true);
-            store.dispatch({
-              type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-              payload: {
-                containerMenuOpen: true
-              }
-            })
-            store.dispatch({
-              type: 'CONTAINER_MENU_WARNING',
-              payload: {
-                message: 'Sync in Progress. \n Please do not refresh the page.'
-              }
-            })
-            SyncLabbookMutation(
-              this.state.owner,
-              this.state.labbookName,
-              false,
-              (error) => {
-                this.props.setSyncingState(false);
-                if (error) {
-                  store.dispatch({
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                      id: id,
-                      message: `Could not sync ${this.state.labbookName}`,
-                      messageBody: error,
-                      isLast: true,
-                      error: true
-                    }
-                  })
-
-                  if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1) || (error[0].message.indexOf('Merge conflict') > -1)){
-
-                    self._toggleSyncModal()
-                  }
-                } else {
-                  BuildImageMutation(
-                    this.state.labbookName,
-                    this.state.owner,
-                    false,
-                    (response, error) => {
-                      if (error) {
-                        console.error(error)
-                        store.dispatch(
-                          {
-                            type: 'MULTIPART_INFO_MESSAGE',
-                            payload: {
-                              id: id,
-                              message: `ERROR: Failed to build ${this.state.labookName}`,
-                              messsagesList: error,
-                              error: true
-                            }
-                          })
-                      }
-                    })
-                  store.dispatch({
-                    type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                    payload: {
-                      containerMenuOpen: false
-                    }
-                  })
-                  store.dispatch({
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                      id: id,
-                      message: `Successfully synced ${this.state.labbookName}`,
-                      isLast: true,
-                      error: false
-                    }
-                  })
-                }
-              }
-            )
-          } else {
-
-            self.setState({
-              showLoginPrompt: true
-            })
-          }
+    if (!this.props.isMainWorkspace) {
+      store.dispatch({
+        type: 'WARNING_MESSAGE',
+        payload: {
+          message: 'Syncing is currently only available on the main workspace branch.',
         }
       })
     } else {
+      const status = store.getState().containerStatus.status
+
       this.setState({ menuOpen: false });
 
-      store.dispatch({
-        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-        payload: {
-          containerMenuOpen: true
-        }
-      })
-      store.dispatch({
-        type: 'CONTAINER_MENU_WARNING',
-        payload: {
-          message: 'Stop LabBook before syncing. \n Be sure to save your changes.'
-        }
-      });
+      if((status === 'Stopped') || (status === 'Rebuild')){
+
+        let id = uuidv4()
+        let self = this;
+
+        this._checkSessionIsValid().then((response) => {
+
+          if (response.data) {
+
+            if (response.data.userIdentity.isSessionValid) {
+              store.dispatch({
+                type: 'MULTIPART_INFO_MESSAGE',
+                payload: {
+                  id: id,
+                  message: 'Syncing LabBook with Gigantum cloud ...',
+                  isLast: false,
+                  error: false
+                }
+              })
+
+              this.props.setSyncingState(true);
+              store.dispatch({
+                type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+                payload: {
+                  containerMenuOpen: true
+                }
+              })
+              store.dispatch({
+                type: 'CONTAINER_MENU_WARNING',
+                payload: {
+                  message: 'Sync in Progress. \n Please do not refresh the page.'
+                }
+              })
+              SyncLabbookMutation(
+                this.state.owner,
+                this.state.labbookName,
+                false,
+                (error) => {
+                  this.props.setSyncingState(false);
+                  if (error) {
+                    store.dispatch({
+                      type: 'MULTIPART_INFO_MESSAGE',
+                      payload: {
+                        id: id,
+                        message: `Could not sync ${this.state.labbookName}`,
+                        messageBody: error,
+                        isLast: true,
+                        error: true
+                      }
+                    })
+
+                    if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1) || (error[0].message.indexOf('Merge conflict') > -1)){
+
+                      self._toggleSyncModal()
+                    }
+                  } else {
+                    BuildImageMutation(
+                      this.state.labbookName,
+                      this.state.owner,
+                      false,
+                      (response, error) => {
+                        if (error) {
+                          console.error(error)
+                          store.dispatch(
+                            {
+                              type: 'MULTIPART_INFO_MESSAGE',
+                              payload: {
+                                id: id,
+                                message: `ERROR: Failed to build ${this.state.labookName}`,
+                                messsagesList: error,
+                                error: true
+                              }
+                            })
+                        }
+                      })
+                    store.dispatch({
+                      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+                      payload: {
+                        containerMenuOpen: false
+                      }
+                    })
+                    store.dispatch({
+                      type: 'MULTIPART_INFO_MESSAGE',
+                      payload: {
+                        id: id,
+                        message: `Successfully synced ${this.state.labbookName}`,
+                        isLast: true,
+                        error: false
+                      }
+                    })
+                  }
+                }
+              )
+            } else {
+
+              self.setState({
+                showLoginPrompt: true
+              })
+            }
+          }
+        })
+      } else {
+        this.setState({ menuOpen: false });
+
+        store.dispatch({
+          type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+          payload: {
+            containerMenuOpen: true
+          }
+        })
+        store.dispatch({
+          type: 'CONTAINER_MENU_WARNING',
+          payload: {
+            message: 'Stop LabBook before syncing. \n Be sure to save your changes.'
+          }
+        });
+      }
     }
   }
 
@@ -702,10 +719,8 @@ export default class UserNote extends Component {
           {!this.state.addedRemoteThisSession &&
             <div className="BranchMenu__publish">
               <button
-                disabled={this.state.publishDisabled || !this.props.isMainWorkspace}
                 className="BranchMenu__remote-button"
                 onClick={() => { this._publishLabbook() }}
-                title={this.props.isMainWorkspace ? null : 'Publishing is currently only available on the main branch'}
               >
                 Publish
                 </button>
@@ -717,8 +732,6 @@ export default class UserNote extends Component {
               <button
                 className="BranchMenu__sync-button"
                 onClick={() => this._sync()}
-                disabled={!this.props.isMainWorkspace}
-                title={this.props.isMainWorkspace ? null : 'Syncing is currently only available on the main branch'}
               >
                 Sync Branch
                 </button>
