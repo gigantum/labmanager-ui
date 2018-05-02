@@ -11,7 +11,7 @@ export default class ActivityCard extends Component {
   	super(props);
     this.state = {
       showExtraInfo: props.edge.node.show,
-      show: false,
+      show: true,
     }
 
     this._toggleExtraInfo = this._toggleExtraInfo.bind(this)
