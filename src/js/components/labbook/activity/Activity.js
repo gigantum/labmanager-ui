@@ -1,5 +1,5 @@
 //vendor
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {
   createPaginationContainer,
   graphql
@@ -290,7 +290,7 @@ class Activity extends Component {
                                   <div className="Activity__submenu-container">
                                   {
                                     (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace) &&
-                                  <React.Fragment>
+                                  <Fragment>
                                   <div
                                       className="Activity__submenu-circle"
                                     >
@@ -303,7 +303,7 @@ class Activity extends Component {
                                         Rollback to previous state
                                       </h5>
                                     </div>
-                                    </React.Fragment>
+                                    </Fragment>
                                   }
                                   </div>
                                 }

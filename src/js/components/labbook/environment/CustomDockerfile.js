@@ -1,5 +1,5 @@
 //vendor
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import ReactMarkdown from 'react-markdown'
 //mutations
 import AddCustomDockerMutation from 'Mutations/AddCustomDockerMutation'
@@ -113,7 +113,7 @@ export default class CustomDockerfile extends Component {
         <div className="CustomDockerfile__content grid column-1-span-12">
         {
             this.state.editingDockerfile ?
-            <React.Fragment>
+            <Fragment>
               <textarea
                 className="CustomDockerfile__content-input column-1-span-9"
                 type="text"
@@ -137,9 +137,9 @@ export default class CustomDockerfile extends Component {
                   Cancel
                 </button>
               </div>
-            </React.Fragment>
+            </Fragment>
             :
-            <React.Fragment>
+            <Fragment>
               <div className={dockerfileCSS}>
                 <p className={dockerfileCSS} >
                   {this.state.dockerfileContent ? this.state.dockerfileContent : 'No commands provided.'}
@@ -152,7 +152,7 @@ export default class CustomDockerfile extends Component {
                 >
                 </button>
               </div>
-            </React.Fragment>
+            </Fragment>
           }
         </div>
 
