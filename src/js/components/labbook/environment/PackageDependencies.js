@@ -4,6 +4,7 @@ import {createPaginationContainer, graphql} from 'react-relay'
 import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
 //components
+import ButtonLoader from 'Components/shared/ButtonLoader'
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
@@ -35,11 +36,13 @@ class PackageDependencies extends Component {
       'packages': [],
       'searchValue': '',
       'forceRender': false,
-      'disableInstall': false
+      'disableInstall': false,
+      'installDependenciesButtonState': ''
     };
     //bind functions here
     this._loadMore = this._loadMore.bind(this)
     this._setSelectedTab = this._setSelectedTab.bind(this)
+    this._addPackageComponentMutation = this._addPackageComponentMutation.bind(this)
   }
   /*
     handle state and addd listeners when component mounts
@@ -74,7 +77,6 @@ class PackageDependencies extends Component {
     unsubscribe from redux store
   */
   storeDidUpdate = (environmentStore) => {
-
     if(this.state.packageMenuVisible !== environmentStore.packageMenuVisible){
       this.setState({packageMenuVisible: environmentStore.packageMenuVisible});//triggers re-render when store updates
     }
@@ -355,7 +357,7 @@ class PackageDependencies extends Component {
     const {environmentId} = this.props
 
 
-    this.setState({disableInstall: true})
+    this.setState({disableInstall: true, installDependenciesButtonState: 'loading'})
     let self = this,
         index = 0
 
@@ -393,15 +395,32 @@ class PackageDependencies extends Component {
               }
             })
 
+            self.setState({installDependenciesButtonState: 'error'})
+
+            setTimeout(()=>{
+              self.setState({installDependenciesButtonState: ''})
+            }, 2000)
+
           }else{
 
             index++
             if(packages[index]){
               addPackage(packages[index])
             }else{
-              self.setState({disableInstall: false, packages: []})
-              self._refetch()
-              self.props.buildCallback()
+
+              self.setState({
+                disableInstall: false,
+                packages: [],
+                installDependenciesButtonState: 'finished'
+              })
+
+              setTimeout(()=>{
+                self.setState({installDependenciesButtonState: ''})
+                self._refetch()
+                self.props.buildCallback()
+              }, 2000)
+
+
             }
           }
         }
@@ -524,8 +543,8 @@ class PackageDependencies extends Component {
                           <tr
                             className={`PackageDependencies__table-row--${node.validity}` }
                             key={node.packageName + node.version}>
-                            <td>{`${node.packageName}`}</td>
-                            <td>{node.validity === 'checking' ? `retrieving ${version === 'latest'?'latest version': `v${version}`}` : version}
+                            <td className="PackageDependencies__td-package">{`${node.packageName}`}</td>
+                            <td className="PackageDependencies__td-version">{node.validity === 'checking' ? `retrieving ${version === 'latest'?'latest version': `v${version}`}` : version}
                             {
                               node.validity === 'checking' &&
                               <div className="PackageDependencies__version-loading"></div>
@@ -542,12 +561,21 @@ class PackageDependencies extends Component {
                     }
                   </tbody>
                 </table>
-                <button
+
+                <ButtonLoader
+                  buttonState={this.state.installDependenciesButtonState}
+                  buttonText={"Install Selected Packages"}
+                  className="PackageDependencies__button--absolute"
+                  params={{}}
+                  buttonDisabled={disableInstall}
+                  clicked={this._addPackageComponentMutation}
+                />
+                {/* <button
                   className="PackageDependencies__button--absolute"
                   onClick={()=> this._addPackageComponentMutation()}
                   disabled={disableInstall}>
                   Install Selected Packages
-                </button>
+                </button> */}
             </div>
           </div>
         </div>

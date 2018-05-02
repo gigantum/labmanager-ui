@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 //Mutations
 import DeleteLabbookMutation from 'Mutations/DeleteLabbookMutation'
 //components
+import ButtonLoader from 'Components/shared/ButtonLoader'
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
@@ -12,8 +13,11 @@ export default class DeleteLabbook extends Component {
   	super(props);
   	this.state = {
       'labbookName': '',
-      deletePending: false
+      deletePending: false,
+      deleteLabbookButtonState: ''
     };
+
+    this._deleteLabbook = this._deleteLabbook.bind(this)
   }
   /**
     @param {object} evt
@@ -28,14 +32,19 @@ export default class DeleteLabbook extends Component {
   */
   _deleteLabbook(){
     const {labbookName, owner} = store.getState().routes
+
     if(labbookName === this.state.labbookName){
-      this.setState({deletePending: true})
+
+      this.setState({deletePending: true, deleteLabbookButtonState: 'loading'})
+
       DeleteLabbookMutation(
         labbookName,
         owner,
         true,
         (response, error)=>{
+
           this.setState({deletePending: false})
+
           if(error){
             store.dispatch({
               'type': "ERROR_MESSAGE",
@@ -44,6 +53,12 @@ export default class DeleteLabbook extends Component {
                 'messageList': error
               }
             })
+
+            this.setState({deleteLabbookButtonState: 'error'})
+
+            setTimeout(()=>{
+              this.setState({deleteLabbookButtonState: ''})
+            }, 2000)
           }else{
             store.dispatch({
               'type': "INFOR_MESSAGE",
@@ -52,7 +67,13 @@ export default class DeleteLabbook extends Component {
               }
             })
 
-            this.props.history.replace('../../labbooks/')
+            this.setState({deleteLabbookButtonState: 'finished'})
+
+            setTimeout(()=>{
+              this.props.history.replace('../../labbooks/')
+              this.setState({deleteLabbookButtonState: ''})
+            }, 2000)
+
 
 
           }
@@ -95,11 +116,20 @@ export default class DeleteLabbook extends Component {
           type="text"
         />
 
-        <button disabled={this.state.deletePending} onClick={()=> this._deleteLabbook()}>Delete Labbook</button>
+
+        <ButtonLoader
+          buttonState={this.state.deleteLabbookButtonState}
+          buttonText={"Delete Labbook"}
+          className=""
+          params={{}}
+          buttonDisabled={this.state.deletePending}
+          clicked={this._deleteLabbook}
+        />
+        {/* //<button disabled={this.state.deletePending} onClick={()=> this._deleteLabbook()}>Delete Labbook</button>
         {
           this.state.deletePending &&
           <Loader />
-        }
+        } */}
       </div>
     )
   }

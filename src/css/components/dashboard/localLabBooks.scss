@@ -7,59 +7,76 @@
   min-width: 760px;
 }
 
-
-.LocalLabbooks__menu {
-  width: 100%;
-  border-bottom: 1px solid $grey;
-}
-
 .LocalLabbooks__nav {
-  @include flex(flex-start, row);
-}
-
-.LocalLabbooks__menu {
   border-bottom: 1px solid $grey;
-  position: relative;
-  box-shadow: none;
-  height: 31px;
-  background-color: inherit;
-  line-height: normal;
   white-space: nowrap;
+  position: relative;
 
-  div {
-    padding: 5px 5px;
-    margin: 0 25px;
-    cursor: pointer;
-    bottom: 0px;
+  li {
+    margin: 0 30px;
+    text-align: center;
 
     a {
-      color: $romanSilver;
-      font-size: 16px;
+      display: inline-block;
+      padding: .75rem 0;
+      margin: 0;
+      text-decoration: none;
+      color: $jet;
+      cursor: pointer;
+    }
+
+    a:hover {
+      color: $selected-blue;
     }
   }
 
-  .Labbook__navigation-item--overview {
-    padding: 5px 5px;
-  }
-
-  div:hover a {
-    color: $turquise;
-  }
-
-  div.selected {
-    border-bottom: 3px solid $turquise;
+  li.selected a {
+    color: $selected-blue;
     z-index: 100;
     position: relative;
-    bottom: 0px;
+    bottom: -2px;
     line-height: 15px;
+  }
 
+  @for $i from 0 through 2 {
+    li.LocalLabbooks__nav-item--#{$i}:hover ~ hr {
+      @if $i == 0 {
+        width: 40px;
+        margin-left: 20px;
+      }
+      @if $i == 1 {
+        width: 115px;
+        margin-left: 100px;
+      }
+      @if $i == 2 {
+        width: 125px;
+        margin-left: 260px;
+      }
+    }
+    .LocalLabbooks__navigation-slider--#{$i} {
+      pointer-events: none;
+      height: 3px;
+      margin: 0;
+      background: $turquise;
+      border: none;
+      transition: .1s ease-in-out;
+      position: absolute;
+      bottom: 0;
+      @if $i == 0 {
+        width: 40px;
+        margin-left: 20px;
+      }
+      @if $i == 1 {
+        width: 115px;
+        margin-left: 100px;
+      }
+      @if $i == 2 {
+        width: 125px;
+        margin-left: 260px;
+      }
+    }
   }
 }
-
-.LocalLabbooks__nav-item{
-
-}
-
 
 .LocalLabbooks__rename-modal {
   padding: 20px;
@@ -643,4 +660,22 @@
   font-size: 24px;
   white-space: nowrap;
   text-align: center;
+}
+
+
+.LocalLabbooks--login-prompt {
+  @include flex(space-between, column);
+  @include modal(200px, 400px);
+  justify-content: flex-start;
+  padding: 20px;
+  z-index: 1200;
+  color: $jet;
+
+  .LoginPrompt__button-container {
+    @include flex(space-around, row);
+  }
+}
+
+.LocalLabbooks-login-prompt--close {
+  @include close()
 }

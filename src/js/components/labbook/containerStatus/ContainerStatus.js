@@ -114,7 +114,9 @@ export default class ContainerStatus extends Component {
     const { owner, labbookName } = store.getState().routes
     const state = this.state
     const self = this
+
     const {isBuilding} = this.state
+
 
     if(owner === this.state.owner && labbookName === this.state.labbookName && store.getState().routes.callbackRoute.split('/').length > 3) {
 
@@ -270,7 +272,7 @@ export default class ContainerStatus extends Component {
       })
     }
 
-    if((status !== 'Stopped') && (status !== 'Rebuild')){
+    if((status) && (status !== 'Stopped') && (status !== 'Rebuild')){
       store.dispatch({
         type: 'CLOSE_ENVIRONMENT_MENUS',
         payload:{
