@@ -1,5 +1,9 @@
 # source: http://localhost:10001/labbook/
+<<<<<<< HEAD
 # timestamp: Wed May 02 2018 10:44:56 GMT-0400 (EDT)
+=======
+# timestamp: Wed Apr 25 2018 16:40:58 GMT-0400 (EDT)
+>>>>>>> 20498e89a97433022e0fd66a91b2135fde4e75d5
 
 schema {
   query: LabbookQuery
@@ -434,13 +438,21 @@ input DeleteRemoteLabbookInput {
   clientMutationId: String
 }
 
+<<<<<<< HEAD
 """Delete a labbook from the remote repository."""
+=======
+# Delete a labbook from the remote repository.
+>>>>>>> 20498e89a97433022e0fd66a91b2135fde4e75d5
 type DeleteRemoteLabbookPayload {
   success: Boolean
   clientMutationId: String
 }
 
+<<<<<<< HEAD
 """A type that represents the Environment for a LabBook"""
+=======
+# A type that represents the Environment for a LabBook
+>>>>>>> 20498e89a97433022e0fd66a91b2135fde4e75d5
 type Environment implements Node & GitRepository {
   """The ID of the object."""
   id: ID!
@@ -535,7 +547,7 @@ type JobStatus implements Node {
 }
 
 """
-A Connection for paging through all background jobs the system is aware of. 
+A Connection for paging through all background jobs the system is aware of.
 """
 type JobStatusConnection {
   pageInfo: PageInfo!
@@ -780,7 +792,7 @@ type LabbookRefEdge {
 
 """
 A type representing a section within a LabBook (i.e., code, input, output)
-    
+
 """
 type LabbookSection implements Node & GitRepository {
   """The ID of the object."""
@@ -816,7 +828,7 @@ input MergeFromBranchInput {
 }
 
 """
-Merge from another branch into the current active branch. Force if necessary. 
+Merge from another branch into the current active branch. Force if necessary.
 """
 type MergeFromBranchPayload {
   labbook: Labbook
@@ -922,6 +934,7 @@ type PushActiveBranchToRemotePayload {
   clientMutationId: String
 }
 
+<<<<<<< HEAD
 """
 A type representing a LabBook stored on a remote server
 
@@ -934,6 +947,18 @@ NOTE: Currently all description fields will return empty strings
 """
 type RemoteLabbook implements Node & GitRepository {
   """The ID of the object."""
+=======
+# A type representing a LabBook stored on a remote server
+#
+# RemoteLabbooks are uniquely identified by both the "owner" and the "name" of the LabBook
+#
+# NOTE: RemoteLabbooks require all fields to be explicitly set as there is no current way to asynchronously retrieve
+#       the data
+#
+# NOTE: Currently all description fields will return empty strings
+type RemoteLabbook implements Node & GitRepository {
+  # The ID of the object.
+>>>>>>> 20498e89a97433022e0fd66a91b2135fde4e75d5
   id: ID!
   owner: String!
   name: String!
@@ -942,6 +967,7 @@ type RemoteLabbook implements Node & GitRepository {
   modifiedDateUtc: String
 }
 
+<<<<<<< HEAD
 """
 A Connection for paging through remote labbooks.
 
@@ -956,16 +982,37 @@ Supported sorting modes:
     - created_on: sort by creation date, newest first
     - modified_on: sort by modification date, newest first
 """
+=======
+# A Connection for paging through remote labbooks.
+#
+# This is a remote call, so should be fetched on its own and only when needed. The user must have a valid
+# session for data to be returned.
+#
+# It is recommended to use large page size (e.g. 50-100). This is due to how the remote server returns all the
+# available data at once, so it is more efficient to load a lot of records at a time.
+#
+# Supported sorting modes:
+#     - az: naturally sort
+#     - created_on: sort by creation date, newest first
+#     - modified_on: sort by modification date, newest first
+>>>>>>> 20498e89a97433022e0fd66a91b2135fde4e75d5
 type RemoteLabbookConnection {
   pageInfo: PageInfo!
   edges: [RemoteLabbookEdge]!
 }
 
 type RemoteLabbookEdge {
+<<<<<<< HEAD
   """The item at the end of the edge"""
   node: RemoteLabbook
 
   """A cursor for use in pagination"""
+=======
+  # The item at the end of the edge
+  node: RemoteLabbook
+
+  # A cursor for use in pagination
+>>>>>>> 20498e89a97433022e0fd66a91b2135fde4e75d5
   cursor: String!
 }
 

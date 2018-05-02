@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 
 export default class BaseDetails extends React.Component {
 
@@ -69,9 +69,9 @@ export default class BaseDetails extends React.Component {
                     Object.keys(installedPackagesDictionary).length ?
                     Object.keys(installedPackagesDictionary).map(manager => {
                       return(
-                        <React.Fragment>
+                        <Fragment>
                           <li>{`${manager} (${installedPackagesDictionary[manager].length})`}</li>
-                        </React.Fragment>
+                        </Fragment>
                      )
                     })
                     :

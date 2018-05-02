@@ -5,7 +5,7 @@ import {createFragmentContainer, graphql} from 'react-relay'
 import Loader from 'Components/shared/Loader'
 import Base from './Base'
 import PackageDependencies from './PackageDependencies'
-import CustomDependencies from './CustomDependencies'
+import CustomDockerfile from './CustomDockerfile'
 //mutations
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
@@ -71,7 +71,7 @@ class Environment extends Component {
                     }
                   })
                 }
-  
+
                 return "finished"
               }
             )
@@ -111,7 +111,6 @@ class Environment extends Component {
   }
 
   render(){
-
     if(this.props.labbook){
       const env = this.props.labbook.environment;
       const {base} = env;
@@ -129,7 +128,6 @@ class Environment extends Component {
               buildCallback={this._buildCallback}
               blockClass="Environment"
               base={base}
-
              />
 
             <PackageDependencies
@@ -147,15 +145,9 @@ class Environment extends Component {
               isLocked={this.props.isLocked}
             />
 
-            <CustomDependencies
-              ref="CustomDependencies"
-              environment={this.props.labbook.environment}
-              blockClass="Environment"
+            <CustomDockerfile
+              dockerfile={this.props.labbook.environment.dockerSnippet}
               buildCallback={this._buildCallback}
-              editVisible
-              labbookId={this.props.labbook.id}
-              environmentId={this.props.labbook.environment.id}
-              containerStatus={this.props.containerStatus}
               isLocked={this.props.isLocked}
             />
           </div>
@@ -179,10 +171,10 @@ export default createFragmentContainer(
         developmentTools
         packageManagers
       }
+      dockerSnippet
 
       ...Base_environment
       ...PackageDependencies_environment
-      ...CustomDependencies_environment
     }
   }`
 )
