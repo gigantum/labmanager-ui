@@ -604,7 +604,7 @@ const LabbookFragmentContainer = createFragmentContainer(
             numPipPackages
             numCustomDependencies
           }
-      
+
 
           availableBranchNames
           mergeableBranchNames

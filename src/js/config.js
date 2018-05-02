@@ -40,8 +40,21 @@ const CONFIG = {
   },
 
   containerStatus:{
-    canEditEnvironment: (status)=> {
+    canEditEnvironment: (status) => {
       return (status === 'Stopped') || (status === 'Rebuild')
+    }
+  },
+  //`https://search-gigantum-user-search-vqlw5xkehlx7634eoap4sv4n4y.us-east-1.cloudsearch.amazonaws.com/2013-01-01/search?q=`
+  userAPI: {
+    getUsersQueryString: (userInput) => {
+      const apiURL = `https://m9eq4m3z0f.execute-api.us-east-1.amazonaws.com/prod?q=${userInput}*&q.options={fields: ['username^5','name']}&size=10`
+
+      return encodeURI(apiURL)
+    },
+    getUserEmailQueryString: (email) => {
+      const apiURL = `https://m9eq4m3z0f.execute-api.us-east-1.amazonaws.com/prod/search?q=${email}&q.options={fields: ['email']}&size=10`
+
+      return encodeURI(apiURL)
     }
   }
 }

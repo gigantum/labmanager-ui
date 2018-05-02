@@ -8,6 +8,9 @@ import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
 import ButtonLoader from 'Components/shared/ButtonLoader'
 //store
 import store from 'JS/redux/store'
+//config
+import config from 'JS/config'
+import fetchQuery from 'JS/fetch'
 
 export default class DeleteLabbook extends Component {
   constructor(props){
@@ -40,6 +43,17 @@ export default class DeleteLabbook extends Component {
     })
 
     this.setState({buttonLoaderRemoveCollaborator})
+  }
+
+  _getUsers(evt){
+    let userInput = evt.target.value
+    if(userInput.length > 2){
+      const apiURL = config.userAPI.getUsersQueryString(evt.target.value)
+
+      fetchQuery(apiURL).then((response) => {
+          console.log(response)
+      })
+    }
   }
   /**
   *  @param {event} evt
@@ -166,8 +180,8 @@ export default class DeleteLabbook extends Component {
               className="CollaboratorModal__input--collaborators"
               ref={el => this.inputTitle = el}
 
-              onChange={(evt) => this._addCollaborator(evt)}
-              onKeyUp={(evt) => this._addCollaborator(evt)}
+              onChange={(evt) => this._getUsers(evt)}
+              onKeyUp={(evt) => this._getUsers(evt)}
 
               type="text"
               placeholder="Add Collaborator"
