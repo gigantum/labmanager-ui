@@ -81,7 +81,7 @@ export default class ActivityDefaultList extends Component {
 
         <div className="ActivityDetail__details">
           {
-            this.state.showDetails &&
+            this.state.showDetails && type !== 'note' ?
             <div
               onClick={() => {this._toggleDetailsList()}}
               className={this.state.show ? 'ActivityDetail__details-title ActivityDetail__details-title--open' : 'ActivityDetail__details-title ActivityDetail__details-title--closed'}>
@@ -95,6 +95,8 @@ export default class ActivityDefaultList extends Component {
               </div>
 
             </div>
+            :
+            <hr />
           }
           {this.state.show &&
             <div className="ActivtyDetail_list">
