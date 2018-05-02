@@ -40,11 +40,17 @@
 
 
 
-.PackageDependencies__table-row--checking {
-  background: linear-gradient(-45deg, $slateBlue, $azure, $turquise, $goldenLemon) no-repeat;
-  background-size: 200% 2px;
-  animation: Gradient 7s ease infinite;
-  border: 0px;
+.PackageDependencies__table-row--checking,
+.PackageDependencies__table-row--valid, {
+  @include flex(flex-start, row);
+}
+
+td.PackageDependencies__td-package {
+  flex: 2;
+}
+
+td.PackageDependencies__td-version {
+  flex: 1;
 }
 
 .PackageDependencies__table-row--invalid {
@@ -96,6 +102,13 @@
   left: 50%;
   bottom: -20px;
   margin: 0 0 0 -117px;
+}
+
+.PackageDependencies__button--absolute.ButtonLoader--loading,
+.PackageDependencies__button--absolute.ButtonLoader--finished,
+.PackageDependencies__button--absolute.ButtonLoader--error{
+  margin: 0 0 0 -13px;
+  bottom: -13px;
 }
 
 .PackageDependencies__button--add {
@@ -202,6 +215,8 @@
     }
 
 }
+
+
 
 .PackageDependencies__optimistic-updating {
   opacity: 0.1;

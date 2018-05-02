@@ -30,9 +30,11 @@ export default class ActivityCard extends Component {
     @return {string}
   */
   _getTimeOfDay(timestamp){
-
     let time = (timestamp !== undefined) ? new Date(timestamp) : new Date();
-    return ((time.getHours()%12 === 0) ? 12 : time.getHours()%12) + ':' + ((time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes()) + (time.getHours() > 12 ? 'pm' : 'am');
+    let hour = (time.getHours() % 12 === 0) ? 12 : time.getHours() % 12;
+    let minutes = (time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes();
+    let ampm = time.getHours() >= 12 ? 'pm' : 'am';
+    return `${hour}:${minutes}${ampm}`
   }
   /**
     @param {string} freeText

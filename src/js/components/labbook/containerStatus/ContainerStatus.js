@@ -181,7 +181,9 @@ export default class ContainerStatus extends Component {
       (evt.target.className.indexOf('BranchMenu') > -1) ||
       (evt.target.className.indexOf('BranchMenu__sync-button') > -1) ||
       (evt.target.className.indexOf('BranchMenu__remote-button') > -1) ||
-      (evt.target.className.indexOf('Activity__rollback-text') > -1)
+      (evt.target.className.indexOf('Activity__rollback-text') > -1) ||
+      (evt.target.className.indexOf('CustomDockerfile__content-edit-button') > -1) ||
+      (evt.target.className.indexOf('CustomDockerfile__content-save-button') > -1)
 
     if(!containerMenuClicked &&
     this.state.containerMenuOpen){
@@ -270,7 +272,7 @@ export default class ContainerStatus extends Component {
       })
     }
 
-    if((status !== 'Stopped') && (status !== 'Rebuild')){
+    if((status) && (status !== 'Stopped') && (status !== 'Rebuild')){
       store.dispatch({
         type: 'CLOSE_ENVIRONMENT_MENUS',
         payload:{

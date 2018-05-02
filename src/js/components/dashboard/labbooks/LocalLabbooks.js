@@ -239,6 +239,16 @@ _captureScroll = () => {
     )
   }
 
+  _changeSlider() {
+    let pathArray = store.getState().routes.callbackRoute.split('/')
+    let selectedPath = (pathArray.length > 2 ) ? pathArray[pathArray.length - 1] : 'all'
+    let defaultOrder = ['all', localStorage.getItem('username'), 'others'];
+    let selectedIndex = defaultOrder.indexOf(selectedPath);
+    return (
+      <hr className={'LocalLabbooks__navigation-slider LocalLabbooks__navigation-slider--' + selectedIndex}/>
+    )
+  }
+
   render(){
       let {props} = this;
       let owner = localStorage.getItem('username')
@@ -266,18 +276,23 @@ _captureScroll = () => {
               </h2>
 
             </div>
-            <div className="LocalLabbooks__menu">
-              <nav className="LocalLabbooks__nav">
-                <div className={this.state.filter === 'all' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }>
+            <div className="LocalLabbooks__menu  mui-container flex-0-0-auto">
+
+              <ul className="LocalLabbooks__nav  flex flex--row">
+                <li className={this.state.filter === 'all' ? 'LocalLabbooks__nav-item--0 selected' : 'LocalLabbooks__nav-item--0' }>
                   <a onClick={()=> this._setFilter('all')}>All</a>
-                </div>
-                <div className={this.state.filter === owner ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }>
+                </li>
+                <li className={this.state.filter === owner ? 'LocalLabbooks__nav-item--1 selected' : 'LocalLabbooks__nav-item--1' }>
                   <a onClick={()=> this._setFilter(owner)}>My LabBooks</a>
-                </div>
-                <div className={this.state.filter === 'others' ? 'LocalLabbooks__nav-item selected' : 'LocalLabbooks__nav-item' }>
+                </li>
+                <li className={this.state.filter === 'others' ? 'LocalLabbooks__nav-item--2 selected' : 'LocalLabbooks__nav-item--2' }>
                   <a onClick={()=> this._setFilter('others')}>Shared With Me</a>
-                </div>
-              </nav>
+                </li>
+                {
+                  this._changeSlider()
+                }
+              </ul>
+
             </div>
             <div className="LocalLabbooks__sort">
               Sort by:

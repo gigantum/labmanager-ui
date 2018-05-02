@@ -91,6 +91,29 @@
   }
 }
 
+.ActivityCard__title.note.open {
+  cursor: pointer;
+  background: url('./../images/icons/up-arrow-silver.svg') no-repeat 98% center;
+  background-size: 20px;
+}
+.ActivityCard__title.note.open:hover {
+  color: $turquise;
+  cursor: pointer;
+  background: url('./../images/icons/up-arrow-turquise.svg') no-repeat 98% center;
+  background-size: 20px;
+}
+.ActivityCard__title.note.closed {
+  cursor: pointer;
+  background: url('./../images/icons/down-arrow-silver.svg') no-repeat 98% center;
+  background-size: 20px;
+}
+.ActivityCard__title.note.closed:hover {
+  color: $turquise;
+  background: url('./../images/icons/down-arrow-turquise.svg') no-repeat 98% center;
+  background-size: 20px;
+}
+
+
 .ActivityCard__row {
   p {
     padding: 5px 15px;
