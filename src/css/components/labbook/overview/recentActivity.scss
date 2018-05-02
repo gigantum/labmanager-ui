@@ -102,9 +102,19 @@
   }
 }
 
+.RecentActivity__fadeout {
+  position: relative;
+  bottom: 2em;
+  height: 2em;
+  background: -webkit-linear-gradient(
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 1) 100%
+  );
+}
 .RecentActivity__card-detail .ReactMarkdown {
-  max-height: 240px;
+  max-height: 290px;
   overflow: hidden;
+  margin: 0;
 }
 
 .RecentActivity__card-detail *{
