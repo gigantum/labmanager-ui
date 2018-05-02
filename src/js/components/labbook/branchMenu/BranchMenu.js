@@ -120,6 +120,27 @@ export default class UserNote extends Component {
     this.setState({ menuOpen: !this.state.menuOpen })
   }
 
+    /**
+    *  @param {string} action
+    *  displays container menu message
+    *  @return {}
+    */
+  _showContainerMenuMessage(action) {
+    store.dispatch({
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+      payload: {
+        containerMenuOpen: true
+      }
+    })
+
+    store.dispatch({
+      type: 'CONTAINER_MENU_WARNING',
+      payload: {
+        message: `LabBook is ${action}. \n Please do not refresh the page.`
+      }
+    })
+  }
+
   /**
   *  @param {}
   *  adds remote url to labbook
@@ -156,18 +177,9 @@ export default class UserNote extends Component {
 
             if (!self.state.remoteUrl) {
               this.props.setPublishingState(true)
-              store.dispatch({
-                type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                payload: {
-                  containerMenuOpen: true
-                }
-              })
-              store.dispatch({
-                type: 'CONTAINER_MENU_WARNING',
-                payload: {
-                  message: 'LabBook is publishing. \n Please do not refresh the page.'
-                }
-              })
+
+              this._showContainerMenuMessage('publishing');
+
               PublishLabbookMutation(
                 self.state.owner,
                 self.state.labbookName,
@@ -180,9 +192,11 @@ export default class UserNote extends Component {
                       containerMenuOpen: false
                     }
                   })
+
                   if (response.publishLabbook && !response.publishLabbook.success) {
                     if(error){
                       console.log(error)
+
                       store.dispatch({
                         type: 'MULTIPART_INFO_MESSAGE',
                         payload: {
@@ -192,10 +206,12 @@ export default class UserNote extends Component {
                           error: true
                         }
                       })
+
                     }
                     self.setState({
                       publishDisabled: false
                     })
+
                   } else {
 
                     store.dispatch({
@@ -207,6 +223,7 @@ export default class UserNote extends Component {
                         error: false
                       }
                     })
+
                     self.setState({
                       addedRemoteThisSession: true,
                       canManageCollaborators: true,
@@ -217,8 +234,6 @@ export default class UserNote extends Component {
                 }
               )
             }
-
-
           } else {
             self.setState({
               'remoteUrl': ''
@@ -278,18 +293,8 @@ export default class UserNote extends Component {
               })
 
               this.props.setSyncingState(true);
-              store.dispatch({
-                type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                payload: {
-                  containerMenuOpen: true
-                }
-              })
-              store.dispatch({
-                type: 'CONTAINER_MENU_WARNING',
-                payload: {
-                  message: 'Sync in Progress. \n Please do not refresh the page.'
-                }
-              })
+              this._showContainerMenuMessage('syncing');
+
               SyncLabbookMutation(
                 this.state.owner,
                 this.state.labbookName,

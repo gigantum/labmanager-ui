@@ -636,7 +636,10 @@ export default class ImportModule extends Component {
       }
     })
   }
-
+  /**
+  *  @param {}
+  *  @return {} hides login prompt modal
+  */
   _closeLoginPromptModal(){
     this.setState({
       'showLoginPrompt': false
