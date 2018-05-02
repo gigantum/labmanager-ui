@@ -36,7 +36,7 @@
   }
   button {
     right: 5px;
-    bottom: 25px;
+    top: 12px;
     position: absolute;
     width: 35px;
     height: 35px;
@@ -55,6 +55,10 @@
     background: $white url('./../images/icons/plus-big-gray.svg');
     background-size: 35px;
   }
+
+  max-height: 40px;
+  overflow: visible;
+  z-index: 1000;
 }
 .CollaboratorModal__container {
   padding: 20px 100px;
@@ -145,4 +149,57 @@
 .CollaboratorModal--item-me {
   @extend .CollaboratorModal--item;
   order: 99999;
+}
+
+.CollaboratorModal__auto-compelte-menu{
+  position: absolute;
+  height: auto;
+  opacity: 0;
+  transition: 0.25s all;
+  background: $white;
+  border: 1px solid $background-color;
+  @extend .box-shadow;
+  top: 52px;
+  left: 0px;
+
+  border-radius: 8px;
+  width: 100%;
+}
+
+.CollaboratorModal__auto-compelte-menu--visible{
+  opacity: 1;
+}
+
+.CollaboratorModal__list{
+  margin: 0 20px;
+
+}
+
+.CollaboratorModal__list-item{
+  padding: 7.5px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid $romanSilver;
+
+  @include flex(flex-start, row);
+}
+
+.CollaboratorModal__list-item--selected{
+  color: $slateBlue;
+}
+
+.CollaboratorModal__list-item:last-child{
+  border: 0;
+}
+
+.CollaboratorModal__list-item:hover{
+  color: $turquise;
+}
+
+.CollaboratorModal__list-item--username{
+    font-weight: bold;
+}
+
+.CollaboratorModal__list-item--username,
+.CollaboratorModal__list-item--name{
+   width: 50%;
 }

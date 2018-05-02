@@ -51,7 +51,7 @@ export default class UserNote extends Component {
     let pElements = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__link'));
     for (let key in pElements) {
       if(!moreObj[key]) {
-        pElements[key].className = 'hidden';
+        pElements[key].className = 'DetailsRecords__link hidden';
       } else {
         pElements[key].className = 'DetailsRecords__link';
       }
@@ -59,7 +59,7 @@ export default class UserNote extends Component {
     let fadeElements = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__fadeout'));
     for (let key in fadeElements) {
       if(!moreObj[key]) {
-        fadeElements[key].className = 'hidden';
+        fadeElements[key].className = 'DetailsRecords__fadeout hidden';
       } else {
         fadeElements[key].className = 'DetailsRecords__fadeout';
       }
@@ -67,13 +67,13 @@ export default class UserNote extends Component {
   }
 
   checkOverflow(el) {
-    var curOverflow = el.style.overflow;
-    if ( !curOverflow || curOverflow === "visible" )
-       el.style.overflow = "hidden";
-
-    var isOverflowing = el.clientHeight < el.scrollHeight;
-    el.style.overflow = curOverflow;
-    return isOverflowing;
+    if(el) {
+      var curOverflow = el.style.overflow;
+      if ( !curOverflow || curOverflow === "visible" )
+         el.style.overflow = "hidden";
+      var isOverflowing = el.clientHeight + 3 < el.scrollHeight;
+      return isOverflowing;
+    }
    }
 
   componentDidMount() {
@@ -148,20 +148,19 @@ export default class UserNote extends Component {
         render={({props, error})=>{
 
             if(props){
-
                 return(
                   <div className="DetailsRecords">
                     <ul className="DetailsRecords__list">
                     {
                       props.labbook.detailRecords.map((detailRecord)=>{
-
+                        let liCSS = detailRecord.type === 'NOTE' ? 'DetailsRecords__item-note' : 'DetailsRecords__item'
                         return(
                           detailRecord.data.map((item, index)=>{
 
                             return(
                               <li
                                 key={detailRecord.id + '_'+ index}
-                                className="DetailsRecords__item">
+                                className={liCSS}>
                                 {this._renderDetail(item)}
                                 <div className="DetailsRecords__fadeout"></div>
                                 <p className="DetailsRecords__link hidden" onClick={(e)=> this._moreClicked(e.target)}>More...</p>

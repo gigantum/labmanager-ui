@@ -20,13 +20,6 @@ export default class DashboardContainer extends Component {
     this.state = {
       selectedComponent: props.match.params.id,
     }
-    store.dispatch({
-      type: 'UPDATE_CALLBACK_ROUTE',
-      payload: {
-        'callbackRoute': props.history.location.pathname
-      }
-    })
-    // this._modifyQuery = this._modifyQuery.bind(this)
   }
   /**
   *  @param {Object} nextProps
@@ -36,14 +29,6 @@ export default class DashboardContainer extends Component {
     this.setState({
       selectedComponent: nextProps.match.params.id
     })
-
-    store.dispatch({
-      type: 'UPDATE_CALLBACK_ROUTE',
-      payload: {
-        'callbackRoute': nextProps.history.location.pathname
-      }
-    })
-
   }
 
   /**

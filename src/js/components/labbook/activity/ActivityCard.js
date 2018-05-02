@@ -10,7 +10,8 @@ export default class ActivityCard extends Component {
 
   	super(props);
     this.state = {
-      showExtraInfo: props.edge.node.show
+      showExtraInfo: props.edge.node.show,
+      show: true,
     }
 
     this._toggleExtraInfo = this._toggleExtraInfo.bind(this)
@@ -51,6 +52,12 @@ export default class ActivityCard extends Component {
       'ActivityCard--collapsed card': !this.state.showExtraInfo,
       'column-1-span-9': true
     })
+    const titleCSS = classNames({
+      'ActivityCard__title flex flex--row justify--space-between': true,
+      'note': type === 'note',
+      'open': type === 'note' && this.state.show,
+      'closed': type === 'note' && !this.state.show,
+    })
     return(
       <div className={activityCardCSS}>
 
@@ -59,7 +66,10 @@ export default class ActivityCard extends Component {
 
         <div className="ActivityCard__content">
 
-          <div className="ActivityCard__title flex flex--row justify--space-between">
+          <div className={titleCSS}
+            onClick={()=>this.setState({show: !this.state.show})}
+
+          >
 
             <div className="ActivityCard__stack">
               <p className="ActivityCard__time">
@@ -76,7 +86,7 @@ export default class ActivityCard extends Component {
             <div className="ActivityCard__ellipsis" onClick={()=>{this._toggleExtraInfo()}}></div>
 
           }
-          { this.state.showExtraInfo &&
+          { this.state.showExtraInfo && (type !== 'note' || this.state.show)&&
             <ActivityDetails
               edge={this.props.edge}
               show={this.state.showExtraInfo}

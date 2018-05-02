@@ -8,8 +8,11 @@ import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
 import ButtonLoader from 'Components/shared/ButtonLoader'
 //store
 import store from 'JS/redux/store'
+//config
+import config from 'JS/config'
+import fetchQuery from 'JS/fetch'
 
-export default class DeleteLabbook extends Component {
+export default class CollaboratorModal extends Component {
   constructor(props){
   	super(props);
     const {
@@ -23,11 +26,14 @@ export default class DeleteLabbook extends Component {
       'addCollaboratorButtonDisabled': false,
       'newCollaborator': '',
       'buttonLoaderRemoveCollaborator': {},
-      'buttonLoaderAddCollaborator': ''
+      'buttonLoaderAddCollaborator': '',
+      'colloboratorSearchList': [],
+      'selectedIndex': 0
     };
 
     this._addCollaborator = this._addCollaborator.bind(this)
     this._removeCollaborator = this._removeCollaborator.bind(this)
+    this._completeColloborator = this._completeColloborator.bind(this)
   }
 
   componentDidMount() {
@@ -41,6 +47,95 @@ export default class DeleteLabbook extends Component {
 
     this.setState({buttonLoaderRemoveCollaborator})
   }
+
+  /**
+  *  @param {Int}
+  *  iterate value of index within the bounds of the array size
+  *  @return {}
+  */
+  _setSelectedIndex(iterate){
+    let newSelectedIndex = this.state.selectedIndex + iterate;
+    newSelectedIndex = (newSelectedIndex < 0) ? this.state.colloboratorSearchList.length - 1 : newSelectedIndex
+    newSelectedIndex = (newSelectedIndex >= this.state.colloboratorSearchList.length) ? 0 : newSelectedIndex
+
+    this.setState({'selectedIndex': newSelectedIndex});
+  }
+  /**
+  *  @param {event} evt
+  *  queries collaborator api and updates list
+  *  @return {}
+  */
+  _getUsers(evt){
+    let userInput = evt.target.value
+    if((userInput.length > 2) && (evt.key !== "Enter")){
+      const apiURL = evt.target.value.indexOf('@') > 0 ? config.userAPI.getUserEmailQueryString(evt.target.value) : config.userAPI.getUsersQueryString(evt.target.value)
+
+      fetchQuery(apiURL).then((response) => {
+
+          let collaborators = response.hits.hit.map((hit)=>{
+            return hit.fields
+          })
+
+          this.setState({colloboratorSearchList: collaborators})
+      })
+    }else{
+      this.setState({colloboratorSearchList: []})
+    }
+
+
+    this._handleInputKeys(evt)
+
+  }
+
+
+  /**
+  *  @param {event} evt
+  *  queries collaborator api and updates list
+  *  @return {}
+  */
+  _handleInputKeys(evt){
+    if ((evt.type === 'click') || (evt.key === "Enter")) {
+
+      if(this.state.colloboratorSearchList.length > 0){
+
+          const collaborator = this.state.colloboratorSearchList[this.state.selectedIndex]
+
+          this._completeColloborator(collaborator)
+      }else{
+        this._addCollaborator()
+      }
+    } else if(evt.key === 'ArrowDown'){
+
+      this._setSelectedIndex(1)
+
+    }else if (evt.key === 'ArrowUp'){
+
+      this._setSelectedIndex(-1)
+
+    }else {
+
+      this.setState({ newCollaborator: evt.target.value })
+
+    }
+  }
+  /**
+  *  @param {event} evt
+  *  queries collaborator api and updates list
+  *  @return {}
+  */
+  _completeColloborator(collaborator){
+    if(collaborator){
+
+      this.collaboratorSearch.value = collaborator.username
+
+      this.setState({
+        newCollaborator: collaborator.username,
+        colloboratorSearchList: [],
+        selectedIndex: 0
+      })
+    }
+
+  }
   /**
   *  @param {event} evt
   *  sets state of Collaborators
@@ -51,7 +146,7 @@ export default class DeleteLabbook extends Component {
       labbookName,
       owner,
       newCollaborator } = this.state
-    if ((evt.type === 'click') || (evt.key === "Enter")) {
+
       //waiting for backend updates
       this.setState({addCollaboratorButtonDisabled: true, buttonLoaderAddCollaborator: 'loading'})
 
@@ -67,10 +162,10 @@ export default class DeleteLabbook extends Component {
 
           this.setState({ newCollaborator: '', addCollaboratorButtonDisabled: false, buttonLoaderRemoveCollaborator})
 
-          this.inputTitle.value = ''
+          this.collaboratorSearch.value = ''
 
           if (error) {
-            console.log(error)
+
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
@@ -80,18 +175,19 @@ export default class DeleteLabbook extends Component {
             })
 
             this.setState({buttonLoaderAddCollaborator: 'error'})
+
           } else {
             this.setState({buttonLoaderAddCollaborator: 'finished'})
-            setTimeout(()=>{
-              this.setState({buttonLoaderAddCollaborator: ''})
-            }, 2000)
+
           }
+
+          setTimeout(()=>{
+            this.setState({buttonLoaderAddCollaborator: ''})
+          }, 2000)
         }
 
       )
-    } else {
-      this.setState({ newCollaborator: evt.target.value })
-    }
+
   }
   /**
   *  @param {object} params
@@ -147,7 +243,10 @@ export default class DeleteLabbook extends Component {
   }
 
   render(){
-
+    const autoCompleteMenu = classNames({
+      'CollaboratorModal__auto-compelte-menu': true,
+      'CollaboratorModal__auto-compelte-menu--visible': this.state.colloboratorSearchList.length > 0
+    })
     return(
       <div className="CollaboratorModal">
         <div
@@ -164,16 +263,41 @@ export default class DeleteLabbook extends Component {
 
             <input
               className="CollaboratorModal__input--collaborators"
-              ref={el => this.inputTitle = el}
+              ref={el => this.collaboratorSearch = el}
 
-              onChange={(evt) => this._addCollaborator(evt)}
-              onKeyUp={(evt) => this._addCollaborator(evt)}
+              onChange={(evt) => this._getUsers(evt)}
+              onKeyUp={(evt) => this._getUsers(evt)}
 
               type="text"
               placeholder="Add Collaborator"
 
               disabled={this.state.addCollaboratorButtonDisabled}
             />
+
+            <div className={autoCompleteMenu}>
+              <ul className="CollaboratorModal__list">
+                {
+                  this.state.colloboratorSearchList.map((collaborator, index)=>{
+
+                    const listItemCSS = classNames({
+                      'CollaboratorModal__list-item': true,
+                      'CollaboratorModal__list-item--selected': (index === this.state.selectedIndex )
+                    })
+                    return <li
+                      onClick={() => this._completeColloborator(collaborator)}
+                      className={listItemCSS}
+                      key={collaborator.username}>
+
+                      <div className="CollaboratorModal__list-item--username">{collaborator.username}</div>
+
+                      <div className="CollaboratorModal__list-item--name">{collaborator.name}</div>
+
+                   </li>
+                  }
+                  )
+                }
+              </ul>
+            </div>
 
             <ButtonLoader
               className="CollaboratorModal__button--add"
