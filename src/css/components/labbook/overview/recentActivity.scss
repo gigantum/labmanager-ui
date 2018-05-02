@@ -27,13 +27,11 @@
 }
 
 .RecentActivity__card-detail .ReactMarkdown * {
-  // line-height: 22px;
   text-overflow: ellipsis;
   display: -webkit-box;
   white-space: pre-line;
   overflow: hidden;
   word-break: break-word;
-  // -webkit-line-clamp: 10;
   -webkit-box-orient: vertical;
 }
 
@@ -104,14 +102,27 @@
   }
 }
 
+.RecentActivity__fadeout {
+  position: relative;
+  bottom: 2em;
+  height: 2em;
+  background: -webkit-linear-gradient(
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 1) 100%
+  );
+}
 .RecentActivity__card-detail .ReactMarkdown {
-  max-height: 240px;
+  max-height: 290px;
   overflow: hidden;
+  margin: 0;
 }
 
 .RecentActivity__card-detail *{
   max-width: 100%;
   max-height: 100%;
+}
+.RecentActivity__card-detail * img{
+  display: inline-block !important;
 }
 
 @keyframes fluxuateLoad {

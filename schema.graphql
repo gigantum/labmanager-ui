@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Wed Apr 25 2018 16:40:58 GMT-0400 (EDT)
+# timestamp: Wed May 02 2018 10:44:56 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -655,7 +655,7 @@ type LabbookFile implements Node & GitRepository {
   isDir: Boolean
   isFavorite: Boolean
   modifiedAt: Int
-  size: Int
+  size: String
 }
 
 """A connection for paging through labbook files. """

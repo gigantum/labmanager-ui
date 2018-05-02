@@ -77,7 +77,6 @@ class PackageDependencies extends Component {
     unsubscribe from redux store
   */
   storeDidUpdate = (environmentStore) => {
-
     if(this.state.packageMenuVisible !== environmentStore.packageMenuVisible){
       this.setState({packageMenuVisible: environmentStore.packageMenuVisible});//triggers re-render when store updates
     }
@@ -544,8 +543,8 @@ class PackageDependencies extends Component {
                           <tr
                             className={`PackageDependencies__table-row--${node.validity}` }
                             key={node.packageName + node.version}>
-                            <td>{`${node.packageName}`}</td>
-                            <td>{node.validity === 'checking' ? `retrieving ${version === 'latest'?'latest version': `v${version}`}` : version}
+                            <td className="PackageDependencies__td-package">{`${node.packageName}`}</td>
+                            <td className="PackageDependencies__td-version">{node.validity === 'checking' ? `retrieving ${version === 'latest'?'latest version': `v${version}`}` : version}
                             {
                               node.validity === 'checking' &&
                               <div className="PackageDependencies__version-loading"></div>
