@@ -20,6 +20,11 @@
   @include flex(flex-end, row);
 }
 
+.WizardModal__nav-item{
+    width: 160px;
+    text-align: center;
+}
+
 .WizardModal__modalWrap-enter {
   opacity: 0.01;
 }

@@ -6,6 +6,7 @@ import CreateLabbook from './CreateLabbook'
 import SelectBase from './SelectBase'
 import TrackingToggle from './TrackingToggle'
 import Loader from 'Components/shared/Loader'
+import ButtonLoader from 'Components/shared/ButtonLoader'
 //mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
@@ -31,7 +32,8 @@ export default class WizardModal extends React.Component {
       'continueDisabled': true,
       'modalBlur': false,
       'menuVisibility': true,
-      'isTrackingOn': true
+      'isTrackingOn': true,
+      'createLabbookButtonState': ''
     };
 
     this._createLabbookCallback = this._createLabbookCallback.bind(this)
@@ -144,7 +146,7 @@ export default class WizardModal extends React.Component {
     @param { boolean} isSkip
     gets selected id and triggers continueSave function using refs
   */
-  _continueSave = (isSkip, text) =>{
+  _continueSave = ({isSkip, text}) =>{
     this.refs[this._getSelectedComponentId()].continueSave(isSkip);
     this.setState({'continueDisabled': true});
     if (text === 'Create Labbook') this.setState({ modalBlur: true })
@@ -189,6 +191,10 @@ export default class WizardModal extends React.Component {
       revision
     } = this.state
 
+    this.setState({
+      createLabbookButtonState: 'loading'
+    })
+
     CreateLabbookMutation(
       name,
       description,
@@ -198,6 +204,8 @@ export default class WizardModal extends React.Component {
       !self.state.isTrackingOn,
       (response, error) => {
         if(error){
+
+
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload: {
@@ -205,18 +213,42 @@ export default class WizardModal extends React.Component {
               messageBody: error
             }
           })
-          this.setState({ modalBlur: false })
+
+          this.setState({
+            modalBlur: false ,
+            createLabbookButtonState: 'error'
+          })
+
+          setTimeout(()=>{
+            this.setState({
+              createLabbookButtonState: ''
+            })
+          },2000)
+
         }else{
           const {owner, name} = response.createLabbook.labbook
 
-          self._buildImage(name, owner)
+          this.setState({
+            createLabbookButtonState: 'finished'
+          })
+
+          setTimeout(()=>{
+            self._buildImage(name, owner)
 
 
-          self.props.history.push(`../labbooks/${owner}/${name}`)
+            self.props.history.push(`../labbooks/${owner}/${name}`)
 
-          if(document.getElementById('modal__cover')){
-            document.getElementById('modal__cover').classList.add('hidden')
-          }
+            if(document.getElementById('modal__cover')){
+              document.getElementById('modal__cover').classList.add('hidden')
+            }
+
+            this.setState({
+              createLabbookButtonState: ''
+            })
+          },2000)
+
+
+
         }
       }
     )
@@ -375,19 +407,34 @@ function ModalNav({self, state, getSelectedComponentId, setComponent, hideModal,
         </div>
       </div>
       <div className="WizardModal__nav-group">
-        <button
-          onClick={() => {hideModal()}}
-          className="WizardModal__progress-button button--flat">
-          Cancel
-        </button>
-        <button
-          onClick={() => {continueSave(false, _getButtonText(state))}}
-          disabled={(state.continueDisabled)}
-          >
-            {
-              _getButtonText(state)
-            }
-        </button>
+        <div className="WizardModal__nav-item">
+          <button
+            onClick={() => {hideModal()}}
+            className="WizardModal__progress-button button--flat">
+            Cancel
+          </button>
+        </div>
+
+        <div className="WizardModal__nav-item">
+          { (state.selectedComponentId === 'createLabbook') &&
+            <button
+              onClick={() => {continueSave({isSkip: false, text: 'Continue'})}}
+              disabled={(state.continueDisabled)}>
+              Continue
+            </button>
+          }
+
+          { (state.selectedComponentId === 'selectBase') &&
+            <ButtonLoader
+              buttonState={state.createLabbookButtonState}
+              buttonText={"Create Labbook"}
+              className=""
+              params={{isSkip: false, text: 'Create Labbook'}}
+              buttonDisabled={state.continueDisabled}
+              clicked={continueSave}
+            />
+          }
+        </div>
       </div>
     </div>)
 }
