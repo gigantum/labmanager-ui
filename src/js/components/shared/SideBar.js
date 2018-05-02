@@ -3,8 +3,22 @@ import classNames from 'classnames'
 import {Link} from 'react-router-dom'
 //components
 import User from './User'
+//store
+import store from 'JS/redux/store'
 
 export default class SideBar extends Component {
+  /**
+    @param {}
+    logout through Auth0
+  */
+  _updateCallbackRoute(){
+    store.dispatch({
+      type: 'UPDATE_CALLBACK_ROUTE',
+      payload: {
+        'callbackRoute': '/labbooks/all'
+      }
+    })
+  }
   /**
     @param {}
     logout through Auth0
@@ -27,8 +41,9 @@ export default class SideBar extends Component {
           <ul className='SideBar__nav'>
             <li className={isLabbooks ? 'SideBar__list-item--selected' : 'SideBar__list-item'}>
               <Link
+                onClick={() => this._updateCallbackRoute()}
                 className={isLabbooks ? 'SideBar__nav-item SideBar__nav-item--labbooks SideBar__nav-item--selected' : 'SideBar__nav-item SideBar__nav-item--labbooks'}
-                to={{pathname: '/labbooks'}}
+                to={{pathname: '/labbooks/all'}}
               >
                 <div className={isLabbooks ? 'SideBar__icon SideBar__icon--labbooks-selected' : 'SideBar__icon SideBar__icon--labbooks'}></div>
                 LabBooks
