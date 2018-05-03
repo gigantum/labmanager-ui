@@ -43,15 +43,15 @@ export default class RecentActivity extends Component {
         case 'text/plain':
           return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
         case 'image/png':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/jpg':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/jpeg':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/bmp':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/gif':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'text/markdown':
           return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
         default:
@@ -87,8 +87,10 @@ export default class RecentActivity extends Component {
     for (let key in this.refs) {
       if(!moreObj[key]) {
         ReactDOM.findDOMNode(this.refs[key]).className = 'hidden';
+        ReactDOM.findDOMNode(this.refs[key]).previousSibling.classList.add('hidden')
       } else {
         ReactDOM.findDOMNode(this.refs[key]).className = 'RecentActivity__card-link';
+        ReactDOM.findDOMNode(this.refs[key]).previousSibling.classList.remove('hidden')
       }
     }
   }
@@ -129,6 +131,7 @@ export default class RecentActivity extends Component {
                         this._renderDetail(edge)
                       }
                     </div>
+                    <div className="RecentActivity__fadeout hidden"></div>
                     <Link
                         className="RecentActivity__card-link hidden"
                         to={{pathname: `../../../../labbooks/${owner}/${labbookName}/activity`}}

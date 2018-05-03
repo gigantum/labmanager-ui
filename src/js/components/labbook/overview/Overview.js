@@ -1,5 +1,5 @@
 //vendor
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {
   createFragmentContainer,
   graphql
@@ -187,7 +187,7 @@ class Overview extends Component {
           <div className="Overview__description grid column-1-span-12">
           {
             this.state.editingDescription ?
-            <React.Fragment>
+            <Fragment>
               <textarea
                 maxLength="260"
                 className="Overview__description-input column-1-span-9"
@@ -212,9 +212,9 @@ class Overview extends Component {
                   Cancel
                 </button>
               </div>
-            </React.Fragment>
+            </Fragment>
             :
-            <React.Fragment>
+            <Fragment>
               <ReactMarkdown className={descriptionCSS} source={this.state.descriptionText ? this.state.descriptionText : 'No description provided.'} />
               <div className="column-1-span-1">
                 <button
@@ -223,7 +223,7 @@ class Overview extends Component {
                 >
                 </button>
               </div>
-            </React.Fragment>
+            </Fragment>
           }
           </div>
           <div className="Overview__title-container">
@@ -366,7 +366,6 @@ export default createFragmentContainer(
       imageStatus
       containerStatus
       ...Base_environment
-      ...CustomDependencies_environment
     }
   }`
 )

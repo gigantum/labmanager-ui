@@ -10,7 +10,8 @@ export default class ActivityCard extends Component {
 
   	super(props);
     this.state = {
-      showExtraInfo: props.edge.node.show
+      showExtraInfo: props.edge.node.show,
+      show: true,
     }
 
     this._toggleExtraInfo = this._toggleExtraInfo.bind(this)
@@ -30,9 +31,11 @@ export default class ActivityCard extends Component {
     @return {string}
   */
   _getTimeOfDay(timestamp){
-
     let time = (timestamp !== undefined) ? new Date(timestamp) : new Date();
-    return ((time.getHours()%12 === 0) ? 12 : time.getHours()%12) + ':' + ((time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes()) + (time.getHours() > 12 ? 'pm' : 'am');
+    let hour = (time.getHours() % 12 === 0) ? 12 : time.getHours() % 12;
+    let minutes = (time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes();
+    let ampm = time.getHours() >= 12 ? 'pm' : 'am';
+    return `${hour}:${minutes}${ampm}`
   }
   /**
     @param {string} freeText
@@ -49,6 +52,12 @@ export default class ActivityCard extends Component {
       'ActivityCard--collapsed card': !this.state.showExtraInfo,
       'column-1-span-9': true
     })
+    const titleCSS = classNames({
+      'ActivityCard__title flex flex--row justify--space-between': true,
+      'note': type === 'note',
+      'open': type === 'note' && this.state.show,
+      'closed': type === 'note' && !this.state.show,
+    })
     return(
       <div className={activityCardCSS}>
 
@@ -57,7 +66,10 @@ export default class ActivityCard extends Component {
 
         <div className="ActivityCard__content">
 
-          <div className="ActivityCard__title flex flex--row justify--space-between">
+          <div className={titleCSS}
+            onClick={()=>this.setState({show: !this.state.show})}
+
+          >
 
             <div className="ActivityCard__stack">
               <p className="ActivityCard__time">
@@ -74,7 +86,7 @@ export default class ActivityCard extends Component {
             <div className="ActivityCard__ellipsis" onClick={()=>{this._toggleExtraInfo()}}></div>
 
           }
-          { this.state.showExtraInfo &&
+          { this.state.showExtraInfo && (type !== 'note' || this.state.show)&&
             <ActivityDetails
               edge={this.props.edge}
               show={this.state.showExtraInfo}

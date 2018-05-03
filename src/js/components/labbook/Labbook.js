@@ -5,8 +5,6 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
-
-import StickyHeader from 'react-sticky-header';
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import classNames from 'classnames'
@@ -25,7 +23,7 @@ import Loader from 'Components/shared/Loader'
 import Branches from './branches/Branches'
 import BranchMenu from './branchMenu/BranchMenu'
 //utils
-import {getFilesFromDragEvent, getFiles} from "JS/utils/html-dir-content";
+import {getFilesFromDragEvent} from "JS/utils/html-dir-content";
 
 import Config from 'JS/config'
 
@@ -604,7 +602,7 @@ const LabbookFragmentContainer = createFragmentContainer(
             numPipPackages
             numCustomDependencies
           }
-      
+
 
           availableBranchNames
           mergeableBranchNames

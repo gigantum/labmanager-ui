@@ -90,7 +90,7 @@ export default class MostRecent extends Component {
       if(this.state.files.allFiles.edges.length > 0){
 
         let allFiles = this.state.files.allFiles.edges.filter((edge)=>{
-          return edge && (edge.node !== undefined) && !edge.node.isDir
+          return edge && edge.node && (edge.node !== undefined) && !edge.node.isDir
         })
         allFiles = this._sortFiles(allFiles);
         return(

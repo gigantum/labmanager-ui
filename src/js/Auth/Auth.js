@@ -62,7 +62,7 @@ export default class Auth {
     //redirect to labbooks when user logs in
     let route = sessionStorage.getItem('CALLBACK_ROUTE') ? sessionStorage.getItem('CALLBACK_ROUTE') : '/labbooks';
 
-    route = route === '/callback' ? '/labbook': route;
+    route = route === '' ? '/labbook': route;
     history.replace(route)
   }
 
