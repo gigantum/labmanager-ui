@@ -25,28 +25,46 @@ export default class CustomDockerfile extends Component {
     const { owner, labbookName } = store.getState().routes
     if(navigator.onLine) {
       if(canEditEnvironment) {
-        this.setState({savingDockerfile: true})
-        AddCustomDockerMutation(
-          owner,
-          labbookName,
-          this.state.dockerfileContent,
-          (res, error) => {
-            if(error) {
-              console.log(error)
-              store.dispatch({
-                type: 'ERROR_MESSAGE',
-                payload: {
-                  message: 'Dockerfile was not set: ',
-                  messageBody: error
-                }
-              })
-              this.setState({savingDockerfile: false})
-            } else {
-              this.props.buildCallback();
-              this.setState({ editingDockerfile: false, lastSavedDockerfileContent: this.state.dockerfileContent, savingDockerfile: false})
-            }
+        const validDictionary = new Set(['LABEL', 'RUN', 'ENV', '#'])
+        let splitDockerSnippet = this.state.dockerfileContent.split(/\n|\\n/);
+        let valid = true;
+        splitDockerSnippet.forEach((snippetLine) => {
+          let firstVal = snippetLine.split(' ')[0];
+          if (firstVal.length && !validDictionary.has(firstVal.toUpperCase())) {
+            valid = false;
           }
-        )
+        });
+        if (valid) {
+          this.setState({savingDockerfile: true})
+          AddCustomDockerMutation(
+            owner,
+            labbookName,
+            this.state.dockerfileContent,
+            (res, error) => {
+              if(error) {
+                console.log(error)
+                store.dispatch({
+                  type: 'ERROR_MESSAGE',
+                  payload: {
+                    message: 'Dockerfile was not set: ',
+                    messageBody: error
+                  }
+                })
+                this.setState({savingDockerfile: false})
+              } else {
+                this.props.buildCallback();
+                this.setState({ editingDockerfile: false, lastSavedDockerfileContent: this.state.dockerfileContent, savingDockerfile: false})
+              }
+            }
+          )
+        } else {
+          store.dispatch({
+            type: 'WARNING_MESSAGE',
+            payload: {
+              message: 'Invalid command entered.',
+            }
+          })
+        }
       } else {
         store.dispatch({
           type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
@@ -104,11 +122,13 @@ export default class CustomDockerfile extends Component {
       <div className="CustomDockerfile">
         <div className="Environment__header-container">
           <h5 className="CustomDockerfile__header">
-            Custom Dockerfile
+            Custom Docker Instructions
           </h5>
         </div>
         <p className="CustomDockerfile__sub-header">
-            Add commands below to modify your environment
+            <p>Add commands below to modify your environment</p>
+            <p>For example, to install a pip package from a Github repo add:</p>
+            <code>RUN pip install git+https://git.repo/some_pkg.git</code>
         </p>
         <div className="CustomDockerfile__content grid column-1-span-12">
         {

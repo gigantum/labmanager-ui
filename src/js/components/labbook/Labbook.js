@@ -8,6 +8,7 @@ import {
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import classNames from 'classnames'
+import uuidv4 from 'uuid/v4';
 //store
 import store from "JS/redux/store"
 //components
@@ -35,6 +36,7 @@ class Labbook extends Component {
 
     localStorage.setItem('owner', store.getState().routes.owner)
     this.state = store.getState().labbook
+    this.state.branchMenuKey = uuidv4();
     //bind functions here
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
     this._setBuildingState = this._setBuildingState.bind(this)
@@ -397,10 +399,11 @@ class Labbook extends Component {
 
                 </div>
                 <div className="Labbook__column-container">
+
                    <BranchMenu
+                     key={this.state.branchMenuKey}
                      history={this.props.history}
                      collaborators={labbook.collaborators}
-                     canManageCollaborators={labbook.canManageCollaborators}
                      defaultRemote={labbook.defaultRemote}
                      labbookId={labbook.id}
                      remoteUrl={labbook.overview.remoteUrl}

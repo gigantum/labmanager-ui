@@ -6,6 +6,8 @@ import classNames from 'classnames'
 import environment from 'JS/createRelayEnvironment'
 //components
 import CollaboratorsModal from './CollaboratorsModal'
+//store
+import store from 'JS/redux/store'
 
 export const CollaboratorsQuery =  graphql`
   query CollaboratorsQuery($name: String!, $owner: String!){
@@ -61,7 +63,9 @@ export const CollaboratorsQuery =  graphql`
     render(){
       let self = this
       const {labbookName, owner} = this.props
-
+      let {collaborators, canManageCollaborators} = store.getState().collaborators;
+      collaborators = collaborators && collaborators[labbookName];
+      canManageCollaborators = canManageCollaborators && canManageCollaborators[labbookName];
       return(
         <QueryRenderer
           query={CollaboratorsQuery}
@@ -70,10 +74,25 @@ export const CollaboratorsQuery =  graphql`
             name: labbookName,
             owner: owner
           }}
-          render={({props, error})=>{
+          render={({props, error})=> {
               if(props){
-
                 const {labbook} = props
+                store.dispatch({
+                  type: 'SET_COLLABORATORS',
+                  payload: {
+                    collaborators: {
+                      [labbookName]: labbook.collaborators
+                    }
+                  }
+                })
+                store.dispatch({
+                  type: 'SET_CANMANAGECOLLABORATORS',
+                  payload: {
+                    canManageCollaborators: {
+                      [labbookName]: labbook.canManageCollaborators
+                    }
+                  }
+                })
                 const collaboratorButtonCSS = classNames({
                   'disabled': !labbook.canManageCollaborators,
                   'BranchMenu__item--flat-button':  true
@@ -122,8 +141,56 @@ export const CollaboratorsQuery =  graphql`
                     }
                   </li>
                 )
-              }else{
+              }else if(collaborators !== null){
+                const collaboratorButtonCSS = classNames({
+                  'disabled': !canManageCollaborators,
+                  'BranchMenu__item--flat-button':  true
+                })
 
+                const collaboratorCSS = classNames({
+                  'BranchMenu__item--collaborators': true,
+                  'disabled': !canManageCollaborators
+                })
+
+                const collaboratorFilteredArr = collaborators && collaborators.filter((name)=>{
+                  return name !== owner
+                })
+
+                const collaboratorNames = self._getCollaboratorList(collaborators, collaboratorFilteredArr)
+
+                return(
+
+                  <li className={collaboratorCSS}
+                    >
+                    <button
+                      onClick={() => this._toggleCollaborators()}
+                      className={collaboratorButtonCSS}>
+                      Collaborators
+
+                      <p className="BranchMenu__collaborator-names">{collaboratorNames}</p>
+
+                    </button>
+
+                    {
+                      this.state.collaboratorModalVisible &&
+
+                        [<CollaboratorsModal
+                          key="CollaboratorsModal"
+                          ref="collaborators"
+                          collaborators={collaborators}
+                          owner={owner}
+                          labbookName={labbookName}
+                          toggleCollaborators={this._toggleCollaborators}
+                        />,
+                        <div
+                          key="CollaboratorsModal__cover"
+                          className="modal__cover"></div>
+                      ]
+
+                    }
+                  </li>
+                )
+              } else{
                 return(
                   <li className="BranchMenu__item--collaborators disabled"
                     >

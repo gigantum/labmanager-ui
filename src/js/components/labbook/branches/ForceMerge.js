@@ -10,8 +10,8 @@ export default class CreateBranchModal extends React.Component {
   *  hides modal
   *  @return {}
   */
-  _forceMerge(){
-    this.props.merge(true);
+  _forceMerge(evt){
+    this.props.merge(evt, this.props.params);
     this.props.toggleModal('forceMergeVisible')
   }
 

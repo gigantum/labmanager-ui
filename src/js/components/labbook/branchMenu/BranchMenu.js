@@ -1,5 +1,6 @@
 //vendor
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
 //utilities
@@ -21,8 +22,8 @@ import LoginPrompt from './LoginPrompt'
 import CreateBranch from 'Components/labbook/branches/CreateBranch'
 import Collaborators from './collaborators/Collaborators'
 
-
-export default class UserNote extends Component {
+let collabKey = uuidv4();
+export default class BranchMenu extends Component {
   constructor(props) {
     super(props);
     const { owner, labbookName } = store.getState().routes
@@ -33,8 +34,6 @@ export default class UserNote extends Component {
       'addedRemoteThisSession': !(this.props.defaultRemote === null),
       'showCollaborators': false,
       'newCollaborator': '',
-      'canManageCollaborators': this.props.canManageCollaborators,
-      'canClickCollaborators': this.props.canManageCollaborators || (owner === localStorage.getItem('username') && this.props.remoteUrl),
       'showLoginPrompt': false,
       'exporting': false,
       'deleteModalVisible': false,
@@ -56,6 +55,7 @@ export default class UserNote extends Component {
     this._exportLabbook = this._exportLabbook.bind(this)
     this._toggleSyncModal = this._toggleSyncModal.bind(this)
     this._switchBranch = this._switchBranch.bind(this)
+    this._remountCollab = this._remountCollab.bind(this)
 
   }
 
@@ -65,7 +65,7 @@ export default class UserNote extends Component {
   componentDidMount() {
     window.addEventListener('click', this._closeMenu)
     let username = localStorage.getItem('username')
-    if ((this.props.owner === username) && this.props.defaultRemote && !this.props.canManageCollaborators) {
+    if ((this.props.owner === username) && this.props.defaultRemote && !this.state.canManageCollaborators) {
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload: {
@@ -118,8 +118,11 @@ export default class UserNote extends Component {
   */
   _openMenu() {
     this.setState({ menuOpen: !this.state.menuOpen })
+    this._remountCollab();
   }
-
+  _remountCollab() {
+    collabKey = uuidv4()
+  }
     /**
     *  @param {string} action
     *  displays container menu message
@@ -192,28 +195,23 @@ export default class UserNote extends Component {
                       containerMenuOpen: false
                     }
                   })
+                  if(error){
+                    console.log(error)
 
-                  if (response.publishLabbook && !response.publishLabbook.success) {
-                    if(error){
-                      console.log(error)
-
-                      store.dispatch({
-                        type: 'MULTIPART_INFO_MESSAGE',
-                        payload: {
-                          id: id,
-                          message: 'Publish failed',
-                          messageList: error,
-                          error: true
-                        }
-                      })
-
-                    }
-                    self.setState({
-                      publishDisabled: false
+                    store.dispatch({
+                      type: 'ERROR_MESSAGE',
+                      payload: {
+                        id: id,
+                        message: 'Publish failed',
+                        messageBody: error,
+                      }
                     })
-
-                  } else {
-
+                  }
+                  self.setState({
+                    publishDisabled: false
+                  })
+                  if (response.publishLabbook && response.publishLabbook.success) {
+                    this._remountCollab();
                     store.dispatch({
                       type: 'MULTIPART_INFO_MESSAGE',
                       payload: {
@@ -226,7 +224,6 @@ export default class UserNote extends Component {
 
                     self.setState({
                       addedRemoteThisSession: true,
-                      canManageCollaborators: true,
                       remoteUrl: `https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`
 
                     })
@@ -606,7 +603,6 @@ export default class UserNote extends Component {
 
   render() {
     const {labbookName, owner} = this.state
-
     const loginPromptModalCSS = classNames({
       'BranchModal--login-prompt': this.state.showLoginPrompt,
       'hidden': !this.state.showLoginPrompt
@@ -672,6 +668,7 @@ export default class UserNote extends Component {
 
           <ul className="BranchMenu__list">
             <Collaborators
+              key={collabKey}
               ref="collaborators"
               owner={owner}
               labbookName={labbookName}
