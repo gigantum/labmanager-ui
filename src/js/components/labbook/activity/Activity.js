@@ -82,7 +82,15 @@ class Activity extends Component {
     clearInterval(this.interval);
     window.removeEventListener('scroll', this._handleScroll)
   }
-
+  /**
+   * @param {}
+   * scroll to top of page
+   * deletes activity feed in the relay store
+   * resets counter
+   * calls restart function
+   * removes scroll listener
+   * @return {}
+   */
   _scrollTo(evt){
 
     if(document.documentElement.scrollTop === 0 ){
@@ -103,7 +111,8 @@ class Activity extends Component {
   }
   /**
    * @param {}
-   * restarts refetch
+   * sets scroll listener
+   * kicks off scroll to top
    * @return {}
    */
   _getNewActivties(){
@@ -122,10 +131,13 @@ class Activity extends Component {
    */
   _startRefetch(){
     if(this.state.newActivityPolling){
-      this.setState({refetchEnabled: true, newActivityPolling: false, 'newActivityAvailable': false})
+      this.setState({
+        'refetchEnabled': true,
+        'newActivityPolling': false,
+        'newActivityAvailable': false
+      })
+
       this._refetch();
-
-
     }
   }
   /**
@@ -138,14 +150,18 @@ class Activity extends Component {
 
     if(!this.state.newActivityPolling){
 
-      this.setState({refetchEnabled: false, newActivityPolling: true, 'newActivityAvailable': false})
+      this.setState({
+        'refetchEnabled': false,
+        'newActivityPolling': true,
+        'newActivityAvailable': false
+      })
 
       const {labbookName, owner} = store.getState().routes
 
       let getNewActivity = () =>{
 
         NewActivity.getNewActivity(labbookName, owner).then((data)=>{
- 
+
           let firstRecordCommitId = self.props.labbook.activityRecords.edges[0].node.commit
           let newRecordCommitId = data.labbook.activityRecords.edges[0].node.commit
 
@@ -239,7 +255,7 @@ class Activity extends Component {
     let {isPaginating} = this.state
     let activityRecords = this.props.labbook.activityRecords,
         root = document.getElementById('root'),
-        distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
+        distanceY = window.innerHeight + document.documentElement.scrollTop + 1000,
         expandOn = root.scrollHeight;
 
 

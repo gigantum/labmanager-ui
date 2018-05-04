@@ -71,7 +71,7 @@ export default class Auth {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
-    localStorage.removeItem('family_name')
+    localStorage.removeItem('family_name');
     localStorage.removeItem('given_name');
     localStorage.removeItem('email');
     localStorage.removeItem('username');
