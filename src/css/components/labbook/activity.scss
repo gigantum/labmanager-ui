@@ -48,8 +48,39 @@
 
 }
 
+.Activity__new-record{
+  cursor: pointer;
+  text-align: center;
+  line-height: 40px;
+  position: fixed;
+  top: 100px;
+  height: 40px;
+  z-index: 800;
+  left: 50%;
+  width: 280px;
+  color: $romanSilver;
+
+  border-radius: 20px;
+
+  margin: 0 0 0 -140px;
+  border: 1px solid $romanSilver;
+
+  padding: 0 20px 0 0;
+  background: #fefefe url('../images/icons/up-arrow-silver.svg') no-repeat calc(100% - 15px) center;
+  background-size: 22px;
+
+  @extend .box-shadow;
+}
+
+.Activity__new-record:hover{
+  color: $turquise;
+  border: 1px solid $turquise;
+  background: #fefefe url('../images/icons/up-arrow-turquise.svg') no-repeat calc(100% - 15px) center;
+  background-size: 22px;
+}
+
 .ActivityCard__loader {
-  margin: 20px 15px;
+  margin: 20px 0px;
   height: 40px;
   background: $white url('../images/icons/paragraph.svg') repeat-X 10px center;
   padding: 0 5px;
@@ -73,7 +104,7 @@
   height: 45px;
 }
 .Activity__date-tab:nth-child(1):before {
-  height: 40px;
+  height: 48px;
 }
 
 .Activity__date-tab:before {
@@ -174,16 +205,12 @@
   overflow: hidden;
   border-top: 2px solid $azure;
   min-height: 0px;
-  //max-height: 540px;
-
   transition: height 0.5s;
 }
 .ActivityCard__expanded-view.no-height {
   height: 0px;
   padding: 0px;
   border: 0px;
-  // overflow: hidden;
-  // visibility: hidden;
 }
 
 

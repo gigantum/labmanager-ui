@@ -96,7 +96,7 @@
   $columnWidth: 130px;
   $columnSpan: ((80px * $span) + (25px * ($span - 1)));
 
-  $maxScreenWidth: ($width + 180px) - (($columnsToRemove - 1) * 130px);
+  $maxScreenWidth: ($width + 180px) - (($columnsToRemove - 1) * 130px) + 25px;
 
   $minScreenWidth: $maxScreenWidth - ($columnsToRemove * $columnWidth);
   @media screen and (max-width: $maxScreenWidth) and (min-width: $minScreenWidth) {

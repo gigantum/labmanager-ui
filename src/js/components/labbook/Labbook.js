@@ -35,6 +35,7 @@ class Labbook extends Component {
 
     localStorage.setItem('owner', store.getState().routes.owner)
     this.state = store.getState().labbook
+
     //bind functions here
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
     this._setBuildingState = this._setBuildingState.bind(this)
@@ -53,6 +54,9 @@ class Labbook extends Component {
 
   componentWillMount() {
     const {labbookName, owner} = store.getState().routes
+
+
+
     document.title =  `${owner}/${labbookName}`
   }
 
@@ -74,6 +78,8 @@ class Labbook extends Component {
     unsubscribe = store.subscribe(() =>{
         this.storeDidUpdate(store.getState().labbook)
     })
+
+
 
     window.addEventListener('scroll', this._setStickHeader)
     window.addEventListener('click', this._branchViewClickedOff )
@@ -494,6 +500,7 @@ class Labbook extends Component {
                         <Route
                           path={`${this.props.match.path}/activity`}
                           render={() => {
+
                           return (
                             <Activity
                               key={this.state.labbookName + '_activity'}

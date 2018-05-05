@@ -4,6 +4,8 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
+import uuidv4 from 'uuid/v4'
+//store
 import store from 'JS/redux/store'
 //Components
 import ActivityCard from './ActivityCard'
@@ -11,10 +13,10 @@ import Loader from 'Components/shared/Loader'
 import UserNote from './UserNote'
 import PaginationLoader from './ActivityLoaders/PaginationLoader'
 import CreateBranch from '../branches/CreateBranch';
-//utilities
-import Config from 'JS/config'
+import NewActivity from './NewActivity'
 //config
 import config from 'JS/config'
+
 
 //local variables
 let pagination = false;
@@ -29,7 +31,10 @@ class Activity extends Component {
       'modalVisible': false,
       'isPaginating': false,
       'selectedNode': null,
-      'createBranchVisible': false
+      'createBranchVisible': false,
+      'refetchEnabled': false,
+      'newActivityAvailable': false,
+      'newActivityPolling': false
     };
 
     //bind functions here
@@ -38,7 +43,11 @@ class Activity extends Component {
     this._hideAddActivity = this._hideAddActivity.bind(this)
     this._handleScroll = this._handleScroll.bind(this)
     this._refetch = this._refetch.bind(this)
+    this._startRefetch = this._startRefetch.bind(this)
+    this._scrollTo = this._scrollTo.bind(this)
+    this._stopRefetch = this._stopRefetch.bind(this)
     this._toggleCreateModal = this._toggleCreateModal.bind(this)
+    this._getNewActivties = this._getNewActivties.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -73,17 +82,120 @@ class Activity extends Component {
     clearInterval(this.interval);
     window.removeEventListener('scroll', this._handleScroll)
   }
-
   /**
    * @param {}
-   * refetches component looking for new edges to insert at the top of the activity feed
-   *
+   * scroll to top of page
+   * deletes activity feed in the relay store
+   * resets counter
+   * calls restart function
+   * removes scroll listener
+   * @return {}
    */
+  _scrollTo(evt){
+
+    if(document.documentElement.scrollTop === 0 ){
+      let {relay} = this.props
+
+      let store = relay.environment.getStore()
+
+      this.props.labbook.activityRecords.edges.forEach((edge)=>{
+        store._recordSource.delete(edge.node.id)
+      })
+
+      counter = 5
+
+      this._startRefetch()
+
+      window.removeEventListener('scroll', this._scrollTo)
+    }
+  }
+  /**
+   * @param {}
+   * sets scroll listener
+   * kicks off scroll to top
+   * @return {}
+   */
+  _getNewActivties(){
+
+    window.addEventListener('scroll', this._scrollTo)
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+  /**
+   * @param {}
+   * restarts refetch
+   * @return {}
+   */
+  _startRefetch(){
+    if(this.state.newActivityPolling){
+      this.setState({
+        'refetchEnabled': true,
+        'newActivityPolling': false,
+        'newActivityAvailable': false
+      })
+
+      this._refetch();
+    }
+  }
+  /**
+   * @param {}
+   * stops refetch from firing
+   * @return {}
+   */
+  _stopRefetch(){
+    let self = this
+
+    if(!this.state.newActivityPolling){
+
+      this.setState({
+        'refetchEnabled': false,
+        'newActivityPolling': true,
+        'newActivityAvailable': false
+      })
+
+      const {labbookName, owner} = store.getState().routes
+
+      let getNewActivity = () =>{
+
+        NewActivity.getNewActivity(labbookName, owner).then((data)=>{
+
+          let firstRecordCommitId = self.props.labbook.activityRecords.edges[0].node.commit
+          let newRecordCommitId = data.labbook.activityRecords.edges[0].node.commit
+
+          if(firstRecordCommitId === newRecordCommitId){
+            setTimeout(()=>{
+               getNewActivity()
+            }, 3000)
+
+
+          }else{
+
+            this.setState({'newActivityAvailable': true})
+
+          }
+
+
+       }).catch(error => console.log(error))
+
+     }
+
+     getNewActivity()
+
+   }
+ }
+
+  /**
+  * @param {}
+  * refetches component looking for new edges to insert at the top of the activity feed
+  *
+  */
   _refetch(){
     let self = this
     let relay = this.props.relay
     let activityRecords = this.props.labbook.activityRecords
-
 
     let cursor = activityRecords.edges[ activityRecords.edges.length - 1].node.cursor
 
@@ -92,8 +204,9 @@ class Activity extends Component {
       (response) => {
 
         setTimeout(function(){
-
-            self._refetch()
+            if(self.state.refetchEnabled){
+              self._refetch()
+            }
         }, 5000)
 
       },
@@ -142,11 +255,20 @@ class Activity extends Component {
     let {isPaginating} = this.state
     let activityRecords = this.props.labbook.activityRecords,
         root = document.getElementById('root'),
-        distanceY = window.innerHeight + document.documentElement.scrollTop + 40,
+        distanceY = window.innerHeight + document.documentElement.scrollTop + 1000,
         expandOn = root.scrollHeight;
+
 
     if ((distanceY > expandOn) && !isPaginating && activityRecords.pageInfo.hasNextPage) {
         this._loadMore(evt);
+    }
+
+    if((distanceY > 1500)){
+
+        this._stopRefetch()
+
+    }else{
+      this._startRefetch()
     }
   }
   /**
@@ -231,6 +353,15 @@ class Activity extends Component {
       return(
         <div key={this.props.labbook} className='Activity'>
 
+          {
+            (!this.state.refetchEnabled && this.state.newActivityAvailable) &&
+             <div
+               onClick={() => this._getNewActivties()}
+               className="Activity__new-record">
+                New Activitie(s) Available
+             </div>
+          }
+
           <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
 
             <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Activity__sizer flex-1-0-auto">
@@ -249,7 +380,7 @@ class Activity extends Component {
 
                       <div className="Activity__date-tab column-1-span-1 flex flex--column justify--space-around">
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
-                        <div className="Activity__date-month">{ Config.months[parseInt(k.split('_')[1], 10)] }</div>
+                        <div className="Activity__date-month">{ config.months[parseInt(k.split('_')[1], 10)] }</div>
                       </div>
 
                       {
@@ -337,6 +468,8 @@ class Activity extends Component {
                   )
                 })
               }
+
+
             </div>
           </div>
 
