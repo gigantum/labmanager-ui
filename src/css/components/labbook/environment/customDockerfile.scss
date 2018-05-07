@@ -12,9 +12,18 @@
 }
 
 .CustomDockerfile__sub-header {
-  padding-top: 0;
+  margin-top: 0;
   font-size: 14px;
   color: $romanSilver;
+  p{
+    margin: 5px 0;
+  }
+  p:first-child {
+    margin: 0 0 10px 0;
+  }
+  code {
+    font-family: monospace;
+  }
 }
 
 .CustomDockerfile__content {
@@ -37,7 +46,12 @@
       have to use extend as ReactMarkDown does not inherit classNames
     */
     @extend .column-1-span-9;
+
     margin-bottom: 0;
+    p {
+      font-family: monospace !important;
+      font-size: 1em !important;
+    }
   }
   button {
     margin-top: 2px;
@@ -54,6 +68,8 @@
 
 .CustomDockerfile__content-input {
   height: 100px;
+  font-family: monospace;
+  font-size: 1em;
   resize: none;
 }
 

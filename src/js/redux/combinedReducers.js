@@ -12,6 +12,8 @@ import overview from './reducers/labbook/overview/overview';
 import environment from './reducers/labbook/environment/environment';
 //labbooks/fileBrowser reducers
 import fileBrowser from './reducers/labbook/fileBrowser/fileBrowserWrapper';
+//labbooks/branchMenu/collaborators reducers
+import collaborators from './reducers/labbook/branchMenu/collaborators/collaborators';
 
 export default combineReducers({
   footer,
@@ -22,5 +24,6 @@ export default combineReducers({
   containerStatus,
   environment,
   login,
-  fileBrowser
+  fileBrowser,
+  collaborators
 });
