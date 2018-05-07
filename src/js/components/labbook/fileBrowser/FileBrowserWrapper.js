@@ -212,7 +212,6 @@ export default class FileBrowserWrapper extends Component {
 
       }else if(filesArray.entry){
 
-        console.log(filesArray)
 
         flattenedFiles.push(filesArray)
       }
@@ -347,10 +346,11 @@ export default class FileBrowserWrapper extends Component {
         let extension = file.name ? file.name.replace(/.*\./, '') : file.entry.fullPath.replace(/.*\./, '');
 
         if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && ((file.entry && file.entry.isFile) || (typeof file.type === 'string'))){
-          console.log(file.size, oneHundredMB, tenMB)
+
           if(file.size > oneHundredMB){
             fileSizeNotAllowed.push(file)
           }
+
           if((file.size > tenMB) && (file.size < oneHundredMB)){
             fileSizePrompt.push(file)
           }
@@ -360,7 +360,6 @@ export default class FileBrowserWrapper extends Component {
 
     filesRecursionCount(files)
 
-    console.log(fileSizeNotAllowed, fileSizePrompt)
     return {fileSizeNotAllowed, fileSizePrompt}
   }
   /**
@@ -411,8 +410,6 @@ export default class FileBrowserWrapper extends Component {
           } = this.state.uploadData
 
    let fileSizeData = this.state.uploadData.fileSizeData
-   console.log(fileSizeData, this)
-   console.log(this.state)
    let fileSizeNotAllowed = fileSizeData.fileSizeNotAllowed.concat(fileSizeData.fileSizePrompt)
 
    fileSizeData.fileSizeNotAllowed = fileSizeNotAllowed
@@ -431,7 +428,7 @@ export default class FileBrowserWrapper extends Component {
       prefix,
       fileSizeData
    } = this.state.uploadData
-    console.log(fileSizeData, this)
+
     this._startFileUpload(files, prefix, fileSizeData);
 
     this.setState({'fileSizePromptVisible': false})
@@ -874,7 +871,9 @@ export default class FileBrowserWrapper extends Component {
             <div
               key="FileBrowserLargeCodeUpload"
               className="FileBrowser__modal">
-
+              <div
+                className="FileBrowser__close-modal"
+                onClick={() => this._cancelUpload()}></div>
               <h5 className="FileBrowser__header">Large File Warning</h5>
 
               <div className="FileBrowser__body">
@@ -882,11 +881,13 @@ export default class FileBrowserWrapper extends Component {
                 <p>You're uploading some large files to the Code Section, are you sure you don't want to place these in the Input Section? Note, putting large files in the Code Section can hurt performance.</p>
 
                 <div className="FileBrowser__button-container">
-                  <button onClick={() => this._userAcceptsUpload()}>Continue Upload</button>
-                  <button onClick={() => this._userAcceptsUpload()}>Skip Large Files</button>
                   <button
                     className="button--flat"
                     onClick={() => this._cancelUpload()}>Cancel Upload</button>
+                  <button onClick={() => this._userAcceptsUpload()}>Skip Large Files</button>
+                  <button onClick={() => this._userAcceptsUpload()}>Continue Upload</button>
+
+
                 </div>
 
               </div>

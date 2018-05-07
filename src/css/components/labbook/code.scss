@@ -190,9 +190,10 @@
 }
 
 .FileBrowser__modal{
-  @include modal(300px, 500px);
+  position: relative;
+  @include modal(340px, 540px);
   z-index: 1000;
-  padding: 20px;
+  padding: 40px;
   @include flex(space-between, column);
 
 }
@@ -206,6 +207,10 @@
 .FileBrowser__body{
   @include flex(space-around, column);
   flex: 1;
+  p{
+    flex: 1;
+    margin-top: 40px;
+  }
 }
 
 .FileBrowser__button-container{
@@ -216,9 +221,14 @@
   align-self: center;
 
   button{
-    padding: 0 8px; 
+    padding: 0 8px;
     margin: 10px;
     width: auto;
     text-align: center;
   }
+
+}
+
+.FileBrowser__close-modal{
+  @include close();
 }
