@@ -8,7 +8,7 @@ import {
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
-import LocalLabbookPanel from 'Components/dashboard/labbooks/LocalLabbookPanel'
+import LocalLabbooks from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooks'
 import ImportModule from 'Components/import/ImportModule'
 //Mutations
 import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
@@ -17,7 +17,7 @@ import Validation from 'JS/utils/Validation'
 
 let isLoadingMore = false;
 let refetchLoading = false;
-class LocalLabbooks extends Component {
+class Labbooks extends Component {
 
   constructor(props){
   	super(props);
@@ -348,34 +348,12 @@ _captureScroll = () => {
                 </li>
               </ul>
             </div>
-            <div className='LocalLabbooks__labbooks'>
-              <div className="LocalLabbooks__sizer grid">
 
-                <ImportModule
-                    ref="ImportModule_localLabooks"
-                    {...props}
-                    showModal={this._showModal}
-                    className="LocalLabbooks__panel column-4-span-3 LocalLabbooks__panel--import"
-                />
-
-                {
-
-                  labbooks.map((edge) => {
-
-                    return (
-                      <LocalLabbookPanel
-                        key={edge.node.name}
-                        ref={'LocalLabbookPanel' + edge.node.name}
-                        className="LocalLabbooks__panel"
-                        edge={edge}
-                        history={this.props.history}
-                        goToLabbook={this._goToLabbook}/>
-                    )
-                  })
-                }
-            </div>
-
-          </div>
+            <LocalLabbooks
+              labbooks={labbooks}
+              showModal={this._showModal}
+              {...props}
+            />
 
         </div>
       )
@@ -396,10 +374,10 @@ _captureScroll = () => {
 }
 
 export default createPaginationContainer(
-  LocalLabbooks,
+  Labbooks,
   {feed: graphql`
-      fragment LocalLabbooks_feed on LabbookQuery{
-        localLabbooks(first: $first, after: $cursor, sort: $sort, reverse: $reverse)@connection(key: "LocalLabbooks_localLabbooks"){
+      fragment Labbooks_feed on LabbookQuery{
+        localLabbooks(first: $first, after: $cursor, sort: $sort, reverse: $reverse)@connection(key: "Labbooks_localLabbooks"){
           edges {
             node {
               name
@@ -450,13 +428,13 @@ export default createPaginationContainer(
       };
     },
     query: graphql`
-      query LocalLabbooksPaginationQuery(
+      query LabbooksPaginationQuery(
         $first: Int!
         $cursor: String
         $sort: String
         $reverse: Boolean
       ) {
-          ...LocalLabbooks_feed
+          ...Labbooks_feed
       }
     `
   }

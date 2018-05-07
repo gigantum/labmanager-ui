@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {graphql, QueryRenderer} from 'react-relay'
 //components
 import DatasetSets from './datasets/DatasetSets';
-import LocalLabbooks from './labbooks/LocalLabbooks';
+import Labbooks from './labbooks/Labbooks';
 import environment from 'JS/createRelayEnvironment'
 import Loader from 'Components/shared/Loader'
 //store
@@ -10,7 +10,7 @@ import store from 'JS/redux/store'
 
 
 const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String, $sort: String $reverse: Boolean){
-    ...LocalLabbooks_feed
+    ...Labbooks_feed
 }`
 
 export default class DashboardContainer extends Component {
@@ -55,11 +55,12 @@ export default class DashboardContainer extends Component {
             reverse: false,
           }}
           render={({error, props}) => {
+            console.log(props)
             if (error) {
               console.log(error)
             } else if (props) {
                 return (
-                  <LocalLabbooks
+                  <Labbooks
                     feed={props}
                     history={this.props.history}
                   />
