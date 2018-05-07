@@ -151,7 +151,7 @@ export default class FileBrowserWrapper extends Component {
   *  @param {array, boolean}
   *  updates footer message depending on the type of upload
   */
-  _creteFilesFooterMessage(totalFiles, hasDirectoryUpload, fileSizeNotAllowed){
+  _creteFilesFooterMessage(totalFiles, hasDirectoryUpload, fileSizeData){
 
 
 
@@ -178,18 +178,32 @@ export default class FileBrowserWrapper extends Component {
           message: `Uploading Directories`,
         }
       })
-    }else{
-      let fileSizeNotAllowedNames = fileSizeNotAllowed.map((file) => file.name)
+    }else if(fileSizeData.fileSizeNotAllowed.length > 0){
+      let fileSizePromptNames = fileSizeData.fileSizePrompt.map((file) => file.name)
+      let fileSizeNotAllowedNames = fileSizeData.fileSizeNotAllowed
+                                    .map((file) => file.name)
+                                    .filter((name) => fileSizePromptNames.indexOf(name) < 0)
+
       let fileSizeNotAllowedString = fileSizeNotAllowedNames.join(', ')
 
-      let largeFileMesage = `Cannot upload files over 100 Mb to the code direcotry. The following files have not been added ${fileSizeNotAllowedString}`
+      if(fileSizeNotAllowedString.length > 0){
+        let message = `Cannot upload files over 100 Mb to the code directory. The following files have not been added ${fileSizeNotAllowedString}`
 
-      let message = fileSizeNotAllowed.length > 0 ? largeFileMesage : `Cannot upload these file types`
+        store.dispatch({
+          type: 'WARNING_MESSAGE',
+          payload:{
+            message: message,
+          }
+        })
+      }
+
+    }else {
+
 
       store.dispatch({
         type: 'WARNING_MESSAGE',
         payload:{
-          message: message,
+          message: `Cannot upload these file types`,
         }
       })
     }
@@ -259,7 +273,7 @@ export default class FileBrowserWrapper extends Component {
     self = this,
     folderFiles = []
 
-    this._creteFilesFooterMessage(totalFiles, hasDirectoryUpload, fileSizeData.fileSizeNotAllowed)
+    this._creteFilesFooterMessage(totalFiles, hasDirectoryUpload, fileSizeData)
 
     //loop through files and upload if file is a file
     files.forEach((file, index) => {
@@ -890,7 +904,7 @@ export default class FileBrowserWrapper extends Component {
                   <button
                     className="button--flat"
                     onClick={() => this._cancelUpload()}>Cancel Upload</button>
-                  <button onClick={() => this._userAcceptsUpload()}>Skip Large Files</button>
+                  <button onClick={() => this._userRejectsUpload()}>Skip Large Files</button>
                   <button onClick={() => this._userAcceptsUpload()}>Continue Upload</button>
 
 
