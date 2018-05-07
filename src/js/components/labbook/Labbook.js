@@ -36,7 +36,6 @@ class Labbook extends Component {
 
     localStorage.setItem('owner', store.getState().routes.owner)
     this.state = store.getState().labbook
-    this.state.branchMenuKey = uuidv4();
     //bind functions here
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
     this._setBuildingState = this._setBuildingState.bind(this)
@@ -401,7 +400,6 @@ class Labbook extends Component {
                 <div className="Labbook__column-container">
 
                    <BranchMenu
-                     key={this.state.branchMenuKey}
                      history={this.props.history}
                      collaborators={labbook.collaborators}
                      defaultRemote={labbook.defaultRemote}

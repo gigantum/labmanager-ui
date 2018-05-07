@@ -22,7 +22,6 @@ import LoginPrompt from './LoginPrompt'
 import CreateBranch from 'Components/labbook/branches/CreateBranch'
 import Collaborators from './collaborators/Collaborators'
 
-let collabKey = uuidv4();
 export default class BranchMenu extends Component {
   constructor(props) {
     super(props);
@@ -42,10 +41,10 @@ export default class BranchMenu extends Component {
       'publishDisabled': false,
       'addCollaboratorButtonDisabled': false,
       'collaboratorBeingRemoved': null,
+      'collabKey': uuidv4(),
       owner,
       labbookName
     }
-
     this._openMenu = this._openMenu.bind(this)
     this._closeMenu = this._closeMenu.bind(this)
     this._toggleModal = this._toggleModal.bind(this)
@@ -118,10 +117,10 @@ export default class BranchMenu extends Component {
   */
   _openMenu() {
     this.setState({ menuOpen: !this.state.menuOpen })
-    this._remountCollab();
   }
+
   _remountCollab() {
-    collabKey = uuidv4()
+    this.setState({collabKey: uuidv4()});
   }
     /**
     *  @param {string} action
@@ -668,10 +667,13 @@ export default class BranchMenu extends Component {
 
           <ul className="BranchMenu__list">
             <Collaborators
-              key={collabKey}
+              key={this.state.collabKey}
+              key2={this.state.collabKey}
               ref="collaborators"
               owner={owner}
               labbookName={labbookName}
+              checkSessionIsValid={this._checkSessionIsValid}
+              showLoginPrompt={()=>this.setState({showLoginPrompt: true})}
             />
             <hr />
             <li className="BranchMenu__item--new-branch">

@@ -22,7 +22,7 @@
     margin: 0 0 10px 0;
   }
   code {
-    font-family: monospace, monospace;
+    font-family: monospace;
   }
 }
 
@@ -49,7 +49,7 @@
 
     margin-bottom: 0;
     p {
-      font-family: monospace, monospace !important;
+      font-family: monospace !important;
       font-size: 1em !important;
     }
   }
@@ -68,7 +68,7 @@
 
 .CustomDockerfile__content-input {
   height: 100px;
-  font-family: monospace, monospace;
+  font-family: monospace;
   font-size: 1em;
   resize: none;
 }
