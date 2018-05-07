@@ -179,7 +179,13 @@ export default class FileBrowserWrapper extends Component {
         }
       })
     }else{
-      let message = fileSizeNotAllowed.lenght > 0 ? `Cannot upload files over 100 Mb to the code direcotry` : `Cannot upload these file types`
+      let fileSizeNotAllowedNames = fileSizeNotAllowed.map((file) => file.name)
+      let fileSizeNotAllowedString = fileSizeNotAllowedNames.join(', ')
+
+      let largeFileMesage = `Cannot upload files over 100 Mb to the code direcotry. The following files have not been added ${fileSizeNotAllowedString}`
+
+      let message = fileSizeNotAllowed.length > 0 ? largeFileMesage : `Cannot upload these file types`
+
       store.dispatch({
         type: 'WARNING_MESSAGE',
         payload:{
