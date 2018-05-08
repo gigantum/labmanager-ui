@@ -122,7 +122,6 @@ export default class BranchCard extends Component {
     merge branch using WorkonExperimentalBranchMutation
   */
   _merge(evt, params){
-
     const otherBranchName = this.props.name
     const {owner, labbookName} = this.state
     const {activeBranchName} =  this.props
@@ -259,6 +258,7 @@ export default class BranchCard extends Component {
           [
           <ForceMerge
             merge={this._merge}
+            params={{force: true}}
             toggleModal={this._toggleModal}
           />,
           <div

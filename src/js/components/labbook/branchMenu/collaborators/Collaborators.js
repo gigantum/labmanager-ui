@@ -6,6 +6,8 @@ import classNames from 'classnames'
 import environment from 'JS/createRelayEnvironment'
 //components
 import CollaboratorsModal from './CollaboratorsModal'
+//store
+import store from 'JS/redux/store'
 
 export const CollaboratorsQuery =  graphql`
   query CollaboratorsQuery($name: String!, $owner: String!){
@@ -21,14 +23,15 @@ export const CollaboratorsQuery =  graphql`
     	super(props);
     	this.state = {
         collaboratorModalVisible: false,
-        canClickCollaborators: false
+        canClickCollaborators: false,
+        sessionValid: true,
       };
 
       this._toggleCollaborators = this._toggleCollaborators.bind(this)
     }
 
     _toggleCollaborators(){
-      this.setState({collaboratorModalVisible: !this.state.collaboratorModalVisible})
+      this.state.sessionValid ? this.setState({collaboratorModalVisible: !this.state.collaboratorModalVisible}) : this.props.showLoginPrompt();
     }
 
     _getCollaboratorList(collaborators, collaboratorFilteredArr){
@@ -58,10 +61,24 @@ export const CollaboratorsQuery =  graphql`
       }
       return collaboratorSubText
     }
+
     render(){
       let self = this
       const {labbookName, owner} = this.props
-
+      let {collaborators, canManageCollaborators} = store.getState().collaborators;
+      collaborators = collaborators && collaborators[labbookName];
+      canManageCollaborators = canManageCollaborators && canManageCollaborators[labbookName];
+      this.props.checkSessionIsValid().then((res) => {
+        if(res.data && res.data.userIdentity.isSessionValid) {
+          if(this.state.sessionValid === false){
+            this.setState({sessionValid: true})
+          }
+        } else {
+          if(this.state.sessionValid === true){
+            this.setState({sessionValid: false})
+          }
+        }
+      })
       return(
         <QueryRenderer
           query={CollaboratorsQuery}
@@ -70,18 +87,33 @@ export const CollaboratorsQuery =  graphql`
             name: labbookName,
             owner: owner
           }}
-          render={({props, error})=>{
+          render={({props, error})=> {
               if(props){
-
                 const {labbook} = props
+                store.dispatch({
+                  type: 'SET_COLLABORATORS',
+                  payload: {
+                    collaborators: {
+                      [labbookName]: labbook.collaborators
+                    }
+                  }
+                })
+                store.dispatch({
+                  type: 'SET_CANMANAGECOLLABORATORS',
+                  payload: {
+                    canManageCollaborators: {
+                      [labbookName]: labbook.canManageCollaborators
+                    }
+                  }
+                })
                 const collaboratorButtonCSS = classNames({
-                  'disabled': !labbook.canManageCollaborators,
+                  'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
                   'BranchMenu__item--flat-button':  true
                 })
 
                 const collaboratorCSS = classNames({
                   'BranchMenu__item--collaborators': true,
-                  'disabled': !labbook.canManageCollaborators
+                  'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
                 })
 
                 const collaboratorFilteredArr = labbook.collaborators && labbook.collaborators.filter((name)=>{
@@ -122,13 +154,61 @@ export const CollaboratorsQuery =  graphql`
                     }
                   </li>
                 )
-              }else{
+              }else if(collaborators !== null){
+                const collaboratorButtonCSS = classNames({
+                  'disabled': !canManageCollaborators && this.state.sessionValid,
+                  'BranchMenu__item--flat-button':  true
+                })
 
+                const collaboratorCSS = classNames({
+                  'BranchMenu__item--collaborators': true,
+                  'disabled': !canManageCollaborators  && this.state.sessionValid
+                })
+
+                const collaboratorFilteredArr = collaborators && collaborators.filter((name)=>{
+                  return name !== owner
+                })
+
+                const collaboratorNames = self._getCollaboratorList(collaborators, collaboratorFilteredArr)
+
+                return(
+
+                  <li className={collaboratorCSS}
+                    >
+                    <button
+                      onClick={() => this._toggleCollaborators()}
+                      className={collaboratorButtonCSS}>
+                      Collaborators
+
+                      <p className="BranchMenu__collaborator-names">{collaboratorNames}</p>
+
+                    </button>
+
+                    {
+                      this.state.collaboratorModalVisible &&
+
+                        [<CollaboratorsModal
+                          key="CollaboratorsModal"
+                          ref="collaborators"
+                          collaborators={collaborators}
+                          owner={owner}
+                          labbookName={labbookName}
+                          toggleCollaborators={this._toggleCollaborators}
+                        />,
+                        <div
+                          key="CollaboratorsModal__cover"
+                          className="modal__cover"></div>
+                      ]
+
+                    }
+                  </li>
+                )
+              } else{
                 return(
                   <li className="BranchMenu__item--collaborators disabled"
                     >
                     <button
-                      onClick={() => this._toggleCollaborators()}
+                      onClick={() => this.props.showLoginPrompt()}
                       className="BranchMenu__item--flat-button disabled">Collaborators</button>
                   </li>
                 )

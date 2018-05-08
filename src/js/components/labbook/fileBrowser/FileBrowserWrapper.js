@@ -322,14 +322,65 @@ export default class FileBrowserWrapper extends Component {
                   edge.node.key,
                   newKeyComputed,
                   this.props.section,
-                  (response, error) => {
+                  (moveResponse, error) => {
 
-                    if(response.moveLabbookFile){
+                    if(moveResponse.moveLabbookFile){
 
                       setTimeout(function(){
 
-                        resolve(response.moveLabbookFile)
+                        resolve(moveResponse.moveLabbookFile)
                       },1050)
+                      if (edge.node.isFavorite) {
+                        RemoveFavoriteMutation(
+                          this.props.favoriteConnection,
+                          this.props.parentId,
+                          this.state.owner,
+                          this.state.labbookName,
+                          this.props.section,
+                          edge.node.key,
+                          edge.node.id,
+                          edge,
+                          this.props.favorites,
+                          (response, error)=>{
+
+                            if(error){
+                              console.error(error)
+                              store.dispatch({
+                                type: 'ERROR_MESSAGE',
+                                payload: {
+                                  message: `ERROR: could not remove favorite ${oldKey}`,
+                                  messageBody: error
+                                }
+                              })
+                            }else{
+                              AddFavoriteMutation(
+                                this.props.favoriteConnection,
+                                this.props.connection,
+                                this.props.parentId,
+                                this.state.owner,
+                                this.state.labbookName,
+                                newKeyComputed,
+                                '',
+                                false,
+                                moveResponse.moveLabbookFile.newLabbookFileEdge,
+                                this.props.section,
+                                (response, error)=>{
+                                  if(error){
+                                    console.error(error)
+                                    store.dispatch({
+                                      type: 'ERROR_MESSAGE',
+                                      payload: {
+                                        message: `ERROR: could not add favorite ${newKey}`,
+                                        messageBody: error
+                                      }
+                                    })
+                                  }
+                                }
+                              )
+                            }
+                          }
+                        )
+                      }
                     }else{
                         store.dispatch({
                           type: 'ERROR_MESSAGE',
@@ -338,7 +389,7 @@ export default class FileBrowserWrapper extends Component {
                             messageBody: error
                           }
                         })
-                        reject(response)
+                        reject(moveResponse)
                     }
                   }
                 )
@@ -383,6 +434,7 @@ export default class FileBrowserWrapper extends Component {
         }).catch(error =>{
           console.error(error)
         })
+
       }
     )
 
@@ -419,7 +471,6 @@ export default class FileBrowserWrapper extends Component {
               }
             })
           }else{
-
             if(edgeToMove.node.isFavorite){
 
               RemoveFavoriteMutation(
@@ -444,7 +495,6 @@ export default class FileBrowserWrapper extends Component {
                       }
                     })
                   }else{
-
                     AddFavoriteMutation(
                       this.props.favoriteConnection,
                       this.props.connection,
@@ -494,6 +544,7 @@ export default class FileBrowserWrapper extends Component {
     let edgesToDelete = this.props.files.edges.filter((edge) => {
       return edge && (edge.node.key.indexOf(folderKey) > -1)
     })
+
     if(edgeToDelete){
       DeleteLabbookFileMutation(
         this.props.connection,
@@ -518,6 +569,35 @@ export default class FileBrowserWrapper extends Component {
         }
       )
     }
+
+    edgesToDelete.forEach((edge) => {
+      if(edge.node.isFavorite) {
+        RemoveFavoriteMutation(
+          this.props.favoriteConnection,
+          this.props.parentId,
+          this.state.owner,
+          this.state.labbookName,
+          this.props.section,
+          edge.node.key,
+          edge.node.id,
+          edge,
+          this.props.favorites,
+          (response, error)=>{
+
+            if(error){
+              console.error(error)
+              store.dispatch({
+                type: 'ERROR_MESSAGE',
+                payload: {
+                  message: `ERROR: could not remove favorite ${edgeToDelete.node.key}`,
+                  messageBody: error
+                }
+              })
+            }
+          })
+      }
+
+    });
   }
   /**
   *  @param {string} fileKey
@@ -529,28 +609,78 @@ export default class FileBrowserWrapper extends Component {
       return edge && edge.node && (fileKey === edge.node.key)
     })[0]
 
-    DeleteLabbookFileMutation(
-      this.props.connection,
-      this.state.owner,
-      this.state.labbookName,
-      this.props.parentId,
-      edgeToDelete.node.id,
-      fileKey,
-      this.props.section,
-      [],
-      (response, error) => {
-        if(error){
-          console.error(error)
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `ERROR: could not delete file ${fileKey}`,
-              messageBody: error
-            }
-          })
+    if(edgeToDelete.node.isFavorite) {
+      RemoveFavoriteMutation(
+        this.props.favoriteConnection,
+        this.props.parentId,
+        this.state.owner,
+        this.state.labbookName,
+        this.props.section,
+        edgeToDelete.node.key,
+        edgeToDelete.node.id,
+        edgeToDelete,
+        this.props.favorites,
+        (response, error)=>{
+
+          if(error){
+            console.error(error)
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `ERROR: could not remove favorite ${edgeToDelete.node.key}`,
+                messageBody: error
+              }
+            })
+          }else{
+            DeleteLabbookFileMutation(
+              this.props.connection,
+              this.state.owner,
+              this.state.labbookName,
+              this.props.parentId,
+              edgeToDelete.node.id,
+              fileKey,
+              this.props.section,
+              [],
+              (response, error) => {
+                if(error){
+                  console.error(error)
+                  store.dispatch({
+                    type: 'ERROR_MESSAGE',
+                    payload: {
+                      message: `ERROR: could not delete file ${fileKey}`,
+                      messageBody: error
+                    }
+                  })
+                }
+              }
+            )
+          }
         }
-      }
-    )
+      )
+    } else {
+      DeleteLabbookFileMutation(
+        this.props.connection,
+        this.state.owner,
+        this.state.labbookName,
+        this.props.parentId,
+        edgeToDelete.node.id,
+        fileKey,
+        this.props.section,
+        [],
+        (response, error) => {
+          if(error){
+            console.error(error)
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `ERROR: could not delete file ${fileKey}`,
+                messageBody: error
+              }
+            })
+          }
+        }
+      )
+    }
   }
   /**
   *  @param {object} files
