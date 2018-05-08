@@ -490,41 +490,104 @@ export default class FileBrowserWrapper extends Component {
         let all = []
 
         edgesToMove.forEach((edge) => {
+
           if(edge.node.key.indexOf('.') > -1 ){
+
             all.push(new Promise((resolve, reject)=>{
-              let newKeyComputed = edge.node.key.replace(oldKey, newKey)
 
-              MoveLabbookFileMutation(
-                this.props.connection,
-                self.state.owner,
-                this.state.labbookName,
-                this.props.parentId,
-                edge,
-                edge.node.key,
-                newKeyComputed,
-                this.props.section,
-                (response, error) => {
+                let newKeyComputed = edge.node.key.replace(oldKey, newKey)
 
-                  if(response.moveLabbookFile){
+                MoveLabbookFileMutation(
+                  this.props.connection,
+                  self.state.owner,
+                  this.state.labbookName,
+                  this.props.parentId,
+                  edge,
+                  edge.node.key,
+                  newKeyComputed,
+                  this.props.section,
+                  (moveResponse, error) => {
 
-                    setTimeout(function(){
+                    if(moveResponse.moveLabbookFile){
 
-                      resolve(response.moveLabbookFile)
-                    },1050)
-                  }else{
-                    store.dispatch({
-                      type: 'ERROR_MESSAGE',
-                      payload: {
-                        message: `ERROR: could not move ${edge.node.key}`,
-                        messageBody: error
+
+                      if (edge.node.isFavorite) {
+                        RemoveFavoriteMutation(
+                          this.props.favoriteConnection,
+                          this.props.parentId,
+                          this.state.owner,
+                          this.state.labbookName,
+                          this.props.section,
+                          edge.node.key,
+                          edge.node.id,
+                          edge,
+                          this.props.favorites,
+                          (response, error)=>{
+
+                            if(error){
+                              reject(moveResponse.moveLabbookFile)
+                              console.error(error)
+                              store.dispatch({
+                                type: 'ERROR_MESSAGE',
+                                payload: {
+                                  message: `ERROR: could not remove favorite ${oldKey}`,
+                                  messageBody: error
+                                }
+                              })
+                            }else{
+                              AddFavoriteMutation(
+                                this.props.favoriteConnection,
+                                this.props.connection,
+                                this.props.parentId,
+                                this.state.owner,
+                                this.state.labbookName,
+                                newKeyComputed,
+                                '',
+                                false,
+                                moveResponse.moveLabbookFile.newLabbookFileEdge,
+                                this.props.section,
+                                (response, error)=>{
+                                  if(error){
+
+                                    reject(moveResponse.moveLabbookFile)
+
+                                    console.error(error)
+
+                                    store.dispatch({
+                                      type: 'ERROR_MESSAGE',
+                                      payload: {
+                                        message: `ERROR: could not add favorite ${newKey}`,
+                                        messageBody: error
+                                      }
+                                    })
+
+                                  }else{
+
+                                    resolve(moveResponse.moveLabbookFile)
+
+                                  }
+                                }
+                              )
+                            }
+                          }
+                        )
                       }
-                    })
-                    reject(response)
-                  }
+                    }else{
+
+                        store.dispatch({
+                          type: 'ERROR_MESSAGE',
+                          payload: {
+                            message: `ERROR: could not move ${edge.node.key}`,
+                            messageBody: error
+                          }
+                        })
+
+                        reject(moveResponse)
+                    }
+                  })
                 }
               )
-
-            }))
+            )
           }
 
         })
@@ -564,6 +627,7 @@ export default class FileBrowserWrapper extends Component {
         }).catch(error =>{
           console.error(error)
         })
+
       }
     )
 
@@ -600,7 +664,6 @@ export default class FileBrowserWrapper extends Component {
               }
             })
           }else{
-
             if(edgeToMove.node.isFavorite){
 
               RemoveFavoriteMutation(
@@ -625,7 +688,6 @@ export default class FileBrowserWrapper extends Component {
                       }
                     })
                   }else{
-
                     AddFavoriteMutation(
                       this.props.favoriteConnection,
                       this.props.connection,
@@ -675,6 +737,7 @@ export default class FileBrowserWrapper extends Component {
     let edgesToDelete = this.props.files.edges.filter((edge) => {
       return edge && (edge.node.key.indexOf(folderKey) > -1)
     })
+
     if(edgeToDelete){
 
       DeleteLabbookFileMutation(
@@ -700,6 +763,35 @@ export default class FileBrowserWrapper extends Component {
         }
       )
     }
+
+    edgesToDelete.forEach((edge) => {
+      if(edge.node.isFavorite) {
+        RemoveFavoriteMutation(
+          this.props.favoriteConnection,
+          this.props.parentId,
+          this.state.owner,
+          this.state.labbookName,
+          this.props.section,
+          edge.node.key,
+          edge.node.id,
+          edge,
+          this.props.favorites,
+          (response, error)=>{
+
+            if(error){
+              console.error(error)
+              store.dispatch({
+                type: 'ERROR_MESSAGE',
+                payload: {
+                  message: `ERROR: could not remove favorite ${edgeToDelete.node.key}`,
+                  messageBody: error
+                }
+              })
+            }
+          })
+      }
+
+    });
   }
   /**
   *  @param {string} fileKey
@@ -711,28 +803,78 @@ export default class FileBrowserWrapper extends Component {
       return edge && edge.node && (fileKey === edge.node.key)
     })[0]
 
-    DeleteLabbookFileMutation(
-      this.props.connection,
-      this.state.owner,
-      this.state.labbookName,
-      this.props.parentId,
-      edgeToDelete.node.id,
-      fileKey,
-      this.props.section,
-      [],
-      (response, error) => {
-        if(error){
-          console.error(error)
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `ERROR: could not delete file ${fileKey}`,
-              messageBody: error
-            }
-          })
+    if(edgeToDelete.node.isFavorite) {
+      RemoveFavoriteMutation(
+        this.props.favoriteConnection,
+        this.props.parentId,
+        this.state.owner,
+        this.state.labbookName,
+        this.props.section,
+        edgeToDelete.node.key,
+        edgeToDelete.node.id,
+        edgeToDelete,
+        this.props.favorites,
+        (response, error)=>{
+
+          if(error){
+            console.error(error)
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `ERROR: could not remove favorite ${edgeToDelete.node.key}`,
+                messageBody: error
+              }
+            })
+          }else{
+            DeleteLabbookFileMutation(
+              this.props.connection,
+              this.state.owner,
+              this.state.labbookName,
+              this.props.parentId,
+              edgeToDelete.node.id,
+              fileKey,
+              this.props.section,
+              [],
+              (response, error) => {
+                if(error){
+                  console.error(error)
+                  store.dispatch({
+                    type: 'ERROR_MESSAGE',
+                    payload: {
+                      message: `ERROR: could not delete file ${fileKey}`,
+                      messageBody: error
+                    }
+                  })
+                }
+              }
+            )
+          }
         }
-      }
-    )
+      )
+    } else {
+      DeleteLabbookFileMutation(
+        this.props.connection,
+        this.state.owner,
+        this.state.labbookName,
+        this.props.parentId,
+        edgeToDelete.node.id,
+        fileKey,
+        this.props.section,
+        [],
+        (response, error) => {
+          if(error){
+            console.error(error)
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `ERROR: could not delete file ${fileKey}`,
+                messageBody: error
+              }
+            })
+          }
+        }
+      )
+    }
   }
   /**
   *  @param {object} files

@@ -8,6 +8,7 @@ import {
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import classNames from 'classnames'
+import uuidv4 from 'uuid/v4';
 //store
 import store from "JS/redux/store"
 //components
@@ -403,10 +404,10 @@ class Labbook extends Component {
 
                 </div>
                 <div className="Labbook__column-container">
+
                    <BranchMenu
                      history={this.props.history}
                      collaborators={labbook.collaborators}
-                     canManageCollaborators={labbook.canManageCollaborators}
                      defaultRemote={labbook.defaultRemote}
                      labbookId={labbook.id}
                      remoteUrl={labbook.overview.remoteUrl}
