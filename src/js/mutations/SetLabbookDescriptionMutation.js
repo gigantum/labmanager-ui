@@ -39,7 +39,7 @@ export default function SetLabbookDescriptionMutation(
       mutation,
       variables,
       onCompleted: (response, error ) => {
-        console.log(response)
+  
         if(error){
           console.log(error)
         }

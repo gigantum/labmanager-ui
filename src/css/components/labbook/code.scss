@@ -188,3 +188,47 @@
     text-align: center !important;
   }
 }
+
+.FileBrowser__modal{
+  position: relative;
+  @include modal(340px, 540px);
+  z-index: 1000;
+  padding: 40px;
+  @include flex(space-between, column);
+
+}
+
+.FileBrowser__header{
+  @include modalHeader();
+
+  border-bottom: 1px solid $azure;
+}
+
+.FileBrowser__body{
+  @include flex(space-around, column);
+  flex: 1;
+  p{
+    flex: 1;
+    margin-top: 40px;
+  }
+}
+
+.FileBrowser__button-container{
+  @include flex(space-between, row);
+  width: 100%;
+  text-align: center;
+
+  align-self: center;
+
+  button{
+    padding: 0 8px;
+    margin: 10px;
+    width: auto;
+    text-align: center;
+  }
+
+}
+
+.FileBrowser__close-modal{
+  @include close();
+}
