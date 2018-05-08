@@ -1,5 +1,5 @@
 .BaseDetails {
-  height: 460px;
+  height: 360px;
 
   h6 {
     font-weight: 400;
@@ -15,7 +15,7 @@
   border: 1px solid $romanSilver;
   margin: 10px 0 0 0;
   padding: 15px;
-  height: 400px;
+  height: 340px;
   overflow: auto;
   @include flex(space-around, row);
   flex-wrap: wrap;

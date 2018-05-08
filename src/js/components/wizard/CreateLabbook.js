@@ -281,9 +281,6 @@ export default class CreateLabbook extends React.Component {
               />
               <p className={'CreateLabbook__warning ' + this.state.textWarning}>{`${this.state.textLength} characters remaining`}</p>
             </div>
-            <div className="CreateLabbook__text-divider-container">
-              <span className="CreateLabbook__text-divider">or</span>
-            </div>
 
           </div>
         </div>
