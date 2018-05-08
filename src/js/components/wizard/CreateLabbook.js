@@ -284,14 +284,6 @@ export default class CreateLabbook extends React.Component {
             <div className="CreateLabbook__text-divider-container">
               <span className="CreateLabbook__text-divider">or</span>
             </div>
-            <div>
-              <label>Add public LabBook</label>
-              <input
-                onChange={(evt) => this._updateRemoteUrl(evt)}
-                type='text'
-                placeholder="Enter URL Location"
-              />
-            </div>
 
           </div>
         </div>
