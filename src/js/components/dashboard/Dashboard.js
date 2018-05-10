@@ -5,12 +5,9 @@ import DatasetSets from './datasets/DatasetSets';
 import Labbooks from './labbooks/Labbooks';
 import environment from 'JS/createRelayEnvironment'
 import Loader from 'Components/shared/Loader'
-//store
-import store from 'JS/redux/store'
 
-
-const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String, $sort: String $reverse: Boolean){
-    ...Labbooks_feed
+const LabbookListingQuery = graphql`query DashboardQuery($first: Int!, $cursor: String, $sort: String $reverse: Boolean){
+  ...Labbooks_labbookList
 }`
 
 export default class DashboardContainer extends Component {
@@ -47,7 +44,7 @@ export default class DashboardContainer extends Component {
       return (
         <QueryRenderer
           environment={environment}
-          query={LabbookQuery}
+          query={LabbookListingQuery}
           variables={{
             first: 20,
             cursor: null,
@@ -55,13 +52,12 @@ export default class DashboardContainer extends Component {
             reverse: false,
           }}
           render={({error, props}) => {
-            console.log(props)
             if (error) {
               console.log(error)
             } else if (props) {
                 return (
                   <Labbooks
-                    feed={props}
+                    labbookList={props}
                     history={this.props.history}
                   />
                 )

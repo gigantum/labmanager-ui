@@ -2,21 +2,25 @@
 import store from 'JS/redux/store'
 import React, { Component } from 'react'
 import {
-  createPaginationContainer,
-  graphql
+  createFragmentContainer,
+  graphql,
 } from 'react-relay'
+import classNames from 'classnames'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
 import LocalLabbooks from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooks'
-import ImportModule from 'Components/import/ImportModule'
+import RemoteLabbooks from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbooks'
+import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 //Mutations
 import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
 //utils
 import Validation from 'JS/utils/Validation'
+//queries
+import UserIdentity from 'JS/Auth/UserIdentity'
 
 let isLoadingMore = false;
-let refetchLoading = false;
+
 class Labbooks extends Component {
 
   constructor(props){
@@ -31,14 +35,18 @@ class Labbooks extends Component {
       'filter': 'all',
       'selectedSort': 'Modified Date (Newest)',
       'sortMenuOpen': false,
-      'refetchLoading': false
+      'refetchLoading': false,
+      'selectedSection': 'localLabbooks',
+      'showLoginPrompt': false
     }
 
     this._closeSortMenu = this._closeSortMenu.bind(this);
     this._goToLabbook = this._goToLabbook.bind(this)
-    this._loadMore = this._loadMore.bind(this)
     this._showModal = this._showModal.bind(this)
-    this._captureScroll = this._captureScroll.bind(this)
+    this._changeSlider = this._changeSlider.bind(this)
+    this._setSortFilter = this._setSortFilter.bind(this)
+    this._refetch = this._refetch.bind(this)
+    this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
   }
 
   componentWillMount() {
@@ -57,8 +65,16 @@ class Labbooks extends Component {
     window.removeEventListener('click', this._closeSortMenu)
     window.removeEventListener("scroll", this._captureScroll)
   }
+
+  _closeLoginPromptModal(){
+    this.setState({
+      'showLoginPrompt': false
+    })
+    document.getElementById('modal__cover').classList.add('hidden')
+  }
+
   _closeSortMenu(evt) {
-    let isSortMenu = evt.target.className.indexOf('LocalLabbooks__sort') > -1
+    let isSortMenu = evt.target.className.indexOf('Labbooks__sort') > -1
 
     if(!isSortMenu && this.state.sortMenuOpen) {
       this.setState({sortMenuOpen: false});
@@ -81,21 +97,8 @@ class Labbooks extends Component {
 
     window.addEventListener('scroll', this._captureScroll);
   }
-/**
-*  @param {}
-*  captures scrolling event
-*/
-_captureScroll = () => {
-  let root = document.getElementById('root')
-  let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
-      expandOn = root.offsetHeight;
 
-  if(this.props.feed.localLabbooks){
-    if ((distanceY > expandOn) && !isLoadingMore && this.props.feed.localLabbooks.pageInfo.hasNextPage) {
-        this._loadMore();
-    }
-  }
-}
+
   /**
   *  @param {string} labbookName - inputs a labbook name
   *  routes to that labbook
@@ -106,22 +109,7 @@ _captureScroll = () => {
     this.props.history.replace(`/labbooks/${owner}/${labbookName}`)
   }
 
-  /**
-  *  @param {}
-  *  loads more labbooks using the relay pagination container
-  */
-  _loadMore = () => {
-    isLoadingMore = true
 
-    if(this.props.feed.localLabbooks.pageInfo.hasNextPage){
-      this.props.relay.loadMore(
-        10, // Fetch the next 10 feed items
-        (ev) => {
-          isLoadingMore = false;
-        }
-      );
-    }
-  }
   /**
   *  @param {string} labbookName
   *  closes labbook modal and resets state to initial state
@@ -190,8 +178,7 @@ _captureScroll = () => {
     this.refs.wizardModal._showModal()
   }
 
-
-  _setSortFilter(selected) {
+  _handleSortFilter(selected) {
     this.setState({sortMenuOpen: false, selectedSort: selected});
     switch(selected){
       case 'Modified Date (Newest)':
@@ -217,47 +204,64 @@ _captureScroll = () => {
     }
   }
 
-  _refetch(sort, reverse){
-    let self = this;
-    let relay = self.props.relay;
-    this.setState({refetchLoading: true})
-
-    relay.refetchConnection(
-      20,
-      (res, err)=>{
-        if(err){
-          console.log(err)
+  _setSortFilter(selected) {
+    if(this.state.selectedSection === 'remoteLabbooks') {
+      UserIdentity.getUserIdentity().then(response => {
+        if(response.data){
+          if(response.data.userIdentity.isSessionValid){
+            this._handleSortFilter(selected);
+          } else {
+            this.setState({'showLoginPrompt': true})
+            document.getElementById('modal__cover').classList.remove('hidden')
+          }
         }
-        this.setState({refetchLoading: false})
+      })
+    } else{
+      this._handleSortFilter(selected);
+    }
+  }
 
-      },
-      {first: 20,
-        cursor: null,
-        sort: sort,
-        reverse: reverse,
-      }
-    )
+  _refetch(sort, reverse){
+    if(this.refs.localLabbooks) {
+      this.refs.localLabbooks.refs.__INTERNAL__component._refetch(sort, reverse);
+    } else if(this.refs.remoteLabbooks) {
+      this.refs.remoteLabbooks.refs.__INTERNAL__component._refetch(sort, reverse);
+    }
   }
 
   _changeSlider() {
-    let pathArray = store.getState().routes.callbackRoute.split('/')
-    let selectedPath = (pathArray.length > 2 ) ? pathArray[pathArray.length - 1] : 'all'
     let defaultOrder = ['all', localStorage.getItem('username'), 'others'];
-    let selectedIndex = defaultOrder.indexOf(selectedPath);
+    let selectedIndex = defaultOrder.indexOf(this.state.filter);
     return (
-      <hr className={'LocalLabbooks__navigation-slider LocalLabbooks__navigation-slider--' + selectedIndex}/>
+      <hr className={'Labbooks__navigation-slider Labbooks__navigation-slider--' + selectedIndex}/>
     )
+  }
+
+  _viewRemote(){
+    UserIdentity.getUserIdentity().then(response => {
+      if(response.data && response.data.userIdentity.isSessionValid){
+        this.setState({selectedSection: 'remoteLabbooks'})
+      } else {
+        if(!this.state.showLoginPrompt) {
+          this.setState({'showLoginPrompt': true})
+          document.getElementById('modal__cover').classList.remove('hidden')
+        }
+      }
+    })
   }
 
   render(){
       let {props} = this;
       let owner = localStorage.getItem('username')
-      if(props.feed.localLabbooks){
+      let loginPromptModalCss = classNames({
+        'CreateLabbook--login-prompt': this.state.showLoginPrompt,
+        'hidden': !this.state.showLoginPrompt
+      })
+      if(props.labbookList){
 
-        let labbooks = this._filterLabbooks(props.feed.localLabbooks.edges, this.state.filter)
         return(
 
-          <div className="LocalLabbooks">
+          <div className="Labbooks">
           {
             this.state.refetchLoading &&
             <Loader />
@@ -269,23 +273,23 @@ _captureScroll = () => {
               {...props}
             />
 
-            <div className="LocalLabbooks__title-bar">
-              <h6 className="LocalLabbooks__username">{localStorage.getItem('username')}</h6>
-              <h2 className="LocalLabbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
+            <div className="Labbooks__title-bar">
+              <h6 className="Labbooks__username">{localStorage.getItem('username')}</h6>
+              <h2 className="Labbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
                 LabBooks
               </h2>
 
             </div>
-            <div className="LocalLabbooks__menu  mui-container flex-0-0-auto">
+            <div className="Labbooks__menu  mui-container flex-0-0-auto">
 
-              <ul className="LocalLabbooks__nav  flex flex--row">
-                <li className={this.state.filter === 'all' ? 'LocalLabbooks__nav-item--0 selected' : 'LocalLabbooks__nav-item--0' }>
+              <ul className="Labbooks__nav  flex flex--row">
+                <li className={this.state.filter === 'all' ? 'Labbooks__nav-item--0 selected' : 'Labbooks__nav-item--0' }>
                   <a onClick={()=> this._setFilter('all')}>All</a>
                 </li>
-                <li className={this.state.filter === owner ? 'LocalLabbooks__nav-item--1 selected' : 'LocalLabbooks__nav-item--1' }>
+                <li className={this.state.filter === owner ? 'Labbooks__nav-item--1 selected' : 'Labbooks__nav-item--1' }>
                   <a onClick={()=> this._setFilter(owner)}>My LabBooks</a>
                 </li>
-                <li className={this.state.filter === 'others' ? 'LocalLabbooks__nav-item--2 selected' : 'LocalLabbooks__nav-item--2' }>
+                <li className={this.state.filter === 'others' ? 'Labbooks__nav-item--2 selected' : 'Labbooks__nav-item--2' }>
                   <a onClick={()=> this._setFilter('others')}>Shared With Me</a>
                 </li>
                 {
@@ -294,70 +298,119 @@ _captureScroll = () => {
               </ul>
 
             </div>
-            <div className="LocalLabbooks__sort">
-              Sort by:
-              {
-                this.state.refetchLoading ?
-                  <div className="LocalLabbooks__sorting">Sorting Labbooks...</div>
-                  :
-                  <span
-                    className={this.state.sortMenuOpen ? 'LocalLabbooks__sort-expanded' : 'LocalLabbooks__sort-collapsed'}
-                    onClick={() => !this.setState({ sortMenuOpen: !this.state.sortMenuOpen })}
+            <div className="Labbooks__subheader">
+              <div className="Labbooks__sort">
+                Sort by:
+                {
+                  this.state.refetchLoading ?
+                    <div className="Labbooks__sorting">Sorting Labbooks...</div>
+                    :
+                    <span
+                      className={this.state.sortMenuOpen ? 'Labbooks__sort-expanded' : 'Labbooks__sort-collapsed'}
+                      onClick={() => !this.setState({ sortMenuOpen: !this.state.sortMenuOpen })}
+                    >
+                      {this.state.selectedSort}
+                    </span>
+                }
+                <ul
+                  className={this.state.sortMenuOpen ? 'Labbooks__sort-menu' : 'hidden'}
+                >
+                  <li
+                    className={'Labbooks__sort-item'}
+                    onClick={()=>this._setSortFilter('Modified Date (Newest)')}
                   >
-                    {this.state.selectedSort}
-                  </span>
-              }
-              <ul
-                className={this.state.sortMenuOpen ? 'LocalLabbooks__sort-menu' : 'hidden'}
-              >
-                <li
-                  className={'LocalLabbooks__sort-item'}
-                  onClick={()=>this._setSortFilter('Modified Date (Newest)')}
+                    Modified Date (Newest) {this.state.selectedSort === 'Modified Date (Newest)' ?  '✓ ' : ''}
+                  </li>
+                  <li
+                    className={'Labbooks__sort-item'}
+                    onClick={()=>this._setSortFilter('Modified Date (Oldest)')}
+                  >
+                    Modified Date (Oldest) {this.state.selectedSort === 'Modified Date (Oldest)' ?  '✓ ' : ''}
+                  </li>
+                  <li
+                    className={'Labbooks__sort-item'}
+                    onClick={()=>this._setSortFilter('Creation Date (Newest)')}
+                  >
+                    Creation Date (Newest) {this.state.selectedSort === 'Creation Date (Newest)' ?  '✓ ' : ''}
+                  </li>
+                  <li
+                    className={'Labbooks__sort-item'}
+                    onClick={()=>this._setSortFilter('Creation Date (Oldest)')}
+                  >
+                    Creation Date (Oldest) {this.state.selectedSort === 'Creation Date (Oldest)' ?  '✓ ' : ''}
+                  </li>
+                  <li
+                    className="Labbooks__sort-item"
+                    onClick={()=>this._setSortFilter('A-Z')}
+                  >
+                    A-Z {this.state.selectedSort === 'A-Z' ?  '✓ ' : ''}
+                  </li>
+                  <li
+                    className="Labbooks__sort-item"
+                    onClick={()=>this._setSortFilter('Z-A')}
+                  >
+                    Z-A {this.state.selectedSort === 'Z-A' ?  '✓ ' : ''}
+                  </li>
+                </ul>
+              </div>
+              <div className="Labbooks__section">
+                <button
+                  className="Labbooks__local-button"
+                  disabled={this.state.selectedSection === 'localLabbooks'}
+                  onClick={()=>this.setState({selectedSection: 'localLabbooks'})}
                 >
-                  Modified Date (Newest) {this.state.selectedSort === 'Modified Date (Newest)' ?  '✓ ' : ''}
-                </li>
-                <li
-                  className={'LocalLabbooks__sort-item'}
-                  onClick={()=>this._setSortFilter('Modified Date (Oldest)')}
+                  Local
+                </button>
+                <button
+                  className="Labbooks__cloud-button"
+                  disabled={this.state.selectedSection === 'remoteLabbooks'}
+                  onClick={()=>this._viewRemote()}
                 >
-                  Modified Date (Oldest) {this.state.selectedSort === 'Modified Date (Oldest)' ?  '✓ ' : ''}
-                </li>
-                <li
-                  className={'LocalLabbooks__sort-item'}
-                  onClick={()=>this._setSortFilter('Creation Date (Newest)')}
-                >
-                  Creation Date (Newest) {this.state.selectedSort === 'Creation Date (Newest)' ?  '✓ ' : ''}
-                </li>
-                <li
-                  className={'LocalLabbooks__sort-item'}
-                  onClick={()=>this._setSortFilter('Creation Date (Oldest)')}
-                >
-                  Creation Date (Oldest) {this.state.selectedSort === 'Creation Date (Oldest)' ?  '✓ ' : ''}
-                </li>
-                <li
-                  className="LocalLabbooks__sort-item"
-                  onClick={()=>this._setSortFilter('A-Z')}
-                >
-                  A-Z {this.state.selectedSort === 'A-Z' ?  '✓ ' : ''}
-                </li>
-                <li
-                  className="LocalLabbooks__sort-item"
-                  onClick={()=>this._setSortFilter('Z-A')}
-                >
-                  Z-A {this.state.selectedSort === 'Z-A' ?  '✓ ' : ''}
-                </li>
-              </ul>
+                  Cloud
+                </button>
+              </div>
+
             </div>
-
-            <LocalLabbooks
-              labbooks={labbooks}
-              showModal={this._showModal}
-              {...props}
-            />
-
+            {
+              this.state.selectedSection === 'localLabbooks' ?
+              <LocalLabbooks
+                ref="localLabbooks"
+                labbookListId={props.labbookList.id}
+                localLabbooks={props.labbookList.labbookList}
+                showModal={this._showModal}
+                goToLabbook={this._goToLabbook}
+                filterLabbooks={this._filterLabbooks}
+                filterState={this.state.filter}
+                changeRefetchState={(bool) => this.setState({refetchLoading: bool})}
+                {...props}
+              />
+              :
+              <RemoteLabbooks
+                ref="remoteLabbooks"
+                labbookListId={props.labbookList.labbookList.id}
+                remoteLabbooks={props.labbookList.labbookList}
+                showModal={this._showModal}
+                goToLabbook={this._goToLabbook}
+                filterLabbooks={this._filterLabbooks}
+                filterState={this.state.filter}
+                forceLocalView={()=> {
+                  this.setState({selectedSection: 'localLabbooks'})
+                  this.setState({'showLoginPrompt': true})
+                  document.getElementById('modal__cover').classList.remove('hidden')}
+                }
+                changeRefetchState={(bool) => this.setState({refetchLoading: bool})}
+                {...props}
+              />
+          }
+          <div className={loginPromptModalCss}>
+            <div
+              onClick={()=>{this._closeLoginPromptModal()}}
+              className="BranchModal--close"></div>
+            <LoginPrompt closeModal={this._closeLoginPromptModal}/>
+          </div>
         </div>
       )
-    } else if(props.feed.localLabbooks === null){
+    } else if(props.labbookList === null){
       store.dispatch({
         type: 'ERROR_MESSAGE',
         payload:{
@@ -365,7 +418,7 @@ _captureScroll = () => {
           messageBody: [{message: 'There was an error while fetching LabBooks. This likely means you have a corrupted LabBook file.'}]
         }
       })
-      return <div className="LocalLabbooks__fetch-error">There was an error attempting to fetch LabBooks. <br/>Try restarting Gigantum and refresh the page.<br/>If the problem persists <a target="_blank" href="https://docs.gigantum.io/discuss" rel="noopener noreferrer">request assistance here.</a></div>
+      return <div className="Labbooks__fetch-error">There was an error attempting to fetch LabBooks. <br/>Try restarting Gigantum and refresh the page.<br/>If the problem persists <a target="_blank" href="https://docs.gigantum.io/discuss" rel="noopener noreferrer">request assistance here.</a></div>
     } else{
       return(<Loader />)
     }
@@ -373,69 +426,15 @@ _captureScroll = () => {
   }
 }
 
-export default createPaginationContainer(
+export default createFragmentContainer(
   Labbooks,
-  {feed: graphql`
-      fragment Labbooks_feed on LabbookQuery{
-        localLabbooks(first: $first, after: $cursor, sort: $sort, reverse: $reverse)@connection(key: "Labbooks_localLabbooks"){
-          edges {
-            node {
-              name
-              description
-              owner
-              creationDateUtc
-              environment{
-                id
-                imageStatus
-                containerStatus
-              }
-            }
-            cursor
-          }
-          pageInfo {
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
-          }
-        }
+  graphql`
+    fragment Labbooks_labbookList on LabbookQuery{
+      labbookList{
+        id
+        ...LocalLabbooks_localLabbooks
+        ...RemoteLabbooks_remoteLabbooks
       }
-    `,
-  },
-  {
-    direction: 'forward',
-    getConnectionFromProps(props, error) {
-      return props.feed.localLabbooks
-    },
-    getFragmentVariables(prevVars, first, cursor) {
-      return {
-        ...prevVars,
-        first: first
-      };
-    },
-    getVariables(props, {first, cursor, sort, reverse}, fragmentVariables) {
-      first = 10;
-      cursor = props.feed.localLabbooks.pageInfo.endCursor;
-      sort = fragmentVariables.sort;
-      reverse = fragmentVariables.reverse
-      return {
-        first,
-        cursor,
-        sort,
-        reverse
-        // in most cases, for variables other than connection filters like
-        // `first`, `after`, etc. you may want to use the previous values.
-      };
-    },
-    query: graphql`
-      query LabbooksPaginationQuery(
-        $first: Int!
-        $cursor: String
-        $sort: String
-        $reverse: Boolean
-      ) {
-          ...Labbooks_feed
-      }
-    `
-  }
+    }
+  `
 );
