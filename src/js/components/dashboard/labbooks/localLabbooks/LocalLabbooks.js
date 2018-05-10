@@ -8,7 +8,7 @@ import {
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
-import LocalLabbookPanel from 'Components/dashboard/labbooks/LocalLabbooks/LocalLabbookPanel'
+import LocalLabbookPanel from 'Components/dashboard/labbooks/localLabbooks/LocalLabbookPanel'
 import ImportModule from 'Components/import/ImportModule'
 //Mutations
 import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
