@@ -61,17 +61,33 @@ class Labbooks extends Component {
 
   }
 
+  /**
+    * @param {}
+    * fires when component unmounts
+    * removes added event listeners
+  */
   componentWillUnmount() {
     window.removeEventListener('click', this._closeSortMenu)
     window.removeEventListener("scroll", this._captureScroll)
   }
 
+  /**
+    * @param {}
+    * fires when user identity returns invalid session
+    * prompts user to revalidate their session
+  */
   _closeLoginPromptModal(){
     this.setState({
       'showLoginPrompt': false
     })
     document.getElementById('modal__cover').classList.add('hidden')
   }
+
+  /**
+    * @param {event} evt
+    * fires when sort menu is open and the user clicks elsewhere
+    * hides the sort menu dropdown from the view
+  */
 
   _closeSortMenu(evt) {
     let isSortMenu = evt.target.className.indexOf('Labbooks__sort') > -1
@@ -90,29 +106,28 @@ class Labbooks extends Component {
   }
 
   /**
-  * fires when a componet mounts
-  * adds a scoll listener to trigger pagination
+    * @param {}
+    * fires when a componet mounts
+    * adds a scoll listener to trigger pagination
   */
   componentDidMount() {
-
     window.addEventListener('scroll', this._captureScroll);
   }
 
 
   /**
-  *  @param {string} labbookName - inputs a labbook name
-  *  routes to that labbook
+    *  @param {string} labbookName - inputs a labbook name
+    *  routes to that labbook
   */
   _goToLabbook = (labbookName, owner) => {
     this.setState({'labbookName': labbookName, 'owner': owner})
-
     this.props.history.replace(`/labbooks/${owner}/${labbookName}`)
   }
 
 
   /**
-  *  @param {string} labbookName
-  *  closes labbook modal and resets state to initial state
+    *  @param {string} labbookName
+    *  closes labbook modal and resets state to initial state
   */
   _closeLabbook(labbookName){
     this.setState({
@@ -126,9 +141,10 @@ class Labbooks extends Component {
       document.getElementById('modal__cover').classList.add('hidden')
     }
   }
+
   /**
-  *  @param {event} evt
-  *  sets new labbook title to state
+    *  @param {event} evt
+    *  sets new labbook title to state
   */
   _setLabbookTitle(evt){
 
@@ -147,13 +163,11 @@ class Labbooks extends Component {
    sets state updates filter
   */
   _setFilter(filter){
-      //this.setState({filter: filter})
        this.props.history.replace(`../labbooks/${filter}`)
   }
   /**
    * @param {array, string} localLabbooks.edges,filter
-
-    @return {array} filteredLabbooks
+   * @return {array} filteredLabbooks
   */
   _filterLabbooks(labbooks, filter){
     let filteredLabbooks = [];
@@ -174,10 +188,20 @@ class Labbooks extends Component {
     return filteredLabbooks
   }
 
+  /**
+    * @param {}
+    * fires when handleSortFilter triggers refetch
+    * references child components and triggers their refetch functions
+  */
   _showModal(){
     this.refs.wizardModal._showModal()
   }
 
+  /**
+    *  @param {string} selected
+    * fires when setSortFilter validates user can sort
+    * triggers a refetch with new sort parameters
+  */
   _handleSortFilter(selected) {
     this.setState({sortMenuOpen: false, selectedSort: selected});
     switch(selected){
@@ -204,6 +228,11 @@ class Labbooks extends Component {
     }
   }
 
+  /**
+    *  @param {string} selected
+    * fires when user selects a sort option
+    * checks session and selectedSection state before handing off to handleSortFilter
+  */
   _setSortFilter(selected) {
     if(this.state.selectedSection === 'remoteLabbooks') {
       UserIdentity.getUserIdentity().then(response => {
@@ -221,6 +250,12 @@ class Labbooks extends Component {
     }
   }
 
+  /**
+    * @param {string, boolean} sort reverse
+    * fires when handleSortFilter triggers refetch
+    * references child components and triggers their refetch functions
+  */
+
   _refetch(sort, reverse){
     if(this.refs.localLabbooks) {
       this.refs.localLabbooks.refs.__INTERNAL__component._refetch(sort, reverse);
@@ -228,6 +263,12 @@ class Labbooks extends Component {
       this.refs.remoteLabbooks.refs.__INTERNAL__component._refetch(sort, reverse);
     }
   }
+
+  /**
+    * @param {}
+    * fires in component render
+    * sets classnames for navigation slider to work as intended
+  */
 
   _changeSlider() {
     let defaultOrder = ['all', localStorage.getItem('username'), 'others'];
@@ -237,6 +278,11 @@ class Labbooks extends Component {
     )
   }
 
+  /**
+    * @param {}
+    * fires when user selects remote labbook view
+    * checks user auth before changing selectedSection state
+  */
   _viewRemote(){
     UserIdentity.getUserIdentity().then(response => {
       if(response.data && response.data.userIdentity.isSessionValid){
@@ -410,18 +456,24 @@ class Labbooks extends Component {
           </div>
         </div>
       )
-    } else if(props.labbookList === null){
-      store.dispatch({
-        type: 'ERROR_MESSAGE',
-        payload:{
-          message: `Failed to fetch LabBooks.`,
-          messageBody: [{message: 'There was an error while fetching LabBooks. This likely means you have a corrupted LabBook file.'}]
-        }
-      })
-      return <div className="Labbooks__fetch-error">There was an error attempting to fetch LabBooks. <br/>Try restarting Gigantum and refresh the page.<br/>If the problem persists <a target="_blank" href="https://docs.gigantum.io/discuss" rel="noopener noreferrer">request assistance here.</a></div>
-    } else{
-      return(<Loader />)
-    }
+      } else if (props.labbookList === null) {
+        store.dispatch({
+          type: 'ERROR_MESSAGE',
+          payload: {
+            message: `Failed to fetch LabBooks.`,
+            messageBody: [{ message: 'There was an error while fetching LabBooks. This likely means you have a corrupted LabBook file.' }]
+          }
+        })
+        return (
+          <div className="Labbooks__fetch-error">
+            There was an error attempting to fetch LabBooks. <br />
+            Try restarting Gigantum and refresh the page.<br />
+            If the problem persists <a target="_blank" href="https://docs.gigantum.io/discuss" rel="noopener noreferrer">request assistance here.</a>
+          </div>
+        )
+      } else {
+        return (<Loader />)
+      }
 
   }
 }

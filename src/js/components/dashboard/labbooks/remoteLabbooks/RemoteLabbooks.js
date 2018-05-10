@@ -57,7 +57,11 @@ class RemoteLabbooks extends Component {
     window.removeEventListener("scroll", this._captureScroll)
   }
 
-
+  /**
+    * @param {}
+    * fires when user identity returns invalid session
+    * prompts user to revalidate their session
+  */
   _closeLoginPromptModal() {
     this.setState({
       'showLoginPrompt': false
@@ -79,7 +83,8 @@ class RemoteLabbooks extends Component {
 
   /**
     *  @param {}
-    *  captures scrolling event
+    *  fires when user scrolls
+    *  if nextPage exists and user is scrolled down, it will cause loadmore to fire
   */
   _captureScroll = () => {
     let root = document.getElementById('root')
@@ -92,6 +97,11 @@ class RemoteLabbooks extends Component {
     }
   }
 
+  /**
+    * @param {string, boolean} sort reverse
+    * fires when parent _refetch function is called
+    * causes relay to refetch with new parameters
+  */
   _refetch(sort, reverse){
     let self = this;
     let relay = self.props.relay;
@@ -117,6 +127,7 @@ class RemoteLabbooks extends Component {
     *  @param {}
     *  loads more labbooks using the relay pagination container
   */
+
   _loadMore = () => {
     UserIdentity.getUserIdentity().then(response => {
       if(response.data){
@@ -137,6 +148,11 @@ class RemoteLabbooks extends Component {
       }
     })
   }
+
+  /**
+    *  @param {object} deleteData
+    *  changes the delete modal's visibility and changes the data passed to it
+  */
 
   _toggleDeleteModal(deleteData){
     if(deleteData) {

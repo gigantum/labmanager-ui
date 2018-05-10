@@ -29,7 +29,7 @@ export default class DeleteLabbook extends Component {
   }
   /**
     @param {}
-    sets state of labbookName
+    fires appropriate delete labbook mutation
   */
   _deleteLabbook(){
     const {labbookName, owner} = this.props.remoteDelete ? {labbookName: this.props.remoteLabbookName, owner: this.props.remoteOwner} : store.getState().routes
@@ -128,6 +128,10 @@ export default class DeleteLabbook extends Component {
     }
   }
 
+  /**
+    *  @param {}
+    *  determines the warning text to be displayed to the user
+  */
   _getExplanationText(){
     const {labbookName, owner} = store.getState().routes
     if(this.props.remoteDelete){

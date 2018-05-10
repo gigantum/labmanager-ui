@@ -30,6 +30,10 @@ export default class LocalLabbookPanel extends Component {
     this._handleDelete = this._handleDelete.bind(this)
   }
 
+  /**
+    * @param {object} edge
+    * validates user's session and then triggers toggleDeleteModal which passes parameters to the DeleteLabbook component
+  */
   _handleDelete(edge) {
     UserIdentity.getUserIdentity().then(response => {
       if(response.data){
@@ -41,9 +45,13 @@ export default class LocalLabbookPanel extends Component {
         }
       }
     })
-
   }
 
+  /**
+    * @param {}
+    * fires when user identity returns invalid session
+    * prompts user to revalidate their session
+  */
   _closeLoginPromptModal() {
     this.setState({
       'showLoginPrompt': false
@@ -51,12 +59,19 @@ export default class LocalLabbookPanel extends Component {
     document.getElementById('modal__cover').classList.add('hidden')
   }
 
+  /**
+    *  @param {}
+    *  changes state of isImporting to false
+  */
   _clearState = () => {
     this.setState({
       isImporting: false
     })
   }
-
+  /**
+    *  @param {}
+    *  changes state of isImporting to true
+  */
   _importingState = () => {
     this.setState({
       isImporting: true

@@ -34,7 +34,8 @@ class LocalLabbooks extends Component {
 
   /**
     *  @param {}
-    *  captures scrolling event
+    *  fires when user scrolls
+    *  if nextPage exists and user is scrolled down, it will cause loadmore to fire
   */
   _captureScroll = () => {
     let root = document.getElementById('root')
@@ -47,6 +48,11 @@ class LocalLabbooks extends Component {
     }
   }
 
+  /**
+    * @param {string, boolean} sort reverse
+    * fires when parent _refetch function is called
+    * causes relay to refetch with new parameters
+  */
   _refetch(sort, reverse){
     let self = this;
     let relay = self.props.relay;

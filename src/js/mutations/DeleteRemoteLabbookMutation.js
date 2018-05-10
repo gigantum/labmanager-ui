@@ -67,9 +67,6 @@ export default function DeleteRemoteLabbookMutation(
       updater: (store, response) => {
         sharedUpdater(store, parentID, nodeID, connection)
       },
-      // optimisticUpdater: (store) => {
-      //   sharedUpdater(store, parentID, nodeID, connection)
-      // },
     },
   )
 }
