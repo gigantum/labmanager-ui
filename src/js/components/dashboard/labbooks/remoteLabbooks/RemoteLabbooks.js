@@ -11,27 +11,9 @@ import classNames from 'classnames'
 import RemoteLabbookPanel from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbookPanel'
 import DeleteLabbook from 'Components/labbook/branchMenu/DeleteLabbook'
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
-//environment
-import {fetchQuery} from 'JS/createRelayEnvironment'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
 
-const RemoteLabbooksQuery = graphql`
-  query RemoteLabbooksQuery{
-    labbookList{
-      localLabbooks{
-        edges{
-          node{
-            id
-            owner
-            name
-            description
-          }
-        }
-      }
-    }
-  }
-`;
 
 let isLoadingMore = false;
 
@@ -39,7 +21,6 @@ class RemoteLabbooks extends Component {
   constructor(props){
     super(props)
     this.state = {
-      localLabbooks: {},
       deleteData: {
         remoteId: null,
         remoteOwner: null,
@@ -70,14 +51,6 @@ class RemoteLabbooks extends Component {
   }
 
   componentDidMount() {
-    fetchQuery(RemoteLabbooksQuery()).then((response) => {
-      let localLabbooksObj = {};
-      let responseArr = response.data.labbookList.localLabbooks.edges;
-      responseArr.forEach((labbook)=> {
-        localLabbooksObj[labbook.node.owner] = localLabbooksObj[labbook.node.owner] ? localLabbooksObj[labbook.node.owner].set(labbook.node.name, labbook.node.description) : new Map([[labbook.node.name, labbook.node.description]])
-      })
-      this.setState({localLabbooks: localLabbooksObj})
-    })
     window.addEventListener('scroll', this._captureScroll);
   }
 
@@ -198,9 +171,8 @@ class RemoteLabbooks extends Component {
                 className="LocalLabbooks__panel"
                 edge={edge}
                 history={this.props.history}
-                existsLocally={this.state.localLabbooks[edge.node.owner] && this.state.localLabbooks[edge.node.owner].has(edge.node.name)}
-                localDescription={this.state.localLabbooks[edge.node.owner] && this.state.localLabbooks[edge.node.owner].get(edge.node.name)}
-                goToLabbook={this.props.goToLabbook}/>
+                existsLocally={edge.node.isLocal}
+                />
             )
           })
         }
@@ -244,6 +216,7 @@ export default createPaginationContainer(
             description
             owner
             id
+            isLocal
           }
           cursor
         }

@@ -35,16 +35,25 @@ export default class LocalLabbookPanel extends Component {
     * validates user's session and then triggers toggleDeleteModal which passes parameters to the DeleteLabbook component
   */
   _handleDelete(edge) {
-    UserIdentity.getUserIdentity().then(response => {
-      if(response.data){
-        if(response.data.userIdentity.isSessionValid){
-          this.props.toggleDeleteModal({remoteId: edge.node.id, remoteOwner: edge.node.owner, remoteLabbookName: edge.node.name, existsLocally: this.props.existsLocally})
-        } else {
-          this.setState({'showLoginPrompt': true})
-          document.getElementById('modal__cover').classList.remove('hidden')
+    if(localStorage.getItem('username') !== edge.node.owner){
+      store.dispatch({
+        type: 'WARNING_MESSAGE',
+        payload: {
+          message: 'You can only delete remote labbooks created by you.',
         }
-      }
-    })
+      })
+    } else {
+      UserIdentity.getUserIdentity().then(response => {
+        if(response.data){
+          if(response.data.userIdentity.isSessionValid){
+            this.props.toggleDeleteModal({remoteId: edge.node.id, remoteOwner: edge.node.owner, remoteLabbookName: edge.node.name, existsLocally: this.props.existsLocally})
+          } else {
+            this.setState({'showLoginPrompt': true})
+            document.getElementById('modal__cover').classList.remove('hidden')
+          }
+        }
+      })
+    }
   }
 
   /**
@@ -199,6 +208,10 @@ export default class LocalLabbookPanel extends Component {
       'RemoteLabbooks__text-row': true,
       'blur': this.state.isImporting
     })
+    let deleteCSS = classNames({
+      'RemoteLabbooks__cloud-delete': localStorage.getItem('username') === edge.node.owner,
+      'RemoteLabbooks__cloud-delete--disabled': localStorage.getItem('username') !== edge.node.owner,
+    })
     return (
       <div
         key={edge.node.name}
@@ -221,9 +234,8 @@ export default class LocalLabbookPanel extends Component {
           ></button>
         }
           <button
-            disabled={this.state.isImporting || localStorage.getItem('username') !== edge.node.owner}
-            title={localStorage.getItem('username') !== edge.node.owner ?  'You can only delete remote labbooks created by you.' : '' }
-            className="RemoteLabbooks__cloud-delete"
+            className={deleteCSS}
+            disabled={this.state.isImporting}
             onClick={() => this._handleDelete(edge)}
           ></button>
         </div>
@@ -239,7 +251,7 @@ export default class LocalLabbookPanel extends Component {
           <p className="RemoteLabbooks__owner">{'Created by ' + edge.node.owner}</p>
           <p
             className="RemoteLabbooks__description">
-            {edge.node.description ? edge.node.description : this.props.localDescription}
+            {edge.node.description}
           </p>
         </div>
         {

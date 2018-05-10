@@ -42,8 +42,7 @@
   padding: 0;
   border: none;
 }
-.RemoteLabbooks__cloud-delete,
-.RemoteLabbooks__cloud-delete:disabled {
+.RemoteLabbooks__cloud-delete {
   background: url('./../images/icons/trash.svg') no-repeat 0 center;
   height: 20px;
   width: 20px;
@@ -51,6 +50,22 @@
   margin-left: 5px;
   padding: 0;
   border: none;
+}
+
+.RemoteLabbooks__cloud-delete--disabled,
+.RemoteLabbooks__cloud-delete--disabled:hover,
+.RemoteLabbooks__cloud-delete--disabled:focus,
+.RemoteLabbooks__cloud-delete--disabled:disabled,
+.RemoteLabbooks__cloud-delete:disabled{
+  background: url('./../images/icons/trash.svg') no-repeat 0 center;
+  height: 20px;
+  width: 20px;
+  background-size: 20px;
+  margin-left: 5px;
+  padding: 0;
+  border: none;
+  opacity: 0.2;
+  cursor: auto;
 }
 
 .RemoteLabbooks__icon-row {
