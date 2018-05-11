@@ -51,9 +51,19 @@ class Activity extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      'isPaginating': false,
-    })
+
+    let activityRecords = nextProps.labbook.activityRecords
+
+    if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 3)){
+      this.setState({
+        'isPaginating': true,
+      })
+      this._loadMore()
+    }else{
+      this.setState({
+        'isPaginating': false,
+      })
+    }
   }
 
   /**

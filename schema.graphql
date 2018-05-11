@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Wed May 02 2018 10:44:56 GMT-0400 (EDT)
+# timestamp: Fri May 11 2018 11:09:41 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -585,6 +585,7 @@ type Labbook implements Node & GitRepository {
   detailRecord(key: String): ActivityDetailObject
   detailRecords(keys: [String]): [ActivityDetailObject]
   backgroundJobs: [JobStatus]
+  package(manager: String, package: String, version: String = ""): PackageComponent
 }
 
 """An object representing a commit to a LabBook"""
@@ -655,7 +656,7 @@ type LabbookFile implements Node & GitRepository {
   isDir: Boolean
   isFavorite: Boolean
   modifiedAt: Int
-  size: Int
+  size: String
 }
 
 """A connection for paging through labbook files. """
@@ -749,7 +750,6 @@ type LabbookQuery {
   remoteLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): RemoteLabbookConnection
   availableBases(before: String, after: String, first: Int, last: Int): BaseComponentConnection
   availableCustomDependencies(before: String, after: String, first: Int, last: Int): CustomComponentConnection
-  package(manager: String, package: String, version: String = ""): PackageComponent
   userIdentity: UserIdentity
 }
 

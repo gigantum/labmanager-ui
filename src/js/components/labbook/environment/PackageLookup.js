@@ -6,25 +6,27 @@ import {
 import {fetchQuery} from 'JS/createRelayEnvironment';
 
 const PackageLookupQuery = graphql`
-  query PackageLookupQuery($manager: String!, $package: String!, $version: String){
-    package(manager: $manager, package: $package, version: $version){
-      id,
-      schema
-      manager
-      package
-      version
-      latestVersion
-      fromBase
+  query PackageLookupQuery($owner: String!, $name: String!, $manager: String!, $package: String!, $version: String){
+    labbook(owner: $owner, name: $name){
+      package(manager: $manager, package: $package, version: $version){
+        id,
+        schema
+        manager
+        package
+        version
+        latestVersion
+        fromBase
+      }
     }
   }
 `;
 
 
 const PackageLookup = {
-  query: (manager, packageName, version ) =>{
+  query: (name, owner, manager, packageName, version ) =>{
 
     version = version === '' ? null : version;
-    const variables = {manager: manager, package: packageName, version: version};
+    const variables = {name, owner, manager, package: packageName, version};
 
     return new Promise((resolve, reject) =>{
 

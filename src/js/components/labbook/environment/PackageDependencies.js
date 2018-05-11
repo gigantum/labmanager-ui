@@ -44,6 +44,17 @@ class PackageDependencies extends Component {
     this._setSelectedTab = this._setSelectedTab.bind(this)
     this._addPackageComponentMutation = this._addPackageComponentMutation.bind(this)
   }
+
+  componentWillReceiveProps(nextProps) {
+
+    if(nextProps.environment.packageDependencies.pageInfo.hasNextPage){
+
+      this._loadMore() //routes query only loads 2, call loadMore
+ 
+    }else{
+      this._refetch()
+    }
+  }
   /*
     handle state and addd listeners when component mounts
   */
@@ -257,9 +268,8 @@ class PackageDependencies extends Component {
   */
   _addStatePackage(){
     let packages = this.state.packages
-    const {packageName, version} = this.state
+    const {packageName, version, labbookName, owner} = this.state
     const manager = this.state.selectedTab
-    let packageIndex = packages.length;
 
     packages.push({
       packageName,
@@ -276,7 +286,7 @@ class PackageDependencies extends Component {
     })
 
 
-      PackageLookup.query(manager, packageName, version).then((response)=>{
+      PackageLookup.query(labbookName, owner, manager, packageName, version).then((response)=>{
         let packageIndex;
         packages.forEach((packageItem, index)=>{
           if(packageItem.packageName === packageName){
@@ -295,10 +305,11 @@ class PackageDependencies extends Component {
 
         }
         else{
+          console.log(response)
           packages.push({
             packageName,
-            version: response.data.package.version,
-            latestVersion: response.data.package.latestVersion,
+            version: response.data.labbook.package.version,
+            latestVersion: response.data.labbook.package.latestVersion,
             manager,
             validity: 'valid'
           })

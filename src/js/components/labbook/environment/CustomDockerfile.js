@@ -125,11 +125,13 @@ export default class CustomDockerfile extends Component {
             Custom Docker Instructions
           </h5>
         </div>
-        <p className="CustomDockerfile__sub-header">
+        <div className="CustomDockerfile__sub-header">
             <p>Add commands below to modify your environment</p>
-            <p>For example, to install a pip package from a Github repo add:</p>
-            <code>RUN pip install git+https://git.repo/some_pkg.git</code>
-        </p>
+            <div className="CustomDockerfile--code-snippet flex">
+              <p>For example, to install a pip package from a Github repo add:</p>
+              <code>RUN pip install git+https://git.repo/some_pkg.git</code>
+            </div>
+        </div>
         <div className="CustomDockerfile__content grid column-1-span-12">
         {
             this.state.editingDockerfile ?
