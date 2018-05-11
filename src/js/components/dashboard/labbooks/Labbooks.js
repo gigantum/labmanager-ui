@@ -37,7 +37,10 @@ class Labbooks extends Component {
       'sortMenuOpen': false,
       'refetchLoading': false,
       'selectedSection': 'localLabbooks',
-      'showLoginPrompt': false
+      'showLoginPrompt': false,
+      'sort': 'modified_on',
+      'reverse': false,
+      'wasSorted': false,
     }
 
     this._closeSortMenu = this._closeSortMenu.bind(this);
@@ -257,11 +260,7 @@ class Labbooks extends Component {
   */
 
   _refetch(sort, reverse){
-    if(this.refs.localLabbooks) {
-      this.refs.localLabbooks.refs.__INTERNAL__component._refetch(sort, reverse);
-    } else if(this.refs.remoteLabbooks) {
-      this.refs.remoteLabbooks.refs.__INTERNAL__component._refetch(sort, reverse);
-    }
+    this.setState({sort, reverse, wasSorted: true})
   }
 
   /**
@@ -420,7 +419,9 @@ class Labbooks extends Component {
             {
               this.state.selectedSection === 'localLabbooks' ?
               <LocalLabbooks
-                ref="localLabbooks"
+                wasSorted={this.state.wasSorted}
+                sort={this.state.sort}
+                reverse={this.state.reverse}
                 labbookListId={props.labbookList.id}
                 localLabbooks={props.labbookList.labbookList}
                 showModal={this._showModal}
@@ -428,17 +429,21 @@ class Labbooks extends Component {
                 filterLabbooks={this._filterLabbooks}
                 filterState={this.state.filter}
                 changeRefetchState={(bool) => this.setState({refetchLoading: bool})}
+                sortProcessed={()=> this.setState({wasSorted: false})}
                 {...props}
               />
               :
               <RemoteLabbooks
-                ref="remoteLabbooks"
+                wasSorted={this.state.wasSorted}
+                sort={this.state.sort}
+                reverse={this.state.reverse}
                 labbookListId={props.labbookList.labbookList.id}
                 remoteLabbooks={props.labbookList.labbookList}
                 showModal={this._showModal}
                 goToLabbook={this._goToLabbook}
                 filterLabbooks={this._filterLabbooks}
                 filterState={this.state.filter}
+                sortProcessed={()=> this.setState({wasSorted: false})}
                 forceLocalView={()=> {
                   this.setState({selectedSection: 'localLabbooks'})
                   this.setState({'showLoginPrompt': true})

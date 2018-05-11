@@ -20,11 +20,27 @@ let isLoadingMore = false;
 class LocalLabbooks extends Component {
   constructor(props){
     super(props)
+    this.state = {
+      sort: this.props.sort,
+      reverse: this.props.reverse
+    }
     this._captureScroll = this._captureScroll.bind(this)
     this._loadMore = this._loadMore.bind(this)
+    this._refetch = this._refetch.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.sort !== this.state.sort || nextProps.reverse !== this.state.reverse) {
+      this.setState({sort: nextProps.sort, reverse: nextProps.reverse});
+      this._refetch(nextProps.sort, nextProps.reverse);
+    }
   }
 
   componentDidMount() {
+    if(this.props.wasSorted) {
+    this._refetch(this.state.sort, this.state.reverse);
+    }
+    this.props.sortProcessed()
     window.addEventListener('scroll', this._captureScroll);
   }
 
@@ -128,7 +144,7 @@ export default createPaginationContainer(
   LocalLabbooks,
   graphql`
     fragment LocalLabbooks_localLabbooks on LabbookList{
-      localLabbooks(first: $first, after: $cursor, sort: $sort, reverse: $reverse)@connection(key: "LocalLabbooks_localLabbooks"){
+      localLabbooks(first: $first, after: $cursor, sort: $sort, reverse: $reverse)@connection(key: "LocalLabbooks_localLabbooks", filters: []){
         edges {
           node {
             name

@@ -29,9 +29,19 @@ class RemoteLabbooks extends Component {
       },
       deleteModalVisible: false,
       'showLoginPrompt': false,
+      sort: this.props.sort,
+      reverse: this.props.reverse
     }
     this._toggleDeleteModal = this._toggleDeleteModal.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
+    this._refetch = this._refetch.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.sort !== this.state.sort || nextProps.reverse !== this.state.reverse) {
+      this.setState({sort: nextProps.sort, reverse: nextProps.reverse});
+      this._refetch(nextProps.sort, nextProps.reverse);
+    }
   }
 
   componentWillUnmount() {
@@ -51,6 +61,10 @@ class RemoteLabbooks extends Component {
   }
 
   componentDidMount() {
+    if(this.props.wasSorted) {
+      this._refetch(this.state.sort, this.state.reverse);
+    }
+    this.props.sortProcessed()
     window.addEventListener('scroll', this._captureScroll);
   }
 
