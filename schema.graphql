@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Wed May 02 2018 10:44:56 GMT-0400 (EDT)
+# timestamp: Thu May 10 2018 18:37:34 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -655,7 +655,7 @@ type LabbookFile implements Node & GitRepository {
   isDir: Boolean
   isFavorite: Boolean
   modifiedAt: Int
-  size: Int
+  size: String
 }
 
 """A connection for paging through labbook files. """
@@ -670,6 +670,23 @@ type LabbookFileEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
+}
+
+"""
+A type simply used as a container to group local and remote LabBooks for better relay support
+
+Labbook and RemoteLabbook objects are uniquely identified by both the "owner" and the "name" of the LabBook
+
+NOTE: RemoteLabbooks require all fields to be explicitly set as there is no current way to asynchronously retrieve
+      the data
+
+NOTE: Currently all RemoteLabbook description fields will return empty strings
+"""
+type LabbookList implements Node {
+  """The ID of the object."""
+  id: ID!
+  localLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): LabbookConnection
+  remoteLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): RemoteLabbookConnection
 }
 
 """Entry point for all graphql mutations"""
@@ -745,8 +762,7 @@ type LabbookQuery {
   currentLabbookSchemaVersion: Int
   jobStatus(jobId: String): JobStatus
   backgroundJobs(before: String, after: String, first: Int, last: Int): JobStatusConnection
-  localLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): LabbookConnection
-  remoteLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): RemoteLabbookConnection
+  labbookList: LabbookList
   availableBases(before: String, after: String, first: Int, last: Int): BaseComponentConnection
   availableCustomDependencies(before: String, after: String, first: Int, last: Int): CustomComponentConnection
   package(manager: String, package: String, version: String = ""): PackageComponent
@@ -940,6 +956,7 @@ type RemoteLabbook implements Node & GitRepository {
   description: String
   creationDateUtc: String
   modifiedDateUtc: String
+  isLocal: Boolean
 }
 
 """

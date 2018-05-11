@@ -23,7 +23,7 @@ test('Test Dashboard datasets', () => {
 test('Test Dashboard Labbooks', () => {
   const dashboard = renderer.create(
 
-    <Dashboard match={{params: {id: 'labbboks'}}} history={history}/>
+    <Dashboard match={{params: {id: 'labbbooks'}}} history={history}/>
 
   );
   let tree = dashboard.toJSON();

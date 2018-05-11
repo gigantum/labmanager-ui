@@ -249,12 +249,12 @@
 
 .BranchMenu__item--delete{
   @extend .BranchMenu__item;
-  background: url('./../images/icons/trash.svg') no-repeat 7px center;
-  background-size: 24px;
+  background: url('./../images/icons/trash.svg') no-repeat 11px center;
+  background-size: 16px;
 }
 .BranchMenu__item--delete:hover {
-  background: $background-color url('./../images/icons/trash.svg') no-repeat 7px center;
-  background-size: 24px;
+  background: $background-color url('./../images/icons/trash.svg') no-repeat 11px center;
+  background-size: 16px;
 
 }
 

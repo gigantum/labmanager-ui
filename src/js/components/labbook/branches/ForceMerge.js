@@ -1,9 +1,7 @@
 //vendor
 import React from 'react';
-//store
-import store from 'JS/redux/store'
 
-export default class CreateBranchModal extends React.Component {
+export default class ForceMerge extends React.Component {
   /**
   *  @param {}
   *  triggers merge with force set top True
