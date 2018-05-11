@@ -32,28 +32,27 @@ const getTotalFileLength = (files) => {
 
   function filesRecursionCount(file){
 
-      if(Array.isArray(file)){
-        file.forEach((nestedFile)=>{
-          filesRecursionCount(nestedFile)
-        })
-      }else if( file.file && Array.isArray(file.file) && (file.file.length > 0)){
-        file.file.forEach((nestedFile)=>{
-          filesRecursionCount(nestedFile)
-        })
-      }else{
+    if(Array.isArray(file)){
+      file.forEach((nestedFile)=>{
+        filesRecursionCount(nestedFile)
+      })
+    }else if( file.file && Array.isArray(file.file) && (file.file.length > 0)){
+      file.file.forEach((nestedFile)=>{
+        filesRecursionCount(nestedFile)
+      })
+    }else{
 
-        let extension = file.name ? file.name.replace(/.*\./, '') : file.entry.fullPath.replace(/.*\./, '');
+      let extension = file.name ? file.name.replace(/.*\./, '') : file.entry.fullPath.replace(/.*\./, '');
 
-        if(file.entry && file.entry.isDirectory){
-          hasDirectoryUpload = true
-        }
-
-        if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && ((file.entry && file.entry.isFile) || (typeof file.type === 'string'))){
-          fileCount++
-        }
+      if(file.entry && file.entry.isDirectory){
+        hasDirectoryUpload = true
       }
-  }
 
+      if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && ((file.entry && file.entry.isFile) || (typeof file.type === 'string'))){
+        fileCount++
+      }
+    }
+  }
 
   filesRecursionCount(files)
 
@@ -62,7 +61,7 @@ const getTotalFileLength = (files) => {
 
 export default class FileBrowserWrapper extends Component {
   constructor(props){
-  	super(props);
+    super(props);
     const {owner, labbookName} = store.getState().routes
     const {uploading} = store.getState().fileBrowser
     this.state = {
@@ -70,8 +69,10 @@ export default class FileBrowserWrapper extends Component {
       'selectedFile': null,
       'message': '',
       'files': this._formatFileJson(props.files),
-      'labbookName': labbookName,
-      'owner': owner,
+      'fileSizePromptVisible': false,
+      'uploadData': {},
+      labbookName,
+      owner,
       uploading
     }
 
@@ -143,146 +144,326 @@ export default class FileBrowserWrapper extends Component {
   _chunkLoader(filepath, file, data, batchUpload, files, index, callback){
 
 
-   ChunkUploader.chunkFile(data, callback)
- }
+    ChunkUploader.chunkFile(data, callback)
+  }
+
+  /**
+  *  @param {array, boolean}
+  *  updates footer message depending on the type of upload
+  */
+  _creteFilesFooterMessage(totalFiles, hasDirectoryUpload, fileSizeData){
 
 
 
+    if(totalFiles > 0){
+      store.dispatch({
+        type: 'STARTED_UPLOADING',
+      })
+
+      store.dispatch({
+        type: 'UPLOAD_MESSAGE_SETTER',
+        payload:{
+          uploadMessage: `Preparing Upload for ${totalFiles} files`,
+          id: Math.random() * 10000,
+          totalFiles: totalFiles
+        }
+      })
+    }else if(hasDirectoryUpload && (totalFiles === 0)){
+      store.dispatch({
+        type: 'STARTED_UPLOADING',
+      })
+      store.dispatch({
+        type: 'INFO_MESSAGE',
+        payload:{
+          message: `Uploading Directories`,
+        }
+      })
+    }else if(fileSizeData.fileSizeNotAllowed.length > 0){
+      let fileSizePromptNames = fileSizeData.fileSizePrompt.map((file) => file.name)
+      let fileSizeNotAllowedNames = fileSizeData.fileSizeNotAllowed
+                                    .map((file) => file.name)
+                                    .filter((name) => fileSizePromptNames.indexOf(name) < 0)
+
+      let fileSizeNotAllowedString = fileSizeNotAllowedNames.join(', ')
+
+      if(fileSizeNotAllowedString.length > 0){
+        let message = `Cannot upload files over 100 Mb to the code directory. The following files have not been added ${fileSizeNotAllowedString}`
+
+        store.dispatch({
+          type: 'WARNING_MESSAGE',
+          payload:{
+            message: message,
+          }
+        })
+      }
+
+    }else {
+
+
+      store.dispatch({
+        type: 'WARNING_MESSAGE',
+        payload:{
+          message: `Cannot upload these file types`,
+        }
+      })
+    }
+  }
+
+  /**
+  *  @param {array, string, Int}
+  *  flattens file Array
+  *  filters file Array
+  *  kicks off upload function
+  */
+  _startFolderUpload(folderFiles, prefix, totalFiles){
+    let flattenedFiles = []
+    //recursively flattens the file array
+    function flattenFiles(filesArray){
+
+      if(Array.isArray(filesArray)){
+
+        filesArray.forEach(filesSubArray => {
+          flattenFiles(filesSubArray)
+        })
+
+      }else if(Array.isArray(filesArray.file) && (filesArray.file.length > 0)){
+
+        flattenFiles(filesArray.file)
+
+      }else if(filesArray.entry){
+
+
+        flattenedFiles.push(filesArray)
+      }
+    }
+
+    flattenFiles(folderFiles)
+
+    let filterFiles = flattenedFiles.filter((fileItem) => {
+
+      let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.entry.fullPath.replace(/.*\./, '');
+
+      return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
+    })
+
+    FolderUpload.uploadFiles(
+      filterFiles,
+      prefix,
+      this.state.labbookName,
+      this.state.owner,
+      this.props.section,
+      this.props.connection,
+      this.props.parentId,
+      this._chunkLoader,
+      totalFiles
+    )
+  }
+
+  /**
+  *  @param {array, string}
+  *  gets file count and upload type
+  *  sets upload message
+  *
+  */
+  _startFileUpload(files, prefix, fileSizeData){
+
+    let fileMetaData =  getTotalFileLength(files),
+    totalFiles = fileMetaData.fileCount - fileSizeData.fileSizeNotAllowed,
+    hasDirectoryUpload = fileMetaData.hasDirectoryUpload,
+    self = this,
+    folderFiles = []
+
+    this._creteFilesFooterMessage(totalFiles, hasDirectoryUpload, fileSizeData)
+
+    //loop through files and upload if file is a file
+    files.forEach((file, index) => {
+
+      if(file.isDirectory){
+
+        folderFiles.push(file)
+
+      }else if(file.name){
+
+
+        let isFileAllowed = fileSizeData.fileSizeNotAllowed.filter((largeFile) => {
+          return largeFile.name === file.name
+        }).length === 0
+
+        if(isFileAllowed){
+          const batchUpload = (files.length > 1)
+
+          let newKey = prefix;
+
+          if ((prefix !== '') && (prefix.substring(prefix.length - 1, prefix.length) !== '/')) {
+            newKey += '/';
+          }
+
+          newKey += file.name;
+
+          let fileReader = new FileReader();
+
+          fileReader.onloadend = function (evt) {
+            let filepath = newKey
+
+            let data = {
+              file: file,
+              filepath: filepath,
+              username: self.state.owner,
+              accessToken: localStorage.getItem('access_token'),
+              connectionKey: self.props.connection,
+              labbookName: self.state.labbookName,
+              parentId: self.props.parentId,
+              section: self.props.section
+            }
+
+            self._chunkLoader(filepath, file, data, batchUpload, files, index, (data)=>{
+
+            })
+          }
+
+          fileReader.readAsArrayBuffer(file);
+        }else{
+          //WARNING_MESSAGE
+        }
+
+      }else{
+
+        folderFiles.push(file)
+
+      }
+
+    })
+
+    if(folderFiles.length > 0){
+      self._startFolderUpload(folderFiles, prefix, totalFiles)
+    }
+  }
+
+  /**
+  * @param {array} files
+  *
+  * @return {number} totalFiles
+  */
+  _checkFileSize = (files) => {
+
+    const tenMB = 10 * 1000 * 1000;
+    const oneHundredMB = 100 * 1000 * 1000;
+    let fileSizePrompt = []
+    let fileSizeNotAllowed = []
+
+    function filesRecursionCount(file){
+
+      if(Array.isArray(file)){
+        file.forEach((nestedFile)=>{
+          filesRecursionCount(nestedFile)
+        })
+      }else if( file.file && Array.isArray(file.file) && (file.file.length > 0)){
+        file.file.forEach((nestedFile)=>{
+          filesRecursionCount(nestedFile)
+        })
+      }else{
+
+        let extension = file.name ? file.name.replace(/.*\./, '') : file.entry.fullPath.replace(/.*\./, '');
+
+        if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && ((file.entry && file.entry.isFile) || (typeof file.type === 'string'))){
+
+          if(file.size > oneHundredMB){
+            fileSizeNotAllowed.push(file)
+          }
+
+          if((file.size > tenMB) && (file.size < oneHundredMB)){
+            fileSizePrompt.push(file)
+          }
+        }
+      }
+    }
+
+    filesRecursionCount(files)
+
+    return {fileSizeNotAllowed, fileSizePrompt}
+  }
   /**
   *  @param {string, string} key,prefix  file key, prefix is root folder -
   *  creates a file using AddLabbookFileMutation by passing a blob
   */
   handleCreateFiles(files, prefix) {
 
+    if(!this.state.uploading) {
 
-    if (!this.state.uploading) {
+       if(this.props.section === 'code'){
+        let fileSizeData = this._checkFileSize(files);
 
-        store.dispatch({
-          type: 'STARTED_UPLOADING',
-        })
+        if(fileSizeData.fileSizePrompt.length === 0){
 
-        let self = this;
-
-        let fileMetaData =  getTotalFileLength(files),
-        totalFiles = fileMetaData.fileCount,
-        hasDirectoryUpload = fileMetaData.hasDirectoryUpload
-
-        if(totalFiles > 0){
-
-          store.dispatch({
-            type: 'UPLOAD_MESSAGE_SETTER',
-            payload:{
-              uploadMessage: `Preparing Upload for ${totalFiles} files`,
-              id: Math.random() * 10000,
-              totalFiles: totalFiles
-            }
-          })
-        }else if(hasDirectoryUpload && (totalFiles === 0)){
-          store.dispatch({
-            type: 'INFO_MESSAGE',
-            payload:{
-              message: `Uploading Directories`,
-            }
-          })
+          this._startFileUpload(files, prefix, fileSizeData);
         }else{
-          store.dispatch({
-            type: 'WARNING_MESSAGE',
-            payload:{
-              message: `Cannot upload these file types`,
-            }
-          })
-        }
 
-        let folderFiles = []
-        files.forEach((file, index) => {
-          if(file.isDirectory){
-            folderFiles.push(file)
-          }else if(file.name){
-            const batchUpload = (files.length > 1)
-
-            let newKey = prefix;
-
-            if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
-              newKey += '/';
-            }
-
-            newKey += file.name;
-
-
-            let fileReader = new FileReader();
-
-            fileReader.onloadend = function (evt) {
-                let filepath = newKey
-
-                let data = {
-                  file: file,
-                  filepath: filepath,
-                  username: self.state.owner,
-                  accessToken: localStorage.getItem('access_token'),
-                  connectionKey: self.props.connection,
-                  labbookName: self.state.labbookName,
-                  parentId: self.props.parentId,
-                  section: self.props.section
-                }
-
-                self._chunkLoader(filepath, file, data, batchUpload, files, index, (data)=>{
-
-                })
-              }
-
-              fileReader.readAsArrayBuffer(file);
-          }else{
-            folderFiles.push(file)
-          }
-
-        })
-        let flattenedFiles = []
-
-        if(folderFiles.length > 0){
-
-          function flattenFiles(filesArray){
-
-              if(Array.isArray(filesArray)){
-                filesArray.forEach(filesSubArray => {
-                  flattenFiles(filesSubArray)
-                })
-              }else if(Array.isArray(filesArray.file) && (filesArray.file.length > 0)){
-                flattenFiles(filesArray.file)
-              }
-              else if(filesArray.entry){
-                flattenedFiles.push(filesArray)
-              }
-          }
-
-          flattenFiles(folderFiles)
-
-          let filterFiles = flattenedFiles.filter((fileItem) => {
-            let extension = fileItem.name ? fileItem.name.replace(/.*\./, '') : fileItem.entry.fullPath.replace(/.*\./, '');
-
-            return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
-          })
-
-          FolderUpload.uploadFiles(
-            filterFiles,
+          this.setState({uploadData:{
+            files,
             prefix,
-            self.state.labbookName,
-            self.state.owner,
-            self.props.section,
-            this.props.connection,
-            this.props.parentId,
-            self._chunkLoader,
-            totalFiles
-          )
+            fileSizeData
+          }})
 
+          this._promptUserToAcceptUpload()
         }
+      }else{
+        this._startFileUpload(files, prefix, {fileSizeNotAllowed: [], fileSizePrompt: []});
       }
     }
+  }
+  /**
+  *  @param {}  -
+  *  show modal assking user if they want to upload files between 10-100 MB
+  */
+  _promptUserToAcceptUpload(){
+     this.setState({'fileSizePromptVisible': true})
+  }
+  /**
+  *  @param {}
+  *  user rejects upload
+  *  prompt files are concatonated into not allowed files
+  *  return {}
+  */
+  _userRejectsUpload(){
+    const { files,
+            prefix
+          } = this.state.uploadData
 
+   let fileSizeData = this.state.uploadData.fileSizeData
+   let fileSizeNotAllowed = fileSizeData.fileSizeNotAllowed.concat(fileSizeData.fileSizePrompt)
+
+   fileSizeData.fileSizeNotAllowed = fileSizeNotAllowed
+
+   this._startFileUpload(files, prefix, fileSizeData);
+
+   this.setState({'fileSizePromptVisible': false})
+  }
+  /**
+  *  @param {}
+  *  creates a file using AddLabbookFileMutation by passing a blob
+  */
+  _userAcceptsUpload(){
+    const {
+      files,
+      prefix,
+      fileSizeData
+   } = this.state.uploadData
+
+    this._startFileUpload(files, prefix, fileSizeData);
+
+    this.setState({'fileSizePromptVisible': false})
+  }
+  /**
+  *  @param {}
+  *  user cancels upload
+  */
+  _cancelUpload(){
+     this.setState({'fileSizePromptVisible': false})
+  }
   /**
   *  @param {string, string} oldKey,newKey  file key, prefix is root folder -
   *  renames folder by creating new folder, moving files to the folder and deleting the old folder
   */
-
   handleRenameFolder(oldKey, newKey) {
     let self = this;
     let edgesToMove = this.props.files.edges.filter((edge) => {
@@ -309,8 +490,11 @@ export default class FileBrowserWrapper extends Component {
         let all = []
 
         edgesToMove.forEach((edge) => {
+
           if(edge.node.key.indexOf('.') > -1 ){
+
             all.push(new Promise((resolve, reject)=>{
+
                 let newKeyComputed = edge.node.key.replace(oldKey, newKey)
 
                 MoveLabbookFileMutation(
@@ -326,10 +510,7 @@ export default class FileBrowserWrapper extends Component {
 
                     if(moveResponse.moveLabbookFile){
 
-                      setTimeout(function(){
 
-                        resolve(moveResponse.moveLabbookFile)
-                      },1050)
                       if (edge.node.isFavorite) {
                         RemoveFavoriteMutation(
                           this.props.favoriteConnection,
@@ -344,6 +525,7 @@ export default class FileBrowserWrapper extends Component {
                           (response, error)=>{
 
                             if(error){
+                              reject(moveResponse.moveLabbookFile)
                               console.error(error)
                               store.dispatch({
                                 type: 'ERROR_MESSAGE',
@@ -366,7 +548,11 @@ export default class FileBrowserWrapper extends Component {
                                 this.props.section,
                                 (response, error)=>{
                                   if(error){
+
+                                    reject(moveResponse.moveLabbookFile)
+
                                     console.error(error)
+
                                     store.dispatch({
                                       type: 'ERROR_MESSAGE',
                                       payload: {
@@ -374,6 +560,11 @@ export default class FileBrowserWrapper extends Component {
                                         messageBody: error
                                       }
                                     })
+
+                                  }else{
+
+                                    resolve(moveResponse.moveLabbookFile)
+
                                   }
                                 }
                               )
@@ -382,6 +573,7 @@ export default class FileBrowserWrapper extends Component {
                         )
                       }
                     }else{
+
                         store.dispatch({
                           type: 'ERROR_MESSAGE',
                           payload: {
@@ -389,12 +581,13 @@ export default class FileBrowserWrapper extends Component {
                             messageBody: error
                           }
                         })
+
                         reject(moveResponse)
                     }
-                  }
-                )
-
-            }))
+                  })
+                }
+              )
+            )
           }
 
         })
@@ -546,6 +739,7 @@ export default class FileBrowserWrapper extends Component {
     })
 
     if(edgeToDelete){
+
       DeleteLabbookFileMutation(
         this.props.connection,
         this.state.owner,
@@ -689,26 +883,26 @@ export default class FileBrowserWrapper extends Component {
   */
   _formatFileJson(files){
 
-      let formatedArray = []
-      let idExists = []
-      if(files){
-        files.edges.forEach((edge) => {
-          if(edge && edge.node){
-            if(idExists.indexOf(edge.node.id) === -1){
-              formatedArray.push({
-                key: edge.node.key,
-                modified: edge.node.modifiedAt,
-                size: edge.node.size,
-                isFavorite: edge.node.isFavorite,
-                id: edge.node.id
-              })
-              idExists.push(edge.node.id)
-            }
+    let formatedArray = []
+    let idExists = []
+    if(files){
+      files.edges.forEach((edge) => {
+        if(edge && edge.node){
+          if(idExists.indexOf(edge.node.id) === -1){
+            formatedArray.push({
+              key: edge.node.key,
+              modified: edge.node.modifiedAt,
+              size: edge.node.size,
+              isFavorite: edge.node.isFavorite,
+              id: edge.node.id
+            })
+            idExists.push(edge.node.id)
           }
-        })
-      }
+        }
+      })
+    }
 
-      return formatedArray
+    return formatedArray
   }
   /**
   *  @param {string} key
@@ -718,9 +912,9 @@ export default class FileBrowserWrapper extends Component {
 
     let fileItem = this.props.files.edges.filter((edge) => {
 
-        if(edge && (edge.node.key === key)){
-          return edge.node
-        }
+      if(edge && (edge.node.key === key)){
+        return edge.node
+      }
     })[0]
 
     if(!fileItem.node.isFavorite){
@@ -792,35 +986,35 @@ export default class FileBrowserWrapper extends Component {
     let files = this._formatFileJson(this.props.files)
 
     return(
-        <div id="code" className="Code flex flex-row justify-center">
+      <div id="code" className="Code flex flex-row justify-center">
 
-          <FileBrowser
-            ref={this.props.connection}
-            key={this.props.connection}
-            keyPrefix={this.props.connection}
-            connectionKey={this.props.connection}
-            files={files}
-            toggleFolder={this.toggleFolder}
-            openDetailPanel={this.openDetailPanel}
-            rootFolder={this.props.section}
-            onCreateFolder={this.handleCreateFolder}
-            onCreateFiles={this.handleCreateFiles}
-            onMoveFolder={this.handleRenameFolder}
-            onMoveFile={this.handleRenameFile}
-            onRenameFolder={this.handleRenameFolder}
-            onRenameFile={this.handleRenameFile}
-            onDeleteFolder={this.handleDeleteFolder}
-            onDeleteFile={this.handleDeleteFile}
-            onFileFavoriting={this.handleFileFavoriting}
-            owner={this.state.owner}
-          />
-          {
-            this.state.uploading &&
-            <div className="Code--uploading flex">
-              Uploading Files...
-              <span className="Code__loading--browser" />
-            </div>
-          }
+        <FileBrowser
+          ref={this.props.connection}
+          key={this.props.connection}
+          keyPrefix={this.props.connection}
+          connectionKey={this.props.connection}
+          files={files}
+          toggleFolder={this.toggleFolder}
+          openDetailPanel={this.openDetailPanel}
+          rootFolder={this.props.section}
+          onCreateFolder={this.handleCreateFolder}
+          onCreateFiles={this.handleCreateFiles}
+          onMoveFolder={this.handleRenameFolder}
+          onMoveFile={this.handleRenameFile}
+          onRenameFolder={this.handleRenameFolder}
+          onRenameFile={this.handleRenameFile}
+          onDeleteFolder={this.handleDeleteFolder}
+          onDeleteFile={this.handleDeleteFile}
+          onFileFavoriting={this.handleFileFavoriting}
+          owner={this.state.owner}
+        />
+        {
+          this.state.uploading &&
+          <div className="Code--uploading flex">
+            Uploading Files...
+            <span className="Code__loading--browser" />
+          </div>
+        }
         {
           this.props.isLocked.locked &&
           <div className="Code--uploading flex">
@@ -829,11 +1023,47 @@ export default class FileBrowserWrapper extends Component {
           </div>
         }
 
-          <DetailPanel
-            {...this.state.selectedFile}
-          />
+        <DetailPanel
+          {...this.state.selectedFile}
+        />
 
-        </div>
-      )
+        {
+          this.state.fileSizePromptVisible &&
+          [
+            <div
+              key="FileBrowserLargeCodeUpload"
+              className="FileBrowser__modal">
+              <div
+                className="FileBrowser__close-modal"
+                onClick={() => this._cancelUpload()}></div>
+              <h5 className="FileBrowser__header">Large File Warning</h5>
+
+              <div className="FileBrowser__body">
+
+                <p>You're uploading some large files to the Code Section, are you sure you don't want to place these in the Input Section? Note, putting large files in the Code Section can hurt performance.</p>
+
+                <div className="FileBrowser__button-container">
+                  <button
+                    className="button--flat"
+                    onClick={() => this._cancelUpload()}>Cancel Upload</button>
+                  <button onClick={() => this._userRejectsUpload()}>Skip Large Files</button>
+                  <button onClick={() => this._userAcceptsUpload()}>Continue Upload</button>
+
+
+                </div>
+
+              </div>
+
+            </div>,
+
+            <div
+              key="FileBrowserLargeCodeUploadCover"
+              className="modal__cover">
+            </div>
+          ]
+        }
+
+      </div>
+    )
   }
 }

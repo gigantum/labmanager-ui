@@ -1,7 +1,7 @@
 .WizardModal__modal {
   overflow: hidden;
   padding: 20px 60px;
-  @include modal(600px, 960px);
+  @include modal(540px, 860px);
 }
 
 .WizardModal__modal--blur {
@@ -9,7 +9,7 @@
   filter: blur(5px);
   overflow: hidden;
   padding: 20px 60px;
-  @include modal(600px, 960px);
+  @include modal(540px, 860px);
 }
 
 .WizardModal__nav {
