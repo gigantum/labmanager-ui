@@ -109,7 +109,7 @@
 
 .Activity__date-tab:before {
   top: 76px;
-  left: 34px;
+  left: 35px;
 }
 
 .ActivtyCard__wrapper:nth-last-child(1):before {
@@ -299,7 +299,7 @@
   position: absolute;
   top: 3px;
   left: 31px;
-  transition: all 0.3s;
+  transition: all 0.125s;
 }
 
 .Activity__user-note:before, .Activity__user-note:before {
@@ -583,7 +583,7 @@
   border-radius: 15px;
   left: 37px;
   z-index: 201;
-  transition: all 0.3s;
+  transition: all 0.125s;
   top: calc(50% - 5px);
 }
 

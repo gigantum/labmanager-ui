@@ -13,6 +13,22 @@ import store from 'JS/redux/store'
 
 
 class InputFavorites extends Component {
+  /*
+    update component when props are reloaded
+  */
+  componentWillReceiveProps(nextProps) {
+
+    //this._loadMore() //routes query only loads 2, call loadMore
+    if(nextProps.input && nextProps.input.favorites && nextProps.input.favorites.pageInfo.hasNextPage && nextProps.input.favorites.edges.length < 3){
+      this.props.relay.loadMore(
+       1, // Fetch the next 10 feed items
+       (response, error) => {
+         if(error){
+           console.error(error)
+        }
+      })
+    }
+  }
 
   /*
     handle state and addd listeners when component mounts
