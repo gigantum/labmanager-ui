@@ -80,10 +80,17 @@ export default class CreateBranchModal extends React.Component {
             <div
               onClick={() => this.props.toggleModal('deleteModalVisible')}
               className="BranchCard__close"></div>
+
             <h4 className="BranchCard__header">Delete Branch</h4>
-            <p className="BranchCard__text BranchCard__text--red">You are going to remove {owner}/{cleanBranchName}. Remove branches cannot be restored. Are you sure?</p>
-            <p className="BranchCard__text">This action can lead to data loss. To prevent accidental deletions we ask you to confirm your intention.</p>
-            <p>Please type {cleanBranchName} to procceed.</p>
+
+            <p className="BranchCard__text BranchCard__text--red">
+              You are going to delete {owner}/{cleanBranchName}. Deleted branches cannot be restored. Are you sure?
+            </p>
+
+            <p className="BranchCard__text">
+              This action can lead to data loss. Please type <b>{cleanBranchName}</b> to proceed.
+            </p>
+
             <input
               onChange={(evt) => {this._updateBranchText(evt)}}
               onKeyUp={(evt) => {this._updateBranchText(evt)}}

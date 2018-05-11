@@ -21,6 +21,17 @@ class CodeBrowser extends Component {
   }
 
   /*
+    update component when props are reloaded
+  */
+  componentWillReceiveProps(nextProps) {
+
+    if(nextProps.code.allFiles.pageInfo.hasNextPage){
+      this._loadMore()
+    } else {
+      this.setState({'moreLoading': false});
+    }
+  }
+  /*
     handle state and addd listeners when component mounts
   */
   componentDidMount() {

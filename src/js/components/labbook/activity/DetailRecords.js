@@ -162,7 +162,7 @@ export default class UserNote extends Component {
                                 key={detailRecord.id + '_'+ index}
                                 className={liCSS}>
                                 {this._renderDetail(item)}
-                                <div className="DetailsRecords__fadeout"></div>
+                         
                                 <p className="DetailsRecords__link hidden" onClick={(e)=> this._moreClicked(e.target)}>More...</p>
                                 {this._setLinks()}
                             </li>)

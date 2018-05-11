@@ -77,7 +77,9 @@ export default class ActivityCard extends Component {
               </p>
               <div className="ActivityCard__user"></div>
             </div>
-            <h6 className="ActivityCard__commit-message">{this.props.edge.node.username + ': ' + this.props.edge.node.message}</h6>
+            <h6 className="ActivityCard__commit-message">
+              <b>{this.props.edge.node.username + ' - '}</b>{this.props.edge.node.message}
+            </h6>
 
           </div>
 

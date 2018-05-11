@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Thu May 10 2018 18:37:34 GMT-0400 (EDT)
+# timestamp: Fri May 11 2018 11:09:41 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -535,7 +535,7 @@ type JobStatus implements Node {
 }
 
 """
-A Connection for paging through all background jobs the system is aware of. 
+A Connection for paging through all background jobs the system is aware of.
 """
 type JobStatusConnection {
   pageInfo: PageInfo!
@@ -585,6 +585,7 @@ type Labbook implements Node & GitRepository {
   detailRecord(key: String): ActivityDetailObject
   detailRecords(keys: [String]): [ActivityDetailObject]
   backgroundJobs: [JobStatus]
+  package(manager: String, package: String, version: String = ""): PackageComponent
 }
 
 """An object representing a commit to a LabBook"""
@@ -765,7 +766,6 @@ type LabbookQuery {
   labbookList: LabbookList
   availableBases(before: String, after: String, first: Int, last: Int): BaseComponentConnection
   availableCustomDependencies(before: String, after: String, first: Int, last: Int): CustomComponentConnection
-  package(manager: String, package: String, version: String = ""): PackageComponent
   userIdentity: UserIdentity
 }
 
@@ -796,7 +796,7 @@ type LabbookRefEdge {
 
 """
 A type representing a section within a LabBook (i.e., code, input, output)
-    
+
 """
 type LabbookSection implements Node & GitRepository {
   """The ID of the object."""
@@ -832,7 +832,7 @@ input MergeFromBranchInput {
 }
 
 """
-Merge from another branch into the current active branch. Force if necessary. 
+Merge from another branch into the current active branch. Force if necessary.
 """
 type MergeFromBranchPayload {
   labbook: Labbook
