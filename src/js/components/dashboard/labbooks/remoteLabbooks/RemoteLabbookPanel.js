@@ -39,7 +39,7 @@ export default class LocalLabbookPanel extends Component {
       store.dispatch({
         type: 'WARNING_MESSAGE',
         payload: {
-          message: 'You can only delete remote labbooks created by you.',
+          message: 'You can only delete remote LabBooks that you have created.',
         }
       })
     } else {
