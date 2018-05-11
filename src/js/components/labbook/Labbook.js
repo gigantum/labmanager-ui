@@ -8,7 +8,6 @@ import {
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import classNames from 'classnames'
-import uuidv4 from 'uuid/v4';
 //store
 import store from "JS/redux/store"
 //components

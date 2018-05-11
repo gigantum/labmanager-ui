@@ -4,7 +4,6 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
-import uuidv4 from 'uuid/v4'
 //store
 import store from 'JS/redux/store'
 //Components
