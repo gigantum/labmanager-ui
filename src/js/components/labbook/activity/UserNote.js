@@ -44,8 +44,11 @@ export default class UserNote extends Component {
     let cardArr = Array.prototype.slice.call(document.getElementsByClassName('card'));
     let circleArr = Array.prototype.slice.call(document.getElementsByClassName('Activity__submenu-circle'));
     if(evt.target.className.indexOf('fa-columns') !== -1){
-      if(document.getElementsByClassName('ReactStickyHeader_fixed')[0].className.indexOf('hidden') === -1) {
-        document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.add('hidden')
+      if(document.getElementsByClassName('Labbook__header')[0].className.indexOf('hidden') === -1) {
+        document.getElementsByClassName('Labbook__header')[0].classList.add('hidden')
+      }
+      if(document.getElementsByClassName('SideBar')[0].className.indexOf('hidden') === -1) {
+        document.getElementsByClassName('SideBar')[0].classList.add('hidden')
       }
       cardArr.forEach((card)=>{
         if(card.className.indexOf('hidden') === -1) {
@@ -58,7 +61,8 @@ export default class UserNote extends Component {
         }
       })
     } else {
-      document.getElementsByClassName('ReactStickyHeader_fixed')[0].className.indexOf('hidden') === -1 ? document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.add('hidden'): document.getElementsByClassName('ReactStickyHeader_fixed')[0].classList.remove('hidden')
+      document.getElementsByClassName('Labbook__header')[0].className.indexOf('hidden') === -1 ? document.getElementsByClassName('Labbook__header')[0].classList.add('hidden'): document.getElementsByClassName('Labbook__header')[0].classList.remove('hidden')
+      document.getElementsByClassName('SideBar')[0].className.indexOf('hidden') === -1 ? document.getElementsByClassName('SideBar')[0].classList.add('hidden'): document.getElementsByClassName('SideBar')[0].classList.remove('hidden')
       cardArr.forEach((card)=>{
         card.className.indexOf('hidden') === -1 ? card.classList.add('hidden') : card.classList.remove('hidden')
       })
