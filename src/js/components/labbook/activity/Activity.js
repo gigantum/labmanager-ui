@@ -356,6 +356,11 @@ class Activity extends Component {
     this.setState({createBranchVisible: !this.state.createBranchVisible})
   }
 
+  /**
+  *   @param {boolean} isFullscreen
+  *   Changes editorFullscreen in state to true if isFullscreen is true, else it swaps existing state
+  *   @return {}
+  */
   _changeFullscreenState(isFullscreen) {
     if(isFullscreen){
       this.setState({editorFullscreen: isFullscreen})
