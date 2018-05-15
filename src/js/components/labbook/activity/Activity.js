@@ -431,7 +431,8 @@ class Activity extends Component {
                                   {
                                     (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace) &&
                                   <Fragment>
-                                  <div
+                                  {/* Rollbacks temporarily disabled */}
+                                  {/* <div
                                       className="Activity__submenu-circle"
                                     >
                                     </div>
@@ -442,7 +443,7 @@ class Activity extends Component {
                                       >
                                         Rollback to previous state
                                       </h5>
-                                    </div>
+                                    </div> */}
                                     </Fragment>
                                   }
                                   </div>

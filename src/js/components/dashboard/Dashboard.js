@@ -57,6 +57,7 @@ export default class DashboardContainer extends Component {
             } else if (props) {
                 return (
                   <Labbooks
+                    auth={this.props.auth}
                     labbookList={props}
                     history={this.props.history}
                   />

@@ -462,20 +462,27 @@ class Labbooks extends Component {
         </div>
       )
       } else if (props.labbookList === null) {
-        store.dispatch({
-          type: 'ERROR_MESSAGE',
-          payload: {
-            message: `Failed to fetch LabBooks.`,
-            messageBody: [{ message: 'There was an error while fetching LabBooks. This likely means you have a corrupted LabBook file.' }]
+
+        UserIdentity.getUserIdentity().then(response => {
+          if(response.data && response.data.userIdentity.isSessionValid){
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `Failed to fetch LabBooks.`,
+                messageBody: [{ message: 'There was an error while fetching LabBooks. This likely means you have a corrupted LabBook file.' }]
+              }
+            })
+            return (
+              <div className="Labbooks__fetch-error">
+                There was an error attempting to fetch LabBooks. <br />
+                Try restarting Gigantum and refresh the page.<br />
+                If the problem persists <a target="_blank" href="https://docs.gigantum.io/discuss" rel="noopener noreferrer">request assistance here.</a>
+              </div>
+            )
+          } else {
+            this.props.auth.login();
           }
         })
-        return (
-          <div className="Labbooks__fetch-error">
-            There was an error attempting to fetch LabBooks. <br />
-            Try restarting Gigantum and refresh the page.<br />
-            If the problem persists <a target="_blank" href="https://docs.gigantum.io/discuss" rel="noopener noreferrer">request assistance here.</a>
-          </div>
-        )
       } else {
         return (<Loader />)
       }

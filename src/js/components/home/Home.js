@@ -24,6 +24,7 @@ export default class Home extends Component {
         {
           isAuthenticated() && (
             <Dashboard
+              auth={this.props.auth}
               footerWorkerCallback={this.footerWorkerCallback}
               match={this.props.match}
               history={this.props.history}
