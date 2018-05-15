@@ -50,9 +50,7 @@ class PackageDependencies extends Component {
     if(nextProps.environment.packageDependencies.pageInfo.hasNextPage){
 
       this._loadMore() //routes query only loads 2, call loadMore
- 
-    }else{
-      this._refetch()
+
     }
   }
   /*
