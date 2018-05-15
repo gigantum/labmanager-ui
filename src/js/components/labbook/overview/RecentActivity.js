@@ -41,7 +41,7 @@ export default class RecentActivity extends Component {
     if(item){
       switch(item[0]){
         case 'text/plain':
-          return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
+          return(<div className="ReactMarkdown"><p>{item[1]}</p></div>)
         case 'image/png':
           return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/jpg':
@@ -63,17 +63,19 @@ export default class RecentActivity extends Component {
   }
 
   checkOverflow(el) {
-   var curOverflow = el.style.overflow;
+    if(el) {
+      var curOverflow = el.style.overflow;
 
-   if ( !curOverflow || curOverflow === "visible" )
-      el.style.overflow = "hidden";
+      if ( !curOverflow || curOverflow === "visible" )
+         el.style.overflow = "hidden";
 
-   var isOverflowing = el.clientWidth < el.scrollWidth
-      || el.clientHeight < el.scrollHeight;
+      var isOverflowing = el.clientWidth < el.scrollWidth
+         || el.clientHeight < el.scrollHeight;
 
-   el.style.overflow = curOverflow;
+      el.style.overflow = curOverflow;
 
-   return isOverflowing;
+      return isOverflowing;
+    }
   }
   _setLinks() {
     let elements = Array.prototype.slice.call(document.getElementsByClassName('ReactMarkdown'));
