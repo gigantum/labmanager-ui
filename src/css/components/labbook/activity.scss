@@ -6,6 +6,9 @@
   height: calc(100% - 13px);
 
 }
+.Activity.fullscreen {
+  z-index: 1000;
+}
 
 .ActivityCard {
   margin: 0;
@@ -654,4 +657,9 @@
   border-width: 0 0 0 4px;
   width: 1px;
   height: 45px;
+}
+
+.UserActivity__container.fullscreen {
+  z-index: 1000;
+  position: fixed;
 }

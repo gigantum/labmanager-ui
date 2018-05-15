@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import SimpleMDE from 'simplemde'
 import { WithContext as ReactTags } from 'react-tag-input';
+import classNames from 'classnames'
 //components
 import Base from 'Components/labbook/environment/Base'
 import FilePreview from './FilePreview'
@@ -39,8 +40,8 @@ class Overview extends Component {
       descriptionText: this.props.description.replace(/\n/g,' '),
       lastSavedDescription: this.props.description.replace(/\n/g,' '),
       savingDescription: false,
+      editorFullscreen: false,
     }, store.getState().overview);
-    this._toggleElements = this._toggleElements.bind(this);
     this._editReadme = this._editReadme.bind(this);
   }
   /*
@@ -63,25 +64,14 @@ class Overview extends Component {
         simple.value(this.props.readme ? this.props.readme : '')
         this.setState({simpleExists: true})
         let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0]
-        fullscreenButton && fullscreenButton.addEventListener('click', this._toggleElements)
+        fullscreenButton && fullscreenButton.addEventListener('click', this.setState({editorFullscreen: !this.state.editorFullscreen}))
         let sideBySideButton = document.getElementsByClassName('fa-columns')[0]
-        sideBySideButton && sideBySideButton.addEventListener('click', this._toggleElements)
+        sideBySideButton && sideBySideButton.addEventListener('click',this.setState({editorFullscreen: true}))
       }
     }
   }
-  _toggleElements(evt) {
-    if(evt.target.className.indexOf('fa-columns') !== -1){
-      if(document.getElementsByClassName('Labbook__header')[0].className.indexOf('hidden') === -1) {
-        document.getElementsByClassName('Labbook__header')[0].classList.add('hidden')
-      }
-      if(document.getElementsByClassName('SideBar')[0].className.indexOf('hidden') === -1) {
-        document.getElementsByClassName('SideBar')[0].classList.add('hidden')
-      }
-    } else {
-      document.getElementsByClassName('Labbook__header')[0].className.indexOf('hidden') === -1 ? document.getElementsByClassName('Labbook__header')[0].classList.add('hidden'): document.getElementsByClassName('Labbook__header')[0].classList.remove('hidden')
-      document.getElementsByClassName('SideBar')[0].className.indexOf('hidden') === -1 ? document.getElementsByClassName('SideBar')[0].classList.add('hidden'): document.getElementsByClassName('SideBar')[0].classList.remove('hidden')
-    }
-  }
+
+
   /*
     unsubscribe from redux store
   */
@@ -182,12 +172,16 @@ class Overview extends Component {
   }
 
   render() {
+    let overviewCSS = classNames({
+      'Overview': true,
+      'fullscreen': this.state.editorFullscreen
+    })
     let readmeCSS = this.state.readmeExpanded ? 'ReadmeMarkdown--expanded' : 'ReadmeMarkdown';
     let descriptionCSS = this.state.descriptionText ? 'column-1-span-9' : 'column-1-span-9 empty'
     if (this.props.labbook) {
       const { owner, labbookName } = store.getState().routes
       return (
-        <div className="Overview">
+        <div className={overviewCSS}>
           <div className="Overview__description grid column-1-span-12">
           {
             this.state.editingDescription ?

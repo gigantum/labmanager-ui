@@ -14,14 +14,14 @@ export default class UserNote extends Component {
     this.state = {
       'tags': [],
       'userSummaryText': '',
-      'addNoteDisabled': true
+      'addNoteDisabled': true,
+      'editorFullscreen': false,
     }
 
     this._addNote = this._addNote.bind(this)
     this._handleDelete = this._handleDelete.bind(this)
     this._handleAddition = this._handleAddition.bind(this)
     this._handleDrag= this._handleDrag.bind(this)
-    this._toggleElements = this._toggleElements.bind(this);
   }
   /**
     @param {}
@@ -34,41 +34,9 @@ export default class UserNote extends Component {
         spellChecker: true
       });
       let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0]
-      fullscreenButton && fullscreenButton.addEventListener('click', this._toggleElements)
+      fullscreenButton && fullscreenButton.addEventListener('click', () => this.props.changeFullScreenState())
       let sideBySideButton = document.getElementsByClassName('fa-columns')[0]
-      sideBySideButton && sideBySideButton.addEventListener('click', this._toggleElements)
-    }
-  }
-
-  _toggleElements(evt) {
-    let cardArr = Array.prototype.slice.call(document.getElementsByClassName('card'));
-    let circleArr = Array.prototype.slice.call(document.getElementsByClassName('Activity__submenu-circle'));
-    if(evt.target.className.indexOf('fa-columns') !== -1){
-      if(document.getElementsByClassName('Labbook__header')[0].className.indexOf('hidden') === -1) {
-        document.getElementsByClassName('Labbook__header')[0].classList.add('hidden')
-      }
-      if(document.getElementsByClassName('SideBar')[0].className.indexOf('hidden') === -1) {
-        document.getElementsByClassName('SideBar')[0].classList.add('hidden')
-      }
-      cardArr.forEach((card)=>{
-        if(card.className.indexOf('hidden') === -1) {
-          card.classList.add('hidden');
-        }
-      })
-      circleArr.forEach((circle)=>{
-        if(circle.className.indexOf('hidden') === -1) {
-          circle.classList.add('hidden');
-        }
-      })
-    } else {
-      document.getElementsByClassName('Labbook__header')[0].className.indexOf('hidden') === -1 ? document.getElementsByClassName('Labbook__header')[0].classList.add('hidden'): document.getElementsByClassName('Labbook__header')[0].classList.remove('hidden')
-      document.getElementsByClassName('SideBar')[0].className.indexOf('hidden') === -1 ? document.getElementsByClassName('SideBar')[0].classList.add('hidden'): document.getElementsByClassName('SideBar')[0].classList.remove('hidden')
-      cardArr.forEach((card)=>{
-        card.className.indexOf('hidden') === -1 ? card.classList.add('hidden') : card.classList.remove('hidden')
-      })
-      circleArr.forEach((circle)=>{
-        circle.className.indexOf('hidden') === -1 ? circle.classList.add('hidden') : circle.classList.remove('hidden')
-      })
+      sideBySideButton && sideBySideButton.addEventListener('click', () => this.props.changeFullScreenState(true))
     }
   }
 
@@ -158,6 +126,7 @@ export default class UserNote extends Component {
 
 
   render(){
+    // console.log(this.state.editorFullscreen)
     const {tags} = this.state;
     return(
       <div className="UserNote flex flex--column">
