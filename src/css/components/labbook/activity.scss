@@ -4,6 +4,7 @@
   padding: 10px;
   width: 100%;
   height: calc(100% - 13px);
+  position: relative;
 
 }
 
@@ -48,25 +49,29 @@
 
 }
 
+.Activity__new-record-wrapper{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+}
+
 .Activity__new-record{
   cursor: pointer;
   text-align: center;
   line-height: 40px;
   position: fixed;
-  top: 100px;
+
   height: 40px;
   z-index: 800;
-  left: 50%;
-  width: 280px;
-  color: $romanSilver;
-
+  width: 200px;
+  color: $white;
   border-radius: 20px;
+  top: 100px;
 
-  margin: 0 0 0 -140px;
-  border: 1px solid $romanSilver;
+  border: 1px solid $turquise;
 
   padding: 0 20px 0 0;
-  background: #fefefe url('../images/icons/up-arrow-silver.svg') no-repeat calc(100% - 15px) center;
+  background: $turquise url('../images/icons/up-arrow-white.svg') no-repeat calc(100% - 15px) center;
   background-size: 22px;
 
   @extend .box-shadow;

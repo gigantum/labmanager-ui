@@ -12,7 +12,7 @@ import store from 'JS/redux/store'
 import AddPackageComponentMutation from 'Mutations/environment/AddPackageComponentMutation'
 import RemovePackageComponentMutation from 'Mutations/environment/RemovePackageComponentMutation'
 //helpers
-import PackageLookup from './PackageLookup'
+//import PackageLookup from './PackageLookup'
 //config
 import config from 'JS/config'
 
@@ -284,40 +284,40 @@ class PackageDependencies extends Component {
     })
 
 
-      PackageLookup.query(labbookName, owner, manager, packageName, version).then((response)=>{
-        let packageIndex;
-        packages.forEach((packageItem, index)=>{
-          if(packageItem.packageName === packageName){
-            packageIndex = index;
-          }
-        })
-        packages.splice(packageIndex, 1);
-        if(response.errors){
-            store.dispatch({
-              type:"ERROR_MESSAGE",
-              payload: {
-                message: `Error occured looking up ${packageName}`,
-                messageBody: response.errors
-              }
-            })
-
-        }
-        else{
-          console.log(response)
-          packages.push({
-            packageName,
-            version: response.data.labbook.package.version,
-            latestVersion: response.data.labbook.package.latestVersion,
-            manager,
-            validity: 'valid'
-          })
-
-        }
-
-      this.setState({
-        packages
-      })
-    })
+    //   PackageLookup.query(labbookName, owner, manager, packageName, version).then((response)=>{
+    //     let packageIndex;
+    //     packages.forEach((packageItem, index)=>{
+    //       if(packageItem.packageName === packageName){
+    //         packageIndex = index;
+    //       }
+    //     })
+    //     packages.splice(packageIndex, 1);
+    //     if(response.errors){
+    //         store.dispatch({
+    //           type:"ERROR_MESSAGE",
+    //           payload: {
+    //             message: `Error occured looking up ${packageName}`,
+    //             messageBody: response.errors
+    //           }
+    //         })
+    //
+    //     }
+    //     else{
+    //       console.log(response)
+    //       packages.push({
+    //         packageName,
+    //         version: response.data.labbook.package.version,
+    //         latestVersion: response.data.labbook.package.latestVersion,
+    //         manager,
+    //         validity: 'valid'
+    //       })
+    //
+    //     }
+    //
+    //   this.setState({
+    //     packages
+    //   })
+    // })
 
     this.inputPackageName.value = ""
     this.inputVersion.value = ""
@@ -603,7 +603,7 @@ class PackageDependencies extends Component {
               <tr>
                 <th>Package Name</th>
                 <th>Current</th>
-                <th>Latest</th>
+                {/* <th>Latest</th> disabled for beta release*/ }
                 <th>Installed By</th>
                 <th></th>
               </tr>
@@ -641,7 +641,7 @@ class PackageDependencies extends Component {
          key={edge.node.package + edge.node.manager + index}>
         <td>{edge.node.package}</td>
         <td>{versionText}</td>
-        <td>{latestVersionText}</td>
+        {/* <td>{latestVersionText}</td>  disabled for beta release*/}
         <td>{installer}</td>
         <td width="60">
           <button

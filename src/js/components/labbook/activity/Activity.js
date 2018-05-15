@@ -272,9 +272,8 @@ class Activity extends Component {
         this._loadMore(evt);
     }
 
-    if((distanceY > 1500)){
-
-        this._stopRefetch()
+    if((distanceY > 3000)){
+      this._stopRefetch()
 
     }else{
       this._startRefetch()
@@ -364,11 +363,14 @@ class Activity extends Component {
 
           {
             (!this.state.refetchEnabled && this.state.newActivityAvailable) &&
+            <div
+              className="Activity__new-record-wrapper column-1-span-9">
              <div
                onClick={() => this._getNewActivties()}
                className="Activity__new-record">
-                New Activitie(s) Available
+                New Activity
              </div>
+           §</div>
           }
 
           <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
