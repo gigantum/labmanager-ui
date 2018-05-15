@@ -23,6 +23,8 @@ let pagination = false;
 
 let counter = 5;
 
+let isMounted = false
+
 class Activity extends Component {
   constructor(props){
 
@@ -75,16 +77,19 @@ class Activity extends Component {
   */
   componentDidMount() {
 
+    isMounted = true
+
     let activityRecords = this.props.labbook.activityRecords
 
     window.addEventListener('scroll', this._handleScroll)
-
     if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 2)){
 
       this._loadMore()
     }
 
     if(activityRecords.edges && activityRecords.edges.length){
+
+      this.setState({'refetchEnabled': true})
       this._refetch()
 
     }
@@ -92,6 +97,9 @@ class Activity extends Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
+
+    isMounted = false
+
     window.removeEventListener('scroll', this._handleScroll)
   }
   /**
@@ -179,7 +187,9 @@ class Activity extends Component {
 
           if(firstRecordCommitId === newRecordCommitId){
             setTimeout(()=>{
-               getNewActivity()
+                if(isMounted){
+                  getNewActivity()
+                }
             }, 3000)
 
 
@@ -194,7 +204,8 @@ class Activity extends Component {
 
      }
 
-     getNewActivity()
+       getNewActivity()
+
 
    }
  }
@@ -205,6 +216,7 @@ class Activity extends Component {
   *
   */
   _refetch(){
+
     let self = this
     let relay = this.props.relay
     let activityRecords = this.props.labbook.activityRecords
@@ -213,10 +225,11 @@ class Activity extends Component {
 
     relay.refetchConnection(
       counter,
-      (response) => {
+      (response, error) => {
 
         setTimeout(function(){
-            if(self.state.refetchEnabled){
+
+            if(self.state.refetchEnabled && isMounted){
               self._refetch()
             }
         }, 5000)
@@ -275,9 +288,8 @@ class Activity extends Component {
         this._loadMore(evt);
     }
 
-    if((distanceY > 1500)){
-
-        this._stopRefetch()
+    if((distanceY > 3000)){
+      this._stopRefetch()
 
     }else{
       this._startRefetch()
@@ -387,11 +399,14 @@ class Activity extends Component {
 
           {
             (!this.state.refetchEnabled && this.state.newActivityAvailable) &&
+            <div
+              className="Activity__new-record-wrapper column-1-span-9">
              <div
                onClick={() => this._getNewActivties()}
                className="Activity__new-record">
-                New Activitie(s) Available
+                New Activity
              </div>
+           §</div>
           }
 
           <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
