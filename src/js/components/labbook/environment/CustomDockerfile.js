@@ -30,7 +30,7 @@ export default class CustomDockerfile extends Component {
         let valid = true;
         splitDockerSnippet.forEach((snippetLine) => {
           let firstVal = snippetLine.split(' ')[0];
-          if (firstVal.length && !validDictionary.has(firstVal.toUpperCase())) {
+          if (firstVal.length && !validDictionary.has(firstVal.toUpperCase()) && firstVal[0] !== "#") {
             valid = false;
           }
         });
@@ -61,7 +61,7 @@ export default class CustomDockerfile extends Component {
           store.dispatch({
             type: 'WARNING_MESSAGE',
             payload: {
-              message: 'Invalid command entered.',
+              message: 'Invalid command entered. Commands must begin with: LABEL, RUN, ENV, or #',
             }
           })
         }
