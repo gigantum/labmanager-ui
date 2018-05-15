@@ -21,6 +21,10 @@
   }
 }
 
+.Overview.fullscreen {
+  z-index: 1000;
+}
+
 .Overview__title-container {
   align-items: center;
   a {

@@ -4,6 +4,7 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
+import classNames from 'classnames'
 //store
 import store from 'JS/redux/store'
 //Components
@@ -33,7 +34,8 @@ class Activity extends Component {
       'createBranchVisible': false,
       'refetchEnabled': false,
       'newActivityAvailable': false,
-      'newActivityPolling': false
+      'newActivityPolling': false,
+      'editorFullscreen': false,
     };
 
     //bind functions here
@@ -47,6 +49,7 @@ class Activity extends Component {
     this._stopRefetch = this._stopRefetch.bind(this)
     this._toggleCreateModal = this._toggleCreateModal.bind(this)
     this._getNewActivties = this._getNewActivties.bind(this)
+    this._changeFullscreenState = this._changeFullscreenState.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -353,14 +356,34 @@ class Activity extends Component {
     this.setState({createBranchVisible: !this.state.createBranchVisible})
   }
 
-  render(){
+  /**
+  *   @param {boolean} isFullscreen
+  *   Changes editorFullscreen in state to true if isFullscreen is true, else it swaps existing state
+  *   @return {}
+  */
+  _changeFullscreenState(isFullscreen) {
+    if(isFullscreen){
+      this.setState({editorFullscreen: isFullscreen})
+    } else {
+      this.setState({editorFullscreen: !this.state.editorFullscreen})
+    }
+  }
 
+  render(){
+    let activityCSS = classNames({
+      'Activity': true,
+      'fullscreen': this.state.editorFullscreen
+    })
+    let userActivityContainerCSS = classNames({
+      'UserActivity__container': true,
+      'fullscreen': this.state.editorFullscreen
+    })
     if(this.props.labbook){
 
       let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
 
       return(
-        <div key={this.props.labbook} className='Activity'>
+        <div key={this.props.labbook} className={activityCSS}>
 
           {
             (!this.state.refetchEnabled && this.state.newActivityAvailable) &&
@@ -394,7 +417,7 @@ class Activity extends Component {
 
                       {
                         (i===0) && (
-                          <div className="UserActivity__container">
+                          <div className={userActivityContainerCSS}>
                             <div className="Activity__user-note"
 
                               onClick={() => this._toggleActivity()}>
@@ -410,6 +433,7 @@ class Activity extends Component {
                                   key="UserNote"
                                   labbookId={this.props.labbook.id}
                                   hideLabbookModal={this._hideAddActivity}
+                                  changeFullScreenState={this._changeFullscreenState}
                                   {...this.props}
                                 />
                               }

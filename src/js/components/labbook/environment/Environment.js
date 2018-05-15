@@ -37,8 +37,7 @@ class Environment extends Component {
   _buildCallback = () => {
     const {labbookName, owner} = this.state
     this.props.setBuildingState(true)
-
-    if(this.props.labbook.environment.containerStatus === "RUNNING"){
+    if(store.getState().containerStatus.status === 'Running'){
 
       StopContainerMutation(
         labbookName,

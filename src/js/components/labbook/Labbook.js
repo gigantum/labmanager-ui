@@ -35,6 +35,10 @@ class Labbook extends Component {
 
     localStorage.setItem('owner', store.getState().routes.owner)
     this.state = store.getState().labbook
+    this.state.isBuilding = false;
+    this.state.isSyncing = false;
+    this.state.isPublishing = false;
+    this.state.isExporting = false;
 
     //bind functions here
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
@@ -160,8 +164,7 @@ class Labbook extends Component {
     updates labbook state
   */
   _setBuildingState = (isBuilding) =>{
-
-    this.refs['ContainerStatus'].setState({'isBuilding': isBuilding})
+    this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({'isBuilding': isBuilding})
 
     if(this.state.isBuilding !== isBuilding){
       store.dispatch(
@@ -179,7 +182,7 @@ class Labbook extends Component {
   updates labbook state
 */
   _setSyncingState = (isSyncing) => {
-    this.refs['ContainerStatus'].setState({ 'isSyncing': isSyncing })
+    this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isSyncing': isSyncing })
 
     if (this.state.isSyncing !== isSyncing) {
       store.dispatch(
@@ -199,7 +202,7 @@ class Labbook extends Component {
   */
  _setPublishingState = (isPublishing) => {
 
-    this.refs['ContainerStatus'].setState({ 'isPublishing': isPublishing })
+    this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isPublishing': isPublishing })
 
     if (this.state.isPublishing !== isPublishing) {
       store.dispatch(
@@ -219,7 +222,7 @@ class Labbook extends Component {
   */
   _setExportingState = (isExporting) => {
 
-    this.refs['ContainerStatus'].setState({ 'isExporting': isExporting })
+    this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isExporting': isExporting })
 
     if (this.state.isExporting !== isExporting) {
       store.dispatch(
