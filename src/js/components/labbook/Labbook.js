@@ -118,13 +118,15 @@ class Labbook extends Component {
   */
   _setStickHeader(){
       let sticky = 50;
-
-      store.dispatch({
-        type: 'UPDATE_STICKY_STATE',
-        payload: {
-          'isSticky': window.pageYOffset >= sticky
-        }
-      })
+      let isSticky = window.pageYOffset >= sticky
+      if(store.getState().labbook.isSticky !== isSticky) {
+        store.dispatch({
+          type: 'UPDATE_STICKY_STATE',
+          payload: {
+            isSticky
+          }
+        })
+      }
     }
   /**
     @param {object} labbook
