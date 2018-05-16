@@ -97,7 +97,7 @@ export default class UserNote extends Component {
   _renderDetail(item){
     switch(item[0]){
       case 'text/plain':
-        return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
+        return(<div className="ReactMarkdown"><p>{item[1]}</p></div>)
       case 'image/png':
         return(<img alt="detail" src={item[1]} />)
       case 'image/jpg':
@@ -162,7 +162,7 @@ export default class UserNote extends Component {
                                 key={detailRecord.id + '_'+ index}
                                 className={liCSS}>
                                 {this._renderDetail(item)}
-                         
+                                <div className="DetailsRecords hidden"></div>
                                 <p className="DetailsRecords__link hidden" onClick={(e)=> this._moreClicked(e.target)}>More...</p>
                                 {this._setLinks()}
                             </li>)
