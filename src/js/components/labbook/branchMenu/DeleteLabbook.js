@@ -152,7 +152,7 @@ export default class DeleteLabbook extends Component {
       return(
       <div>
         <p>This will delete <b>{labbookName}</b> from this Gigantum client.</p>
-        <p>You can still download it from repo.gigantum.io/{owner}/{labbookName}.</p>
+        <p>You can still download it from gigantum.com/{owner}/{labbookName}.</p>
       </div>)
     }else{
       return(<p>This will delete <b>{labbookName}</b> from this Gigantum instance. All data will be removed and can not be recovered.</p>)
