@@ -215,7 +215,7 @@ export default class BranchMenu extends Component {
                       type: 'MULTIPART_INFO_MESSAGE',
                       payload: {
                         id: id,
-                        message: `Added remote https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`,
+                        message: `Added remote https://gigantum.com/${self.state.owner}/${self.state.labbookName}`,
                         isLast: true,
                         error: false
                       }
@@ -223,7 +223,7 @@ export default class BranchMenu extends Component {
 
                     self.setState({
                       addedRemoteThisSession: true,
-                      remoteUrl: `https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`
+                      remoteUrl: `https://gigantum.com/${self.state.owner}/${self.state.labbookName}`
 
                     })
                   }
@@ -750,7 +750,7 @@ export default class BranchMenu extends Component {
                   <input
                     id="BranchMenu-copy"
                     className="BranchMenu__input"
-                    defaultValue={this.state.remoteUrl}
+                    defaultValue={`gigantum.com/${this.state.owner}/${this.state.labbookName}`}
                     type="text" />
                   <button onClick={()=> this._copyRemote()} className="BranchMenu__copy-button fa fa-clone"></button>
                 </div>

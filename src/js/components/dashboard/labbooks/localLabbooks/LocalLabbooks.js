@@ -110,33 +110,40 @@ class LocalLabbooks extends Component {
   }
 
   render(){
-    let labbooks = this.props.filterLabbooks(this.props.localLabbooks.localLabbooks.edges, this.props.filterState)
-    return(
-      <div className='LocalLabbooks__labbooks'>
-      <div className="LocalLabbooks__sizer grid">
+    if(this.props.localLabbooks && this.props.localLabbooks.localLabbooks && this.props.localLabbooks.localLabbooks.edges){
 
-        <ImportModule
-            ref="ImportModule_localLabooks"
-            {...this.props}
-            showModal={this.props.showModal}
-            className="LocalLabbooks__panel column-4-span-3 LocalLabbooks__panel--import"
-        />
-        {
-          labbooks.map((edge) => {
-            return (
-              <LocalLabbookPanel
-                key={edge.node.name}
-                ref={'LocalLabbookPanel' + edge.node.name}
-                className="LocalLabbooks__panel"
-                edge={edge}
-                history={this.props.history}
-                goToLabbook={this.props.goToLabbook}/>
-            )
-          })
-        }
+      let labbooks = this.props.filterLabbooks(this.props.localLabbooks.localLabbooks.edges, this.props.filterState)
+
+      return(
+        <div className='LocalLabbooks__labbooks'>
+        <div className="LocalLabbooks__sizer grid">
+
+          <ImportModule
+              ref="ImportModule_localLabooks"
+              {...this.props}
+              showModal={this.props.showModal}
+              className="LocalLabbooks__panel column-4-span-3 LocalLabbooks__panel--import"
+          />
+          {
+            labbooks.map((edge) => {
+              return (
+                <LocalLabbookPanel
+                  key={edge.node.name}
+                  ref={'LocalLabbookPanel' + edge.node.name}
+                  className="LocalLabbooks__panel"
+                  edge={edge}
+                  history={this.props.history}
+                  goToLabbook={this.props.goToLabbook}/>
+              )
+            })
+          }
+        </div>
       </div>
-    </div>
-    )
+      )
+
+    }else{
+      return(<div></div>)
+    }
   }
 }
 

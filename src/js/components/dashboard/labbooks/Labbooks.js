@@ -476,7 +476,7 @@ class Labbooks extends Component {
               <div className="Labbooks__fetch-error">
                 There was an error attempting to fetch LabBooks. <br />
                 Try restarting Gigantum and refresh the page.<br />
-                If the problem persists <a target="_blank" href="https://docs.gigantum.io/discuss" rel="noopener noreferrer">request assistance here.</a>
+                If the problem persists <a target="_blank" href="https://docs.gigantum.com/discuss" rel="noopener noreferrer">request assistance here.</a>
               </div>
             )
           } else {

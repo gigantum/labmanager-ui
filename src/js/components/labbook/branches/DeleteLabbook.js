@@ -29,10 +29,9 @@ export default class CreateBranchModal extends React.Component {
   *  @return {}
   */
   _deleteBranch(){
-    this.setState({
-      'deleteModalVisible': false
-    })
+    
 
+    this.props.toggleModal('deleteModalVisible')
     const {
       owner,
       labbookName,

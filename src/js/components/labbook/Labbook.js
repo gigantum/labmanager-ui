@@ -127,6 +127,16 @@ class Labbook extends Component {
           }
         })
       }
+
+      if(isSticky){
+        store.dispatch({
+          type: 'MERGE_MODE',
+          payload: {
+            brancfahesOpen: false,
+            mergeFilter: false
+          }
+        })
+      }
     }
   /**
     @param {object} labbook
@@ -328,7 +338,7 @@ class Labbook extends Component {
   }
 
   /**
-    @param {}
+    @param {boolean, boolean}
     updates branchOpen state
   */
   _toggleBranchesView(branchesOpen, mergeFilter){
@@ -343,9 +353,9 @@ class Labbook extends Component {
 
   }
   /**
-    @param {branchName}
+    @param {string}
     makes branch name pretty
-    @return {prettyBranchName}
+    @return {string}
   */
   _sanitizeBranchName(branchName){
     const username = localStorage.getItem('username')
