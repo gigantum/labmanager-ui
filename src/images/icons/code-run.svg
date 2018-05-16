@@ -1,24 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<?xml version="1.0" encoding="UTF-8"?>
 <svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<style type="text/css">
-	.st0{fill:none;stroke:#007EA8;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-	.st1{fill:none;stroke:#007EA8;stroke-width:2;}
-	.st2{fill:#FFFFFF;}
-	.st3{fill:#FFFFFF;stroke:#007EA8;stroke-width:2;}
-</style>
-<title>icon/activity/object-code</title>
-<desc>Created with Sketch.</desc>
-<g id="icon_x2F_activity_x2F_object-code">
-	<polyline id="Shape" class="st0" points="15.3,12 9,18.3 15.3,24.7 	"/>
-	<polyline id="Shape_1_" class="st0" points="21.7,24.7 28,18.3 21.7,12 	"/>
-	<path id="Shape_2_" class="st1" d="M33.5,35H2.5C1.7,35,1,34.3,1,33.5V2.5C1,1.7,1.7,1,2.5,1h30.9C34.3,1,35,1.7,35,2.5v30.9
-		C35,34.3,34.3,35,33.5,35z"/>
-</g>
-<g id="icon_x2F_activity_x2F_action-run">
-	<circle id="Oval-Copy" class="st2" cx="32.4" cy="31.7" r="11"/>
-	<circle id="Oval" class="st3" cx="32.4" cy="31.7" r="9"/>
-	<path id="Shape_3_" class="st0" d="M31.1,27.8l5,3.3c0.5,0.3,0.5,1,0,1.2l-5,3.3c-0.5,0.3-1.2,0-1.2-0.6v-6.5
-		C29.9,27.8,30.6,27.5,31.1,27.8z"/>
-</g>
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>icon/activity/object-code-run-temp</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icon/activity/object-code-run-temp" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polyline id="Shape" stroke="#007EA8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="15.3333333 12 9 18.3333333 15.3333333 24.6666667"></polyline>
+        <polyline id="Shape" stroke="#007EA8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="21.6666667 24.6666667 28 18.3333333 21.6666667 12"></polyline>
+        <path d="M19.9023438,35 C17.1093576,35 11.3237279,35 2.54545455,35 C1.69545455,35 1,34.3045455 1,33.4545455 L1,2.54545455 C1,1.69545455 1.69545455,1 2.54545455,1 L33.4545455,1 C34.3045455,1 35,1.69545455 35,2.54545455 C35,11.4541726 35,17.3044182 35,20.0961914" id="Shape" stroke="#007EA8" stroke-width="2" stroke-linecap="round"></path>
+        <g id="Group" transform="translate(18.000000, 18.000000)">
+            <circle id="Oval" fill="#FFFFFF" cx="9.5" cy="9.5" r="9.5"></circle>
+            <g transform="translate(2.000000, 2.000000)">
+                <circle id="Oval" stroke="#007EA8" stroke-width="2" fill="#FFFFFF" cx="7.5" cy="7.5" r="7.5"></circle>
+                <path d="M6.07043024,4.11051701 L10.6867742,7.03833469 C11.1044086,7.30321009 11.1044086,7.89679027 10.6867742,8.16166567 L6.07043024,11.089483 C5.61029295,11.3813151 5,11.0610882 5,10.5278175 L5,4.67218248 C5,4.13891175 5.61029295,3.81868488 6.07043024,4.11051701 Z" id="Shape" fill="#007EA8"></path>
+            </g>
+        </g>
+    </g>
 </svg>

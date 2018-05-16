@@ -8,7 +8,9 @@
   padding: 15px 15px 15px 66px;
 
   img {
+    width: -moz-fit-content;
     width: fit-content;
+
   }
 
   @include flex(flex-start, column);
@@ -20,6 +22,7 @@
   padding: 0 0 0 15px;
 
   img {
+    width: -moz-fit-content;
     width: fit-content;
   }
 
