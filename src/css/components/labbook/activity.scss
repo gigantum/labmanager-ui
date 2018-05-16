@@ -425,6 +425,8 @@
 }
 
 .ActivityCard__content {
+  max-width: calc(100% - 100px);
+  width: calc(100% - 100px);
   flex: 1;
 }
 

@@ -59,14 +59,7 @@ class Activity extends Component {
     let activityRecords = nextProps.labbook.activityRecords
 
     if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 3)){
-      this.setState({
-        'isPaginating': true,
-      })
       this._loadMore()
-    }else{
-      this.setState({
-        'isPaginating': false,
-      })
     }
   }
 
@@ -278,6 +271,7 @@ class Activity extends Component {
   _handleScroll(evt){
 
     let {isPaginating} = this.state
+    console.log(isPaginating)
     let activityRecords = this.props.labbook.activityRecords,
         root = document.getElementById('root'),
         distanceY = window.innerHeight + document.documentElement.scrollTop + 1000,
