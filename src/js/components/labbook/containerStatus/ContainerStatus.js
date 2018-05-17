@@ -183,7 +183,8 @@ export default class ContainerStatus extends Component {
       (evt.target.className.indexOf('BranchMenu__remote-button') > -1) ||
       (evt.target.className.indexOf('Activity__rollback-text') > -1) ||
       (evt.target.className.indexOf('CustomDockerfile__content-edit-button') > -1) ||
-      (evt.target.className.indexOf('CustomDockerfile__content-save-button') > -1)
+      (evt.target.className.indexOf('CustomDockerfile__content-save-button') > -1) ||
+      (evt.target.className.indexOf('BranchCard__delete-labbook') > -1)
 
     if(!containerMenuClicked &&
     this.state.containerMenuOpen){

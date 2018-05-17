@@ -33,6 +33,7 @@ export default class BranchCard extends Component {
     this._merge = this._merge.bind(this)
     this._checkoutBranch = this._checkoutBranch.bind(this)
     this._toggleModal = this._toggleModal.bind(this)
+    this._handleToggleModal = this._handleToggleModal.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -218,6 +219,31 @@ export default class BranchCard extends Component {
     })
   }
 
+  /**
+  *  @param {string} modal
+  *  passes modal to toggleModal if container is not running
+  *  @return {}
+  */
+ _handleToggleModal(modal) {
+  if(store.getState().containerStatus.status !== 'Running'){
+    this._toggleModal(modal)
+  } else {
+    store.dispatch({
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+      payload: {
+        containerMenuOpen: true
+      }
+    })
+
+    store.dispatch({
+      type: 'CONTAINER_MENU_WARNING',
+      payload: {
+        message: 'Stop LabBook before deleting branches. \n Be sure to save your changes.',
+      }
+    })
+  }
+}
+
   render(){
     const {owner, showLoader} = this.state
     const isCurrentBranch = (this.props.name === this.props.activeBranchName)
@@ -269,7 +295,7 @@ export default class BranchCard extends Component {
         }
         {showDelete &&
           <button
-            onClick={()=> {this._toggleModal('deleteModalVisible')}}
+            onClick={()=> {this._handleToggleModal('deleteModalVisible')}}
             className="BranchCard__delete-labbook">
           </button>
         }
