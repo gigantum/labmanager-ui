@@ -271,7 +271,7 @@ class Activity extends Component {
   _handleScroll(evt){
 
     let {isPaginating} = this.state
-    console.log(isPaginating)
+ 
     let activityRecords = this.props.labbook.activityRecords,
         root = document.getElementById('root'),
         distanceY = window.innerHeight + document.documentElement.scrollTop + 1000,
