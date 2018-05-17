@@ -342,15 +342,29 @@ class Labbook extends Component {
     updates branchOpen state
   */
   _toggleBranchesView(branchesOpen, mergeFilter){
+    if(store.getState().containerStatus.status !== 'Running'){
+      store.dispatch({
+        type: 'MERGE_MODE',
+        payload: {
+          branchesOpen,
+          mergeFilter
+        }
+      })
+    } else {
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
+        }
+      })
 
-    store.dispatch({
-      type: 'MERGE_MODE',
-      payload: {
-        branchesOpen,
-        mergeFilter
-      }
-    })
-
+      store.dispatch({
+        type: 'CONTAINER_MENU_WARNING',
+        payload: {
+          message: 'Stop LabBook before switching branches. \n Be sure to save your changes.',
+        }
+      })
+    }
   }
   /**
     @param {string}

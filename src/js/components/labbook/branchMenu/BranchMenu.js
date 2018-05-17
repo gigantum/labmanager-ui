@@ -609,9 +609,12 @@ export default class BranchMenu extends Component {
   *  @return {}
   */
   _switchBranch(){
-
-    this.props.toggleBranchesView(true, false)
-    this.setState({ menuOpen: false })
+    if(store.getState().containerStatus.status !== 'Running'){
+      this.props.toggleBranchesView(true, false)
+      this.setState({ menuOpen: false })
+    } else {
+      this._showContainerMenuMessage('switching branches', true)
+     }
   }
 
   /**
