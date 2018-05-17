@@ -80,12 +80,19 @@
 }
 
 .Code__subtitle {
-
   text-align: left;
-
   color: $romanSilver;
-
   font-weight: 100;
+}
+
+.Code__subtitle-sub {
+  text-align: left;
+  color: $romanSilver;
+  margin-top: 0;
+}
+
+.Code__toolbar.end {
+  align-self: flex-end;
 }
 
 .Code__loading {

@@ -45,3 +45,12 @@
   left: 0;
   z-index: 102;
 }
+
+.Routes__error {
+  @include flex(center, column);
+  align-items: center;
+  height: 100%;
+  i {
+    margin-bottom: 20px;
+  }
+}
