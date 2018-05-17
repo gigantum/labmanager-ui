@@ -19,6 +19,7 @@ import config from 'JS/config'
 
 let totalCount = 2
 let owner, unsubscribe
+
 class PackageDependencies extends Component {
   constructor(props){
     super(props);
@@ -61,7 +62,7 @@ class PackageDependencies extends Component {
 
       this._loadMore() //routes query only loads 2, call loadMore
     }else{
-      this._refetch()
+      //this._refetch() //removed for latest  version fix
     }
 
     if(this.state.selectedTab === ''){
@@ -111,7 +112,7 @@ class PackageDependencies extends Component {
 
          self._loadMore()
        }else{
-         self._refetch()
+         //self._refetch() commented out to stop latest version check
        }
      }
    );
@@ -155,14 +156,18 @@ class PackageDependencies extends Component {
   *  hides packagemanager modal
   */
   _filterPackageDependencies(packageDependencies){
-    let searchValue = this.state.searchValue.toLowerCase()
-    let packages = packageDependencies.edges.filter((edge)=>{
-      return edge && edge.node && (edge.node.manager === this.state.selectedTab)
-    }).filter((edge)=>{
-      let name = edge && edge.node && edge.node.package ? edge.node.package.toLowerCase() : ''
-      let searchMatch = ((searchValue === '') || (name.indexOf(searchValue) > -1))
-      return searchMatch
-    })
+      let searchValue = this.state.searchValue.toLowerCase()
+
+      let packages = packageDependencies.edges.filter((edge) => {
+
+        return edge && edge.node && (edge.node.manager === this.state.selectedTab)
+      }).filter((edge) => {
+
+        let name = edge && edge.node && edge.node.package ? edge.node.package.toLowerCase() : ''
+        let searchMatch = ((searchValue === '') || (name.indexOf(searchValue) > -1))
+
+        return searchMatch
+      })
 
     return packages
   }
@@ -175,10 +180,13 @@ class PackageDependencies extends Component {
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status) && !this.props.isLocked
 
     if(navigator.onLine){
+
       if(canEditEnvironment){
+
         const {labbookName, owner} = store.getState().routes
         const {environmentId} = this.props
         const clinetMutationId = uuidv4()
+
         let self = this
 
         RemovePackageComponentMutation(
@@ -244,10 +252,12 @@ class PackageDependencies extends Component {
   *  updates package name in components state
   */
   _updatePackageName(evt){
-    this.setState({packageName: evt.target.value})
-    if(evt.key === 'Enter'){
-      this._addStatePackage(evt)
 
+    this.setState({packageName: evt.target.value})
+
+    if(evt.key === 'Enter'){
+
+      this._addStatePackage(evt)
     }
   }
   /**
@@ -255,8 +265,11 @@ class PackageDependencies extends Component {
   *  updates package version in components state
   */
   _updateVersion(evt){
+
     this.setState({'version': evt.target.value})
+
     if(evt.key === 'Enter'){
+
       this._addStatePackage(evt)
     }
   }
@@ -266,6 +279,7 @@ class PackageDependencies extends Component {
   */
   _addStatePackage(){
     let packages = this.state.packages
+
     const {packageName, version, labbookName, owner} = this.state
     const manager = this.state.selectedTab
 
@@ -280,19 +294,25 @@ class PackageDependencies extends Component {
       packages,
       packageName: '',
       version: '',
-
     })
 
 
       PackageLookup.query(labbookName, owner, manager, packageName, version).then((response)=>{
+
         let packageIndex;
+
         packages.forEach((packageItem, index)=>{
+
           if(packageItem.packageName === packageName){
+
             packageIndex = index;
           }
         })
+
         packages.splice(packageIndex, 1);
+
         if(response.errors){
+
             store.dispatch({
               type:"ERROR_MESSAGE",
               payload: {
@@ -303,7 +323,8 @@ class PackageDependencies extends Component {
 
         }
         else{
-          console.log(response)
+
+
           packages.push({
             packageName,
             version: response.data.labbook.package.version,
@@ -317,6 +338,7 @@ class PackageDependencies extends Component {
       this.setState({
         packages
       })
+
     })
 
     this.inputPackageName.value = ""
@@ -350,7 +372,9 @@ class PackageDependencies extends Component {
   */
   _removeStatePackages(node, index){
     let packages = this.state.packages
+
     packages.splice(index, 1)
+
     this.setState({
       packages
     })
@@ -361,18 +385,21 @@ class PackageDependencies extends Component {
   *  triggers add package mutation
   */
   _addPackageComponentMutation(){
+
     const {packages} = this.state
     const {labbookName, owner} = store.getState().routes
     const {environmentId} = this.props
 
-
     this.setState({disableInstall: true, installDependenciesButtonState: 'loading'})
+
     let self = this,
-        index = 0
+        index = 0;
 
     function addPackage(packageItem){
+
       const messageVersion = (packageItem.version === '') ? 'latest' : packageItem.version
       const version = (packageItem.version === '') ? null : packageItem.version
+
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload: {
@@ -425,7 +452,7 @@ class PackageDependencies extends Component {
 
               setTimeout(()=>{
                 self.setState({installDependenciesButtonState: ''})
-                self._refetch()
+                //self._refetch() removed refetch so on latest version
                 self.props.buildCallback()
               }, 2000)
 
@@ -603,7 +630,7 @@ class PackageDependencies extends Component {
               <tr>
                 <th>Package Name</th>
                 <th>Current</th>
-                <th>Latest</th>
+                {/* <th>Latest</th> disabled for beta release*/ }
                 <th>Installed By</th>
                 <th></th>
               </tr>
@@ -641,7 +668,7 @@ class PackageDependencies extends Component {
          key={edge.node.package + edge.node.manager + index}>
         <td>{edge.node.package}</td>
         <td>{versionText}</td>
-        <td>{latestVersionText}</td>
+        {/* <td>{latestVersionText}</td>  disabled for beta release*/}
         <td>{installer}</td>
         <td width="60">
           <button

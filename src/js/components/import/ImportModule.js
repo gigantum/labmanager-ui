@@ -534,8 +534,9 @@ export default class ImportModule extends Component {
     let self = this;
     const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
     const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
-    const remote = this.state.remoteURL.indexOf('https://') > -1 ? this.state.remoteURL + '.git' : 'https://' + this.state.remoteURL + '.git'
+    const remote = `https://repo.gigantum.io/${owner}/${labbookName}.git`
 
+    console.log(remote)
     UserIdentity.getUserIdentity().then(response => {
 
     if(response.data){

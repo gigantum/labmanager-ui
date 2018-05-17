@@ -233,7 +233,7 @@ export default class UserNote extends Component {
                     type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
                       id: id,
-                      message: `Added remote https://repo.gigantum.io/${self.state.owner}/${self.state.labbookName}`,
+                      message: `Added remote https://gigantum.com/${self.state.owner}/${self.state.labbookName}`,
                       isLast: true,
                       error: false
                     }

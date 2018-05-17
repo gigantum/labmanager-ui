@@ -4,6 +4,7 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
+import classNames from 'classnames'
 //store
 import store from 'JS/redux/store'
 //Components
@@ -22,6 +23,8 @@ let pagination = false;
 
 let counter = 5;
 
+let isMounted = false
+
 class Activity extends Component {
   constructor(props){
 
@@ -33,7 +36,8 @@ class Activity extends Component {
       'createBranchVisible': false,
       'refetchEnabled': false,
       'newActivityAvailable': false,
-      'newActivityPolling': false
+      'newActivityPolling': false,
+      'editorFullscreen': false,
     };
 
     //bind functions here
@@ -47,6 +51,7 @@ class Activity extends Component {
     this._stopRefetch = this._stopRefetch.bind(this)
     this._toggleCreateModal = this._toggleCreateModal.bind(this)
     this._getNewActivties = this._getNewActivties.bind(this)
+    this._changeFullscreenState = this._changeFullscreenState.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -54,14 +59,7 @@ class Activity extends Component {
     let activityRecords = nextProps.labbook.activityRecords
 
     if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 3)){
-      this.setState({
-        'isPaginating': true,
-      })
       this._loadMore()
-    }else{
-      this.setState({
-        'isPaginating': false,
-      })
     }
   }
 
@@ -72,16 +70,19 @@ class Activity extends Component {
   */
   componentDidMount() {
 
+    isMounted = true
+
     let activityRecords = this.props.labbook.activityRecords
 
     window.addEventListener('scroll', this._handleScroll)
-
     if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 2)){
 
       this._loadMore()
     }
 
     if(activityRecords.edges && activityRecords.edges.length){
+
+      this.setState({'refetchEnabled': true})
       this._refetch()
 
     }
@@ -89,6 +90,9 @@ class Activity extends Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
+
+    isMounted = false
+
     window.removeEventListener('scroll', this._handleScroll)
   }
   /**
@@ -176,7 +180,9 @@ class Activity extends Component {
 
           if(firstRecordCommitId === newRecordCommitId){
             setTimeout(()=>{
-               getNewActivity()
+                if(isMounted){
+                  getNewActivity()
+                }
             }, 3000)
 
 
@@ -191,7 +197,8 @@ class Activity extends Component {
 
      }
 
-     getNewActivity()
+       getNewActivity()
+
 
    }
  }
@@ -202,6 +209,7 @@ class Activity extends Component {
   *
   */
   _refetch(){
+
     let self = this
     let relay = this.props.relay
     let activityRecords = this.props.labbook.activityRecords
@@ -210,10 +218,11 @@ class Activity extends Component {
 
     relay.refetchConnection(
       counter,
-      (response) => {
+      (response, error) => {
 
         setTimeout(function(){
-            if(self.state.refetchEnabled){
+
+            if(self.state.refetchEnabled && isMounted){
               self._refetch()
             }
         }, 5000)
@@ -262,6 +271,7 @@ class Activity extends Component {
   _handleScroll(evt){
 
     let {isPaginating} = this.state
+    console.log(isPaginating)
     let activityRecords = this.props.labbook.activityRecords,
         root = document.getElementById('root'),
         distanceY = window.innerHeight + document.documentElement.scrollTop + 1000,
@@ -272,9 +282,8 @@ class Activity extends Component {
         this._loadMore(evt);
     }
 
-    if((distanceY > 1500)){
-
-        this._stopRefetch()
+    if((distanceY > 3000)){
+      this._stopRefetch()
 
     }else{
       this._startRefetch()
@@ -353,22 +362,45 @@ class Activity extends Component {
     this.setState({createBranchVisible: !this.state.createBranchVisible})
   }
 
-  render(){
+  /**
+  *   @param {boolean} isFullscreen
+  *   Changes editorFullscreen in state to true if isFullscreen is true, else it swaps existing state
+  *   @return {}
+  */
+  _changeFullscreenState(isFullscreen) {
+    if(isFullscreen){
+      this.setState({editorFullscreen: isFullscreen})
+    } else {
+      this.setState({editorFullscreen: !this.state.editorFullscreen})
+    }
+  }
 
+  render(){
+    let activityCSS = classNames({
+      'Activity': true,
+      'fullscreen': this.state.editorFullscreen
+    })
+    let userActivityContainerCSS = classNames({
+      'UserActivity__container': true,
+      'fullscreen': this.state.editorFullscreen
+    })
     if(this.props.labbook){
 
       let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
 
       return(
-        <div key={this.props.labbook} className='Activity'>
+        <div key={this.props.labbook} className={activityCSS}>
 
           {
             (!this.state.refetchEnabled && this.state.newActivityAvailable) &&
+            <div
+              className="Activity__new-record-wrapper column-1-span-9">
              <div
                onClick={() => this._getNewActivties()}
                className="Activity__new-record">
-                New Activitie(s) Available
+                New Activity
              </div>
+           §</div>
           }
 
           <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
@@ -394,7 +426,7 @@ class Activity extends Component {
 
                       {
                         (i===0) && (
-                          <div className="UserActivity__container">
+                          <div className={userActivityContainerCSS}>
                             <div className="Activity__user-note"
 
                               onClick={() => this._toggleActivity()}>
@@ -410,6 +442,7 @@ class Activity extends Component {
                                   key="UserNote"
                                   labbookId={this.props.labbook.id}
                                   hideLabbookModal={this._hideAddActivity}
+                                  changeFullScreenState={this._changeFullscreenState}
                                   {...this.props}
                                 />
                               }
@@ -431,7 +464,8 @@ class Activity extends Component {
                                   {
                                     (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace) &&
                                   <Fragment>
-                                  <div
+                                  {/* Rollbacks temporarily disabled */}
+                                  {/* <div
                                       className="Activity__submenu-circle"
                                     >
                                     </div>
@@ -442,7 +476,7 @@ class Activity extends Component {
                                       >
                                         Rollback to previous state
                                       </h5>
-                                    </div>
+                                    </div> */}
                                     </Fragment>
                                   }
                                   </div>

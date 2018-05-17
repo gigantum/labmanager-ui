@@ -4,7 +4,11 @@
   padding: 10px;
   width: 100%;
   height: calc(100% - 13px);
+  position: relative;
 
+}
+.Activity.fullscreen {
+  z-index: 1000;
 }
 
 .ActivityCard {
@@ -48,25 +52,29 @@
 
 }
 
+.Activity__new-record-wrapper{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+}
+
 .Activity__new-record{
   cursor: pointer;
   text-align: center;
   line-height: 40px;
   position: fixed;
-  top: 100px;
+
   height: 40px;
   z-index: 800;
-  left: 50%;
-  width: 280px;
-  color: $romanSilver;
-
+  width: 200px;
+  color: $white;
   border-radius: 20px;
+  top: 100px;
 
-  margin: 0 0 0 -140px;
-  border: 1px solid $romanSilver;
+  border: 1px solid $turquise;
 
   padding: 0 20px 0 0;
-  background: #fefefe url('../images/icons/up-arrow-silver.svg') no-repeat calc(100% - 15px) center;
+  background: $turquise url('../images/icons/up-arrow-white.svg') no-repeat calc(100% - 15px) center;
   background-size: 22px;
 
   @extend .box-shadow;
@@ -417,12 +425,14 @@
 }
 
 .ActivityCard__content {
+  max-width: calc(100% - 100px);
+  width: calc(100% - 100px);
   flex: 1;
 }
 
 
 .ActivityCard__badge {
-  font-family: FontAwesome !important;
+
   height: 60px;
   width: 60px;
   margin: 10px 20px 0 0;
@@ -435,7 +445,6 @@
   font-size: 40px !important;
 }
 .ActivityDetail__badge {
-  font-family: FontAwesome !important;
   height: 40px;
   width: 40px;
   margin: 0 20px 0 0;
@@ -466,9 +475,11 @@
 .ActivityDetail__badge--code {
   @extend .SmallIcon;
 }
-.ActivityCard__badge--code_executed,
+.ActivityCard__badge--code_executed{
+   @extend .LargeIcon;
+}
 .ActivityDetail__badge--code_executed {
-  @extend .terminal-icon;
+  @extend .SmallIcon;
 }
 .ActivityCard__badge--result,
 .ActivityDetail__badge--result {
@@ -539,6 +550,13 @@
 .ActivityDetail__badge--labbook {
   background: url('./../images/icons/labbooks-blue.svg') no-repeat center center;
   @extend .SmallIcon;
+}
+
+
+.ActivityCard__badge--code_executed,
+.ActivityDetail__badge--code_executed {
+    background: url('./../images/icons/code-run.svg') no-repeat center center;
+    @extend .SmallIcon;
 }
 
 .ActivityCard__collapsed-container,
@@ -654,4 +672,9 @@
   border-width: 0 0 0 4px;
   width: 1px;
   height: 45px;
+}
+
+.UserActivity__container.fullscreen {
+  z-index: 1000;
+  position: fixed;
 }

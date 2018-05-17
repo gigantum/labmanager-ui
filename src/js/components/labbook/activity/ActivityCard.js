@@ -61,7 +61,7 @@ export default class ActivityCard extends Component {
     return(
       <div className={activityCardCSS}>
 
-        <div className={'fa ActivityCard__badge ActivityCard__badge--' + type}>
+        <div className={'ActivityCard__badge ActivityCard__badge--' + type}>
         </div>
 
         <div className="ActivityCard__content">
