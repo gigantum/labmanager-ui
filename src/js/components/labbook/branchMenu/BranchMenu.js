@@ -553,17 +553,14 @@ export default class BranchMenu extends Component {
           }).catch((error) => {
             this.props.setExportingState(false);
             console.log(error)
-            if (error) {
-
-              let errorArray = [{'message': 'Export failed.'}]
-              store.dispatch({
-                type: 'ERROR_MESSAGE',
-                payload: {
-                  message: `${this.state.labbookName} failed to export `,
-                  messageBody: errorArray
-                }
-              })
-            }
+            let errorArray = [{'message': 'Export failed.'}]
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: `${this.state.labbookName} failed to export `,
+                messageBody: errorArray
+              }
+            })
             this.setState({ exporting: false });
           })
         } else {
