@@ -132,15 +132,20 @@
 
   font-size: 14px;
 
-  background: $white url('./../images/icons/ellipsis.svg') no-repeat calc(100% - 10px) center;
-  background-size: 30px 30px;
+  background: $white url('./../images/icons/ellipsis.svg') no-repeat no-repeat calc(100% - 10px) center !important;
+  background-size: 30px !important;
+  background-color: $white !important;
 }
 
 .BranchMenu__button:hover {
   border: 3px solid $romanSilver;
   color: $romanSilver;
-  background: $white url('./../images/icons/ellipsis.svg') no-repeat no-repeat calc(100% - 10px) center;
-  background-size: 30px 30px;
+  background: $white url('./../images/icons/ellipsis.svg') no-repeat no-repeat calc(100% - 10px) center !important;
+  background-size: 30px 30px !important;
+
+  background-color: $white;
+
+
 }
 
 .BranchMenu__menu {

@@ -55,6 +55,7 @@ export default class BranchMenu extends Component {
     this._toggleSyncModal = this._toggleSyncModal.bind(this)
     this._switchBranch = this._switchBranch.bind(this)
     this._remountCollab = this._remountCollab.bind(this)
+    this._handleToggleModal = this._handleToggleModal.bind(this)
 
   }
 
@@ -123,11 +124,11 @@ export default class BranchMenu extends Component {
     this.setState({collabKey: uuidv4()});
   }
     /**
-    *  @param {string} action
+    *  @param {string, boolean} action, containerRunning
     *  displays container menu message
     *  @return {}
     */
-  _showContainerMenuMessage(action) {
+  _showContainerMenuMessage(action, containerRunning) {
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
@@ -135,12 +136,15 @@ export default class BranchMenu extends Component {
       }
     })
 
+    let dispatchMessage = containerRunning ? `Stop LabBook before ${action}. \n Be sure to save your changes.` : `LabBook is ${action}. \n Please do not refresh the page.`
+
     store.dispatch({
       type: 'CONTAINER_MENU_WARNING',
       payload: {
-        message: `LabBook is ${action}. \n Please do not refresh the page.`
+        message: dispatchMessage
       }
     })
+    this.setState({menuOpen: false});
   }
 
   /**
@@ -164,71 +168,74 @@ export default class BranchMenu extends Component {
         if (response.data) {
 
           if (response.data.userIdentity.isSessionValid) {
+            if(store.getState().containerStatus.status !== 'Running'){
+              self.setState({ menuOpen: false, 'publishDisabled': true})
 
-            self.setState({ menuOpen: false, 'publishDisabled': true})
-
-            store.dispatch({
-              type: 'MULTIPART_INFO_MESSAGE',
-              payload: {
-                id: id,
-                message: 'Publishing LabBook to Gigantum cloud ...',
-                isLast: false,
-                error: false
-              }
-            })
-
-            if (!self.state.remoteUrl) {
-              this.props.setPublishingState(true)
-
-              this._showContainerMenuMessage('publishing');
-
-              PublishLabbookMutation(
-                self.state.owner,
-                self.state.labbookName,
-                self.props.labbookId,
-                (response, error) => {
-                  this.props.setPublishingState(false)
-                  store.dispatch({
-                    type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                    payload: {
-                      containerMenuOpen: false
-                    }
-                  })
-                  if(error){
-                    console.log(error)
-
-                    store.dispatch({
-                      type: 'ERROR_MESSAGE',
-                      payload: {
-                        id: id,
-                        message: 'Publish failed',
-                        messageBody: error,
-                      }
-                    })
-                  }
-                  self.setState({
-                    publishDisabled: false
-                  })
-                  if (response.publishLabbook && response.publishLabbook.success) {
-                    this._remountCollab();
-                    store.dispatch({
-                      type: 'MULTIPART_INFO_MESSAGE',
-                      payload: {
-                        id: id,
-                        message: `Added remote https://gigantum.com/${self.state.owner}/${self.state.labbookName}`,
-                        isLast: true,
-                        error: false
-                      }
-                    })
-
-                    self.setState({
-                      addedRemoteThisSession: true,
-                      remoteUrl: `https://gigantum.com/${self.state.owner}/${self.state.labbookName}`
-
-                    })
-                  }
+              store.dispatch({
+                type: 'MULTIPART_INFO_MESSAGE',
+                payload: {
+                  id: id,
+                  message: 'Publishing LabBook to Gigantum cloud ...',
+                  isLast: false,
+                  error: false
                 }
-              )
+              })
+
+              if (!self.state.remoteUrl) {
+                this.props.setPublishingState(true)
+
+                this._showContainerMenuMessage('publishing');
+
+                PublishLabbookMutation(
+                  self.state.owner,
+                  self.state.labbookName,
+                  self.props.labbookId,
+                  (response, error) => {
+                    this.props.setPublishingState(false)
+                    store.dispatch({
+                      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+                      payload: {
+                        containerMenuOpen: false
+                      }
+                    })
+                    if(error){
+                      console.log(error)
+
+                      store.dispatch({
+                        type: 'ERROR_MESSAGE',
+                        payload: {
+                          id: id,
+                          message: 'Publish failed',
+                          messageBody: error,
+                        }
+                      })
+                    }
+                    self.setState({
+                      publishDisabled: false
+                    })
+                    if (response.publishLabbook && response.publishLabbook.success) {
+                      this._remountCollab();
+                      store.dispatch({
+                        type: 'MULTIPART_INFO_MESSAGE',
+                        payload: {
+                          id: id,
+                          message: `Added remote https://gigantum.com/${self.state.owner}/${self.state.labbookName}`,
+                          isLast: true,
+                          error: false
+                        }
+                      })
+
+                      self.setState({
+                        addedRemoteThisSession: true,
+                        remoteUrl: `https://gigantum.com/${self.state.owner}/${self.state.labbookName}`
+
+                      })
+                    }
+                  }
+                )
+              }
+            } else {
+              this._showContainerMenuMessage('publishing', true)
             }
           } else {
             self.setState({
@@ -519,34 +526,33 @@ export default class BranchMenu extends Component {
   *  @return {}
   */
   _exportLabbook = (evt) => {
-    this.setState({ exporting: true, menuOpen: false });
-    store.dispatch({
-      type: 'INFO_MESSAGE',
-      payload: {
-        message: `Exporting ${this.state.labbookName} LabBook`,
-      }
-    })
-    this.props.setExportingState(true);
-    ExportLabbookMutation(this.state.owner, this.state.labbookName, (response, error) => {
-      if (response.exportLabbook) {
-        JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data) => {
-          this.props.setExportingState(false);
+    if(store.getState().containerStatus.status !== 'Running'){
+      this.setState({ exporting: true, menuOpen: false });
+      store.dispatch({
+        type: 'INFO_MESSAGE',
+        payload: {
+          message: `Exporting ${this.state.labbookName} LabBook`,
+        }
+      })
+      this.props.setExportingState(true);
+      ExportLabbookMutation(this.state.owner, this.state.labbookName, (response, error) => {
+        if (response.exportLabbook) {
+          JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data) => {
+            this.props.setExportingState(false);
 
-          if (data.jobStatus.result) {
-            store.dispatch({
-              type: 'INFO_MESSAGE',
-              payload: {
-                message: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-              }
-            })
-          }
+            if (data.jobStatus.result) {
+              store.dispatch({
+                type: 'INFO_MESSAGE',
+                payload: {
+                  message: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
+                }
+              })
+            }
 
-          this.setState({ exporting: false });
-        }).catch((error) => {
-          this.props.setExportingState(false);
-          console.log(error)
-          if (error) {
-
+            this.setState({ exporting: false });
+          }).catch((error) => {
+            this.props.setExportingState(false);
+            console.log(error)
             let errorArray = [{'message': 'Export failed.'}]
             store.dispatch({
               type: 'ERROR_MESSAGE',
@@ -555,22 +561,23 @@ export default class BranchMenu extends Component {
                 messageBody: errorArray
               }
             })
-          }
-          this.setState({ exporting: false });
-        })
-      } else {
-        console.log(error)
-        this.props.setExportingState(false);
-        store.dispatch({
-          type: 'ERROR_MESSAGE',
-          payload: {
-            message: 'Export Failed',
-            messageBody: error
-          }
-        })
-      }
-    })
-
+            this.setState({ exporting: false });
+          })
+        } else {
+          console.log(error)
+          this.props.setExportingState(false);
+          store.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload: {
+              message: 'Export Failed',
+              messageBody: error
+            }
+          })
+        }
+      })
+    } else {
+      this._showContainerMenuMessage('exporting', true)
+    }
   }
   /**
   *  @param {}
@@ -586,8 +593,12 @@ export default class BranchMenu extends Component {
   *  @return {}
   */
   _mergeFilter(){
-    this.props.toggleBranchesView(true, true)
-    this.setState({ menuOpen: false })
+    if(store.getState().containerStatus.status !== 'Running'){
+      this.props.toggleBranchesView(true, true)
+      this.setState({ menuOpen: false })
+    } else {
+     this._showContainerMenuMessage('merging branches', true)
+    }
   }
   /**
   *  @param {}
@@ -595,9 +606,33 @@ export default class BranchMenu extends Component {
   *  @return {}
   */
   _switchBranch(){
+    if(store.getState().containerStatus.status !== 'Running'){
+      this.props.toggleBranchesView(true, false)
+      this.setState({ menuOpen: false })
+    } else {
+      this._showContainerMenuMessage('switching branches', true)
+     }
+  }
 
-    this.props.toggleBranchesView(true, false)
-    this.setState({ menuOpen: false })
+  /**
+  *  @param {string} modal
+  *  passes modal to toggleModal if container is not running
+  *  @return {}
+  */
+  _handleToggleModal(modal) {
+    let action = '';
+    if(store.getState().containerStatus.status !== 'Running'){
+      this._toggleModal(modal)
+    } else {
+      switch(modal){
+        case 'createBranchVisible':
+          action = 'creating branches'
+          break;
+        default :
+          break;
+      }
+      this._showContainerMenuMessage(action, true)
+    }
   }
 
   render() {
@@ -678,7 +713,7 @@ export default class BranchMenu extends Component {
             <hr />
             <li className="BranchMenu__item--new-branch">
               <button
-                onClick={() => { this._toggleModal('createBranchVisible') }}
+                onClick={() => {this._handleToggleModal('createBranchVisible')}}
                 className="BranchMenu__item--flat-button"
               >
                 New Branch

@@ -183,7 +183,10 @@ export default class ContainerStatus extends Component {
       (evt.target.className.indexOf('BranchMenu__remote-button') > -1) ||
       (evt.target.className.indexOf('Activity__rollback-text') > -1) ||
       (evt.target.className.indexOf('CustomDockerfile__content-edit-button') > -1) ||
-      (evt.target.className.indexOf('CustomDockerfile__content-save-button') > -1)
+      (evt.target.className.indexOf('CustomDockerfile__content-save-button') > -1) ||
+      (evt.target.className.indexOf('Labbook__name') > -1) ||
+      (evt.target.className.indexOf('Labbook__branch-toggle') > -1) ||
+      (evt.target.className.indexOf('BranchCard__delete-labbook') > -1)
 
     if(!containerMenuClicked &&
     this.state.containerMenuOpen){
@@ -437,6 +440,13 @@ export default class ContainerStatus extends Component {
       this.setState({
         status: 'Starting',
         contanerMenuRunning: false
+      })
+      store.dispatch({
+        type: 'MERGE_MODE',
+        payload: {
+          branchesOpen: false,
+          mergeFilter: false
+        }
       })
       this._startContainerMutation()
     }else if((status === "Rebuild") || (status === "Rebuild")){
