@@ -22,6 +22,7 @@ export default function CreateExperimentalBranchMutation(
   labbookName,
   branchName,
   revision,
+  description,
   callback
 ) {
 
@@ -32,6 +33,7 @@ export default function CreateExperimentalBranchMutation(
       labbookName,
       branchName,
       revision,
+      description,
       clientMutationId
     },
     first: 2,

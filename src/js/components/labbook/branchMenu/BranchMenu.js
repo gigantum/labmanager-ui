@@ -606,7 +606,9 @@ export default class BranchMenu extends Component {
   *  @return {}
   */
   _switchBranch(){
-    if(store.getState().containerStatus.status !== 'Running'){
+    let status = store.getState().containerStatus.status
+    if(status !== 'Running' ){
+      window.scrollTo(0, 0);
       this.props.toggleBranchesView(true, false)
       this.setState({ menuOpen: false })
     } else {
@@ -692,6 +694,7 @@ export default class BranchMenu extends Component {
         </div>
 
         <CreateBranch
+          description={this.props.description}
           modalVisible={this.state.createBranchVisible}
           toggleModal={this._toggleModal}
         />
