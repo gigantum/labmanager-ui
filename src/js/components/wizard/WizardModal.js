@@ -303,7 +303,6 @@ export default class WizardModal extends React.Component {
                   getSelectedComponentId={this._getSelectedComponentId}
                   setComponent={this._setComponent}
                   hideModal={this._hideModal}
-                  getButtonText={this._getButtonText}
                   continueSave={this._continueSave}
                   createLabbookCallback={this._createLabbookCallback}
                 />
@@ -359,23 +358,7 @@ export default class WizardModal extends React.Component {
   gets button text for current componenet
   @return {string} text
 */
-function _getButtonText(state){
-  let text = (state.selectedComponentId === 'selectBase') ? 'Create Labbook' : 'Continue'
-
-  return text
-}
-
-
-/**
-  @param {}
-  gets button text for current componenet
-  @return {string} text
-*/
-function ModalNav({self, state, getSelectedComponentId, setComponent, hideModal, getButtonText, continueSave}){
-
-  const continueSaveDisabled = ['createLabbook', 'selectBase']
-
-  let disabled = (continueSaveDisabled.indexOf(state.selectedComponentId) > -1)
+function ModalNav({self, state, getSelectedComponentId, setComponent, hideModal, continueSave}){
 
   let backButton = classNames({
     'WizardModal__progress-button': true,

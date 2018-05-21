@@ -3,7 +3,6 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
 import uuidv4 from 'uuid/v4'
 
 
@@ -24,33 +23,6 @@ const mutation = graphql`
     }
   }
 `;
-
-
-function sharedUpdater(store, parentId, connectionKey, node, deleteId) {
-
-  const labbookProxy = store.get(parentId);
-
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    labbookProxy,
-    connectionKey
-  );
-
-  if(conn){
-
-    const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-      store,
-      conn,
-      node,
-      "newFavoriteEdge"
-    )
-
-    RelayRuntime.ConnectionHandler.insertEdgeAfter(
-      conn,
-      newEdge
-    );
-
-  }
-}
 
 export default function UpdateFavoriteMutation(
   connectionKey,

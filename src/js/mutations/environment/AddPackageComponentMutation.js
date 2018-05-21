@@ -113,7 +113,6 @@ export default function AddPackageComponentMutation(
           const {
               schema,
               version,
-              latestVersion,
               fromBase } = response.addPackageComponent.newPackageComponentEdge.node
 
           //TODO use edge from linked record
