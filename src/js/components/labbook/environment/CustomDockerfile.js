@@ -1,6 +1,5 @@
 //vendor
 import React, { Component, Fragment } from 'react'
-import ReactMarkdown from 'react-markdown'
 //mutations
 import AddCustomDockerMutation from 'Mutations/AddCustomDockerMutation'
 //store
@@ -126,7 +125,7 @@ export default class CustomDockerfile extends Component {
           </h5>
         </div>
         <div className="CustomDockerfile__sub-header">
-            <p>Add commands below to modify your environment</p>
+            <p>Add commands below to modify your environment. &emsp; Note: Docker instructions are executed after packages are installed.</p>
             <div className="CustomDockerfile--code-snippet flex">
               <p>For example, to install a pip package from a Github repo add:</p>
               <code>RUN pip install git+https://git.repo/some_pkg.git</code>

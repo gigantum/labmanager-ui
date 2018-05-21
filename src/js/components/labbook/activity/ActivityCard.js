@@ -47,10 +47,12 @@ export default class ActivityCard extends Component {
 
     const node = this.props.edge.node;
     const type = this.props.edge.node.type.toLowerCase()
+    let shouldBeFaded = this.props.hoveredRollback && ((this.props.hoveredRollback.i > this.props.position.i) || (this.props.hoveredRollback.i >= this.props.position.i && this.props.hoveredRollback.j > this.props.position.j))
     const activityCardCSS = classNames({
       'ActivityCard card': this.state.showExtraInfo,
       'ActivityCard--collapsed card': !this.state.showExtraInfo,
-      'column-1-span-9': true
+      'column-1-span-9': true,
+      'faded': shouldBeFaded,
     })
     const titleCSS = classNames({
       'ActivityCard__title flex flex--row justify--space-between': true,

@@ -1,12 +1,10 @@
 //vendor
 import React, { Component } from 'react'
-import classNames from 'classnames'
 //Mutations
 import DeleteLabbookMutation from 'Mutations/DeleteLabbookMutation'
 import DeleteRemoteLabbookMutation from 'Mutations/DeleteRemoteLabbookMutation'
 //components
 import ButtonLoader from 'Components/shared/ButtonLoader'
-import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
 
@@ -111,7 +109,6 @@ export default class DeleteLabbook extends Component {
               this.setState({deleteLabbookButtonState: 'finished'})
               setTimeout(()=>{
                 this.props.history.replace('../../labbooks/')
-                this.setState({deleteLabbookButtonState: ''})
               }, 2000)
             }
           }

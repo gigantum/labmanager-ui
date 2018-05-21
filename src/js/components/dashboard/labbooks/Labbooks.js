@@ -12,14 +12,10 @@ import Loader from 'Components/shared/Loader'
 import LocalLabbooks from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooks'
 import RemoteLabbooks from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbooks'
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
-//Mutations
-import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
 //utils
 import Validation from 'JS/utils/Validation'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
-
-let isLoadingMore = false;
 
 class Labbooks extends Component {
 
