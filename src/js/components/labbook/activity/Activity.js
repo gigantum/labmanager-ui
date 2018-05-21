@@ -38,6 +38,7 @@ class Activity extends Component {
       'newActivityAvailable': false,
       'newActivityPolling': false,
       'editorFullscreen': false,
+      'hoveredRollback': null,
     };
 
     //bind functions here
@@ -457,32 +458,37 @@ class Activity extends Component {
                             let isLastRecordObj = i === Object.keys(activityRecordsTime).length -1;
                             let isLastRecordNode = j === activityRecordsTime[k].length -1;
                             let isLastPage = !this.props.labbook.activityRecords.pageInfo.hasNextPage;
+                            let rollbackableDetails = obj.edge.node.detailObjects.filter((detailObjs) => {
+                              return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
+                            })
                             return (
                               <div className="ActivtyCard__wrapper" key={obj.edge.node.id}>
                                 { ((i !== 0 ) || (j !== 0)) &&
                                   <div className="Activity__submenu-container">
                                   {
-                                    (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace) &&
+                                    (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) &&
                                   <Fragment>
-                                  {/* Rollbacks temporarily disabled */}
-                                  {/* <div
-                                      className="Activity__submenu-circle"
-                                    >
-                                    </div>
-                                    <div className="Activity__submenu-subcontainer">
-                                      <h5
-                                        className="Activity__rollback-text"
-                                        onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+                                    <div
+                                        className="Activity__submenu-circle"
                                       >
-                                        Rollback to previous state
-                                      </h5>
-                                    </div> */}
+                                      </div>
+                                      <div className="Activity__submenu-subcontainer">
+                                        <h5
+                                          onMouseOver={() => this.setState({hoveredRollback: {i, j}})}
+                                          onMouseOut={() => this.setState({hoveredRollback : null})}
+                                          className="Activity__rollback-text"
+                                          onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+                                        >
+                                          Rollback to previous state
+                                        </h5>
+                                      </div>
                                     </Fragment>
                                   }
                                   </div>
                                 }
                                 <ActivityCard
-
+                                  position={{i, j}}
+                                  hoveredRollback={this.state.hoveredRollback}
                                   key={`${obj.edge.node.id}_activity-card`}
                                   edge={obj.edge}
                                 />

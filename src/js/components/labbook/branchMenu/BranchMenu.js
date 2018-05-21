@@ -1,6 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
 //utilities

@@ -1,16 +1,9 @@
 //vendor
 import React, { Component } from 'react'
-import {
-  createPaginationContainer,
-  graphql
-} from 'react-relay'
-import Slider from 'react-slick';
 import classNames from 'classnames'
 //componenets
 import Loader from 'Components/shared/Loader'
 import BranchCard from './BranchCard'
-//store
-import store from 'JS/redux/store'
 
 
 export default class Branches extends Component {

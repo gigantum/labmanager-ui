@@ -401,9 +401,7 @@
     bottom: -2px;
     line-height: 15px;
   }
-  .Labbook__navigation-slider{
 
-  }
   @for $i from 0 through 5 {
     li.Labbook__navigation-item--#{$i}:hover ~ hr {
       margin-left: $i * 14% + 2%;

@@ -23,6 +23,11 @@
   @include flex(flex-start, row)
 }
 
+.ActivityCard.faded {
+  filter: grayscale(100%);
+  opacity: 0.5
+}
+
 .ActivityCard--collapsed {
   @extend .ActivityCard;
   height: 80px;

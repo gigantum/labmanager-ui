@@ -11,11 +11,9 @@ import classNames from 'classnames'
 import RemoteLabbookPanel from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbookPanel'
 import DeleteLabbook from 'Components/labbook/branchMenu/DeleteLabbook'
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
+import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
-
-
-let isLoadingMore = false;
 
 class RemoteLabbooks extends Component {
   constructor(props){
@@ -30,7 +28,8 @@ class RemoteLabbooks extends Component {
       deleteModalVisible: false,
       'showLoginPrompt': false,
       sort: this.props.sort,
-      reverse: this.props.reverse
+      reverse: this.props.reverse,
+      isPaginating: false,
     }
     this._toggleDeleteModal = this._toggleDeleteModal.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
@@ -78,7 +77,7 @@ class RemoteLabbooks extends Component {
     let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
         expandOn = root.offsetHeight;
     if(this.props.remoteLabbooks.remoteLabbooks){
-      if ((distanceY > expandOn) && !isLoadingMore && this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage) {
+      if ((distanceY > expandOn) && !this.state.isPaginating && this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage) {
         this._loadMore();
       }
     }
@@ -119,13 +118,17 @@ class RemoteLabbooks extends Component {
     UserIdentity.getUserIdentity().then(response => {
       if(response.data){
         if(response.data.userIdentity.isSessionValid){
-          isLoadingMore = true
+          this.setState({
+            'isPaginating': true
+          })
 
           if(this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
             this.props.relay.loadMore(
               10, // Fetch the next 10 items
               (ev) => {
-                isLoadingMore = false;
+                this.setState({
+                  'isPaginating': false
+                })
               }
             );
           }
@@ -186,6 +189,18 @@ class RemoteLabbooks extends Component {
                 edge={edge}
                 history={this.props.history}
                 existsLocally={edge.node.isLocal}
+                />
+            )
+          })
+        }
+        {
+          Array(5).fill(1).map((value, index) => {
+
+              return (
+                <LabbooksPaginationLoader
+                  key={'LocalLabbooks_paginationLoader' + index}
+                  index={index}
+                  isLoadingMore={this.state.isPaginating}
                 />
             )
           })

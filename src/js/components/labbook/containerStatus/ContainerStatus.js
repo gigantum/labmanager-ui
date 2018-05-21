@@ -529,7 +529,7 @@ export default class ContainerStatus extends Component {
           if(error){
             console.log(error)
           }
-          self.setState({rebuildAttempts: this.state.rebuildAttempts++})
+          self.setState({rebuildAttempts: this.state.rebuildAttempts + 1})
           if((this.state.status === 'Starting') && (this.state.rebuildAttempts < 1)){
             self._startContainerMutation()
           }else{

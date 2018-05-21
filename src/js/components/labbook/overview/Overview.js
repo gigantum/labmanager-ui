@@ -7,7 +7,6 @@ import {
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import SimpleMDE from 'simplemde'
-import { WithContext as ReactTags } from 'react-tag-input';
 import classNames from 'classnames'
 //components
 import Base from 'Components/labbook/environment/Base'
