@@ -49,7 +49,7 @@
 
 .Branches__slider-button--right {
   @extend .Branches__slider-button;
-  right: 0px;
+  right: 5px;
   background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
   background-size: 30px;
   transform: rotate(270deg);
@@ -80,11 +80,27 @@
 }
 
 .Branches__card-wrapper {
-  width: calc(25vw - 50px);
-  max-width: calc(25vw - 50px);
-  min-width: calc(25vw - 50px);
-
+  width: calc(20.8vw - 50px);
+  max-width: calc(20.8vw - 50px);
+  min-width: calc(20.8vw - 50px);
 }
+
+@media screen and (max-width: 1239px) and (min-width: 0px) {
+  .Branches__card-wrapper {
+    width: calc(31.25vw - 50px);
+    max-width: calc(31.25vw - 50px);
+    min-width: calc(31.25vw - 50px);
+  }
+}
+
+@media screen and (max-width: 1600px) and (min-width: 1240px) {
+  .Branches__card-wrapper {
+    width: calc(25vw - 50px);
+    max-width: calc(25vw - 50px);
+    min-width: calc(25vw - 50px);
+  }
+}
+
 
 .Branches-shadow {
   position: absolute;

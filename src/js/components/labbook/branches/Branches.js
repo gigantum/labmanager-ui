@@ -16,7 +16,7 @@ export default class Branches extends Component {
       listPositionIndex: 0,
       width: 0,
     }
-
+    this._determineVisibleBranchCount = this._determineVisibleBranchCount.bind(this)
     this._windowResize = this._windowResize.bind(this)
   }
   /**
@@ -80,15 +80,29 @@ export default class Branches extends Component {
 
     return filteredBranches
   }
+  /**
+  * @param {}
+  * determines how many branches are visible based on window width
+  * @return {int} branchCount
+  */
+  _determineVisibleBranchCount() {
+    let branchCount = 5;
+    if (window.innerWidth <= 1239) {
+      branchCount = 3;
+    } else if (window.innerWidth <= 1600) {
+      branchCount = 4;
+    }
+    return branchCount;
+  }
 
   render(){
-
     if(this.props.labbook){
       const listPositionIndex = this.state.listPositionIndex
       const {labbook} = this.props
       const branchArrayToFilter = this.props.mergeFilter ?  labbook.mergeableBranchNames : labbook.availableBranchNames
       const branches = this._filterBranches(branchArrayToFilter);
-      const showRightBumper = (listPositionIndex < (labbook.availableBranchNames.length - 4))
+      const branchesVisibleCount = this._determineVisibleBranchCount();
+      const showRightBumper = (listPositionIndex < (labbook.availableBranchNames.length - branchesVisibleCount))
       const branchesCSS = classNames({
         'Branches': this.props.branchesOpen,
         'Branches--closed': !this.props.branchesOpen
@@ -109,6 +123,7 @@ export default class Branches extends Component {
         'hidden': !(this.props.branchesOpen && (showRightBumper))
       })
       const width = listPositionIndex * (this.state.width/branches.length)
+
       const widthPX = `-${width}px`;
 
       return(

@@ -170,6 +170,15 @@ class Overview extends Component {
     this.setState({ editingDescription: true });
   }
 
+  /**
+    *  @param {Object} nextprops
+    *  fires when component recieves props
+    *  changes the description text, particularly used when switching branches
+  */
+  componentWillReceiveProps(nextProps){
+    this.setState({descriptionText: nextProps.description.replace(/\n/g,' '), lastSavedDescription: nextProps.description.replace(/\n/g,' ')})
+  }
+
   render() {
     let overviewCSS = classNames({
       'Overview': true,

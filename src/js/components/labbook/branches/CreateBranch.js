@@ -23,7 +23,7 @@ export default class CreateBranchModal extends React.Component {
       'textLength': 0,
       'showError': false,
       'branchName': '',
-      'branchDescription': '',
+      'branchDescription': this.props.selected ? `Branch created on ${Moment().format("M/DD/YY h:mm:ss A")} to rollback workspace to ${Moment(Date.parse(this.props.selected.timestamp)).format("M/DD/YY h:mm:ss A")}.` : this.props.description ? this.props.description : '',
       'createButtonClicked': false,
       'buttonLoaderCreateBranch': ''
     };
@@ -153,6 +153,7 @@ export default class CreateBranchModal extends React.Component {
       labbookName,
       branchName,
       revision,
+      this.state.branchDescription,
       (response, error) => {
 
 
@@ -188,7 +189,6 @@ export default class CreateBranchModal extends React.Component {
     }
 
     render() {
-
       let loginPromptModalCss = classNames({
         'CreateBranch--login-prompt': this.state.showLoginPrompt,
         'hidden': !this.state.showLoginPrompt
@@ -243,7 +243,7 @@ export default class CreateBranchModal extends React.Component {
 
                           maxLength="240"
                           placeholder="Briefly describe this branch, its purpose and any other key details. "
-                          defaultValue={this.props.selected ? `Branch created on ${Moment().format("M/DD/YY h:mm:ss A")} to rollback workspace to ${Moment(Date.parse(this.props.selected.timestamp)).format("M/DD/YY h:mm:ss A")}.` : ''}
+                          defaultValue={this.props.selected ? `Branch created on ${Moment().format("M/DD/YY h:mm:ss A")} to rollback workspace to ${Moment(Date.parse(this.props.selected.timestamp)).format("M/DD/YY h:mm:ss A")}.` : this.props.description ? this.props.description : ''}
                         />
                         <p className={'CreateBranch__warning ' + this.state.textWarning}>{`${this.state.textLength} characters remaining`}</p>
                       </div>
