@@ -7,6 +7,9 @@
   padding: 0 25px;
 }
 
+/*******************
+Labbook__nav start
+********************/
 .Labbooks__nav {
   position: relative;
 
@@ -89,6 +92,9 @@
   }
 }
 
+/*******************
+Labbook__nav end
+********************/
 .Labbooks__rename-modal {
   padding: 20px;
 
@@ -99,6 +105,7 @@
 .Labbooks__rename-error {
   color: $azure;
 }
+
 .Labbooks__modal-title {
   margin-top: 0px;
   padding: 10px;
@@ -109,6 +116,7 @@
   border-bottom: 1px solid $azure;
 
 }
+
 .Labbooks__rename-close {
   @include close();
 }
@@ -161,6 +169,8 @@
   padding: 0;
 
 }
+
+
 .Labbooks__file-system {
   padding: 0 0 0 3px;
 
@@ -171,6 +181,7 @@
 
   font-size: 16px;
 }
+
 
 .Labbooks__title-add {
   position: absolute;
@@ -197,6 +208,7 @@
 
   color: $azure;
 }
+
 
 .Labbooks__title:hover {
   .Labbooks__title-add {
@@ -283,9 +295,11 @@
   }
 }
 
+
 .Labbooks__panel--import {
   padding: 0px;
 }
+
 
 .Labbooks__panel:before,
 .Labbooks__panel:after {
