@@ -26,7 +26,7 @@ class OutputDataBrowser extends Component {
   */
   componentWillReceiveProps(nextProps) {
 
-    if(nextProps.output.allFiles.pageInfo.hasNextPage){
+    if(nextProps.output.allFiles.pageInfo.hasNextPage && nextProps.output.allFiles.edges.length > 3){
       this._loadMore()
     } else {
       this.setState({'moreLoading': false});
