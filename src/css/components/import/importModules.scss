@@ -45,7 +45,6 @@
 
 .ImportModule__drop-area-highlight {
   //width: 300px;
-
   opacity: 1;
   color: $azure;
   border: 2px dashed $azure;
@@ -68,22 +67,20 @@
   height: 40px;
   padding-left: 25px;
 
-  line-height: 20px;
-  text-align: center;
-
-  color: $azure;
-  border: 1px solid $azure;
-  background: url('../images/icons/import.svg') no-repeat 15px center;
-  background-size: 18px;
-
-  border-radius: 20px;
-
-  font-size: 20px;
-
   animation-name: oscilateImportIcon;
   animation-duration: 0.4s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
+  text-align: center;
+
+  color: $azure;
+  border: 1px solid $azure;
+  border-radius: 20px;
+  background: url('../images/icons/import.svg') no-repeat 15px center;
+  background-size: 18px;
+
+  font-size: 20px;
+  line-height: 20px;
 }
 
 @keyframes oscilateImportIcon {
@@ -113,23 +110,24 @@
 
 .ImportModule__upload-button:disabled,
 .ImportModule__upload-button:disabled:hover {
+  animation-duration: 0.0s;
+  animation-iteration-count: 0;
+  animation-direction: alternate;
+
   color: black;
   border: 1px solid $grey-light;
   background: none;
   //background: url('../images/icons/import-disabled.svg') no-repeat 0px center;
   background-size: 18px;
-  animation-duration: 0.0s;
-  animation-iteration-count: 0;
-  animation-direction: alternate;
 }
 
 .ImportModule__loading-mask {
   position: absolute;
+  top: 0;
+  right: 0;
+  bottom:0;
+  left:0;
 
   background: rgba(0,0,0,0.3) url('../images/icons/rings.svg') no-repeat center center;
   background-size: 40px;
-  top: 0;
-  bottom:0;
-  left:0;
-  right: 0;
 }

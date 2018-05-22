@@ -1,55 +1,56 @@
+
 .RemoteLabbooks__cloud-download:hover,
-.RemoteLabbooks__cloud-download:focus {
-  background: url('./../images/icons/download-azure.svg') no-repeat 0 center;
-  height: 20px;
+.RemoteLabbooks__cloud-download:focus,
+.RemoteLabbooks__cloud-download,
+.RemoteLabbooks__cloud-download:disabled,
+.RemoteLabbooks__cloud-download--exists,
+.RemoteLabbooks__cloud-download--exists:disabled,
+.RemoteLabbooks__cloud-download--exists,
+.RemoteLabbooks__cloud-download--exists:disabled,
+.RemoteLabbooks__cloud-delete:hover,
+.RemoteLabbooks__cloud-delete:focus,
+.RemoteLabbooks__cloud-delete,
+.RemoteLabbooks__cloud-delete--disabled,
+.RemoteLabbooks__cloud-delete--disabled:hover,
+.RemoteLabbooks__cloud-delete--disabled:focus,
+.RemoteLabbooks__cloud-delete--disabled:disabled,
+.RemoteLabbooks__cloud-delete:disabled{
   width: 20px;
-  background-size: 20px;
+  height: 20px;
   margin-left: 5px;
   padding: 0;
+
   border: none;
 }
 
-.RemoteLabbooks__cloud-download,
-.RemoteLabbooks__cloud-download:disabled, {
-  background: url('./../images/icons/download.svg') no-repeat 0 center;
-  height: 20px;
-  width: 20px;
+.RemoteLabbooks__cloud-download:hover,
+.RemoteLabbooks__cloud-download:focus {
+  background: url('./../images/icons/download-azure.svg') no-repeat 0 center;
   background-size: 20px;
-  margin-left: 5px;
-  padding: 0;
-  border: none;
+}
+
+.RemoteLabbooks__cloud-download,
+.RemoteLabbooks__cloud-download:disabled{
+  background: url('./../images/icons/download.svg') no-repeat 0 center;
+  background-size: 20px;
 }
 
 
 .RemoteLabbooks__cloud-download--exists,
 .RemoteLabbooks__cloud-download--exists:disabled {
   background: url('./../images/icons/download-check.svg') no-repeat 0 center;
-  height: 20px;
-  width: 20px;
   background-size: 20px;
-  margin-left: 5px;
-  padding: 0;
-  border: none;
 }
 
 .RemoteLabbooks__cloud-delete:hover,
 .RemoteLabbooks__cloud-delete:focus {
   background: url('./../images/icons/trash-azure.svg') no-repeat 0 center;
-  height: 20px;
-  width: 20px;
   background-size: 20px;
-  margin-left: 5px;
-  padding: 0;
-  border: none;
 }
+
 .RemoteLabbooks__cloud-delete {
   background: url('./../images/icons/trash.svg') no-repeat 0 center;
-  height: 20px;
-  width: 20px;
   background-size: 20px;
-  margin-left: 5px;
-  padding: 0;
-  border: none;
 }
 
 .RemoteLabbooks__cloud-delete--disabled,
@@ -57,23 +58,21 @@
 .RemoteLabbooks__cloud-delete--disabled:focus,
 .RemoteLabbooks__cloud-delete--disabled:disabled,
 .RemoteLabbooks__cloud-delete:disabled{
-  background: url('./../images/icons/trash.svg') no-repeat 0 center;
-  height: 20px;
-  width: 20px;
-  background-size: 20px;
-  margin-left: 5px;
-  padding: 0;
-  border: none;
-  opacity: 0.2;
+
   cursor: auto;
+
+  opacity: 0.2;
+  background: url('./../images/icons/trash.svg') no-repeat 0 center;
+  background-size: 20px;
 }
 
 .RemoteLabbooks__icon-row {
-  padding: 20px 20px 10px;
-  height: 68px;
   display: flex;
-  justify-content: flex-end;
   flex-direction: row;
+  justify-content: flex-end;
+
+  height: 68px;
+  padding: 20px 20px 10px;
 }
 
 .RemoteLabbooks__panel {
@@ -103,23 +102,28 @@
 
 .RemoteLabbooks__panel:hover {
   transition: box-shadow 0.5s;
+
   box-shadow: 0 0px 12px 0 rgba(0,0,0,.50);
 }
 
 .RemoteLabbooks__text-row {
   flex: 1;
-  text-align: left;
-  padding: 10px 20px;
+
   height: 100px;
+  padding: 10px 20px;
+
+  text-align: left;
 
   h4{
-    font-size: 22px;
     padding: 0px;
+
+    font-size: 22px;
   }
 
   p{
-    font-size: 14px;
     color: $romanSilver;
+
+    font-size: 14px;
   }
 }
 
@@ -129,21 +133,26 @@
 
 .RemoteLabbooks__owner {
   height: 20px;
-  line-height: 20px;
   margin: 2px;
+
+  line-height: 20px;
 }
 
 .RemoteLabbooks__description{
-  line-height: 20px;
-  text-overflow: ellipsis;
   display: -webkit-box;
-  white-space: pre-line;
   overflow: hidden;
-  word-break: initial;
-  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
-  box-orient: vertical;
+
   max-height: 130px;
+
+  white-space: pre-line;
+  text-overflow: ellipsis;
+  word-break: initial;
+
+  line-height: 20px;
+
+  -webkit-line-clamp: 6;
+  box-orient: vertical;
 }
 
 .RemoteLabbooks__panel:before,
@@ -156,9 +165,10 @@
 }
 
 .RemoteLabbooks--delete-modal {
-
   justify-content: flex-start;
+
   padding: 20px 40px;
+
   @include flex(space-between, column);
   @include modal(300px, 600px);
 
@@ -167,21 +177,24 @@
   }
 
   .DeleteLabbook{
+    align-items: center;
+
+    height: 300px;
+
+    @include flex(space-between, column);
     p{
       margin: 0;
     }
     hr{
       border-bottom: 1px solid $azure;
     }
-    height: 300px;
-    @include flex(space-between, column);
-    align-items: center;
   }
 }
 
 .RemoteLabbooks__loader {
-  transform: scale(0.5);
   position: absolute;
   top: 50%;
   left: 50%;
+
+  transform: scale(0.5);
 }
