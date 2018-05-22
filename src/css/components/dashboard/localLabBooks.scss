@@ -32,7 +32,6 @@
 
   li.selected a {
     color: $selected-blue;
-    z-index: 100;
     position: relative;
     bottom: -2px;
     line-height: 15px;
@@ -343,7 +342,7 @@
   line-height: 26px;
   cursor: pointer;
   border: 2px solid rgba(0,0,0,0);
-  z-index: 100;
+  z-index: index($elements, button);
   padding: 0 10px 0 0;
 
   @extend .box-shadow;
@@ -485,7 +484,7 @@
     background: $white;
     width: 200px;
     right: 0;
-    z-index: 101;
+
     text-align: left;
     border: 1px solid $grey;
     margin-top: 23px;
@@ -668,7 +667,7 @@
   @include modal(200px, 400px);
   justify-content: flex-start;
   padding: 20px;
-  z-index: 1200;
+  z-index: index($elements, modal);
   color: $jet;
 
   .LoginPrompt__button-container {

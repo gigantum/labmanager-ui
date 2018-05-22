@@ -28,6 +28,10 @@ export default class Prompt extends Component {
     this.intervalId = setInterval(this._handlePing.bind(this), 2500);
   }
 
+  /**
+    @param {}
+    pings server and checks when the api comes back up
+  */
   _handlePing = () => {
     pingServer()
       .then((response) => {

@@ -14,7 +14,7 @@
   right: 0px;
   position: absolute;
   background: $white;
-  z-index: 400;
+  z-index: index($elements, popup);
   padding: 15px;
   border-radius: 8px;
   @extend .box-shadow;
@@ -26,7 +26,7 @@
   top: 30px;
   right: 75px;
   position: absolute;
-  z-index: 401;
+  z-index: index($elements, popup);
   @include triangle('up', 14px, $white);
 }
 
@@ -51,7 +51,7 @@
   line-height: 26px;
   cursor: pointer;
   border: 2px solid rgba(0,0,0,0);
-  z-index: 100;
+  z-index: index($elements, button);
   padding-right: 10px;
 
   @extend .box-shadow;
@@ -188,12 +188,12 @@
   height: auto;
   border-radius: 8px;
   @extend .box-shadow;
-  z-index: 200;
+  z-index: index($elements, popup);
   padding: 15px;
 }
 
 .ContainerStatus__plugins-menu-arrow {
-  z-index: 203;
+  z-index: index($elements, popup);
   position: absolute;
   top: 29px;
   right: -3px;

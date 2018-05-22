@@ -91,7 +91,7 @@
     margin: 0 10px;
   }
 
-  
+
 
 
   .CreateBranch {
@@ -115,7 +115,7 @@
     @include modal(200px, 400px);
     justify-content: flex-start;
     padding: 20px;
-    z-index: 1200;
+    z-index: index($elements, modal);
 
     .LoginPrompt__button-container {
       @include flex(space-around, row);
