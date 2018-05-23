@@ -11,17 +11,9 @@ export default class ActivityCard extends Component {
     let showDetails = this.props.edge.node.show && this.props.edge.node.detailObjects.filter((details) => {
       return details.show
     }).length !== 0
-    let hideElement = false;
-    !this.props.edge.node.show && this.props.clusterObject && this.props.clusterObject[this.props.position.i] && Object.keys(this.props.clusterObject[this.props.position.i]).forEach((key) =>{
-      let range = key.split('-');
-      if(this.props.position.j >= Number(range[0]) && this.props.position.j <= Number(range[1])){
-        hideElement = true
-      }
-    })
     this.state = {
       showExtraInfo: showDetails,
       show: true,
-      hideElement: hideElement,
     }
 
     this._toggleExtraInfo = this._toggleExtraInfo.bind(this)
@@ -66,43 +58,16 @@ export default class ActivityCard extends Component {
     }
   }
 
-  /**
-  *   @param {}
-  *   hides wrapper if element is hidden on mount
-  *   @return {}
-  */
-
-  componentDidMount(){
-    if(this.state.hideElement) {
-      this.refs.card.parentElement.classList.add('hidden')
-    } else {
-      this.refs.card.parentElement.classList.remove('hidden')
-    }
-  }
-
-  /**
-  *   @param {}
-  *   hides wrapper if element is hidden on update
-  *   @return {}
-  */
-  componentDidUpdate(){
-    if(this.state.hideElement) {
-      this.refs.card.parentElement.classList.add('hidden')
-    } else {
-      this.refs.card.parentElement.classList.remove('hidden')
-    }
-  }
-
   render(){
     const node = this.props.edge.node;
     const type = this.props.edge.node.type.toLowerCase()
-    let shouldBeFaded = this.props.hoveredRollback && ((this.props.hoveredRollback.i > this.props.position.i) || (this.props.hoveredRollback.i >= this.props.position.i && this.props.hoveredRollback.j > this.props.position.j))
+    let shouldBeFaded = this.props.hoveredRollback > this.props.position
     const activityCardCSS = classNames({
       'ActivityCard card': this.state.showExtraInfo,
       'ActivityCard--collapsed card': !this.state.showExtraInfo,
       'column-1-span-9': true,
       'faded': shouldBeFaded,
-      'hidden': this.state.hideElement
+      // 'hidden': this.state.hideElement
     })
     const titleCSS = classNames({
       'ActivityCard__title flex flex--row justify--space-between': true,
