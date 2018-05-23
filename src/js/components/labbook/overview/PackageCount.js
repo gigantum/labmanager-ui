@@ -1,15 +1,10 @@
 //vendor
 import React, { Component } from 'react'
-//utilites
-import environment from 'JS/createRelayEnvironment'
-//store
-import store from 'JS/redux/store'
 
 
 export default class PackageCount extends Component {
 
   render(){
-    const {owner, labbookName} = store.getState().routes
     const {overview} = this.props
 
     let totalPackageCount = overview.numPipPackages + overview.numAptPackages + overview.numConda2Packages + overview.numConda3Packages

@@ -155,7 +155,7 @@
   background: $white;
   border-radius: 10px;
   padding: 10px;
-  z-index: 201;
+  z-index: index($elements, popup);
   width: 200px;
   animation: slide-down-fade-in forwards .25s;
   @extend .box-shadow;
@@ -186,7 +186,7 @@
 }
 
 .BranchMenu__menu-arrow {
-  z-index: 203;
+  z-index: index($elements, popup);
   position: absolute;
   top: 25px;
   right: 16px;

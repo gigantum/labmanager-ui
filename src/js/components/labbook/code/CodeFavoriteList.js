@@ -1,10 +1,7 @@
 // vendor
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 //componenets
 import FavoriteCard from './../fileBrowser/FavoriteCard'
-//store
-import store from 'JS/redux/store'
 
 class CodeFavoriteList extends Component {
   constructor(props){
@@ -52,7 +49,7 @@ class CodeFavoriteList extends Component {
     const { favorites } = this.state
     let newFavoritesList = this._arrayMove(favorites, dragIndex, hoverIndex)
 
-    this.setState(favorites: newFavoritesList)
+    this.setState({favorites: newFavoritesList})
   }
 
   _arrayMove(arr, oldIndex, newIndex) {

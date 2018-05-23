@@ -2,7 +2,7 @@
   position: fixed;
   left: 50%;
   top: 50%;
-  z-index: 1000;
+  z-index: index($elements, modal);
   width: $width;
   height: $height;
 

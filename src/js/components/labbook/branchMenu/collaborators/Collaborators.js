@@ -148,7 +148,7 @@ export const CollaboratorsQuery =  graphql`
                         />,
                         <div
                           key="CollaboratorsModal__cover"
-                          className="modal__cover"></div>
+                          className="modal__cover--nested"></div>
                       ]
 
                     }
@@ -197,7 +197,7 @@ export const CollaboratorsQuery =  graphql`
                         />,
                         <div
                           key="CollaboratorsModal__cover"
-                          className="modal__cover"></div>
+                          className="modal__cover--nested"></div>
                       ]
 
                     }

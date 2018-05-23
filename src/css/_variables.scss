@@ -49,6 +49,15 @@ $white: #fefefe;
 
 /*********************
 *
+* z-index
+*
+* z-index: index($elements, labbookHeader)
+*
+***********************/
+$elements: basic, psuedoCard, card, button, sideBar, headerStrip, veil, popup, footer, modalCoverNested, modalCover, labbookHeader, loader, modal;
+
+/*********************
+*
 * font sizes
 *
 ***********************/

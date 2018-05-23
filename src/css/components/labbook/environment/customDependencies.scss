@@ -46,7 +46,7 @@ input.CustomDependenciesDropdown__input[type="text"]:focus {
   max-height: 210px;
   transition: height 0.5s;
 
-  z-index: 200;
+  z-index: index($elements, popup);
 
   background: $white;
   width: calc(100% - 118px);

@@ -126,7 +126,7 @@ export default class UserNote extends Component {
 
 
   render(){
-    // console.log(this.state.editorFullscreen)
+   
     const {tags} = this.state;
     return(
       <div className="UserNote flex flex--column">

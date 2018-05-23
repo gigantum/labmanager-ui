@@ -87,7 +87,7 @@
   @include modal(440px, 660px);
   @include flex(flex-start, column);
   padding: 40px;
-  z-index: 3000;
+  z-index: index($elements, modal);
 }
 
 
@@ -121,7 +121,7 @@
   position: fixed;
   height: 3000%;
   width: 3000%;
-  z-index: 2000;
+  z-index: index($elements, modal);
   background-color: $white;
   opacity: 0.5;
 }

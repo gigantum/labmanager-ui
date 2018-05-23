@@ -1,6 +1,6 @@
 .DetailPanel {
   position: fixed;
-  z-index: 500;
+  z-index: index($elements, siderBar);
   top: 10px;
   right: 0px;
   bottom: 0px;
