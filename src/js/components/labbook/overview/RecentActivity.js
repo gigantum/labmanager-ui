@@ -1,39 +1,14 @@
 //vendor
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import {
-  QueryRenderer,
-  graphql
-} from 'react-relay'
-import className from 'classnames'
 import {Link} from 'react-router-dom';
 import ReactMarkdown from 'react-markdown'
 import Moment from 'moment'
 //components
 import CodeBlock from 'Components/labbook/renderers/CodeBlock'
-//utilites
-import environment from 'JS/createRelayEnvironment'
 //store
 import store from 'JS/redux/store'
 
-let RecentActivityQuery = graphql`query RecentActivityQuery($name: String!, $owner: String!, $first: Int!){
-  labbook(name: $name, owner: $owner){
-    activityRecords(first: $first){
-      edges{
-        node{
-          id
-          message
-          detailObjects{
-            data
-            type
-          }
-          timestamp
-        }
-      }
-    }
-  }
-}
-`
 
 export default class RecentActivity extends Component {
   _renderDetail(node){

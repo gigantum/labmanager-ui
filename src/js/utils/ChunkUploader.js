@@ -1,7 +1,5 @@
 //vendor
 import uuidv4 from 'uuid/v4'
-//utils
-import JobStatus from './JobStatus'
 //mutations
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 import AddLabbookFileMutation from 'Mutations/fileBrowser/AddLabbookFileMutation'
@@ -81,16 +79,9 @@ const updateTotalStatus = (file) =>{
 
 const updateChunkStatus = (file, chunkData) =>{
 
-
-  let fileCount = store.getState().footer.fileCount + 1
-  let totalFiles = store.getState().footer.totalFiles
-
-  const {blob,
+  const {
       fileSizeKb,
       chunkSize,
-      totalChunks,
-      filename,
-      uploadId,
     } = chunkData
   let chunkIndex = chunkData.chunkIndex + 1
   let uploadedChunkSize = ((chunkSize/1000) * chunkIndex) >fileSizeKb ? humanFileSize(fileSizeKb) : humanFileSize((chunkSize/1000) * chunkIndex)

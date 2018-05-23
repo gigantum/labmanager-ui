@@ -205,7 +205,6 @@ export default class ImportModule extends Component {
   componentDidMount() {
     let fileInput = document.getElementById('file__input')
     if(fileInput) {
-      let evt = new MouseEvent("click", {"bubbles":false, "cancelable":true});
 
       fileInput.onclick = (evt) =>{
         evt.cancelBubble = true;

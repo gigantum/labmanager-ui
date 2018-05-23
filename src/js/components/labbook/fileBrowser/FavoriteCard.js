@@ -82,10 +82,6 @@ function collectDropTarget(connect, monitor) {
   };
 }
 
-const propTypes = {
-  connectDragSource: PropTypes.func.isRequired
-};
-
 class FavoriteCard extends Component {
   constructor(props){
   	super(props);

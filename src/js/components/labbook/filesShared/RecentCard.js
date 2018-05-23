@@ -1,8 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import { DragSource, DropTarget } from 'react-dnd'
-import PropTypes from 'prop-types'
-import { findDOMNode } from 'react-dom'
 import Moment from 'moment'
 //Mutations
 import RemoveFavoriteMutation from 'Mutations/fileBrowser/RemoveFavoriteMutation'

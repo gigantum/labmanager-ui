@@ -1,7 +1,5 @@
 //vendor
-import store from 'JS/redux/store'
-import React, { Component, Fragment } from 'react'
-import ReactDom from 'react-dom'
+import React, { Component } from 'react'
 import {
   createPaginationContainer,
   graphql

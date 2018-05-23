@@ -1,7 +1,6 @@
 // vendor
 import React, { Component } from 'react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
-import classNames from 'classnames'
 //components
 import DetailPanel from './../detail/DetailPanel'
 //mutations
@@ -911,10 +910,7 @@ export default class FileBrowserWrapper extends Component {
   handleFileFavoriting(key){
 
     let fileItem = this.props.files.edges.filter((edge) => {
-
-      if(edge && (edge.node.key === key)){
-        return edge.node
-      }
+        return edge && (edge.node.key === key)
     })[0]
 
     if(!fileItem.node.isFavorite){
