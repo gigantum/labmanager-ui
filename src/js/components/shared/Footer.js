@@ -217,8 +217,9 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
         {mostRecentMessage && mostRecentMessage.error && mostRecentMessage.messageBody &&
           <ul>
             {
-              mostRecentMessage.messageBody.map((error) => {
-                return(<li key={error.id}>{error.message}</li>)
+              mostRecentMessage.messageBody.map((error, index) => {
+              
+                return(<li key={`${mostRecentMessage.id}_${index}`}>{error.message}</li>)
               })
             }
           </ul>

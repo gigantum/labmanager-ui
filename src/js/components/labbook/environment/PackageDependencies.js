@@ -131,7 +131,7 @@ class PackageDependencies extends Component {
     if(packageDependencies.edges.length > 0){
 
       let cursor =  packageDependencies.edges[packageDependencies.edges.length - 1].node.cursor
-
+      console.log(cursor, packageDependencies)
       relay.refetchConnection(
         totalCount + 5,
         (response) =>{

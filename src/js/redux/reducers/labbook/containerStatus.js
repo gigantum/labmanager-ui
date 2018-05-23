@@ -13,6 +13,7 @@ export default (
  },
  action
 ) => {
+
 if (action.type === UPDATE_CONTAINER_STATUS) {
    return {
      ...state,
