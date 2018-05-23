@@ -78,8 +78,7 @@ class Activity extends Component {
     let activityRecords = this.props.labbook.activityRecords
 
     window.addEventListener('scroll', this._handleScroll)
-    if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 2)){
-
+    if((activityRecords.pageInfo.hasNextPage && activityRecords.edges.length < 2)|| (activityRecords.pageInfo.hasNextPage && activityRecords.edges[activityRecords.edges.length -1].node.show === false)){
       this._loadMore()
     }
 
@@ -93,7 +92,8 @@ class Activity extends Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
-
+    clearTimeout(this.refetchTimeout)
+    clearTimeout(this.newActivityTimeout)
     isMounted = false
 
     window.removeEventListener('scroll', this._handleScroll)
@@ -182,7 +182,7 @@ class Activity extends Component {
           let newRecordCommitId = data.labbook.activityRecords.edges[0].node.commit
 
           if(firstRecordCommitId === newRecordCommitId){
-            setTimeout(()=>{
+            self.newActivityTimeout = setTimeout(()=>{
                 if(isMounted){
                   getNewActivity()
                 }
@@ -212,7 +212,6 @@ class Activity extends Component {
   *
   */
   _refetch(){
-
     let self = this
     let relay = this.props.relay
     let activityRecords = this.props.labbook.activityRecords
@@ -223,7 +222,7 @@ class Activity extends Component {
       counter,
       (response, error) => {
 
-        setTimeout(function(){
+        self.refetchTimeout = setTimeout(function(){
 
             if(self.state.refetchEnabled && isMounted){
               self._refetch()
@@ -242,7 +241,6 @@ class Activity extends Component {
   *  pagination container loads more items
   */
   _loadMore() {
-
     pagination = true
     this.setState({
       'isPaginating': true
@@ -254,7 +252,6 @@ class Activity extends Component {
        if(error){
          console.error(error)
        }
-
        this.setState({
          'isPaginating': false
        })
@@ -389,13 +386,17 @@ class Activity extends Component {
     }
   }
 
+  /**
+  *   @param {string, integer} key, i
+  *   modifies expandedClusterObject and clusterObject from state
+  *   @return {}
+  */
   _deleteCluster(key, i){
     let newClusterObject = Object.assign({}, this.state.clusterObject)
     delete newClusterObject[i][key]
     clusterObject =  Object.assign({}, newClusterObject)
     let newExpandedClusterObject = Object.assign({}, this.state.expandedClusterObject)
     newExpandedClusterObject[i] = newExpandedClusterObject[i] ? newExpandedClusterObject[i].add(key) : new Set([key])
-    console.log(newExpandedClusterObject)
     this.setState({clusterObject: newClusterObject, expandedClusterObject: newExpandedClusterObject})
     this.refs[key].classList.add('hidden')
   }
@@ -488,6 +489,8 @@ class Activity extends Component {
                             let rollbackableDetails = obj.edge.node.detailObjects.filter((detailObjs) => {
                               return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
                             })
+                            let shouldBeFaded = null;
+
                             if(!obj.edge.node.show){
                               clusterElements.push({i, j})
                             } else if (clusterElements.length > 2) {
@@ -500,6 +503,15 @@ class Activity extends Component {
                             if(obj.edge.node.show){
                               clusterElements = [];
                             }
+                            if(addClusterLength !== 0){
+                              shouldBeFaded = this.state.hoveredRollback && ((this.state.hoveredRollback.i > i) || (this.state.hoveredRollback.i >= i && this.state.hoveredRollback.j > j -1))
+                            }
+                            let clusterCSS = classNames({
+                              'ActivityCard--cluster': true,
+                              'column-1-span-9': true,
+                              'faded': shouldBeFaded,
+                            });
+
                             return (
                               <Fragment key={obj.edge.node.id}>
                               {
@@ -510,7 +522,7 @@ class Activity extends Component {
                                       <div className="Activity__submenu-container">
                                       </div>
                                     }
-                                    <div className="ActivityCard column-1-span-9">
+                                    <div className={clusterCSS}>
                                       {addClusterLength} Related Activities
                                       <div className="ActivityCard__ellipsis" onClick={()=> this._deleteCluster(clusterKey, i)}></div>
                                     </div>

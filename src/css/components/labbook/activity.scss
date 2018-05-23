@@ -28,6 +28,23 @@
   opacity: 0.5
 }
 
+.ActivityCard--cluster {
+  margin: 0;
+  padding: 12.5px 10px 0 10px;
+  color: $romanSilver;
+  z-index: 200;
+  position: relative;
+  background: white;
+  min-height: 60px;
+  border-bottom: 10px solid $azure;
+  @include flex(center, row);
+}
+
+.ActivityCard--cluster.faded {
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
 .ActivityCard--collapsed {
   @extend .ActivityCard;
   height: 80px;

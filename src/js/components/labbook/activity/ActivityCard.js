@@ -55,9 +55,9 @@ export default class ActivityCard extends Component {
 
   componentWillReceiveProps(nextProps){
     let hideElement = false;
-    !this.props.edge.node.show && this.props.clusterObject && this.props.clusterObject[this.props.position.i] && Object.keys(this.props.clusterObject[this.props.position.i]).forEach((key) =>{
+    !nextProps.edge.node.show && nextProps.clusterObject && nextProps.clusterObject[nextProps.position.i] && Object.keys(nextProps.clusterObject[nextProps.position.i]).forEach((key) =>{
       let range = key.split('-');
-      if(this.props.position.j >= Number(range[0]) && this.props.position.j <= Number(range[1])){
+      if(nextProps.position.j >= Number(range[0]) && nextProps.position.j <= Number(range[1])){
         hideElement = true
       }
     })
@@ -65,6 +65,12 @@ export default class ActivityCard extends Component {
       this.setState({hideElement})
     }
   }
+
+  /**
+  *   @param {}
+  *   hides wrapper if element is hidden on mount
+  *   @return {}
+  */
 
   componentDidMount(){
     if(this.state.hideElement) {
@@ -74,6 +80,11 @@ export default class ActivityCard extends Component {
     }
   }
 
+  /**
+  *   @param {}
+  *   hides wrapper if element is hidden on update
+  *   @return {}
+  */
   componentDidUpdate(){
     if(this.state.hideElement) {
       this.refs.card.parentElement.classList.add('hidden')
