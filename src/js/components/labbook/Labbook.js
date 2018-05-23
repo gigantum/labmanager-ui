@@ -61,7 +61,7 @@ class Labbook extends Component {
 
 
 
-    document.title =  `${owner}/${labbookName}`
+    document.title = `${owner}/${labbookName}`
   }
 
   componentWillReceiveProps(nextProps) {
@@ -387,6 +387,7 @@ class Labbook extends Component {
     const isLockedEnvironment = this.state.isBuilding || this.state.isSyncing || this.state.isPublishing
 
     if(this.props.labbook){
+
       const {labbook} = this.props
       const name = this._sanitizeBranchName(this.props.labbook.activeBranchName)
       const {branchesOpen} = this.state

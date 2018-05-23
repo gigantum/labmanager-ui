@@ -24,7 +24,7 @@
   position: absolute;
   top: 50%;
   margin: -20px 0 0;
-  z-index: 100;
+  z-index: index($elements, button);
   border-width: 0px;
 }
 

@@ -2,7 +2,7 @@
   @include modal(300px, 500px);
   @include flex(flex-start, column);
   padding: 40px;
-  z-index: 3000;
+  z-index: index($elements, modal);
 }
 
 .ForceMege__close{
