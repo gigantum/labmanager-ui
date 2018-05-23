@@ -659,9 +659,11 @@ class PackageDependencies extends Component {
 
   _packageRow(edge, index){
     const installer = edge.node.fromBase ? 'System' : 'User'
-    const {version, latestVersion} = edge.node
+    //temporarily removed latestVersion
+    const {version, /* latestVersion */} = edge.node
     const versionText = version ?  `v${version}` : ''
-    const latestVersionText = latestVersion ?  `v${latestVersion}` : ''
+    // disbaled for beta release
+    // const latestVersionText = latestVersion ?  `v${latestVersion}` : ''
     let trCSS = classNames({
       'PackageDependencies__optimistic-updating': edge.node.id === undefined
     })
