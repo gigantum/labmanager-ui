@@ -26,7 +26,7 @@ class InputDataBrowser extends Component {
   */
   componentWillReceiveProps(nextProps) {
 
-    if(nextProps.input.allFiles.pageInfo.hasNextPage){
+    if(nextProps.input.allFiles.pageInfo.hasNextPage && nextProps.input.allFiles.edges.length > 3){
       this._loadMore()
     } else {
       this.setState({'moreLoading': false});
