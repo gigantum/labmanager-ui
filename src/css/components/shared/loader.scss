@@ -1,13 +1,16 @@
 .Loader {
-  z-index: 1002;
   position: absolute;
+  z-index: index($elements, loader);
   top: calc(50% - 75px);
   left: calc(50% - 75px);
-  height: 150px;
+
   width: 150px;
+  height: 150px;
+
+  animation: spin 2s linear infinite;
+
   background: url(../images/loaders/load.svg) no-repeat 50% 50%;
   background-size: 100px;
-  animation: spin 2s linear infinite;
 }
 
 @keyframes spin {

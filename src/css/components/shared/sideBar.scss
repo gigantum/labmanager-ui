@@ -1,6 +1,6 @@
 .SideBar {
   position: fixed;
-  z-index: 201;
+  z-index: index($elements, sideBar);
   top: 10px;
 
   height: 100%;

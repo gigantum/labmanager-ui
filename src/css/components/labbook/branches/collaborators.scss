@@ -58,7 +58,7 @@
 
   max-height: 40px;
   overflow: visible;
-  z-index: 1000;
+  z-index: index($elements, modal);
 }
 .CollaboratorModal__container {
   padding: 20px 100px;

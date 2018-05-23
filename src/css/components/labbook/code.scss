@@ -196,7 +196,7 @@
 .FileBrowser__modal{
   position: relative;
   @include modal(340px, 540px);
-  z-index: 1000;
+  z-index: index($elements, modal);
   padding: 40px;
   @include flex(space-between, column);
 

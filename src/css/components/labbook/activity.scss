@@ -8,14 +8,14 @@
 
 }
 .Activity.fullscreen {
-  z-index: 1000;
+  z-index: index($elements, modal);
 }
 
 .ActivityCard {
   margin: 0;
   padding: 0 10px;
   color: $romanSilver;
-  z-index: 200;
+  z-index: index($elements, card);
   position: relative;
   background: white;
   min-height: 80px;
@@ -70,7 +70,7 @@
   position: fixed;
 
   height: 40px;
-  z-index: 800;
+  z-index: index($elements, card);
   width: 200px;
   color: $white;
   border-radius: 20px;
@@ -108,7 +108,7 @@
   content: "";
   display: block;
   position: absolute;
-  z-index: 1;
+  z-index: index($elements, pseudoCard);
   top: 100%;
   left: 40px;
   border: 4px solid $romanSilver;
@@ -295,7 +295,7 @@
   position: relative;
   font-size: 14px;
   cursor: pointer;
-  z-index: 200;
+  z-index: index($elements, card);
 
   h5 {
     padding: 0px 0 0 60px;
@@ -319,7 +319,7 @@
   content: "";
   display: block;
   position: absolute;
-  z-index: 1;
+  z-index: index($elements, pseudoCard);
   top: calc(100% - 4px);
   left: 39px;
   border: 4px solid $romanSilver;
@@ -594,7 +594,7 @@
 }
 
 .ActivityCard__ellipsis-detail {
-  z-index:400;
+  z-index: index($elements, card);
 }
 
 
@@ -605,7 +605,7 @@
   width: 10px;
   border-radius: 15px;
   left: 37px;
-  z-index: 201;
+  z-index: index($elements, card);
   transition: all 0.125s;
   top: calc(50% - 5px);
 }
@@ -670,7 +670,7 @@
   content: "";
   display: block;
   position: absolute;
-  z-index: 1;
+  z-index: index($elements, card);
   top: calc(100% + 10px);
   left: 40px;
   border: 4px solid $romanSilver;
@@ -680,6 +680,6 @@
 }
 
 .UserActivity__container.fullscreen {
-  z-index: 1000;
+  z-index: index($elements, modal);
   position: fixed;
 }
