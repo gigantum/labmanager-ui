@@ -1,6 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import {QueryRenderer, graphql} from 'react-relay'
 import ReactMarkdown from 'react-markdown'
 //Components

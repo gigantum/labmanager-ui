@@ -25,8 +25,7 @@ class CodeBrowser extends Component {
     update component when props are reloaded
   */
   componentWillReceiveProps(nextProps) {
-
-    if(nextProps.code.allFiles.pageInfo.hasNextPage){
+    if(nextProps.code.allFiles.pageInfo.hasNextPage && nextProps.code.allFiles.edges.length > 3){
       this._loadMore()
     } else {
       this.setState({'moreLoading': false});
@@ -63,7 +62,6 @@ class CodeBrowser extends Component {
 
        if(self.props.code.allFiles &&
          self.props.code.allFiles.pageInfo.hasNextPage) {
-
          self._loadMore()
        } else {
          this.setState({'moreLoading': false});

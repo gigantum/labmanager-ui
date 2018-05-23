@@ -39,6 +39,8 @@ class Activity extends Component {
       'newActivityPolling': false,
       'editorFullscreen': false,
       'hoveredRollback': null,
+      'newActivityForcePaused': false,
+      'refetchForcePaused': false,
     };
 
     //bind functions here
@@ -53,6 +55,7 @@ class Activity extends Component {
     this._toggleCreateModal = this._toggleCreateModal.bind(this)
     this._getNewActivties = this._getNewActivties.bind(this)
     this._changeFullscreenState = this._changeFullscreenState.bind(this)
+    this._handleVisibilityChange = this._handleVisibilityChange.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,6 +79,7 @@ class Activity extends Component {
     let activityRecords = this.props.labbook.activityRecords
 
     window.addEventListener('scroll', this._handleScroll)
+    window.addEventListener('visibilitychange', this._handleVisibilityChange)
     if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 2)){
 
       this._loadMore()
@@ -94,6 +98,7 @@ class Activity extends Component {
 
     isMounted = false
 
+    window.removeEventListener('visibilitychange', this._handleVisibilityChange)
     window.removeEventListener('scroll', this._handleScroll)
   }
   /**
@@ -121,6 +126,20 @@ class Activity extends Component {
       this._startRefetch()
 
       window.removeEventListener('scroll', this._scrollTo)
+    }
+  }
+    /**
+   * @param {}
+   * handles refiring new activity query if visibility changes back to visible
+   * @return {}
+   */
+  _handleVisibilityChange() {
+    if(this.state.newActivityForcePaused) {
+      this._stopRefetch()
+      this.setState({newActivityForcePaused: false})
+    } else if(this.state.refetchForcePaused) {
+      this._refetch()
+      this.setState({refetchForcePaused: false})
     }
   }
   /**
@@ -180,9 +199,12 @@ class Activity extends Component {
           let newRecordCommitId = data.labbook.activityRecords.edges[0].node.commit
 
           if(firstRecordCommitId === newRecordCommitId){
+
             setTimeout(()=>{
-                if(isMounted){
+                if(isMounted && document.visibilityState === 'visible' && !this.state.refetchEnabled){
                   getNewActivity()
+                } else if (isMounted && document.visibilityState !== 'visible' && !this.state.refetchEnabled) {
+                  this.setState({newActivityForcePaused: true, newActivityPolling: false})
                 }
             }, 3000)
 
@@ -198,8 +220,8 @@ class Activity extends Component {
 
      }
 
-       getNewActivity()
 
+      getNewActivity()
 
    }
  }
@@ -222,9 +244,10 @@ class Activity extends Component {
       (response, error) => {
 
         setTimeout(function(){
-
-            if(self.state.refetchEnabled && isMounted){
+            if(self.state.refetchEnabled && isMounted && document.visibilityState === 'visible'){
               self._refetch()
+            } else if(self.state.refetchEnabled && isMounted && document.visibilityState !== 'visible') {
+              self.setState({refetchForcePaused: true})
             }
         }, 5000)
 

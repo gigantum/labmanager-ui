@@ -16,16 +16,6 @@ const mutation = graphql`
     }
   }
 `;
-const configs = [{
-  type: 'RANGE_ADD',
-  parentID: 'client:root',
-  connectionInfo: [{
-    key: 'LocalLabbooks_localLabbooks',
-    rangeBehavior: 'append',
-  }],
-  edgeName: 'labbook',
-}];
-
 
 let tempID = 0;
 export default function CreateLabbookMutation(
@@ -79,7 +69,7 @@ export default function CreateLabbookMutation(
          );
 
          if(conn){
-           const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+           RelayRuntime.ConnectionHandler.createEdge(
              store,
              conn,
              node,
