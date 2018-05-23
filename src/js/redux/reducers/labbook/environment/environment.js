@@ -14,7 +14,10 @@ export default (
  state = {
    'status': "",
    'containerMenuOpen': false,
-   'containerMenuWarning': ''
+   'containerMenuWarning': '',
+   'packageMenuVisible': false,
+   'viewContainerVisible': false,
+   'detailMode': false
  },
  action
 ) => {

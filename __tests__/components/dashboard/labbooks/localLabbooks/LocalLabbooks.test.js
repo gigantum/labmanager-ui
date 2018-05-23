@@ -4,7 +4,7 @@ import {shallow, mount} from 'enzyme';
 import history from 'JS/history'
 import {StaticRouter, Link} from 'react-router';
 import json from './__relaydata__/LocalLabbooks.json'
-import LocalLabbooks from 'Components/dashboard/labbooks/LocalLabbooks';
+import LocalLabbooks from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooks';
 import relayTestingUtils from 'relay-testing-utils'
 import {MemoryRouter } from 'react-router-dom'
 import environment from 'JS/createRelayEnvironment'
@@ -112,7 +112,7 @@ describe('Test scroll functon', () => {
       <LocalLabbooks history={history} feed={json.data}/>
 
   );
-  //console.log(localLabbooks.find('.LocalLabbooks__panel').at(20))
+
   localLabbooks.find('.LocalLabbooks__panel').at(20).simulate('scroll')
 
 
