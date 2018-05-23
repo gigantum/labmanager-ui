@@ -40,6 +40,7 @@ class Activity extends Component {
       'editorFullscreen': false,
       'hoveredRollback': null,
       'clusterObject': null,
+      'expandedClusterObject': null,
     };
 
     //bind functions here
@@ -377,33 +378,29 @@ class Activity extends Component {
     }
   }
 
+  /**
+  *   @param {}
+  *   When component updates and clusterObject changes, clusterObject will be set
+  *   @return {}
+  */
   componentDidUpdate(){
     if(JSON.stringify(clusterObject) !== JSON.stringify(this.state.clusterObject)) {
-      console.log('this ran')
       this.setState({clusterObject })
     }
   }
 
   _deleteCluster(key, i){
-    // const {}
     let newClusterObject = Object.assign({}, this.state.clusterObject)
-    // let newClusterObject = JSON.parse(JSON.stringify(this.state.clusterObject))
     delete newClusterObject[i][key]
-    console.log(newClusterObject)
-    // console.log(newClusterObject)
-    // console.log(i, key)
-    // delete newClusterObject[i][key]
-    // console.log(this.state.clusterObject)
-    // console.log(newClusterObject)
-    // clusterObject = JSON.parse(JSON.stringify(newClusterObject));
     clusterObject =  Object.assign({}, newClusterObject)
-    // console.log(newClusterObject)
-    this.setState({clusterObject: newClusterObject})
-    // this.refs[key].classList.add('hidden')
+    let newExpandedClusterObject = Object.assign({}, this.state.expandedClusterObject)
+    newExpandedClusterObject[i] = newExpandedClusterObject[i] ? newExpandedClusterObject[i].add(key) : new Set([key])
+    console.log(newExpandedClusterObject)
+    this.setState({clusterObject: newClusterObject, expandedClusterObject: newExpandedClusterObject})
+    this.refs[key].classList.add('hidden')
   }
 
   render(){
-    console.log(this.state.clusterObject)
     let activityCSS = classNames({
       'Activity': true,
       'fullscreen': this.state.editorFullscreen
@@ -495,8 +492,10 @@ class Activity extends Component {
                               clusterElements.push({i, j})
                             } else if (clusterElements.length > 2) {
                               clusterKey = `${clusterElements[0].j}-${clusterElements[clusterElements.length -1].j}`
-                              clusterObject[i][clusterKey] = clusterElements
-                              addClusterLength = clusterElements.length;
+                              if(!(this.state.expandedClusterObject && this.state.expandedClusterObject[i] && this.state.expandedClusterObject[i].has(clusterKey))){
+                                clusterObject[i][clusterKey] = clusterElements
+                                addClusterLength = clusterElements.length;
+                              }
                             }
                             if(obj.edge.node.show){
                               clusterElements = [];
@@ -506,6 +505,11 @@ class Activity extends Component {
                               {
                                 addClusterLength !== 0 &&
                                   <div className="ActivtyCard__wrapper" ref={clusterKey} >
+                                    {
+                                      (clusterKey[0] !== '0' || i !== 0) &&
+                                      <div className="Activity__submenu-container">
+                                      </div>
+                                    }
                                     <div className="ActivityCard column-1-span-9">
                                       {addClusterLength} Related Activities
                                       <div className="ActivityCard__ellipsis" onClick={()=> this._deleteCluster(clusterKey, i)}></div>
