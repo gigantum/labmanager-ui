@@ -7,11 +7,21 @@ import ActivityDetails from 'Components/labbook/activity/ActivityDetails'
 
 export default class ActivityCard extends Component {
   constructor(props){
-
-  	super(props);
+    super(props);
+    let showDetails = this.props.edge.node.show && this.props.edge.node.detailObjects.filter((details) => {
+      return details.show
+    }).length !== 0
+    let hideElement = false;
+    !this.props.edge.node.show && this.props.clusterObject && this.props.clusterObject[this.props.position.i] && Object.keys(this.props.clusterObject[this.props.position.i]).forEach((key) =>{
+      let range = key.split('-');
+      if(this.props.position.j >= Number(range[0]) && this.props.position.j <= Number(range[1])){
+        hideElement = true
+      }
+    })
     this.state = {
-      showExtraInfo: props.edge.node.show,
+      showExtraInfo: showDetails,
       show: true,
+      hideElement: hideElement,
     }
 
     this._toggleExtraInfo = this._toggleExtraInfo.bind(this)
@@ -43,8 +53,36 @@ export default class ActivityCard extends Component {
     @return {html}
   */
 
-  render(){
+  componentWillReceiveProps(nextProps){
+    let hideElement = false;
+    !this.props.edge.node.show && this.props.clusterObject && this.props.clusterObject[this.props.position.i] && Object.keys(this.props.clusterObject[this.props.position.i]).forEach((key) =>{
+      let range = key.split('-');
+      if(this.props.position.j >= Number(range[0]) && this.props.position.j <= Number(range[1])){
+        hideElement = true
+      }
+    })
+    if(hideElement !== this.state.hideElement) {
+      this.setState({hideElement})
+    }
+  }
 
+  componentDidMount(){
+    if(this.state.hideElement) {
+      this.refs.card.parentElement.classList.add('hidden')
+    } else {
+      this.refs.card.parentElement.classList.remove('hidden')
+    }
+  }
+
+  componentDidUpdate(){
+    if(this.state.hideElement) {
+      this.refs.card.parentElement.classList.add('hidden')
+    } else {
+      this.refs.card.parentElement.classList.remove('hidden')
+    }
+  }
+
+  render(){
     const node = this.props.edge.node;
     const type = this.props.edge.node.type.toLowerCase()
     let shouldBeFaded = this.props.hoveredRollback && ((this.props.hoveredRollback.i > this.props.position.i) || (this.props.hoveredRollback.i >= this.props.position.i && this.props.hoveredRollback.j > this.props.position.j))
@@ -53,6 +91,7 @@ export default class ActivityCard extends Component {
       'ActivityCard--collapsed card': !this.state.showExtraInfo,
       'column-1-span-9': true,
       'faded': shouldBeFaded,
+      'hidden': this.state.hideElement
     })
     const titleCSS = classNames({
       'ActivityCard__title flex flex--row justify--space-between': true,
@@ -61,7 +100,7 @@ export default class ActivityCard extends Component {
       'closed': type === 'note' && !this.state.show,
     })
     return(
-      <div className={activityCardCSS}>
+      <div className={activityCardCSS} ref="card">
 
         <div className={'ActivityCard__badge ActivityCard__badge--' + type}>
         </div>

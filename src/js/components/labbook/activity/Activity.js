@@ -22,7 +22,7 @@ import config from 'JS/config'
 let pagination = false;
 
 let counter = 5;
-
+let clusterObject = {}
 let isMounted = false
 
 class Activity extends Component {
@@ -39,6 +39,7 @@ class Activity extends Component {
       'newActivityPolling': false,
       'editorFullscreen': false,
       'hoveredRollback': null,
+      'clusterObject': null,
     };
 
     //bind functions here
@@ -376,7 +377,33 @@ class Activity extends Component {
     }
   }
 
+  componentDidUpdate(){
+    if(JSON.stringify(clusterObject) !== JSON.stringify(this.state.clusterObject)) {
+      console.log('this ran')
+      this.setState({clusterObject })
+    }
+  }
+
+  _deleteCluster(key, i){
+    // const {}
+    let newClusterObject = Object.assign({}, this.state.clusterObject)
+    // let newClusterObject = JSON.parse(JSON.stringify(this.state.clusterObject))
+    delete newClusterObject[i][key]
+    console.log(newClusterObject)
+    // console.log(newClusterObject)
+    // console.log(i, key)
+    // delete newClusterObject[i][key]
+    // console.log(this.state.clusterObject)
+    // console.log(newClusterObject)
+    // clusterObject = JSON.parse(JSON.stringify(newClusterObject));
+    clusterObject =  Object.assign({}, newClusterObject)
+    // console.log(newClusterObject)
+    this.setState({clusterObject: newClusterObject})
+    // this.refs[key].classList.add('hidden')
+  }
+
   render(){
+    console.log(this.state.clusterObject)
     let activityCSS = classNames({
       'Activity': true,
       'fullscreen': this.state.editorFullscreen
@@ -416,7 +443,8 @@ class Activity extends Component {
               />
               {
                 Object.keys(activityRecordsTime).map((k, i) => {
-
+                  clusterObject[i] = {}
+                  let clusterElements = [];
                   return (
                     <div key={k}>
 
@@ -455,45 +483,68 @@ class Activity extends Component {
                       <div key={`${k}__card`}>
                         {
                           activityRecordsTime[k].map((obj, j) => {
+                            let addClusterLength = 0;
+                            let clusterKey = null;
                             let isLastRecordObj = i === Object.keys(activityRecordsTime).length -1;
                             let isLastRecordNode = j === activityRecordsTime[k].length -1;
                             let isLastPage = !this.props.labbook.activityRecords.pageInfo.hasNextPage;
                             let rollbackableDetails = obj.edge.node.detailObjects.filter((detailObjs) => {
                               return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
                             })
+                            if(!obj.edge.node.show){
+                              clusterElements.push({i, j})
+                            } else if (clusterElements.length > 2) {
+                              clusterKey = `${clusterElements[0].j}-${clusterElements[clusterElements.length -1].j}`
+                              clusterObject[i][clusterKey] = clusterElements
+                              addClusterLength = clusterElements.length;
+                            }
+                            if(obj.edge.node.show){
+                              clusterElements = [];
+                            }
                             return (
-                              <div className="ActivtyCard__wrapper" key={obj.edge.node.id}>
-                                { ((i !== 0 ) || (j !== 0)) &&
-                                  <div className="Activity__submenu-container">
-                                  {
-                                    (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) &&
-                                  <Fragment>
-                                    <div
-                                        className="Activity__submenu-circle"
-                                      >
-                                      </div>
-                                      <div className="Activity__submenu-subcontainer">
-                                        <h5
-                                          onMouseOver={() => this.setState({hoveredRollback: {i, j}})}
-                                          onMouseOut={() => this.setState({hoveredRollback : null})}
-                                          className="Activity__rollback-text"
-                                          onClick={() => this._toggleRollbackMenu(obj.edge.node)}
-                                        >
-                                          Rollback to previous state
-                                        </h5>
-                                      </div>
-                                    </Fragment>
-                                  }
+                              <Fragment key={obj.edge.node.id}>
+                              {
+                                addClusterLength !== 0 &&
+                                  <div className="ActivtyCard__wrapper" ref={clusterKey} >
+                                    <div className="ActivityCard column-1-span-9">
+                                      {addClusterLength} Related Activities
+                                      <div className="ActivityCard__ellipsis" onClick={()=> this._deleteCluster(clusterKey, i)}></div>
+                                    </div>
                                   </div>
-                                }
-                                <ActivityCard
-                                  position={{i, j}}
-                                  hoveredRollback={this.state.hoveredRollback}
-                                  key={`${obj.edge.node.id}_activity-card`}
-                                  edge={obj.edge}
-                                />
-                              </div>
-
+                              }
+                                <div className="ActivtyCard__wrapper">
+                                  { ((i !== 0 ) || (j !== 0)) &&
+                                    <div className="Activity__submenu-container">
+                                    {
+                                      (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) &&
+                                    <Fragment>
+                                      <div
+                                          className="Activity__submenu-circle"
+                                        >
+                                        </div>
+                                        <div className="Activity__submenu-subcontainer">
+                                          <h5
+                                            onMouseOver={() => this.setState({hoveredRollback: {i, j}})}
+                                            onMouseOut={() => this.setState({hoveredRollback : null})}
+                                            className="Activity__rollback-text"
+                                            onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+                                          >
+                                            Rollback to previous state
+                                          </h5>
+                                        </div>
+                                      </Fragment>
+                                    }
+                                    </div>
+                                  }
+                                  <ActivityCard
+                                    clusterObject={this.state.clusterObject}
+                                    position={{i, j}}
+                                    hoveredRollback={this.state.hoveredRollback}
+                                    key={`${obj.edge.node.id}_activity-card`}
+                                    edge={obj.edge}
+                                  />
+                                </div>
+                              </Fragment>
                             )
                           })
                         }
