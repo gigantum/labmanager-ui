@@ -434,6 +434,7 @@ class Labbook extends Component {
                 <div className="Labbook__column-container">
 
                    <BranchMenu
+                     description={labbook.description}
                      history={this.props.history}
                      collaborators={labbook.collaborators}
                      defaultRemote={labbook.defaultRemote}

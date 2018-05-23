@@ -2,7 +2,6 @@ import {
   commitMutation,
   graphql,
 } from 'react-relay'
-import RelayRuntime from 'relay-runtime'
 import environment from 'JS/createRelayEnvironment'
 
 
@@ -17,18 +16,19 @@ const mutation = graphql`
 
 let tempID = 0;
 
-function sharedUpdater(store, labbookID, deletedID, connectionKey) {
-  const userProxy = store.get(labbookID);
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    userProxy,
-    connectionKey,
-  );
+// disabled until mutation is updated
+// function sharedUpdater(store, labbookID, deletedID, connectionKey) {
+//   const userProxy = store.get(labbookID);
+//   const conn = RelayRuntime.ConnectionHandler.getConnection(
+//     userProxy,
+//     connectionKey,
+//   );
 
-  RelayRuntime.ConnectionHandler.deleteNode(
-    conn,
-    deletedID
-  );
-}
+//   RelayRuntime.ConnectionHandler.deleteNode(
+//     conn,
+//     deletedID
+//   );
+// }
 
 
 export default function RenameLabbookMutation(

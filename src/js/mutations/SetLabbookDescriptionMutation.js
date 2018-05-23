@@ -2,7 +2,6 @@ import {
   commitMutation,
   graphql,
 } from 'react-relay'
-import RelayRuntime from 'relay-runtime'
 import environment from 'JS/createRelayEnvironment'
 
 
@@ -39,7 +38,7 @@ export default function SetLabbookDescriptionMutation(
       mutation,
       variables,
       onCompleted: (response, error ) => {
-  
+
         if(error){
           console.log(error)
         }

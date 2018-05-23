@@ -40,7 +40,7 @@ export default class ButtonLoader extends Component {
 
     return (
       <button
-        disabled={buttonState !== ''}
+        disabled={buttonState !== '' || buttonDisabled}
         className={buttonLoaderCSS}
         onClick={(evt => this.props.clicked(evt, params))}>
 

@@ -1,6 +1,5 @@
 // vendor
 import React, { Component } from 'react'
-import {createPaginationContainer, graphql} from 'react-relay'
 //componenets
 import FileEmpty from 'Components/labbook/overview/FileEmpty'
 import MostRecentList from './MostRecentList'

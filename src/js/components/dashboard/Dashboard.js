@@ -5,6 +5,8 @@ import DatasetSets from './datasets/DatasetSets';
 import Labbooks from './labbooks/Labbooks';
 import environment from 'JS/createRelayEnvironment'
 import Loader from 'Components/shared/Loader'
+//store
+import store from "JS/redux/store"
 
 const LabbookListingQuery = graphql`query DashboardQuery($first: Int!, $cursor: String, $sort: String $reverse: Boolean){
   ...Labbooks_labbookList
@@ -17,6 +19,12 @@ export default class DashboardContainer extends Component {
     this.state = {
       selectedComponent: props.match.params.id,
     }
+    store.dispatch({
+      type: 'UPDATE_CALLBACK_ROUTE',
+      payload: {
+        'callbackRoute': props.history.location.pathname
+      }
+    })
   }
   /**
   *  @param {Object} nextProps
@@ -25,6 +33,12 @@ export default class DashboardContainer extends Component {
   componentWillReceiveProps(nextProps){
     this.setState({
       selectedComponent: nextProps.match.params.id
+    })
+    store.dispatch({
+      type: 'UPDATE_CALLBACK_ROUTE',
+      payload: {
+        'callbackRoute': nextProps.history.location.pathname
+      }
     })
   }
 
