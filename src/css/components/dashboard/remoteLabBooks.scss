@@ -148,10 +148,9 @@
   white-space: pre-line;
   text-overflow: ellipsis;
   word-break: initial;
-
   line-height: 20px;
-
   -webkit-line-clamp: 6;
+  line-clamp: 6;
   box-orient: vertical;
 }
 

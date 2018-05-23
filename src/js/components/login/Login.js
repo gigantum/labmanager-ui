@@ -1,8 +1,6 @@
 //vendor
 import React, { Component } from 'react';
 import store from 'JS/redux/store'
-//components
-import Callback from 'JS/Callback/Callback';
 
 let unsubscribe;
 //import CreatePage from './components/CreatePage';

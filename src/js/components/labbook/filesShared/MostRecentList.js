@@ -1,6 +1,5 @@
 // vendor
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 //componenets
 import RecentCard from './RecentCard'
 //store

@@ -38,7 +38,8 @@ class PackageDependencies extends Component {
       'searchValue': '',
       'forceRender': false,
       'disableInstall': false,
-      'installDependenciesButtonState': ''
+      'installDependenciesButtonState': '',
+      'hardDisable': false,
     };
     //bind functions here
     this._loadMore = this._loadMore.bind(this)
@@ -182,29 +183,32 @@ class PackageDependencies extends Component {
     if(navigator.onLine){
 
       if(canEditEnvironment){
+        if(!this.state.hardDisable){
+          const {labbookName, owner} = store.getState().routes
+          const {environmentId} = this.props
+          const clientMutationId = uuidv4()
 
-        const {labbookName, owner} = store.getState().routes
-        const {environmentId} = this.props
-        const clinetMutationId = uuidv4()
+          let self = this
+          this.setState({hardDisable: true})
 
-        let self = this
-
-        RemovePackageComponentMutation(
-          labbookName,
-          owner,
-          node.manager,
-          node.package,
-          node.id,
-          clinetMutationId,
-          environmentId,
-          'PackageDependencies_packageDependencies',
-          (response, error) => {
-            if(error){
-              console.log(error)
+          RemovePackageComponentMutation(
+            labbookName,
+            owner,
+            node.manager,
+            node.package,
+            node.id,
+            clientMutationId,
+            environmentId,
+            'PackageDependencies_packageDependencies',
+            (response, error) => {
+              if(error){
+                console.log(error)
+              }
+              this.setState({hardDisable: false})
+              self.props.buildCallback()
             }
-            self.props.buildCallback()
-          }
-        )
+          )
+        }
       }else{
         this._promptUserToCloseContainer()
       }

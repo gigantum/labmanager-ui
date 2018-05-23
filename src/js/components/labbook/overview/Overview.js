@@ -7,7 +7,6 @@ import {
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import SimpleMDE from 'simplemde'
-import { WithContext as ReactTags } from 'react-tag-input';
 import classNames from 'classnames'
 //components
 import Base from 'Components/labbook/environment/Base'
@@ -169,6 +168,15 @@ class Overview extends Component {
   }
   _editingDescription() {
     this.setState({ editingDescription: true });
+  }
+
+  /**
+    *  @param {Object} nextprops
+    *  fires when component recieves props
+    *  changes the description text, particularly used when switching branches
+  */
+  componentWillReceiveProps(nextProps){
+    this.setState({descriptionText: nextProps.description.replace(/\n/g,' '), lastSavedDescription: nextProps.description.replace(/\n/g,' ')})
   }
 
   render() {

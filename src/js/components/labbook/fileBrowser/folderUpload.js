@@ -5,7 +5,6 @@ import {
 //environment
 import {fetchQuery} from 'JS/createRelayEnvironment';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation';
-import ChunkUploader from 'JS/utils/ChunkUploader'
 //store
 import store from 'JS/redux/store'
 
@@ -228,7 +227,7 @@ const getFolderExistsQueryPromises = (folderPaths, labbookName, owner, section) 
 * created a promise that checks it folder exists
 * pushes promise into an array all
 */
-const getMakeDirectoryPromises = (labbooks, labbookName, owner, path, section, connectionKey, sectionId, existingPaths) =>{
+export const getMakeDirectoryPromises = (labbooks, labbookName, owner, path, section, connectionKey, sectionId, existingPaths) =>{
   let directoryAll = []
 
   labbooks.forEach((response)=>{
@@ -358,9 +357,6 @@ const FolderUpload = {
 
 
     CreateFolders(files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck, totalFiles)
-
-
-    let addFilePromises = []
 
     function fileCheck(fileItem){
 

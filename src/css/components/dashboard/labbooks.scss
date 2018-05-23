@@ -861,3 +861,36 @@ Labbook__nav end
 .Labbooks-login-prompt--close {
   @include close()
 }
+
+.Labbook__loader-hidden {
+  display: block;
+  opacity: 0;
+  height: 0;
+}
+
+.Labbook-paginating {
+  background: $white url('../images/icons/paragraph.svg') no-repeat center center;
+  padding: 0 5px;
+  background-size: 300px 200px;
+  opacity: 1;
+}
+
+.Labbook-paginating__loader--0 {
+  transition: opacity 0.8s;
+}
+
+.Labbook-paginating__loader--1 {
+  transition: opacity 1.2s;
+}
+
+.Labbook-paginating__loader--2 {
+  transition: opacity 2s;
+}
+
+.Labbook-paginating__loader--3 {
+  transition: opacity 2.8s;
+}
+
+.Labbook-paginating__loader--4 {
+  transition: opacity 3.6s;
+}

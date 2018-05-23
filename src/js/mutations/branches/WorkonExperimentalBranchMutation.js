@@ -4,7 +4,6 @@ import {
 } from 'react-relay'
 import uuidV4 from 'uuid/v4'
 import environment from 'JS/createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
   mutation WorkonExperimentalBranchMutation($input: WorkonBranchInput!, $first: Int, $cursor: String, $hasNext: Boolean!){

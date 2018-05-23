@@ -157,6 +157,7 @@
   padding: 10px;
   z-index: index($elements, popup);
   width: 200px;
+  animation: slide-down-fade-in forwards .25s;
   @extend .box-shadow;
 
   ul {
@@ -189,6 +190,7 @@
   position: absolute;
   top: 25px;
   right: 16px;
+  animation: slide-down-fade-in forwards .25s;
   @include triangle('up', 14px, $white);
 }
 .BranchMenu__item {

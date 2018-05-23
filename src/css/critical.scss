@@ -91,6 +91,7 @@
   right: 0px;
   left: 0px;
   background-color: $white;
+  animation: fade-in-modal forwards .25s;
   opacity: 0.5;
 }
 
@@ -100,6 +101,15 @@
 
 .modal__cover--nested{
   z-index: index($elements, modalCoverNested);
+}
+
+@keyframes fade-in-modal{
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:0.5;
+  }
 }
 
 .rendered-react-keyed-file-browser{

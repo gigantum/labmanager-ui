@@ -11,6 +11,7 @@
   border: 1px solid $white;
   border-radius: 8px;
   background-color: $white;
+  animation: slide-up-fade-in forwards .25s;
   @extend .box-shadow;
 }
 
@@ -54,23 +55,23 @@
     width: 0;
     height: 0;
     @if $direction == 'up' {
-        border-left: em($size) solid transparent;
-        border-right: em($size) solid transparent;
-        border-bottom: em($size) solid $color;
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+        border-bottom: $size solid $color;
     }
     @else if $direction == 'down' {
-        border-left: em($size) solid transparent;
-        border-right: em($size) solid transparent;
-        border-top: em($size) solid $color;
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+        border-top: $size solid $color;
     }
     @else if $direction == 'right' {
-        border-top: em($size) solid transparent;
-        border-bottom: em($size) solid transparent;
-        border-left: em($size) solid $color;
+        border-top: $size solid transparent;
+        border-bottom: $size solid transparent;
+        border-left: $size solid $color;
     }
     @else if $direction == 'left' {
-        border-top: em($size) solid transparent;
-        border-bottom: em($size) solid transparent;
-        border-right: em($size) solid $color;
+        border-top: $size solid transparent;
+        border-bottom: $size solid transparent;
+        border-right: $size solid $color;
     }
 }

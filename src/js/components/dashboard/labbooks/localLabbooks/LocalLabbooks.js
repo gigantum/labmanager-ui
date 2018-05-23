@@ -1,28 +1,21 @@
 //vendor
-import store from 'JS/redux/store'
 import React, { Component } from 'react'
 import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
 //components
-import WizardModal from 'Components/wizard/WizardModal'
-import Loader from 'Components/shared/Loader'
 import LocalLabbookPanel from 'Components/dashboard/labbooks/localLabbooks/LocalLabbookPanel'
+import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
 import ImportModule from 'Components/import/ImportModule'
-//Mutations
-import RenameLabbookMutation from 'Mutations/RenameLabbookMutation'
-//utils
-import Validation from 'JS/utils/Validation'
-
-let isLoadingMore = false;
 
 class LocalLabbooks extends Component {
   constructor(props){
     super(props)
     this.state = {
       sort: this.props.sort,
-      reverse: this.props.reverse
+      reverse: this.props.reverse,
+      isPaginating: false,
     }
     this._captureScroll = this._captureScroll.bind(this)
     this._loadMore = this._loadMore.bind(this)
@@ -58,7 +51,7 @@ class LocalLabbooks extends Component {
     let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
         expandOn = root.offsetHeight;
     if(this.props.localLabbooks.localLabbooks){
-      if ((distanceY > expandOn) && !isLoadingMore && this.props.localLabbooks.localLabbooks.pageInfo.hasNextPage) {
+      if ((distanceY > expandOn) && !this.state.isPaginating && this.props.localLabbooks.localLabbooks.pageInfo.hasNextPage) {
         this._loadMore();
       }
     }
@@ -97,13 +90,16 @@ class LocalLabbooks extends Component {
   */
 
   _loadMore = () => {
-    isLoadingMore = true
-
+    this.setState({
+      'isPaginating': true
+    })
     if(this.props.localLabbooks.localLabbooks.pageInfo.hasNextPage){
       this.props.relay.loadMore(
         10, // Fetch the next 10 items
         (ev) => {
-          isLoadingMore = false;
+          this.setState({
+            'isPaginating': false
+          })
         }
       );
     }
@@ -134,6 +130,18 @@ class LocalLabbooks extends Component {
                   edge={edge}
                   history={this.props.history}
                   goToLabbook={this.props.goToLabbook}/>
+              )
+            })
+          }
+          {
+            Array(5).fill(1).map((value, index) => {
+
+                return (
+                  <LabbooksPaginationLoader
+                    key={'LocalLabbooks_paginationLoader' + index}
+                    index={index}
+                    isLoadingMore={this.state.isPaginating}
+                  />
               )
             })
           }

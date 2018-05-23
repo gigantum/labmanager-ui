@@ -4,7 +4,6 @@ import {
 } from 'react-relay'
 import uuidV4 from 'uuid/v4'
 import environment from 'JS/createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
   mutation CreateExperimentalBranchMutation($input: CreateExperimentalBranchInput!, $first: Int, $cursor: String, $hasNext: Boolean!){
@@ -22,6 +21,7 @@ export default function CreateExperimentalBranchMutation(
   labbookName,
   branchName,
   revision,
+  description,
   callback
 ) {
 
@@ -32,6 +32,7 @@ export default function CreateExperimentalBranchMutation(
       labbookName,
       branchName,
       revision,
+      description,
       clientMutationId
     },
     first: 2,

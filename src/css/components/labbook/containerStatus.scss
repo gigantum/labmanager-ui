@@ -20,6 +20,7 @@
   @extend .box-shadow;
   width: 350px;
   text-align: center;
+  animation: slide-down-fade-in forwards .25s;
 }
 
 .ContainerStatus__menu-pointer {
@@ -27,6 +28,7 @@
   right: 75px;
   position: absolute;
   z-index: index($elements, popup);
+  animation: slide-down-fade-in forwards .25s;
   @include triangle('up', 14px, $white);
 }
 
