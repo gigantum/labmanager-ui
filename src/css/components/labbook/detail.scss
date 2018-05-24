@@ -113,3 +113,29 @@ li.DetailsRecords__item-note .ReactMarkdown {
       rgba(255, 255, 255, 1) 100%
   );
 }
+
+.DetailsRecords__action{
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  top: 20px;
+  left: 20px;
+  @extend .SmallIcon;
+}
+
+.DetailsRecords__action--create{
+  background: url('../images/icons/action-create.svg') no-repeat center center;
+}
+.DetailsRecords__action--edit{
+  background: url('../images/icons/action-edit.svg') no-repeat center center;
+}
+.DetailsRecords__action--delete{
+  background: url('../images/icons/action-delete.svg') no-repeat center center;
+}
+.DetailsRecords__action--execute{
+  background: url('../images/icons/action-run.svg') no-repeat center center;
+}
+
+.DetailsRecords__container {
+  position: relative;
+}

@@ -117,6 +117,7 @@ export default class BranchMenu extends Component {
   */
   _openMenu() {
     this.setState({ menuOpen: !this.state.menuOpen })
+    this._remountCollab();
   }
 
   _remountCollab() {
@@ -701,11 +702,9 @@ export default class BranchMenu extends Component {
         <button onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
         <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
         <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
-
           <ul className="BranchMenu__list">
             <Collaborators
               key={this.state.collabKey}
-              key2={this.state.collabKey}
               ref="collaborators"
               owner={owner}
               labbookName={labbookName}

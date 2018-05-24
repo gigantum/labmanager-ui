@@ -427,8 +427,42 @@ class Activity extends Component {
     }
   }
 
+  /**
+  *   @param {}
+  *   toggle create branch modal visibility
+  *   @return {}
+  */
+
   _toggleCreateModal(){
     this.setState({createBranchVisible: !this.state.createBranchVisible})
+  }
+
+  /**
+  *   @param {}
+  *   opens create branch modal and also sets selectedNode to null
+  *   @return {}
+  */
+  _createBranch(){
+    const {status} = store.getState().containerStatus;
+    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+    if(canEditEnvironment){
+      document.getElementById('modal__cover').classList.remove('hidden')
+      this.setState({createBranchVisible: true, selectedNode: null})
+    } else {
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
+        }
+      })
+
+      store.dispatch({
+        type: 'CONTAINER_MENU_WARNING',
+        payload: {
+          message: 'Stop LabBook before creating branches. \n Be sure to save your changes.'
+        }
+      })
+    }
   }
 
   /**
@@ -459,6 +493,21 @@ class Activity extends Component {
     this.setState({expandedClusterObject: newExpandedClusterObject}, ()=> {
       this.setState({activityRecords: this._transformActivity(this.props.labbook.activityRecords)})
     })
+  }
+  /**
+  *   @param {}
+  *   assigns open-menu class to parent element and ActivityExtended to previous element
+  *   @return {}
+  */
+  _toggleSubmenu(evt){
+    let submenu = evt.target.parentElement;
+    let wrapper = submenu && submenu.parentElement;
+    if(wrapper.previousSibling){
+     wrapper.previousSibling.className.indexOf('ActivityExtended') !== -1 ? wrapper.previousSibling.classList.remove('ActivityExtended')  :wrapper.previousSibling.classList.add('ActivityExtended')
+    } else {
+      wrapper.parentElement.previousSibling.className.indexOf('ActivityExtended') !== -1 ?wrapper.parentElement.previousSibling.classList.remove('ActivityExtended') : wrapper.parentElement.previousSibling.classList.add('ActivityExtended')
+    }
+    submenu.className.indexOf('open-menu') !== -1 ? submenu.classList.remove('open-menu') : submenu.classList.add('open-menu')
   }
 
   render(){
@@ -508,19 +557,35 @@ class Activity extends Component {
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
                         <div className="Activity__date-month">{ config.months[parseInt(k.split('_')[1], 10)] }</div>
                       </div>
-
                       {
                         (i===0) && (
                           <div className={userActivityContainerCSS}>
-                            <div className="Activity__user-note"
-
-                              onClick={() => this._toggleActivity()}>
-                              <div className={this.state.modalVisible ? 'Activity__user-note--remove' : 'Activity__user-note--add'}></div>
-                              <h5>Add Note</h5>
-
+                            <div className="Activity__user-note">
+                              <div
+                                className="Activity__user-note-menu-icon"
+                                onClick={(evt) => {this._toggleSubmenu(evt)}}
+                              >
+                              </div>
+                              <div className="Activity__user-note-menu">
+                                <div className="Activity__add-note">
+                                  <button
+                                    className={this.state.modalVisible ? 'Activity__hide-note-button' : 'Activity__add-note-button'}
+                                    onClick={() => this._toggleActivity()}
+                                  >
+                                  </button>
+                                  <h5>Add Note</h5>
+                                </div>
+                                <div className="Activity__add-branch">
+                                  <button
+                                    className="Activity__add-branch-button"
+                                    onClick={()=> this._createBranch()}
+                                  >
+                                  </button>
+                                  <h5>Add Branch</h5>
+                                </div>
+                              </div>
                             </div>
                             <div className={this.state.modalVisible ? 'Activity__add ActivityCard' : 'hidden'}>
-
                               {
                                 (this.state.modalVisible) &&
                                 <UserNote
@@ -556,17 +621,26 @@ class Activity extends Component {
                                     <Fragment>
                                       <div
                                           className="Activity__submenu-circle"
+                                          onClick={(evt)=>this._toggleSubmenu(evt)}
                                         >
                                         </div>
                                         <div className="Activity__submenu-subcontainer">
-                                          <h5
+                                          <div
+                                            className="Acitivty__rollback"
                                             onMouseOver={() => this.setState({hoveredRollback: obj.flatIndex})}
                                             onMouseOut={() => this.setState({hoveredRollback : null})}
-                                            className="Activity__rollback-text"
-                                            onClick={() => this._toggleRollbackMenu(obj.edge.node)}
                                           >
-                                            Rollback to previous state
-                                          </h5>
+                                            <button
+                                              className="Acitivty__rollback-button"
+                                              onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+                                            >
+                                            </button>
+                                            <h5
+                                              className="Activity__rollback-text"
+                                            >
+                                              Rollback
+                                            </h5>
+                                          </div>
                                         </div>
                                       </Fragment>
                                     }
@@ -590,7 +664,6 @@ class Activity extends Component {
                                 'faded': shouldBeFaded,
                               });
                               clusterElements.push(obj.flatIndex)
-                              // console.log(clusterElements)
                               let clusterRef = clusterElements.slice()
                               if(this.state.activityRecords[k][j+1] && this.state.activityRecords[k][j+1].collapsed){
                                 return undefined;
@@ -603,7 +676,7 @@ class Activity extends Component {
                                   </div>
                                 }
                                 <div className={clusterCSS} ref={'cluster--'+ obj.flatindex}>
-                                  {clusterElements.length} Related Activities
+                                  {clusterElements.length} Minor Activities
                                   <div className="ActivityCard__ellipsis" onClick={()=> this._deleteCluster(clusterRef, i)}></div>
                                 </div>
                               </div>

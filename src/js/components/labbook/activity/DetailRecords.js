@@ -16,6 +16,7 @@ query DetailRecordsQuery($name: String!, $owner: String!, $keys: [String]){
     description
     detailRecords(keys: $keys){
       id
+      action
       key
       data
       type
@@ -154,18 +155,22 @@ export default class UserNote extends Component {
                       props.labbook.detailRecords.map((detailRecord)=>{
                         let liCSS = detailRecord.type === 'NOTE' ? 'DetailsRecords__item-note' : 'DetailsRecords__item'
                         return(
-                          detailRecord.data.map((item, index)=>{
-
-                            return(
-                              <li
-                                key={detailRecord.id + '_'+ index}
-                                className={liCSS}>
-                                {this._renderDetail(item)}
-                                <div className="DetailsRecords hidden"></div>
-                                <p className="DetailsRecords__link hidden" onClick={(e)=> this._moreClicked(e.target)}>More...</p>
-                                {this._setLinks()}
-                            </li>)
-                          })
+                          <div className="DetailsRecords__container" key={detailRecord.id}>
+                            <div className={`DetailsRecords__action DetailsRecords__action--${detailRecord.action.toLowerCase()}`}></div>
+                            {
+                              detailRecord.data.map((item, index)=>{
+                                return(
+                                  <li
+                                    key={detailRecord.id + '_'+ index}
+                                    className={liCSS}>
+                                    {this._renderDetail(item)}
+                                    <div className="DetailsRecords hidden"></div>
+                                    <p className="DetailsRecords__link hidden" onClick={(e)=> this._moreClicked(e.target)}>More...</p>
+                                    {this._setLinks()}
+                                </li>)
+                              })
+                            }
+                          </div>
                         )
                       })
                     }

@@ -45,19 +45,6 @@ export default class ActivityCard extends Component {
     @return {html}
   */
 
-  componentWillReceiveProps(nextProps){
-    let hideElement = false;
-    !nextProps.edge.node.show && nextProps.clusterObject && nextProps.clusterObject[nextProps.position.i] && Object.keys(nextProps.clusterObject[nextProps.position.i]).forEach((key) =>{
-      let range = key.split('-');
-      if(nextProps.position.j >= Number(range[0]) && nextProps.position.j <= Number(range[1])){
-        hideElement = true
-      }
-    })
-    if(hideElement !== this.state.hideElement) {
-      this.setState({hideElement})
-    }
-  }
-
   render(){
     const node = this.props.edge.node;
     const type = this.props.edge.node.type.toLowerCase()
