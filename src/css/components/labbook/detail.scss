@@ -4,8 +4,7 @@
 
 .DetailsRecords__item {
   margin-bottom: 1px;
-  border-bottom: 1px solid $lightGrey;
-  padding: 15px 15px 15px 66px;
+  padding: 15px 15px 15px 75px;
 
   img {
     width: -moz-fit-content;
@@ -116,10 +115,10 @@ li.DetailsRecords__item-note .ReactMarkdown {
 
 .DetailsRecords__action{
   position: absolute;
-  height: 40px;
-  width: 40px;
-  top: 20px;
-  left: 20px;
+  height: 30px;
+  width: 30px;
+  top: calc(50% - 15px);
+  left: 35px;
   @extend .SmallIcon;
 }
 
@@ -135,7 +134,33 @@ li.DetailsRecords__item-note .ReactMarkdown {
 .DetailsRecords__action--execute{
   background: url('../images/icons/action-run.svg') no-repeat center center;
 }
-
+.DetailsRecords__action--noaction{
+  background: url('../images/icons/action-delete.svg') no-repeat center center;
+}
 .DetailsRecords__container {
   position: relative;
+}
+
+.DetailsRecords__action:before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: index($elements, card);
+  border: 1px dashed $grey;
+  height: 1px;
+  width: 10px;
+  top: 15px;
+  left: -8px
+}
+
+.DetailsRecords__container:last-child:not(.note):before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 3;
+  border: 1px solid #fefefe;
+  height: calc(50% - 10px);
+  width: 1px;
+  top: calc(50% + 3px);
+  left: 25px;
 }

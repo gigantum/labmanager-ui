@@ -132,7 +132,7 @@
   border-width: 0 0 0 4px;
   width: 1px;
   height: 30px;
-  transition: height 0.25s;
+  transition: height 0.125s;
 }
 .Activity__date-tab:nth-child(1):before {
   height: 48px;
@@ -325,7 +325,7 @@
   position: relative;
   top: 19px;
   left: 32px;
-  transition: all 0.25s ease, background-image 0s, background-size 0s;
+  transition: all 0.125s ease;
   z-index: index($elements, card);
   cursor: pointer;
 }
@@ -364,19 +364,18 @@
       height: 25px;
       background-size: 25px;
       padding: 0;
+      transition: all 0.125s;
     }
     button:hover {
       background: $turquise url('../images/icons/menu-add-turquise.svg') no-repeat center center;
       background-size: 25px;
     }
     .Activity__hide-note-button{
-      background: $azure url('../images/icons/x-close-azure.svg') no-repeat center center ;
-      background-size: 37px;
+      transform: rotate(40deg);
 
     }
     .Activity__hide-note-button:hover{
-      background: $azure url('../images/icons/x-close-turquise.svg') no-repeat center center;
-      background-size: 37px;
+      transform: rotate(40deg);
     }
   }
   .Activity__add-branch{
@@ -410,13 +409,13 @@
     display: flex;
   }
   .Activity__user-note-menu-icon{
-    background: $azure url('../images/icons/x-close-azure.svg') no-repeat 50% 50% !important;
     width: 40px !important;
     height: 40px !important;
     left: 23px !important;
     top: calc(50% - 18px) !important;
     border-radius: 40px !important;
-    background-size: 50px !important;
+    background-size: 40px !important;
+    transform: rotate(45deg);
   }
 }
 
@@ -453,12 +452,12 @@
 }
 
 .ActivityDetail__details {
+  position: relative;
   margin: -1px 0px;
 }
 
 .ActivityDetail__details-title {
   border-top: 1px solid $romanSilver;
-  border-bottom: 1px solid $romanSilver;
   padding: 5px;
   cursor: pointer;
 
@@ -678,12 +677,13 @@
   left: 36px;
   z-index: index($elements, card);
   top: calc(50% - 6px);
-  transition: all 0.25s ease, background-image 0s, background-size 0s;
+  background-size: 12px;
+  transition: all 0.125s ease;
 }
 
 .Activity__submenu-container {
   height: 30px;
-  transition: height .25s;
+  transition: height .125s;
   @include flex(flex-start, row)
 }
 
@@ -696,13 +696,13 @@
     }
   }
   .Activity__submenu-circle{
-    background: $azure url('../images/icons/x-close-azure.svg') no-repeat 50% 50% !important;
     width: 40px !important;
     height: 40px !important;
     left: 23px !important;
     top: calc(50% - 20px) !important;
     border-radius: 40px !important;
-    background-size: 50px !important;
+    background-size: 40px !important;
+    transform: rotate(40deg);
   }
 }
 
@@ -726,7 +726,8 @@
   background: $grey-background;
   position: relative;
 
-  .Acitivty__rollback{
+  .Activity__rollback{
+    cursor: pointer;
     @include flex(flex-start, row);
     h5 {
       margin: 6px;
@@ -736,17 +737,26 @@
       color: $romanSilver;
       user-select: none;
     }
+
     button {
       background: $azure url('../images/icons/menu-rollback.svg') no-repeat center center;
       border-radius: 25px;
       width: 25px;
       height: 25px;
-      background-size: 17px;
+      background-size: 25px;
       padding: 0;
+      border: none;
     }
-    button:hover {
+  }
+
+  .Activity__rollback:hover{
+    h5 {
+      color: $turquise;
+    }
+    button {
+      border: none;
       background: $turquise url('../images/icons/menu-rollback-turquise.svg') no-repeat center center;
-      background-size: 17px;
+      background-size: 25px;
     }
   }
 }
@@ -766,7 +776,7 @@
   border-width: 0 0 0 4px;
   width: 1px;
   height: 30px;
-  transition: height 0.25s;
+  transition: height 0.125s;
 }
 
 .UserActivity__container.fullscreen {
@@ -776,5 +786,17 @@
 
 .ActivityExtended:before {
   height: 60px !important;
-  transition: height 0.25s;
+  transition: height 0.125s;
+}
+
+.ActivityDetail__details:not(.note):before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 3;
+  border: 1px dashed #b9babc;
+  height: calc(100% - 82px);
+  width: 1px;
+  top: 41px;
+  left: 25px;
 }

@@ -154,9 +154,13 @@ export default class UserNote extends Component {
                     {
                       props.labbook.detailRecords.map((detailRecord)=>{
                         let liCSS = detailRecord.type === 'NOTE' ? 'DetailsRecords__item-note' : 'DetailsRecords__item'
+                        let containerCSS = detailRecord.type === 'NOTE' ? 'DetailsRecords__container note' : 'DetailsRecords__container'
                         return(
-                          <div className="DetailsRecords__container" key={detailRecord.id}>
-                            <div className={`DetailsRecords__action DetailsRecords__action--${detailRecord.action.toLowerCase()}`}></div>
+                          <div className={containerCSS} key={detailRecord.id}>
+                            {
+                              detailRecord.type !== 'NOTE' &&
+                              <div className={`DetailsRecords__action DetailsRecords__action--${detailRecord.action.toLowerCase()}`}></div>
+                            }
                             {
                               detailRecord.data.map((item, index)=>{
                                 return(

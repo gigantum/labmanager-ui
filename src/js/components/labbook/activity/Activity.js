@@ -626,13 +626,13 @@ class Activity extends Component {
                                         </div>
                                         <div className="Activity__submenu-subcontainer">
                                           <div
-                                            className="Acitivty__rollback"
+                                            className="Activity__rollback"
                                             onMouseOver={() => this.setState({hoveredRollback: obj.flatIndex})}
                                             onMouseOut={() => this.setState({hoveredRollback : null})}
+                                            onClick={() => this._toggleRollbackMenu(obj.edge.node)}
                                           >
                                             <button
-                                              className="Acitivty__rollback-button"
-                                              onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+                                              className="Activity__rollback-button"
                                             >
                                             </button>
                                             <h5
