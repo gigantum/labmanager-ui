@@ -22,7 +22,6 @@ import config from 'JS/config'
 let pagination = false;
 
 let counter = 5;
-
 let isMounted = false
 
 class Activity extends Component {
@@ -39,8 +38,10 @@ class Activity extends Component {
       'newActivityPolling': false,
       'editorFullscreen': false,
       'hoveredRollback': null,
+      'expandedClusterObject': new Set(),
       'newActivityForcePaused': false,
       'refetchForcePaused': false,
+      'activityRecords': this._transformActivity(this.props.labbook.activityRecords)
     };
 
     //bind functions here
@@ -56,12 +57,16 @@ class Activity extends Component {
     this._getNewActivties = this._getNewActivties.bind(this)
     this._changeFullscreenState = this._changeFullscreenState.bind(this)
     this._handleVisibilityChange = this._handleVisibilityChange.bind(this)
+    this._transformActivity = this._transformActivity.bind(this)
+    this._countUnexpandedRecords = this._countUnexpandedRecords.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
 
     let activityRecords = nextProps.labbook.activityRecords
-
+    if(JSON.stringify(this._transformActivity(activityRecords)) !== JSON.stringify(this.state.activityRecords)) {
+      this.setState({activityRecords: this._transformActivity(activityRecords)})
+    }
     if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 3)){
       this._loadMore()
     }
@@ -80,7 +85,7 @@ class Activity extends Component {
 
     window.addEventListener('scroll', this._handleScroll)
     window.addEventListener('visibilitychange', this._handleVisibilityChange)
-    if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 2)){
+    if((activityRecords.pageInfo.hasNextPage && activityRecords.edges.length < 2)){
 
       this._loadMore()
     }
@@ -91,11 +96,15 @@ class Activity extends Component {
       this._refetch()
 
     }
+    if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 5){
+      this._loadMore()
+    }
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
-
+    clearTimeout(this.refetchTimeout)
+    clearTimeout(this.newActivityTimeout)
     isMounted = false
 
     window.removeEventListener('visibilitychange', this._handleVisibilityChange)
@@ -200,7 +209,7 @@ class Activity extends Component {
 
           if(firstRecordCommitId === newRecordCommitId){
 
-            setTimeout(()=>{
+            self.newActivityTimeout = setTimeout(()=>{
                 if(isMounted && document.visibilityState === 'visible' && !this.state.refetchEnabled){
                   getNewActivity()
                 } else if (isMounted && document.visibilityState !== 'visible' && !this.state.refetchEnabled) {
@@ -232,7 +241,6 @@ class Activity extends Component {
   *
   */
   _refetch(){
-
     let self = this
     let relay = this.props.relay
     let activityRecords = this.props.labbook.activityRecords
@@ -242,8 +250,7 @@ class Activity extends Component {
     relay.refetchConnection(
       counter,
       (response, error) => {
-
-        setTimeout(function(){
+        self.refetchTimeout = setTimeout(function(){
             if(self.state.refetchEnabled && isMounted && document.visibilityState === 'visible'){
               self._refetch()
             } else if(self.state.refetchEnabled && isMounted && document.visibilityState !== 'visible') {
@@ -263,7 +270,7 @@ class Activity extends Component {
   *  pagination container loads more items
   */
   _loadMore() {
-
+    let self = this;
     pagination = true
     this.setState({
       'isPaginating': true
@@ -275,10 +282,13 @@ class Activity extends Component {
        if(error){
          console.error(error)
        }
-
-       this.setState({
-         'isPaginating': false
-       })
+       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 5){
+        self._loadMore();
+       } else{
+        this.setState({
+          'isPaginating': false
+        })
+       }
      },{
        name: 'labbook'
      }
@@ -286,6 +296,31 @@ class Activity extends Component {
    if(this.props.labbook.activityRecords.pageInfo.hasNextPage){
      counter += 5
    }
+  }
+
+  /**
+  *  @param {}
+  *  counts visible non clustered activity records
+  */
+  _countUnexpandedRecords(){
+    let records = this.props.labbook.activityRecords.edges;
+    let hiddenCount = 0;
+    let recordCount = 0;
+    let visibleRecords = records.filter((record) => {
+      if(!record.node.show){
+        hiddenCount++;
+      } else {
+        if(hiddenCount > 2){
+          hiddenCount = 0;
+          recordCount++;
+        }
+      }
+      return record.node.show
+    })
+    if(hiddenCount > 0) {
+      recordCount ++;
+    }
+    return visibleRecords.length + recordCount;
   }
   /**
   *  @param {evt}
@@ -319,14 +354,24 @@ class Activity extends Component {
   *   @return {Object}
   */
   _transformActivity(activityRecords){
-
     let activityTime = {}
 
-    activityRecords.edges.forEach((edge) => {
+    let count = 0;
+    let previousTimeHash = null;
+    activityRecords.edges.forEach((edge, index) => {
 
       let date = (edge.node && edge.node.timestamp) ? new Date(edge.node.timestamp) : new Date()
       let timeHash = `${date.getYear()}_${date.getMonth()}_${date.getDate()}`;
-      let newActivityObject = {edge: edge, date: date}
+      count = edge.node.show || (previousTimeHash && timeHash !== previousTimeHash) ? 0 : count + 1;
+      previousTimeHash = timeHash;
+
+      let newActivityObject = {edge: edge, date: date, collapsed: (count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state))), flatIndex: index}
+
+      if(count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state)) ){
+        activityTime[timeHash][activityTime[timeHash].length - 1].collapsed =  true;
+        activityTime[timeHash][activityTime[timeHash].length - 2].collapsed =  true;
+      }
+
       activityTime[timeHash] ? activityTime[timeHash].push(newActivityObject) : activityTime[timeHash] = [newActivityObject];
     })
 
@@ -382,8 +427,42 @@ class Activity extends Component {
     }
   }
 
+  /**
+  *   @param {}
+  *   toggle create branch modal visibility
+  *   @return {}
+  */
+
   _toggleCreateModal(){
     this.setState({createBranchVisible: !this.state.createBranchVisible})
+  }
+
+  /**
+  *   @param {}
+  *   opens create branch modal and also sets selectedNode to null
+  *   @return {}
+  */
+  _createBranch(){
+    const {status} = store.getState().containerStatus;
+    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+    if(canEditEnvironment){
+      document.getElementById('modal__cover').classList.remove('hidden')
+      this.setState({createBranchVisible: true, selectedNode: null})
+    } else {
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
+        }
+      })
+
+      store.dispatch({
+        type: 'CONTAINER_MENU_WARNING',
+        payload: {
+          message: 'Stop LabBook before creating branches. \n Be sure to save your changes.'
+        }
+      })
+    }
   }
 
   /**
@@ -399,22 +478,197 @@ class Activity extends Component {
     }
   }
 
+  /**
+  *   @param {array} clusterElements
+  *   modifies expandedClusterObject from state
+  *   @return {}
+  */
+  _deleteCluster(clusterElements){
+    let newExpandedClusterObject = new Set(this.state.expandedClusterObject)
+    if (newExpandedClusterObject !== {}){
+      clusterElements.forEach((val) => {
+        newExpandedClusterObject.add(val)
+      })
+    }
+    this.setState({expandedClusterObject: newExpandedClusterObject}, ()=> {
+      this.setState({activityRecords: this._transformActivity(this.props.labbook.activityRecords)})
+    })
+  }
+
+  /**
+  *   @param {event} evt
+  *   assigns open-menu class to parent element and ActivityExtended to previous element
+  *   @return {}
+  */
+  _toggleSubmenu(evt){
+    let submenu = evt.target.parentElement;
+    let wrapper = submenu && submenu.parentElement;
+    if(wrapper.previousSibling){
+     wrapper.previousSibling.className.indexOf('ActivityExtended') !== -1 ? wrapper.previousSibling.classList.remove('ActivityExtended')  :wrapper.previousSibling.classList.add('ActivityExtended')
+    } else {
+      wrapper.parentElement.previousSibling.className.indexOf('ActivityExtended') !== -1 ?wrapper.parentElement.previousSibling.classList.remove('ActivityExtended') : wrapper.parentElement.previousSibling.classList.add('ActivityExtended')
+    }
+    submenu.className.indexOf('open-menu') !== -1 ? submenu.classList.remove('open-menu') : submenu.classList.add('open-menu')
+  }
+
+  /**
+  *   @param {object, array, integer, integer, integer} obj, clusterElements, i, j, k
+  *   resets clusterElements
+  *   returns visible activity cards and their submenus
+  *   @return {jsx}
+  */
+
+  _visibleCardRenderer(obj, clusterElements, i, j, k){
+    clusterElements = [];
+    let isLastRecordObj = i === Object.keys(this.state.activityRecords).length -1;
+    let isLastRecordNode = j === this.state.activityRecords[k].length -1;
+    let isLastPage = !this.props.labbook.activityRecords.pageInfo.hasNextPage;
+    let rollbackableDetails = obj.edge.node.detailObjects.filter((detailObjs) => {
+      return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
+    })
+    return (
+      <div className="ActivtyCard__wrapper"  key={obj.edge.node.id}>
+        { ((i !== 0 ) || (j !== 0)) &&
+          <div className="Activity__submenu-container">
+          {
+            (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) &&
+          <Fragment>
+            <div
+                className="Activity__submenu-circle"
+                onClick={(evt)=>this._toggleSubmenu(evt)}
+              >
+              </div>
+              <div className="Activity__submenu-subcontainer">
+                <div
+                  className="Activity__rollback"
+                  onMouseOver={() => this.setState({hoveredRollback: obj.flatIndex})}
+                  onMouseOut={() => this.setState({hoveredRollback : null})}
+                  onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+                >
+                  <button
+                    className="Activity__rollback-button"
+                  >
+                  </button>
+                  <h5
+                    className="Activity__rollback-text"
+                  >
+                    Rollback
+                  </h5>
+                </div>
+              </div>
+            </Fragment>
+          }
+          </div>
+        }
+        <ActivityCard
+          collapsed={obj.collapsed}
+          clusterObject={this.state.clusterObject}
+          position={obj.flatIndex}
+          hoveredRollback={this.state.hoveredRollback}
+          key={`${obj.edge.node.id}_activity-card`}
+          edge={obj.edge}
+        />
+      </div>
+    )
+  }
+
+  /**
+  *   @param {object, array, integer, integer, integer} obj, clusterElements, i, j, k
+  *   appends to clusterElements
+  *   creates a cluster card that replaces multiple repeating minor activities
+  *   @return {jsx}
+  */
+  _cardClusterRenderer(obj, clusterElements, i, j, k){
+    let shouldBeFaded = this.state.hoveredRollback > obj.flatIndex
+    let clusterCSS = classNames({
+      'ActivityCard--cluster': true,
+      'column-1-span-9': true,
+      'faded': shouldBeFaded,
+    });
+    clusterElements.push(obj.flatIndex)
+    let clusterRef = clusterElements.slice()
+    if(this.state.activityRecords[k][j+1] && this.state.activityRecords[k][j+1].collapsed){
+      return undefined;
+    }
+    return (
+      <div className="ActivtyCard__wrapper" key={obj.flatIndex}>
+      {
+        (clusterElements[0] !== 0) &&
+        <div className="Activity__submenu-container">
+        </div>
+      }
+      <div className={clusterCSS} ref={'cluster--'+ obj.flatindex}>
+        {clusterElements.length} Minor Activities
+        <div className="ActivityCard__ellipsis" onClick={()=> this._deleteCluster(clusterRef, i)}></div>
+      </div>
+    </div>
+    )
+  }
+
+  /**
+  *   @param {} obj
+  *   renders usernote and it's menu
+  *   @return {jsx}
+  */
+
+  _renderUserNote(){
+    let userActivityContainerCSS = classNames({
+      'UserActivity__container': true,
+      'fullscreen': this.state.editorFullscreen
+    })
+    return(
+      <div className={userActivityContainerCSS}>
+      <div className="Activity__user-note">
+        <div
+          className="Activity__user-note-menu-icon"
+          onClick={this.state.modalVisible ? (evt)=> {
+            this._toggleActivity();
+            this._toggleSubmenu(evt)
+          } : (evt) => this._toggleSubmenu(evt) }
+        >
+        </div>
+        <div className="Activity__user-note-menu">
+          <div className="Activity__add-note">
+            <button
+              className={this.state.modalVisible ? 'Activity__hide-note-button' : 'Activity__add-note-button'}
+              onClick={() => this._toggleActivity()}
+            >
+            </button>
+            <h5>Add Note</h5>
+          </div>
+          <div className="Activity__add-branch">
+            <button
+              className="Activity__add-branch-button"
+              onClick={()=> this._createBranch()}
+            >
+            </button>
+            <h5>Add Branch</h5>
+          </div>
+        </div>
+      </div>
+      <div className={this.state.modalVisible ? 'Activity__add ActivityCard' : 'hidden'}>
+        <UserNote
+          key="UserNote"
+          labbookId={this.props.labbook.id}
+          hideLabbookModal={this._hideAddActivity}
+          changeFullScreenState={this._changeFullscreenState}
+          {...this.props}
+        />
+      </div>
+  </div>
+    )
+  }
+
   render(){
     let activityCSS = classNames({
       'Activity': true,
       'fullscreen': this.state.editorFullscreen
     })
-    let userActivityContainerCSS = classNames({
-      'UserActivity__container': true,
-      'fullscreen': this.state.editorFullscreen
-    })
     if(this.props.labbook){
 
-      let activityRecordsTime = this._transformActivity(this.props.labbook.activityRecords);
 
       return(
         <div key={this.props.labbook} className={activityCSS}>
-
           {
             (!this.state.refetchEnabled && this.state.newActivityAvailable) &&
             <div
@@ -426,9 +680,7 @@ class Activity extends Component {
              </div>
            §</div>
           }
-
           <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
-
             <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Activity__sizer flex-1-0-auto">
               <CreateBranch
                 ref="createBranch"
@@ -438,113 +690,44 @@ class Activity extends Component {
                 toggleModal={this._toggleCreateModal}
               />
               {
-                Object.keys(activityRecordsTime).map((k, i) => {
-
+                Object.keys(this.state.activityRecords).map((k, i) => {
+                  let clusterElements = [];
                   return (
                     <div key={k}>
-
                       <div className="Activity__date-tab column-1-span-1 flex flex--column justify--space-around">
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
                         <div className="Activity__date-month">{ config.months[parseInt(k.split('_')[1], 10)] }</div>
                       </div>
-
                       {
-                        (i===0) && (
-                          <div className={userActivityContainerCSS}>
-                            <div className="Activity__user-note"
-
-                              onClick={() => this._toggleActivity()}>
-                              <div className={this.state.modalVisible ? 'Activity__user-note--remove' : 'Activity__user-note--add'}></div>
-                              <h5>Add Note</h5>
-
-                            </div>
-                            <div className={this.state.modalVisible ? 'Activity__add ActivityCard' : 'hidden'}>
-
-                              {
-                                (this.state.modalVisible) &&
-                                <UserNote
-                                  key="UserNote"
-                                  labbookId={this.props.labbook.id}
-                                  hideLabbookModal={this._hideAddActivity}
-                                  changeFullScreenState={this._changeFullscreenState}
-                                  {...this.props}
-                                />
-                              }
-                            </div>
-                        </div>
-                        )
+                        (i===0) && this._renderUserNote()
                       }
-
                       <div key={`${k}__card`}>
                         {
-                          activityRecordsTime[k].map((obj, j) => {
-                            let isLastRecordObj = i === Object.keys(activityRecordsTime).length -1;
-                            let isLastRecordNode = j === activityRecordsTime[k].length -1;
-                            let isLastPage = !this.props.labbook.activityRecords.pageInfo.hasNextPage;
-                            let rollbackableDetails = obj.edge.node.detailObjects.filter((detailObjs) => {
-                              return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
-                            })
-                            return (
-                              <div className="ActivtyCard__wrapper" key={obj.edge.node.id}>
-                                { ((i !== 0 ) || (j !== 0)) &&
-                                  <div className="Activity__submenu-container">
-                                  {
-                                    (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) &&
-                                  <Fragment>
-                                    <div
-                                        className="Activity__submenu-circle"
-                                      >
-                                      </div>
-                                      <div className="Activity__submenu-subcontainer">
-                                        <h5
-                                          onMouseOver={() => this.setState({hoveredRollback: {i, j}})}
-                                          onMouseOut={() => this.setState({hoveredRollback : null})}
-                                          className="Activity__rollback-text"
-                                          onClick={() => this._toggleRollbackMenu(obj.edge.node)}
-                                        >
-                                          Rollback to previous state
-                                        </h5>
-                                      </div>
-                                    </Fragment>
-                                  }
-                                  </div>
-                                }
-                                <ActivityCard
-                                  position={{i, j}}
-                                  hoveredRollback={this.state.hoveredRollback}
-                                  key={`${obj.edge.node.id}_activity-card`}
-                                  edge={obj.edge}
-                                />
-                              </div>
-
-                            )
+                          this.state.activityRecords[k].map((obj, j) => {
+                            if(!obj.collapsed){
+                              return this._visibleCardRenderer(obj, clusterElements, i, j, k);
+                            } else {
+                              return this._cardClusterRenderer(obj, clusterElements, i, j, k)
+                            }
                           })
                         }
-
                     </div>
-
                   </div>)
                 })
               }
-
-
               {
                 Array(5).fill(1).map((value, index) => {
-
-                    return (
-                      <PaginationLoader
-                        key={'Actvity_paginationLoader' + index}
-                        index={index}
-                        isLoadingMore={this.state.isPaginating}
-                      />
+                  return (
+                    <PaginationLoader
+                      key={'Actvity_paginationLoader' + index}
+                      index={index}
+                      isLoadingMore={this.state.isPaginating}
+                    />
                   )
                 })
               }
-
-
             </div>
           </div>
-
         </div>
       )
     }else{

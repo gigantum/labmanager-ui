@@ -4,8 +4,7 @@
 
 .DetailsRecords__item {
   margin-bottom: 1px;
-  border-bottom: 1px solid $lightGrey;
-  padding: 15px 15px 15px 66px;
+  padding: 5px 15px 5px 75px;
 
   img {
     width: -moz-fit-content;
@@ -72,7 +71,9 @@ li.DetailsRecords__item-note .ReactMarkdown ul, {
   white-space: pre-line;
   overflow: hidden;
   word-break: break-word;
+  line-clamp: 10;
   -webkit-line-clamp: 10;
+  box-orient: vertical;
   -webkit-box-orient: vertical;
 }
 
@@ -112,4 +113,67 @@ li.DetailsRecords__item-note .ReactMarkdown {
       rgba(255, 255, 255, 0) 0%,
       rgba(255, 255, 255, 1) 100%
   );
+}
+
+.DetailsRecords__action{
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  top: calc(50% - 15px);
+  left: 35px;
+  @extend .SmallIcon;
+}
+
+.DetailsRecords__action--create{
+  background: url('../images/icons/action-create.svg') no-repeat center center;
+}
+.DetailsRecords__action--edit{
+  background: url('../images/icons/action-edit.svg') no-repeat center center;
+}
+.DetailsRecords__action--delete{
+  background: url('../images/icons/action-delete.svg') no-repeat center center;
+}
+.DetailsRecords__action--execute{
+  background: url('../images/icons/action-run.svg') no-repeat center center;
+}
+.DetailsRecords__action--noaction{
+  background: url('../images/icons/action-null.svg') no-repeat center center;
+}
+.DetailsRecords__container {
+  position: relative;
+}
+
+.DetailsRecords__action:before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: index($elements, card);
+  border: 1px dashed $grey;
+  height: 1px;
+  width: 10px;
+  top: 15px;
+  left: -8px
+}
+
+.DetailsRecords__container:last-child:not(.note):before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 3;
+  border: 1px solid #fefefe;
+  height: calc(50% - 10px);
+  width: 1px;
+  top: calc(50% + 3px);
+  left: 25px;
+}
+
+.DetailsRecords__item:after {
+  content: "";
+  background: $grey;
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  height: 1px;
+  width: 50%;
+  opacity: 0.5;
 }
