@@ -124,7 +124,7 @@ export default class BranchMenu extends Component {
     this.setState({ menuOpen: !this.state.menuOpen})
     if(!this.state.menuOpen){
       setTimeout(() => {
-   
+
         this.setState({ justOpened: false })
       }, 500)
     }else{
@@ -655,7 +655,7 @@ export default class BranchMenu extends Component {
     const {labbookName, owner} = this.state
 
     const branchMenuCSS = classNames({
-      'BranchMenu__menu--animation': this.state.justOpened,
+      'BranchMenu__menu--animation': this.state.justOpened, //this is needed to stop animation from breaking position flow when collaborators modal is open
       'hidden': !this.state.menuOpen,
       'BranchMenu__menu': true
     })
