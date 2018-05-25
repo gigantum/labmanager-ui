@@ -7,10 +7,12 @@ import ActivityDetails from 'Components/labbook/activity/ActivityDetails'
 
 export default class ActivityCard extends Component {
   constructor(props){
-
-  	super(props);
+    super(props);
+    let showDetails = this.props.edge.node.show && this.props.edge.node.detailObjects.filter((details) => {
+      return details.show
+    }).length !== 0
     this.state = {
-      showExtraInfo: props.edge.node.show,
+      showExtraInfo: showDetails,
       show: true,
     }
 
@@ -44,10 +46,9 @@ export default class ActivityCard extends Component {
   */
 
   render(){
-
     const node = this.props.edge.node;
     const type = this.props.edge.node.type.toLowerCase()
-    let shouldBeFaded = this.props.hoveredRollback && ((this.props.hoveredRollback.i > this.props.position.i) || (this.props.hoveredRollback.i >= this.props.position.i && this.props.hoveredRollback.j > this.props.position.j))
+    let shouldBeFaded = this.props.hoveredRollback > this.props.position
     const activityCardCSS = classNames({
       'ActivityCard card': this.state.showExtraInfo,
       'ActivityCard--collapsed card': !this.state.showExtraInfo,
@@ -61,7 +62,7 @@ export default class ActivityCard extends Component {
       'closed': type === 'note' && !this.state.show,
     })
     return(
-      <div className={activityCardCSS}>
+      <div className={activityCardCSS} ref="card">
 
         <div className={'ActivityCard__badge ActivityCard__badge--' + type}>
         </div>
