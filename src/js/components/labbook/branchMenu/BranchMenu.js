@@ -123,6 +123,7 @@ export default class BranchMenu extends Component {
   _openMenu() {
 
     this.setState({ menuOpen: !this.state.menuOpen})
+
     if(!this.state.menuOpen){
       setTimeout(() => {
 
@@ -132,20 +133,21 @@ export default class BranchMenu extends Component {
       this.setState({ justOpened: true })
     }
 
-    this.setState({ menuOpen: !this.state.menuOpen })
-    this._remountCollab();
-
   }
-
+  /**
+  *  @param {}
+  *  remounts collaborators by updating key
+  *  @return {}
+  */
   _remountCollab() {
     this.setState({collabKey: uuidv4()});
-    this.setState({ menuOpen: false })
+
   }
-    /**
-    *  @param {string, boolean} action, containerRunning
-    *  displays container menu message
-    *  @return {}
-    */
+  /**
+  *  @param {string, boolean} action, containerRunning
+  *  displays container menu message
+  *  @return {}
+  */
   _showContainerMenuMessage(action, containerRunning) {
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
