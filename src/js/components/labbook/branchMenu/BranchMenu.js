@@ -611,6 +611,7 @@ export default class BranchMenu extends Component {
     if(store.getState().containerStatus.status !== 'Running'){
       this.props.toggleBranchesView(true, true)
       this.setState({ menuOpen: false })
+      window.scrollTo(0, 0);
     } else {
      this._showContainerMenuMessage('merging branches', true)
     }
