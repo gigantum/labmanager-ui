@@ -186,6 +186,8 @@ export default class ContainerStatus extends Component {
       (evt.target.className.indexOf('CustomDockerfile__content-save-button') > -1) ||
       (evt.target.className.indexOf('Labbook__name') > -1) ||
       (evt.target.className.indexOf('Labbook__branch-toggle') > -1) ||
+      (evt.target.className.indexOf('Acitivty__rollback-button') > -1) ||
+      (evt.target.className.indexOf('Activity__add-branch-button') > -1) ||
       (evt.target.className.indexOf('BranchCard__delete-labbook') > -1)
 
     if(!containerMenuClicked &&

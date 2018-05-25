@@ -1,6 +1,8 @@
 //vendor
 import React, { Component } from 'react'
 import DetailRecords from './DetailRecords'
+import classNames from 'classnames'
+
 export default class ActivityDefaultList extends Component {
 
   constructor(props){
@@ -77,9 +79,13 @@ export default class ActivityDefaultList extends Component {
 
     let keys = this.props.categorizedDetails.detailKeys[this.props.itemKey],
         type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase();
+        let activityDetailsCSS = classNames({
+          'ActivityDetail__details': true,
+          note: type === 'note'
+        })
     return(
 
-        <div className="ActivityDetail__details">
+        <div className={activityDetailsCSS}>
           {
             this.state.showDetails && type !== 'note' ?
             <div

@@ -317,7 +317,7 @@ Labbook__nav end
   text-overflow: ellipsis;
   word-break: initial;
   line-height: 20px;
- 
+
   -webkit-line-clamp: 6;
   line-clamp: 6;
   box-orient: vertical;
@@ -869,9 +869,8 @@ Labbook__nav end
 }
 
 .Labbook-paginating {
-  background: $white url('../images/icons/paragraph.svg') no-repeat center center;
-  padding: 0 5px;
-  background-size: 300px 200px;
+  background: $white url('../images/icons/labbooks-placeholder.svg') no-repeat center center;
+  background-size: 275px;
   opacity: 1;
 }
 

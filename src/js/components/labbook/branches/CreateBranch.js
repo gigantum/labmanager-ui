@@ -44,6 +44,8 @@ export default class CreateBranchModal extends React.Component {
     if(nextProps.selected){
       let branchName = `rollback-to-${Moment(Date.parse(nextProps.selected.timestamp)).format("YYYYMMDD-HHmmss")}`
       this.setState({branchName})
+    } else{
+      this.setState({branchName: ''})
     }
   }
 
