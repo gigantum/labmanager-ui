@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import {shallow, mount} from 'enzyme';
 import history from 'JS/history'
 
-//import json from './__relaydata__/RemoteLabbooks.json'
+import json from './__relaydata__/RemoteLabbooks.json'
 import RemoteLabbooks from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbooks';
 import relayTestingUtils from 'relay-testing-utils'
 
@@ -20,7 +20,7 @@ test('Test RemoteLabbooks rendering', () => {
 
   const localLabbooks = renderer.create(
 
-     //relayTestingUtils.relayWrap(<RemoteLabbooks history={history} {...fixtures} feed={json.data}/>, {}, json.data)
+     relayTestingUtils.relayWrap(<RemoteLabbooks history={history} {...fixtures} feed={json.data}/>, {}, json.data)
 
   );
 

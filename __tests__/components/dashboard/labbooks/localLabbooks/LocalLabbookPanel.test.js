@@ -20,7 +20,7 @@ test('Test LocalLabbooks rendering', () => {
 
   const localLabbooks = renderer.create(
 
-     relayTestingUtils.relayWrap(<LocalLabbooksPanel history={history} {...fixtures} feed={json.data}/>, {}, json.data)
+     relayTestingUtils.relayWrap(<LocalLabbooksPanel history={history} {...fixtures} feed={json.data.localLabbooks[0]}/>, {}, json.data.localLabbooks[0])
 
   );
 

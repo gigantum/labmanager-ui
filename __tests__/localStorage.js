@@ -10,7 +10,8 @@ var localStorageMock = (function() {
 
   store = {
     'id_token':  token,
-    'expires_at': d.getTime()
+    'expires_at': d.getTime(),
+    'username': 'cbutler'
   };
 
   return {

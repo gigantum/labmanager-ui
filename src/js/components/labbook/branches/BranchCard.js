@@ -275,7 +275,7 @@ export default class BranchCard extends Component {
             />,
             <div
               key="BranchDelete__modal-cover"
-              className="BranchCard__modal">
+              className="modal__cover--nested">
             </div>
           ]
         }
@@ -289,7 +289,7 @@ export default class BranchCard extends Component {
           />,
           <div
             key="BranchDelete__modal-cover"
-            className="BranchCard__modal">
+            className="modal__cover--nested">
           </div>
           ]
         }
