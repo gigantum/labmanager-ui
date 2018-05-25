@@ -121,7 +121,7 @@ export default class BranchMenu extends Component {
   *  @return {string}
   */
   _openMenu() {
-<<<<<<< HEAD
+
     this.setState({ menuOpen: !this.state.menuOpen})
     if(!this.state.menuOpen){
       setTimeout(() => {
@@ -131,10 +131,10 @@ export default class BranchMenu extends Component {
     }else{
       this.setState({ justOpened: true })
     }
-=======
+
     this.setState({ menuOpen: !this.state.menuOpen })
     this._remountCollab();
->>>>>>> integration
+
   }
 
   _remountCollab() {
