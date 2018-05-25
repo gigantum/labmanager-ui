@@ -4,7 +4,7 @@
 
 .DetailsRecords__item {
   margin-bottom: 1px;
-  padding: 15px 15px 15px 75px;
+  padding: 5px 15px 5px 75px;
 
   img {
     width: -moz-fit-content;
@@ -71,7 +71,9 @@ li.DetailsRecords__item-note .ReactMarkdown ul, {
   white-space: pre-line;
   overflow: hidden;
   word-break: break-word;
+  line-clamp: 10;
   -webkit-line-clamp: 10;
+  box-orient: vertical;
   -webkit-box-orient: vertical;
 }
 
@@ -135,7 +137,7 @@ li.DetailsRecords__item-note .ReactMarkdown {
   background: url('../images/icons/action-run.svg') no-repeat center center;
 }
 .DetailsRecords__action--noaction{
-  background: url('../images/icons/action-delete.svg') no-repeat center center;
+  background: url('../images/icons/action-null.svg') no-repeat center center;
 }
 .DetailsRecords__container {
   position: relative;
@@ -163,4 +165,15 @@ li.DetailsRecords__item-note .ReactMarkdown {
   width: 1px;
   top: calc(50% + 3px);
   left: 25px;
+}
+
+.DetailsRecords__item:after {
+  content: "";
+  background: $grey;
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  height: 1px;
+  width: 50%;
+  opacity: 0.5;
 }

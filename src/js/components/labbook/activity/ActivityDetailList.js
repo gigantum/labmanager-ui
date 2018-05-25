@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import DetailRecords from './DetailRecords'
 import classNames from 'classnames'
+
 export default class ActivityDefaultList extends Component {
 
   constructor(props){

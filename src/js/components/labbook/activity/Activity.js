@@ -494,8 +494,9 @@ class Activity extends Component {
       this.setState({activityRecords: this._transformActivity(this.props.labbook.activityRecords)})
     })
   }
+
   /**
-  *   @param {}
+  *   @param {event} evt
   *   assigns open-menu class to parent element and ActivityExtended to previous element
   *   @return {}
   */
@@ -508,6 +509,100 @@ class Activity extends Component {
       wrapper.parentElement.previousSibling.className.indexOf('ActivityExtended') !== -1 ?wrapper.parentElement.previousSibling.classList.remove('ActivityExtended') : wrapper.parentElement.previousSibling.classList.add('ActivityExtended')
     }
     submenu.className.indexOf('open-menu') !== -1 ? submenu.classList.remove('open-menu') : submenu.classList.add('open-menu')
+  }
+
+  /**
+  *   @param {object, array, integer, integer, integer} obj, clusterElements, i, j, k
+  *   resets clusterElements
+  *   returns visible activity cards and their submenus
+  *   @return {jsx}
+  */
+
+  _visibleCardRenderer(obj, clusterElements, i, j, k){
+    clusterElements = [];
+    let isLastRecordObj = i === Object.keys(this.state.activityRecords).length -1;
+    let isLastRecordNode = j === this.state.activityRecords[k].length -1;
+    let isLastPage = !this.props.labbook.activityRecords.pageInfo.hasNextPage;
+    let rollbackableDetails = obj.edge.node.detailObjects.filter((detailObjs) => {
+      return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
+    })
+    return (
+      <div className="ActivtyCard__wrapper"  key={obj.edge.node.id}>
+        { ((i !== 0 ) || (j !== 0)) &&
+          <div className="Activity__submenu-container">
+          {
+            (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) &&
+          <Fragment>
+            <div
+                className="Activity__submenu-circle"
+                onClick={(evt)=>this._toggleSubmenu(evt)}
+              >
+              </div>
+              <div className="Activity__submenu-subcontainer">
+                <div
+                  className="Activity__rollback"
+                  onMouseOver={() => this.setState({hoveredRollback: obj.flatIndex})}
+                  onMouseOut={() => this.setState({hoveredRollback : null})}
+                  onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+                >
+                  <button
+                    className="Activity__rollback-button"
+                  >
+                  </button>
+                  <h5
+                    className="Activity__rollback-text"
+                  >
+                    Rollback
+                  </h5>
+                </div>
+              </div>
+            </Fragment>
+          }
+          </div>
+        }
+        <ActivityCard
+          collapsed={obj.collapsed}
+          clusterObject={this.state.clusterObject}
+          position={obj.flatIndex}
+          hoveredRollback={this.state.hoveredRollback}
+          key={`${obj.edge.node.id}_activity-card`}
+          edge={obj.edge}
+        />
+      </div>
+    )
+  }
+
+  /**
+  *   @param {object, array, integer, integer, integer} obj, clusterElements, i, j, k
+  *   appends to clusterElements
+  *   creates a cluster card that replaces multiple repeating minor activities
+  *   @return {jsx}
+  */
+  _cardClusterRenderer(obj, clusterElements, i, j, k){
+    let shouldBeFaded = this.state.hoveredRollback > obj.flatIndex
+    let clusterCSS = classNames({
+      'ActivityCard--cluster': true,
+      'column-1-span-9': true,
+      'faded': shouldBeFaded,
+    });
+    clusterElements.push(obj.flatIndex)
+    let clusterRef = clusterElements.slice()
+    if(this.state.activityRecords[k][j+1] && this.state.activityRecords[k][j+1].collapsed){
+      return undefined;
+    }
+    return (
+      <div className="ActivtyCard__wrapper" key={obj.flatIndex}>
+      {
+        (clusterElements[0] !== 0) &&
+        <div className="Activity__submenu-container">
+        </div>
+      }
+      <div className={clusterCSS} ref={'cluster--'+ obj.flatindex}>
+        {clusterElements.length} Minor Activities
+        <div className="ActivityCard__ellipsis" onClick={()=> this._deleteCluster(clusterRef, i)}></div>
+      </div>
+    </div>
+    )
   }
 
   render(){
@@ -563,7 +658,10 @@ class Activity extends Component {
                             <div className="Activity__user-note">
                               <div
                                 className="Activity__user-note-menu-icon"
-                                onClick={(evt) => {this._toggleSubmenu(evt)}}
+                                onClick={this.state.modalVisible ? (evt)=> {
+                                  this._toggleActivity();
+                                  this._toggleSubmenu(evt)
+                                } : (evt) => this._toggleSubmenu(evt) }
                               >
                               </div>
                               <div className="Activity__user-note-menu">
@@ -605,82 +703,9 @@ class Activity extends Component {
                         {
                           this.state.activityRecords[k].map((obj, j) => {
                             if(!obj.collapsed){
-                              clusterElements = [];
-                              let isLastRecordObj = i === Object.keys(this.state.activityRecords).length -1;
-                              let isLastRecordNode = j === this.state.activityRecords[k].length -1;
-                              let isLastPage = !this.props.labbook.activityRecords.pageInfo.hasNextPage;
-                              let rollbackableDetails = obj.edge.node.detailObjects.filter((detailObjs) => {
-                                return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
-                              })
-                              return (
-                                <div className="ActivtyCard__wrapper"  key={obj.edge.node.id}>
-                                  { ((i !== 0 ) || (j !== 0)) &&
-                                    <div className="Activity__submenu-container">
-                                    {
-                                      (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) &&
-                                    <Fragment>
-                                      <div
-                                          className="Activity__submenu-circle"
-                                          onClick={(evt)=>this._toggleSubmenu(evt)}
-                                        >
-                                        </div>
-                                        <div className="Activity__submenu-subcontainer">
-                                          <div
-                                            className="Activity__rollback"
-                                            onMouseOver={() => this.setState({hoveredRollback: obj.flatIndex})}
-                                            onMouseOut={() => this.setState({hoveredRollback : null})}
-                                            onClick={() => this._toggleRollbackMenu(obj.edge.node)}
-                                          >
-                                            <button
-                                              className="Activity__rollback-button"
-                                            >
-                                            </button>
-                                            <h5
-                                              className="Activity__rollback-text"
-                                            >
-                                              Rollback
-                                            </h5>
-                                          </div>
-                                        </div>
-                                      </Fragment>
-                                    }
-                                    </div>
-                                  }
-                                  <ActivityCard
-                                    collapsed={obj.collapsed}
-                                    clusterObject={this.state.clusterObject}
-                                    position={obj.flatIndex}
-                                    hoveredRollback={this.state.hoveredRollback}
-                                    key={`${obj.edge.node.id}_activity-card`}
-                                    edge={obj.edge}
-                                  />
-                                </div>
-                              )
+                              return this._visibleCardRenderer(obj, clusterElements, i, j, k);
                             } else {
-                              let shouldBeFaded = this.state.hoveredRollback > obj.flatIndex
-                              let clusterCSS = classNames({
-                                'ActivityCard--cluster': true,
-                                'column-1-span-9': true,
-                                'faded': shouldBeFaded,
-                              });
-                              clusterElements.push(obj.flatIndex)
-                              let clusterRef = clusterElements.slice()
-                              if(this.state.activityRecords[k][j+1] && this.state.activityRecords[k][j+1].collapsed){
-                                return undefined;
-                              }
-                              return (
-                                <div className="ActivtyCard__wrapper" key={obj.flatIndex}>
-                                {
-                                  (clusterElements[0] !== 0) &&
-                                  <div className="Activity__submenu-container">
-                                  </div>
-                                }
-                                <div className={clusterCSS} ref={'cluster--'+ obj.flatindex}>
-                                  {clusterElements.length} Minor Activities
-                                  <div className="ActivityCard__ellipsis" onClick={()=> this._deleteCluster(clusterRef, i)}></div>
-                                </div>
-                              </div>
-                              )
+                              return this._cardClusterRenderer(obj, clusterElements, i, j, k)
                             }
                           })
                         }

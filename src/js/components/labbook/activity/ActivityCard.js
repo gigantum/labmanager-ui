@@ -54,7 +54,6 @@ export default class ActivityCard extends Component {
       'ActivityCard--collapsed card': !this.state.showExtraInfo,
       'column-1-span-9': true,
       'faded': shouldBeFaded,
-      // 'hidden': this.state.hideElement
     })
     const titleCSS = classNames({
       'ActivityCard__title flex flex--row justify--space-between': true,

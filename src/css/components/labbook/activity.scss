@@ -371,11 +371,13 @@
       background-size: 25px;
     }
     .Activity__hide-note-button{
-      transform: rotate(40deg);
+      background: $azure url('../images/icons/menu-add.svg') no-repeat center center !important;
+      transform: rotate(45deg);
 
     }
     .Activity__hide-note-button:hover{
-      transform: rotate(40deg);
+      background: $azure url('../images/icons/menu-add-turquise.svg') no-repeat center center !important;
+      transform: rotate(45deg);
     }
   }
   .Activity__add-branch{
@@ -696,13 +698,14 @@
     }
   }
   .Activity__submenu-circle{
+    background: $azure url('../images/icons/menu-add.svg') no-repeat center center !important;
     width: 40px !important;
     height: 40px !important;
     left: 23px !important;
     top: calc(50% - 20px) !important;
     border-radius: 40px !important;
     background-size: 40px !important;
-    transform: rotate(40deg);
+    transform: rotate(45deg);
   }
 }
 
@@ -795,8 +798,19 @@
   position: absolute;
   z-index: 3;
   border: 1px dashed #b9babc;
-  height: calc(100% - 82px);
+  height: calc(100% - 73px);
   width: 1px;
   top: 41px;
   left: 25px;
+}
+
+.ActivityDetail__details-title.ActivityDetail__details-title--closed:before {
+  position: absolute;
+  content: "";
+  height: 1px;
+  width: 1px;
+  border: 1px solid white;
+  top: 41px;
+  left: 25px;
+  z-index: index($elements, card) + 1;
 }
