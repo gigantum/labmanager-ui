@@ -104,12 +104,6 @@ export default class BranchMenu extends Component {
   */
   _toggleModal(value) {
 
-
-    if (!this.state[value]) {
-      document.getElementById('modal__cover').classList.remove('hidden')
-    } else {
-      document.getElementById('modal__cover').classList.add('hidden')
-    }
     this.setState({
       [value]: !this.state[value]
     })
