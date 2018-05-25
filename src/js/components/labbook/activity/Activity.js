@@ -669,7 +669,6 @@ class Activity extends Component {
 
       return(
         <div key={this.props.labbook} className={activityCSS}>
-
           {
             (!this.state.refetchEnabled && this.state.newActivityAvailable) &&
             <div
@@ -681,9 +680,7 @@ class Activity extends Component {
              </div>
            §</div>
           }
-
           <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
-
             <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Activity__sizer flex-1-0-auto">
               <CreateBranch
                 ref="createBranch"
@@ -697,7 +694,6 @@ class Activity extends Component {
                   let clusterElements = [];
                   return (
                     <div key={k}>
-
                       <div className="Activity__date-tab column-1-span-1 flex flex--column justify--space-around">
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
                         <div className="Activity__date-month">{ config.months[parseInt(k.split('_')[1], 10)] }</div>
@@ -705,7 +701,6 @@ class Activity extends Component {
                       {
                         (i===0) && this._renderUserNote()
                       }
-
                       <div key={`${k}__card`}>
                         {
                           this.state.activityRecords[k].map((obj, j) => {
@@ -716,31 +711,23 @@ class Activity extends Component {
                             }
                           })
                         }
-
                     </div>
-
                   </div>)
                 })
               }
-
-
               {
                 Array(5).fill(1).map((value, index) => {
-
-                    return (
-                      <PaginationLoader
-                        key={'Actvity_paginationLoader' + index}
-                        index={index}
-                        isLoadingMore={this.state.isPaginating}
-                      />
+                  return (
+                    <PaginationLoader
+                      key={'Actvity_paginationLoader' + index}
+                      index={index}
+                      isLoadingMore={this.state.isPaginating}
+                    />
                   )
                 })
               }
-
-
             </div>
           </div>
-
         </div>
       )
     }else{
