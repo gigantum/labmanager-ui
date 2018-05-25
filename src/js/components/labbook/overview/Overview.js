@@ -350,7 +350,6 @@ export default createFragmentContainer(
       numConda2Packages
       numConda3Packages
       numPipPackages
-      numCustomDependencies
       recentActivity{
         id
         owner

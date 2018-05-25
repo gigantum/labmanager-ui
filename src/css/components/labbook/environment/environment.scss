@@ -57,8 +57,7 @@
   @include modal(500px, 800px);
 
   .SelectDevelopmentEnvironment__title,
-  .AddEnvironmentPackage__title,
-  .AddCustomDependencies__title {
+  .AddEnvironmentPackage__title {
     font-size: 1.5em;
     text-align: center;
     border-bottom: 1px solid $azure;
