@@ -605,13 +605,63 @@ class Activity extends Component {
     )
   }
 
+  /**
+  *   @param {} obj
+  *   renders usernote and it's menu
+  *   @return {jsx}
+  */
+
+  _renderUserNote(){
+    let userActivityContainerCSS = classNames({
+      'UserActivity__container': true,
+      'fullscreen': this.state.editorFullscreen
+    })
+    return(
+      <div className={userActivityContainerCSS}>
+      <div className="Activity__user-note">
+        <div
+          className="Activity__user-note-menu-icon"
+          onClick={this.state.modalVisible ? (evt)=> {
+            this._toggleActivity();
+            this._toggleSubmenu(evt)
+          } : (evt) => this._toggleSubmenu(evt) }
+        >
+        </div>
+        <div className="Activity__user-note-menu">
+          <div className="Activity__add-note">
+            <button
+              className={this.state.modalVisible ? 'Activity__hide-note-button' : 'Activity__add-note-button'}
+              onClick={() => this._toggleActivity()}
+            >
+            </button>
+            <h5>Add Note</h5>
+          </div>
+          <div className="Activity__add-branch">
+            <button
+              className="Activity__add-branch-button"
+              onClick={()=> this._createBranch()}
+            >
+            </button>
+            <h5>Add Branch</h5>
+          </div>
+        </div>
+      </div>
+      <div className={this.state.modalVisible ? 'Activity__add ActivityCard' : 'hidden'}>
+        <UserNote
+          key="UserNote"
+          labbookId={this.props.labbook.id}
+          hideLabbookModal={this._hideAddActivity}
+          changeFullScreenState={this._changeFullscreenState}
+          {...this.props}
+        />
+      </div>
+  </div>
+    )
+  }
+
   render(){
     let activityCSS = classNames({
       'Activity': true,
-      'fullscreen': this.state.editorFullscreen
-    })
-    let userActivityContainerCSS = classNames({
-      'UserActivity__container': true,
       'fullscreen': this.state.editorFullscreen
     })
     if(this.props.labbook){
@@ -653,50 +703,7 @@ class Activity extends Component {
                         <div className="Activity__date-month">{ config.months[parseInt(k.split('_')[1], 10)] }</div>
                       </div>
                       {
-                        (i===0) && (
-                          <div className={userActivityContainerCSS}>
-                            <div className="Activity__user-note">
-                              <div
-                                className="Activity__user-note-menu-icon"
-                                onClick={this.state.modalVisible ? (evt)=> {
-                                  this._toggleActivity();
-                                  this._toggleSubmenu(evt)
-                                } : (evt) => this._toggleSubmenu(evt) }
-                              >
-                              </div>
-                              <div className="Activity__user-note-menu">
-                                <div className="Activity__add-note">
-                                  <button
-                                    className={this.state.modalVisible ? 'Activity__hide-note-button' : 'Activity__add-note-button'}
-                                    onClick={() => this._toggleActivity()}
-                                  >
-                                  </button>
-                                  <h5>Add Note</h5>
-                                </div>
-                                <div className="Activity__add-branch">
-                                  <button
-                                    className="Activity__add-branch-button"
-                                    onClick={()=> this._createBranch()}
-                                  >
-                                  </button>
-                                  <h5>Add Branch</h5>
-                                </div>
-                              </div>
-                            </div>
-                            <div className={this.state.modalVisible ? 'Activity__add ActivityCard' : 'hidden'}>
-                              {
-                                (this.state.modalVisible) &&
-                                <UserNote
-                                  key="UserNote"
-                                  labbookId={this.props.labbook.id}
-                                  hideLabbookModal={this._hideAddActivity}
-                                  changeFullScreenState={this._changeFullscreenState}
-                                  {...this.props}
-                                />
-                              }
-                            </div>
-                        </div>
-                        )
+                        (i===0) && this._renderUserNote()
                       }
 
                       <div key={`${k}__card`}>
