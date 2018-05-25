@@ -692,7 +692,7 @@ export default class ImportModule extends Component {
           :
           <div id="dropZone__title" className="Labbooks__labbook-importing">
             <div
-              className="labbook__import-close"
+              className="Labbook__import-close"
               onClick={() => this._hideImportScreen()}>
             </div>
             <div className="Labbooks__labbook-import-header">
