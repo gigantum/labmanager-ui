@@ -1,3 +1,342 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `null`;
+exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
+<div
+  className="LocalLabbooks__labbooks"
+>
+  <div
+    className="LocalLabbooks__sizer grid"
+  >
+    <div
+      className="ImportModule Labbooks__panel Labbooks__panel--add Labbooks__panel--import column-4-span-3"
+      id="dropZone"
+      onDragEnd={[Function]}
+      onDragOver={[Function]}
+      onDrop={[Function]}
+      type="file"
+    >
+      <div
+        className="Labbooks__labbook-main"
+      >
+        <div
+          className="Labbooks__labbook-header"
+        >
+          <div
+            className="Labbooks__labbook-icon"
+          >
+            <div
+              className="Labbooks__title-add"
+            />
+          </div>
+          <div
+            className="Labbooks__add-text"
+          >
+            <h4>
+              Add LabBook
+            </h4>
+          </div>
+        </div>
+        <div
+          className="Labbooks__labbook-button"
+          onClick={[Function]}
+        >
+          Create New
+        </div>
+        <div
+          className="Labbooks__labbook-button-import"
+          onClick={[Function]}
+        >
+          Import Existing
+        </div>
+      </div>
+      <div
+        className="hidden"
+      >
+        <div
+          className="Labbooks-login-prompt--close"
+          onClick={[Function]}
+        />
+        <div
+          className="LoginPrompt"
+        >
+          <div>
+            <p>
+              You need an active session to perform this action
+            </p>
+            <p>
+              Do you want login?
+            </p>
+          </div>
+          <div
+            className="LoginPrompt__button-container"
+          >
+            <button
+              onClick={[Function]}
+            >
+              Yes
+            </button>
+            <button
+              onClick={[Function]}
+            >
+              no
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="hidden"
+      />
+    </div>
+    <div
+      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      onClick={[Function]}
+    >
+      <div
+        className="LocalLabbooks__icon-row"
+      >
+        <div
+          className="LocalLabbooks__containerStatus"
+        >
+          <button
+            className="LocalLabbooks__containerStatus--state Rebuild"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            Rebuild
+          </button>
+        </div>
+      </div>
+      <div
+        className="LocalLabbooks__text-row"
+      >
+        <div
+          className="LocalLabbooks__title-row"
+        >
+          <h6
+            className="LocalLabbooks__panel-title"
+            onClick={[Function]}
+          >
+            76e68030-f74d-4d2b-905f-49d1f92953a7
+          </h6>
+        </div>
+        <p
+          className="LocalLabbooks__owner"
+        >
+          Created by cbutler
+        </p>
+        <p
+          className="LocalLabbooks__description"
+        >
+          This is a test labbook
+        </p>
+      </div>
+    </div>
+    <div
+      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      onClick={[Function]}
+    >
+      <div
+        className="LocalLabbooks__icon-row"
+      >
+        <div
+          className="LocalLabbooks__containerStatus"
+        >
+          <button
+            className="LocalLabbooks__containerStatus--state Rebuild"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            Rebuild
+          </button>
+        </div>
+      </div>
+      <div
+        className="LocalLabbooks__text-row"
+      >
+        <div
+          className="LocalLabbooks__title-row"
+        >
+          <h6
+            className="LocalLabbooks__panel-title"
+            onClick={[Function]}
+          >
+            95a26266-276b-43d8-bdbd-2e5373624fb4
+          </h6>
+        </div>
+        <p
+          className="LocalLabbooks__owner"
+        >
+          Created by cbutler
+        </p>
+        <p
+          className="LocalLabbooks__description"
+        >
+          This is a test labbook
+        </p>
+      </div>
+    </div>
+    <div
+      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      onClick={[Function]}
+    >
+      <div
+        className="LocalLabbooks__icon-row"
+      >
+        <div
+          className="LocalLabbooks__containerStatus"
+        >
+          <button
+            className="LocalLabbooks__containerStatus--state Rebuild"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            Rebuild
+          </button>
+        </div>
+      </div>
+      <div
+        className="LocalLabbooks__text-row"
+      >
+        <div
+          className="LocalLabbooks__title-row"
+        >
+          <h6
+            className="LocalLabbooks__panel-title"
+            onClick={[Function]}
+          >
+            867e715e-a63c-48ee-8cd3-a8ccbcf39538
+          </h6>
+        </div>
+        <p
+          className="LocalLabbooks__owner"
+        >
+          Created by cbutler
+        </p>
+        <p
+          className="LocalLabbooks__description"
+        >
+          This is a test labbook
+        </p>
+      </div>
+    </div>
+    <div
+      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      onClick={[Function]}
+    >
+      <div
+        className="LocalLabbooks__icon-row"
+      >
+        <div
+          className="LocalLabbooks__containerStatus"
+        >
+          <button
+            className="LocalLabbooks__containerStatus--state Rebuild"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            Rebuild
+          </button>
+        </div>
+      </div>
+      <div
+        className="LocalLabbooks__text-row"
+      >
+        <div
+          className="LocalLabbooks__title-row"
+        >
+          <h6
+            className="LocalLabbooks__panel-title"
+            onClick={[Function]}
+          >
+            3874fb64-5ae5-4c8a-af51-8241319f3525
+          </h6>
+        </div>
+        <p
+          className="LocalLabbooks__owner"
+        >
+          Created by cbutler
+        </p>
+        <p
+          className="LocalLabbooks__description"
+        >
+          This is a test labbook
+        </p>
+      </div>
+    </div>
+    <div
+      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      onClick={[Function]}
+    >
+      <div
+        className="LocalLabbooks__icon-row"
+      >
+        <div
+          className="LocalLabbooks__containerStatus"
+        >
+          <button
+            className="LocalLabbooks__containerStatus--state Rebuild"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            Rebuild
+          </button>
+        </div>
+      </div>
+      <div
+        className="LocalLabbooks__text-row"
+      >
+        <div
+          className="LocalLabbooks__title-row"
+        >
+          <h6
+            className="LocalLabbooks__panel-title"
+            onClick={[Function]}
+          >
+            added-new-lab
+          </h6>
+        </div>
+        <p
+          className="LocalLabbooks__owner"
+        >
+          Created by cbutler
+        </p>
+        <p
+          className="LocalLabbooks__description"
+        >
+          
+        </p>
+      </div>
+    </div>
+    <div
+      className="Labbook__loader-hidden"
+    >
+      <div />
+    </div>
+    <div
+      className="Labbook__loader-hidden"
+    >
+      <div />
+    </div>
+    <div
+      className="Labbook__loader-hidden"
+    >
+      <div />
+    </div>
+    <div
+      className="Labbook__loader-hidden"
+    >
+      <div />
+    </div>
+    <div
+      className="Labbook__loader-hidden"
+    >
+      <div />
+    </div>
+  </div>
+</div>
+`;

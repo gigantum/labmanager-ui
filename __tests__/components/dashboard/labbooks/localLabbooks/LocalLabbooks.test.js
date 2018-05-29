@@ -141,7 +141,6 @@ describe('LocalLabbooks', () => {
          relay={{loadMore: loadMore}}
        />, {}, json.data.labbookList
      )
-
   );
 
   it('Simulates sort processed', () => {
@@ -166,6 +165,9 @@ describe('LocalLabbooks', () => {
 
 
   it('Simulates pagination', () => {
+
+    // console.log(localLabbooksMount)
+    // console.log( localLabbooksMount.instance())
     //window.dispatchEvent(new window.UIEvent('scroll', { detail: 1800}))
     localLabbooksMount.instance()._loadMore()
 

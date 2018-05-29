@@ -6,29 +6,58 @@ import React,{Component} from 'react'
 global.XMLHttpRequest = XMLHttpRequest;
 
 const relay = jest.genMockFromModule('react-relay');
-const relayPaginationProps = {
 
+const RelayPaginationProps = {
+  // relay:{
       hasMore: jest.fn(),
       loadMore: () => {
 
       },
       isLoading: jest.fn()
-}
-function makeRelayWrapper(relayProps) {
-  return function (Comp) {
-       class HOC extends React.Component {
-
-           render() {
-               return <Comp {...this.props} {...relayProps}/>;
-           }
-       }
-
-       return HOC;
-   };
 
 }
+
+// function makeRelayWrapper<
+//   Props: {},
+//   TComponent: React.ComponentType<Props>,
+// >(
+//   Component: TComponent,
+// ) : React.ComponentType<
+//   $RelayProps<React.ElementConfig<TCompnent>, RelayPaginationProps>,> {
+//
+const makeRelayWrapper = (Comp) => {
+
+  class Container extends Component{
+    constructor(props, context){
+    	super(props);
+     
+    	this.state = {};
+    }
+
+    render(){
+      return React.createElement(Comp, {
+        ...this.props,
+        ...this.state.data,
+        relay: RelayPaginationProps
+      })
+    }
+  }
+
+  return Container
+}
+
+
+// return <Comp {...relayProps}/>
+
+  // return function () {
+  //
+  //      console.log(Comp)
+  //      return <Comp {...props} {...relayProps}/>;
+  //  };
+
+
 relay.createFragmentContainer = (c) => c;
-relay.createPaginationContainer = makeRelayWrapper(relayPaginationProps);
+relay.createPaginationContainer = (Comp) => makeRelayWrapper(Comp)
 relay.createRefetchContainer = (c) => c;
 
 relay.Component = Component
