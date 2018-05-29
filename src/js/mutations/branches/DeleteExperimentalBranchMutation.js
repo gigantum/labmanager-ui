@@ -57,6 +57,13 @@ export default function DeleteExperimentalBranchMutation(
 
         labbook.setValue(newAvailableBranchNames, 'availableBranchNames')
 
+        let mergeableBranchNames = labbook.getValue('mergeableBranchNames')
+        let newMergeableBranchNames = mergeableBranchNames.filter((listBranchName) => {
+          return listBranchName !== branchName
+        })
+
+        labbook.setValue(newMergeableBranchNames, 'mergeableBranchNames')
+
       },
       updater: (store, response) => {
         let labbook = store.get(labbookId)
@@ -67,6 +74,13 @@ export default function DeleteExperimentalBranchMutation(
         })
 
         labbook.setValue(newAvailableBranchNames, 'availableBranchNames')
+
+        let mergeableBranchNames = labbook.getValue('mergeableBranchNames')
+        let newMergeableBranchNames = mergeableBranchNames.filter((listBranchName) => {
+          return listBranchName !== branchName
+        })
+
+        labbook.setValue(newMergeableBranchNames, 'mergeableBranchNames')
       }
     },
   )
