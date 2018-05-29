@@ -88,6 +88,10 @@ class Activity extends Component {
     if((activityRecords.pageInfo.hasNextPage && activityRecords.edges.length < 2)){
 
       this._loadMore()
+    } else {
+      if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
+        this._loadMore()
+      }
     }
 
     if(activityRecords.edges && activityRecords.edges.length){
@@ -96,9 +100,7 @@ class Activity extends Component {
       this._refetch()
 
     }
-    if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
-      this._loadMore()
-    }
+
   }
 
   componentWillUnmount() {
