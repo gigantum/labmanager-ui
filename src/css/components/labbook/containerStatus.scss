@@ -27,7 +27,7 @@
   top: 30px;
   right: 75px;
   position: absolute;
-  z-index: index($elements, popup);
+  z-index: index($elements, popup) + 1;
   animation: slide-down-fade-in forwards .25s;
   @include triangle('up', 14px, $white);
 }
