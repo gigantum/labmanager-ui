@@ -483,6 +483,7 @@ export default class ImportModule extends Component {
   }
 
   _showModal(evt){
+  
     if (navigator.onLine){
       if(evt.target.id !== 'file__input-label'){
         this.props.showModal()
