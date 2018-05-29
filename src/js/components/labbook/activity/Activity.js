@@ -96,7 +96,7 @@ class Activity extends Component {
       this._refetch()
 
     }
-    if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 5){
+    if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
       this._loadMore()
     }
   }
@@ -282,7 +282,7 @@ class Activity extends Component {
        if(error){
          console.error(error)
        }
-       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 5){
+       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
         self._loadMore();
        } else{
         this.setState({
