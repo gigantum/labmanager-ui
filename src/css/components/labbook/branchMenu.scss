@@ -186,7 +186,7 @@
 }
 
 .BranchMenu__menu-arrow {
-  z-index: index($elements, popup);
+  z-index: index($elements, popup) + 1;
   position: absolute;
   top: 25px;
   right: 16px;

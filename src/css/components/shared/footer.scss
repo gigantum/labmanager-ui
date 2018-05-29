@@ -190,10 +190,17 @@ $footerElements: basic, progressBar, status, section, message;
 
   .Footer__message--error {
     @extend .Footer__message;
-    @extend .fa;
-    @extend .fa-exclamation-circle;
+
     align-items: center;
     @include flex(flex-start, row);
+
+    i{
+      background: url(../images/icons/warning.svg) no-repeat center left;
+      background-size: 18px;
+
+      border: 1px solid $white;
+      border-radius: 15px;
+    }
 
     // i:before {
     //   align-self: flex-end;
