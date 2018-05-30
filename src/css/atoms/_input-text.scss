@@ -21,6 +21,10 @@ input[type="text"].full--border {
   border-radius: 8px;
   margin: 20px 0;
 }
+input[type="text"].full--border.no--margin {
+  margin: 0;
+}
+
 input[type="text"].full--border:focus {
   border: 1px solid $turquise !important;
   box-shadow: 0 1px 0 0 $turquise !important;

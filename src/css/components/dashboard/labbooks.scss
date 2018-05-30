@@ -551,10 +551,18 @@ Labbook__nav end
   position: relative;
 
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
 
   margin: 10px;
   margin: 60px 0 10px 0;
+}
+
+.Labbooks__filter-container{
+  flex-grow: 1;
+  margin-right: 20px;
+}
+.Labbooks__filter {
+  height: 30px !important;
 }
 
 .Labbooks__section {
