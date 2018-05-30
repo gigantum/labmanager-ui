@@ -27,6 +27,7 @@ button:disabled {
   color: $grey;
   background: $grey-light;
   border: 2px solid $grey;
+  overflow: hidden;
 }
 
 .button--flat {
@@ -48,4 +49,11 @@ button:disabled {
   color: $azure;
   background: none;
   border: 0px solid $azure;
+}
+.button--flat:disabled,
+.button--flat:disabled:focus,
+.button--flat:disabled:hover{
+  color: $grey;
+  background: $grey-light;
+  border: 2px solid $grey;
 }

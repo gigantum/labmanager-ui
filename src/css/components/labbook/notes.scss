@@ -11,7 +11,7 @@
   padding: 0 10px;
   //border: 1px solid $romanSilver;
   color: $romanSilver;
-  z-index: 200;
+  z-index: index($elements, card);
   position: relative;
   background: white;
   border-bottom: 10px solid $azure;
@@ -48,7 +48,7 @@
   content: "";
   display: block;
   position: absolute;
-  z-index: 1;
+  z-index: index($elements, pseudoCard);
   top: calc(100% + 10px);
   left: 25px;
   border: 4px solid $romanSilver;
@@ -216,7 +216,7 @@
   position: relative;
   font-size: 14px;
   cursor: pointer;
-  z-index: 200;
+  z-index: index($elements, card);
 
   h5 {
     padding: 0px 0 0 60px;
@@ -240,7 +240,7 @@
   content: "";
   display: block;
   position: absolute;
-  z-index: 1;
+  z-index: index($elements, pseudoCard);
   top: calc(100% - 4px);
   left: 39px;
   border: 4px solid $romanSilver;

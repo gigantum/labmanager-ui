@@ -9,15 +9,55 @@
 }
 
 .BranchModal {
-  position: relative;
   padding: 15px;
   @include flex(space-between, column);
-  @include modal(500px, 500px);
+  @include modal(600px, 900px);
 }
 
 .BranchModal--collaborators {
   @extend .BranchModal;
   justify-content: flex-start;
+  hr {
+    background-color: $azure;
+    border-color: $azure;
+    border-width: 1px;
+    padding: 0 20px;
+    opacity: 0.9;
+    width: 90%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+.BranchMenu__add {
+  position: relative;
+  input[type="text"] {
+    font-size: 24px !important;
+    border-bottom: 1px solid $background-color  !important
+  }
+  button {
+    right: 5px;
+    bottom: 25px;
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    background: $white url('./../images/icons/plus-big.svg');
+    cursor: pointer;
+    background-size: 35px;
+    border: none;
+  }
+  button:hover {
+    background: $white url('./../images/icons/plus-big-turquise.svg');
+    background-size: 35px;
+  }
+  button:disabled,
+  button:disabled:hover {
+    cursor: default;
+    background: $white url('./../images/icons/plus-big-gray.svg');
+    background-size: 35px;
+  }
+}
+.BranchMenu__collaborator-container {
+  padding: 20px 100px;
 }
 .BranchModal--login-prompt{
   justify-content: flex-start;
@@ -58,18 +98,21 @@
 .ForceSync__header,
 .DeleteLabbook__header,
 .BranchModal__header {
+
   padding: 5px 0 5px 0px;
   color: $azure;
   text-align: center;
   min-width: 100%;
   margin: 0 auto;
 }
-.BranchModal__header--new-branch {
-  @extend .BranchModal__header;
-  background: url('./../images/icons/new-branch.svg') no-repeat left 5px;
-  background-size: 40px;
 
+.BranchModal__header {
+  background: url('./../images/icons/user-azure.svg') no-repeat 190px 32px;
+  background-size: 50px;
+  font-weight: 600;
+  padding: 40px 0 5px 20px;
 }
+
 
 .BranchModal--close {
   @include close()
@@ -88,15 +131,20 @@
 
   font-size: 14px;
 
-  background: $white url('./../images/icons/ellipsis.svg') no-repeat calc(100% - 10px) center;
-  background-size: 30px 30px;
+  background: $white url('./../images/icons/ellipsis.svg') no-repeat no-repeat calc(100% - 10px) center !important;
+  background-size: 30px !important;
+  background-color: $white !important;
 }
 
 .BranchMenu__button:hover {
   border: 3px solid $romanSilver;
   color: $romanSilver;
-  background: $white url('./../images/icons/ellipsis.svg') no-repeat no-repeat calc(100% - 10px) center;
-  background-size: 30px 30px;
+  background: $white url('./../images/icons/ellipsis.svg') no-repeat no-repeat calc(100% - 10px) center !important;
+  background-size: 30px 30px !important;
+
+  background-color: $white;
+
+
 }
 
 .BranchMenu__menu {
@@ -105,31 +153,51 @@
   top: 37px;
   background: $white;
   border-radius: 10px;
-  padding: 20px;
-  z-index: 201;
-  width: 230px;
+  padding: 10px;
+  z-index: index($elements, popup);
+  width: 200px;
+
   @extend .box-shadow;
 
   ul {
     margin-top: 0px;
+    li:hover button {
+      background-color: $background-color;
+    }
+    .BranchMenu__item--collaborators.disabled {
+      pointer-events: none;
+    }
+    .BranchMenu__item--collaborators.disabled:hover{
+      background-color: $white;
+    }
+    .BranchMenu__item--collaborators.disabled:hover button {
+      background-color: $white;
+    }
   }
 
   hr {
-    background-color: $lightGrey;
-    border-color: $lightGrey;
+    background-color: $background-color;
+    border-color: $background-color;
     border-width: 1px;
+    opacity: 0.3;
+    width: 85%;
   }
 }
 
+.BranchMenu__menu--animation{
+  animation: slide-down-fade-in forwards .25s;
+}
+
 .BranchMenu__menu-arrow {
-  z-index: 203;
+  z-index: index($elements, popup) + 1;
   position: absolute;
   top: 25px;
   right: 16px;
+  animation: slide-down-fade-in forwards .25s;
   @include triangle('up', 14px, $white);
 }
 .BranchMenu__item {
-  padding: 2px 0 2px 30px;
+  padding: 0 0 0 40px;
   line-height: 24px;
   cursor: pointer;
   color: $romanSilver;
@@ -139,49 +207,71 @@
   }
 }
 
-.BranchMenu__item:hover {
-  color: $turquise;
-  .BranchMenu__item--new-branch {
-    color: $turquise
-  };
-}
 .BranchMenu__item--new-branch {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/new-branch.svg') no-repeat left center;
-  background-size: 16px;
-  opacity: .3;
+  background: url('./../images/icons/create.svg') no-repeat 7px center;
+  background-size: 24px;
+}
+.BranchMenu__item--new-branch:hover {
+  background: $background-color url('./../images/icons/create.svg') no-repeat 7px center;
+  background-size: 24px;
+
 }
 .BranchMenu__item--merge {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/merge.svg') no-repeat left center;
-  background-size: 16px;
-  opacity: .3;
+  background: url('./../images/icons/merge.svg') no-repeat 7px center;
+  background-size: 24px;
+}
+.BranchMenu__item--merge:hover {
+  background: $background-color url('./../images/icons/merge.svg') no-repeat 7px center;
+  background-size: 24px;
+
+}
+.BranchMenu__item--switch {
+  @extend .BranchMenu__item;
+  background: url('./../images/icons/switch.svg') no-repeat 7px center;
+  background-size: 24px;
+}
+.BranchMenu__item--switch:hover {
+  background: $background-color url('./../images/icons/switch.svg') no-repeat 7px center;
+  background-size: 24px;
 }
 .BranchMenu__item--export {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/download.svg') no-repeat left 8px;
-  background-size: 22px;
-  // opacity: .3;
+  background: url('./../images/icons/export.svg') no-repeat 7px center;
+  background-size: 24px;
 }
+.BranchMenu__item--export:hover {
+  background: $background-color url('./../images/icons/export.svg') no-repeat 7px center;
+  background-size: 24px;
 
-
+}
 
 .BranchMenu__item--export--downloading {
   @extend .BranchMenu__item;
-  background: url('./../images/icons/rings.svg') no-repeat left center;
-  background-size: 20px;
+  background: url('./../images/icons/rings.svg') no-repeat 7px center;
+  background-size: 24px;
+}
+.BranchMenu__item--export--downloading:hover {
+  background: $background-color url('./../images/icons/rings.svg') no-repeat 7px center;
+  background-size: 24px;
 }
 
 .BranchMenu__item--delete{
   @extend .BranchMenu__item;
-  background: url('./../images/icons/trash.svg') no-repeat left 8px;
-  background-size: 20px;
+  background: url('./../images/icons/trash.svg') no-repeat 11px center;
+  background-size: 16px;
+}
+.BranchMenu__item--delete:hover {
+  background: $background-color url('./../images/icons/trash.svg') no-repeat 11px center;
+  background-size: 16px;
+
 }
 
 .BranchMenu__item--collaborators {
-  @extend .BranchMenu__item;
-  background: url('./../images/icons/user.svg') no-repeat left 7px;
-  background-size: 16px;
+  background: url('./../images/icons/user.svg') no-repeat 7px center;
+  background-size: 24px;
+  height: 40px;
   @extend .BranchMenu__item;
 
   a {
@@ -191,11 +281,18 @@
 
   p {
     padding: 0px;
+    margin: -6px 0 0 0;
+    font-size: 12px;
   }
 }
 
-.BranchMenu__add-collaborators {
-  width: 300px !important;
+.BranchMenu__item--collaborators:hover {
+  background: $background-color url('./../images/icons/user.svg') no-repeat 7px center;
+  background-size: 24px;
+}
+.BranchMenu__item--collaborators.disabled:hover {
+  background: $white url('./../images/icons/user.svg') no-repeat 7px center;
+  background-size: 24px;
 }
 
 .BranchMenu__add-button {
@@ -209,51 +306,34 @@
 .BranchMenu__publish {
   width: 100%;
   text-align: center;
-  height: 40px;
-  line-height: 40px;
 }
 
 
-.BranchMenu__item--collaborators-button,
-.BranchMenu__item--export-button,
-.BranchMenu__item--delete-button  {
-  background-size: 16px;
+.BranchMenu__item--flat-button,
+.BranchMenu__item--flat-button:focus {
   width: 100%;
   cursor: pointer;
-  margin: 0 0 5px 0;
+  margin: 1.5px 0;
   background-color: $white;
   border: 0px solid $white;
   text-align: left;
   padding: 0px;
   color: $romanSilver;
+  font-size: 15px;
 }
-
-.BranchMenu__item--collaborators-button:hover,
-.BranchMenu__item--collaborators-button:focus,
-.BranchMenu__item--delete-button:hover,
-.BranchMenu__item--delete-button:focus,
-.BranchMenu__item--export-button:hover,
-.BranchMenu__item--export-button:focus {
-  background-size: 16px;
-  color: $turquise;
+.BranchMenu__item--flat-button:hover {
+  background-color: $background-color;
   width: 100%;
   cursor: pointer;
-
-  margin: 0 0 5px 0;
-  background-color: $white;
+  color: $romanSilver;
+  margin: 1.5px 0;
   border: 0px solid $white;
 }
 
-.BranchMenu__item--collaborators-button.disabled,
-.BranchMenu__item--collaborators-button.disabled:hover,
-.BranchMenu__item--export-button:disabled,
-.BranchMenu__item--export-button:disabled:hover,
-.BranchMenu__item--delete-button:disabled,
-.BranchMenu__item--delete-button:disabled:hover{
-  background-size: 16px;
+.BranchMenu__item--flat-button.disabled,
+.BranchMenu__item--flat-button.disabled:hover{
   width: 100%;
-  cursor: pointer;
-  margin: 0 0 5px 0;
+  margin: 1.5px 0;
   background-color: $white;
   border: 0px solid $white;
   opacity: 0.3;
@@ -276,14 +356,40 @@
   @include flex(space-between, row);
 }
 
-.BranchMenu__collaborator--item {
-  border-bottom: 1px solid $lightGrey;
-  padding: 10px 0;
-  @include flex(space-between, row);
+
+.BranchMenu__add.loading{
+  button {
+    border: 3px solid $grey;
+    border-top: 3px solid $turquise;
+    border-radius: 50%;
+    background: $white;
+    animation: spin 2s linear infinite;
+    cursor: default;
+  }
+}
+.BranchMenu__collaborator--item.loading{
+  button {
+    border: 3px solid $grey;
+    border-top: 3px solid $turquise;
+    border-radius: 50%;
+    background: $white;
+    animation: spin 2s linear infinite;
+    cursor: default;
+  }
 }
 
+.BranchMenu__collaborators {
+  color: $romanSilver;
+  h5 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+  }
+}
+
+
 .BranchMenu__collaborators-list {
-  height: 340px;
+  height: 100%;
   overflow: auto;
 }
 
@@ -303,7 +409,7 @@
   @include flex(flex-start, row);
   flex-wrap: nowrap;
   align-items: center;
-  margin: 20px 0 0;
+  margin: 5px 0 0;
 }
 
 .BranchMenu__input[type="text"]{
@@ -311,12 +417,13 @@
   padding: 0px 5px !important;
   border: 1px solid $romanSilver !important;
   border-radius: 8px 0px 0px 8px !important;
-  height: 40px !important;
+  height: 30px !important;
   margin: 0px !important;
+  font-size: 15px !important;
 }
 
 .BranchMenu__copy-button{
-  height: 42px;
+  height: 32px;
   width: 40px;
   padding: 0px;
   border-radius: 0px 8px 8px 0px !important;
@@ -332,4 +439,10 @@
 .ForceSync__buttons{
   width: 200px;
   @include flex(space-between, row);
+}
+
+.BranchMenu__remote-button,
+.BranchMenu__sync-button {
+  width: 90%;
+  border-radius: 40px;
 }

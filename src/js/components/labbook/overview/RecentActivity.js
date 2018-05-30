@@ -1,39 +1,14 @@
 //vendor
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import {
-  QueryRenderer,
-  graphql
-} from 'react-relay'
-import className from 'classnames'
 import {Link} from 'react-router-dom';
 import ReactMarkdown from 'react-markdown'
 import Moment from 'moment'
 //components
 import CodeBlock from 'Components/labbook/renderers/CodeBlock'
-//utilites
-import environment from 'JS/createRelayEnvironment'
 //store
 import store from 'JS/redux/store'
 
-let RecentActivityQuery = graphql`query RecentActivityQuery($name: String!, $owner: String!, $first: Int!){
-  labbook(name: $name, owner: $owner){
-    activityRecords(first: $first){
-      edges{
-        node{
-          id
-          message
-          detailObjects{
-            data
-            type
-          }
-          timestamp
-        }
-      }
-    }
-  }
-}
-`
 
 export default class RecentActivity extends Component {
   _renderDetail(node){
@@ -41,17 +16,17 @@ export default class RecentActivity extends Component {
     if(item){
       switch(item[0]){
         case 'text/plain':
-          return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
+          return(<div className="ReactMarkdown"><p>{item[1]}</p></div>)
         case 'image/png':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/jpg':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/jpeg':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/bmp':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'image/gif':
-          return(<img alt="detail" src={item[1]} />)
+          return(<p className="ReactMarkdown"><img alt="detail" src={item[1]} /></p>)
         case 'text/markdown':
           return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
         default:
@@ -63,17 +38,19 @@ export default class RecentActivity extends Component {
   }
 
   checkOverflow(el) {
-   var curOverflow = el.style.overflow;
+    if(el) {
+      var curOverflow = el.style.overflow;
 
-   if ( !curOverflow || curOverflow === "visible" )
-      el.style.overflow = "hidden";
+      if ( !curOverflow || curOverflow === "visible" )
+         el.style.overflow = "hidden";
 
-   var isOverflowing = el.clientWidth < el.scrollWidth
-      || el.clientHeight < el.scrollHeight;
+      var isOverflowing = el.clientWidth < el.scrollWidth
+         || el.clientHeight < el.scrollHeight;
 
-   el.style.overflow = curOverflow;
+      el.style.overflow = curOverflow;
 
-   return isOverflowing;
+      return isOverflowing;
+    }
   }
   _setLinks() {
     let elements = Array.prototype.slice.call(document.getElementsByClassName('ReactMarkdown'));
@@ -87,8 +64,10 @@ export default class RecentActivity extends Component {
     for (let key in this.refs) {
       if(!moreObj[key]) {
         ReactDOM.findDOMNode(this.refs[key]).className = 'hidden';
+        ReactDOM.findDOMNode(this.refs[key]).previousSibling.classList.add('hidden')
       } else {
         ReactDOM.findDOMNode(this.refs[key]).className = 'RecentActivity__card-link';
+        ReactDOM.findDOMNode(this.refs[key]).previousSibling.classList.remove('hidden')
       }
     }
   }
@@ -116,19 +95,20 @@ export default class RecentActivity extends Component {
             <h5 className="RecentActivity__header">Activity</h5>
             <Link to={`../../../../labbooks/${owner}/${labbookName}/activity`}>Activity Details ></Link>
           </div>
-          <div className="RecentActivity__list">
+          <div className="RecentActivity__list grid">
             {
               recentActivity.map((edge, index) =>{
                 return (
                   <div
                     key={edge.id}
-                    className="RecentActivity__card">
+                    className="RecentActivity__card column-3-span-4">
                     <div className="RecentActivity__card-date">{this._getDate(edge)}</div>
                     <div className="RecentActivity__card-detail">
                       {
                         this._renderDetail(edge)
                       }
                     </div>
+                    <div className="RecentActivity__fadeout hidden"></div>
                     <Link
                         className="RecentActivity__card-link hidden"
                         to={{pathname: `../../../../labbooks/${owner}/${labbookName}/activity`}}
@@ -148,7 +128,7 @@ export default class RecentActivity extends Component {
       return(
       <div className="RecentActivity">
         <h5 className="RecentActivity__header">Activity</h5>
-        <div className="RecentActivity__list">
+        <div className="RecentActivity__list grid">
           <div className="RecentActivity__card--loading"></div>
           <div className="RecentActivity__card--loading"></div>
           <div className="RecentActivity__card--loading"></div>

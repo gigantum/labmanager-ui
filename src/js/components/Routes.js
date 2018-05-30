@@ -1,7 +1,7 @@
 //vendor
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
+import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
 import Auth from 'JS/Auth/Auth';
 import history from 'JS/history';
@@ -42,7 +42,8 @@ export default class Routes extends Component {
   constructor(props){
     super(props)
     this.state = {
-      history: history
+      history: history,
+      hasError: false,
     }
 
     this.setRouteStore = this.setRouteStore.bind(this)
@@ -78,147 +79,163 @@ export default class Routes extends Component {
     this.props.auth.logout()
   }
 
+  /**
+    @param {Error, Object} error, info
+    shows error message when runtime error occurs
+  */
+  componentDidCatch(error, info) {
+    this.setState({hasError: true})
+  }
+
   render(){
-    let authed = auth.isAuthenticated();
-    let self = this
-    let headerCSS = classNames({
-      'Header': authed,
-      'hidden': !authed
-    })
-    let routesCSS = classNames({
-      'Routes__main': authed,
-      'Routes__main-no-auth': !authed
-    })
-    return(
+    if(!this.state.hasError){
+      let authed = auth.isAuthenticated();
+      let self = this
+      let headerCSS = classNames({
+        'Header': authed,
+        'hidden': !authed
+      })
+      let routesCSS = classNames({
+        'Routes__main': authed,
+        'Routes__main-no-auth': !authed
+      })
+      return(
 
-        <Router>
+          <Router>
 
-          <Switch>
+            <Switch>
 
-            <Route
-              path=""
-              render={(location) => {return(
-              <div className="Routes">
-                <div className={headerCSS}></div>
-                <SideBar
-                  auth={auth} history={history}
-                />
-                <div className={routesCSS}>
+              <Route
+                path=""
+                render={(location) => {return(
+                <div className="Routes">
+                  <div className={headerCSS}></div>
+                  <SideBar
+                    auth={auth} history={history}
+                  />
+                  <div className={routesCSS}>
 
-                <Route
-                  exact
-                  path="/"
-                  render={(props) =>
-                    <Home
-                      history={history}
-                      auth={auth}
-                      {...props}
-                    />
-                  }
-                />
-                <Route
-                  exact
-                  path="/:id"
-                  render={(props) =>
-                    <Home
-                      history={history}
-                      auth={auth}
-                      {...props}
-                    />
-                  }
-                />
-
-                <Route
-                  exact
-                  path="/:id/:labbookFilter"
-                  render={(props) =>
-                    <Home
-                      history={history}
-                      auth={auth}
-                      {...props}
-                    />
-                  }
-                />
-
-                <Route
-                  path="/labbooks/:owner/:labbookName"
-                  auth={auth}
-                  render={(parentProps) =>{
-
-                      const labbookName = parentProps.match.params.labbookName;
-                      const owner = parentProps.match.params.owner;
-
-                      self.setRouteStore(owner, labbookName)
-
-                      return (<QueryRenderer
-                        environment={environment}
-                        query={LabbookQuery}
-                        variables={
-                          {
-                            name: parentProps.match.params.labbookName,
-                            owner: parentProps.match.params.owner,
-                            first: 2,
-                            hasNext: false
-                          }
-                        }
-                        render={({error, props}) => {
-
-                          if(error){
-                            console.log(error)
-                            return (<div>{error.message}</div>)
-                          }
-                          else if(props){
-                            if(props.errors){
-                              return(<div>{props.errors[0].message}</div>)
-                            }else{
-
-
-                              return (<Labbook
-                                key={labbookName}
-                                auth={auth}
-                                labbookName={labbookName}
-                                query={props.query}
-                                labbook={props.labbook}
-                                owner={owner}
-                                {...parentProps}
-                              />)
-                            }
-                          }
-                          else{
-                            return (<Loader />)
-                          }
-                        }
-                      }
-                    />)
-                  }
-
-                  }
-                />
-
-                <Route
-                  path="/callback"
-                  render={(props) => {
-                    handleAuthentication(props);
-                    return (
-                      <Callback
+                  <Route
+                    exact
+                    path="/"
+                    render={(props) =>
+                      <Home
+                        history={history}
+                        auth={auth}
                         {...props}
                       />
-                    )
-                  }}
-                />
-                <Prompt
-                  ref="prompt"
-                />
-                <Footer
-                  ref="footer"
-                  history={history}
-                />
-              </div>
-              </div>
-            )}}
-           />
-          </Switch>
-        </Router>
-    )
+                    }
+                  />
+
+
+                  <Route
+                    exact
+                    path="/:id"
+                    render={(props) =>
+                      <Redirect to="/labbooks/all"/>
+                    }
+                  />
+
+                  <Route
+                    exact
+                    path="/labbooks/:labbookFilter"
+                    render={(props) =>
+                      <Home
+                        history={history}
+                        auth={auth}
+                        {...props}
+                      />
+                    }
+                  />
+
+                  <Route
+                    path="/labbooks/:owner/:labbookName"
+                    auth={auth}
+                    render={(parentProps) =>{
+
+                        const labbookName = parentProps.match.params.labbookName;
+                        const owner = parentProps.match.params.owner;
+
+                        self.setRouteStore(owner, labbookName)
+
+                        return (<QueryRenderer
+                          environment={environment}
+                          query={LabbookQuery}
+                          variables={
+                            {
+                              name: parentProps.match.params.labbookName,
+                              owner: parentProps.match.params.owner,
+                              first: 2,
+                              hasNext: false
+                            }
+                          }
+                          render={({error, props}) => {
+
+                            if(error){
+                              console.log(error)
+                              return (<div>{error.message}</div>)
+                            }
+                            else if(props){
+                              if(props.errors){
+                                return(<div>{props.errors[0].message}</div>)
+                              }else{
+
+
+                                return (<Labbook
+                                  key={labbookName}
+                                  auth={auth}
+                                  labbookName={labbookName}
+                                  query={props.query}
+                                  labbook={props.labbook}
+                                  owner={owner}
+                                  {...parentProps}
+                                />)
+                              }
+                            }
+                            else{
+                              return (<Loader />)
+                            }
+                          }
+                        }
+                      />)
+                    }
+
+                    }
+                  />
+
+                  <Route
+                    path="/callback"
+                    render={(props) => {
+                      handleAuthentication(props);
+                      return (
+                        <Callback
+                          {...props}
+                        />
+                      )
+                    }}
+                  />
+
+                  <Prompt
+                    ref="prompt"
+                  />
+                  <Footer
+                    ref="footer"
+                    history={history}
+                  />
+                </div>
+                </div>
+              )}}
+             />
+            </Switch>
+          </Router>
+      )
+    } else {
+      return (
+        <div className="Routes__error">
+     
+          <p>An error has occured. Please try refreshing the page.</p>
+        </div>
+      )
+    }
   }
 }

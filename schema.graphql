@@ -1,9 +1,18 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Mon Mar 26 2018 15:34:42 GMT-0400 (EDT)
+# timestamp: Wed May 23 2018 14:48:32 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
   mutation: LabbookMutations
+}
+
+"""Enumeration representing the modifiers on Activity Detail Records"""
+enum ActivityAction {
+  NOACTION
+  CREATE
+  EDIT
+  DELETE
+  EXECUTE
 }
 
 """A Connection for paging through activity recrods"""
@@ -21,6 +30,7 @@ type ActivityDetailObject implements Node & GitRepository {
   key: String!
   data: [[String]]
   type: ActivityDetailType
+  action: ActivityAction
   show: Boolean
   importance: Int
   tags: [String]
@@ -92,6 +102,18 @@ type AddCustomComponentPayload {
   clientMutationId: String
 }
 
+input AddCustomDockerInput {
+  owner: String!
+  labbookName: String!
+  dockerContent: String!
+  clientMutationId: String
+}
+
+type AddCustomDockerPayload {
+  updatedEnvironment: Environment
+  clientMutationId: String
+}
+
 input AddLabbookCollaboratorInput {
   owner: String!
   labbookName: String!
@@ -156,10 +178,17 @@ input AddPackageComponentInput {
   manager: String!
   package: String!
   version: String
+  skipValidation: Boolean
   clientMutationId: String
 }
 
-"""Mutation to add a new package to labbook"""
+"""
+Mutation to add a new package to labbook
+
+The optional argument `skipValidation` will skip the validation step when adding the package.
+You MUST have previously validated the package information or errors can occur at build time.
+You MUST include a version, since auto-addition of a package version is done during validation.
+"""
 type AddPackageComponentPayload {
   newPackageComponentEdge: PackageComponentEdge
   clientMutationId: String
@@ -185,6 +214,7 @@ type BaseComponent implements Node {
   languages: [String]
   developmentTools: [String]
   packageManagers: [String]
+  installedPackages: [String]
   dockerImageServer: String
   dockerImageNamespace: String
   dockerImageRepository: String
@@ -266,6 +296,21 @@ type CreateBranchPayload {
   clientMutationId: String
 }
 
+input CreateExperimentalBranchInput {
+  owner: String!
+  labbookName: String!
+  branchName: String!
+  revision: String
+  description: String
+  clientMutationId: String
+}
+
+"""Mutation to create a local experimental (or Rollback) branch. """
+type CreateExperimentalBranchPayload {
+  labbook: Labbook
+  clientMutationId: String
+}
+
 input CreateLabbookInput {
   name: String!
   description: String!
@@ -340,6 +385,19 @@ value as specified by
 """
 scalar DateTime
 
+input DeleteExperimentalBranchInput {
+  owner: String!
+  labbookName: String!
+  branchName: String!
+  clientMutationId: String
+}
+
+"""Delete a feature/rollback branch. Fails for any other attempt."""
+type DeleteExperimentalBranchPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
 input DeleteLabbookCollaboratorInput {
   owner: String!
   labbookName: String!
@@ -379,6 +437,19 @@ type DeleteLabbookPayload {
   clientMutationId: String
 }
 
+input DeleteRemoteLabbookInput {
+  owner: String!
+  labbookName: String!
+  confirm: Boolean!
+  clientMutationId: String
+}
+
+"""Delete a labbook from the remote repository."""
+type DeleteRemoteLabbookPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
 """A type that represents the Environment for a LabBook"""
 type Environment implements Node & GitRepository {
   """The ID of the object."""
@@ -390,6 +461,7 @@ type Environment implements Node & GitRepository {
   base: BaseComponent
   packageDependencies(before: String, after: String, first: Int, last: Int): PackageComponentConnection
   customDependencies(before: String, after: String, first: Int, last: Int): CustomComponentConnection
+  dockerSnippet: String
 }
 
 input ExportLabbookInput {
@@ -499,12 +571,17 @@ type Labbook implements Node & GitRepository {
   owner: String!
   name: String!
   description: String
+  readme: String
   schemaVersion: Int
   sizeBytes: String
-  activeBranch: LabbookRef
+  activeBranchName: String
+  workspaceBranchName: String
+  availableBranchNames: [String]
+  mergeableBranchNames: [String]
+  activeBranch: LabbookRef @deprecated(reason: "Can use workspaceBranchName instead")
+  branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection @deprecated(reason: "Can use availableBranchNames instead")
   defaultRemote: String
   creationDateUtc: DateTime
-  branches(before: String, after: String, first: Int, last: Int): LabbookRefConnection
   collaborators: [String]
   canManageCollaborators: Boolean
   updatesAvailableCount: Int
@@ -518,6 +595,7 @@ type Labbook implements Node & GitRepository {
   detailRecord(key: String): ActivityDetailObject
   detailRecords(keys: [String]): [ActivityDetailObject]
   backgroundJobs: [JobStatus]
+  package(manager: String, package: String, version: String = ""): PackageComponent
 }
 
 """An object representing a commit to a LabBook"""
@@ -588,7 +666,7 @@ type LabbookFile implements Node & GitRepository {
   isDir: Boolean
   isFavorite: Boolean
   modifiedAt: Int
-  size: Int
+  size: String
 }
 
 """A connection for paging through labbook files. """
@@ -605,6 +683,23 @@ type LabbookFileEdge {
   cursor: String!
 }
 
+"""
+A type simply used as a container to group local and remote LabBooks for better relay support
+
+Labbook and RemoteLabbook objects are uniquely identified by both the "owner" and the "name" of the LabBook
+
+NOTE: RemoteLabbooks require all fields to be explicitly set as there is no current way to asynchronously retrieve
+      the data
+
+NOTE: Currently all RemoteLabbook description fields will return empty strings
+"""
+type LabbookList implements Node {
+  """The ID of the object."""
+  id: ID!
+  localLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): LabbookConnection
+  remoteLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): RemoteLabbookConnection
+}
+
 """Entry point for all graphql mutations"""
 type LabbookMutations {
   importLabbook(input: ImportLabbookInput!): ImportLabbookPayload
@@ -612,7 +707,9 @@ type LabbookMutations {
   exportLabbook(input: ExportLabbookInput!): ExportLabbookPayload
   createLabbook(input: CreateLabbookInput!): CreateLabbookPayload
   deleteLabbook(input: DeleteLabbookInput!): DeleteLabbookPayload
+  deleteRemoteLabbook(input: DeleteRemoteLabbookInput!): DeleteRemoteLabbookPayload
   renameLabbook(input: RenameLabbookInput!): RenameLabbookPayload
+  setLabbookDescription(input: SetLabbookDescriptionInput!): SetLabbookDescriptionPayload
   publishLabbook(input: PublishLabbookInput!): PublishLabbookPayload
   syncLabbook(input: SyncLabbookInput!): SyncLabbookPayload
   createBranch(input: CreateBranchInput!): CreateBranchPayload
@@ -629,6 +726,8 @@ type LabbookMutations {
   removeCustomComponent(input: RemoveCustomComponentInput!): RemoveCustomComponentPayload
   addPackageComponent(input: AddPackageComponentInput!): AddPackageComponentPayload
   removePackageComponent(input: RemovePackageComponentInput!): RemovePackageComponentPayload
+  addCustomDocker(input: AddCustomDockerInput!): AddCustomDockerPayload
+  removeCustomDocker(input: RemoveCustomDockerInput!): RemoveCustomDockerPayload
   addLabbookFile(input: AddLabbookFileInput!): AddLabbookFilePayload
   moveLabbookFile(input: MoveLabbookFileInput!): MoveLabbookFilePayload
   deleteLabbookFile(input: DeleteLabbookFileInput!): DeleteLabbookFilePayload
@@ -639,6 +738,11 @@ type LabbookMutations {
   removeFavorite(input: RemoveLabbookFavoriteInput!): RemoveLabbookFavoritePayload
   addCollaborator(input: AddLabbookCollaboratorInput!): AddLabbookCollaboratorPayload
   deleteCollaborator(input: DeleteLabbookCollaboratorInput!): DeleteLabbookCollaboratorPayload
+  writeReadme(input: WriteReadmeInput!): WriteReadmePayload
+  createExperimentalBranch(input: CreateExperimentalBranchInput!): CreateExperimentalBranchPayload
+  deleteExperimentalBranch(input: DeleteExperimentalBranchInput!): DeleteExperimentalBranchPayload
+  mergeFromBranch(input: MergeFromBranchInput!): MergeFromBranchPayload
+  workonExperimentalBranch(input: WorkonBranchInput!): WorkonBranchPayload
 }
 
 """
@@ -669,7 +773,7 @@ type LabbookQuery {
   currentLabbookSchemaVersion: Int
   jobStatus(jobId: String): JobStatus
   backgroundJobs(before: String, after: String, first: Int, last: Int): JobStatusConnection
-  localLabbooks(before: String, after: String, first: Int, last: Int): LabbookConnection
+  labbookList: LabbookList
   availableBases(before: String, after: String, first: Int, last: Int): BaseComponentConnection
   availableCustomDependencies(before: String, after: String, first: Int, last: Int): CustomComponentConnection
   package(manager: String, package: String, version: String = ""): PackageComponent
@@ -727,6 +831,22 @@ input MakeLabbookDirectoryInput {
 
 type MakeLabbookDirectoryPayload {
   newLabbookFileEdge: LabbookFileEdge
+  clientMutationId: String
+}
+
+input MergeFromBranchInput {
+  owner: String!
+  labbookName: String!
+  otherBranchName: String!
+  force: Boolean
+  clientMutationId: String
+}
+
+"""
+Merge from another branch into the current active branch. Force if necessary. 
+"""
+type MergeFromBranchPayload {
+  labbook: Labbook
   clientMutationId: String
 }
 
@@ -829,6 +949,54 @@ type PushActiveBranchToRemotePayload {
   clientMutationId: String
 }
 
+"""
+A type representing a LabBook stored on a remote server
+
+RemoteLabbooks are uniquely identified by both the "owner" and the "name" of the LabBook
+
+NOTE: RemoteLabbooks require all fields to be explicitly set as there is no current way to asynchronously retrieve
+      the data
+
+NOTE: Currently all description fields will return empty strings
+"""
+type RemoteLabbook implements Node & GitRepository {
+  """The ID of the object."""
+  id: ID!
+  owner: String!
+  name: String!
+  description: String
+  creationDateUtc: String
+  modifiedDateUtc: String
+  isLocal: Boolean
+}
+
+"""
+A Connection for paging through remote labbooks.
+
+This is a remote call, so should be fetched on its own and only when needed. The user must have a valid
+session for data to be returned.
+
+It is recommended to use large page size (e.g. 50-100). This is due to how the remote server returns all the
+available data at once, so it is more efficient to load a lot of records at a time.
+
+Supported sorting modes:
+    - az: naturally sort
+    - created_on: sort by creation date, newest first
+    - modified_on: sort by modification date, newest first
+"""
+type RemoteLabbookConnection {
+  pageInfo: PageInfo!
+  edges: [RemoteLabbookEdge]!
+}
+
+type RemoteLabbookEdge {
+  """The item at the end of the edge"""
+  node: RemoteLabbook
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
 input RemoveCustomComponentInput {
   owner: String!
   labbookName: String!
@@ -840,6 +1008,17 @@ input RemoveCustomComponentInput {
 """Mutation to remove an environment component to a LabBook"""
 type RemoveCustomComponentPayload {
   success: Boolean
+  clientMutationId: String
+}
+
+input RemoveCustomDockerInput {
+  owner: String!
+  labbookName: String!
+  clientMutationId: String
+}
+
+type RemoveCustomDockerPayload {
+  updatedEnvironment: Environment
   clientMutationId: String
 }
 
@@ -896,6 +1075,18 @@ type RenameLabbookPayload {
   clientMutationId: String
 }
 
+input SetLabbookDescriptionInput {
+  owner: String!
+  labbookName: String!
+  descriptionContent: String!
+  clientMutationId: String
+}
+
+type SetLabbookDescriptionPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
 input StartContainerInput {
   owner: String!
   labbookName: String!
@@ -942,6 +1133,7 @@ input SyncLabbookInput {
 
 type SyncLabbookPayload {
   updateCount: Int
+  updatedLabbook: Labbook
   clientMutationId: String
 }
 
@@ -977,4 +1169,30 @@ type UserIdentity implements Node & User {
   givenName: String
   familyName: String
   isSessionValid: Boolean
+}
+
+input WorkonBranchInput {
+  owner: String!
+  labbookName: String!
+  branchName: String!
+  revision: String
+  clientMutationId: String
+}
+
+"""Work on another branch (perform a git checkout)."""
+type WorkonBranchPayload {
+  labbook: Labbook
+  clientMutationId: String
+}
+
+input WriteReadmeInput {
+  owner: String!
+  labbookName: String!
+  content: String!
+  clientMutationId: String
+}
+
+type WriteReadmePayload {
+  updatedLabbook: Labbook
+  clientMutationId: String
 }

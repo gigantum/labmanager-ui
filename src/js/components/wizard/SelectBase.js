@@ -30,6 +30,7 @@ const BaseQuery = graphql`query SelectBaseQuery($first: Int!, $cursor: String){
         url
         languages
         developmentTools
+        installedPackages
         packageManagers
         dockerImageServer
         dockerImageNamespace
@@ -98,7 +99,6 @@ export default class SelectBase extends React.Component {
     callback triggers and modal state is changed to  next window
   */
   continueSave(){
-    const username = localStorage.getItem('username')
     this.props.toggleDisabledContinue(true);
     this.props.createLabbookMutation()
   }

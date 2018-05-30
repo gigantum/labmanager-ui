@@ -5,7 +5,7 @@ html, body, .root {
   padding: 0;
   color: $jet;
   font-family: arial;
-  position: relative;
+  //position: relative;
 }
 
 body {
@@ -38,6 +38,10 @@ h6 {
   font-weight: 100;
 }
 
+h5{
+  margin-top: 50px;
+}
+
 ul {
   margin: 0;
 }
@@ -55,7 +59,6 @@ h6 {
 
 li > code,
 p > code {
-  // color: $jet;
   display: inline !important;
   padding: 0px 3px !important;
   white-space: pre-wrap !important;

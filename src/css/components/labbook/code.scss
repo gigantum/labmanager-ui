@@ -69,9 +69,6 @@
   color: $jet;
 }
 
-.Code__favorites-card {
-}
-
 .Code__file-browser {
   padding: 10px 15px;
 
@@ -80,12 +77,19 @@
 }
 
 .Code__subtitle {
-
   text-align: left;
-
   color: $romanSilver;
-
   font-weight: 100;
+}
+
+.Code__subtitle-sub {
+  text-align: left;
+  color: $romanSilver;
+  margin-top: 0;
+}
+
+.Code__toolbar.end {
+  align-self: flex-end;
 }
 
 .Code__loading {
@@ -187,4 +191,48 @@
   td{
     text-align: center !important;
   }
+}
+
+.FileBrowser__modal{
+  position: relative;
+  @include modal(340px, 540px);
+  z-index: index($elements, modal);
+  padding: 40px;
+  @include flex(space-between, column);
+
+}
+
+.FileBrowser__header{
+  @include modalHeader();
+
+  border-bottom: 1px solid $azure;
+}
+
+.FileBrowser__body{
+  @include flex(space-around, column);
+  flex: 1;
+  p{
+    flex: 1;
+    margin-top: 40px;
+  }
+}
+
+.FileBrowser__button-container{
+  @include flex(space-between, row);
+  width: 100%;
+  text-align: center;
+
+  align-self: center;
+
+  button{
+    padding: 0 8px;
+    margin: 10px;
+    width: auto;
+    text-align: center;
+  }
+
+}
+
+.FileBrowser__close-modal{
+  @include close();
 }

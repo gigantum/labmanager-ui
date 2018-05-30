@@ -34,33 +34,36 @@ function sharedUpdater(store, parentId, connectionKey, node, tempId) {
 
   const labbookProxy = store.get(parentId);
 
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    labbookProxy,
-    connectionKey
-  );
+  if(labbookProxy){
 
-  if(conn){
-
-    if(tempId){
-
-      RelayRuntime.ConnectionHandler.deleteNode(
-        conn,
-        tempId
-      );
-    }
-
-    const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-      store,
-      conn,
-      node,
-      "newFavoriteEdge"
-    )
-
-    RelayRuntime.ConnectionHandler.insertEdgeAfter(
-      conn,
-      newEdge
+    const conn = RelayRuntime.ConnectionHandler.getConnection(
+      labbookProxy,
+      connectionKey
     );
 
+    if(conn){
+
+      if(tempId){
+
+        RelayRuntime.ConnectionHandler.deleteNode(
+          conn,
+          tempId
+        );
+      }
+
+      const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+        store,
+        conn,
+        node,
+        "newFavoriteEdge"
+      )
+
+      RelayRuntime.ConnectionHandler.insertEdgeAfter(
+        conn,
+        newEdge
+      );
+
+    }
   }
 }
 
@@ -130,7 +133,7 @@ export default function AddFavoriteMutation(
           sharedUpdater(store, parentId, favoriteKey, node, tempId)
 
         }
-    
+
         const fileNode = store.get(fileItem.node.id)
         if(fileNode){
           fileNode.setValue(true, 'isFavorite')

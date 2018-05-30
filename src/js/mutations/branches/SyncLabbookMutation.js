@@ -3,12 +3,14 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
 
 const mutation = graphql`
-  mutation SyncLabbookMutation($input: SyncLabbookInput!){
+  mutation SyncLabbookMutation($input: SyncLabbookInput!, $first: Int, $cursor: String, $hasNext: Boolean!){
     syncLabbook(input: $input){
       updateCount
+      updatedLabbook{
+        ...Labbook_labbook
+      }
       clientMutationId
     }
   }
@@ -30,7 +32,10 @@ export default function SyncLabbookMutation(
       labbookName,
       force,
       clientMutationId: tempID++
-    }
+    },
+    first: 2,
+    cursor: null,
+    hasNext: false
   }
 
   commitMutation(

@@ -129,7 +129,7 @@ class CustomDependencies extends Component {
   _toggleViewContainer(){
     if (navigator.onLine) {
       const {status} = store.getState().containerStatus;
-      const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+      const canEditEnvironment = config.containerStatus.canEditEnvironment(status) && !this.props.isLocked
 
       if(canEditEnvironment){
         store.dispatch({
@@ -308,9 +308,9 @@ class CustomDependencies extends Component {
         <div className="CustomDependencies">
 
             <div className="Environment__header-container">
-              <h4 className="CustomDependencies__header">
+              <h5 className="CustomDependencies__header">
                 Custom Dependencies
-              </h4>
+              </h5>
             </div>
             <div className="CustomDependencies__card">
             <div className="CustomDependencies__add-dependencies">
@@ -349,15 +349,6 @@ class CustomDependencies extends Component {
             </div>
 
             <div className="CustomDependencies__table--container">
-              {
-              //Awaiting new UI design due to user confusion
-              /* <input
-                type="text"
-                className="full--border"
-                placeholder="Filter dependencies by keyword"
-                onKeyUp={(evt)=> this._setSearchValue(evt)}
-              /> */
-            }
 
               <table className="CustomDependencies__table">
                 <thead>

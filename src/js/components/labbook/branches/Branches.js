@@ -1,37 +1,37 @@
 //vendor
 import React, { Component } from 'react'
-import {
-  createPaginationContainer,
-  graphql
-} from 'react-relay'
 import classNames from 'classnames'
 //componenets
 import Loader from 'Components/shared/Loader'
 import BranchCard from './BranchCard'
-//store
-import store from 'JS/redux/store'
 
 
-class Branches extends Component {
+export default class Branches extends Component {
   constructor(props){
     super(props)
     this.state = {
       newBranchName: '',
       isValid: true,
       listPosition: 0,
+      listPositionIndex: 0,
       width: 0,
     }
-
+    this._determineVisibleBranchCount = this._determineVisibleBranchCount.bind(this)
+    this._windowResize = this._windowResize.bind(this)
   }
   /**
     subscribe to store to update state
   */
   componentDidMount() {
-    if(this.props.labbook.branches.pageInfo.hasNextPage){
-      this._loadMore()
-    }
-    const width = this.refs.Branches__branchesList.offsetWidth
+
+    const width = this.refs.Branches__branchesList.offsetWidth - 30
     this.setState({width: width})
+
+    window.addEventListener('resize', this._windowResize)
+  }
+
+  componentWillMount() {
+    window.removeEventListener('resize', this._windowResize)
   }
   /**
   *  @param {object} overview
@@ -44,37 +44,24 @@ class Branches extends Component {
     }
   }
   /**
-  * @param {}
-  * loads more edges via pagination
-  * @return{}
+  *  @param {}
+  *  triggers on resize
+  * update width in state
+  *  @return
   */
-  _loadMore() {
-    const {relay} = this.props
-    let self = this;
-
-    relay.loadMore(
-     5, // Fetch the next 5 feed items
-     (response, error) => {
-       if(error){
-         console.error(error)
-       }
-       if(self.props.labbook.branches &&
-         self.props.labbook.branches.pageInfo.hasNextPage) {
-
-         self._loadMore()
-       }
-     }
-   );
+  _windowResize(evt){
+    if(this.refs.Branches__branchesList){
+      const width = this.refs.Branches__branchesList.offsetWidth - 30
+      this.setState({width: width})
+    }
   }
   /**
   * @param {number} value
   * updates list position in state
   * @return{}
   */
-  _updatePosition(value){
-
-    this.setState({listPosition: (this.state.listPosition + value)})
-
+  _updatePosition(index){
+    this.setState({listPositionIndex: (this.state.listPositionIndex + index)})
   }
   /**
   * @param {array} branches
@@ -82,35 +69,48 @@ class Branches extends Component {
   * @return{array} filteredBranches
   */
   _filterBranches(branches){
-    let activeBranch
-    let filteredBranches = branches.filter((branch) => {
 
-      if(branch.node.name === this.props.labbook.activeBranch.name){
-        activeBranch = branch;
-      }
-      return (branch.node.name !== this.props.labbook.activeBranch.name)
+    let filteredBranches = branches.filter((branchName) => {
+      return (branchName !== this.props.labbook.activeBranchName)
     });
 
-    if(activeBranch){
-      filteredBranches.unshift(activeBranch);
+    if(!this.props.mergeFilter){
+      filteredBranches.unshift(this.props.labbook.activeBranchName);
     }
+
     return filteredBranches
+  }
+  /**
+  * @param {}
+  * determines how many branches are visible based on window width
+  * @return {int} branchCount
+  */
+  _determineVisibleBranchCount() {
+    let branchCount = 5;
+    if (window.innerWidth <= 1239) {
+      branchCount = 3;
+    } else if (window.innerWidth <= 1600) {
+      branchCount = 4;
+    }
+    return branchCount;
   }
 
   render(){
-    let showRightBumper = (-this.state.listPosition < (25 * (this.props.labbook.branches.edges.length - 4)))
-
     if(this.props.labbook){
-      const branches = this._filterBranches(this.props.labbook.branches.edges);
-
+      const listPositionIndex = this.state.listPositionIndex
+      const {labbook} = this.props
+      const branchArrayToFilter = this.props.mergeFilter ?  labbook.mergeableBranchNames : labbook.availableBranchNames
+      const branches = this._filterBranches(branchArrayToFilter);
+      const branchesVisibleCount = this._determineVisibleBranchCount();
+      const showRightBumper = (listPositionIndex < (labbook.availableBranchNames.length - branchesVisibleCount))
       const branchesCSS = classNames({
         'Branches': this.props.branchesOpen,
-        'Branches--closed': !this.props.branchesOpe
+        'Branches--closed': !this.props.branchesOpen
       })
 
       const leftBumperCSS = classNames({
-        'Brances__slider-button--left': (-this.state.listPosition > 0),
-        'hidden': !(-this.state.listPosition > 0)
+        'Branches__slider-button--left': (listPositionIndex > 0),
+        'hidden': !(listPositionIndex > 0)
       })
 
       const branchesListCSS = classNames({
@@ -119,39 +119,49 @@ class Branches extends Component {
       })
 
       const rightBumperCSS = classNames({
-        'Brances__slider-button--left': this.props.branchesOpen && (showRightBumper),
+        'Branches__slider-button--right': this.props.branchesOpen && (showRightBumper),
         'hidden': !(this.props.branchesOpen && (showRightBumper))
       })
+      const width = listPositionIndex * (this.state.width/branches.length)
+
+      const widthPX = `-${width}px`;
 
       return(
-        <div className={branchesCSS}>
-
+        <div ref="Branches__branchesList__cover" className={branchesCSS}>
+          <div
+            onClick={() => {this.props.toggleBranchesView(false, false)}}
+            className="Branhces__button--close"></div>
           <button
-            onClick={() => {this._updatePosition(25)}}
+            onClick={() => {this._updatePosition(-1)}}
             className={leftBumperCSS}></button>
           <div
             ref="Branches__branchesList"
             className={branchesListCSS}
-            style={{left: (this.state.listPosition < 0) ? ' calc(' + this.state.listPosition + 'vw - 200px)' : ' 0vw'}}>
+            style={{left: (listPositionIndex > 0) ? widthPX : ' 0vw'}}>
 
             {
-              branches.map((edge)=>{
+              branches.map((name)=>{
                 return (
 
                   <div
-                    key={edge.node.id}
+                    key={name}
                     className="Branches__card-wrapper">
                       <BranchCard
-                        activeBranch={this.props.activeBranch}
-                        edge={edge}
+                        activeBranchName={this.props.labbook.activeBranchName}
+                        name={name}
                         labbookId={this.props.labbookId}
+                        mergeFilter={this.props.mergeFilter}
+                        branchesOpen={this.props.branchesOpen}
+                        setBuildingState={this.props.setBuildingState}
                       />
                   </div>)
               })
             }
+
           </div>
+
           <button
-            onClick={() => {this._updatePosition(-25)}}
+            onClick={() => {this._updatePosition(1)}}
             className={rightBumperCSS}></button>
 
         </div>
@@ -161,88 +171,3 @@ class Branches extends Component {
     }
   }
 }
-
-
-/*
-  activity pagination container
-  contains activity fragment and for query consumption
-*/
-export default createPaginationContainer(
-  Branches,
-  {
-    labbook: graphql`
-      fragment Branches_labbook on Labbook{
-        branches(first: $first, after: $cursor) @connection(key: "Branches_branches"){
-          edges{
-            node{
-              id
-              name
-              prefix
-              commit{
-                hash
-                shortHash
-                committedOn
-                id
-              }
-            }
-            cursor
-          }
-          pageInfo{
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
-          }
-        }
-        activeBranch{
-          id
-          name
-          prefix
-          commit{
-            hash
-            shortHash
-            committedOn
-            id
-          }
-        }
-      }`
-  },
-  {
-    direction: 'forward',
-    getConnectionFromProps(props) {
-        return props.labbook && props.labbook.branches;
-    },
-    getFragmentVariables(prevVars, first, cursor) {
-
-      return {
-       ...prevVars,
-       first: first,
-     };
-   },
-   getVariables(props, {count, cursor}, fragmentVariables) {
-     const {owner, labbookName} = store.getState().routes
-     const name = labbookName
-     let first = count
-     cursor = props.labbook.branches.edges[props.labbook.branches.edges.length - 1].cursor
-
-     return {
-       first,
-       cursor,
-       name,
-       owner
-       // in most cases, for variables other than connection filters like
-       // `first`, `after`, etc. you may want to use the previous values.
-       //orderBy: fragmentVariables.orderBy,
-     };
-   },
-   query: graphql`
-     query BranchesPaginationQuery($name: String!, $owner: String!, $first: Int!, $cursor: String){
-       labbook(name: $name, owner: $owner){
-         id
-         description
-         ...Branches_labbook
-       }
-     }`
-
-  }
-)

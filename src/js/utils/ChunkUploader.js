@@ -1,7 +1,5 @@
 //vendor
 import uuidv4 from 'uuid/v4'
-//utils
-import JobStatus from './JobStatus'
 //mutations
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 import AddLabbookFileMutation from 'Mutations/fileBrowser/AddLabbookFileMutation'
@@ -81,16 +79,9 @@ const updateTotalStatus = (file) =>{
 
 const updateChunkStatus = (file, chunkData) =>{
 
-
-  let fileCount = store.getState().footer.fileCount + 1
-  let totalFiles = store.getState().footer.totalFiles
-
-  const {blob,
+  const {
       fileSizeKb,
       chunkSize,
-      totalChunks,
-      filename,
-      uploadId,
     } = chunkData
   let chunkIndex = chunkData.chunkIndex + 1
   let uploadedChunkSize = ((chunkSize/1000) * chunkIndex) >fileSizeKb ? humanFileSize(fileSizeKb) : humanFileSize((chunkSize/1000) * chunkIndex)
@@ -138,7 +129,9 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
     accessToken,
     section,
     (result, error)=>{
-
+      store.dispatch({
+        type: 'FINISHED_UPLOADING',
+      })
       if(result && (error === undefined)){
         getChunkCallback(file, result)
         if(store.getState().footer.totalFiles > 1){
@@ -147,7 +140,13 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
           updateChunkStatus(file, chunkData)
         }
       }else{
-        getChunkCallback(error)
+        let errorBody = error.length && error[0].message ? error[0].message: error
+        store.dispatch({
+          type: 'WARNING_MESSAGE',
+          payload: {
+            message: errorBody,
+          }
+        })
       }
 
   })

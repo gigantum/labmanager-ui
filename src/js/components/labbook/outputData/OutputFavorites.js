@@ -9,13 +9,29 @@ import FileEmpty from 'Components/labbook/overview/FileEmpty'
 import store from 'JS/redux/store'
 
 class OutputFavorites extends Component {
+  /*
+    update component when props are reloaded
+  */
+  componentWillReceiveProps(nextProps) {
+
+    //this._loadMore() //routes query only loads 2, call loadMore
+    if(nextProps.output && nextProps.output.favorites && nextProps.output.favorites.pageInfo.hasNextPage && nextProps.output.favorites.edges.length < 3){
+      this.props.relay.loadMore(
+       1, // Fetch the next 10 feed items
+       (response, error) => {
+         if(error){
+           console.error(error)
+        }
+      })
+    }
+  }
 
   /*
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
     //this._loadMore() //routes query only loads 2, call loadMore
-    if(this.props.output && this.props.output.favorites && this.props.output.favorites.pageInfo.hasNextPage && this.props.input.favorites.edges.length < 3){
+    if(this.props.output && this.props.output.favorites && this.props.output.favorites.pageInfo.hasNextPage && this.props.output.favorites.edges.length < 3){
       this.props.relay.loadMore(
        1, // Fetch the next 10 feed items
        (response, error) => {

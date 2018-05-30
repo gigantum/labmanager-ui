@@ -5,7 +5,7 @@ import {createFragmentContainer, graphql} from 'react-relay'
 import Loader from 'Components/shared/Loader'
 import Base from './Base'
 import PackageDependencies from './PackageDependencies'
-import CustomDependencies from './CustomDependencies'
+import CustomDockerfile from './CustomDockerfile'
 //mutations
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
@@ -37,14 +37,13 @@ class Environment extends Component {
   _buildCallback = () => {
     const {labbookName, owner} = this.state
     this.props.setBuildingState(true)
-
-    if(this.props.labbook.environment.containerStatus === "RUNNING"){
+    if(store.getState().containerStatus.status === 'Running'){
 
       StopContainerMutation(
         labbookName,
         owner,
         'clientMutationId',
-        (error) =>{
+        (response, error) =>{
           if(error){
             console.log(error)
             store.dispatch({
@@ -59,7 +58,7 @@ class Environment extends Component {
             labbookName,
               owner,
               false,
-              (error) => {
+              (response, error) => {
 
 
                 if(error){
@@ -71,7 +70,7 @@ class Environment extends Component {
                     }
                   })
                 }
-                this.props.setBuildingState(false)
+
                 return "finished"
               }
             )
@@ -84,7 +83,7 @@ class Environment extends Component {
         labbookName,
         owner,
         false,
-        (error) => {
+        (response, error) => {
           if(error){
             store.dispatch({
               type: 'ERROR_MESSAGE',
@@ -95,7 +94,6 @@ class Environment extends Component {
             })
           }
 
-          this.props.setBuildingState(false)
           return "finished"
         }
       )
@@ -112,7 +110,6 @@ class Environment extends Component {
   }
 
   render(){
-
     if(this.props.labbook){
       const env = this.props.labbook.environment;
       const {base} = env;
@@ -130,7 +127,6 @@ class Environment extends Component {
               buildCallback={this._buildCallback}
               blockClass="Environment"
               base={base}
-
              />
 
             <PackageDependencies
@@ -145,17 +141,13 @@ class Environment extends Component {
               overview={this.props.overview}
               base={base}
               blockClass="Environment"
+              isLocked={this.props.isLocked}
             />
 
-            <CustomDependencies
-              ref="CustomDependencies"
-              environment={this.props.labbook.environment}
-              blockClass="Environment"
+            <CustomDockerfile
+              dockerfile={this.props.labbook.environment.dockerSnippet}
               buildCallback={this._buildCallback}
-              editVisible
-              labbookId={this.props.labbook.id}
-              environmentId={this.props.labbook.environment.id}
-              containerStatus={this.props.containerStatus}
+              isLocked={this.props.isLocked}
             />
           </div>
       )
@@ -178,10 +170,10 @@ export default createFragmentContainer(
         developmentTools
         packageManagers
       }
+      dockerSnippet
 
       ...Base_environment
       ...PackageDependencies_environment
-      ...CustomDependencies_environment
     }
   }`
 )

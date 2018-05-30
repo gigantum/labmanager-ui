@@ -94,11 +94,14 @@ class InputData extends Component {
           }
           </div>
           <div className="Code__header">
-            <h5 className="Code__subtitle">Input Browser</h5>
-            {this.state.loadingStatus &&
-              <div className="Code__loading"></div>
-            }
-            <div className="Code__toolbar">
+            <div className="Code__subtitle-container">
+              <h5 className="Code__subtitle">Input Browser</h5>
+              {this.state.loadingStatus &&
+                <div className="Code__loading"></div>
+              }
+              <p className="Code__subtitle-sub">Currently only files under 2GB are supported.</p>
+            </div>
+            <div className="Code__toolbar end">
               <p className="Code__import-text" id="Code__">
                 <label
                   className="Code__import-file"
@@ -123,6 +126,7 @@ class InputData extends Component {
               labbookId={this.props.labbookId}
               input={this.props.labbook.input}
               loadStatus={this._loadStatus}
+              isLocked={this.props.isLocked}
             />
           </div>
         </div>

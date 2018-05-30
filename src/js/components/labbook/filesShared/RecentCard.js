@@ -1,8 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import { DragSource, DropTarget } from 'react-dnd'
-import PropTypes from 'prop-types'
-import { findDOMNode } from 'react-dom'
 import Moment from 'moment'
 //Mutations
 import RemoveFavoriteMutation from 'Mutations/fileBrowser/RemoveFavoriteMutation'
@@ -11,7 +8,6 @@ import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
 import store from 'JS/redux/store'
 //utils
 import {humanFileSize} from 'JS/utils/ChunkUploader'
-
 export default class RecentCard extends Component {
     constructor(props) {
         super(props);
@@ -100,7 +96,7 @@ export default class RecentCard extends Component {
                             Last Modified: {Moment(this.props.file.node.modifiedAt * 1000).fromNow()}
                         </p>
                         <p>
-                            Size: {humanFileSize(this.props.file.node.size)}
+                            Size: {humanFileSize(this.props.file.node.size / 1000)}
                         </p>
 
                     </div>

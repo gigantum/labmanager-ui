@@ -14,7 +14,10 @@ export default (
  state = {
    'status': "",
    'containerMenuOpen': false,
-   'containerMenuWarning': ''
+   'containerMenuWarning': '',
+   'packageMenuVisible': false,
+   'viewContainerVisible': false,
+   'detailMode': false
  },
  action
 ) => {
@@ -26,7 +29,6 @@ if (action.type === CLOSE_ENVIRONMENT_MENUS) {
      viewContainerVisible: false
    };
  }else if (action.type === TOGGLE_PACKAGE_MENU) {
-
    return {
      ...state,
      packageMenuVisible: action.payload.packageMenuVisible
@@ -47,7 +49,7 @@ if (action.type === CLOSE_ENVIRONMENT_MENUS) {
     containerMenuWarning: action.payload.message
   }
 } else if (action.type === UPDATE_CONTAINER_MENU_VISIBILITY) {
-  
+
   return {
     ...state,
     containerMenuOpen: action.payload.containerMenuOpen

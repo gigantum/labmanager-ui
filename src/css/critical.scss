@@ -1,8 +1,7 @@
-//vendor
-@import 'bourbon';
-@import 'neat';
+
 //@import "neat";
 @import '../../node_modules/normalize-sass/normalize';
+@import '../../node_modules/simplemde/dist/simplemde.min.css';
 @import  'vendor/materialize.scss';
 
 @import 'vendor/fileBrowser/browser.scss';
@@ -11,7 +10,6 @@
 @import 'vendor/fileIcons/fileIcons.scss';
 @import 'vendor/font-awesome/fontawesome.scss';
 @import 'vendor/carousel.scss';
-@import 'vendor/react-sticky-header.scss';
 
 //generic
 @import '_variables';
@@ -20,6 +18,7 @@
 @import '_layout';
 @import '_fonts';
 @import '_base';
+@import '_grid';
 //atoms
 @import 'atoms/button.scss';
 @import 'atoms/loader.scss';
@@ -33,7 +32,9 @@
 @import 'components/shared/footer';
 @import 'components/shared/prompt';
 @import 'components/shared/loader';
+@import 'components/shared/buttonLoader';
 @import 'components/shared/user';
+@import 'components/shared/header';
 //
 @import 'components/routes.scss';
 @import 'components/login.scss';
@@ -41,6 +42,8 @@
 //dashboard components
 @import 'components/dashboard/dashboard';
 @import 'components/dashboard/localLabBooks.scss';
+@import 'components/dashboard/remoteLabBooks.scss';
+@import 'components/dashboard/labbooks.scss';
 //import
 @import 'components/import/importModules.scss';
 //labbook components
@@ -54,7 +57,12 @@
 @import 'components/labbook/detailPanel.scss';
 @import 'components/labbook/favorite.scss';
 @import 'components/labbook/recent.scss';
-@import 'components/labbook/branches.scss';
+@import 'components/labbook/branches/branches.scss';
+@import 'components/labbook/branches/branchCard.scss';
+@import 'components/labbook/branches/createBranch.scss';
+@import 'components/labbook/branches/forceMerge.scss';
+@import 'components/labbook/branches/collaborators.scss';
+@import 'components/labbook/createBranch.scss';
 @import 'components/labbook/branchMenu.scss';
 @import 'components/labbook/codeBlock.scss';
 //environment
@@ -62,6 +70,7 @@
 @import 'components/labbook/environment/packageDependencies.scss';
 @import 'components/labbook/environment/base.scss';
 @import 'components/labbook/environment/customDependencies.scss';
+@import 'components/labbook/environment/customDockerfile.scss';
 //overview
 @import 'components/labbook/overview/overview.scss';
 @import 'components/labbook/overview/filePreview.scss';
@@ -74,15 +83,33 @@
 @import 'components/wizard/baseDetails';
 @import 'components/wizard/trackingToggle';
 
-.modal__cover{
+.modal__cover,
+.modal__cover--nested{
   position: fixed;
   top: 0px;
   bottom: 0px;
   right: 0px;
   left: 0px;
   background-color: $white;
+  animation: fade-in-modal forwards .25s;
   opacity: 0.5;
-  z-index: 900;
+}
+
+.modal__cover{
+  z-index: index($elements, modalCover);
+}
+
+.modal__cover--nested{
+  z-index: index($elements, modalCoverNested);
+}
+
+@keyframes fade-in-modal{
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:0.5;
+  }
 }
 
 .rendered-react-keyed-file-browser{
@@ -98,6 +125,7 @@
   background-color: #8ea4b2;
 }
 
-// .Routes{
-//   filter: invert(1);
-// }
+code {
+  color: $slateBlue !important;
+  background: $background-color !important;
+}

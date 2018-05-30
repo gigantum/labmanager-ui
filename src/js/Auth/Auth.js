@@ -21,7 +21,6 @@ export default class Auth {
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
-
   }
 
   login() {
@@ -62,7 +61,7 @@ export default class Auth {
     //redirect to labbooks when user logs in
     let route = sessionStorage.getItem('CALLBACK_ROUTE') ? sessionStorage.getItem('CALLBACK_ROUTE') : '/labbooks';
 
-    route = route === '/callback' ? '/labbook': route;
+    route = route === '' ? '/labbook': route;
     history.replace(route)
   }
 
@@ -71,7 +70,7 @@ export default class Auth {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
-    localStorage.removeItem('family_name')
+    localStorage.removeItem('family_name');
     localStorage.removeItem('given_name');
     localStorage.removeItem('email');
     localStorage.removeItem('username');

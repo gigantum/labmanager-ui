@@ -1,26 +1,17 @@
-.RecentActivity__list{
-  @include flex(flex-start, row);
-}
+
 
 .RecentActivity__title-container{
   align-items: center;
   @include flex(space-between, row);
+  a {
+    color: $dark-blue;
+  }
 }
 
 .RecentActivity__card {
   min-height: 150px;
   padding: 20px 20px 60px 20px;
   @extend .card;
-  width: calc(33.333% - 20px);
-  margin: 0 10px;
-}
-
-.RecentActivity__card:nth-child(3n + 1) {
-
-  margin: 0 20px 0 0;
-}
-.RecentActivity__card:nth-child(3n + 3) {
-  margin: 0 0 0 20px;
 }
 
 .RecentActivity__card-date {
@@ -36,24 +27,102 @@
 }
 
 .RecentActivity__card-detail .ReactMarkdown * {
-  line-height: 22px;
   text-overflow: ellipsis;
   display: -webkit-box;
   white-space: pre-line;
   overflow: hidden;
   word-break: break-word;
-  -webkit-line-clamp: 10;
   -webkit-box-orient: vertical;
 }
 
+.ReactMarkdown,
+.ReactMarkdown-long {
+  h1 {
+    img {
+      width:max-content;
+      margin: 2px;
+    }
+  }
+}
+.ReactMarkdown,
+.ReactMarkdown-long {
+  color: $romanSilver;
+  h1 {
+    padding: 10px 0;
+    font-size: 2em;
+    color: $jet;
+    border-bottom: 1px solid $grey-light;
+    font-weight: 400;
+  }
+  h2 {
+    padding: 10px 0;
+    font-size: 1.5em;
+    color: $jet;
+    border-bottom: 1px solid $grey-light;
+    font-weight: 400;
+
+  }
+  h3 {
+    font-size: 1.17em;
+    color: $jet;
+    font-weight: 400;
+
+  }
+  h4 {
+    font-size: 1.12em;
+    color: $jet;
+    font-weight: 400;
+
+  }
+  h5 {
+    font-size: .83em;
+    font-weight: 400;
+    color: $jet;
+  }
+  h6 {
+    font-weight: 400;
+    font-size: .75em;
+    color: $jet;
+  }
+  blockquote {
+    border-left: 5px solid $lightblue;
+  }
+  a {
+    color: $azure;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  ul {
+    padding-left: 40px;
+    list-style-type: disc;
+    li {
+      list-style-type: disc;
+    }
+  }
+}
+
+.RecentActivity__fadeout {
+  position: relative;
+  bottom: 2em;
+  height: 2em;
+  background: -webkit-linear-gradient(
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 1) 100%
+  );
+}
 .RecentActivity__card-detail .ReactMarkdown {
-  max-height: 240px;
+  max-height: 290px;
   overflow: hidden;
+  margin: 0;
 }
 
 .RecentActivity__card-detail *{
   max-width: 100%;
   max-height: 100%;
+}
+.RecentActivity__card-detail * img{
+  display: inline-block !important;
 }
 
 @keyframes fluxuateLoad {
@@ -66,8 +135,8 @@
     100% {
       opacity: 0.1;
     }
-
 }
+
 .RecentActivity__card--loading{
   @extend .RecentActivity__card;
   opacity: 0.1;

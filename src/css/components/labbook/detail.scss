@@ -3,10 +3,25 @@
 }
 
 .DetailsRecords__item {
-  border-bottom: 1px solid $lightGrey;
-  padding: 15px 15px 15px 66px;
+  margin-bottom: 1px;
+  padding: 5px 15px 5px 75px;
 
   img {
+    width: -moz-fit-content;
+    width: fit-content;
+
+  }
+
+  @include flex(flex-start, column);
+}
+
+.DetailsRecords__item-note {
+  margin-bottom: 1px;
+  border-bottom: 1px solid $lightGrey;
+  padding: 0 0 0 15px;
+
+  img {
+    width: -moz-fit-content;
     width: fit-content;
   }
 
@@ -39,23 +54,31 @@
   animation: fluxuateLoad 3s infinite;
 }
 
-li.DetailsRecords__item * {
+li.DetailsRecords__item *,
+li.DetailsRecords__item-note *, {
+  white-space: pre;
   max-width: 100%;
+  line-height: 24px;
 }
 
 li.DetailsRecords__item .ReactMarkdown p,
-li.DetailsRecords__item .ReactMarkdown ul, {
+li.DetailsRecords__item .ReactMarkdown ul,
+li.DetailsRecords__item-note .ReactMarkdown p,
+li.DetailsRecords__item-note .ReactMarkdown ul, {
   line-height: 24px;
   text-overflow: ellipsis;
   display: -webkit-box;
   white-space: pre-line;
   overflow: hidden;
   word-break: break-word;
+  line-clamp: 10;
   -webkit-line-clamp: 10;
+  box-orient: vertical;
   -webkit-box-orient: vertical;
 }
 
-li.DetailsRecords__item .ReactMarkdown {
+li.DetailsRecords__item .ReactMarkdown,
+li.DetailsRecords__item-note .ReactMarkdown {
   max-height: 400px;
   overflow: hidden;
 }
@@ -80,4 +103,77 @@ li.DetailsRecords__item .ReactMarkdown {
 .DetailsRecords__link-clicked:hover {
   color: $turquise;
   cursor: pointer;
+}
+
+.DetailsRecords__fadeout {
+  position: relative;
+  bottom: 2em;
+  height: 2em;
+  background: -webkit-linear-gradient(
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 1) 100%
+  );
+}
+
+.DetailsRecords__action{
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  top: calc(50% - 15px);
+  left: 35px;
+  @extend .SmallIcon;
+}
+
+.DetailsRecords__action--create{
+  background: url('../images/icons/action-create.svg') no-repeat center center;
+}
+.DetailsRecords__action--edit{
+  background: url('../images/icons/action-edit.svg') no-repeat center center;
+}
+.DetailsRecords__action--delete{
+  background: url('../images/icons/action-delete.svg') no-repeat center center;
+}
+.DetailsRecords__action--execute{
+  background: url('../images/icons/action-run.svg') no-repeat center center;
+}
+.DetailsRecords__action--noaction{
+  background: url('../images/icons/action-null.svg') no-repeat center center;
+}
+.DetailsRecords__container {
+  position: relative;
+}
+
+.DetailsRecords__action:before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: index($elements, card);
+  border: 1px dashed $grey;
+  height: 1px;
+  width: 10px;
+  top: 15px;
+  left: -8px
+}
+
+.DetailsRecords__container:last-child:not(.note):before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 3;
+  border: 1px solid #fefefe;
+  height: calc(50% - 10px);
+  width: 1px;
+  top: calc(50% + 3px);
+  left: 25px;
+}
+
+.DetailsRecords__item:after {
+  content: "";
+  background: $grey;
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  height: 1px;
+  width: 50%;
+  opacity: 0.5;
 }

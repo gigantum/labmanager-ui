@@ -1,8 +1,6 @@
 //vendor
 import React, { Component } from 'react';
 import store from 'JS/redux/store'
-//components
-import Callback from 'JS/Callback/Callback';
 
 let unsubscribe;
 //import CreatePage from './components/CreatePage';
@@ -87,7 +85,7 @@ export default class Login extends Component {
                         Gigantum is currently in a limited Beta and you must have received an invite to log in.
                       </p>
                       <p>
-                        You can sign up <a href="http://gigantum.io/#sign-up" rel="noopener noreferrer" target="_blank">here</a>.
+                        You can sign up <a href="http://gigantum.com/#sign-up" rel="noopener noreferrer" target="_blank">here</a>.
                       </p>
                       <p>We are constantly adding users and you will receive an email when your account is ready!
                       </p>

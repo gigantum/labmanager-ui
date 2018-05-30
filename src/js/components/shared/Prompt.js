@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Sniffr from 'sniffr'
 
 const pingServer = () => {
   return fetch(window.location.protocol + '//' + window.location.hostname + `${process.env.GIGANTUM_API}`, {
@@ -27,6 +28,10 @@ export default class Prompt extends Component {
     this.intervalId = setInterval(this._handlePing.bind(this), 2500);
   }
 
+  /**
+    @param {}
+    pings server and checks when the api comes back up
+  */
   _handlePing = () => {
     pingServer()
       .then((response) => {
@@ -46,6 +51,9 @@ export default class Prompt extends Component {
 
 
   render() {
+    let s = new Sniffr();
+    s.sniff(navigator.userAgent)
+    let os = s.os.name;
     return (
       <div className="Prompt">
         <div className={this.state.promptState ? "hidden" : "Prompt__info"}>
@@ -58,13 +66,27 @@ export default class Prompt extends Component {
           </div>
           <div className={this.state.failureCount >= 8 ? "Prompt__failure-container" : "hidden"}>
             <div className="Prompt__failure-text">
-              <p>Looks like something is wrong.</p>
-              <p>Are you sure Gigantum is running?</p>
-              <p>Use the 'gigantum start' command to run the application.</p>
+              <p>There was a problem loading Gigantum</p>
+              <p>Ensure Gigantum is running or restart the application</p>
             </div>
-            <div
-              className="Prompt__cli">
-            </div>
+            {
+              os === 'macos' &&
+              <div
+                className="Prompt__mac">
+              </div>
+            }
+            {
+              os === 'windows' &&
+              <div
+                className="Prompt__windows">
+              </div>
+            }
+            {
+              os === 'linux' &&
+              <div
+                className="Prompt__cli">
+              </div>
+            }
           </div>
         </div>
       </div>

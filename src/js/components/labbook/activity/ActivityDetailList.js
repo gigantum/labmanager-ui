@@ -1,6 +1,8 @@
 //vendor
 import React, { Component } from 'react'
 import DetailRecords from './DetailRecords'
+import classNames from 'classnames'
+
 export default class ActivityDefaultList extends Component {
 
   constructor(props){
@@ -56,7 +58,10 @@ export default class ActivityDefaultList extends Component {
   _getTimeOfDay(timestamp){
 
     let time = (timestamp !== undefined) ? new Date(timestamp) : new Date();
-    return ((time.getHours()%12 === 0) ? 12 : time.getHours()%12) + ':' + ((time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes()) + (time.getHours() > 12 ? 'pm' : 'am');
+    let hour = (time.getHours() % 12 === 0) ? 12 : time.getHours() % 12;
+    let minutes = (time.getMinutes() > 9) ? time.getMinutes() : '0' + time.getMinutes();
+    let ampm = time.getHours() >= 12 ? 'pm' : 'am';
+    return `${hour}:${minutes}${ampm}`
   }
 
   /**
@@ -74,17 +79,21 @@ export default class ActivityDefaultList extends Component {
 
     let keys = this.props.categorizedDetails.detailKeys[this.props.itemKey],
         type = this.props.categorizedDetails.detailObjects[this.props.itemKey][0].type.toLowerCase();
+        let activityDetailsCSS = classNames({
+          'ActivityDetail__details': true,
+          note: type === 'note'
+        })
     return(
 
-        <div className="ActivityDetail__details">
+        <div className={activityDetailsCSS}>
           {
-            this.state.showDetails &&
+            this.state.showDetails && type !== 'note' ?
             <div
               onClick={() => {this._toggleDetailsList()}}
               className={this.state.show ? 'ActivityDetail__details-title ActivityDetail__details-title--open' : 'ActivityDetail__details-title ActivityDetail__details-title--closed'}>
 
               <div className="ActivityDetail__header">
-                <div className={'fa ActivityDetail__badge ActivityDetail__badge--' + type }>
+                <div className={'ActivityDetail__badge ActivityDetail__badge--' + type }>
                 </div>
                 <div className="ActivityDetail__content">
                   <p>{this._formatTitle(this.props.itemKey)}</p>
@@ -92,6 +101,8 @@ export default class ActivityDefaultList extends Component {
               </div>
 
             </div>
+            :
+            <hr />
           }
           {this.state.show &&
             <div className="ActivtyDetail_list">

@@ -6,23 +6,16 @@
   min-width: 960px;
 }
 
-.Header {
-  position: fixed;
-  width: 100%;
-  height: 10px;
-  background-color: $jet;
-  top: 0px;
-  z-index: 800;
-}
+
 
 .Routes__main {
   flex: 1 0;
   margin-left: $sideBarWidth;
-  max-width: calc(100%);
+  max-width: 100%;
 }
 .Routes__main-no-auth {
   flex: 1 0;
-  max-width: calc(100%);
+  max-width: 100%;
 }
 
 .Callback {
@@ -44,4 +37,13 @@
   top: 0;
   left: 0;
   z-index: 102;
+}
+
+.Routes__error {
+  @include flex(center, column);
+  align-items: center;
+  height: 100%;
+  background: url(../images/icons/warning-triangle.svg) no-repeat center center;
+  background-size: 256px;
+  padding: 280px 0 0 0;
 }

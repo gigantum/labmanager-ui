@@ -1,6 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import {QueryRenderer, graphql} from 'react-relay'
 import ReactMarkdown from 'react-markdown'
 //Components
@@ -17,6 +16,7 @@ query DetailRecordsQuery($name: String!, $owner: String!, $keys: [String]){
     description
     detailRecords(keys: $keys){
       id
+      action
       key
       data
       type
@@ -36,7 +36,7 @@ export default class UserNote extends Component {
 
     this.state = {
       owner: owner,
-      labbookName: labbookName
+      labbookName: labbookName,
     }
     this._setLinks = this._setLinks.bind(this);
   }
@@ -49,24 +49,31 @@ export default class UserNote extends Component {
       if (this.checkOverflow(elOuter.childNodes[elOuter.childNodes.length - 1]) === true) moreObj[index] = true;
     });
     let pElements = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__link'));
-
     for (let key in pElements) {
       if(!moreObj[key]) {
-        pElements[key].className = 'hidden';
+        pElements[key].className = 'DetailsRecords__link hidden';
       } else {
         pElements[key].className = 'DetailsRecords__link';
+      }
+    }
+    let fadeElements = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__fadeout'));
+    for (let key in fadeElements) {
+      if(!moreObj[key]) {
+        fadeElements[key].className = 'DetailsRecords__fadeout hidden';
+      } else {
+        fadeElements[key].className = 'DetailsRecords__fadeout';
       }
     }
   }
 
   checkOverflow(el) {
-    var curOverflow = el.style.overflow;
-    if ( !curOverflow || curOverflow === "visible" )
-       el.style.overflow = "hidden";
-
-    var isOverflowing = el.clientHeight < el.scrollHeight;
-    el.style.overflow = curOverflow;
-    return isOverflowing;
+    if(el) {
+      var curOverflow = el.style.overflow;
+      if ( !curOverflow || curOverflow === "visible" )
+         el.style.overflow = "hidden";
+      var isOverflowing = el.clientHeight + 3 < el.scrollHeight;
+      return isOverflowing;
+    }
    }
 
   componentDidMount() {
@@ -80,11 +87,17 @@ export default class UserNote extends Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this._setLinks.bind(this));
   }
+  componentDidUpdate() {
+    let self = this;
+    setTimeout(function(){
+      self._setLinks();
+    }, 100)
+  }
 
   _renderDetail(item){
     switch(item[0]){
       case 'text/plain':
-        return(<ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={item[1]} />)
+        return(<div className="ReactMarkdown"><p>{item[1]}</p></div>)
       case 'image/png':
         return(<img alt="detail" src={item[1]} />)
       case 'image/jpg':
@@ -109,12 +122,14 @@ export default class UserNote extends Component {
       elements[index].className = "ReactMarkdown-long"
       target.className = "DetailsRecords__link-clicked";
       target.textContent = "Less...";
+      target.previousSibling.className = "hidden"
     } else {
       let elements = Array.prototype.slice.call(document.getElementsByClassName('ReactMarkdown-long'));
       let index = Array.prototype.slice.call(document.getElementsByClassName('DetailsRecords__link-clicked')).indexOf(target);
       elements[index].className = "ReactMarkdown"
       target.className = "DetailsRecords__link";
       target.textContent = "More...";
+      target.previousSibling.className = "DetailsRecords__fadeout"
     }
   }
 
@@ -133,24 +148,33 @@ export default class UserNote extends Component {
         render={({props, error})=>{
 
             if(props){
-
                 return(
                   <div className="DetailsRecords">
                     <ul className="DetailsRecords__list">
                     {
                       props.labbook.detailRecords.map((detailRecord)=>{
-
+                        let liCSS = detailRecord.type === 'NOTE' ? 'DetailsRecords__item-note' : 'DetailsRecords__item'
+                        let containerCSS = detailRecord.type === 'NOTE' ? 'DetailsRecords__container note' : 'DetailsRecords__container'
                         return(
-                          detailRecord.data.map((item, index)=>{
-
-                            return(
-                              <li
-                                key={detailRecord.id + '_'+ index}
-                                className="DetailsRecords__item">
-                                {this._renderDetail(item)}
-                                <p className="DetailsRecords__link hidden" onClick={(e)=> this._moreClicked(e.target)}>More...</p>
-                            </li>)
-                          })
+                          <div className={containerCSS} key={detailRecord.id}>
+                            {
+                              detailRecord.type !== 'NOTE' &&
+                              <div className={`DetailsRecords__action DetailsRecords__action--${detailRecord.action.toLowerCase()}`}></div>
+                            }
+                            {
+                              detailRecord.data.map((item, index)=>{
+                                return(
+                                  <li
+                                    key={detailRecord.id + '_'+ index}
+                                    className={liCSS}>
+                                    {this._renderDetail(item)}
+                                    <div className="DetailsRecords hidden"></div>
+                                    <p className="DetailsRecords__link hidden" onClick={(e)=> this._moreClicked(e.target)}>More...</p>
+                                    {this._setLinks()}
+                                </li>)
+                              })
+                            }
+                          </div>
                         )
                       })
                     }

@@ -22,6 +22,8 @@ export default class ContainerStatus extends Component {
     let state = {
       'status': "",
       'building': this.props.isBuilding,
+      'syncing': this.props.isSyncing,
+      'publishing': this.props.isPublishing,
       'secondsElapsed': 0,
       'containerStatus': props.containerStatus,
       'imageStatus': props.imageStatus,
@@ -58,9 +60,13 @@ export default class ContainerStatus extends Component {
   */
   storeDidUpdate = (containerStatusStore) => {
 
-    if(this.state.containerMenuOpen !== containerStatusStore.containerMenuOpen){
+    if(this.state.containerMenuOpen !== containerStatusStore.containerMenuOpen || this.state.containerMenuWarning !== containerStatusStore.containerMenuWarning){
         this.setState({containerMenuOpen: containerStatusStore.containerMenuOpen, containerMenuWarning: containerStatusStore.containerMenuWarning}); //triggers  re-render when store updates
     }
+  }
+  componentWillMount() {
+   
+    this._getContainerStatusText(this.props.containerStatus, this.props.imageStatus)
   }
   /**
   *  @param {}
@@ -70,22 +76,25 @@ export default class ContainerStatus extends Component {
   componentDidMount(){
     let self = this
     let intervalInSeconds = 3 * 1000
+
     setTimeout(function(){
       self._fetchStatus()
     }, intervalInSeconds);
 
     unsubscribe = store.subscribe(() =>{
 
-      this.storeDidUpdate(store.getState().environment)
+      this.storeDidUpdate(store.getState().containerStatus)
     })
 
-    let status = this._getContainerStatusText(
-      {
-      containerStatus:this.props.containerStatus, imageStatus: this.props.imageStatus
-      })
+    let status = this._getContainerStatusText({
+      containerStatus:this.props.containerStatus,
+      imageStatus: this.props.imageStatus
+    })
+
     const hasLabbookId = store.getState().overview.containerStates[this.props.labbookId]
 
     if(hasLabbookId){
+
       const storeStatus = store.getState().overview.containerStates[this.props.labbookId]
 
       if(storeStatus !== status){
@@ -102,26 +111,69 @@ export default class ContainerStatus extends Component {
     window.addEventListener("click", this._closePopupMenus)
   }
 
-  _fetchStatus(){
-    const {owner, labbookName} = store.getState().routes
+  /**
+  *  @param {}
+  *  fetches status of labbook container and image
+  *  sets state of labbook using redux and containerStatus using setState
+  *  @return {}
+  */
+  _fetchStatus() {
+    const { owner, labbookName } = store.getState().routes
     const state = this.state
     const self = this
-    FetchContainerStatus.getContainerStatus(owner, labbookName).then((response, error)=>{
 
-      const {environment} = response.labbook
+    const {isBuilding} = this.state
 
-      if((state.containerStatus !== environment.containerStatus) || (state.imageStatus !== environment.imageStatus)){
-        self.setState({
-          'imageStatus': environment.imageStatus,
-          'containerStatus': environment.containerStatus
-        })
-      }
 
-      setTimeout(()=>{
+    if(owner === this.state.owner && labbookName === this.state.labbookName && store.getState().routes.callbackRoute.split('/').length > 3) {
 
-        self._fetchStatus()
-      }, 3 * 1000)
-    })
+      FetchContainerStatus.getContainerStatus(owner, labbookName).then((response, error) => {
+
+        if(response.labbook){
+
+          const { environment } = response.labbook
+          //reset build flags
+          if((environment.imageStatus !== 'BUILD_IN_PROGRESS') && isBuilding){
+
+            self.setState({
+              isBuilding: false
+            })
+            store.dispatch(
+              {
+              type: 'IS_BUILDING',
+              payload:{
+                'isBuilding': false
+              }
+            })
+          }
+          //throws build failed error
+          // passes error message to footer using redux
+          if (state.imageStatus !== environment.imageStatus && environment.imageStatus === 'BUILD_FAILED') {
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: 'LabBook failed to build:',
+                messageBody: [{ message: 'Check for and remove invalid dependencies and try again.' }]
+              }
+            })
+          }
+          //only updates state if container or imageStatus has changed
+          if ((state.containerStatus !== environment.containerStatus) || (state.imageStatus !== environment.imageStatus)) {
+            self.setState({
+              'imageStatus': environment.imageStatus,
+              'containerStatus': environment.containerStatus
+            })
+          }
+
+        }
+        //refetches status after a 3 second timeout
+        setTimeout(() => {
+
+          self._fetchStatus()
+        }, 3 * 1000)
+
+      })
+    }
   }
   /**
    *  @param {event} evt
@@ -129,12 +181,21 @@ export default class ContainerStatus extends Component {
    *
   */
   _closePopupMenus(evt){
-
     let containerMenuClicked = (evt.target.className.indexOf('ContainerStatus__container-state') > -1) ||
       (evt.target.className.indexOf('ContainerStatus__button-menu') > -1) ||
       (evt.target.className.indexOf('PackageDependencies__button') > -1) ||
       (evt.target.className.indexOf('CustomDependencies__button') > -1) ||
-      (evt.target.className.indexOf('BranchMenu') > -1)
+      (evt.target.className.indexOf('BranchMenu') > -1) ||
+      (evt.target.className.indexOf('BranchMenu__sync-button') > -1) ||
+      (evt.target.className.indexOf('BranchMenu__remote-button') > -1) ||
+      (evt.target.className.indexOf('Activity__rollback-text') > -1) ||
+      (evt.target.className.indexOf('CustomDockerfile__content-edit-button') > -1) ||
+      (evt.target.className.indexOf('CustomDockerfile__content-save-button') > -1) ||
+      (evt.target.className.indexOf('Labbook__name') > -1) ||
+      (evt.target.className.indexOf('Labbook__branch-toggle') > -1) ||
+      (evt.target.className.indexOf('Acitivty__rollback-button') > -1) ||
+      (evt.target.className.indexOf('Activity__add-branch-button') > -1) ||
+      (evt.target.className.indexOf('BranchCard__delete-labbook') > -1)
 
     if(!containerMenuClicked &&
     this.state.containerMenuOpen){
@@ -178,8 +239,6 @@ export default class ContainerStatus extends Component {
 
     }
   }
-
-
   /**
     @param {}
     set containerStatus secondsElapsed state by iterating
@@ -207,8 +266,8 @@ export default class ContainerStatus extends Component {
     let status = (containerStatus === 'RUNNING') ? 'Running' : containerStatus;
     status = (containerStatus === 'NOT_RUNNING') ? 'Stopped' : status;
     status = (imageStatus === "BUILD_IN_PROGRESS") ? 'Building' : status;
-    status = (imageStatus === "BUILD_FAILED") ? 'Build Failed' : status;
-    status = (imageStatus === "DOES_NOT_EXIST") ? 'Rebuild Required' : status;
+    status = (imageStatus === "BUILD_FAILED") ? 'Rebuild' : status;
+    status = (imageStatus === "DOES_NOT_EXIST") ? 'Rebuild' : status;
     status = ((imageStatus === "DOES_NOT_EXIST") || (imageStatus === "BUILD_IN_PROGRESS")) && (timeDifferenceMS < 15000) ? "Building" : status;
 
     status = ((status === 'Stopped') && (this.state.status === "Starting")) ? "Starting" : status;
@@ -223,7 +282,7 @@ export default class ContainerStatus extends Component {
       })
     }
 
-    if((status !== 'Stopped') && (status !== 'Build Failed')){
+    if((status) && (status !== 'Stopped') && (status !== 'Rebuild')){
       store.dispatch({
         type: 'CLOSE_ENVIRONMENT_MENUS',
         payload:{
@@ -341,13 +400,16 @@ export default class ContainerStatus extends Component {
     mutation to trigger opening of development tool
   */
   _openDevToolMuation(developmentTool){
+
     const {owner, labbookName} = store.getState().routes
+
     store.dispatch({
       type: 'INFO_MESSAGE',
       payload:{
         message: `Starting ${developmentTool}`,
       }
     })
+
     StartDevToolMutation(
       owner,
       labbookName,
@@ -378,7 +440,6 @@ export default class ContainerStatus extends Component {
     @return {string} newStatus
    */
   _containerAction(status, evt){
-
     if(status === "Stop"){
       this.setState({
         status: 'Stopping',
@@ -390,8 +451,15 @@ export default class ContainerStatus extends Component {
         status: 'Starting',
         contanerMenuRunning: false
       })
+      store.dispatch({
+        type: 'MERGE_MODE',
+        payload: {
+          branchesOpen: false,
+          mergeFilter: false
+        }
+      })
       this._startContainerMutation()
-    }else if((status === "Rebuild") || (status === "Rebuild Required")){
+    }else if((status === "Rebuild") || (status === "Rebuild")){
 
       this.setState({
         status: "Building",
@@ -400,10 +468,6 @@ export default class ContainerStatus extends Component {
 
       this._rebuildContainer(evt, status)
     }
-
-
-
-
   }
 
   /**
@@ -445,10 +509,10 @@ export default class ContainerStatus extends Component {
 
     newStatus = this.state.isMouseOver && (status === 'Running') ? 'Stop' : newStatus
     newStatus = this.state.isMouseOver && (status === 'Stopped') ? 'Run' : newStatus
-    newStatus = this.state.isMouseOver && (status === 'Build Failed') ? 'Rebuild' : newStatus
-    newStatus = this.state.isMouseOver && (status === 'Rebuild Required') ? 'Rebuild' : newStatus
+    newStatus = this.state.isMouseOver && (status === 'Rebuild') ? 'Rebuild' : newStatus
+    newStatus = this.state.isMouseOver && (status === 'Rebuild') ? 'Rebuild' : newStatus
 
-    newStatus = this.state.isBuilding ? 'Building' : newStatus
+    newStatus = this.state.isBuilding? 'Building' : this.state.isSyncing ? 'Syncing' : this.state.isPublishing ? 'Publishing' : newStatus
 
     return newStatus;
   }
@@ -466,6 +530,7 @@ export default class ContainerStatus extends Component {
     })
     let {labbookName, owner} = this.state
     let self = this
+    this.setState({imageStatus: "BUILD_IN_PROGRESS"});
     BuildImageMutation(
       labbookName,
       owner,
@@ -474,7 +539,7 @@ export default class ContainerStatus extends Component {
           if(error){
             console.log(error)
           }
-          self.setState({rebuildAttempts: this.state.rebuildAttempts++})
+          self.setState({rebuildAttempts: this.state.rebuildAttempts + 1})
           if((this.state.status === 'Starting') && (this.state.rebuildAttempts < 1)){
             self._startContainerMutation()
           }else{
@@ -495,15 +560,20 @@ export default class ContainerStatus extends Component {
     )
   }
 
+
   _containerStatusJSX(status, key){
+    let excludeStatuses = ['Stopping', 'Starting', 'Building', 'Publishing', 'Syncing']
+    let notExcluded = excludeStatuses.indexOf(this.state.status) === -1
     const containerStatusCss = classNames({
       'ContainerStatus__container-state--menu-open': this.state.containerMenuOpen,
       'ContainerStatus__container-state': !this.state.containerMenuOpen,
-      'Building': this.props.isBuilding,
-      [status]: !this.props.isBuilding,
-      'ContainerStatus__container-state--expanded': this.state.isMouseOver
+      [status]: !this.props.isBuilding && !this.props.isSyncing && !this.props.isPublishing,
+      'Building': this.props.isBuilding || this.state.imageStatus === 'BUILD_IN_PROGRESS',
+      'Syncing': this.props.isSyncing,
+      'Publishing': this.props.isPublishing,
+      'ContainerStatus__container-state--expanded': this.state.isMouseOver && notExcluded && !this.state.isBuilding && !(this.state.imageStatus === 'BUILD_IN_PROGRESS') ,
+      'ContainerStatus__container-remove-pointer': !notExcluded || this.state.isBuilding || (this.state.imageStatus === 'BUILD_IN_PROGRESS') || this.state.isSyncing ||this.state.isPublishing
     })
-
     const containerMenuIconCSS = classNames({
         'ContainerStatus__plugins-menu-arrow': true,
         'hidden': !this.state.pluginsMenu
@@ -520,58 +590,83 @@ export default class ContainerStatus extends Component {
       'ContainerStatus__button--bottom': this.state.isMouseOver
     })
     const textStatus = this._getStatusText(status)
+
     return(
       <div className="ContainerStatus flex flex--row">
+
         { (status === 'Running') &&
+
             <div className="ContainerStatus__plugins">
+
                 <div
                   className={jupyterButtonCss}
                   onClick={()=>{this._openDevToolMuation(this.props.base.developmentTools[0])}}>
                   Open Jupyter
                 </div>
+
                 <div className={containerMenuIconCSS} ></div>
+
                 <div
                   className={containerMenuCSS}>
+
                   <div className="ContainerStatus__plugins-title">Launch</div>
+
                   <ul className="ContainerStatus__plugins-list">
                     {
 
                       this.props.base.developmentTools.map((developmentTool) =>{
                         return(
+
                           <li
                             key={developmentTool}
                             className="ContainerStatus__plugins-list-item">
+
                             <button
                               className={jupyterButtonCss}
-                              onClick={()=>this._openDevToolMuation(developmentTool)}
+                              onClick={() => this._openDevToolMuation(developmentTool)}
                               rel="noopener noreferrer">
                                 {developmentTool}
                             </button>
+
                           </li>
                         )
                       })
                     }
                   </ul>
+
                 </div>
+
             </div>
+
         }
+
         <div
           onClick={(evt) => this._containerAction(textStatus, key)}
           key={key}
           className={containerStatusCss}
-          onMouseOver={()=>{this._setMouseOverState(true)}}
-          onMouseOut ={()=>{this._setMouseOverState(false)}}>
+          onMouseOver={() => {this._setMouseOverState(true)}}
+          onMouseOut ={() => {this._setMouseOverState(false)}}>
+
           {this._getStatusText(textStatus)}
+
         </div>
+
         {
           this.state.containerMenuOpen &&
+
           <div className="ContainerStatus__menu-pointer"></div>
+
         }
+
         {
           this.state.containerMenuOpen &&
+
           <div className="ContainerStatus__button-menu">
-            {this.state.containerMenuWarning}
+
+            {store.getState().environment.containerMenuWarning}
+
           </div>
+
         }
       </div>)
   }

@@ -1,7 +1,8 @@
+$footerElements: basic, progressBar, status, section, message, button;
+
 .Footer {
   position: fixed;
-  z-index: 50;
-  z-index: 1200;
+  z-index: index($elements, footer);
   right: 0;
   bottom: 0;
   left: $sideBarWidth;
@@ -34,12 +35,14 @@
 .Footer--expand-extra {
   max-height: 240px !important;
 }
+
 .Footer__main-message {
   min-height: 40px;
   overflow: hidden;
   align-items: center;
   @include flex(flex-start, row);
 }
+
 .Footer__main-detatails {
   margin: 0 10px;
   flex: 1;
@@ -50,7 +53,7 @@
   flex: 1;
 }
 .Footer__messages-section {
-  z-index: 300;
+  z-index: index($footerElements, section);
 
   width: 100%;
 
@@ -58,10 +61,12 @@
 }
 
 .Footer__upload-message {
-  z-index: 400;
+  z-index: index($footerElements, message);
   text-align: center;
   width: 100%;
   position: absolute;
+  height: 100%;
+  line-height: 42px;
 
 }
 
@@ -73,11 +78,6 @@
   overflow: auto;
   width: calc(100% - 40px);
 }
-// .Footer__message-list::-webkit-scrollbar-track
-// {
-//
-// 	background-color: rgba(255,255,255, 0.7);
-// }
 
 .Footer__message-list::-webkit-scrollbar {
 	width: 8px;
@@ -118,7 +118,7 @@
 
 .Footer__progress-bar {
   position: absolute;
-  z-index: 50;
+  z-index: index($footerElements, progressBar);
   top: 0;
   left: 0;
 
@@ -152,7 +152,7 @@
 .Footer__status {
 
   position: relative;
-  z-index: 60;
+  z-index: index($footerElements, status);
 
   overflow: hidden;
   flex-wrap: nowrap;
@@ -190,10 +190,17 @@
 
   .Footer__message--error {
     @extend .Footer__message;
-    @extend .fa;
-    @extend .fa-exclamation-circle;
+
     align-items: center;
     @include flex(flex-start, row);
+
+    i{
+      background: url(../images/icons/warning.svg) no-repeat center left;
+      background-size: 18px;
+
+      border: 1px solid $white;
+      border-radius: 15px;
+    }
 
     // i:before {
     //   align-self: flex-end;
@@ -241,6 +248,7 @@
 
 .Footer__status--warning {
   background-color: $goldenLemon;
+  color: $jet;
 }
 
 .Footer__upload-status {
@@ -254,7 +262,7 @@
 
 .Footer__button {
   position: absolute;
-  z-index: 60;
+  z-index: index($footerElements, button);
   top: 5px;
   right: 10px;
 

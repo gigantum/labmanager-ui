@@ -5,7 +5,6 @@ import {
 //environment
 import {fetchQuery} from 'JS/createRelayEnvironment';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation';
-import ChunkUploader from 'JS/utils/ChunkUploader'
 //store
 import store from 'JS/redux/store'
 
@@ -228,7 +227,7 @@ const getFolderExistsQueryPromises = (folderPaths, labbookName, owner, section) 
 * created a promise that checks it folder exists
 * pushes promise into an array all
 */
-const getMakeDirectoryPromises = (labbooks, labbookName, owner, path, section, connectionKey, sectionId, existingPaths) =>{
+export const getMakeDirectoryPromises = (labbooks, labbookName, owner, path, section, connectionKey, sectionId, existingPaths) =>{
   let directoryAll = []
 
   labbooks.forEach((response)=>{
@@ -266,7 +265,7 @@ const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, co
       let filePath = fileItem.entry ? fileItem.entry.fullPath : fileItem.fullPath;
       const fullPath = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
 
-      let r = /[^\/]*$/;
+      let r = /[^/]*$/;
       const tempPath =  fileItem.entry.isDirectory ? fullPath : fullPath.replace(r, '');
 
       const path = (tempPath.indexOf(tempPath.length - 1)) === '/' ? tempPath.replace(tempPath.length -1, 1) : tempPath;
@@ -359,27 +358,15 @@ const FolderUpload = {
 
     CreateFolders(files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck, totalFiles)
 
-
-    let addFilePromises = []
-
     function fileCheck(fileItem){
 
       filePaths.push(fileItem)
       count++
 
       if(fileItem && fileItem.entry){
-
-        let filePath = fileItem.entry.fullPath.replace('/' + fileItem.file.name, '')
-        const path = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
-        const folderNames = path.split('/')
-
-
-        let folderPaths = getFolderPaths(folderNames, prefix);
-        let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, section)
-
         if(fileItem.entry.isFile){
-          batchCount++
-          let addPromise = new Promise(function(resolve, reject){
+          batchCount++;
+          new Promise(function(resolve, reject){
             addFiles([fileItem],
               connectionKey,
               owner,

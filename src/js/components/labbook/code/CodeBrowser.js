@@ -18,8 +18,19 @@ class CodeBrowser extends Component {
     }
 
     this.setRootFolder = this.setRootFolder.bind(this)
+    this._loadMore = this._loadMore.bind(this)
   }
 
+  /*
+    update component when props are reloaded
+  */
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.code.allFiles.pageInfo.hasNextPage && nextProps.code.allFiles.edges.length > 3){
+      this._loadMore()
+    } else {
+      this.setState({'moreLoading': false});
+    }
+  }
   /*
     handle state and addd listeners when component mounts
   */
@@ -39,6 +50,7 @@ class CodeBrowser extends Component {
   */
 
   _loadMore() {
+
     this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
@@ -50,10 +62,9 @@ class CodeBrowser extends Component {
 
        if(self.props.code.allFiles &&
          self.props.code.allFiles.pageInfo.hasNextPage) {
-
          self._loadMore()
        } else {
-        this.setState({'moreLoading': false});
+         this.setState({'moreLoading': false});
       }
      }
    );
@@ -68,6 +79,7 @@ class CodeBrowser extends Component {
   }
 
   render(){
+ 
     this.props.loadStatus(this.state.moreLoading);
     if(this.props.code && this.props.code.allFiles){
 
@@ -90,6 +102,7 @@ class CodeBrowser extends Component {
             connection="CodeBrowser_allFiles"
             favoriteConnection="CodeFavorites_favorites"
             favorites={this.props.favorites}
+            isLocked={this.props.isLocked}
             {...this.props}
           />
       )

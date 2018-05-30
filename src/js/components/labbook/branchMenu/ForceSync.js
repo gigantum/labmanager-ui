@@ -7,7 +7,7 @@ import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
 import store from 'JS/redux/store'
 
 
-export default class LoginPrompt extends Component {
+export default class ForceSync extends Component {
   _forceSync(){
     const id = uuidv4;
     const {owner, labbookName} = store.getState().routes

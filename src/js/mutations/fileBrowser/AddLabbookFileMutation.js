@@ -7,6 +7,7 @@ import RelayRuntime from 'relay-runtime'
 import uuidv4 from 'uuid/v4'
 
 
+
 const mutation = graphql`
   mutation AddLabbookFileMutation($input: AddLabbookFileInput!){
     addLabbookFile(input: $input){
@@ -71,7 +72,6 @@ function sharedUpdater(store, labbookId, connectionKey, node) {
     }
   }
 
-
 export default function AddLabbookFileMutation(
   connectionKey,
   owner,
@@ -88,6 +88,7 @@ export default function AddLabbookFileMutation(
 
   const id = uuidv4()
   const optimisticId = uuidv4()
+
   const variables = {
     input: {
       owner,
@@ -133,6 +134,7 @@ export default function AddLabbookFileMutation(
         edgeName: 'newLabbookFileEdge'
       }],
       onCompleted: (response, error ) => {
+
         if(error){
           console.log(error)
         }

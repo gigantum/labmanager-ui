@@ -22,7 +22,19 @@ class OutputDataBrowser extends Component {
   }
 
   /*
-    handle state and addd listeners when component mounts
+    update component when props are reloaded
+  */
+  componentWillReceiveProps(nextProps) {
+
+    if(nextProps.output.allFiles.pageInfo.hasNextPage && nextProps.output.allFiles.edges.length > 3){
+      this._loadMore()
+    } else {
+      this.setState({'moreLoading': false});
+    }
+  }
+
+  /*
+    handle state and add listeners when component mounts
   */
   componentDidMount() {
     if(this.props.output.allFiles &&
@@ -85,6 +97,7 @@ class OutputDataBrowser extends Component {
           favoriteConnection="OutputFavorites_favorites"
           connection="OutputDataBrowser_allFiles"
           owner={this.props.owner}
+          isLocked={this.props.isLocked}
           {...this.props}
         />
       )

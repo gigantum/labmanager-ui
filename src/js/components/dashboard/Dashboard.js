@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import {graphql, QueryRenderer} from 'react-relay'
 //components
 import DatasetSets from './datasets/DatasetSets';
-import LocalLabbooks from './labbooks/LocalLabbooks';
+import Labbooks from './labbooks/Labbooks';
 import environment from 'JS/createRelayEnvironment'
 import Loader from 'Components/shared/Loader'
 //store
-import store from 'JS/redux/store'
+import store from "JS/redux/store"
 
-
-const LabbookQuery = graphql`query DashboardQuery($first: Int!, $cursor: String){
-    ...LocalLabbooks_feed
+const LabbookListingQuery = graphql`query DashboardQuery($first: Int!, $cursor: String, $sort: String $reverse: Boolean){
+  ...Labbooks_labbookList
 }`
 
 export default class DashboardContainer extends Component {
@@ -18,7 +17,7 @@ export default class DashboardContainer extends Component {
 
     super(props);
     this.state = {
-      selectedComponent: props.match.params.id
+      selectedComponent: props.match.params.id,
     }
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
@@ -35,14 +34,12 @@ export default class DashboardContainer extends Component {
     this.setState({
       selectedComponent: nextProps.match.params.id
     })
-
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
       payload: {
         'callbackRoute': nextProps.history.location.pathname
       }
     })
-
   }
 
   /**
@@ -61,27 +58,25 @@ export default class DashboardContainer extends Component {
       return (
         <QueryRenderer
           environment={environment}
-          query={LabbookQuery}
+          query={LabbookListingQuery}
           variables={{
             first: 20,
-            cursor: null
+            cursor: null,
+            sort: 'modified_on',
+            reverse: false,
           }}
           render={({error, props}) => {
-
             if (error) {
               console.log(error)
-              return <div>{error.message}</div>
             } else if (props) {
-
                 return (
-                  <LocalLabbooks
-                    feed={props}
+                  <Labbooks
+                    auth={this.props.auth}
+                    labbookList={props}
                     history={this.props.history}
                   />
                 )
-
             }else{
-
               return (
                 <Loader />
               )

@@ -3,7 +3,6 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
 import uuidv4 from 'uuid/v4'
 
 
@@ -24,33 +23,6 @@ const mutation = graphql`
     }
   }
 `;
-
-
-function sharedUpdater(store, parentId, connectionKey, node, deleteId) {
-
-  const labbookProxy = store.get(parentId);
-
-  const conn = RelayRuntime.ConnectionHandler.getConnection(
-    labbookProxy,
-    connectionKey
-  );
-
-  if(conn){
-
-    const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-      store,
-      conn,
-      node,
-      "newFavoriteEdge"
-    )
-
-    RelayRuntime.ConnectionHandler.insertEdgeAfter(
-      conn,
-      newEdge
-    );
-
-  }
-}
 
 export default function UpdateFavoriteMutation(
   connectionKey,
@@ -97,18 +69,24 @@ export default function UpdateFavoriteMutation(
 
         const node = store.get(favorite.id)
 
-        node.setValue(updatedDescription, 'description')
-        node.setValue(updatedIndex, 'index')
+        if(node){
+          node.setValue(updatedDescription, 'description')
+          node.setValue(updatedIndex, 'index')
+        }
 
       },
 
       updater: (store, response)=>{
 
-        const node = store.get(response.updateFavorite.updatedFavoriteEdge
-.node.id)
+        if(response && response.updateFavorite){
 
-        node.setValue(updatedDescription, 'description')
-        node.setValue(updatedIndex, 'index')
+          const node = store.get(response.updateFavorite.updatedFavoriteEdge.node.id)
+
+          if(node){
+            node.setValue(updatedDescription, 'description')
+            node.setValue(updatedIndex, 'index')
+          }
+        }
       }
 
     },

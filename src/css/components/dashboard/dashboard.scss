@@ -3,19 +3,22 @@
 }
 
 .Dashboard__view {
-  height: calc(100% - 200px);
   width: 100%;
+  height: calc(100% - 200px);
 }
 
 .Dashboard__nav {
   width: 300px;
+
   list-style: none;
+
   font-size: 22px;
   font-weight: 200;
 }
 
 .Dashboard__nav-item {
   cursor: pointer;
+
   color: $jet;
 }
 

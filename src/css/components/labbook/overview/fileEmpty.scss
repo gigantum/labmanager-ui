@@ -27,6 +27,10 @@
   background: url(../images/icons/data-output-grey.svg) no-repeat 50% 5px;
   background-size: 30px;
 }
+.FileEmpty__container--edit{
+    background: url(../images/icons/edit.svg) no-repeat 50% 5px;
+    background-size: 30px;
+  }
 
 .FileEmpty__main-text {
     font-size: 18px;
@@ -35,4 +39,8 @@
 .FileEmpty__sub-text {
     font-size: 15px;
     text-decoration: underline;
+}
+.FileEmpty__sub-text:hover {
+    color: $turquise;
+    cursor: pointer;
 }

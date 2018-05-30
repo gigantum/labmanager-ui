@@ -5,7 +5,9 @@ import uuidv4 from 'uuid/v4'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
 import ChunkUploader from 'JS/utils/ChunkUploader'
-
+//components
+import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
+//store
 import store from 'JS/redux/store'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
@@ -140,6 +142,7 @@ export default class ImportModule extends Component {
     this._clearState = this._clearState.bind(this)
     this._showImportScreen = this._showImportScreen.bind(this)
     this._hideImportScreen = this._hideImportScreen.bind(this)
+    this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
 
 
 
@@ -202,7 +205,6 @@ export default class ImportModule extends Component {
   componentDidMount() {
     let fileInput = document.getElementById('file__input')
     if(fileInput) {
-      let evt = new MouseEvent("click", {"bubbles":false, "cancelable":true});
 
       fileInput.onclick = (evt) =>{
         evt.cancelBubble = true;
@@ -481,6 +483,7 @@ export default class ImportModule extends Component {
   }
 
   _showModal(evt){
+  
     if (navigator.onLine){
       if(evt.target.id !== 'file__input-label'){
         this.props.showModal()
@@ -531,7 +534,8 @@ export default class ImportModule extends Component {
     let self = this;
     const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
     const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
-    const remote = this.state.remoteURL.indexOf('https://') > -1 ? this.state.remoteURL + '.git' : 'https://' + this.state.remoteURL + '.git'
+    const remote = `https://repo.gigantum.io/${owner}/${labbookName}.git`
+
 
     UserIdentity.getUserIdentity().then(response => {
 
@@ -585,7 +589,7 @@ export default class ImportModule extends Component {
               labbookName,
               owner,
               false,
-              (error)=>{
+              (response, error)=>{
                 if(error){
                   console.error(error)
                   store.dispatch(
@@ -627,54 +631,57 @@ export default class ImportModule extends Component {
           }
         )
       }else{
-
-          store.dispatch(
-            {
-              type: "MULTIPART_INFO_MESSAGE",
-              payload: {
-                id: id,
-                message: 'ERROR: User session not valid for remote import',
-                messsagesList: [{message:'User must be authenticated to perform this action.'}],
-                error: true
-              }
-            })
-
           this.setState({'showLoginPrompt': true})
+          document.getElementById('modal__cover').classList.remove('hidden')
       }
       }
     })
   }
+  /**
+  *  @param {}
+  *  @return {} hides login prompt modal
+  */
+  _closeLoginPromptModal(){
+    this.setState({
+      'showLoginPrompt': false
+    })
+    document.getElementById('modal__cover').classList.add('hidden')
+  }
 
   render(){
     let importCSS = classNames({
-      'LocalLabbooks__labbook-button-import': this.state.importTransition === null,
-      'LocalLabbooks__labbook-button-import--expanding': this.state.importTransition,
-      'LocalLabbooks__labbook-button-import--collapsing': !this.state.importTransition && this.state.importTransition !== null
+      'Labbooks__labbook-button-import': this.state.importTransition === null,
+      'Labbooks__labbook-button-import--expanding': this.state.importTransition,
+      'Labbooks__labbook-button-import--collapsing': !this.state.importTransition && this.state.importTransition !== null
+    })
+    let loginPromptModalCss = classNames({
+      'Labbooks--login-prompt': this.state.showLoginPrompt,
+      'hidden': !this.state.showLoginPrompt
     })
 
     return(
       <div
         id="dropZone"
         type="file"
-        className="ImportModule LocalLabbooks__panel LocalLabbooks__panel--add LocalLabbooks__panel--import"
+        className="ImportModule Labbooks__panel Labbooks__panel--add Labbooks__panel--import column-4-span-3"
         ref={(div) => this.dropZone = div}
         onDragEnd={(evt) => this._dragendHandler(evt)}
         onDrop={(evt) => this._dropHandler(evt)}
         onDragOver={(evt) => this._dragoverHandler(evt)}
         key={'addLabbook'}>
         { !this.state.importingScreen ?
-          <div className="LocalLabbooks__labbook-main">
-            <div className="LocalLabbooks__labbook-header">
+          <div className="Labbooks__labbook-main">
+            <div className="Labbooks__labbook-header">
               <div
-                className="LocalLabbooks__labbook-icon">
-                <div className="LocalLabbooks__title-add"></div>
+                className="Labbooks__labbook-icon">
+                <div className="Labbooks__title-add"></div>
               </div>
               <div
-                className="LocalLabbooks__add-text">
+                className="Labbooks__add-text">
                 <h4>Add LabBook</h4>
               </div>
             </div>
-            <div className="LocalLabbooks__labbook-button"
+            <div className="Labbooks__labbook-button"
               onClick={(evt) => { this._showModal(evt) }}>
               Create New
             </div>
@@ -684,12 +691,12 @@ export default class ImportModule extends Component {
             </div>
           </div>
           :
-          <div id="dropZone__title" className="LocalLabbooks__labbook-importing">
+          <div id="dropZone__title" className="Labbooks__labbook-importing">
             <div
-              className="Locallabbook__import-close"
+              className="Labbooks__import-close"
               onClick={() => this._hideImportScreen()}>
             </div>
-            <div className="LocalLabbooks__labbook-import-header">
+            <div className="Labbooks__labbook-import-header">
               <h4 id="dropZone__create">
                 Import Existing
               </h4>
@@ -701,7 +708,7 @@ export default class ImportModule extends Component {
               Drag .lbk File Here
             </p>
             <label
-              className="LocalLabbooks__file-system"
+              className="Labbooks__file-system"
               id="file__input-label"
               htmlFor="file__input">
               Browse & Upload .lbk File
@@ -712,7 +719,7 @@ export default class ImportModule extends Component {
               type="file"
               onChange={(evt) => { this._fileSelected(evt.files) }}
             />
-            <div className="LocalLabbooks__labbook-paste">
+            <div className="Labbooks__labbook-paste">
               <input
                 type="text"
                 placeholder="Paste LabBook URL"
@@ -727,6 +734,12 @@ export default class ImportModule extends Component {
             </div>
           </div>
         }
+        <div className={loginPromptModalCss}>
+          <div
+            onClick={() => { this._closeLoginPromptModal() }}
+            className="Labbooks-login-prompt--close"></div>
+          <LoginPrompt closeModal={this._closeLoginPromptModal} />
+        </div>
         <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
 
       </div>

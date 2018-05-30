@@ -95,7 +95,7 @@ export default class FilePreview extends Component {
                   </Link>
                 </div>
                 <p>Favorite Code Files</p>
-                <div className="FilePreview__list">
+                <div className="FilePreview__list grid">
                   {
                     props.labbook.code.favorites && props.labbook.code.favorites.edges.length ?
                     props.labbook.code.favorites.edges.map(edge =>{
@@ -121,7 +121,7 @@ export default class FilePreview extends Component {
                   </Link>
                 </div>
                 <p>Favorite Input Files</p>
-                <div className="FilePreview__list">
+                <div className="FilePreview__list grid">
                   {
                     props.labbook.input.favorites &&
                     props.labbook.input.favorites.edges.length ? props.labbook.input.favorites.edges.map(edge =>{
@@ -146,7 +146,7 @@ export default class FilePreview extends Component {
                   </Link>
                 </div>
                 <p>Favorite Output Files</p>
-                <div className="FilePreview__list">
+                <div className="FilePreview__list grid">
                   {
                     props.labbook.output.favorites &&
                     props.labbook.output.favorites.edges.length ? props.labbook.output.favorites.edges.map(edge =>{

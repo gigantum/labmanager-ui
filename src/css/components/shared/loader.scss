@@ -1,27 +1,16 @@
-.Loader__logo {
-  z-index: 1002;
+.Loader {
   position: absolute;
+  z-index: index($elements, loader);
   top: calc(50% - 75px);
   left: calc(50% - 75px);
-  background: url(../images/logos/logo-circle-cyan.png) no-repeat 50% 50%;
-  background-size: 150px;
-  height: 150px;
-  width: 150px;
-}
 
-
-.Loader__logo-border {
-  box-sizing: content-box !important;
-  z-index: 1001;
-  position: absolute;
   width: 150px;
   height: 150px;
-  top: calc(50% - 90px);
-  left: calc(50% - 90px);
-  border: 16px solid $grey;
-  border-top: 16px solid $turquise;
-  border-radius: 50%;
+
   animation: spin 2s linear infinite;
+
+  background: url(../images/loaders/load.svg) no-repeat 50% 50%;
+  background-size: 100px;
 }
 
 @keyframes spin {

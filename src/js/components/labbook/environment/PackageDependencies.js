@@ -4,6 +4,7 @@ import {createPaginationContainer, graphql} from 'react-relay'
 import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
 //components
+import ButtonLoader from 'Components/shared/ButtonLoader'
 import Loader from 'Components/shared/Loader'
 //store
 import store from 'JS/redux/store'
@@ -18,6 +19,7 @@ import config from 'JS/config'
 
 let totalCount = 2
 let owner, unsubscribe
+
 class PackageDependencies extends Component {
   constructor(props){
     super(props);
@@ -35,11 +37,23 @@ class PackageDependencies extends Component {
       'packages': [],
       'searchValue': '',
       'forceRender': false,
-      'disableInstall': false
+      'disableInstall': false,
+      'installDependenciesButtonState': '',
+      'hardDisable': false,
     };
     //bind functions here
     this._loadMore = this._loadMore.bind(this)
     this._setSelectedTab = this._setSelectedTab.bind(this)
+    this._addPackageComponentMutation = this._addPackageComponentMutation.bind(this)
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+    if(nextProps.environment.packageDependencies.pageInfo.hasNextPage){
+
+      this._loadMore() //routes query only loads 2, call loadMore
+
+    }
   }
   /*
     handle state and addd listeners when component mounts
@@ -49,7 +63,7 @@ class PackageDependencies extends Component {
 
       this._loadMore() //routes query only loads 2, call loadMore
     }else{
-      this._refetch()
+      //this._refetch() //removed for latest  version fix
     }
 
     if(this.state.selectedTab === ''){
@@ -74,7 +88,6 @@ class PackageDependencies extends Component {
     unsubscribe from redux store
   */
   storeDidUpdate = (environmentStore) => {
-
     if(this.state.packageMenuVisible !== environmentStore.packageMenuVisible){
       this.setState({packageMenuVisible: environmentStore.packageMenuVisible});//triggers re-render when store updates
     }
@@ -100,7 +113,7 @@ class PackageDependencies extends Component {
 
          self._loadMore()
        }else{
-         self._refetch()
+         //self._refetch() commented out to stop latest version check
        }
      }
    );
@@ -136,22 +149,26 @@ class PackageDependencies extends Component {
   *  @param {Object}
   *  hides packagemanager modal
   */
-  _setSelectedTab(tab){
-    this.setState({'selectedTab': tab})
+  _setSelectedTab(tab, isSelected){
+    this.setState({'selectedTab': tab, packageMenuVisible: isSelected ? this.state.packageMenuVisible : false, packages: isSelected ? this.state.packages : []})
   }
   /**
   *  @param {Object}
   *  hides packagemanager modal
   */
   _filterPackageDependencies(packageDependencies){
-    let searchValue = this.state.searchValue.toLowerCase()
-    let packages = packageDependencies.edges.filter((edge)=>{
-      return edge && edge.node && (edge.node.manager === this.state.selectedTab)
-    }).filter((edge)=>{
-      let name = edge && edge.node && edge.node.package ? edge.node.package.toLowerCase() : ''
-      let searchMatch = ((searchValue === '') || (name.indexOf(searchValue) > -1))
-      return searchMatch
-    })
+      let searchValue = this.state.searchValue.toLowerCase()
+
+      let packages = packageDependencies.edges.filter((edge) => {
+
+        return edge && edge.node && (edge.node.manager === this.state.selectedTab)
+      }).filter((edge) => {
+
+        let name = edge && edge.node && edge.node.package ? edge.node.package.toLowerCase() : ''
+        let searchMatch = ((searchValue === '') || (name.indexOf(searchValue) > -1))
+
+        return searchMatch
+      })
 
     return packages
   }
@@ -161,31 +178,37 @@ class PackageDependencies extends Component {
   */
   _removePackage(node){
     const {status} = store.getState().containerStatus;
-    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+    const canEditEnvironment = config.containerStatus.canEditEnvironment(status) && !this.props.isLocked
 
     if(navigator.onLine){
-      if(canEditEnvironment){
-        const {labbookName, owner} = store.getState().routes
-        const {environmentId} = this.props
-        const clinetMutationId = uuidv4()
-        let self = this
 
-        RemovePackageComponentMutation(
-          labbookName,
-          owner,
-          node.manager,
-          node.package,
-          node.id,
-          clinetMutationId,
-          environmentId,
-          'PackageDependencies_packageDependencies',
-          (response, error) => {
-            if(error){
-              console.log(error)
+      if(canEditEnvironment){
+        if(!this.state.hardDisable){
+          const {labbookName, owner} = store.getState().routes
+          const {environmentId} = this.props
+          const clientMutationId = uuidv4()
+
+          let self = this
+          this.setState({hardDisable: true})
+
+          RemovePackageComponentMutation(
+            labbookName,
+            owner,
+            node.manager,
+            node.package,
+            node.id,
+            clientMutationId,
+            environmentId,
+            'PackageDependencies_packageDependencies',
+            (response, error) => {
+              if(error){
+                console.log(error)
+              }
+              this.setState({hardDisable: false})
+              self.props.buildCallback()
             }
-            self.props.buildCallback()
-          }
-        )
+          )
+        }
       }else{
         this._promptUserToCloseContainer()
       }
@@ -205,7 +228,7 @@ class PackageDependencies extends Component {
   */
   _toggleAddPackageMenu(){
     const {status} = store.getState().containerStatus;
-    const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
+    const canEditEnvironment = config.containerStatus.canEditEnvironment(status) && !this.props.isLocked
 
     if(navigator.onLine){
       if(canEditEnvironment){
@@ -233,10 +256,12 @@ class PackageDependencies extends Component {
   *  updates package name in components state
   */
   _updatePackageName(evt){
-    this.setState({packageName: evt.target.value})
-    if(evt.key === 'Enter'){
-      this._addStatePackage(evt)
 
+    this.setState({packageName: evt.target.value})
+
+    if(evt.key === 'Enter'){
+
+      this._addStatePackage(evt)
     }
   }
   /**
@@ -244,8 +269,11 @@ class PackageDependencies extends Component {
   *  updates package version in components state
   */
   _updateVersion(evt){
+
     this.setState({'version': evt.target.value})
+
     if(evt.key === 'Enter'){
+
       this._addStatePackage(evt)
     }
   }
@@ -255,9 +283,9 @@ class PackageDependencies extends Component {
   */
   _addStatePackage(){
     let packages = this.state.packages
-    const {packageName, version} = this.state
+
+    const {packageName, version, labbookName, owner} = this.state
     const manager = this.state.selectedTab
-    let packageIndex = packages.length;
 
     packages.push({
       packageName,
@@ -270,19 +298,25 @@ class PackageDependencies extends Component {
       packages,
       packageName: '',
       version: '',
-
     })
 
 
-      PackageLookup.query(manager, packageName, version).then((response)=>{
+      PackageLookup.query(labbookName, owner, manager, packageName, version).then((response)=>{
+
         let packageIndex;
+
         packages.forEach((packageItem, index)=>{
+
           if(packageItem.packageName === packageName){
+
             packageIndex = index;
           }
         })
+
         packages.splice(packageIndex, 1);
+
         if(response.errors){
+
             store.dispatch({
               type:"ERROR_MESSAGE",
               payload: {
@@ -293,10 +327,12 @@ class PackageDependencies extends Component {
 
         }
         else{
+
+
           packages.push({
             packageName,
-            version: response.data.package.version,
-            latestVersion: response.data.package.latestVersion,
+            version: response.data.labbook.package.version,
+            latestVersion: response.data.labbook.package.latestVersion,
             manager,
             validity: 'valid'
           })
@@ -306,6 +342,7 @@ class PackageDependencies extends Component {
       this.setState({
         packages
       })
+
     })
 
     this.inputPackageName.value = ""
@@ -339,7 +376,9 @@ class PackageDependencies extends Component {
   */
   _removeStatePackages(node, index){
     let packages = this.state.packages
+
     packages.splice(index, 1)
+
     this.setState({
       packages
     })
@@ -350,18 +389,21 @@ class PackageDependencies extends Component {
   *  triggers add package mutation
   */
   _addPackageComponentMutation(){
+
     const {packages} = this.state
     const {labbookName, owner} = store.getState().routes
     const {environmentId} = this.props
 
+    this.setState({disableInstall: true, installDependenciesButtonState: 'loading'})
 
-    this.setState({disableInstall: true})
     let self = this,
-        index = 0
+        index = 0;
 
     function addPackage(packageItem){
+
       const messageVersion = (packageItem.version === '') ? 'latest' : packageItem.version
       const version = (packageItem.version === '') ? null : packageItem.version
+
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload: {
@@ -393,15 +435,32 @@ class PackageDependencies extends Component {
               }
             })
 
+            self.setState({installDependenciesButtonState: 'error'})
+
+            setTimeout(()=>{
+              self.setState({installDependenciesButtonState: ''})
+            }, 2000)
+
           }else{
 
             index++
             if(packages[index]){
               addPackage(packages[index])
             }else{
-              self.setState({disableInstall: false, packages: []})
-              self._refetch()
-              self.props.buildCallback()
+
+              self.setState({
+                disableInstall: false,
+                packages: [],
+                installDependenciesButtonState: 'finished'
+              })
+
+              setTimeout(()=>{
+                self.setState({installDependenciesButtonState: ''})
+                //self._refetch() removed refetch so on latest version
+                self.props.buildCallback()
+              }, 2000)
+
+
             }
           }
         }
@@ -464,7 +523,7 @@ class PackageDependencies extends Component {
       <div className="PackageDependencies">
 
         <div className={blockClass + '__header-container'}>
-          <h4 className="PackageDependencies__header">Packages</h4>
+          <h5 className="PackageDependencies__header">Packages</h5>
         </div>
 
         <div className="PackageDependencies__card">
@@ -480,7 +539,7 @@ class PackageDependencies extends Component {
                 return(<li
                   key={tab + index}
                   className={packageTab}
-                  onClick={() => this._setSelectedTab(tab.tabName)}>{`${tab.tabName} (${tab.count})`}
+                  onClick={() => this._setSelectedTab(tab.tabName, this.state.selectedTab === tab.tabName)}>{`${tab.tabName} (${tab.count})`}
                 </li>)
               })
             }
@@ -519,14 +578,19 @@ class PackageDependencies extends Component {
                   <tbody>
                     {
                       this.state.packages.map((node, index)=>{
-
                         const version = node.version === '' ? 'latest' : `v${node.version}`
                         return (
                           <tr
                             className={`PackageDependencies__table-row--${node.validity}` }
                             key={node.packageName + node.version}>
-                            <td>{`${node.packageName}`}</td>
-                            <td>{version}</td>
+                            <td className="PackageDependencies__td-package">{`${node.packageName}`}</td>
+                            <td className="PackageDependencies__td-version">{node.validity === 'checking' ? `retrieving ${version === 'latest'?'latest version': `v${version}`}` : version}
+                            {
+                              node.validity === 'checking' &&
+                              <div className="PackageDependencies__version-loading"></div>
+                            }
+
+                            </td>
                             <td className="PackageDependencies__table--no-right-padding" width="30">
                               <button className="PackageDependencies__button--round PackageDependencies__button--remove"
                                 onClick={()=>this._removeStatePackages(node, index)}>
@@ -537,12 +601,21 @@ class PackageDependencies extends Component {
                     }
                   </tbody>
                 </table>
-                <button
+
+                <ButtonLoader
+                  buttonState={this.state.installDependenciesButtonState}
+                  buttonText={"Install Selected Packages"}
+                  className="PackageDependencies__button--absolute"
+                  params={{}}
+                  buttonDisabled={disableInstall}
+                  clicked={this._addPackageComponentMutation}
+                />
+                {/* <button
                   className="PackageDependencies__button--absolute"
                   onClick={()=> this._addPackageComponentMutation()}
                   disabled={disableInstall}>
                   Install Selected Packages
-                </button>
+                </button> */}
             </div>
           </div>
         </div>
@@ -561,7 +634,7 @@ class PackageDependencies extends Component {
               <tr>
                 <th>Package Name</th>
                 <th>Current</th>
-                <th>Latest</th>
+                {/* <th>Latest</th> disabled for beta release*/ }
                 <th>Installed By</th>
                 <th></th>
               </tr>
@@ -586,9 +659,11 @@ class PackageDependencies extends Component {
 
   _packageRow(edge, index){
     const installer = edge.node.fromBase ? 'System' : 'User'
-    const {version, latestVersion} = edge.node
+    //temporarily removed latestVersion
+    const {version, /* latestVersion */} = edge.node
     const versionText = version ?  `v${version}` : ''
-    const latestVersionText = latestVersion ?  `v${latestVersion}` : ''
+    // disbaled for beta release
+    // const latestVersionText = latestVersion ?  `v${latestVersion}` : ''
     let trCSS = classNames({
       'PackageDependencies__optimistic-updating': edge.node.id === undefined
     })
@@ -599,7 +674,7 @@ class PackageDependencies extends Component {
          key={edge.node.package + edge.node.manager + index}>
         <td>{edge.node.package}</td>
         <td>{versionText}</td>
-        <td>{latestVersionText}</td>
+        {/* <td>{latestVersionText}</td>  disabled for beta release*/}
         <td>{installer}</td>
         <td width="60">
           <button

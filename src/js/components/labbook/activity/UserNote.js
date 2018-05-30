@@ -14,7 +14,8 @@ export default class UserNote extends Component {
     this.state = {
       'tags': [],
       'userSummaryText': '',
-      'addNoteDisabled': false
+      'addNoteDisabled': true,
+      'editorFullscreen': false,
     }
 
     this._addNote = this._addNote.bind(this)
@@ -32,6 +33,10 @@ export default class UserNote extends Component {
         element: document.getElementById('markDown'),
         spellChecker: true
       });
+      let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0]
+      fullscreenButton && fullscreenButton.addEventListener('click', () => this.props.changeFullScreenState())
+      let sideBySideButton = document.getElementsByClassName('fa-columns')[0]
+      sideBySideButton && sideBySideButton.addEventListener('click', () => this.props.changeFullScreenState(true))
     }
   }
 
@@ -73,10 +78,9 @@ export default class UserNote extends Component {
   _setUserSummaryText(evt){
 
     const summaryText =  evt.target.value;
-
     this.setState({
       'userSummaryText': summaryText,
-      'addNoteEnabled': (summaryText.length > 0)
+      'addNoteDisabled': (summaryText.length === 0)
     })
   }
   /**
@@ -122,6 +126,7 @@ export default class UserNote extends Component {
 
 
   render(){
+   
     const {tags} = this.state;
     return(
       <div className="UserNote flex flex--column">

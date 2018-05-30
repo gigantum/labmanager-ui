@@ -21,6 +21,17 @@ class InputDataBrowser extends Component {
       labbookName
     }
   }
+  /*
+    update component when props are reloaded
+  */
+  componentWillReceiveProps(nextProps) {
+
+    if(nextProps.input.allFiles.pageInfo.hasNextPage && nextProps.input.allFiles.edges.length > 3){
+      this._loadMore()
+    } else {
+      this.setState({'moreLoading': false});
+    }
+  }
 
   /*
     handle state and addd listeners when component mounts
@@ -84,6 +95,7 @@ class InputDataBrowser extends Component {
           parentId={this.props.inputId}
           favoriteConnection="InputFavorites_favorites"
           owner={this.state.owner}
+          isLocked={this.props.isLocked}
           {...this.props}
         />
       )

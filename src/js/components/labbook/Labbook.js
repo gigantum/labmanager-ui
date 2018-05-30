@@ -5,8 +5,6 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay'
-
-import StickyHeader from 'react-sticky-header';
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import classNames from 'classnames'
@@ -25,7 +23,7 @@ import Loader from 'Components/shared/Loader'
 import Branches from './branches/Branches'
 import BranchMenu from './branchMenu/BranchMenu'
 //utils
-import {getFilesFromDragEvent, getFiles} from "JS/utils/html-dir-content";
+import {getFilesFromDragEvent} from "JS/utils/html-dir-content";
 
 import Config from 'JS/config'
 
@@ -37,12 +35,18 @@ class Labbook extends Component {
 
     localStorage.setItem('owner', store.getState().routes.owner)
     this.state = store.getState().labbook
+    this.state.isBuilding = false;
+    this.state.isSyncing = false;
+    this.state.isPublishing = false;
+    this.state.isExporting = false;
+
     //bind functions here
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
     this._setBuildingState = this._setBuildingState.bind(this)
     this._showLabbookModal = this._showLabbookModal.bind(this)
     this._hideLabbookModal = this._hideLabbookModal.bind(this)
     this._toggleBranchesView = this._toggleBranchesView.bind(this)
+    this._branchViewClickedOff = this._branchViewClickedOff.bind(this)
 
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
@@ -54,7 +58,7 @@ class Labbook extends Component {
 
   componentWillMount() {
     const {labbookName, owner} = store.getState().routes
-    document.title =  `${owner}/${labbookName}`
+    document.title = `${owner}/${labbookName}`
   }
 
   componentWillReceiveProps(nextProps) {
@@ -75,6 +79,11 @@ class Labbook extends Component {
     unsubscribe = store.subscribe(() =>{
         this.storeDidUpdate(store.getState().labbook)
     })
+
+
+    this._setStickHeader();
+    window.addEventListener('scroll', this._setStickHeader)
+    window.addEventListener('click', this._branchViewClickedOff )
   }
   /**
     @param {}
@@ -82,7 +91,50 @@ class Labbook extends Component {
   */
   componentWillUnmount() {
     unsubscribe()
+
+
+    window.removeEventListener('scroll', this._setStickHeader)
+
+    window.removeEventListener('click', this._branchViewClickedOff)
+
   }
+  /**
+    @param {event}
+    updates state of labbook when prompted ot by the store
+    updates history prop
+  */
+  _branchViewClickedOff(evt) {
+    if(evt.target.className.indexOf('Labbook__veil') > -1) {
+      this._toggleBranchesView(false, false);
+    }
+  }
+
+  /**
+    @param {}
+    dispatches sticky state to redux to update state
+  */
+  _setStickHeader(){
+      let sticky = 50;
+      let isSticky = window.pageYOffset >= sticky
+      if(store.getState().labbook.isSticky !== isSticky) {
+        store.dispatch({
+          type: 'UPDATE_STICKY_STATE',
+          payload: {
+            isSticky
+          }
+        })
+      }
+
+      if(isSticky){
+        store.dispatch({
+          type: 'MERGE_MODE',
+          payload: {
+            brancfahesOpen: false,
+            mergeFilter: false
+          }
+        })
+      }
+    }
   /**
     @param {object} labbook
     updates state of labbook when prompted ot by the store
@@ -121,8 +173,7 @@ class Labbook extends Component {
     updates labbook state
   */
   _setBuildingState = (isBuilding) =>{
-
-    this.refs['ContainerStatus'].setState({'isBuilding': isBuilding})
+    this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({'isBuilding': isBuilding})
 
     if(this.state.isBuilding !== isBuilding){
       store.dispatch(
@@ -135,6 +186,66 @@ class Labbook extends Component {
   }
 
   /**
+  @param {boolean} isSyncing
+  updates container status state
+  updates labbook state
+*/
+  _setSyncingState = (isSyncing) => {
+    this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isSyncing': isSyncing })
+
+    if (this.state.isSyncing !== isSyncing) {
+      store.dispatch(
+        {
+          type: 'IS_SYNCING',
+          payload: {
+            'isSyncing': isSyncing
+          }
+        })
+    }
+  }
+
+  /**
+    @param {boolean} isPublishing
+    updates container status state
+    updates labbook state
+  */
+ _setPublishingState = (isPublishing) => {
+
+    this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isPublishing': isPublishing })
+
+    if (this.state.isPublishing !== isPublishing) {
+      store.dispatch(
+        {
+          type: 'IS_PUBLISHING',
+          payload: {
+            'isPublishing': isPublishing
+          }
+        })
+    }
+  }
+
+  /**
+    @param {boolean} isExporting
+    updates container status state
+    updates labbook state
+  */
+  _setExportingState = (isExporting) => {
+
+    this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isExporting': isExporting })
+
+    if (this.state.isExporting !== isExporting) {
+      store.dispatch(
+        {
+          type: 'IS_EXPORTING',
+          payload: {
+            'isExporting': isExporting
+          }
+        })
+    }
+  }
+
+
+  /**
     @param {object} item
     returns nav jsx
   */
@@ -145,7 +256,7 @@ class Labbook extends Component {
     let defaultOrder = ['overview', 'activity', 'environment', 'code', 'inputData', 'outputData'];
     let selectedIndex = defaultOrder.indexOf(selectedPath);
     return (
-      <hr className={'Labbook__navigation-slider--' + selectedIndex}/>
+      <hr className={' Labbook__navigation-slider Labbook__navigation-slider--' + selectedIndex}/>
     )
   }
 
@@ -224,109 +335,164 @@ class Labbook extends Component {
   }
 
   /**
-    @param {}
+    @param {boolean, boolean}
     updates branchOpen state
   */
-  _toggleBranchesView(){
-    if(!this.state.isSticky){
-    store.dispatch({
-      type: 'UPDATE_BRANCHES_VIEW',
-      payload: {
-        branchesOpen: !this.state.branchesOpen
-      }
-    })
+  _toggleBranchesView(branchesOpen, mergeFilter){
+    if(store.getState().containerStatus.status !== 'Running'){
+      store.dispatch({
+        type: 'MERGE_MODE',
+        payload: {
+          branchesOpen,
+          mergeFilter
+        }
+      })
+    } else {
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
+        }
+      })
+
+      store.dispatch({
+        type: 'CONTAINER_MENU_WARNING',
+        payload: {
+          message: 'Stop LabBook before switching branches. \n Be sure to save your changes.',
+        }
+      })
     }
+  }
+  /**
+    @param {string}
+    makes branch name pretty
+    @return {string}
+  */
+  _sanitizeBranchName(branchName){
+    const username = localStorage.getItem('username')
+    const workspace = `gm.workspace-${username}`
+    const prettyBranchName = (branchName === workspace) ? 'workspace' : branchName.replace(`${workspace}.`, '')
+
+    return prettyBranchName
   }
 
   render(){
 
     const { isAuthenticated } = this.props.auth
     const {labbookName} = this.props
+    const isLockedBrowser = {locked: (this.state.isPublishing || this.state.isSyncing || this.state.isExporting), isPublishing: this.state.isPublishing, isExporting: this.state.isExporting, isSyncing: this.state.isSyncing}
+    const isLockedEnvironment = this.state.isBuilding || this.state.isSyncing || this.state.isPublishing
 
     if(this.props.labbook){
+
       const {labbook} = this.props
-      const name = this.props.labbook.activeBranch ? this.props.labbook.activeBranch.name.replace(/-/g, ' ') : 'temp'
+      const name = this._sanitizeBranchName(this.props.labbook.activeBranchName)
+      const {branchesOpen} = this.state
+      const labbookCSS = classNames({
+        'Labbook': true,
+        'Labbook--detail-mode': this.state.detailMode,
+        'Labbook-branch-mode': branchesOpen
+      })
+
+      const branchNameCSS = classNames({
+        'Labbook__branch-title': true,
+        'Labbook__branch-title--open': branchesOpen,
+        'Labbook__branch-title--closed': !branchesOpen
+      })
+
+      const labbookHeaderCSS = classNames({
+        'Labbook__header': true,
+        'is-sticky': this.state.isSticky
+      })
 
       return(
         <div
-          className={this.state.detailMode ? "Labbook Labbook--detail-mode" : "Labbook"}>
+          className={labbookCSS}>
 
            <div className="Labbook__inner-container flex flex--row">
              <div className="Labbook__component-container flex flex--column">
-              <StickyHeader
-                header ={
-              <div className="Labbook__header">
-                <div className="Labbook__row-container">
-                 <div className="Labbook__column-container--flex-1">
-                   <div className="Labbook__name-title">
-                     {labbook.owner + '/' + labbookName}
-                   </div>
-
-                   <div className={(this.state.branchesOpen) ? 'Labbook__branch-title Labbook__branch-title--open' : 'Labbook__branch-title Labbook__branch-title--closed'}>
-                     <div className="Labbook__name" onClick={()=> this._toggleBranchesView()}>
-                         {name}
+              <div className="Labbook__header-container">
+                <div className={labbookHeaderCSS}>
+                  <div className="Labbook__row-container">
+                   <div className="Labbook__column-container--flex-1">
+                     <div className="Labbook__name-title">
+                       {labbook.owner + '/' + labbookName}
                      </div>
-                     <div
-                       onClick={()=> this._toggleBranchesView()}
-                      className="Labbook__branch-toggle"></div>
-                   </div>
+
+                     <div className={branchNameCSS}>
+                       <div className="Labbook__name" onClick={()=> this._toggleBranchesView(!branchesOpen, false)}>
+                           {name}
+                       </div>
+                       <div
+                         onClick={()=> this._toggleBranchesView(!branchesOpen, false)}
+                        className="Labbook__branch-toggle"></div>
+                     </div>
 
                 </div>
                 <div className="Labbook__column-container">
 
                    <BranchMenu
+                     description={labbook.description}
                      history={this.props.history}
                      collaborators={labbook.collaborators}
-                     canManageCollaborators={labbook.canManageCollaborators}
                      defaultRemote={labbook.defaultRemote}
                      labbookId={labbook.id}
                      remoteUrl={labbook.overview.remoteUrl}
+                     setSyncingState={this._setSyncingState}
+                     setPublishingState={this._setPublishingState}
+                     setExportingState={this._setExportingState}
+                     toggleBranchesView={this._toggleBranchesView}
+                     isMainWorkspace={name === 'workspace' || name === `gm.workspace-${localStorage.getItem('username')}`}
                     />
 
-                   <ContainerStatus
-                     ref="ContainerStatus"
-                     base={labbook.environment.base}
-                     containerStatus={labbook.environment.containerStatus}
-                     imageStatus={labbook.environment.imageStatus}
-                     labbookId={labbook.id}
-                     setBuildingState={this._setBuildingState}
-                     isBuilding={this.state.isBuilding}
-                     creationDateUtc={labbook.creationDateUtc}
-                   />
+                     <ContainerStatus
+                       ref="ContainerStatus"
+                       base={labbook.environment.base}
+                       containerStatus={labbook.environment.containerStatus}
+                       imageStatus={labbook.environment.imageStatus}
+                       labbookId={labbook.id}
+                       setBuildingState={this._setBuildingState}
+                       isBuilding={this.state.isBuilding}
+                       isSyncing={this.state.isSyncing}
+                       isPublishing={this.state.isPublishing}
+                       creationDateUtc={labbook.creationDateUtc}
+                     />
+                  </div>
                 </div>
-              </div>
-              <div className={(this.state.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
+                <div className={(this.state.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
 
-                <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
+                  <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
 
                 <Branches
                   defaultRemote={labbook.defaultRemote}
                   branchesOpen={this.state.branchesOpen}
                   labbook={labbook}
                   labbookId={labbook.id}
-                  activeBranch={labbook.activeBranch}
+                  activeBranch={labbook.activeBranchName}
+                  toggleBranchesView={this._toggleBranchesView}
+                  mergeFilter={this.state.mergeFilter}
+                  setBuildingState={this._setBuildingState}
                 />
 
-                <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
+                  <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
+                </div>
               </div>
-              </div>}>
-              <div className="Labbook__navigation-container mui-container flex-0-0-auto">
-                 <ul className="Labbook__navigation flex flex--row">
-                   {
-                     Config.navigation_items.map((item, index) => {
-                       return (this._getNavItem(item, index))
-                     })
-                   }
-                   {
-                    (this._changeSlider())
-                   }
-                 </ul>
-               </div>
+                <div className="Labbook__navigation-container mui-container flex-0-0-auto">
+                   <ul className="Labbook__navigation flex flex--row">
+                     {
+                       Config.navigation_items.map((item, index) => {
+                         return (this._getNavItem(item, index))
+                       })
+                     }
+                     {
+                      (this._changeSlider())
+                     }
+                   </ul>
+                 </div>
 
+             </div>
 
-              </StickyHeader>
-
-               <div className="Labbook__view mui-container flex flex-1-0-auto">
+             <div className="Labbook__view mui-container flex flex-1-0-auto">
 
                   <Switch>
                     <Route
@@ -340,6 +506,7 @@ class Labbook extends Component {
                           description={labbook.description}
                           labbookId={labbook.id}
                           setBuildingState={this._setBuildingState}
+                          readme={labbook.readme}
                         />)
                       }}
                     />
@@ -353,6 +520,7 @@ class Labbook extends Component {
                               key={this.state.labbookName + '_overview'}
                               labbook={labbook}
                               description={labbook.description}
+                              readme={labbook.readme}
                             />)
                           }}
                         />
@@ -360,14 +528,16 @@ class Labbook extends Component {
                         <Route
                           path={`${this.props.match.path}/activity`}
                           render={() => {
+
                           return (
                             <Activity
                               key={this.state.labbookName + '_activity'}
                               labbook={labbook}
                               activityRecords={this.props.activityRecords}
                               labbookId={labbook.id}
+                              activeBranch={labbook.activeBranch}
+                              isMainWorkspace={name === 'workspace'}
                               {...this.props}
-
                             />)
                         }} />
 
@@ -382,6 +552,7 @@ class Labbook extends Component {
                                 setBuildingState={this._setBuildingState}
                                 containerStatus={this.refs.ContainerStatus}
                                 overview={labbook.overview}
+                                isLocked={isLockedEnvironment}
                                 {...this.props}
                               />)
                           }}
@@ -393,6 +564,7 @@ class Labbook extends Component {
                               labbook={labbook}
                               labbookId={labbook.id}
                               setContainerState={this._setContainerState}
+                              isLocked={isLockedBrowser}
                             />)
                         }} />
 
@@ -401,6 +573,7 @@ class Labbook extends Component {
                             <InputData
                               labbook={labbook}
                               labbookId={labbook.id}
+                              isLocked={isLockedBrowser}
                             />)
                         }} />
 
@@ -409,6 +582,7 @@ class Labbook extends Component {
                             <OutputData
                               labbook={labbook}
                               labbookId={labbook.id}
+                              isLocked={isLockedBrowser}
                             />)
                         }} />
                       </Switch>
@@ -420,6 +594,7 @@ class Labbook extends Component {
             </div>
 
           </div>
+          <div className="Labbook__veil"></div>
         </div>
       )
 
@@ -441,22 +616,11 @@ const LabbookFragmentContainer = createFragmentContainer(
       fragment Labbook_labbook on Labbook{
           id
           description
-          updatesAvailableCount
-          isRepoClean
+          readme
           defaultRemote
           owner
           creationDateUtc
-          activeBranch{
-            id
-            name
-            prefix
-            commit{
-              hash
-              shortHash
-              committedOn
-              id
-            }
-          }
+
           environment{
             containerStatus
             imageStatus
@@ -474,8 +638,11 @@ const LabbookFragmentContainer = createFragmentContainer(
             numCustomDependencies
           }
 
-          collaborators
-          canManageCollaborators
+
+          availableBranchNames
+          mergeableBranchNames
+          workspaceBranchName
+          activeBranchName
 
           ...Environment_labbook
           ...Overview_labbook
@@ -483,7 +650,6 @@ const LabbookFragmentContainer = createFragmentContainer(
           ...Code_labbook
           ...InputData_labbook
           ...OutputData_labbook
-          ...Branches_labbook
 
       }`
   }

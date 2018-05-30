@@ -40,11 +40,21 @@ $grey-light: rgb(244,244,244);
 $grey-background: rgb(227,225,226);
 $grey-border: #E3E4E5;
 $font-grey: #9c9b9b;
-
+$dark-blue: #334156;
 $background-color: rgb(240, 241, 245);
 
 
+
 $white: #fefefe;
+
+/*********************
+*
+* z-index
+*
+* z-index: index($elements, labbookHeader)
+*
+***********************/
+$elements: basic, psuedoCard, card, button, sideBar, headerStrip, veil, popup, footer, modalCoverNested, labbookHeader, loader, modalCover, modal;
 
 /*********************
 *

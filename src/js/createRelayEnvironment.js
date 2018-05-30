@@ -1,4 +1,3 @@
-
 const {
   Environment,
   Network,
@@ -45,17 +44,19 @@ function fetchQuery(
   }else{
 
     body = new FormData()
+
     body.append('query', queryString)
     body.append('variables', JSON.stringify(variables))
     body.append('uploadChunk', uploadables[0])
   }
 
-  return fetch(window.location.protocol + '//' + window.location.hostname + `${process.env.GIGANTUM_API}`, {
+  const apiURL = `${window.location.protocol}//${window.location.hostname}${process.env.GIGANTUM_API}`
+  return fetch(apiURL, {
     'method': 'POST',
     'headers': headers,
     'body': body,
   }).then(response => response.json())
-    .catch(error => error);
+    .catch(error => error)
 
 }
 

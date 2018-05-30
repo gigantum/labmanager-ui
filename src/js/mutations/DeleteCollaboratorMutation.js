@@ -41,7 +41,6 @@ export default function DeleteCollaboratorMutation(
       mutation,
       variables,
       onCompleted: (response, error) => {
-        console.log(error)
         if(error){
           console.log(error)
           reduxStore.dispatch({
@@ -52,7 +51,7 @@ export default function DeleteCollaboratorMutation(
             }
           })
         }
-        callback(error)
+        callback(response, error)
       },
       onError: err => console.error(err),
 
