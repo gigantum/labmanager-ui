@@ -635,7 +635,6 @@ const LabbookFragmentContainer = createFragmentContainer(
             numConda2Packages
             numConda3Packages
             numPipPackages
-            numCustomDependencies
           }
 
 
