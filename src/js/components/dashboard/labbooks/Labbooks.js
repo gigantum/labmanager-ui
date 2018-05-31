@@ -298,7 +298,9 @@ class Labbooks extends Component {
         'CreateLabbook--login-prompt': this.state.showLoginPrompt,
         'hidden': !this.state.showLoginPrompt
       })
-      if(props.labbookList){
+      let labbookListId = props.labbookList && props.labbookList.labbookList.id;
+      let labbookListItems = props.labbookList ? props.labbookList.labbookList : {};
+      if(props.labbookList !== null || props.loading){
 
         return(
 
@@ -415,11 +417,12 @@ class Labbooks extends Component {
             {
               this.state.selectedSection === 'localLabbooks' ?
               <LocalLabbooks
+                loading={props.loading}
                 wasSorted={this.state.wasSorted}
                 sort={this.state.sort}
                 reverse={this.state.reverse}
-                labbookListId={props.labbookList.id}
-                localLabbooks={props.labbookList.labbookList}
+                labbookListId={labbookListId}
+                localLabbooks={labbookListItems}
                 showModal={this._showModal}
                 goToLabbook={this._goToLabbook}
                 filterLabbooks={this._filterLabbooks}
@@ -433,8 +436,8 @@ class Labbooks extends Component {
                 wasSorted={this.state.wasSorted}
                 sort={this.state.sort}
                 reverse={this.state.reverse}
-                labbookListId={props.labbookList.labbookList.id}
-                remoteLabbooks={props.labbookList.labbookList}
+                labbookListId={labbookListId}
+                remoteLabbooks={labbookListItems}
                 showModal={this._showModal}
                 goToLabbook={this._goToLabbook}
                 filterLabbooks={this._filterLabbooks}
