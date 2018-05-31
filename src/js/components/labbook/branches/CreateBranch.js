@@ -1,5 +1,5 @@
 //vendor
-import React from 'react';
+import React, {Component} from 'react';
 import classNames from 'classnames';
 import dateFormat from 'dateformat';
 import Moment from 'moment'
@@ -13,7 +13,7 @@ import validation from 'JS/utils/Validation'
 //store
 import store from 'JS/redux/store'
 
-export default class CreateBranchModal extends React.Component {
+export default class CreateBranchModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -71,12 +71,12 @@ export default class CreateBranchModal extends React.Component {
 
       this.setState({ 'modalVisible': false });
 
-      document.getElementById('modal__cover').classList.add('hidden')
-
       if(this.props.toggleModal){
         this.props.toggleModal('createBranchVisible')
       }
     }
+
+    document.getElementById('modal__cover').classList.add('hidden')
 
   }
   /**
@@ -203,6 +203,7 @@ export default class CreateBranchModal extends React.Component {
         <div>
           {this.state.modalVisible &&
             <div className="CreateBranch__container">
+              <div className="modal__cover--nested"></div>
               <div className="CreateBranch__modal">
                 <div
                   className="CreateBranch__modal-close"
@@ -282,6 +283,7 @@ export default class CreateBranchModal extends React.Component {
                 </div>
               }
             </div>
+
           )
         }
       }

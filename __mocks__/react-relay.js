@@ -7,13 +7,72 @@ global.XMLHttpRequest = XMLHttpRequest;
 
 const relay = jest.genMockFromModule('react-relay');
 
+const RelayPaginationProps = {
+  // relay:{
+      hasMore: jest.fn(),
+      loadMore: () => {
+
+      },
+      isLoading: jest.fn()
+
+}
+
+// function makeRelayWrapper<
+//   Props: {},
+//   TComponent: React.ComponentType<Props>,
+// >(
+//   Component: TComponent,
+// ) : React.ComponentType<
+//   $RelayProps<React.ElementConfig<TCompnent>, RelayPaginationProps>,> {
+//
+const makeRelayWrapper = (Comp) => {
+
+  class Container extends Component{
+    constructor(props, context){
+    	super(props);
+
+    	this.state = {};
+    }
+
+    render(){
+      return React.createElement(Comp, {
+        ...this.props,
+        ...this.state.data,
+        relay: RelayPaginationProps
+      })
+    }
+  }
+
+  return Container
+}
+
+
+// return <Comp {...relayProps}/>
+
+  // return function () {
+  //
+  //      console.log(Comp)
+  //      return <Comp {...props} {...relayProps}/>;
+  //  };
+
 
 relay.createFragmentContainer = (c) => c;
-relay.createPaginationContainer = (c) => c;
+relay.createPaginationContainer = (Comp) => makeRelayWrapper(Comp)
 relay.createRefetchContainer = (c) => c;
+
 relay.Component = Component
 relay.commitMutation = commitMutation
 relay.graphql = graphql
+
+
+const loadMore = (props, value, ha) => {
+  console.log(props, value, ha)
+  // let labbooks = json.data.labbookList.localLabbooks
+  // labbooks.edges = labbooks.edges.slice(0, 5)
+  return "labbooks"
+}
+
+relay.loadMore = loadMore
 
 class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
 
@@ -29,7 +88,7 @@ class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
 
     this.state = {
       readyState: {
-        props: global.data, //(type !== false) ? global.data[type] : global.data
+        props: (type !== false) ? global.data[type] : global.data
       }
     }
   }
@@ -40,6 +99,8 @@ class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
   }
 }
 
-relay.QueryRenderer = QueryRenderer
+relay.QueryRenderer = ReactRelayQueryRenderer
+
+//relay.QueryRendererMock = ReactRelayQueryRenderer
 
 module.exports = relay

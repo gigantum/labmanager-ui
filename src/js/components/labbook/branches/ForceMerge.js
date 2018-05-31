@@ -1,7 +1,7 @@
 //vendor
-import React from 'react';
+import React, {Component} from 'react';
 
-export default class ForceMerge extends React.Component {
+export default class ForceMerge extends Component {
   /**
   *  @param {}
   *  triggers merge with force set top True

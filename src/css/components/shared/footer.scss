@@ -1,4 +1,4 @@
-$footerElements: basic, progressBar, status, section, message;
+$footerElements: basic, progressBar, status, section, message, button;
 
 .Footer {
   position: fixed;
@@ -262,7 +262,7 @@ $footerElements: basic, progressBar, status, section, message;
 
 .Footer__button {
   position: absolute;
-  z-index: index($footerElements, status);
+  z-index: index($footerElements, button);
   top: 5px;
   right: 10px;
 

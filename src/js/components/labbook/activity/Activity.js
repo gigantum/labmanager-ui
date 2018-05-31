@@ -89,6 +89,10 @@ class Activity extends Component {
     if((activityRecords.pageInfo.hasNextPage && activityRecords.edges.length < 2)){
 
       this._loadMore()
+    } else {
+      if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
+        this._loadMore()
+      }
     }
 
     if(activityRecords.edges && activityRecords.edges.length){
@@ -97,9 +101,7 @@ class Activity extends Component {
       this._refetch()
 
     }
-    if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 5){
-      this._loadMore()
-    }
+
   }
 
   componentWillUnmount() {
@@ -283,7 +285,7 @@ class Activity extends Component {
        if(error){
          console.error(error)
        }
-       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 5){
+       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
         self._loadMore();
        } else{
         this.setState({

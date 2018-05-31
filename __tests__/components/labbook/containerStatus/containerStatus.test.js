@@ -16,12 +16,13 @@ let _setBuildingState = () =>{
 
 test('Test Container Rendering Building', async () => {
       const component = await renderer.create(
-        relayTestingUtils.relayWrap(<ContainerStatus
-          containerStatus={"Building"}
-          labbookName={"demo-lab-book"}
-          setBuildingState={_setBuildingState}
-          isBuilding={true}
-        />,{}, json.data)
+        relayTestingUtils.relayWrap(
+           <ContainerStatus
+              containerStatus={"Building"}
+              labbookName={"demo-lab-book"}
+              setBuildingState={_setBuildingState}
+              isBuilding={true}
+            />,{}, json.data)
       )
 
       let tree = component.toJSON();

@@ -58,9 +58,6 @@ class Labbook extends Component {
 
   componentWillMount() {
     const {labbookName, owner} = store.getState().routes
-
-
-
     document.title = `${owner}/${labbookName}`
   }
 
@@ -84,7 +81,7 @@ class Labbook extends Component {
     })
 
 
-
+    this._setStickHeader();
     window.addEventListener('scroll', this._setStickHeader)
     window.addEventListener('click', this._branchViewClickedOff )
   }
@@ -638,7 +635,6 @@ const LabbookFragmentContainer = createFragmentContainer(
             numConda2Packages
             numConda3Packages
             numPipPackages
-            numCustomDependencies
           }
 
 
