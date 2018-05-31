@@ -9,7 +9,7 @@ import classNames from 'classnames'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
-import LocalLabbooks from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooks'
+import LocalLabbooksContainer, {LocalLabbooks} from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooks'
 import RemoteLabbooks from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbooks'
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 //utils
@@ -298,17 +298,11 @@ class Labbooks extends Component {
         'CreateLabbook--login-prompt': this.state.showLoginPrompt,
         'hidden': !this.state.showLoginPrompt
       })
-      let labbookListId = props.labbookList && props.labbookList.labbookList.id;
-      let labbookListItems = props.labbookList ? props.labbookList.labbookList : {};
       if(props.labbookList !== null || props.loading){
 
         return(
 
           <div className="Labbooks">
-          {
-            this.state.refetchLoading &&
-            <Loader />
-          }
             <WizardModal
               ref="wizardModal"
               handler={this.handler}
@@ -415,14 +409,20 @@ class Labbooks extends Component {
 
             </div>
             {
-              this.state.selectedSection === 'localLabbooks' ?
+              props.loading ?
               <LocalLabbooks
-                loading={props.loading}
+                loading
+                showModal={this._showModal}
+
+              />
+              :
+              this.state.selectedSection === 'localLabbooks' ?
+              <LocalLabbooksContainer
                 wasSorted={this.state.wasSorted}
                 sort={this.state.sort}
                 reverse={this.state.reverse}
-                labbookListId={labbookListId}
-                localLabbooks={labbookListItems}
+                labbookListId={props.labbookList.id}
+                localLabbooks={props.labbookList.labbookList}
                 showModal={this._showModal}
                 goToLabbook={this._goToLabbook}
                 filterLabbooks={this._filterLabbooks}
@@ -436,8 +436,8 @@ class Labbooks extends Component {
                 wasSorted={this.state.wasSorted}
                 sort={this.state.sort}
                 reverse={this.state.reverse}
-                labbookListId={labbookListId}
-                remoteLabbooks={labbookListItems}
+                labbookListId={props.labbookList.labbookList.id}
+                remoteLabbooks={props.labbookList.labbookList}
                 showModal={this._showModal}
                 goToLabbook={this._goToLabbook}
                 filterLabbooks={this._filterLabbooks}
