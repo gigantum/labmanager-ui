@@ -64,6 +64,10 @@ export default class ContainerStatus extends Component {
         this.setState({containerMenuOpen: containerStatusStore.containerMenuOpen, containerMenuWarning: containerStatusStore.containerMenuWarning}); //triggers  re-render when store updates
     }
   }
+  componentWillMount() {
+   
+    this._getContainerStatusText(this.props.containerStatus, this.props.imageStatus)
+  }
   /**
   *  @param {}
   *  set fetch interval
@@ -72,22 +76,25 @@ export default class ContainerStatus extends Component {
   componentDidMount(){
     let self = this
     let intervalInSeconds = 3 * 1000
+
     setTimeout(function(){
       self._fetchStatus()
     }, intervalInSeconds);
 
     unsubscribe = store.subscribe(() =>{
 
-      this.storeDidUpdate(store.getState().environment)
+      this.storeDidUpdate(store.getState().containerStatus)
     })
 
-    let status = this._getContainerStatusText(
-      {
-      containerStatus:this.props.containerStatus, imageStatus: this.props.imageStatus
-      })
+    let status = this._getContainerStatusText({
+      containerStatus:this.props.containerStatus,
+      imageStatus: this.props.imageStatus
+    })
+
     const hasLabbookId = store.getState().overview.containerStates[this.props.labbookId]
 
     if(hasLabbookId){
+
       const storeStatus = store.getState().overview.containerStates[this.props.labbookId]
 
       if(storeStatus !== status){
@@ -177,7 +184,6 @@ export default class ContainerStatus extends Component {
     let containerMenuClicked = (evt.target.className.indexOf('ContainerStatus__container-state') > -1) ||
       (evt.target.className.indexOf('ContainerStatus__button-menu') > -1) ||
       (evt.target.className.indexOf('PackageDependencies__button') > -1) ||
-      (evt.target.className.indexOf('CustomDependencies__button') > -1) ||
       (evt.target.className.indexOf('BranchMenu') > -1) ||
       (evt.target.className.indexOf('BranchMenu__sync-button') > -1) ||
       (evt.target.className.indexOf('BranchMenu__remote-button') > -1) ||
@@ -232,8 +238,6 @@ export default class ContainerStatus extends Component {
 
     }
   }
-
-
   /**
     @param {}
     set containerStatus secondsElapsed state by iterating
@@ -395,13 +399,16 @@ export default class ContainerStatus extends Component {
     mutation to trigger opening of development tool
   */
   _openDevToolMuation(developmentTool){
+
     const {owner, labbookName} = store.getState().routes
+
     store.dispatch({
       type: 'INFO_MESSAGE',
       payload:{
         message: `Starting ${developmentTool}`,
       }
     })
+
     StartDevToolMutation(
       owner,
       labbookName,
@@ -585,56 +592,80 @@ export default class ContainerStatus extends Component {
 
     return(
       <div className="ContainerStatus flex flex--row">
+
         { (status === 'Running') &&
+
             <div className="ContainerStatus__plugins">
+
                 <div
                   className={jupyterButtonCss}
                   onClick={()=>{this._openDevToolMuation(this.props.base.developmentTools[0])}}>
                   Open Jupyter
                 </div>
+
                 <div className={containerMenuIconCSS} ></div>
+
                 <div
                   className={containerMenuCSS}>
+
                   <div className="ContainerStatus__plugins-title">Launch</div>
+
                   <ul className="ContainerStatus__plugins-list">
                     {
 
                       this.props.base.developmentTools.map((developmentTool) =>{
                         return(
+
                           <li
                             key={developmentTool}
                             className="ContainerStatus__plugins-list-item">
+
                             <button
                               className={jupyterButtonCss}
-                              onClick={()=>this._openDevToolMuation(developmentTool)}
+                              onClick={() => this._openDevToolMuation(developmentTool)}
                               rel="noopener noreferrer">
                                 {developmentTool}
                             </button>
+
                           </li>
                         )
                       })
                     }
                   </ul>
+
                 </div>
+
             </div>
+
         }
+
         <div
           onClick={(evt) => this._containerAction(textStatus, key)}
           key={key}
           className={containerStatusCss}
-          onMouseOver={()=>{this._setMouseOverState(true)}}
-          onMouseOut ={()=>{this._setMouseOverState(false)}}>
+          onMouseOver={() => {this._setMouseOverState(true)}}
+          onMouseOut ={() => {this._setMouseOverState(false)}}>
+
           {this._getStatusText(textStatus)}
+
         </div>
+
         {
           this.state.containerMenuOpen &&
+
           <div className="ContainerStatus__menu-pointer"></div>
+
         }
+
         {
           this.state.containerMenuOpen &&
+
           <div className="ContainerStatus__button-menu">
+
             {store.getState().environment.containerMenuWarning}
+
           </div>
+
         }
       </div>)
   }

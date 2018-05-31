@@ -62,11 +62,12 @@ class Activity extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
+ 
     let activityRecords = nextProps.labbook.activityRecords
     if(JSON.stringify(this._transformActivity(activityRecords)) !== JSON.stringify(this.state.activityRecords)) {
       this.setState({activityRecords: this._transformActivity(activityRecords)})
     }
+
     if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 3)){
       this._loadMore()
     }
@@ -88,6 +89,10 @@ class Activity extends Component {
     if((activityRecords.pageInfo.hasNextPage && activityRecords.edges.length < 2)){
 
       this._loadMore()
+    } else {
+      if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
+        this._loadMore()
+      }
     }
 
     if(activityRecords.edges && activityRecords.edges.length){
@@ -96,9 +101,7 @@ class Activity extends Component {
       this._refetch()
 
     }
-    if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 5){
-      this._loadMore()
-    }
+
   }
 
   componentWillUnmount() {
@@ -245,7 +248,7 @@ class Activity extends Component {
     let relay = this.props.relay
     let activityRecords = this.props.labbook.activityRecords
 
-    let cursor = activityRecords.edges[ activityRecords.edges.length - 1].node.cursor
+    let cursor = activityRecords.edges.node ? activityRecords.edges[ activityRecords.edges.length - 1].node.cursor : null
 
     relay.refetchConnection(
       counter,
@@ -282,7 +285,7 @@ class Activity extends Component {
        if(error){
          console.error(error)
        }
-       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 5){
+       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
         self._loadMore();
        } else{
         this.setState({
@@ -307,15 +310,17 @@ class Activity extends Component {
     let hiddenCount = 0;
     let recordCount = 0;
     let visibleRecords = records.filter((record) => {
-      if(!record.node.show){
-        hiddenCount++;
-      } else {
-        if(hiddenCount > 2){
-          hiddenCount = 0;
-          recordCount++;
+      if(record){
+        if(!record.node.show){
+          hiddenCount++;
+        } else {
+          if(hiddenCount > 2){
+            hiddenCount = 0;
+            recordCount++;
+          }
         }
       }
-      return record.node.show
+      return record && record.node && record.node.show
     })
     if(hiddenCount > 0) {
       recordCount ++;
@@ -358,21 +363,24 @@ class Activity extends Component {
 
     let count = 0;
     let previousTimeHash = null;
+
     activityRecords.edges.forEach((edge, index) => {
 
-      let date = (edge.node && edge.node.timestamp) ? new Date(edge.node.timestamp) : new Date()
-      let timeHash = `${date.getYear()}_${date.getMonth()}_${date.getDate()}`;
-      count = edge.node.show || (previousTimeHash && timeHash !== previousTimeHash) ? 0 : count + 1;
-      previousTimeHash = timeHash;
+      if(edge && edge.node){
+        let date = (edge.node && edge.node.timestamp) ? new Date(edge.node.timestamp) : new Date()
+        let timeHash = `${date.getYear()}_${date.getMonth()}_${date.getDate()}`;
+        count = edge.node.show || (previousTimeHash && timeHash !== previousTimeHash) ? 0 : count + 1;
+        previousTimeHash = timeHash;
 
-      let newActivityObject = {edge: edge, date: date, collapsed: (count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state))), flatIndex: index}
+        let newActivityObject = {edge: edge, date: date, collapsed: (count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state))), flatIndex: index}
 
-      if(count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state)) ){
-        activityTime[timeHash][activityTime[timeHash].length - 1].collapsed =  true;
-        activityTime[timeHash][activityTime[timeHash].length - 2].collapsed =  true;
+        if(count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state)) ){
+          activityTime[timeHash][activityTime[timeHash].length - 1].collapsed =  true;
+          activityTime[timeHash][activityTime[timeHash].length - 2].collapsed =  true;
+        }
+
+        activityTime[timeHash] ? activityTime[timeHash].push(newActivityObject) : activityTime[timeHash] = [newActivityObject];
       }
-
-      activityTime[timeHash] ? activityTime[timeHash].push(newActivityObject) : activityTime[timeHash] = [newActivityObject];
     })
 
     return activityTime
@@ -664,6 +672,7 @@ class Activity extends Component {
       'Activity': true,
       'fullscreen': this.state.editorFullscreen
     })
+
     if(this.props.labbook){
 
 

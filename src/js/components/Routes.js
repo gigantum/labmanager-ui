@@ -232,7 +232,7 @@ export default class Routes extends Component {
     } else {
       return (
         <div className="Routes__error">
-          <i className="fa fa-exclamation-triangle fa-10x"></i>
+     
           <p>An error has occured. Please try refreshing the page.</p>
         </div>
       )

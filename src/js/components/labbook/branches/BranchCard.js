@@ -266,6 +266,7 @@ export default class BranchCard extends Component {
         { this.state.deleteModalVisible &&
           [
             <DeleteLabbook
+              key="BranchDelete__modal"
               branchName={this.props.name}
               cleanBranchName={branchName}
               labbookName={this.state.labbookName}
@@ -275,7 +276,7 @@ export default class BranchCard extends Component {
             />,
             <div
               key="BranchDelete__modal-cover"
-              className="BranchCard__modal">
+              className="modal__cover--nested">
             </div>
           ]
         }
@@ -283,13 +284,14 @@ export default class BranchCard extends Component {
         { this.state.forceMergeVisible &&
           [
           <ForceMerge
+            key="ForceMerge__modal"
             merge={this._merge}
             params={{force: true}}
             toggleModal={this._toggleModal}
           />,
           <div
             key="BranchDelete__modal-cover"
-            className="BranchCard__modal">
+            className="modal__cover--nested">
           </div>
           ]
         }

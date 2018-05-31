@@ -43,7 +43,7 @@
   @include flex(center, column);
   align-items: center;
   height: 100%;
-  i {
-    margin-bottom: 20px;
-  }
+  background: url(../images/icons/warning-triangle.svg) no-repeat center center;
+  background-size: 256px;
+  padding: 280px 0 0 0;
 }

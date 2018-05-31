@@ -17,6 +17,7 @@ class LocalLabbooks extends Component {
       reverse: this.props.reverse,
       isPaginating: false,
     }
+
     this._captureScroll = this._captureScroll.bind(this)
     this._loadMore = this._loadMore.bind(this)
     this._refetch = this._refetch.bind(this);
@@ -90,6 +91,7 @@ class LocalLabbooks extends Component {
   */
 
   _loadMore = () => {
+    
     this.setState({
       'isPaginating': true
     })
@@ -106,6 +108,7 @@ class LocalLabbooks extends Component {
   }
 
   render(){
+
     if(this.props.localLabbooks && this.props.localLabbooks.localLabbooks && this.props.localLabbooks.localLabbooks.edges){
 
       let labbooks = this.props.filterLabbooks(this.props.localLabbooks.localLabbooks.edges, this.props.filterState)

@@ -483,6 +483,7 @@ export default class ImportModule extends Component {
   }
 
   _showModal(evt){
+  
     if (navigator.onLine){
       if(evt.target.id !== 'file__input-label'){
         this.props.showModal()
@@ -692,7 +693,7 @@ export default class ImportModule extends Component {
           :
           <div id="dropZone__title" className="Labbooks__labbook-importing">
             <div
-              className="labbook__import-close"
+              className="Labbooks__import-close"
               onClick={() => this._hideImportScreen()}>
             </div>
             <div className="Labbooks__labbook-import-header">

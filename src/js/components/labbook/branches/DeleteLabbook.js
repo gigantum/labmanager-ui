@@ -1,11 +1,11 @@
 //vendor
-import React from 'react';
+import React, {Component} from 'react';
 //Mutations
 import DeleteExperimentalBranchMutation from 'Mutations/branches/DeleteExperimentalBranchMutation'
 //store
 import store from 'JS/redux/store'
 
-export default class CreateBranchModal extends React.Component {
+export default class CreateBranchModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,7 @@ export default class CreateBranchModal extends React.Component {
   *  @return {}
   */
   _deleteBranch(){
-    
+
 
     this.props.toggleModal('deleteModalVisible')
     const {

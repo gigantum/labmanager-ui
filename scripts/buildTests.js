@@ -5,6 +5,7 @@ import fs from 'fs'
 import jsdom from 'jsdom-global'
 import fetch from 'node-fetch'
 import jest from 'jest'
+import secret from './../config/secret'
 
 jsdom()
 // Do this as the first thing so that any code reading it knows the right env.]
@@ -63,12 +64,14 @@ let relayQueries = genteratedFiles.filter((route) => {
 relayQueries.forEach((queryData) => {
 
   let variables = queryData.variables
+  console.log(secret)
 
   fetch('http://localhost:10001/labbook/', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'authorization': `Bearer ${secret.accessToken}`
     },
     body: JSON.stringify({
       query: queryData.relay.text,

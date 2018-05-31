@@ -41,6 +41,7 @@ export default class BranchMenu extends Component {
       'addCollaboratorButtonDisabled': false,
       'collaboratorBeingRemoved': null,
       'collabKey': uuidv4(),
+      'justOpened': true,
       owner,
       labbookName
     }
@@ -58,6 +59,7 @@ export default class BranchMenu extends Component {
 
   }
 
+
   /**
    * attach window listener evetns here
   */
@@ -72,6 +74,7 @@ export default class BranchMenu extends Component {
         }
       })
     }
+
   }
   /**
    * detach window listener evetns here
@@ -89,9 +92,10 @@ export default class BranchMenu extends Component {
     let isBranchMenu = (evt.target.className.indexOf('modal__cover') > -1) || (evt.target.className.indexOf('BranchMenu') > -1) || (evt.target.className.indexOf('CollaboratorModal') > -1)
 
     if (!isBranchMenu && this.state.menuOpen) {
-      this.setState({ menuOpen: false })
+      this.setState({ menuOpen: false, justOpened: true })
       this.refs['collaborators'].setState({collaboratorModalVisible: false})
     }
+
   }
 
   /**
@@ -100,15 +104,10 @@ export default class BranchMenu extends Component {
   */
   _toggleModal(value) {
 
-    this.setState({ menuOpen: false })
-    if (!this.state[value]) {
-      document.getElementById('modal__cover').classList.remove('hidden')
-    } else {
-      document.getElementById('modal__cover').classList.add('hidden')
-    }
     this.setState({
       [value]: !this.state[value]
     })
+
   }
   /**
   *  @param {}
@@ -116,18 +115,33 @@ export default class BranchMenu extends Component {
   *  @return {string}
   */
   _openMenu() {
-    this.setState({ menuOpen: !this.state.menuOpen })
-    this._remountCollab();
-  }
 
+    this.setState({ menuOpen: !this.state.menuOpen})
+
+    if(!this.state.menuOpen){
+      setTimeout(() => {
+
+        this.setState({ justOpened: false })
+      }, 500)
+    }else{
+      this.setState({ justOpened: true })
+    }
+
+  }
+  /**
+  *  @param {}
+  *  remounts collaborators by updating key
+  *  @return {}
+  */
   _remountCollab() {
     this.setState({collabKey: uuidv4()});
+
   }
-    /**
-    *  @param {string, boolean} action, containerRunning
-    *  displays container menu message
-    *  @return {}
-    */
+  /**
+  *  @param {string, boolean} action, containerRunning
+  *  displays container menu message
+  *  @return {}
+  */
   _showContainerMenuMessage(action, containerRunning) {
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
@@ -442,6 +456,7 @@ export default class BranchMenu extends Component {
   */
   _toggleCollaborators() {
     let self = this;
+
     this._checkSessionIsValid().then((response) => {
 
       if (response.data) {
@@ -596,6 +611,7 @@ export default class BranchMenu extends Component {
     if(store.getState().containerStatus.status !== 'Running'){
       this.props.toggleBranchesView(true, true)
       this.setState({ menuOpen: false })
+      window.scrollTo(0, 0);
     } else {
      this._showContainerMenuMessage('merging branches', true)
     }
@@ -639,6 +655,12 @@ export default class BranchMenu extends Component {
 
   render() {
     const {labbookName, owner} = this.state
+
+    const branchMenuCSS = classNames({
+      'BranchMenu__menu--animation': this.state.justOpened, //this is needed to stop animation from breaking position flow when collaborators modal is open
+      'hidden': !this.state.menuOpen,
+      'BranchMenu__menu': true
+    })
     const loginPromptModalCSS = classNames({
       'BranchModal--login-prompt': this.state.showLoginPrompt,
       'hidden': !this.state.showLoginPrompt
@@ -663,7 +685,7 @@ export default class BranchMenu extends Component {
     })
 
     return (
-      <div className="BranchMenu flex flex--column">
+      <div className="BranchMenu flex flex--column'">
 
         <div className={loginPromptModalCSS}>
           <div
@@ -701,7 +723,8 @@ export default class BranchMenu extends Component {
 
         <button onClick={()=>{this._openMenu()}} className="BranchMenu__button">Actions</button>
         <div className={this.state.menuOpen ? 'BranchMenu__menu-arrow' :  'BranchMenu__menu-arrow hidden'}></div>
-        <div className={this.state.menuOpen ? 'BranchMenu__menu' : 'BranchMenu__menu hidden'}>
+        <div className={branchMenuCSS}>
+
           <ul className="BranchMenu__list">
             <Collaborators
               key={this.state.collabKey}

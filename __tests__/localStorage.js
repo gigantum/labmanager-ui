@@ -1,3 +1,5 @@
+import secret from './../config/secret'
+
 var localStorageMock = (function() {
   var store = {};
   var jwt = require('jsonwebtoken');
@@ -8,7 +10,8 @@ var localStorageMock = (function() {
 
   store = {
     'id_token':  token,
-    'expires_at': d.getTime()
+    'expires_at': d.getTime(),
+    'username': 'cbutler'
   };
 
   return {
@@ -26,7 +29,31 @@ var localStorageMock = (function() {
     }
   };
 })();
+
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+
+
+var sessionStorageMock = (function() {
+  var store = {};
+
+  return {
+    getItem: function(key) {
+      return store[key];
+    },
+    setItem: function(key, value) {
+      store[key] = value.toString();
+    },
+    clear: function() {
+      store = {};
+    },
+    removeItem: function(key) {
+      delete store[key];
+    }
+  };
+})();
+
+Object.defineProperty(window, 'sessionStorage', { value: sessionStorageMock });
+
 
 const oneHundredSeconds = 1 * 1000 * 100
 //set timout to one hundred seconds

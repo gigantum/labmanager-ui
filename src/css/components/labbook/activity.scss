@@ -87,7 +87,7 @@
   position: fixed;
 
   height: 40px;
-  z-index: index($elements, card);
+  z-index: index($elements, popup);
   width: 200px;
   color: $white;
   border-radius: 20px;
@@ -150,6 +150,7 @@
 .ActivityCard__title {
   h6 {
     padding: 5px;
+    word-break: break-all;
   }
 }
 
