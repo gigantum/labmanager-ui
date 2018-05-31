@@ -78,7 +78,12 @@ export default class DashboardContainer extends Component {
                 )
             }else{
               return (
-                <Loader />
+                <Labbooks
+                  auth={this.props.auth}
+                  labbookList={props}
+                  history={this.props.history}
+                  loading
+                />
               )
             }
           }}
