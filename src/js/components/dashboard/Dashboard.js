@@ -60,7 +60,7 @@ export default class DashboardContainer extends Component {
           environment={environment}
           query={LabbookListingQuery}
           variables={{
-            first: 20,
+            first: 100,
             cursor: null,
             sort: 'modified_on',
             reverse: false,
