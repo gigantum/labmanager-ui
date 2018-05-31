@@ -560,9 +560,11 @@ Labbook__nav end
 .Labbooks__filter-container{
   flex-grow: 1;
   margin-right: 20px;
+  align-self: flex-end;
 }
 .Labbooks__filter {
-  height: 30px !important;
+  height: 20px !important;
+  margin: 0px !important;
 }
 
 .Labbooks__section {
@@ -608,6 +610,7 @@ Labbook__nav end
 
 .Labbooks__sort {
   color: $font-grey;
+  align-self: flex-end;
   span {
     display: inline-block;
 

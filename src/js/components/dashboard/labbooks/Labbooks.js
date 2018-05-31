@@ -364,7 +364,7 @@ class Labbooks extends Component {
               <div className="Labbooks__filter-container">
                 <input
                   type="text"
-                  className="Labbooks__filter full--border no--margin"
+                  className="Labbooks__filter no--margin"
                   placeholder="Filter Labbooks by name or description"
                   onKeyUp={(evt) => this._setFilterValue(evt)}
                 />
