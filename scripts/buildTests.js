@@ -45,7 +45,7 @@ let relayQueries = genteratedFiles.filter((route) => {
 
   const exists = fs.existsSync(testFile)
   if(!exists){
-    console.log(`create test ${testFile}`)
+    console.log(`Please create test in ${testFile}`)
   }
   return exists
 }).map((route) => {
@@ -94,14 +94,13 @@ relayQueries.forEach((queryData) => {
 
           ensureDirectoryExistence(relayDataField)
 
-          console.log('gets here')
           fs.exists(relayDataField, function(exists){
             console.log(exists)
             if(exists){
               fs.open(relayDataField, 'w', (err, fd) => {
                 if (err) throw err;
-
-                fs.write(fd, JSON.stringify(data), 0, JSON.stringify(data).length, null, function(err) {
+                let stringData = JSON.stringify(data, null, ' ')
+                fs.write(fd, stringData, 0, stringData.length, null, function(err) {
                     if (err) throw 'error writing file: ' + err;
                     fs.close(fd, function() {
                         console.log(`${fd} updated`);

@@ -1,1 +1,13 @@
-{"errors":[{"message":"Variable \"$hasNext\" of required type \"Boolean!\" was not provided.","locations":[{"line":6,"column":3}]}]}
+{
+ "errors": [
+  {
+   "message": "Variable \"$hasNext\" of required type \"Boolean!\" was not provided.",
+   "locations": [
+    {
+     "line": 6,
+     "column": 3
+    }
+   ]
+  }
+ ]
+}

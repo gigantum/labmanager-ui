@@ -16,7 +16,6 @@ relay.commitMutation = commitMutation
 relay.graphql = graphql
 
 class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
-;
 
   constructor(props: Props, context: Object, data: Data) {
     super(props, context);
@@ -24,9 +23,9 @@ class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
     this._rootSubscription = null;
     this._selectionReference = null;
 
-    let type =  props.query().query.selections[0].name;
+    let name = props.query().query.selections[0].name;
 
-    type = type.charAt(0).toLowerCase() + type.slice(1)
+    let type = name.charAt(0).toLowerCase() + name.slice(1)
 
     this.state = {
       readyState: {
