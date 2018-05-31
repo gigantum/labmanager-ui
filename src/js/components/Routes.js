@@ -14,6 +14,7 @@ import Footer from 'Components/shared/Footer';
 import Prompt from 'Components/shared/Prompt';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
+import Helper from 'Components/shared/Helper'
 //
 import store from 'JS/redux/store'
 
@@ -214,7 +215,7 @@ export default class Routes extends Component {
                       )
                     }}
                   />
-
+                  <Helper/>
                   <Prompt
                     ref="prompt"
                   />
@@ -232,7 +233,7 @@ export default class Routes extends Component {
     } else {
       return (
         <div className="Routes__error">
-     
+
           <p>An error has occured. Please try refreshing the page.</p>
         </div>
       )

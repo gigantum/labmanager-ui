@@ -9,6 +9,7 @@ import {Link} from 'react-router-dom';
 import Loader from 'Components/shared/Loader'
 import FileCard from './FileCard'
 import FileEmpty from './FileEmpty'
+import ToolTip from 'Components/shared/ToolTip'
 //utilites
 import environment from 'JS/createRelayEnvironment'
 //store
@@ -86,7 +87,7 @@ export default class FilePreview extends Component {
             <div className="FilePreview">
               <div className="FilePreview__section">
                 <div className="FilePreview__title-container">
-                  <h5>Code</h5>
+                  <h5>Code &nbsp;&nbsp; <ToolTip section="codeOverview"/></h5>
                   <Link
                     to={{pathname: `../../../../labbooks/${owner}/${labbookName}/code`}}
                     replace
@@ -112,7 +113,7 @@ export default class FilePreview extends Component {
               </div>
               <div className="FilePreview__section">
                 <div className="FilePreview__title-container">
-                  <h5>Input Data</h5>
+                  <h5>Input Data<ToolTip section="inputDataOverview"/></h5>
                   <Link
                     to={{pathname: `../../../../labbooks/${owner}/${labbookName}/inputData`}}
                     replace
@@ -137,7 +138,7 @@ export default class FilePreview extends Component {
               </div>
               <div className="FilePreview__section">
                 <div className="FilePreview__title-container">
-                  <h5>Ouput Data</h5>
+                  <h5>Ouput Data<ToolTip section="outputDataOverview"/></h5>
                   <Link
                     to={{pathname: `../../../../labbooks/${owner}/${labbookName}/outputData`}}
                     replace

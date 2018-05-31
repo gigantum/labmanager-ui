@@ -4,6 +4,7 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import PackageCount from 'Components/labbook/overview/PackageCount'
 import Loader from 'Components/shared/Loader'
+import ToolTip from 'Components/shared/ToolTip';
 
 class Base extends Component {
 
@@ -60,7 +61,7 @@ class Base extends Component {
       return(
         <div className="Base">
           <div className="Base__header-container">
-            <h5 className="Base__header">Base</h5>
+            <h5 className="Base__header">Base&nbsp;&nbsp;&nbsp; <ToolTip section="baseEnvironment"/></h5>
           </div>
 
           <div className="Base__info">

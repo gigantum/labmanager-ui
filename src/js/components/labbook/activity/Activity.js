@@ -14,6 +14,7 @@ import UserNote from './UserNote'
 import PaginationLoader from './ActivityLoaders/PaginationLoader'
 import CreateBranch from '../branches/CreateBranch';
 import NewActivity from './NewActivity'
+import ToolTip from 'Components/shared/ToolTip'
 //config
 import config from 'JS/config'
 
@@ -62,7 +63,7 @@ class Activity extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
- 
+
     let activityRecords = nextProps.labbook.activityRecords
     if(JSON.stringify(this._transformActivity(activityRecords)) !== JSON.stringify(this.state.activityRecords)) {
       this.setState({activityRecords: this._transformActivity(activityRecords)})
@@ -541,6 +542,7 @@ class Activity extends Component {
           {
             (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) &&
           <Fragment>
+            <ToolTip section="activitySubmenu"/>
             <div
                 className="Activity__submenu-circle"
                 onClick={(evt)=>this._toggleSubmenu(evt)}
@@ -606,7 +608,7 @@ class Activity extends Component {
         </div>
       }
       <div className={clusterCSS} ref={'cluster--'+ obj.flatindex}>
-        {clusterElements.length} Minor Activities
+        {clusterElements.length} Minor Activities <ToolTip section="activityCluster"/>
         <div className="ActivityCard__ellipsis" onClick={()=> this._deleteCluster(clusterRef, i)}></div>
       </div>
     </div>
@@ -627,6 +629,7 @@ class Activity extends Component {
     return(
       <div className={userActivityContainerCSS}>
       <div className="Activity__user-note">
+        <ToolTip section="userNote"/>
         <div
           className="Activity__user-note-menu-icon"
           onClick={this.state.modalVisible ? (evt)=> {

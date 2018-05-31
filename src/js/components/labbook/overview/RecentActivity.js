@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown'
 import Moment from 'moment'
 //components
 import CodeBlock from 'Components/labbook/renderers/CodeBlock'
+import ToolTip from 'Components/shared/ToolTip';
 //store
 import store from 'JS/redux/store'
 
@@ -92,7 +93,12 @@ export default class RecentActivity extends Component {
       return(
         <div className="RecentActivity">
           <div className="RecentActivity__title-container">
-            <h5 className="RecentActivity__header">Activity</h5>
+            <h5 className="RecentActivity__header">
+              Activity
+              <ToolTip
+                section="recentActivity"
+              />
+              </h5>
             <Link to={`../../../../labbooks/${owner}/${labbookName}/activity`}>Activity Details ></Link>
           </div>
           <div className="RecentActivity__list grid">

@@ -20,6 +20,7 @@ import ForceSync from './ForceSync'
 import LoginPrompt from './LoginPrompt'
 import CreateBranch from 'Components/labbook/branches/CreateBranch'
 import Collaborators from './collaborators/Collaborators'
+import ToolTip from 'Components/shared/ToolTip';
 
 export default class BranchMenu extends Component {
   constructor(props) {
@@ -817,6 +818,7 @@ export default class BranchMenu extends Component {
             }
           </div>
           <div className={modalCoverCSS}></div>
+          <ToolTip section="actionMenu"/>
         </div>
     )
   }

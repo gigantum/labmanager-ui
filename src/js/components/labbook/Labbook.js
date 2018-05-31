@@ -22,6 +22,7 @@ import ContainerStatus from './containerStatus/ContainerStatus'
 import Loader from 'Components/shared/Loader'
 import Branches from './branches/Branches'
 import BranchMenu from './branchMenu/BranchMenu'
+import ToolTip from 'Components/shared/ToolTip';
 //utils
 import {getFilesFromDragEvent} from "JS/utils/html-dir-content";
 
@@ -426,6 +427,7 @@ class Labbook extends Component {
                        <div
                          onClick={()=> this._toggleBranchesView(!branchesOpen, false)}
                         className="Labbook__branch-toggle"></div>
+                        <ToolTip section="branchView"/>
                      </div>
 
                 </div>

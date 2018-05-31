@@ -32,7 +32,7 @@
   margin: 0;
   padding: 12.5px 10px 0 10px;
   color: $romanSilver;
-  z-index: index($elements, card);
+  z-index: index($elements, card) + 1;
   position: relative;
   background: white;
   min-height: 60px;
@@ -311,7 +311,7 @@
 
 .Activity__user-note {
   @include flex(flex-start, row);
-  z-index: index($elements, card);
+  z-index: index($elements, card) + 1;
   position: relative;
   height: 54px;
   transition: height 0.5s;

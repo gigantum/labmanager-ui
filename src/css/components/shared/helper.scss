@@ -1,0 +1,66 @@
+.Helper-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: $azure;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  cursor: pointer;
+  z-index: index($elements, helper);
+}
+
+.Helper_menu.hidden{
+  transition: all 0.5s;
+  right: 0;
+}
+
+.Helper__menu{
+  animation: slide-left-fade-in forwards .25s;
+  width: auto;
+  height: 40px;
+  position: fixed;
+  bottom: 35px;
+  right: 52px;
+  padding: 7px 50px 0 50px;
+  border-radius: 40px 0 0 40px;
+  background: $grey-background;
+  z-index: index($elements, helper) - 1;
+  @include flex(flex-end, row);
+}
+
+.Helper__menu-docs{
+  @include flex(flex-end, row);
+  button {
+    border-radius: 25px;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+  }
+  h5 {
+    margin: 5px 10px;
+    font-weight: 600;
+    font-size: 16px;
+    color: $romanSilver;
+    user-select: none;
+  }
+}
+
+.Helper__menu-discussion{
+  margin-left: 20px;
+  @include flex(flex-end, row);
+  button {
+    border-radius: 25px;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+  }
+  h5 {
+    margin: 5px 10px;
+    font-weight: 600;
+    font-size: 16px;
+    color: $romanSilver;
+    user-select: none;
+  }
+}
+

@@ -6,6 +6,7 @@ import uuidv4 from 'uuid/v4'
 //components
 import ButtonLoader from 'Components/shared/ButtonLoader'
 import Loader from 'Components/shared/Loader'
+import ToolTip from 'Components/shared/ToolTip';
 //store
 import store from 'JS/redux/store'
 //Mutations
@@ -523,7 +524,7 @@ class PackageDependencies extends Component {
       <div className="PackageDependencies">
 
         <div className={blockClass + '__header-container'}>
-          <h5 className="PackageDependencies__header">Packages</h5>
+          <h5 className="PackageDependencies__header">Packages <ToolTip section="packagesEnvironment"/></h5>
         </div>
 
         <div className="PackageDependencies__card">
