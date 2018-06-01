@@ -11,6 +11,8 @@
 /build
 *.graphcool
 
+/config/secret.js
+
 # misc
 .DS_Store
 .env.local
