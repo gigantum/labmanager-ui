@@ -415,6 +415,11 @@
   color: $romanSilver;
   background-color: transparent !important;
 }
+.LocalLabbooks__containerStatus--state.loading,
+.LocalLabbooks__containerStatus--state.loading:hover,
+.LocalLabbooks__containerStatus--state.loading:focus{
+  border: 3px solid $romanSilver !important;
+}
 
 .LocalLabbooks__containerStatus--state.Stopped {
   transition: box-shadow 0.5s;

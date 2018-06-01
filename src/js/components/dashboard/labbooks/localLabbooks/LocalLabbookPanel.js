@@ -17,7 +17,7 @@ export default class LocalLabbookPanel extends Component {
 
     this.state = {
       'exportPath': '',
-      'status': '',
+      'status': 'loading',
       'textStatus': '',
       'labbookName': props.edge.node.name,
       'owner': props.edge.node.owner
@@ -27,10 +27,11 @@ export default class LocalLabbookPanel extends Component {
   }
 
   componentWillMount() {
-    const {environment} = this.props.edge.node
-    let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
 
-    this.setState({status: status, textStatus: status})
+    // const {environment} = this.props.edge.node
+    // let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
+
+    // this.setState({status: status, textStatus: status})
 
   }
 
@@ -57,6 +58,13 @@ export default class LocalLabbookPanel extends Component {
       this._startContainerMutation()
     }else if(status === "Running"){
       this._stopContainerMutation()
+    } else if(status === "loading"){
+      store.dispatch({
+        type: 'INFO_MESSAGE',
+        payload:{
+          message: `Container status is still loading. The status will update when it is available.`
+        }
+      })
     }else{
       store.dispatch({
         type: 'INFO_MESSAGE',
@@ -146,16 +154,20 @@ export default class LocalLabbookPanel extends Component {
   ***/
   _updateTextStatusOver(evt, status){
     let newStatus = status;
-    newStatus = (status === "Running") ? 'Stop' : newStatus;
-    newStatus = (status === "Stopped") ? 'Run' : newStatus;
-    this.setState({textStatus: newStatus})
+    if(status !== 'loading'){
+      newStatus = (status === "Running") ? 'Stop' : newStatus;
+      newStatus = (status === "Stopped") ? 'Run' : newStatus;
+      this.setState({textStatus: newStatus})
+    }
   }
   /***
   * @param {objectstring} evt,status
   * stops labbbok conatainer
   ***/
   _updateTextStatusOut(evt, status){
+    if(status !== 'loading'){
     this.setState({textStatus: status})
+    }
   }
 
   render(){

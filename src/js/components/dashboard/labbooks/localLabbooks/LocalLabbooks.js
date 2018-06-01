@@ -38,6 +38,7 @@ export class LocalLabbooks extends Component {
       }
       this.props.sortProcessed()
       window.addEventListener('scroll', this._captureScroll);
+      let idArr = this.props.localLabbooks.localLabbooks.edges.map(edges =>edges.node.id)
     }
   }
 
@@ -174,11 +175,6 @@ export default createPaginationContainer(
             description
             owner
             creationDateUtc
-            environment{
-              id
-              imageStatus
-              containerStatus
-            }
           }
           cursor
         }
