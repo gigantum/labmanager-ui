@@ -26,13 +26,13 @@ export default class LocalLabbookPanel extends Component {
     this._stopStartContainer = this._stopStartContainer.bind(this)
   }
 
-  componentWillMount() {
+  componentWillReceiveProps(nextProps) {
+    let {environment} = nextProps
+    if(environment){
+    let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
 
-    // const {environment} = this.props.edge.node
-    // let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
-
-    // this.setState({status: status, textStatus: status})
-
+    this.setState({status: status, textStatus: status})
+    }
   }
 
   _getContainerStatusText(containerStatus, imageStatus){

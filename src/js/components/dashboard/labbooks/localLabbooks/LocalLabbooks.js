@@ -8,6 +8,9 @@ import {
 import LocalLabbookPanel from 'Components/dashboard/labbooks/localLabbooks/LocalLabbookPanel'
 import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
 import ImportModule from 'Components/import/ImportModule'
+//helpers
+import ContainerLookup from './ContainerLookup'
+
 
 export class LocalLabbooks extends Component {
   constructor(props){
@@ -17,11 +20,13 @@ export class LocalLabbooks extends Component {
       reverse: this.props.reverse,
       isPaginating: false,
       refetchLoading: false,
+      containerList: null,
     }
 
     this._captureScroll = this._captureScroll.bind(this)
     this._loadMore = this._loadMore.bind(this)
     this._refetch = this._refetch.bind(this);
+    this._containerLookup = this._containerLookup.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,11 +43,26 @@ export class LocalLabbooks extends Component {
       }
       this.props.sortProcessed()
       window.addEventListener('scroll', this._captureScroll);
-      let idArr = this.props.localLabbooks.localLabbooks.edges.map(edges =>edges.node.id)
+      this._containerLookup();
     }
   }
 
+  _containerLookup(){
+    let self = this;
+    let idArr = this.props.localLabbooks.localLabbooks.edges.map(edges =>edges.node.id)
+    ContainerLookup.query(idArr).then((res)=>{
+      if(res && res.data && res.data.labbookList && res.data.labbookList.localById){
+        self.setState({containerList: res.data.labbookList.localById})
+        this.containerLookup = setTimeout(()=>{
+          self._containerLookup()
+        }, 10000)
+      }
+    })
+  }
+
+
   componentWillUnmount() {
+    clearTimeout(this.containerLookup)
     window.removeEventListener("scroll", this._captureScroll)
   }
 
@@ -130,7 +150,7 @@ export class LocalLabbooks extends Component {
           />
           {
 
-            !this.state.refetchLoading && labbooks.map((edge) => {
+            !this.state.refetchLoading && labbooks.map((edge, index) => {
               return (
                 <LocalLabbookPanel
                   key={edge.node.name}
@@ -138,6 +158,7 @@ export class LocalLabbooks extends Component {
                   className="LocalLabbooks__panel"
                   edge={edge}
                   history={this.props.history}
+                  environment={this.state.containerList && this.state.containerList[index].environment}
                   goToLabbook={this.props.goToLabbook}/>
               )
             })
@@ -171,6 +192,7 @@ export default createPaginationContainer(
       localLabbooks(first: $first, after: $cursor, sort: $sort, reverse: $reverse)@connection(key: "LocalLabbooks_localLabbooks", filters: []){
         edges {
           node {
+            id
             name
             description
             owner
