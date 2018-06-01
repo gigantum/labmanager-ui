@@ -102,7 +102,7 @@ class RemoteLabbooks extends Component {
         this.setState({refetchLoading: false})
         this.props.changeRefetchState(false)
       },
-      {first: 20,
+      {first: 100,
         cursor: null,
         sort: sort,
         reverse: reverse,

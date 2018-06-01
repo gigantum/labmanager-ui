@@ -82,7 +82,7 @@ export class LocalLabbooks extends Component {
         this.props.changeRefetchState(false)
 
       },
-      {first: 20,
+      {first: 100,
         cursor: null,
         sort: sort,
         reverse: reverse,
