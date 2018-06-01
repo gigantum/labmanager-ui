@@ -43,7 +43,7 @@ export default class Prompt extends Component {
           clearInterval(this.intervalId);
           this.intervalId = setInterval(this._handlePing.bind(this), 10000);
         } else {
-          //if (this.state.connected) window.location.reload();
+  
           this.setState({ failureCount: this.state.failureCount + 1, promptState: false });
           clearInterval(this.intervalId);
           this.intervalId = setInterval(this._handlePing.bind(this), 2500);
