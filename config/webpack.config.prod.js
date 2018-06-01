@@ -54,7 +54,11 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: 'source-map',
   // In production, we only want to load the polyfills and the app code.
-  entry: [require.resolve('./polyfills'), paths.appIndexJs],
+  entry: [
+    require.resolve('./polyfills'),
+    paths.appIndexJs,
+    paths.dahshboardJs
+  ],
   output: {
     // The build folder.
     path: paths.appBuild,
@@ -69,6 +73,7 @@ module.exports = {
     devtoolModuleFilenameTemplate: info =>
       path.relative(paths.appSrc, info.absoluteResourcePath),
   },
+
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
     // We placed these paths second because we want `node_modules` to "win"
@@ -276,6 +281,9 @@ module.exports = {
     new webpack.DefinePlugin(env.stringified),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({
+      splitChunks: {
+       chunks: 'all'
+      },
       compress: {
         warnings: false,
         // Disabled because of an issue with Uglify breaking seemingly valid code:
@@ -287,7 +295,7 @@ module.exports = {
       output: {
         comments: false,
       },
-      sourceMap: true,
+      sourceMap: false,
     }),
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
     new ExtractTextPlugin({

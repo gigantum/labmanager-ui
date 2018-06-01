@@ -30,7 +30,7 @@ const makeRelayWrapper = (Comp) => {
   class Container extends Component{
     constructor(props, context){
     	super(props);
-     
+
     	this.state = {};
     }
 
@@ -75,7 +75,6 @@ const loadMore = (props, value, ha) => {
 relay.loadMore = loadMore
 
 class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
-;
 
   constructor(props: Props, context: Object, data: Data) {
     super(props, context);
@@ -83,10 +82,10 @@ class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
     this._rootSubscription = null;
     this._selectionReference = null;
 
-    let type =  props.query().query.selections[0].name;
+    let name = props.query().query.selections[0].name;
 
-    type = type.charAt(0).toLowerCase() + type.slice(1)
-    console.log(type, global.data)
+    let type = name.charAt(0).toLowerCase() + name.slice(1)
+
     this.state = {
       readyState: {
         props: (type !== false) ? global.data[type] : global.data
