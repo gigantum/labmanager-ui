@@ -28,6 +28,7 @@ class RemoteLabbooks extends Component {
       sort: this.props.sort,
       reverse: this.props.reverse,
       isPaginating: false,
+      refetchLoading: false,
     }
     this._toggleDeleteModal = this._toggleDeleteModal.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
@@ -89,6 +90,7 @@ class RemoteLabbooks extends Component {
   _refetch(sort, reverse){
     let self = this;
     let relay = self.props.relay;
+    this.setState({refetchLoading: true})
     this.props.changeRefetchState(true)
 
     relay.refetchConnection(
@@ -97,9 +99,10 @@ class RemoteLabbooks extends Component {
         if(err){
           console.log(err)
         }
+        this.setState({refetchLoading: false})
         this.props.changeRefetchState(false)
       },
-      {first: 20,
+      {first: 100,
         cursor: null,
         sort: sort,
         reverse: reverse,
@@ -176,7 +179,7 @@ class RemoteLabbooks extends Component {
       <div className='LocalLabbooks__labbooks'>
       <div className="LocalLabbooks__sizer grid">
         {
-          labbooks.map((edge) => {
+          !this.state.refetchLoading && labbooks.map((edge) => {
             return (
               <RemoteLabbookPanel
                 toggleDeleteModal={this._toggleDeleteModal}
@@ -198,7 +201,7 @@ class RemoteLabbooks extends Component {
                 <LabbooksPaginationLoader
                   key={'LocalLabbooks_paginationLoader' + index}
                   index={index}
-                  isLoadingMore={this.state.isPaginating}
+                  isLoadingMore={this.state.isPaginating ||this.state.refetchLoading}
                 />
             )
           })

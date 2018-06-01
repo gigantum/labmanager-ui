@@ -9,13 +9,14 @@ import LocalLabbookPanel from 'Components/dashboard/labbooks/localLabbooks/Local
 import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
 import ImportModule from 'Components/import/ImportModule'
 
-class LocalLabbooks extends Component {
+export class LocalLabbooks extends Component {
   constructor(props){
     super(props)
     this.state = {
       sort: this.props.sort,
       reverse: this.props.reverse,
       isPaginating: false,
+      refetchLoading: false,
     }
 
     this._captureScroll = this._captureScroll.bind(this)
@@ -31,11 +32,13 @@ class LocalLabbooks extends Component {
   }
 
   componentDidMount() {
-    if(this.props.wasSorted) {
-    this._refetch(this.state.sort, this.state.reverse);
+    if(!this.props.loading){
+      if(this.props.wasSorted) {
+      this._refetch(this.state.sort, this.state.reverse);
+      }
+      this.props.sortProcessed()
+      window.addEventListener('scroll', this._captureScroll);
     }
-    this.props.sortProcessed()
-    window.addEventListener('scroll', this._captureScroll);
   }
 
   componentWillUnmount() {
@@ -66,6 +69,7 @@ class LocalLabbooks extends Component {
   _refetch(sort, reverse){
     let self = this;
     let relay = self.props.relay;
+    this.setState({refetchLoading: true})
     this.props.changeRefetchState(true)
 
     relay.refetchConnection(
@@ -74,10 +78,11 @@ class LocalLabbooks extends Component {
         if(err){
           console.log(err)
         }
+        this.setState({refetchLoading: false})
         this.props.changeRefetchState(false)
 
       },
-      {first: 20,
+      {first: 100,
         cursor: null,
         sort: sort,
         reverse: reverse,
@@ -91,7 +96,7 @@ class LocalLabbooks extends Component {
   */
 
   _loadMore = () => {
-    
+
     this.setState({
       'isPaginating': true
     })
@@ -108,10 +113,9 @@ class LocalLabbooks extends Component {
   }
 
   render(){
+    if((this.props.localLabbooks && this.props.localLabbooks.localLabbooks && this.props.localLabbooks.localLabbooks.edges) || this.props.loading){
 
-    if(this.props.localLabbooks && this.props.localLabbooks.localLabbooks && this.props.localLabbooks.localLabbooks.edges){
-
-      let labbooks = this.props.filterLabbooks(this.props.localLabbooks.localLabbooks.edges, this.props.filterState)
+      let labbooks = !this.props.loading ? this.props.filterLabbooks(this.props.localLabbooks.localLabbooks.edges, this.props.filterState) : [];
 
       return(
         <div className='LocalLabbooks__labbooks'>
@@ -124,7 +128,8 @@ class LocalLabbooks extends Component {
               className="LocalLabbooks__panel column-4-span-3 LocalLabbooks__panel--import"
           />
           {
-            labbooks.map((edge) => {
+
+            !this.state.refetchLoading && labbooks.map((edge) => {
               return (
                 <LocalLabbookPanel
                   key={edge.node.name}
@@ -143,7 +148,7 @@ class LocalLabbooks extends Component {
                   <LabbooksPaginationLoader
                     key={'LocalLabbooks_paginationLoader' + index}
                     index={index}
-                    isLoadingMore={this.state.isPaginating}
+                    isLoadingMore={this.state.isPaginating || this.props.loading ||this.state.refetchLoading}
                   />
               )
             })

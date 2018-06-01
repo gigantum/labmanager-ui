@@ -5,8 +5,6 @@ import store from 'JS/redux/store'
 //config
 import config from 'JS/config';
 
-let unsubscribe;
-
 export default class ToolTip extends Component {
   constructor(props){
     super(props)
@@ -24,7 +22,7 @@ export default class ToolTip extends Component {
     * set unsubcribe for store
   */
   componentDidMount() {
-    unsubscribe = store.subscribe(() =>{
+    this.unsubscribe = store.subscribe(() =>{
         this.storeDidUpdate(store.getState().helper)
     })
     window.addEventListener("click", this._hideToolTip)
@@ -45,7 +43,7 @@ export default class ToolTip extends Component {
     unsubscribe from redux store
   */
   componentWillUnmount(){
-    unsubscribe();
+    this.unsubscribe();
     window.removeEventListener("click", this._hideToolTip)
   }
   /**

@@ -9,7 +9,7 @@ import classNames from 'classnames'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
-import LocalLabbooks from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooks'
+import LocalLabbooksContainer, {LocalLabbooks} from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooks'
 import RemoteLabbooks from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbooks'
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 //utils
@@ -37,15 +37,18 @@ class Labbooks extends Component {
       'sort': 'modified_on',
       'reverse': false,
       'wasSorted': false,
+      'filterValue': '',
     }
 
     this._closeSortMenu = this._closeSortMenu.bind(this);
     this._goToLabbook = this._goToLabbook.bind(this)
     this._showModal = this._showModal.bind(this)
+    this._filterSearch = this._filterSearch.bind(this)
     this._changeSlider = this._changeSlider.bind(this)
     this._setSortFilter = this._setSortFilter.bind(this)
     this._refetch = this._refetch.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
+    this._filterLabbooks = this._filterLabbooks.bind(this)
   }
 
   componentWillMount() {
@@ -165,24 +168,38 @@ class Labbooks extends Component {
        this.props.history.replace(`../labbooks/${filter}`)
   }
   /**
+   * @param {object} labbook
+   * returns true if labbook's name or description exists in filtervalue, else returns false
+  */
+  _filterSearch(labbook){
+    if(this.state.filterValue === '' || labbook.node.name.indexOf(this.state.filterValue) > -1 || labbook.node.description.indexOf(this.state.filterValue) > -1){
+      return true;
+    }
+    return false;
+  }
+  /**
    * @param {array, string} localLabbooks.edges,filter
    * @return {array} filteredLabbooks
   */
   _filterLabbooks(labbooks, filter){
+    let self = this;
     let filteredLabbooks = [];
     let username = localStorage.getItem('username')
     if(filter === username){
-      filteredLabbooks = labbooks.filter((labbook)=>{
-          return (labbook.node.owner === username)
+      filteredLabbooks = labbooks.filter((labbook) => {
+          return ((labbook.node.owner === username) && self._filterSearch(labbook))
       })
 
     }else if(filter === "others"){
       filteredLabbooks = labbooks.filter((labbook)=>{
-          return (labbook.node.owner !== username)
+          return (labbook.node.owner !== username  && self._filterSearch(labbook))
       })
     }else{
-      filteredLabbooks = labbooks;
+      filteredLabbooks = labbooks.filter((labbook)=>{
+        return self._filterSearch(labbook)
+      });
     }
+
 
     return filteredLabbooks
   }
@@ -291,6 +308,14 @@ class Labbooks extends Component {
     })
   }
 
+  /**
+  *  @param {evt}
+  *  sets the filterValue in state
+  */
+  _setFilterValue(evt) {
+    this.setState({'filterValue': evt.target.value})
+  }
+
   render(){
       let {props} = this;
       let owner = localStorage.getItem('username')
@@ -298,15 +323,11 @@ class Labbooks extends Component {
         'CreateLabbook--login-prompt': this.state.showLoginPrompt,
         'hidden': !this.state.showLoginPrompt
       })
-      if(props.labbookList){
+      if(props.labbookList !== null || props.loading){
 
         return(
 
           <div className="Labbooks">
-          {
-            this.state.refetchLoading &&
-            <Loader />
-          }
             <WizardModal
               ref="wizardModal"
               handler={this.handler}
@@ -340,6 +361,14 @@ class Labbooks extends Component {
 
             </div>
             <div className="Labbooks__subheader">
+              <div className="Labbooks__filter-container">
+                <input
+                  type="text"
+                  className="Labbooks__filter no--margin"
+                  placeholder="Filter Labbooks by name or description"
+                  onKeyUp={(evt) => this._setFilterValue(evt)}
+                />
+              </div>
               <div className="Labbooks__sort">
                 Sort by:
                 {
@@ -413,8 +442,15 @@ class Labbooks extends Component {
 
             </div>
             {
-              this.state.selectedSection === 'localLabbooks' ?
+              props.loading ?
               <LocalLabbooks
+                loading
+                showModal={this._showModal}
+
+              />
+              :
+              this.state.selectedSection === 'localLabbooks' ?
+              <LocalLabbooksContainer
                 wasSorted={this.state.wasSorted}
                 sort={this.state.sort}
                 reverse={this.state.reverse}

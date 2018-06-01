@@ -192,6 +192,14 @@
   }
 }
 
+@keyframes fade-in{
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
 
 @keyframes slide-up-fade-in{
   0% {
