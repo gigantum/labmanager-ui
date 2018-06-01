@@ -9,7 +9,7 @@ import classNames from 'classnames'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
-import LocalLabbooks from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooks'
+import LocalLabbooksContainer, {LocalLabbooks} from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooks'
 import RemoteLabbooks from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbooks'
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 //utils
@@ -298,15 +298,11 @@ class Labbooks extends Component {
         'CreateLabbook--login-prompt': this.state.showLoginPrompt,
         'hidden': !this.state.showLoginPrompt
       })
-      if(props.labbookList){
+      if(props.labbookList !== null || props.loading){
 
         return(
 
           <div className="Labbooks">
-          {
-            this.state.refetchLoading &&
-            <Loader />
-          }
             <WizardModal
               ref="wizardModal"
               handler={this.handler}
@@ -413,8 +409,15 @@ class Labbooks extends Component {
 
             </div>
             {
-              this.state.selectedSection === 'localLabbooks' ?
+              props.loading ?
               <LocalLabbooks
+                loading
+                showModal={this._showModal}
+
+              />
+              :
+              this.state.selectedSection === 'localLabbooks' ?
+              <LocalLabbooksContainer
                 wasSorted={this.state.wasSorted}
                 sort={this.state.sort}
                 reverse={this.state.reverse}
