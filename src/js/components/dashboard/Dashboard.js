@@ -4,7 +4,6 @@ import {graphql, QueryRenderer} from 'react-relay'
 import DatasetSets from './datasets/DatasetSets';
 import Labbooks from './labbooks/Labbooks';
 import environment from 'JS/createRelayEnvironment'
-import Loader from 'Components/shared/Loader'
 //store
 import store from "JS/redux/store"
 

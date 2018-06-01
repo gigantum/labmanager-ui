@@ -35,6 +35,7 @@
   text-align: center;
   animation: slide-down-fade-in forwards .25s;
   user-select: none;
+  word-break: normal;
 }
 
 .ToolTip__pointer{
@@ -213,6 +214,22 @@
   .ToolTip__message{
     bottom: -35px;
     left: 10px;
+  }
+}
+
+.ToolTip.createLabbook,
+.ToolTip.importLabbook{
+  .ToolTip__toggle{
+    right: 0;
+    bottom: 25px;
+  }
+  .ToolTip__pointer{
+    right: -7px;
+    bottom: 7px;
+  }
+  .ToolTip__message{
+    left: 100px;
+    top: -7px;
   }
 }
 

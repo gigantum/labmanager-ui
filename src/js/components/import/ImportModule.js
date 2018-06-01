@@ -7,6 +7,7 @@ import JobStatus from 'JS/utils/JobStatus'
 import ChunkUploader from 'JS/utils/ChunkUploader'
 //components
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
+import ToolTip from 'Components/shared/ToolTip';
 //store
 import store from 'JS/redux/store'
 //queries
@@ -483,7 +484,7 @@ export default class ImportModule extends Component {
   }
 
   _showModal(evt){
-  
+
     if (navigator.onLine){
       if(evt.target.id !== 'file__input-label'){
         this.props.showModal()
@@ -685,10 +686,12 @@ export default class ImportModule extends Component {
               onClick={(evt) => { this._showModal(evt) }}>
               Create New
             </div>
+            <ToolTip section="createLabbook" />
             <div className={importCSS}
               onClick={()=>{this._showImportScreen()}}>
               Import Existing
             </div>
+            <ToolTip section="importLabbook" />
           </div>
           :
           <div id="dropZone__title" className="Labbooks__labbook-importing">

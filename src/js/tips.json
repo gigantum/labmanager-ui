@@ -24,7 +24,7 @@
   "outputDataFiles": "This displays a LabBook's 'favorite' and most recent Output Data files. Favorites are a useful way to indicate which files are important and provide an additional description.",
   "outputDataBrowser": "This section is where you can modify your Output Data files. In order to add files just drag and drop into the section below. \n Note: Files above 1.8GB are currently unsupported.",
   "createLabbook": "'Create New' will guide you towards creating a new LabBook.",
-  "importLabbook": "'Import Existing' will guide you towards importing a LabBook. You can import by using a URL of a published LabBook or by uploading a .lbk file. You can also import LabBooks that you are a collaborator of in the Cloud view.",
+  "importLabbook": "'Import Existing' will guide you towards importing a LabBook. \n You can import by using a URL of a published LabBook or by uploading a .lbk file. \n You can also import LabBooks that you are a collaborator of in the Cloud view.",
   "sortLabbook": "This will allow you to sort LabBooks. \n Labbooks will display by most recently modified by default.",
   "cloudLocal": "This allows you to switch between Local and and Remote Labbook listings."
 }
