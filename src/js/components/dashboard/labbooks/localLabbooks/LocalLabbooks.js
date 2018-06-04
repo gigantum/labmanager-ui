@@ -115,7 +115,7 @@ export class LocalLabbooks extends Component {
             labbooks.map((edge, index) => {
               return (
                 <LocalLabbookPanel
-                  key={edge.node.name}
+                  key={`${edge.node.owner}/${edge.node.name}`}
                   ref={'LocalLabbookPanel' + edge.node.name}
                   className="LocalLabbooks__panel"
                   edge={edge}
