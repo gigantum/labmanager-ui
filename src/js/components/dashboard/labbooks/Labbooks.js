@@ -58,7 +58,6 @@ export default class Labbooks extends Component {
     * set unsubcribe for store
   */
   componentWillMount() {
-    console.log(queryString.parse(this.props.history.location.search))
     let paths = this.props.history.location.pathname.split('/')
     let sectionRoute = paths.length > 2 ?  paths[2] : 'local'
     if(paths[2] !== 'cloud' && paths[2] !== 'local'){
@@ -464,10 +463,6 @@ export default class Labbooks extends Component {
                 >
                   {this._getSelectedSort()}
                 </span>
-                {console.log(this.state.sort, this.state.reverse)}
-                {console.log(this.state.sort === 'created_on')}
-                {console.log(!this.state.reverse)}
-                {console.log(this.state.sort === 'created_on' && !this.state.reverse)}
                 <ul
                   className={this.state.sortMenuOpen ? 'Labbooks__sort-menu' : 'hidden'}
                 >
