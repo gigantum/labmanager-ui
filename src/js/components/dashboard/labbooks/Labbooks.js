@@ -20,7 +20,7 @@ export default class Labbooks extends Component {
     super(props);
 
     const {filterText} = store.getState().labbookListing
-    let {filter, sort, reverse} = queryString.parse(this.props.history.location.search)
+    let {filter, sort, reverse} = queryString.parse(this.props.history.location.search.slice(1))
     reverse = reverse === 'true'
     this.state = {
       'labbookModalVisible': false,
@@ -371,7 +371,7 @@ export default class Labbooks extends Component {
     }
   }
   _changeSearchParam(newValues){
-    let searchObj = Object.assign({}, queryString.parse(this.props.history.location.search), newValues)
+    let searchObj = Object.assign({}, queryString.parse(this.props.history.location.search.slice(1)), newValues)
     this.props.history.replace(`..${this.props.history.location.pathname}?${queryString.stringify(searchObj)}`)
   }
 
