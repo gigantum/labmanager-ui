@@ -90,6 +90,7 @@
     "normalize": "^0.3.1",
     "pretty-file-icons": "^2.2.1",
     "prop-types": "^15.6.1",
+    "query-string": "^6.1.0",
     "react": "^16.3.2",
     "react-dnd": "^2.6.0",
     "react-dnd-html5-backend": "^2.6.0",

@@ -35,6 +35,15 @@ export default class LocalLabbookPanel extends Component {
     }
   }
 
+  componentWillMount(){
+    let {environment} = this.props
+    if(environment){
+      let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
+
+      this.setState({status: status, textStatus: status})
+    }
+  }
+
   _getContainerStatusText(containerStatus, imageStatus){
 
     let status = 'Running';

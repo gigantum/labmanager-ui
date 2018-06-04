@@ -418,7 +418,8 @@
 .LocalLabbooks__containerStatus--state.loading,
 .LocalLabbooks__containerStatus--state.loading:hover,
 .LocalLabbooks__containerStatus--state.loading:focus{
-  border: 3px solid $romanSilver !important;
+  background: $grey !important;
+  opacity: 0.5;
 }
 
 .LocalLabbooks__containerStatus--state.Stopped {

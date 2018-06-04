@@ -10,7 +10,7 @@ export default createFragmentContainer(
     fragment RemoteLabbooksContainer_labbookList on LabbookQuery{
       labbookList{
         id
-        ...RemoteLabbooks_remotelabbooks
+        ...RemoteLabbooks_remoteLabbooks
       }
     }
   `

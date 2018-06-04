@@ -20,23 +20,6 @@ const ContainerLookupQuery = graphql`
   }
 `;
 
-// const ContainerLookupQuery = graphql`
-//   query ContainerLookupQuery($owner: String!, $name: String!, $manager: String!, $package: String!, $version: String){
-    // labbook(owner: $owner, name: $name){
-    //   package(manager: $manager, package: $package, version: $version){
-    //     id,
-    //     schema
-    //     manager
-    //     package
-    //     version
-    //     latestVersion
-    //     fromBase
-    //   }
-    // }
-//   }
-// `;
-
-
 const ContainerLookup = {
   query: (ids) =>{
     const variables = {ids};
