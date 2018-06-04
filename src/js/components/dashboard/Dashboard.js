@@ -52,9 +52,8 @@ export default class DashboardContainer extends Component {
   }
 
   /**
-    * @param {}
-    * fires when component unmounts
-    * unsubscribe from redux store
+    * @param {string, boolean} sort, reverse
+    * sets state of sort and reverse, passed to child components
   */
   _refetchSort(sort, reverse) {
     if(this.state.sort !== sort || this.state.reverse !== reverse){

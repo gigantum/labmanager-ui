@@ -347,7 +347,10 @@ export default class Labbooks extends Component {
       }
     })
   }
-
+  /**
+    *  @param {}
+    *  gets filter value and displays it to the UI more clearly
+  */
   _getFilter(){
     switch(this.state.filter){
       case 'all':
@@ -360,7 +363,10 @@ export default class Labbooks extends Component {
         return this.state.filter
     }
   }
-
+  /**
+    *  @param {}
+    *  gets sort and reverse value and displays it to the UI more clearly
+  */
   _getSelectedSort(){
     if(this.state.sort === 'modified_on'){
       return `Modified Date ${this.state.reverse ? '(Oldest)' : '(Newest)'}`
@@ -370,6 +376,11 @@ export default class Labbooks extends Component {
       return this.state.reverse ? 'Z-A' : 'A-Z';
     }
   }
+
+  /**
+    *  @param {object} newValues
+    *  changes the query params to new sort and filter values
+  */
   _changeSearchParam(newValues){
     let searchObj = Object.assign({}, queryString.parse(this.props.history.location.search.slice(1)), newValues)
     this.props.history.replace(`..${this.props.history.location.pathname}?${queryString.stringify(searchObj)}`)
