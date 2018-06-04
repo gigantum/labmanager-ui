@@ -2,7 +2,7 @@
 import store from 'JS/redux/store'
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import queryString from 'query-string'
+//import queryString from 'query-string'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
@@ -20,7 +20,7 @@ export default class Labbooks extends Component {
     super(props);
 
     const {filterText} = store.getState().labbookListing
-    let {filter, sort, reverse} = queryString.parse(this.props.history.location.search)
+    let {filter, sort, reverse} = {filter: '', sort: '', reverse: ''}
     reverse = reverse === 'true'
     this.state = {
       'labbookModalVisible': false,
@@ -371,8 +371,8 @@ export default class Labbooks extends Component {
     }
   }
   _changeSearchParam(newValues){
-    let searchObj = Object.assign({}, queryString.parse(this.props.history.location.search), newValues)
-    this.props.history.replace(`..${this.props.history.location.pathname}?${queryString.stringify(searchObj)}`)
+    // let searchObj = Object.assign({}, queryString.parse(this.props.history.location.search), newValues)
+    // this.props.history.replace(`..${this.props.history.location.pathname}?${queryString.stringify(searchObj)}`)
   }
 
   render(){

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {graphql, QueryRenderer} from 'react-relay'
-import queryString from 'query-string'
+//import queryString from 'query-string'
 //components
 import DatasetSets from './datasets/DatasetSets';
 import LocalLabbooksContainer from './labbooks/localLabbooks/LocalLabbooksContainer';
@@ -20,7 +20,7 @@ const RemoteListingQuery = graphql`query DashboardRemoteQuery($first: Int!, $cur
 export default class DashboardContainer extends Component {
   constructor(props){
     super(props);
-    let {sort, reverse} = queryString.parse(this.props.history.location.search)
+    let {sort, reverse} = {sort: '', reverse: ''}//queryString.parse(this.props.history.location.search)
     reverse = reverse === 'true'
     this.state = {
       selectedComponent: props.match.params.id,
