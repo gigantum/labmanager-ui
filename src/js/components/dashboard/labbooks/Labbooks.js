@@ -2,7 +2,7 @@
 import store from 'JS/redux/store'
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import queryString from 'query-string'
+import queryString from 'querystring'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
