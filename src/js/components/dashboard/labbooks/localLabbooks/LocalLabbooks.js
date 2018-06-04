@@ -40,6 +40,7 @@ export class LocalLabbooks extends Component {
       if(res && res.data && res.data.labbookList && res.data.labbookList.localById){
         let containerListCopy = new Map(this.state.containerList)
         res.data.labbookList.localById.forEach((node) => {
+          console.log(node)
           containerListCopy.set(node.id, node.environment)
         })
         self.setState({containerList: containerListCopy})
