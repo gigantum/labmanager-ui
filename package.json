@@ -64,7 +64,7 @@
     "sinon": "^4.5.0",
     "style-loader": "0.17.0",
     "sw-precache-webpack-plugin": "0.9.1",
-    "url-loader": "0.5.8",
+    "url-loader": "^1.0.1",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.11.2",
     "webpack-manifest-plugin": "1.1.0",
