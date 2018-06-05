@@ -229,16 +229,15 @@ export default class BranchCard extends Component {
     this._toggleModal(modal)
   } else {
     store.dispatch({
-      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-      payload: {
-        containerMenuOpen: true
-      }
-    })
-
-    store.dispatch({
       type: 'CONTAINER_MENU_WARNING',
       payload: {
         message: 'Stop LabBook before deleting branches. \n Be sure to save your changes.',
+      }
+    })
+    store.dispatch({
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+      payload: {
+        containerMenuOpen: true
       }
     })
   }

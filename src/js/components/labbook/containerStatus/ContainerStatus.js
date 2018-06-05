@@ -65,7 +65,7 @@ export default class ContainerStatus extends Component {
     }
   }
   componentWillMount() {
-   
+
     this._getContainerStatusText(this.props.containerStatus, this.props.imageStatus)
   }
   /**

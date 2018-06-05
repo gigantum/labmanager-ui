@@ -62,7 +62,7 @@ class Activity extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
- 
+
     let activityRecords = nextProps.labbook.activityRecords
     if(JSON.stringify(this._transformActivity(activityRecords)) !== JSON.stringify(this.state.activityRecords)) {
       this.setState({activityRecords: this._transformActivity(activityRecords)})
@@ -458,16 +458,15 @@ class Activity extends Component {
       this.setState({createBranchVisible: true, selectedNode: null})
     } else {
       store.dispatch({
-        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-        payload: {
-          containerMenuOpen: true
-        }
-      })
-
-      store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
           message: 'Stop LabBook before creating branches. \n Be sure to save your changes.'
+        }
+      })
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
         }
       })
     }

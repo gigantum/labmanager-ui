@@ -143,12 +143,6 @@ export default class BranchMenu extends Component {
   *  @return {}
   */
   _showContainerMenuMessage(action, containerRunning) {
-    store.dispatch({
-      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-      payload: {
-        containerMenuOpen: true
-      }
-    })
 
     let dispatchMessage = containerRunning ? `Stop LabBook before ${action}. \n Be sure to save your changes.` : `LabBook is ${action}. \n Please do not refresh the page.`
 
@@ -159,6 +153,12 @@ export default class BranchMenu extends Component {
       }
     })
     this.setState({menuOpen: false});
+    store.dispatch({
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+      payload: {
+        containerMenuOpen: true
+      }
+    })
   }
 
   /**
@@ -382,19 +382,18 @@ export default class BranchMenu extends Component {
         })
       } else {
         this.setState({ menuOpen: false });
-
-        store.dispatch({
-          type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-          payload: {
-            containerMenuOpen: true
-          }
-        })
         store.dispatch({
           type: 'CONTAINER_MENU_WARNING',
           payload: {
             message: 'Stop LabBook before syncing. \n Be sure to save your changes.'
           }
         });
+        store.dispatch({
+          type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+          payload: {
+            containerMenuOpen: true
+          }
+        })
       }
     }
   }

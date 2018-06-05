@@ -349,16 +349,15 @@ class Labbook extends Component {
       })
     } else {
       store.dispatch({
-        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-        payload: {
-          containerMenuOpen: true
-        }
-      })
-
-      store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
           message: 'Stop LabBook before switching branches. \n Be sure to save your changes.',
+        }
+      })
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
         }
       })
     }
