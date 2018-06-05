@@ -25,7 +25,10 @@ export class LocalLabbooks extends Component {
     this._containerLookup = this._containerLookup.bind(this)
   }
 
-
+  /***
+  * @param {}
+  * adds event listener for pagination and fetches container status
+  */
   componentDidMount() {
     if(!this.props.loading){
       window.addEventListener('scroll', this._captureScroll);
@@ -33,6 +36,19 @@ export class LocalLabbooks extends Component {
     }
   }
 
+  /***
+  * @param {}
+  * removes event listener for pagination and removes timeout for container status
+  */
+  componentWillUnmount() {
+    clearTimeout(this.containerLookup)
+    window.removeEventListener("scroll", this._captureScroll)
+  }
+
+  /***
+  * @param {}
+  * calls ContainerLookup query and attaches the returned data to the state
+  */
   _containerLookup(){
     let self = this;
     let idArr = this.props.localLabbooks.localLabbooks.edges.map(edges =>edges.node.id)
@@ -48,12 +64,6 @@ export class LocalLabbooks extends Component {
         }, 10000)
       }
     })
-  }
-
-
-  componentWillUnmount() {
-    clearTimeout(this.containerLookup)
-    window.removeEventListener("scroll", this._captureScroll)
   }
 
   /**
