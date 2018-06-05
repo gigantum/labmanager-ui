@@ -3,7 +3,6 @@ import Sniffr from 'sniffr'
 
 const pingServer = () => {
   const url = `${window.location.protocol}//${window.location.hostname}${process.env.PING_API}`;
-  console.log(url, process.env.PING_API)
   return fetch(url, {
     'method': 'GET'
   }).then(response => {
@@ -43,7 +42,7 @@ export default class Prompt extends Component {
           clearInterval(this.intervalId);
           this.intervalId = setInterval(this._handlePing.bind(this), 10000);
         } else {
-  
+
           this.setState({ failureCount: this.state.failureCount + 1, promptState: false });
           clearInterval(this.intervalId);
           this.intervalId = setInterval(this._handlePing.bind(this), 2500);
