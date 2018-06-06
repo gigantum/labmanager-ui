@@ -1,13 +1,12 @@
 //vendor
-import React, {Component} from 'react';
-import classNames from 'classnames';
+import React, {Component, Fragment} from 'react';
 import dateFormat from 'dateformat';
 import Moment from 'moment'
 //Mutations
 import CreateExperimentalBranchMutation from 'Mutations/branches/CreateExperimentalBranchMutation'
 //components
-import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 import ButtonLoader from 'Components/shared/ButtonLoader'
+import Modal from 'Components/shared/Modal'
 //utilities
 import validation from 'JS/utils/Validation'
 //store
@@ -191,10 +190,6 @@ export default class CreateBranchModal extends Component {
     }
 
     render() {
-      let loginPromptModalCss = classNames({
-        'CreateBranch--login-prompt': this.state.showLoginPrompt,
-        'hidden': !this.state.showLoginPrompt
-      })
       const createDisabled = this.state.showError || (this.state.branchName.length === 0) || this.state.createButtonClicked
 
       const inputsDisabled = this.state.buttonLoaderCreateBranch !== '';
@@ -202,87 +197,72 @@ export default class CreateBranchModal extends Component {
       return (
         <div>
           {this.state.modalVisible &&
-            <div className="CreateBranch__container">
-              <div className="modal__cover--nested"></div>
-              <div className="CreateBranch__modal">
-                <div
-                  className="CreateBranch__modal-close"
-                  onClick={() => this._hideModal(inputsDisabled)}>
+            <Modal
+              handleClose={() => { this._hideModal(inputsDisabled) }}
+              size="large"
+              header="Create Branch"
+              icon="create"
+              renderContent={()=>
+                <Fragment>
+                <div>
+                  <label>Name</label>
+                  <input
+                    type='text'
+                    maxLength="100"
+                    className={this.state.showError ? 'invalid' : ''}
+                    onChange={(evt) => this._updateTextState(evt, 'branchName')}
+                    onKeyUp={(evt) => this._updateTextState(evt, 'branchName')}
+                    placeholder="Enter a unique branch name"
+                    defaultValue={this.state.branchName}
+                    disabled={inputsDisabled}
+                  />
+                  <span className={this.state.showError ? 'error' : 'hidden'}>{this._getErrorText()}</span>
                 </div>
 
-                <div className="CreateBranch">
-                  <div className={loginPromptModalCss}>
-                    <div
-                      onClick={() => { this._closeLoginPromptModal() }}
-                      className="BranchModal--close"></div>
-                      <LoginPrompt closeModal={this._closeLoginPromptModal} />
-                    </div>
-                    <h4 className="CreateBranch__header">Create Branch</h4>
-                    <div className='CreateBranch__modal-inner-container flex flex--column justify--space-between'>
+                <div>
+                  <label>Description</label>
+                  <textarea
+                    className="CreateBranch__description-input"
+                    disabled={inputsDisabled}
 
-                      <div>
-                        <label>Name</label>
-                        <input
-                          type='text'
-                          maxLength="100"
-                          className={this.state.showError ? 'invalid' : ''}
-                          onChange={(evt) => this._updateTextState(evt, 'branchName')}
-                          onKeyUp={(evt) => this._updateTextState(evt, 'branchName')}
-                          placeholder="Enter a unique branch name"
-                          defaultValue={this.state.branchName}
-                          disabled={inputsDisabled}
-                        />
-                        <span className={this.state.showError ? 'error' : 'hidden'}>{this._getErrorText()}</span>
-                      </div>
+                    onChange={(evt) => this._updateTextState(evt, 'branchDescription')}
+                    onKeyUp={(evt) => this._updateTextState(evt, 'branchDescription')}
 
-                      <div>
-                        <label>Description</label>
-                        <textarea
-                          className="CreateBranch__description-input"
-                          disabled={inputsDisabled}
-
-                          onChange={(evt) => this._updateTextState(evt, 'branchDescription')}
-                          onKeyUp={(evt) => this._updateTextState(evt, 'branchDescription')}
-
-                          maxLength="240"
-                          placeholder="Briefly describe this branch, its purpose and any other key details. "
-                          defaultValue={this.props.selected ? `Branch created on ${Moment().format("M/DD/YY h:mm:ss A")} to rollback workspace to ${Moment(Date.parse(this.props.selected.timestamp)).format("M/DD/YY h:mm:ss A")}.` : this.props.description ? this.props.description : ''}
-                        />
-                        <p className={'CreateBranch__warning ' + this.state.textWarning}>{`${this.state.textLength} characters remaining`}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={'CreateBranchNav'}>
-                    <div>
-                    </div>
-                    <div className="CreateBranch__nav-group">
-
-                      <div className="CreateBranch_nav-item">
-                        <button
-                          disabled={inputsDisabled}
-                          onClick={() => { this._hideModal() }}
-                          className="CreateBranch__progress-button button--flat">
-                          Cancel
-                        </button>
-                      </div>
-
-                      <div className="CreateBranch_nav-item">
-                        <ButtonLoader
-                          ref="buttonLoaderCreateBranch"
-                          buttonState={this.state.buttonLoaderCreateBranch}
-                          buttonText={"Create"}
-                          params={{}}
-                          buttonDisabled={createDisabled}
-                          clicked={this._createNewBranch}
-                        />
-                      </div>
-                      </div>
-                    </div>
-                  </div>
+                    maxLength="240"
+                    placeholder="Briefly describe this branch, its purpose and any other key details. "
+                    defaultValue={this.props.selected ? `Branch created on ${Moment().format("M/DD/YY h:mm:ss A")} to rollback workspace to ${Moment(Date.parse(this.props.selected.timestamp)).format("M/DD/YY h:mm:ss A")}.` : this.props.description ? this.props.description : ''}
+                  />
+                  <p className={'CreateBranch__warning ' + this.state.textWarning}>{`${this.state.textLength} characters remaining`}</p>
                 </div>
+
+                <div className={'CreateBranchNav'}>
+                  <div className="CreateBranch__nav-group">
+                    <div className="CreateBranch_nav-item">
+                      <button
+                        disabled={inputsDisabled}
+                        onClick={() => { this._hideModal() }}
+                        className="CreateBranch__progress-button button--flat">
+                        Cancel
+                      </button>
+                    </div>
+
+                    <div className="CreateBranch_nav-item">
+                      <ButtonLoader
+                        ref="buttonLoaderCreateBranch"
+                        buttonState={this.state.buttonLoaderCreateBranch}
+                        buttonText={"Create"}
+                        params={{}}
+                        buttonDisabled={createDisabled}
+                        clicked={this._createNewBranch}
+                      />
+                    </div>
+                    </div>
+                  </div>
+                </Fragment>
               }
-            </div>
+            />
+          }
+        </div>
 
           )
         }

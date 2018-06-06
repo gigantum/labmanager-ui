@@ -167,10 +167,6 @@ class RemoteLabbooks extends Component {
   render(){
     let labbooks = this.props.filterLabbooks(this.props.remoteLabbooks.remoteLabbooks.edges, this.props.filterState)
 
-    const deleteModalCSS = classNames({
-      'BranchModal--delete-modal': this.state.deleteModalVisible,
-      'hidden': !this.state.deleteModalVisible
-    })
     let loginPromptModalCss = classNames({
       'Labbooks--login-prompt': this.state.showLoginPrompt,
       'hidden': !this.state.showLoginPrompt
@@ -207,29 +203,27 @@ class RemoteLabbooks extends Component {
           })
         }
       </div>
-      <div className={deleteModalCSS}>
-          <div
-            onClick={() => { this._toggleDeleteModal() }}
-            className="RemoteLabbooks--close"></div>
-
-          <DeleteLabbook
-            labbookListId={this.props.labbookListId}
-            remoteId={this.state.deleteData.remoteId}
-            remoteConnection={'RemoteLabbooks_remoteLabbooks'}
-            toggleModal={this._toggleDeleteModal}
-            remoteOwner={this.state.deleteData.remoteOwner}
-            remoteLabbookName={this.state.deleteData.remoteLabbookName}
-            existsLocally={this.state.deleteData.existsLocally}
-            remoteDelete={true}
-            history={this.props.history}
-          />
-        </div>
-        <div className={loginPromptModalCss}>
-          <div
-            onClick={() => { this._closeLoginPromptModal() }}
-            className="Labbooks-login-prompt--close"></div>
-          <LoginPrompt closeModal={this._closeLoginPromptModal} />
-        </div>
+      {
+        this.state.deleteModalVisible &&
+        <DeleteLabbook
+          handleClose={() => { this._toggleDeleteModal() }}
+          labbookListId={this.props.labbookListId}
+          remoteId={this.state.deleteData.remoteId}
+          remoteConnection={'RemoteLabbooks_remoteLabbooks'}
+          toggleModal={this._toggleDeleteModal}
+          remoteOwner={this.state.deleteData.remoteOwner}
+          remoteLabbookName={this.state.deleteData.remoteLabbookName}
+          existsLocally={this.state.deleteData.existsLocally}
+          remoteDelete={true}
+          history={this.props.history}
+        />
+      }
+      <div className={loginPromptModalCss}>
+        <div
+          onClick={() => { this._closeLoginPromptModal() }}
+          className="Labbooks-login-prompt--close"></div>
+        <LoginPrompt closeModal={this._closeLoginPromptModal} />
+      </div>
     </div>
     )
   }

@@ -83,7 +83,7 @@
 
 
 .CollaboratorModal__list-container {
-  height: 220px;
+  height: 200px;
   border: 1px solid $background-color;
   ul {
     @include flex(flex-start, column);
@@ -100,7 +100,7 @@
 
 
 .BranchMenu__collaborators-list-container {
-  height: 220px;
+  height: 200px;
   border: 1px solid $background-color;
   ul {
     @include flex(flex-start, column);

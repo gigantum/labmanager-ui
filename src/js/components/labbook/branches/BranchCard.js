@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 //components
-import DeleteLabbook from './DeleteLabbook'
+import DeleteBranch from './DeleteBranch'
 import ForceMerge from './ForceMerge'
 import ButtonLoader from 'Components/shared/ButtonLoader'
 //mutations
@@ -264,7 +264,7 @@ export default class BranchCard extends Component {
         <h6 className="BranchCard__title">{branchName}</h6>
         { this.state.deleteModalVisible &&
           [
-            <DeleteLabbook
+            <DeleteBranch
               key="BranchDelete__modal"
               branchName={this.props.name}
               cleanBranchName={branchName}

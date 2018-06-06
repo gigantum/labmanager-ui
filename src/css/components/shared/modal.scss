@@ -1,0 +1,80 @@
+.Modal__content{
+  @include flex(flex-start, column);
+  padding: 0 40px;
+  z-index: index($elements, modal);
+  overflow: hidden;
+}
+
+.Modal__container{
+  padding: 20px;
+  hr{
+    background-color: #007ea8 !important;
+    border-color: #007ea8 !important;
+    border-width: 1px;
+    opacity: 0.3 !important;
+    width: 100% !important;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.Modal__content.create .Modal__container{
+  .Modal__header{
+    background: url('./../images/icons/create-azure.svg') no-repeat 207px 45px;
+    background-size: 50px;
+  }
+}
+
+.Modal__content.user .Modal__container{
+  .Modal__header{
+    background: url('./../images/icons/user-azure.svg') no-repeat 160px 34px;
+    background-size: 50px;
+  }
+}
+
+.Modal__sub-container{
+  padding: 0 20px;
+  @include flex(flex-start, column);
+  button{
+    align-self: center;
+  }
+}
+
+.Modal__content.large{
+  padding: 0 60px 20px 60px;
+  @include modal(500px, 960px);
+}
+
+.Modal__content.medium{
+  @include modal(440px, 660px);
+}
+
+.Modal__content.small{
+  @include modal(200px, 400px);
+}
+
+
+.Modal__header{
+  background-size: 50px;
+  font-weight: 600;
+  padding: 40px 0 5px 20px;
+  color: $azure;
+  text-align: center;
+  margin: 0;
+}
+
+.Modal__cover{
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  background-color: $white;
+  animation: fade-in-modal forwards .25s;
+  opacity: 0.5;
+  z-index: index($elements, modalCoverNested);
+}
+
+.Modal__close{
+  @include close();
+}

@@ -1,19 +1,19 @@
-.ForceMege{
-  @include modal(300px, 500px);
-  @include flex(flex-start, column);
-  padding: 40px;
-  z-index: index($elements, modal);
-}
+// .ForceMege{
+//   @include modal(300px, 500px);
+//   @include flex(flex-start, column);
+//   padding: 40px;
+//   z-index: index($elements, modal);
+// }
 
-.ForceMege__close{
-  @include close();
-}
+// .ForceMege__close{
+//   @include close();
+// }
 
 
-.ForceMege__header{
-  @include modalHeader();
-  border-bottom: 1px solid $azure;
-}
+// .ForceMege__header{
+//   @include modalHeader();
+//   border-bottom: 1px solid $azure;
+// }
 
 .ForceMege__text{
   margin: 60px 0;

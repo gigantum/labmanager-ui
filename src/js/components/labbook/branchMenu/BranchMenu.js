@@ -669,11 +669,6 @@ export default class BranchMenu extends Component {
       'BranchMenu__item--export--downloading': this.state.exporting
     })
 
-    const deleteModalCSS = classNames({
-      'BranchModal--delete-modal': this.state.deleteModalVisible,
-      'hidden': !this.state.deleteModalVisible
-    })
-
     const modalCoverCSS = classNames({
       'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt && !this.state.forceSyncModalVisible && !this.state.showCollaborators && !this.state.createBranchVisible,
       'modal__cover': true
@@ -694,18 +689,14 @@ export default class BranchMenu extends Component {
             <LoginPrompt closeModal={this._closeLoginPromptModal} />
 
         </div>
-
-        <div className={deleteModalCSS}>
-          <div
-            onClick={() => { this._toggleDeleteModal() }}
-            className="BranchModal--close"></div>
-
-            <DeleteLabbook
-              remoteAdded={this.state.addedRemoteThisSession}
-              history={this.props.history}
-            />
-
-        </div>
+        {
+          this.state.deleteModalVisible &&
+          <DeleteLabbook
+            handleClose={()=> this._toggleDeleteModal()}
+            remoteAdded={this.state.addedRemoteThisSession}
+            history={this.props.history}
+          />
+        }
 
         <div className={syncModalCSS}>
           <div

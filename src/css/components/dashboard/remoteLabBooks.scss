@@ -175,18 +175,8 @@
     @include flex(space-around, row);
   }
 
-  .DeleteLabbook{
+  .Modal{
     align-items: center;
-
-    height: 300px;
-
-    @include flex(space-between, column);
-    p{
-      margin: 0;
-    }
-    hr{
-      border-bottom: 1px solid $azure;
-    }
   }
 }
 

@@ -35,6 +35,7 @@
 @import 'components/shared/buttonLoader';
 @import 'components/shared/user';
 @import 'components/shared/header';
+@import 'components/shared/modal';
 //
 @import 'components/routes.scss';
 @import 'components/login.scss';
@@ -82,25 +83,25 @@
 @import 'components/wizard/baseDetails';
 @import 'components/wizard/trackingToggle';
 
-.modal__cover,
-.modal__cover--nested{
-  position: fixed;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
-  left: 0px;
-  background-color: $white;
-  animation: fade-in-modal forwards .25s;
-  opacity: 0.5;
-}
+// .modal__cover,
+// .modal__cover--nested{
+//   position: fixed;
+//   top: 0px;
+//   bottom: 0px;
+//   right: 0px;
+//   left: 0px;
+//   background-color: $white;
+//   animation: fade-in-modal forwards .25s;
+//   opacity: 0.5;
+// }
 
-.modal__cover{
-  z-index: index($elements, modalCover);
-}
+// .modal__cover{
+//   z-index: index($elements, modalCover);
+// }
 
-.modal__cover--nested{
-  z-index: index($elements, modalCoverNested);
-}
+// .modal__cover--nested{
+//   z-index: index($elements, modalCoverNested);
+// }
 
 @keyframes fade-in-modal{
   0% {
