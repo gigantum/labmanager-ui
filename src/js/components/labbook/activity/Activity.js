@@ -368,7 +368,7 @@ class Activity extends Component {
 
       if(edge && edge.node){
         let date = (edge.node && edge.node.timestamp) ? new Date(edge.node.timestamp) : new Date()
-        let timeHash = `${date.getYear()}_${date.getMonth()}_${date.getDate()}`;
+        let timeHash = `${date.getFullYear()}_${date.getMonth()}_${date.getDate()}`;
         count = edge.node.show || (previousTimeHash && timeHash !== previousTimeHash) ? 0 : count + 1;
         previousTimeHash = timeHash;
 
@@ -535,7 +535,7 @@ class Activity extends Component {
       return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
     })
     return (
-      <div className="ActivtyCard__wrapper"  key={obj.edge.node.id}>
+      <div className="ActivityCard__wrapper"  key={obj.edge.node.id}>
         { ((i !== 0 ) || (j !== 0)) &&
           <div className="Activity__submenu-container">
           {
@@ -599,7 +599,7 @@ class Activity extends Component {
       return undefined;
     }
     return (
-      <div className="ActivtyCard__wrapper" key={obj.flatIndex}>
+      <div className="ActivityCard__wrapper" key={obj.flatIndex}>
       {
         (clusterElements[0] !== 0) &&
         <div className="Activity__submenu-container">
@@ -689,7 +689,7 @@ class Activity extends Component {
              </div>
            §</div>
           }
-          <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
+          <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--flex-start">
             <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Activity__sizer flex-1-0-auto">
               <CreateBranch
                 ref="createBranch"
@@ -703,9 +703,12 @@ class Activity extends Component {
                   let clusterElements = [];
                   return (
                     <div key={k}>
-                      <div className="Activity__date-tab column-1-span-1 flex flex--column justify--space-around">
+                      <div className="Activity__date-tab">
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
-                        <div className="Activity__date-month">{ config.months[parseInt(k.split('_')[1], 10)] }</div>
+                        <div className="Activity__date-sub">
+                          <div className="Activity__date-month">{ config.months[parseInt(k.split('_')[1], 10)] }</div>
+                          <div className="Activity__date-year">{k.split('_')[0]}</div>
+                        </div>
                       </div>
                       {
                         (i===0) && this._renderUserNote()

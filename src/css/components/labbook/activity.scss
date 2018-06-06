@@ -117,11 +117,11 @@
   background-size: 30px 30px;
 }
 
-.ActivtyCard__wrapper{
+.ActivityCard__wrapper{
     position: relative;
 }
 
-.ActivtyCard__wrapper:before, .Activity__date-tab:before {
+.ActivityCard__wrapper:before, .Activity__date-tab:before {
   content: "";
   display: block;
   position: absolute;
@@ -139,12 +139,8 @@
 }
 
 .Activity__date-tab:before {
-  top: 76px;
+  top: 46px;
   left: 35px;
-}
-
-.ActivtyCard__wrapper:nth-last-child(1):before {
-  display: none !important;
 }
 
 .ActivityCard__title {
@@ -276,42 +272,40 @@
 
 .Activity__date-tab {
     position: relative;
-    margin: 40px 1px -6px;
+    margin: 30px 1px 0;
 
-    height: 80px;
-
+    height: 50px;
+    width: 120px;
     border: 4px solid $azure;
     border-radius: 40px;
     background: $white;
 
     font-weight: lighter;
+    @include flex(center, row)
 }
-
-.Activity__date-month {
+.Activity__date-sub{
+  @include flex(center, column)
+}
+.Activity__date-month,
+.Activity__date-year {
+  text-transform: uppercase;
   align-self: center;
-
-  height: 30px;
-
   color: $romanSilver;
-
-  font-size: 20px;
+  font-size: 13px;
 }
 
 .Activity__date-day {
   align-self: center;
-
-  height: 26px;
-
   color: $romanSilver;
-
-  font-size: 26px;
+  font-size: 38px;
+  margin-right: 5px;
 }
 
 .Activity__user-note {
   @include flex(flex-start, row);
   z-index: index($elements, card);
   position: relative;
-  height: 54px;
+  height: 49px;
   transition: height 0.5s;
 }
 
@@ -322,7 +316,7 @@
   width: 20px;
   border-radius: 15px;
   position: relative;
-  top: 19px;
+  top: 14px;
   left: 32px;
   transition: all 0.125s ease;
   z-index: index($elements, card);
@@ -332,7 +326,7 @@
 .Activity__user-note-menu-icon:hover {
     height: 24px;
     width: 24px;
-    top: 17px;
+    top: 12px;
     left: 30px;
     background-size: 24px;
 }
