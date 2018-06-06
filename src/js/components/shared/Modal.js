@@ -1,5 +1,5 @@
 //vendor
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import classNames from 'classnames'
 
 export default class Modal extends Component {
@@ -35,9 +35,13 @@ export default class Modal extends Component {
               this.props.preHeader &&
               <p className="Modal__pre-header">{this.props.preHeader}</p>
             }
-
-            <h4 className="Modal__header">{this.props.header}</h4>
-            <hr></hr>
+            {
+              this.props.header &&
+              <Fragment>
+                <h4 className="Modal__header">{this.props.header}</h4>
+                <hr></hr>
+              </Fragment>
+            }
             <div className="Modal__sub-container">
               {
                 this.props.renderContent()

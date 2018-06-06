@@ -263,36 +263,24 @@ export default class BranchCard extends Component {
         }
         <h6 className="BranchCard__title">{branchName}</h6>
         { this.state.deleteModalVisible &&
-          [
-            <DeleteBranch
-              key="BranchDelete__modal"
-              branchName={this.props.name}
-              cleanBranchName={branchName}
-              labbookName={this.state.labbookName}
-              labbookId={this.props.labbookId}
-              owner={owner}
-              toggleModal={this._toggleModal}
-            />,
-            <div
-              key="BranchDelete__modal-cover"
-              className="modal__cover--nested">
-            </div>
-          ]
+          <DeleteBranch
+            key="BranchDelete__modal"
+            branchName={this.props.name}
+            cleanBranchName={branchName}
+            labbookName={this.state.labbookName}
+            labbookId={this.props.labbookId}
+            owner={owner}
+            toggleModal={this._toggleModal}
+          />
         }
 
         { this.state.forceMergeVisible &&
-          [
           <ForceMerge
             key="ForceMerge__modal"
             merge={this._merge}
             params={{force: true}}
             toggleModal={this._toggleModal}
-          />,
-          <div
-            key="BranchDelete__modal-cover"
-            className="modal__cover--nested">
-          </div>
-          ]
+          />
         }
         {showDelete &&
           <button

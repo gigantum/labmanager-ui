@@ -8,26 +8,6 @@
   @include flex(flex-end, row)
 }
 
-.BranchModal {
-  padding: 15px;
-  @include flex(space-between, column);
-  @include modal(600px, 900px);
-}
-
-.BranchModal--collaborators {
-  @extend .BranchModal;
-  justify-content: flex-start;
-  hr {
-    background-color: $azure;
-    border-color: $azure;
-    border-width: 1px;
-    padding: 0 20px;
-    opacity: 0.9;
-    width: 90%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-}
 .BranchMenu__add {
   position: relative;
   input[type="text"] {
@@ -59,69 +39,11 @@
 .BranchMenu__collaborator-container {
   padding: 20px 100px;
 }
-.BranchModal--login-prompt{
-  justify-content: flex-start;
-  padding: 20px;
-  @include flex(space-between, column);
-  @include modal(200px, 400px);
-
-  .LoginPrompt__button-container {
-    @include flex(space-around, row);
-  }
-}
 
 .DeleteLabbook{
   @include flex(flex-start, column);
   align-items: center;
 }
-
-// .BranchModal--delete-modal {
-
-//   justify-content: flex-start;
-//   padding: 20px 40px;
-//   @include flex(space-between, column);
-//   @include modal(300px, 600px);
-
-//   .LoginPrompt__button-container {
-//     @include flex(space-around, row);
-//   }
-
-//   .DeleteLabbook{
-//     hr{
-//       border-bottom: 1px solid $azure;
-//     }
-//     height: 300px;
-//     @include flex(space-between, column);
-//     align-items: center;
-//   }
-// }
-// .ForceSync__header,
-// .DeleteLabbook__header{
-//   border-bottom: 1px solid #007ea8;
-//   width: 300px;
-// }
-// .ForceSync__header,
-// .DeleteLabbook__header,
-// .BranchModal__header {
-
-//   padding: 5px 0 5px 0px;
-//   color: $azure;
-//   text-align: center;
-//   min-width: 100%;
-//   margin: 0 auto;
-// }
-
-// .BranchModal__header {
-//   background: url('./../images/icons/user-azure.svg') no-repeat 190px 32px;
-//   background-size: 50px;
-//   font-weight: 600;
-//   padding: 40px 0 5px 20px;
-// }
-
-
-// .BranchModal--close {
-//   @include close()
-// }
 
 .BranchMenu__button,
 .BranchMenu__button:focus {

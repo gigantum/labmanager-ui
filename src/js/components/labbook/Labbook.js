@@ -289,15 +289,6 @@ class Labbook extends Component {
     updates html element classlist and labbook state
   */
   _showLabbookModal = () => {
-
-    if(document.getElementById('labbookModal')){
-      document.getElementById('labbookModal').classList.remove('hidden')
-    }
-
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.remove('hidden')
-    }
-
     if(!this.state.modalVisible){
       store.dispatch(
         {

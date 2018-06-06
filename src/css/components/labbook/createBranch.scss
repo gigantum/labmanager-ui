@@ -40,14 +40,6 @@
     text-align: center;
   }
 
-  .CreateBranch__modal-close {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    cursor: pointer;
-    @include close();
-  }
-
   .CreateBranch__button--margin {
     margin-left: 20px;
   }
@@ -99,17 +91,6 @@
     }
   }
 
-  .CreateBranch--login-prompt {
-    @include flex(space-between, column);
-    @include modal(200px, 400px);
-    justify-content: flex-start;
-    padding: 20px;
-    z-index: index($elements, modal);
-
-    .LoginPrompt__button-container {
-      @include flex(space-around, row);
-    }
-  }
   .CreateBranch__warning {
     text-align: right;
     margin: 0px;
@@ -139,13 +120,6 @@
       text-align: center;
       font-weight: 400;
       border-bottom: 1px solid $azure;
-  }
-
-  .CreateBranch__modal-close {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    cursor: pointer;
   }
 
   .CreateBranch__modal-inner-container {

@@ -1,33 +1,3 @@
-.CollaboratorModal{
-  @extend .BranchModal;
-  justify-content: flex-start;
-  hr {
-    background-color: $azure;
-    border-color: $azure;
-    border-width: 1px;
-    padding: 0 20px;
-    opacity: 0.9;
-    width: 90%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-}
-.CollaboratorModal__button--close {
-  @include close()
-}
-.CollaboratorModal__header {
-  background: url('./../images/icons/user-azure.svg') no-repeat 190px 32px;
-  background-size: 50px;
-  font-weight: 600;
-  padding: 40px 0 5px 20px;
-  color: $azure;
-  text-align: center;
-}
-
-.CollaboratorModal__sub-header{
-  margin: 20px 0 !important;
-}
-
 .CollaboratorModal__add {
   position: relative;
   input[type="text"] {

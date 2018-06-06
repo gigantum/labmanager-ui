@@ -13,8 +13,8 @@
     border-width: 1px;
     opacity: 0.3 !important;
     width: 100% !important;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
 
@@ -50,7 +50,11 @@
 }
 
 .Modal__content.small{
-  @include modal(200px, 400px);
+  p{
+    line-height: 20px;
+  }
+  padding: 0;
+  @include modal(200px, 300px);
 }
 
 
@@ -77,4 +81,12 @@
 
 .Modal__close{
   @include close();
+}
+
+.Modal__pre-header{
+  margin: 0;
+  color: #007ea8;
+  text-align: center;
+  margin-top: -10px;
+  margin-bottom: -40px;
 }

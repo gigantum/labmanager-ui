@@ -415,9 +415,7 @@ class Activity extends Component {
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
     if(canEditEnvironment) {
-      this.setState({selectedNode: node})
-      document.getElementById('modal__cover').classList.remove('hidden')
-      this.setState({createBranchVisible: true})
+      this.setState({selectedNode: node, createBranchVisible: true})
     } else {
       store.dispatch({
         type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
@@ -454,7 +452,6 @@ class Activity extends Component {
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
     if(canEditEnvironment){
-      document.getElementById('modal__cover').classList.remove('hidden')
       this.setState({createBranchVisible: true, selectedNode: null})
     } else {
       store.dispatch({

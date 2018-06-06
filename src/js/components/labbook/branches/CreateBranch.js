@@ -74,9 +74,6 @@ export default class CreateBranchModal extends Component {
         this.props.toggleModal('createBranchVisible')
       }
     }
-
-    document.getElementById('modal__cover').classList.add('hidden')
-
   }
   /**
   *   @param {event,string} evt, key
