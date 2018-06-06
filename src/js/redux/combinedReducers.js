@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 import footer from './reducers/footer';
 import login from './reducers/login';
 import routes from './reducers/routes';
+//labbook listing reducers
+import labbookListing from './reducers/labbookListing/labbookListing'
 //labbook reducers
 import labbook from './reducers/labbook/labbook';
 import detailView from './reducers/labbook/detail';
@@ -25,5 +27,6 @@ export default combineReducers({
   environment,
   login,
   fileBrowser,
-  collaborators
+  collaborators,
+  labbookListing
 });

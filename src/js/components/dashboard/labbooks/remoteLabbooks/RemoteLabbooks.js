@@ -25,21 +25,10 @@ class RemoteLabbooks extends Component {
       },
       deleteModalVisible: false,
       'showLoginPrompt': false,
-      sort: this.props.sort,
-      reverse: this.props.reverse,
       isPaginating: false,
-      refetchLoading: false,
     }
     this._toggleDeleteModal = this._toggleDeleteModal.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
-    this._refetch = this._refetch.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.sort !== this.state.sort || nextProps.reverse !== this.state.reverse) {
-      this.setState({sort: nextProps.sort, reverse: nextProps.reverse});
-      this._refetch(nextProps.sort, nextProps.reverse);
-    }
   }
 
   componentWillUnmount() {
@@ -59,10 +48,6 @@ class RemoteLabbooks extends Component {
   }
 
   componentDidMount() {
-    if(this.props.wasSorted) {
-      this._refetch(this.state.sort, this.state.reverse);
-    }
-    this.props.sortProcessed()
     window.addEventListener('scroll', this._captureScroll);
   }
 
@@ -80,34 +65,6 @@ class RemoteLabbooks extends Component {
         this._loadMore();
       }
     }
-  }
-
-  /**
-    * @param {string, boolean} sort reverse
-    * fires when parent _refetch function is called
-    * causes relay to refetch with new parameters
-  */
-  _refetch(sort, reverse){
-    let self = this;
-    let relay = self.props.relay;
-    this.setState({refetchLoading: true})
-    this.props.changeRefetchState(true)
-
-    relay.refetchConnection(
-      20,
-      (res, err)=>{
-        if(err){
-          console.log(err)
-        }
-        this.setState({refetchLoading: false})
-        this.props.changeRefetchState(false)
-      },
-      {first: 100,
-        cursor: null,
-        sort: sort,
-        reverse: reverse,
-      }
-    )
   }
 
   /**
@@ -165,73 +122,77 @@ class RemoteLabbooks extends Component {
   }
 
   render(){
-    let labbooks = this.props.filterLabbooks(this.props.remoteLabbooks.remoteLabbooks.edges, this.props.filterState)
+    if(this.props.remoteLabbooks && this.props.remoteLabbooks.remoteLabbooks !== null){
+      let labbooks = this.props.filterLabbooks(this.props.remoteLabbooks.remoteLabbooks.edges, this.props.filterState)
 
-    const deleteModalCSS = classNames({
-      'BranchModal--delete-modal': this.state.deleteModalVisible,
-      'hidden': !this.state.deleteModalVisible
-    })
-    let loginPromptModalCss = classNames({
-      'Labbooks--login-prompt': this.state.showLoginPrompt,
-      'hidden': !this.state.showLoginPrompt
-    })
-    return(
-      <div className='LocalLabbooks__labbooks'>
-      <div className="LocalLabbooks__sizer grid">
-        {
-          !this.state.refetchLoading && labbooks.map((edge) => {
-            return (
-              <RemoteLabbookPanel
-                toggleDeleteModal={this._toggleDeleteModal}
-                labbookListId={this.props.labbookListId}
-                key={edge.node.owner + edge.node.name}
-                ref={'LocalLabbookPanel' + edge.node.name}
-                className="LocalLabbooks__panel"
-                edge={edge}
-                history={this.props.history}
-                existsLocally={edge.node.isLocal}
-                />
-            )
-          })
-        }
-        {
-          Array(5).fill(1).map((value, index) => {
-
+      const deleteModalCSS = classNames({
+        'BranchModal--delete-modal': this.state.deleteModalVisible,
+        'hidden': !this.state.deleteModalVisible
+      })
+      let loginPromptModalCss = classNames({
+        'Labbooks--login-prompt': this.state.showLoginPrompt,
+        'hidden': !this.state.showLoginPrompt
+      })
+      return(
+        <div className='LocalLabbooks__labbooks'>
+        <div className="LocalLabbooks__sizer grid">
+          {
+            labbooks.map((edge) => {
               return (
-                <LabbooksPaginationLoader
-                  key={'LocalLabbooks_paginationLoader' + index}
-                  index={index}
-                  isLoadingMore={this.state.isPaginating ||this.state.refetchLoading}
-                />
-            )
-          })
-        }
-      </div>
-      <div className={deleteModalCSS}>
-          <div
-            onClick={() => { this._toggleDeleteModal() }}
-            className="RemoteLabbooks--close"></div>
+                <RemoteLabbookPanel
+                  toggleDeleteModal={this._toggleDeleteModal}
+                  labbookListId={this.props.labbookListId}
+                  key={edge.node.owner + edge.node.name}
+                  ref={'LocalLabbookPanel' + edge.node.name}
+                  className="LocalLabbooks__panel"
+                  edge={edge}
+                  history={this.props.history}
+                  existsLocally={edge.node.isLocal}
+                  />
+              )
+            })
+          }
+          {
+            Array(5).fill(1).map((value, index) => {
 
-          <DeleteLabbook
-            labbookListId={this.props.labbookListId}
-            remoteId={this.state.deleteData.remoteId}
-            remoteConnection={'RemoteLabbooks_remoteLabbooks'}
-            toggleModal={this._toggleDeleteModal}
-            remoteOwner={this.state.deleteData.remoteOwner}
-            remoteLabbookName={this.state.deleteData.remoteLabbookName}
-            existsLocally={this.state.deleteData.existsLocally}
-            remoteDelete={true}
-            history={this.props.history}
-          />
+                return (
+                  <LabbooksPaginationLoader
+                    key={'LocalLabbooks_paginationLoader' + index}
+                    index={index}
+                    isLoadingMore={this.state.isPaginating}
+                  />
+              )
+            })
+          }
         </div>
-        <div className={loginPromptModalCss}>
-          <div
-            onClick={() => { this._closeLoginPromptModal() }}
-            className="Labbooks-login-prompt--close"></div>
-          <LoginPrompt closeModal={this._closeLoginPromptModal} />
-        </div>
-    </div>
-    )
+        <div className={deleteModalCSS}>
+            <div
+              onClick={() => { this._toggleDeleteModal() }}
+              className="RemoteLabbooks--close"></div>
+
+            <DeleteLabbook
+              labbookListId={this.props.labbookListId}
+              remoteId={this.state.deleteData.remoteId}
+              remoteConnection={'RemoteLabbooks_remoteLabbooks'}
+              toggleModal={this._toggleDeleteModal}
+              remoteOwner={this.state.deleteData.remoteOwner}
+              remoteLabbookName={this.state.deleteData.remoteLabbookName}
+              existsLocally={this.state.deleteData.existsLocally}
+              remoteDelete={true}
+              history={this.props.history}
+            />
+          </div>
+          <div className={loginPromptModalCss}>
+            <div
+              onClick={() => { this._closeLoginPromptModal() }}
+              className="Labbooks-login-prompt--close"></div>
+            <LoginPrompt closeModal={this._closeLoginPromptModal} />
+          </div>
+      </div>
+      )
+    } else {
+      this.props.auth.login();
+    }
   }
 }
 
