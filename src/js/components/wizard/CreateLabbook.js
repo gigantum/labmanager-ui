@@ -1,6 +1,5 @@
 //vendor
 import React from 'react'
-import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
 //utilities
 import validation from 'JS/utils/Validation'
