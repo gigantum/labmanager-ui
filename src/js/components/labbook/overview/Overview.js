@@ -185,7 +185,7 @@ class Overview extends Component {
       'fullscreen': this.state.editorFullscreen
     })
     let readmeCSS = this.state.readmeExpanded ? 'ReadmeMarkdown--expanded' : 'ReadmeMarkdown';
-    let descriptionCSS = this.state.descriptionText ? 'column-1-span-9' : 'column-1-span-9 empty'
+    let descriptionCSS = this.state.descriptionText ? 'column-1-span-10' : 'column-1-span-10 empty'
     if (this.props.labbook) {
       const { owner, labbookName } = store.getState().routes
       return (
@@ -196,7 +196,7 @@ class Overview extends Component {
             <Fragment>
               <textarea
                 maxLength="260"
-                className="Overview__description-input column-1-span-9"
+                className="Overview__description-input column-1-span-10"
                 type="text"
                 onChange={(evt)=>{this.setState({descriptionText: evt.target.value.replace(/\n/g,' ')})}}
                 placeholder="Short description of labbook"

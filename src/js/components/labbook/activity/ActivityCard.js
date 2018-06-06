@@ -52,7 +52,7 @@ export default class ActivityCard extends Component {
     const activityCardCSS = classNames({
       'ActivityCard card': this.state.showExtraInfo,
       'ActivityCard--collapsed card': !this.state.showExtraInfo,
-      'column-1-span-9': true,
+      'column-1-span-10': true,
       'faded': shouldBeFaded,
     })
     const titleCSS = classNames({

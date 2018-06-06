@@ -62,7 +62,7 @@ class Activity extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
- 
+
     let activityRecords = nextProps.labbook.activityRecords
     if(JSON.stringify(this._transformActivity(activityRecords)) !== JSON.stringify(this.state.activityRecords)) {
       this.setState({activityRecords: this._transformActivity(activityRecords)})
@@ -590,7 +590,7 @@ class Activity extends Component {
     let shouldBeFaded = this.state.hoveredRollback > obj.flatIndex
     let clusterCSS = classNames({
       'ActivityCard--cluster': true,
-      'column-1-span-9': true,
+      'column-1-span-10': true,
       'faded': shouldBeFaded,
     });
     clusterElements.push(obj.flatIndex)
@@ -681,7 +681,7 @@ class Activity extends Component {
           {
             (!this.state.refetchEnabled && this.state.newActivityAvailable) &&
             <div
-              className="Activity__new-record-wrapper column-1-span-9">
+              className="Activity__new-record-wrapper column-1-span-10">
              <div
                onClick={() => this._getNewActivties()}
                className="Activity__new-record">
