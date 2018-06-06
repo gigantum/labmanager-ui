@@ -1,5 +1,8 @@
 const CONFIG = {
   'api': process.env.NODE_ENV,
+  routes:{
+    noRedirect: ['/profile']
+  },
   'navigation_items': [
     {id:'overview', name: 'Overview'},
     {id:'activity', name: 'Activity', 'fragment': '...Activity_labbook'},

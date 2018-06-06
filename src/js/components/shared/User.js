@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Link} from 'react-router-dom'
 
 export default class User extends Component {
 
@@ -38,7 +39,7 @@ export default class User extends Component {
       handles click to update state
     */
   _handleClickOutside(event) {
-    const userElementIds = ['user', 'username', 'logout']
+    const userElementIds = ['user', 'username', 'logout', 'profile']
     if(this.state.dropdownVisible && (userElementIds.indexOf(event.target.id) < 0)){
       this.setState({
         dropdownVisible: false
@@ -55,6 +56,7 @@ export default class User extends Component {
       dropdownVisible: !this.state.dropdownVisible
     })
   }
+
 
 
   render() {
@@ -74,13 +76,23 @@ export default class User extends Component {
         <div className={ this.state.dropdownVisible ? 'User__dropdown--arrow' : 'hidden'}></div>
 
         <div className={this.state.dropdownVisible ? 'User__dropdown' : 'hidden'}>
+
           <button
             id="logout"
             className="User__button btn-margin"
             onClick={this.logout.bind(this)}
           >
             Logout
-        </button>
+         </button>
+
+          <Link
+              id="profile"
+              className="User__button btn-margin"
+              to="/profile"
+              onClick={()=>this._toggleDropdown()}
+          >
+            Profile
+          </Link>
 
         </div>
 

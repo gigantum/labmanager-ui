@@ -17,6 +17,8 @@ import Loader from 'Components/shared/Loader'
 import Profile from 'Components/profile/Profile'
 //
 import store from 'JS/redux/store'
+//
+import config from 'JS/config'
 
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
@@ -128,12 +130,34 @@ export default class Routes extends Component {
                     }
                   />
 
+                  <Route
+                    exact
+                    path="/profile"
+                    render={(props)=>{
+                      console.log(props)
+
+                      return(
+                        <Profile
+
+                        />
+                      )
+
+                    }}
+                  />
+
 
                   <Route
                     exact
                     path="/:id"
-                    render={(props) =>
-                      <Redirect to="/labbooks/all"/>
+                    render={(props) =>{
+                      console.log(props)
+                      if(config.routes.noRedirect.indexOf(props.location.pathname) < 0){
+                        return(<Redirect to="/labbooks/all"/>)
+                      }else{
+                        return null
+                      }
+
+                      }
                     }
                   />
 
@@ -216,16 +240,7 @@ export default class Routes extends Component {
                     }}
                   />
 
-                  <Route
-                    path="/profile"
-                    render={(props)=>{
-                      return(
-                        <Profile
 
-                        />
-                      )
-                    }}
-                  />
 
                   <Prompt
                     ref="prompt"
