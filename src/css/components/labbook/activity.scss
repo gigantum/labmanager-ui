@@ -150,23 +150,23 @@
   }
 }
 
-.ActivityCard__title.note.open {
+.ActivityCard__title.open {
   cursor: pointer;
   background: url('./../images/icons/up-arrow-silver.svg') no-repeat 98% center;
   background-size: 20px;
 }
-.ActivityCard__title.note.open:hover {
+.ActivityCard__title.open:hover {
   color: $turquise;
   cursor: pointer;
   background: url('./../images/icons/up-arrow-turquise.svg') no-repeat 98% center;
   background-size: 20px;
 }
-.ActivityCard__title.note.closed {
+.ActivityCard__title.closed {
   cursor: pointer;
   background: url('./../images/icons/down-arrow-silver.svg') no-repeat 98% center;
   background-size: 20px;
 }
-.ActivityCard__title.note.closed:hover {
+.ActivityCard__title.closed:hover {
   color: $turquise;
   background: url('./../images/icons/down-arrow-turquise.svg') no-repeat 98% center;
   background-size: 20px;
@@ -463,25 +463,25 @@
 
 .ActivityDetail__details-title--open:hover {
   color: $turquise;
-  background: url('./../images/icons/up-arrow-turquise.svg') no-repeat 98% center;
+  background: url('./../images/icons/up-arrow-turquise.svg') no-repeat 94% center;
   background-size: 20px;
 
 }
 
 .ActivityDetail__details-title--closed:hover {
   color: $turquise;
-  background: url('./../images/icons/down-arrow-turquise.svg') no-repeat 98% center;
+  background: url('./../images/icons/down-arrow-turquise.svg') no-repeat 94% center;
   background-size: 20px;
 
 }
 
 .ActivityDetail__details-title--open {
-  background: url('./../images/icons/up-arrow-silver.svg') no-repeat 98% center;
+  background: url('./../images/icons/up-arrow-silver.svg') no-repeat 94% center;
   background-size: 20px;
 }
 
 .ActivityDetail__details-title--closed {
-  background: url('./../images/icons/down-arrow-silver.svg') no-repeat 98% center;
+  background: url('./../images/icons/down-arrow-silver.svg') no-repeat 94% center;
   background-size: 20px;
 }
 

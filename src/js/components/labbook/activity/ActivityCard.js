@@ -15,17 +15,8 @@ export default class ActivityCard extends Component {
       showExtraInfo: showDetails,
       show: true,
     }
-
-    this._toggleExtraInfo = this._toggleExtraInfo.bind(this)
   }
 
-  /**
-  *   @param {}
-  *  reverse state of showExtraInfo
-  */
-  _toggleExtraInfo = () => {
-    this.setState({showExtraInfo: !this.state.showExtraInfo})
-  }
   /**
     @param {string} timestamp
     if input is undefined. current time of day is used
@@ -57,9 +48,8 @@ export default class ActivityCard extends Component {
     })
     const titleCSS = classNames({
       'ActivityCard__title flex flex--row justify--space-between': true,
-      'note': type === 'note',
-      'open': type === 'note' && this.state.show,
-      'closed': type === 'note' && !this.state.show,
+      'open': this.state.showExtraInfo || (type === 'note' && this.state.show),
+      'closed': !this.state.showExtraInfo || (type === 'note' && !this.state.show)
     })
     return(
       <div className={activityCardCSS} ref="card">
@@ -70,7 +60,7 @@ export default class ActivityCard extends Component {
         <div className="ActivityCard__content">
 
           <div className={titleCSS}
-            onClick={()=>this.setState({show: !this.state.show})}
+            onClick={()=>this.setState({show: !this.state.show, showExtraInfo: !this.state.showExtraInfo})}
 
           >
 
@@ -86,11 +76,6 @@ export default class ActivityCard extends Component {
 
           </div>
 
-          { !this.state.showExtraInfo &&
-
-            <div className="ActivityCard__ellipsis" onClick={()=>{this._toggleExtraInfo()}}></div>
-
-          }
           { this.state.showExtraInfo && (type !== 'note' || this.state.show)&&
             <ActivityDetails
               edge={this.props.edge}
