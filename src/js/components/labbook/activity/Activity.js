@@ -41,8 +41,10 @@ class Activity extends Component {
       'expandedClusterObject': new Set(),
       'newActivityForcePaused': false,
       'refetchForcePaused': false,
-      'activityRecords': this._transformActivity(this.props.labbook.activityRecords)
+      'activityRecords': this._transformActivity(this.props.labbook.activityRecords),
+      'stickyDate': false,
     };
+    this.dates = [];
 
     //bind functions here
     this._loadMore = this._loadMore.bind(this)
@@ -328,12 +330,37 @@ class Activity extends Component {
     return visibleRecords.length + recordCount;
   }
   /**
+    *  @param {}
+    *   determines value of stickyDate by checking vertical offset and assigning it to the state
+    *
+  */
+  _setStickyDate(){
+    let stickyDate = null;
+    this.dates.forEach((date)=> {
+      if(date && date.e){
+        let bounds = date.e.getBoundingClientRect()
+        if(bounds.top < 80){
+          stickyDate = date.time
+          date.e.classList.add('not-visible')
+          date.e.nextSibling && date.e.nextSibling.classList.add('next-element')
+        } else {
+          date.e.classList.remove('not-visible')
+          date.e.nextSibling && date.e.nextSibling.classList.remove('next-element')
+
+        }
+      }
+    })
+    if (stickyDate !== this.state.stickyDate){
+      this.setState({stickyDate})
+    }
+  }
+  /**
   *  @param {evt}
   *   handles scolls and passes off loading to pagination container
   *
   */
   _handleScroll(evt){
-
+    this._setStickyDate()
     let {isPaginating} = this.state
 
     let activityRecords = this.props.labbook.activityRecords,
@@ -674,7 +701,7 @@ class Activity extends Component {
     })
 
     if(this.props.labbook){
-
+      let recordDates = Object.keys(this.state.activityRecords)
 
       return(
         <div key={this.props.labbook} className={activityCSS}>
@@ -689,6 +716,16 @@ class Activity extends Component {
              </div>
            §</div>
           }
+          {
+            this.state.stickyDate &&
+            <div className="Activity__date-tab fixed">
+              <div className="Activity__date-day">{this.state.stickyDate.split('_')[2]}</div>
+              <div className="Activity__date-sub">
+                <div className="Activity__date-month">{ config.months[parseInt(this.state.stickyDate.split('_')[1], 10)] }</div>
+                <div className="Activity__date-year">{this.state.stickyDate.split('_')[0]}</div>
+              </div>
+            </div>
+          }
           <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--flex-start">
             <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Activity__sizer flex-1-0-auto">
               <CreateBranch
@@ -699,11 +736,19 @@ class Activity extends Component {
                 toggleModal={this._toggleCreateModal}
               />
               {
-                Object.keys(this.state.activityRecords).map((k, i) => {
+                recordDates.map((k, i) => {
                   let clusterElements = [];
+                  let ActivityDateCSS= classNames({
+                    'Activity__date-tab': true,
+                    'note': (i===0)
+                  })
+                  let ActivityContainerCSS= classNames({
+                    'Activity__card-container': true,
+                    'Activity__card-container--last': recordDates.length === i + 1
+                  })
                   return (
                     <div key={k}>
-                      <div className="Activity__date-tab">
+                      <div ref={(evt)=> this.dates[i] = {e: evt, time: k}} className={ActivityDateCSS}>
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
                         <div className="Activity__date-sub">
                           <div className="Activity__date-month">{ config.months[parseInt(k.split('_')[1], 10)] }</div>
@@ -713,7 +758,7 @@ class Activity extends Component {
                       {
                         (i===0) && this._renderUserNote()
                       }
-                      <div key={`${k}__card`}>
+                      <div key={`${k}__card`} className={ActivityContainerCSS}>
                         {
                           this.state.activityRecords[k].map((obj, j) => {
                             if(!obj.collapsed){

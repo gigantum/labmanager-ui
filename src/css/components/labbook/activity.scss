@@ -134,7 +134,10 @@
   height: 30px;
   transition: height 0.125s;
 }
-.Activity__date-tab:nth-child(1):before {
+.Activity__date-tab.note{
+  z-index: index($elements, card) !important;
+}
+.Activity__date-tab.note:before {
   height: 48px;
 }
 
@@ -270,10 +273,27 @@
   text-align: center;
 }
 
+.Activity__date-tab.fixed{
+  position: fixed;
+  z-index: index($elements, fixedDate);
+  top: 50px
+}
+
+.Activity__date-tab.not-visible{
+  z-index: index($elements, card);
+}
+.Activity__date-tab.not-visible:before{
+  visibility: visible;
+}
+
+.Activity__date-tab.fixed:before{
+  display: none !important;
+}
+
 .Activity__date-tab {
     position: relative;
     margin: 30px 1px 0;
-
+    z-index: index($elements, date);
     height: 50px;
     width: 120px;
     border: 4px solid $azure;
@@ -283,6 +303,7 @@
     font-weight: lighter;
     @include flex(center, row)
 }
+
 .Activity__date-sub{
   @include flex(center, column)
 }
@@ -310,6 +331,7 @@
 }
 
 .Activity__user-note-menu-icon {
+
   background: $azure url('../images/icons/menu-add.svg') no-repeat center center;
   background-size: 20px;
   height: 20px;
@@ -319,7 +341,6 @@
   top: 14px;
   left: 32px;
   transition: all 0.125s ease;
-  z-index: index($elements, card);
   cursor: pointer;
 }
 
@@ -404,6 +425,7 @@
     display: flex;
   }
   .Activity__user-note-menu-icon{
+    z-index: index($elements, button);
     width: 40px !important;
     height: 40px !important;
     left: 23px !important;
@@ -703,6 +725,7 @@
 }
 
 .Activity__submenu-container:hover > .Activity__submenu-circle {
+
   background: $azure url('../images/icons/menu-add.svg') no-repeat center center;
   height: 20px;
   width: 20px;
@@ -710,6 +733,15 @@
   left: 31.5px;
   top: calc(50% - 10px);
   cursor: pointer;
+}
+
+.Activity__card-container:not(.next-element) .ActivityCard__wrapper:nth-child(1) > .Activity__submenu-container:hover > .Activity__submenu-circle {
+  z-index: index($elements, button);
+}
+.Activity__card-container:not(.next-element) .ActivityCard__wrapper:nth-child(1) > .Activity__submenu-container.open-menu{
+  .Activity__submenu-circle{
+    z-index: index($elements, button);
+  }
 }
 
 .Activity__submenu-subcontainer {
@@ -806,4 +838,8 @@
   top: 41px;
   left: 25px;
   z-index: index($elements, card) + 1;
+}
+
+.Activity__card-container--last .ActivityCard__wrapper:last-child:before{
+  display: none;
 }
