@@ -38,11 +38,12 @@ class Activity extends Component {
       'newActivityPolling': false,
       'editorFullscreen': false,
       'hoveredRollback': null,
-      'expandedClusterObject': new Set(),
+      'expandedClusterObject': new Map(),
       'newActivityForcePaused': false,
       'refetchForcePaused': false,
       'activityRecords': this._transformActivity(this.props.labbook.activityRecords),
       'stickyDate': false,
+      'compressedElements': new Set(),
     };
     this.dates = [];
 
@@ -56,18 +57,23 @@ class Activity extends Component {
     this._scrollTo = this._scrollTo.bind(this)
     this._stopRefetch = this._stopRefetch.bind(this)
     this._toggleCreateModal = this._toggleCreateModal.bind(this)
-    this._getNewActivties = this._getNewActivties.bind(this)
+    this._getNewActivities = this._getNewActivities.bind(this)
     this._changeFullscreenState = this._changeFullscreenState.bind(this)
     this._handleVisibilityChange = this._handleVisibilityChange.bind(this)
     this._transformActivity = this._transformActivity.bind(this)
     this._countUnexpandedRecords = this._countUnexpandedRecords.bind(this)
+    this._addCluster = this._addCluster.bind(this)
+    this._compressExpanded = this._compressExpanded.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
-
     let activityRecords = nextProps.labbook.activityRecords
     if(JSON.stringify(this._transformActivity(activityRecords)) !== JSON.stringify(this.state.activityRecords)) {
-      this.setState({activityRecords: this._transformActivity(activityRecords)})
+      if(this.props.labbook.activityRecords.edges[0].node.commit !== nextProps.labbook.activityRecords.edges[0].node.commit){
+        this.setState({expandedClusterObject: new Map()}, () => this.setState({activityRecords: this._transformActivity(activityRecords)}))
+      } else{
+        this.setState({activityRecords: this._transformActivity(activityRecords)})
+      }
     }
 
     if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 3)){
@@ -162,7 +168,7 @@ class Activity extends Component {
    * kicks off scroll to top
    * @return {}
    */
-  _getNewActivties(){
+  _getNewActivities(){
 
     window.addEventListener('scroll', this._scrollTo)
 
@@ -399,7 +405,12 @@ class Activity extends Component {
         count = edge.node.show || (previousTimeHash && timeHash !== previousTimeHash) ? 0 : count + 1;
         previousTimeHash = timeHash;
 
-        let newActivityObject = {edge: edge, date: date, collapsed: (count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state))), flatIndex: index}
+        let isExpandedHead = this.state && this.state.expandedClusterObject.has(index) && !this.state.expandedClusterObject.has(index - 1)
+        let isExpandedEnd =  this.state && this.state.expandedClusterObject.has(index) && !this.state.expandedClusterObject.has(index + 1)
+        let isExpandedNode = this.state && this.state.expandedClusterObject.has(index)
+        let attachedCluster = this.state && this.state.expandedClusterObject.has(index) && this.state.expandedClusterObject.get(index)
+
+        let newActivityObject = {edge: edge, date: date, collapsed: (count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state))), flatIndex: index, isExpandedHead, isExpandedEnd, isExpandedNode, attachedCluster}
 
         if(count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state)) ){
           activityTime[timeHash][activityTime[timeHash].length - 1].collapsed =  true;
@@ -519,15 +530,47 @@ class Activity extends Component {
   *   @return {}
   */
   _deleteCluster(clusterElements){
-    let newExpandedClusterObject = new Set(this.state.expandedClusterObject)
+    let newExpandedClusterObject = new Map(this.state.expandedClusterObject)
     if (newExpandedClusterObject !== {}){
       clusterElements.forEach((val) => {
-        newExpandedClusterObject.add(val)
+        newExpandedClusterObject.set(val, clusterElements)
       })
     }
     this.setState({expandedClusterObject: newExpandedClusterObject}, ()=> {
       this.setState({activityRecords: this._transformActivity(this.props.labbook.activityRecords)})
     })
+  }
+
+  /**
+    *   @param {array} clusterElements
+    *   modifies expandedClusterObject from state
+    *   @return {}
+  */
+ _addCluster(clusterElements){
+  let newExpandedClusterObject = new Map(this.state.expandedClusterObject)
+  if (newExpandedClusterObject !== {}){
+    clusterElements.forEach((val) => {
+      newExpandedClusterObject.delete(val)
+    })
+  }
+  this.setState({expandedClusterObject: newExpandedClusterObject}, ()=> {
+    this.setState({activityRecords: this._transformActivity(this.props.labbook.activityRecords)})
+    this._compressExpanded(clusterElements, true)
+  })
+}
+
+  _compressExpanded(clusterElements, remove){
+    let newCompressedElements = new Set(this.state.compressedElements)
+    if(remove){
+      clusterElements.forEach((val) => {
+        newCompressedElements.delete(val)
+      })
+    } else{
+      clusterElements.forEach((val) => {
+        newCompressedElements.add(val)
+      })
+    }
+    this.setState({compressedElements: newCompressedElements});
   }
 
   /**
@@ -554,7 +597,6 @@ class Activity extends Component {
   */
 
   _visibleCardRenderer(obj, clusterElements, i, j, k){
-    clusterElements = [];
     let isLastRecordObj = i === Object.keys(this.state.activityRecords).length -1;
     let isLastRecordNode = j === this.state.activityRecords[k].length -1;
     let isLastPage = !this.props.labbook.activityRecords.pageInfo.hasNextPage;
@@ -562,48 +604,72 @@ class Activity extends Component {
       return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
     })
     return (
-      <div className="ActivityCard__wrapper"  key={obj.edge.node.id}>
-        { ((i !== 0 ) || (j !== 0)) &&
-          <div className="Activity__submenu-container">
-          {
-            (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) &&
-          <Fragment>
-            <div
-                className="Activity__submenu-circle"
-                onClick={(evt)=>this._toggleSubmenu(evt)}
-              >
-              </div>
-              <div className="Activity__submenu-subcontainer">
-                <div
-                  className="Activity__rollback"
-                  onMouseOver={() => this.setState({hoveredRollback: obj.flatIndex})}
-                  onMouseOut={() => this.setState({hoveredRollback : null})}
-                  onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+      <Fragment key={obj.edge.node.id}>
+        <div className="ActivityCard__wrapper">
+          { ((i !== 0 ) || (j !== 0)) &&
+            <div className="Activity__submenu-container">
+            {
+              (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) && this.state.compressedElements.size === 0 &&
+            <Fragment>
+              <div
+                  className="Activity__submenu-circle"
+                  onClick={(evt)=>this._toggleSubmenu(evt)}
                 >
-                  <button
-                    className="Activity__rollback-button"
-                  >
-                  </button>
-                  <h5
-                    className="Activity__rollback-text"
-                  >
-                    Rollback
-                  </h5>
                 </div>
-              </div>
-            </Fragment>
+                <div className="Activity__submenu-subcontainer">
+                  <div
+                    className="Activity__rollback"
+                    onMouseOver={() => this.setState({hoveredRollback: obj.flatIndex})}
+                    onMouseOut={() => this.setState({hoveredRollback : null})}
+                    onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+                  >
+                    <button
+                      className="Activity__rollback-button"
+                    >
+                    </button>
+                    <h5
+                      className="Activity__rollback-text"
+                    >
+                      Rollback
+                    </h5>
+                  </div>
+                </div>
+              </Fragment>
+            }
+            </div>
           }
-          </div>
+          {j === 0 &&
+            <div className="Activity__submenu--flat">&nbsp;</div>
+          }
+          {
+            obj.isExpandedHead && this.state.compressedElements.has(obj.flatIndex) &&
+              <div className="Activity__compressed-bar--top" style={{height: `${((obj.attachedCluster.length - 1) * 7.5) + 30}px`}}></div>
+          }
+          {
+            obj.isExpandedEnd && this.state.compressedElements.has(obj.flatIndex) &&
+              <div className="Activity__compressed-bar--bottom" style={{height: `${((obj.attachedCluster.length - 1) * 7.5) + 30}px`}}></div>
+          }
+          <ActivityCard
+            isFirstCard={j === 0}
+            addCluster={this._addCluster}
+            compressExpanded={this._compressExpanded}
+            isCompressed={this.state.compressedElements.has(obj.flatIndex)}
+            isExpandedHead={obj.isExpandedHead}
+            isExpandedEnd={obj.isExpandedEnd}
+            isExpandedNode={obj.isExpandedNode}
+            attachedCluster={obj.attachedCluster}
+            collapsed={obj.collapsed}
+            clusterObject={this.state.clusterObject}
+            position={obj.flatIndex}
+            hoveredRollback={this.state.hoveredRollback}
+            key={`${obj.edge.node.id}_activity-card`}
+            edge={obj.edge}
+          />
+        </div>
+        {(j === this.state.activityRecords[k].length - 1) &&
+          <div className="Activity__submenu--flat">&nbsp;</div>
         }
-        <ActivityCard
-          collapsed={obj.collapsed}
-          clusterObject={this.state.clusterObject}
-          position={obj.flatIndex}
-          hoveredRollback={this.state.hoveredRollback}
-          key={`${obj.edge.node.id}_activity-card`}
-          edge={obj.edge}
-        />
-      </div>
+      </Fragment>
     )
   }
 
@@ -632,9 +698,12 @@ class Activity extends Component {
         <div className="Activity__submenu-container">
         </div>
       }
-      <div className={clusterCSS} ref={'cluster--'+ obj.flatindex}>
-        {clusterElements.length} Minor Activities
-        <div className="ActivityCard__ellipsis" onClick={()=> this._deleteCluster(clusterRef, i)}></div>
+      <div className={clusterCSS} ref={'cluster--'+ obj.flatindex} onClick={()=> this._deleteCluster(clusterRef, i)}>
+        <div className="ActivityCard__cluster--layer1">
+          {clusterElements.length} Minor Activities
+        </div>
+        <div className="ActivityCard__cluster--layer2"></div>
+        <div className="ActivityCard__cluster--layer3"></div>
       </div>
     </div>
     )
@@ -710,7 +779,7 @@ class Activity extends Component {
             <div
               className="Activity__new-record-wrapper column-1-span-10">
              <div
-               onClick={() => this._getNewActivties()}
+               onClick={() => this._getNewActivities()}
                className="Activity__new-record">
                 New Activity
              </div>
@@ -762,6 +831,7 @@ class Activity extends Component {
                         {
                           this.state.activityRecords[k].map((obj, j) => {
                             if(!obj.collapsed){
+                              clusterElements = [];
                               return this._visibleCardRenderer(obj, clusterElements, i, j, k);
                             } else {
                               return this._cardClusterRenderer(obj, clusterElements, i, j, k)
