@@ -89,7 +89,7 @@ export default class BranchMenu extends Component {
     closes menu
   */
   _closeMenu(evt) {
-    let isBranchMenu = (evt.target.className.indexOf('modal__cover') > -1) || (evt.target.className.indexOf('BranchMenu') > -1) || (evt.target.className.indexOf('CollaboratorModal') > -1)
+    let isBranchMenu = (evt.target.className.indexOf('BranchMenu') > -1) || (evt.target.className.indexOf('CollaboratorModal') > -1)
 
     if (!isBranchMenu && this.state.menuOpen) {
       this.setState({ menuOpen: false, justOpened: true })
@@ -143,12 +143,6 @@ export default class BranchMenu extends Component {
   *  @return {}
   */
   _showContainerMenuMessage(action, containerRunning) {
-    store.dispatch({
-      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-      payload: {
-        containerMenuOpen: true
-      }
-    })
 
     let dispatchMessage = containerRunning ? `Stop LabBook before ${action}. \n Be sure to save your changes.` : `LabBook is ${action}. \n Please do not refresh the page.`
 
@@ -159,6 +153,12 @@ export default class BranchMenu extends Component {
       }
     })
     this.setState({menuOpen: false});
+    store.dispatch({
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+      payload: {
+        containerMenuOpen: true
+      }
+    })
   }
 
   /**
@@ -382,19 +382,18 @@ export default class BranchMenu extends Component {
         })
       } else {
         this.setState({ menuOpen: false });
-
-        store.dispatch({
-          type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-          payload: {
-            containerMenuOpen: true
-          }
-        })
         store.dispatch({
           type: 'CONTAINER_MENU_WARNING',
           payload: {
             message: 'Stop LabBook before syncing. \n Be sure to save your changes.'
           }
         });
+        store.dispatch({
+          type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+          payload: {
+            containerMenuOpen: true
+          }
+        })
       }
     }
   }
@@ -661,59 +660,30 @@ export default class BranchMenu extends Component {
       'hidden': !this.state.menuOpen,
       'BranchMenu__menu': true
     })
-    const loginPromptModalCSS = classNames({
-      'BranchModal--login-prompt': this.state.showLoginPrompt,
-      'hidden': !this.state.showLoginPrompt
-    })
     const exportCSS = classNames({
       'BranchMenu__item--export': !this.state.exporting,
       'BranchMenu__item--export--downloading': this.state.exporting
     })
 
-    const deleteModalCSS = classNames({
-      'BranchModal--delete-modal': this.state.deleteModalVisible,
-      'hidden': !this.state.deleteModalVisible
-    })
-
-    const modalCoverCSS = classNames({
-      'hidden': !this.state.deleteModalVisible && !this.state.showLoginPrompt && !this.state.forceSyncModalVisible && !this.state.showCollaborators && !this.state.createBranchVisible,
-      'modal__cover': true
-    })
-
-    const syncModalCSS = classNames({
-      'hidden': !this.state.forceSyncModalVisible
-    })
-
     return (
       <div className="BranchMenu flex flex--column'">
+        {
+          this.state.showLoginPrompt &&
+          <LoginPrompt closeModal={this._closeLoginPromptModal} />
+        }
+        {
+          this.state.deleteModalVisible &&
+          <DeleteLabbook
+            handleClose={()=> this._toggleDeleteModal()}
+            remoteAdded={this.state.addedRemoteThisSession}
+            history={this.props.history}
+          />
+        }
+        {
+          this.state.forceSyncModalVisible &&
+          <ForceSync toggleSyncModal={this._toggleSyncModal}/>
 
-        <div className={loginPromptModalCSS}>
-          <div
-            onClick={() => { this._closeLoginPromptModal() }}
-            className="BranchModal--close"></div>
-
-            <LoginPrompt closeModal={this._closeLoginPromptModal} />
-
-        </div>
-
-        <div className={deleteModalCSS}>
-          <div
-            onClick={() => { this._toggleDeleteModal() }}
-            className="BranchModal--close"></div>
-
-            <DeleteLabbook
-              remoteAdded={this.state.addedRemoteThisSession}
-              history={this.props.history}
-            />
-
-        </div>
-
-        <div className={syncModalCSS}>
-          <div
-            onClick={() => { this._toggleSyncModal()}}
-            className="BranchModal--close"></div>
-            <ForceSync toggleSyncModal={this._toggleSyncModal}/>
-        </div>
+        }
 
         <CreateBranch
           description={this.props.description}
@@ -816,7 +786,6 @@ export default class BranchMenu extends Component {
               </div>
             }
           </div>
-          <div className={modalCoverCSS}></div>
         </div>
     )
   }
