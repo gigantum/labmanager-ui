@@ -837,7 +837,7 @@
   z-index: index($elements, card) + 1;
 }
 
-.Activity__card-container--last .ActivityCard__wrapper:last-child:before{
+.Activity__card-container--last .ActivityCard__wrapper:last-child:before {
   display: none;
 }
 
