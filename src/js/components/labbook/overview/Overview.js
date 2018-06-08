@@ -184,7 +184,10 @@ class Overview extends Component {
       'Overview': true,
       'fullscreen': this.state.editorFullscreen
     })
-    let readmeCSS = this.state.readmeExpanded ? 'ReadmeMarkdown--expanded' : 'ReadmeMarkdown';
+    let readmeCSS = classNames({
+      'ReadmeMarkdown--expanded': this.state.readmeExpanded,
+      'ReadmeMarkdown': !this.state.readmeExpanded
+    })
     let descriptionCSS = this.state.descriptionText ? 'column-1-span-10' : 'column-1-span-10 empty'
     if (this.props.labbook) {
       const { owner, labbookName } = store.getState().routes
