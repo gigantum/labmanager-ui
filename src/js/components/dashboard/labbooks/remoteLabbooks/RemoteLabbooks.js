@@ -25,7 +25,6 @@ class RemoteLabbooks extends Component {
       isPaginating: false,
     }
     this._toggleDeleteModal = this._toggleDeleteModal.bind(this)
-    this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
   }
 
   componentWillUnmount() {
