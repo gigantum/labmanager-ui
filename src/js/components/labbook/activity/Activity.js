@@ -344,16 +344,10 @@ class Activity extends Component {
     let isExpanded = window.pageYOffset < this.offsetDistance && window.pageYOffset > 120
     this.offsetDistance = window.pageYOffset;
     let stickyDate = null;
-    // let headerExpanded = store.getState().labbook.isExpanded
     this.dates.forEach((date)=> {
       if(date && date.e){
         let bounds = date.e.getBoundingClientRect()
-        if((date.time === '2018_5_6' || date.time === '2018_5_8')){
-          console.log(date.time, date.e.getBoundingClientRect().top)
-        }
-        console.log(isExpanded)
         if((!isExpanded && bounds.top < 80) || (isExpanded && bounds.top < 120)){
-          console.log(date.time)
           stickyDate = date.time
           date.e.classList.add('not-visible')
           date.e.nextSibling && date.e.nextSibling.classList.add('next-element')
