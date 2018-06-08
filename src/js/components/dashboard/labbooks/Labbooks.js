@@ -1,7 +1,6 @@
 //vendor
 import store from 'JS/redux/store'
 import React, { Component } from 'react'
-import classNames from 'classnames'
 import queryString from 'querystring'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
@@ -119,7 +118,6 @@ export default class Labbooks extends Component {
     this.setState({
       'showLoginPrompt': false
     })
-    document.getElementById('modal__cover').classList.add('hidden')
   }
 
   /**
@@ -181,10 +179,6 @@ export default class Labbooks extends Component {
       newLabbookName:'',
       showNamingError: false
     })
-
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.add('hidden')
-    }
   }
 
   /**
@@ -293,7 +287,6 @@ export default class Labbooks extends Component {
             this._handleSortFilter(sort, reverse);
           } else {
             this.setState({'showLoginPrompt': true})
-            document.getElementById('modal__cover').classList.remove('hidden')
           }
         }
       })
@@ -329,7 +322,6 @@ export default class Labbooks extends Component {
       } else {
         if(!this.state.showLoginPrompt) {
           this.setState({'showLoginPrompt': true})
-          document.getElementById('modal__cover').classList.remove('hidden')
         }
       }
     })
@@ -388,10 +380,6 @@ export default class Labbooks extends Component {
 
   render(){
       let {props} = this;
-      let loginPromptModalCss = classNames({
-        'CreateLabbook--login-prompt': this.state.showLoginPrompt,
-        'hidden': !this.state.showLoginPrompt
-      })
       if(props.labbookList !== null || props.loading){
 
         return(
@@ -545,19 +533,16 @@ export default class Labbooks extends Component {
                 filterState={this.state.filter}
                 forceLocalView={()=> {
                   this.setState({selectedSection: 'local'})
-                  this.setState({'showLoginPrompt': true})
-                  document.getElementById('modal__cover').classList.remove('hidden')}
+                  this.setState({'showLoginPrompt': true})}
                 }
                 changeRefetchState={(bool) => this.setState({refetchLoading: bool})}
                 {...props}
               />
           }
-          <div className={loginPromptModalCss}>
-            <div
-              onClick={()=>{this._closeLoginPromptModal()}}
-              className="BranchModal--close"></div>
+          {
+            this.state.showLoginPrompt &&
             <LoginPrompt closeModal={this._closeLoginPromptModal}/>
-          </div>
+          }
         </div>
       )
       } else if (props.labbookList === null) {

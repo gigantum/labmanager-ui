@@ -4,11 +4,9 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
-import classNames from 'classnames'
 //components
 import RemoteLabbookPanel from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbookPanel'
 import DeleteLabbook from 'Components/labbook/branchMenu/DeleteLabbook'
-import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
@@ -24,7 +22,6 @@ class RemoteLabbooks extends Component {
         existsLocally: null,
       },
       deleteModalVisible: false,
-      'showLoginPrompt': false,
       isPaginating: false,
     }
     this._toggleDeleteModal = this._toggleDeleteModal.bind(this)
@@ -35,17 +32,6 @@ class RemoteLabbooks extends Component {
     window.removeEventListener("scroll", this._captureScroll)
   }
 
-  /**
-    * @param {}
-    * fires when user identity returns invalid session
-    * prompts user to revalidate their session
-  */
-  _closeLoginPromptModal() {
-    this.setState({
-      'showLoginPrompt': false
-    })
-    document.getElementById('modal__cover').classList.add('hidden')
-  }
 
   componentDidMount() {
     window.addEventListener('scroll', this._captureScroll);
@@ -125,14 +111,6 @@ class RemoteLabbooks extends Component {
     if(this.props.remoteLabbooks && this.props.remoteLabbooks.remoteLabbooks !== null){
       let labbooks = this.props.filterLabbooks(this.props.remoteLabbooks.remoteLabbooks.edges, this.props.filterState)
 
-      const deleteModalCSS = classNames({
-        'BranchModal--delete-modal': this.state.deleteModalVisible,
-        'hidden': !this.state.deleteModalVisible
-      })
-      let loginPromptModalCss = classNames({
-        'Labbooks--login-prompt': this.state.showLoginPrompt,
-        'hidden': !this.state.showLoginPrompt
-      })
       return(
         <div className='LocalLabbooks__labbooks'>
         <div className="LocalLabbooks__sizer grid">
@@ -165,29 +143,21 @@ class RemoteLabbooks extends Component {
             })
           }
         </div>
-        <div className={deleteModalCSS}>
-            <div
-              onClick={() => { this._toggleDeleteModal() }}
-              className="RemoteLabbooks--close"></div>
-
-            <DeleteLabbook
-              labbookListId={this.props.labbookListId}
-              remoteId={this.state.deleteData.remoteId}
-              remoteConnection={'RemoteLabbooks_remoteLabbooks'}
-              toggleModal={this._toggleDeleteModal}
-              remoteOwner={this.state.deleteData.remoteOwner}
-              remoteLabbookName={this.state.deleteData.remoteLabbookName}
-              existsLocally={this.state.deleteData.existsLocally}
-              remoteDelete={true}
-              history={this.props.history}
-            />
-          </div>
-          <div className={loginPromptModalCss}>
-            <div
-              onClick={() => { this._closeLoginPromptModal() }}
-              className="Labbooks-login-prompt--close"></div>
-            <LoginPrompt closeModal={this._closeLoginPromptModal} />
-          </div>
+        {
+          this.state.deleteModalVisible &&
+          <DeleteLabbook
+            handleClose={() => { this._toggleDeleteModal() }}
+            labbookListId={this.props.labbookListId}
+            remoteId={this.state.deleteData.remoteId}
+            remoteConnection={'RemoteLabbooks_remoteLabbooks'}
+            toggleModal={this._toggleDeleteModal}
+            remoteOwner={this.state.deleteData.remoteOwner}
+            remoteLabbookName={this.state.deleteData.remoteLabbookName}
+            existsLocally={this.state.deleteData.existsLocally}
+            remoteDelete={true}
+            history={this.props.history}
+          />
+        }
       </div>
       )
     } else {
