@@ -1,6 +1,5 @@
 .CreateLabbook {
-  padding: 20px;
-  height: 445px;
+  height: 275px;
 
   input[type=text].invalid,
   input[type=text].invalid:focus,
@@ -14,17 +13,6 @@
   }
 }
 
-.CreateLabbook--login-prompt {
-  @include flex(space-between, column);
-  @include modal(200px, 400px);
-  justify-content: flex-start;
-  padding: 20px;
-  z-index: 1200;
-
-  .LoginPrompt__button-container {
-    @include flex(space-around, row);
-  }
-}
 .CreateLabbook__warning {
   text-align: right;
   margin: 0px;

@@ -908,28 +908,6 @@ Labbook__nav end
   font-size: 24px;
 }
 
-
-.Labbooks--login-prompt {
-  z-index: index($elements, modal);
-
-  justify-content: flex-start;
-
-  padding: 20px;
-
-  color: $jet;
-
-  @include flex(space-between, column);
-  @include modal(200px, 400px);
-
-  .LoginPrompt__button-container {
-    @include flex(space-around, row);
-  }
-}
-
-.Labbooks-login-prompt--close {
-  @include close()
-}
-
 .Labbook__loader-hidden {
   display: block;
   opacity: 0;

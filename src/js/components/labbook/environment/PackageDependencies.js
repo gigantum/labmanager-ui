@@ -355,18 +355,16 @@ class PackageDependencies extends Component {
   *  sends message to footer
   */
   _promptUserToCloseContainer(){
-
-    store.dispatch({
-      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-      payload: {
-        containerMenuOpen: true
-      }
-    })
-
     store.dispatch({
       type: 'CONTAINER_MENU_WARNING',
       payload: {
         message: 'Stop LabBook before editing the environment. \n Be sure to save your changes.'
+      }
+    })
+    store.dispatch({
+      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+      payload: {
+        containerMenuOpen: true
       }
     })
   }
