@@ -406,7 +406,11 @@ class Labbook extends Component {
                   <div className="Labbook__row-container">
                    <div className="Labbook__column-container--flex-1">
                      <div className="Labbook__name-title">
-                       {labbook.owner + '/' + labbookName}
+                       {`${labbook.owner}/${labbookName}${this.state.isSticky ? '/ ': ''}`}
+                       {
+                         this.state.isSticky &&
+                         <span className="Labbook__name-branch">{name}</span>
+                       }
                      </div>
 
                      <div className={branchNameCSS}>
