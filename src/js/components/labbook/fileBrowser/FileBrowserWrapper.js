@@ -1,6 +1,7 @@
 // vendor
 import React, { Component } from 'react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
+import uuidv4 from 'uuid/v4'
 //components
 import DetailPanel from './../detail/DetailPanel'
 //mutations
@@ -89,7 +90,7 @@ export default class FileBrowserWrapper extends Component {
 
   componentDidMount() {
     this.unsubscribe = store.subscribe(() =>{
-      this.setState({uploading: store.getState().fileBrowser.uploading})
+      this.setState({uploading: store.getState().fileBrowser.uploading, pause: store.getState().fileBrowser.pause})
     })
   }
 
@@ -312,7 +313,8 @@ export default class FileBrowserWrapper extends Component {
               connectionKey: self.props.connection,
               labbookName: self.state.labbookName,
               parentId: self.props.parentId,
-              section: self.props.section
+              section: self.props.section,
+              transactionId: uuidv4()
             }
 
             self._chunkLoader(filepath, file, data, batchUpload, files, index, (data)=>{
@@ -641,6 +643,8 @@ export default class FileBrowserWrapper extends Component {
       return edge && edge.node && (oldKey === edge.node.key)
     })[0]
 
+    //TODO fix this function, there are too many nested if else statements
+
     if(edgeToMove){
       MoveLabbookFileMutation(
         this.props.connection,
@@ -716,7 +720,6 @@ export default class FileBrowserWrapper extends Component {
               )
             }
           }
-
         }
       )
     }
@@ -1039,12 +1042,14 @@ export default class FileBrowserWrapper extends Component {
                 <p>You're uploading some large files to the Code Section, are you sure you don't want to place these in the Input Section? Note, putting large files in the Code Section can hurt performance.</p>
 
                 <div className="FileBrowser__button-container">
+
                   <button
                     className="button--flat"
                     onClick={() => this._cancelUpload()}>Cancel Upload</button>
-                  <button onClick={() => this._userRejectsUpload()}>Skip Large Files</button>
-                  <button onClick={() => this._userAcceptsUpload()}>Continue Upload</button>
 
+                  <button onClick={() => this._userRejectsUpload()}>Skip Large Files</button>
+
+                  <button onClick={() => this._userAcceptsUpload()}>Continue Upload</button>
 
                 </div>
 

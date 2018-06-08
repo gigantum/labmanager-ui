@@ -276,6 +276,10 @@ $footerElements: basic, progressBar, status, section, message, button;
   line-height: 10px;
 }
 
+.Footer__button--cancel{
+  
+}
+
 .Footer__button:hover {
   color: $jet ;
   background-color: $white !important;

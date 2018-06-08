@@ -3,6 +3,7 @@ import uuidv4 from 'uuid/v4'
 //mutations
 import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 import AddLabbookFileMutation from 'Mutations/fileBrowser/AddLabbookFileMutation'
+import CompleteBatchUploadTransactionMutation from 'Mutations/fileBrowser/CompleteBatchUploadTransactionMutation'
 import store from 'JS/redux/store'
 
 /**
@@ -42,7 +43,7 @@ const uploadLabbookChunk = (file, chunk, accessToken, getChunkCallback) => {
 
 }
 
-const updateTotalStatus = (file) =>{
+const updateTotalStatus = (file, labbookName, owner, transactionId) =>{
 
   let fileCount = store.getState().footer.fileCount + 1
   let totalFiles = store.getState().footer.totalFiles
@@ -57,24 +58,35 @@ const updateTotalStatus = (file) =>{
       open: true
     }
   })
+    if(fileCount === totalFiles){
+      setTimeout(()=>{
+        store.dispatch({
+          type: 'FINISHED_UPLOADING',
+        })
+        store.dispatch({
+          type: 'UPLOAD_MESSAGE_REMOVE',
+          payload:{
+            uploadMessage: `Uploaded ${fileCount} of ${totalFiles} files`,
+            fileCount: (store.getState().footer.fileCount + 1),
+            progessBarPercentage: ((fileCount/totalFiles) * 100),
+            error: false,
+            open: false
+          }
+        })
+      }, 2000)
 
-  if(fileCount === totalFiles){
-    setTimeout(()=>{
-      store.dispatch({
-        type: 'FINISHED_UPLOADING',
+      CompleteBatchUploadTransactionMutation(
+        'connectionKey',
+        owner,
+        labbookName,
+        false,
+        false,
+        transactionId,
+        (response, error) =>{
+
       })
-      store.dispatch({
-        type: 'UPLOAD_MESSAGE_REMOVE',
-        payload:{
-          uploadMessage: `Uploaded ${fileCount} of ${totalFiles} files`,
-          fileCount: (store.getState().footer.fileCount + 1),
-          progessBarPercentage: ((fileCount/totalFiles) * 100),
-          error: false,
-          open: false
-        }
-      })
-    }, 2000)
-  }
+    }
+
 }
 
 const updateChunkStatus = (file, chunkData) =>{
@@ -118,7 +130,7 @@ const updateChunkStatus = (file, chunkData) =>{
 
 
 const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, username, filepath, section, getChunkCallback, componentCallback) => {
-
+  console.log(data)
   AddLabbookFileMutation(
     data.connectionKey,
     username,
@@ -128,6 +140,7 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
     chunk,
     accessToken,
     section,
+    data.transactionId,
     (result, error)=>{
       store.dispatch({
         type: 'FINISHED_UPLOADING',
@@ -135,7 +148,7 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
       if(result && (error === undefined)){
         getChunkCallback(file, result)
         if(store.getState().footer.totalFiles > 1){
-          updateTotalStatus(file)
+          updateTotalStatus(file, data.labbookName, username, data.transactionId)
         }else{
           updateChunkStatus(file, chunkData)
         }
@@ -164,7 +177,7 @@ const ChunkUploader = {
       username = data.username,
       section = data.section,
       componentCallback = (response) => { //callback to trigger postMessage from initializer
-        postMessage(response);
+        postMessage(response, false);
       }
 
     const id = uuidv4(),
@@ -179,7 +192,6 @@ const ChunkUploader = {
     /*
       @param{object, object} response result
     */
-
     const getChunk = (response, result) => {
 
 
@@ -215,24 +227,28 @@ const ChunkUploader = {
               getChunk
             )
 
-            postMessage(chunkData) //post progress back to worker instantiator file
+            postMessage(chunkData, false) //post progress back to worker instantiator file
 
           }
           else{
-            uploadFileBrowserChunk(
-              data,
-              chunkData,
-              file,
-              chunkData,
-              data.accessToken,
-              username,
-              filepath,
-              section,
-              getChunk,
-              componentCallback
-            )
+            if(store.getState().fileBrowser === false){
+              uploadFileBrowserChunk(
+                data,
+                chunkData,
+                file,
+                chunkData,
+                data.accessToken,
+                username,
+                filepath,
+                section,
+                getChunk,
+                componentCallback
+              )
 
-            postMessage(chunkData)
+              postMessage(chunkData, false)
+            }else{
+              postMessage(chunkData, true)
+            }
           }
 
         }else if(result){ //completes chunk upload task

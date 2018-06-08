@@ -2,6 +2,7 @@
 import {
   graphql,
 } from 'react-relay'
+import uuidv4 from 'uuid/v4'
 //environment
 import {fetchQuery} from 'JS/createRelayEnvironment';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation';
@@ -144,7 +145,9 @@ sectionId,
 path,
 section,
 prefix,
-chunkLoader, chunckCallback) =>{
+chunkLoader,
+transactionId,
+chunckCallback) =>{
 
   files.forEach((file, count) =>{
 
@@ -157,16 +160,20 @@ chunkLoader, chunckCallback) =>{
       if(filePath.indexOf('/') === 0){
         filePath = filePath.replace('/', '')
       }
+
       let data = {
           file: file.file,
           filepath: filePath,
           username: owner,
           accessToken: localStorage.getItem('access_token'),
-          connectionKey: connectionKey,
-          labbookName: labbookName,
           parentId: sectionId,
-          section: section
+          connectionKey,
+          labbookName,
+          section,
+          transactionId
         }
+
+        console.log(transactionId)
 
         chunkLoader(filePath, file, data, true, files, count, chunckCallback)
       }
@@ -347,7 +354,9 @@ const FolderUpload = {
     let existingPaths = []
     let filePaths = []
     let batchCount = 0
-    let bathCallbackCount = 0
+    let batchCallbackCount = 0
+    let transactionId = uuidv4()
+    console.log(transactionId)
     /**
     *  @param {object} fileItem
     *  recursive function that loops through a object that replicates a folders structure
@@ -376,20 +385,36 @@ const FolderUpload = {
               section,
               prefix,
               chunkLoader,
-              (result)=>{
-                if(result.addLabbookFile){
-                  bathCallbackCount++
-                  if(batchCount === bathCallbackCount){
-                    batchCount = 0
-                    bathCallbackCount = 0
-                    fileCheck(files[count])
+              transactionId,
+              (result, pause)=>{
+                console.log(pause)
+                if(pause){
+                  store.dispatch({
+                    type: "PAUSE_UPLOAD_DATA",
+                    payload:{
+                      files,
+                      count
+                    }
+                  })
+                }else{
+
+                  if(result.addLabbookFile){
+
+                    batchCallbackCount++
+
+                    if(batchCount === batchCallbackCount){
+                      batchCount = 0
+                      batchCallbackCount = 0
+                      fileCheck(files[count])
+                    }
+
                   }
                 }
               })
 
           })
         }
-        if(batchCount < 6){
+        if(batchCount < 4){
           fileCheck(files[count])
         }
 
