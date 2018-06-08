@@ -97,7 +97,7 @@ class Activity extends Component {
 
     window.addEventListener('scroll', this._handleScroll)
     window.addEventListener('visibilitychange', this._handleVisibilityChange)
-    if((activityRecords.pageInfo.hasNextPage && activityRecords.edges.length < 2)){
+    if((activityRecords.pageInfo.hasNextPage && activityRecords.edges.length <= 2)){
 
       this._loadMore()
     } else {
@@ -296,7 +296,7 @@ class Activity extends Component {
        if(error){
          console.error(error)
        }
-       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
+       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7 && this._countUnexpandedRecords() > 2){
         self._loadMore();
        } else{
         this.setState({
