@@ -6,6 +6,7 @@ import AddCollaboratorMutation from 'Mutations/AddCollaboratorMutation'
 import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
 //components
 import ButtonLoader from 'Components/shared/ButtonLoader'
+import Modal from 'Components/shared/Modal'
 //store
 import store from 'JS/redux/store'
 //config
@@ -248,16 +249,13 @@ export default class CollaboratorModal extends Component {
       'CollaboratorModal__auto-compelte-menu--visible': this.state.colloboratorSearchList.length > 0
     })
     return(
-      <div className="CollaboratorModal">
-        <div
-          onClick={() => { this.props.toggleCollaborators() }}
-          className="CollaboratorModal__button--close">
-        </div>
-        <h4
-          className="CollaboratorModal__header">Manage Collaborators</h4>
-        <hr />
-
-        <div className="CollaboratorModal__container">
+      <Modal
+        header="Manage Collaborators"
+        icon="user"
+        size="large"
+        handleClose={() => { this.props.toggleCollaborators() }}
+        renderContent={()=>
+          <div>
 
           <div className="CollaboratorModal__add">
 
@@ -362,8 +360,8 @@ export default class CollaboratorModal extends Component {
             </div>
           </div>
         </div>
-
-      </div>
+        }
+      />
     )
   }
 }

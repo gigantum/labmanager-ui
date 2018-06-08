@@ -483,7 +483,7 @@ export default class ImportModule extends Component {
   }
 
   _showModal(evt){
-  
+
     if (navigator.onLine){
       if(evt.target.id !== 'file__input-label'){
         this.props.showModal()
@@ -604,7 +604,6 @@ export default class ImportModule extends Component {
                   })
                 }
               })
-              document.getElementById('modal__cover').classList.add('hidden')
               self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
             }else{
 
@@ -632,7 +631,6 @@ export default class ImportModule extends Component {
         )
       }else{
           this.setState({'showLoginPrompt': true})
-          document.getElementById('modal__cover').classList.remove('hidden')
       }
       }
     })
@@ -645,7 +643,6 @@ export default class ImportModule extends Component {
     this.setState({
       'showLoginPrompt': false
     })
-    document.getElementById('modal__cover').classList.add('hidden')
   }
 
   render(){
@@ -653,10 +650,6 @@ export default class ImportModule extends Component {
       'Labbooks__labbook-button-import': this.state.importTransition === null,
       'Labbooks__labbook-button-import--expanding': this.state.importTransition,
       'Labbooks__labbook-button-import--collapsing': !this.state.importTransition && this.state.importTransition !== null
-    })
-    let loginPromptModalCss = classNames({
-      'Labbooks--login-prompt': this.state.showLoginPrompt,
-      'hidden': !this.state.showLoginPrompt
     })
 
     return(
@@ -734,12 +727,10 @@ export default class ImportModule extends Component {
             </div>
           </div>
         }
-        <div className={loginPromptModalCss}>
-          <div
-            onClick={() => { this._closeLoginPromptModal() }}
-            className="Labbooks-login-prompt--close"></div>
+        {
+          this.state.showLoginPrompt &&
           <LoginPrompt closeModal={this._closeLoginPromptModal} />
-        </div>
+        }
         <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
 
       </div>

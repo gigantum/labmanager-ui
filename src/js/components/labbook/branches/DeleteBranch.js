@@ -1,11 +1,13 @@
 //vendor
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
+//components
+import Modal from 'Components/shared/Modal'
 //Mutations
 import DeleteExperimentalBranchMutation from 'Mutations/branches/DeleteExperimentalBranchMutation'
 //store
 import store from 'JS/redux/store'
 
-export default class CreateBranchModal extends Component {
+export default class DeleteBranch extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -72,16 +74,14 @@ export default class CreateBranchModal extends Component {
 
     const {owner, cleanBranchName} = this.props
 
-      return (
-        <div
-          key="BranchDelete__modal"
-          className="BranchCard__delete-modal">
-            <div
-              onClick={() => this.props.toggleModal('deleteModalVisible')}
-              className="BranchCard__close"></div>
+    return (
 
-            <h4 className="BranchCard__header">Delete Branch</h4>
-
+      <Modal
+        handleClose={() => this.props.toggleModal('deleteModalVisible')}
+        size="medium"
+        header="Delete Branch"
+        renderContent={()=>
+          <Fragment>
             <p className="BranchCard__text BranchCard__text--red">
               You are going to delete {owner}/{cleanBranchName}. Deleted branches cannot be restored. Are you sure?
             </p>
@@ -104,6 +104,9 @@ export default class CreateBranchModal extends Component {
                 Confirm
               </button>
             </div>
-        </div>)
+          </Fragment>
         }
-      }
+      />
+    )
+  }
+}

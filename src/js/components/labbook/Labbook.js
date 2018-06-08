@@ -289,15 +289,6 @@ class Labbook extends Component {
     updates html element classlist and labbook state
   */
   _showLabbookModal = () => {
-
-    if(document.getElementById('labbookModal')){
-      document.getElementById('labbookModal').classList.remove('hidden')
-    }
-
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.remove('hidden')
-    }
-
     if(!this.state.modalVisible){
       store.dispatch(
         {
@@ -349,16 +340,15 @@ class Labbook extends Component {
       })
     } else {
       store.dispatch({
-        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-        payload: {
-          containerMenuOpen: true
-        }
-      })
-
-      store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
           message: 'Stop LabBook before switching branches. \n Be sure to save your changes.',
+        }
+      })
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
         }
       })
     }
