@@ -70,7 +70,9 @@ class Activity extends Component {
   componentWillReceiveProps(nextProps) {
     let activityRecords = nextProps.labbook.activityRecords
     if(JSON.stringify(this._transformActivity(activityRecords)) !== JSON.stringify(this.state.activityRecords)) {
-      if(this.props.labbook.activityRecords.edges[0].node.commit !== nextProps.labbook.activityRecords.edges[0].node.commit){
+      let prevCommit = this.props.labbook && this.props.labbook.activityRecords && this.props.labbook.activityRecords.edges && this.props.labbook.activityRecords.edges[0] && this.props.labbook.activityRecords.edges[0].node && this.props.labbook.activityRecords.edges[0].node.commit
+      let newcommit = nextProps.labbook && nextProps.labbook.activityRecords && nextProps.labbook.activityRecords.edges && nextProps.labbook.activityRecords.edges[0] && nextProps.labbook.activityRecords.edges[0].node && nextProps.labbook.activityRecords.edges[0].node.commit
+      if(prevCommit && prevCommit !== newcommit){
         this.setState({expandedClusterObject: new Map()}, () => this.setState({activityRecords: this._transformActivity(activityRecords)}))
       } else{
         this.setState({activityRecords: this._transformActivity(activityRecords)})
