@@ -133,7 +133,7 @@
 .ActivityCard__title {
   h6 {
     padding: 5px;
-    word-break: break-all;
+    word-break: break-word;
   }
 }
 
@@ -234,7 +234,7 @@
   align-self: center;
   flex: 1 0 auto;
   font-size: 16px;
-  margin: 18px 15px;
+  margin: 18px 40px 18px 15px;
 }
 
 .ActivityCard__tags-list {
