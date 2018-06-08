@@ -275,18 +275,22 @@
   display: none !important;
 }
 
-.Activity__date-tab {
-    position: relative;
-    margin: 30px 1px 0 0;
-    z-index: index($elements, date);
-    height: 50px;
-    width: 115px;
-    border: 2px solid $azure;
-    border-radius: 40px;
-    background: $white;
+.Activity__date-tab.is-expanded{
+  top: 90px;
+}
 
-    font-weight: lighter;
-    @include flex(center, row)
+.Activity__date-tab {
+  position: relative;
+  margin: 30px 1px 0 0;
+  z-index: index($elements, date);
+  height: 50px;
+  width: 115px;
+  border: 2px solid $azure;
+  border-radius: 40px;
+  background: $white;
+
+  font-weight: lighter;
+  @include flex(center, row)
 }
 
 .Activity__date-sub{

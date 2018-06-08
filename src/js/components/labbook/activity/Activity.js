@@ -341,11 +341,19 @@ class Activity extends Component {
     *
   */
   _setStickyDate(){
+    let isExpanded = window.pageYOffset < this.offsetDistance && window.pageYOffset > 120
+    this.offsetDistance = window.pageYOffset;
     let stickyDate = null;
+    // let headerExpanded = store.getState().labbook.isExpanded
     this.dates.forEach((date)=> {
       if(date && date.e){
         let bounds = date.e.getBoundingClientRect()
-        if(bounds.top < 80){
+        if((date.time === '2018_5_6' || date.time === '2018_5_8')){
+          console.log(date.time, date.e.getBoundingClientRect().top)
+        }
+        console.log(isExpanded)
+        if((!isExpanded && bounds.top < 80) || (isExpanded && bounds.top < 120)){
+          console.log(date.time)
           stickyDate = date.time
           date.e.classList.add('not-visible')
           date.e.nextSibling && date.e.nextSibling.classList.add('next-element')
@@ -599,6 +607,7 @@ class Activity extends Component {
     let rollbackableDetails = obj.edge.node.detailObjects.filter((detailObjs) => {
       return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
     })
+    let isCompressed = this.state.compressedElements.has(obj.flatIndex)
     return (
       <Fragment key={obj.edge.node.id}>
         <div className="ActivityCard__wrapper">
@@ -634,22 +643,22 @@ class Activity extends Component {
             }
             </div>
           }
-          {j === 0 &&
+          {j === 0 && isCompressed &&
             <div className="Activity__submenu--flat">&nbsp;</div>
           }
           {
-            obj.isExpandedHead && this.state.compressedElements.has(obj.flatIndex) &&
+            obj.isExpandedHead && isCompressed &&
               <div className="Activity__compressed-bar--top" style={{height: `${((obj.attachedCluster.length - 1) * 7.5) + 30}px`}}></div>
           }
           {
-            obj.isExpandedEnd && this.state.compressedElements.has(obj.flatIndex) &&
+            obj.isExpandedEnd && isCompressed &&
               <div className="Activity__compressed-bar--bottom" style={{height: `${((obj.attachedCluster.length - 1) * 7.5) + 30}px`}}></div>
           }
           <ActivityCard
             isFirstCard={j === 0}
             addCluster={this._addCluster}
             compressExpanded={this._compressExpanded}
-            isCompressed={this.state.compressedElements.has(obj.flatIndex)}
+            isCompressed={isCompressed}
             isExpandedHead={obj.isExpandedHead}
             isExpandedEnd={obj.isExpandedEnd}
             isExpandedNode={obj.isExpandedNode}
@@ -662,7 +671,7 @@ class Activity extends Component {
             edge={obj.edge}
           />
         </div>
-        {(j === this.state.activityRecords[k].length - 1) &&
+        {(j === this.state.activityRecords[k].length - 1) && isCompressed &&
           <div className="Activity__submenu--flat">&nbsp;</div>
         }
       </Fragment>
@@ -767,7 +776,11 @@ class Activity extends Component {
 
     if(this.props.labbook){
       let recordDates = Object.keys(this.state.activityRecords)
-
+      let stickyDateCSS = classNames({
+        'Activity__date-tab': true,
+        'fixed': this.state.stickyDate,
+        'is-expanded': store.getState().labbook.isExpanded
+      })
       return(
         <div key={this.props.labbook} className={activityCSS}>
           {
@@ -783,7 +796,7 @@ class Activity extends Component {
           }
           {
             this.state.stickyDate &&
-            <div className="Activity__date-tab fixed">
+            <div className={stickyDateCSS}>
               <div className="Activity__date-day">{this.state.stickyDate.split('_')[2]}</div>
               <div className="Activity__date-sub">
                 <div className="Activity__date-month">{ config.months[parseInt(this.state.stickyDate.split('_')[1], 10)] }</div>

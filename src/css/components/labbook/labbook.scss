@@ -372,6 +372,16 @@
   }
 }
 
+.Labbook__header.is-expanded{
+  height: 100px !important;
+}
+
+.Labbook__navigation-container--header{
+  position: absolute;
+  margin: 0;
+  bottom: 0;
+}
+
 
 .Labbook__navigation-container {
   margin-top: 154px;
@@ -491,7 +501,15 @@
     }
   }
 }
+.Labbook__navigation--header{
+  border-bottom: none;
+  li {
+    a {
+      color: $romanSilver;
+    }
+  }
 
+}
 .Labbook__veil{
   opacity: 0;
   transition: 0.25s opacity;
