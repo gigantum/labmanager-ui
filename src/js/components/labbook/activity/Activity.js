@@ -94,7 +94,6 @@ class Activity extends Component {
     let activityRecords = this.props.labbook.activityRecords
 
     window.addEventListener('scroll', this._handleScroll)
-    window.addEventListener('scroll', this._setStickyDate)
     window.addEventListener('visibilitychange', this._handleVisibilityChange)
     if((activityRecords.pageInfo.hasNextPage && activityRecords.edges.length < 2)){
 
@@ -122,7 +121,6 @@ class Activity extends Component {
 
     window.removeEventListener('visibilitychange', this._handleVisibilityChange)
     window.removeEventListener('scroll', this._handleScroll)
-    window.removeEventListener('scroll', this._setStickyDate)
   }
   /**
    * @param {}
@@ -371,6 +369,7 @@ class Activity extends Component {
   *
   */
   _handleScroll(evt){
+    this._setStickyDate()
     let {isPaginating} = this.state
 
     let activityRecords = this.props.labbook.activityRecords,
