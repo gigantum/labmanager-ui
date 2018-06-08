@@ -64,6 +64,7 @@ class Activity extends Component {
     this._countUnexpandedRecords = this._countUnexpandedRecords.bind(this)
     this._addCluster = this._addCluster.bind(this)
     this._compressExpanded = this._compressExpanded.bind(this)
+    this._setStickyDate =  this._setStickyDate.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -368,7 +369,7 @@ class Activity extends Component {
   *
   */
   _handleScroll(evt){
-    this._setStickyDate()
+    window.requestAnimationFrame(this._setStickyDate);
     let {isPaginating} = this.state
 
     let activityRecords = this.props.labbook.activityRecords,
