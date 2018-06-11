@@ -114,11 +114,11 @@ class Labbook extends Component {
     dispatches sticky state to redux to update state
   */
   _setStickHeader(){
-    let isExpanded = window.pageYOffset < this.offsetDistance && window.pageYOffset > 120
+    let isExpanded = (window.pageYOffset < this.offsetDistance) && (window.pageYOffset > 120)
     this.offsetDistance = window.pageYOffset;
     let sticky = 50;
     let isSticky = window.pageYOffset >= sticky
-    if(store.getState().labbook.isSticky !== isSticky || store.getState().labbook.isExpanded !== isExpanded) {
+    if((store.getState().labbook.isSticky !== isSticky) || (store.getState().labbook.isExpanded !== isExpanded)) {
       store.dispatch({
         type: 'UPDATE_STICKY_STATE',
         payload: {
