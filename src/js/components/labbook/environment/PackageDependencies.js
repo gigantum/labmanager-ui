@@ -49,8 +49,7 @@ class PackageDependencies extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    if(nextProps.environment.packageDependencies.pageInfo.hasNextPage){
-
+    if(nextProps.environment.packageDependencies.pageInfo.hasNextPage && nextProps.environment.packageDependencies.edges.length < 3){
       this._loadMore() //routes query only loads 2, call loadMore
 
     }
@@ -60,7 +59,6 @@ class PackageDependencies extends Component {
   */
   componentDidMount() {
     if(this.props.environment.packageDependencies.pageInfo.hasNextPage){
-
       this._loadMore() //routes query only loads 2, call loadMore
     }else{
       //this._refetch() //removed for latest  version fix
