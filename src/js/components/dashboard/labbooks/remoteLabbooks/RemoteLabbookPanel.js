@@ -252,6 +252,7 @@ export default class LocalLabbookPanel extends Component {
             <Loader/>
           </div>
         }
+
         {
           this.state.showLoginPrompt &&
           <LoginPrompt closeModal={this._closeLoginPromptModal} />

@@ -15,21 +15,23 @@ export default class Modal extends Component {
   render() {
     let modelContentCSS = classNames({
       'Modal__content': true,
-      [this.props.size]: this.props.size,
+      [this.props.size]: this.props.size, //large, medium, small
       [this.props.icon]: this.props.icon
     })
     return (
       <div className="Modal">
+
         <div className="Modal__cover"></div>
+
         <div className={modelContentCSS}>
-        {
-          this.props.handleClose &&
-          <div
-            className="Modal__close"
-            onClick={()=> this.props.handleClose()}
-          >
-          </div>
-        }
+          {
+            this.props.handleClose &&
+            <div
+              className="Modal__close"
+              onClick={()=> this.props.handleClose()}
+            >
+            </div>
+          }
           <div className="Modal__container">
             {
               this.props.preHeader &&
