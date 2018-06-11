@@ -130,39 +130,52 @@ const updateChunkStatus = (file, chunkData) =>{
 
 
 const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, username, filepath, section, getChunkCallback, componentCallback) => {
-  console.log(data)
-  AddLabbookFileMutation(
-    data.connectionKey,
-    username,
-    data.labbookName,
-    data.parentId,
-    filepath,
-    chunk,
-    accessToken,
-    section,
-    data.transactionId,
-    (result, error)=>{
-      store.dispatch({
-        type: 'FINISHED_UPLOADING',
-      })
-      if(result && (error === undefined)){
-        getChunkCallback(file, result)
-        if(store.getState().footer.totalFiles > 1){
-          updateTotalStatus(file, data.labbookName, username, data.transactionId)
-        }else{
-          updateChunkStatus(file, chunkData)
-        }
-      }else{
-        let errorBody = error.length && error[0].message ? error[0].message: error
+  if(!store.getState().fileBrowser.pause || (store.getState().footer.totalFiles > 1)){
+    AddLabbookFileMutation(
+      data.connectionKey,
+      username,
+      data.labbookName,
+      data.parentId,
+      filepath,
+      chunk,
+      accessToken,
+      section,
+      data.transactionId,
+      (result, error)=>{
         store.dispatch({
-          type: 'WARNING_MESSAGE',
-          payload: {
-            message: errorBody,
-          }
+          type: 'FINISHED_UPLOADING',
         })
-      }
+        if(result && (error === undefined)){
+          getChunkCallback(file, result)
+          if(store.getState().footer.totalFiles > 1){
+            updateTotalStatus(file, data.labbookName, username, data.transactionId)
+          }else{
+            updateChunkStatus(file, chunkData)
+          }
+        }else{
+          let errorBody = error.length && error[0].message ? error[0].message: error
+          store.dispatch({
+            type: 'WARNING_MESSAGE',
+            payload: {
+              message: errorBody,
+            }
+          })
+        }
 
-  })
+    })
+  }else if(chunk.fileSizeKb > (48 * 1000)){
+
+
+     store.dispatch({
+       type: 'PAUSE_CHUNK_UPLOAD',
+       payload:{
+         data,
+         chunkData,
+         section,
+         username
+       }
+     })
+  }
 
 }
 
@@ -170,7 +183,7 @@ const ChunkUploader = {
   /*
     @param {object} data includes file filepath username and accessToken
   */
-  chunkFile: (data, postMessage) => {
+  chunkFile: (data, postMessage, passedChunkIndex) => {
 
     let file = data.file,
       filepath = data.filepath,
@@ -186,7 +199,7 @@ const ChunkUploader = {
           fileSizeKb = Math.round(fileSize/1000, 10);
 
     let fileLoadedSize = 0,
-        chunkIndex = 0,
+        chunkIndex = passedChunkIndex ? passedChunkIndex : 0,
         totalChunks = (file.size === 0) ? 1 : Math.ceil(file.size/chunkSize);
 
     /*
@@ -231,7 +244,7 @@ const ChunkUploader = {
 
           }
           else{
-            if(store.getState().fileBrowser === false){
+             //if(store.getState().fileBrowser.pause === false){
               uploadFileBrowserChunk(
                 data,
                 chunkData,
@@ -246,9 +259,9 @@ const ChunkUploader = {
               )
 
               postMessage(chunkData, false)
-            }else{
-              postMessage(chunkData, true)
-            }
+            // }else{
+            //   postMessage(chunkData, true)
+            // }
           }
 
         }else if(result){ //completes chunk upload task

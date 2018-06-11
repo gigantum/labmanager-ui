@@ -35,8 +35,7 @@ export default class LocalLabbookPanel extends Component {
     * validates user's session and then triggers toggleDeleteModal which passes parameters to the DeleteLabbook component
   */
   _handleDelete(edge) {
-    console.log(localStorage.getItem('username'))
-    console.log(edge.node.owner)
+
     if(localStorage.getItem('username') !== edge.node.owner){
       store.dispatch({
         type: 'WARNING_MESSAGE',
@@ -254,7 +253,7 @@ export default class LocalLabbookPanel extends Component {
             <Loader/>
           </div>
         }
-        {console.log(this.state.showLoginPrompt)}
+
         {
           this.state.showLoginPrompt &&
           <LoginPrompt closeModal={this._closeLoginPromptModal} />

@@ -85,7 +85,7 @@ export default function AddLabbookFileMutation(
       clientMutationId: id
     }
   }
-  console.log('owner', owner, variables)
+
 
   commitMutation(
     environment,
@@ -93,7 +93,7 @@ export default function AddLabbookFileMutation(
       mutation,
       variables,
       onCompleted: (response, error ) => {
-        console.log(response, error)
+
         if(error){
           console.log(error)
         }
@@ -102,7 +102,6 @@ export default function AddLabbookFileMutation(
       onError: err => console.error(err),
       optimisticUpdater:(store)=>{
 
-        console.log(store)
 
       },
       updater: (store, response) => {

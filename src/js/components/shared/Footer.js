@@ -94,7 +94,7 @@ export default class Footer extends Component {
       type:'PAUSE_UPLOAD',
       payload:
       {
-        uploadPaused: true
+        pause: true
       }
    })
   }
@@ -321,11 +321,11 @@ const FooterUpload = ({self}) => {
           className="Footer__progress-bar">
         </div>
 
-        <button
+        {/* <button // commented out until backend bugs are fixed
           onClick={() =>{ self._pauseUpload() }}
           className="Footer__button Footer__button--cancel">
           Cancel
-        </button>
+        </button> */}
         {
           self.state.uploadError &&
             <div
