@@ -64,15 +64,20 @@ class Activity extends Component {
     this._countUnexpandedRecords = this._countUnexpandedRecords.bind(this)
     this._addCluster = this._addCluster.bind(this)
     this._compressExpanded = this._compressExpanded.bind(this)
+    this._setStickyDate =  this._setStickyDate.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
     let activityRecords = nextProps.labbook.activityRecords
     if(JSON.stringify(this._transformActivity(activityRecords)) !== JSON.stringify(this.state.activityRecords)) {
-      if(this.props.labbook.activityRecords.edges[0].node.commit !== nextProps.labbook.activityRecords.edges[0].node.commit){
+      let prevCommit = this.props.labbook && this.props.labbook.activityRecords.edges && this.props.labbook.activityRecords.edges[0].node
+      let newcommit = nextProps.labbook && nextProps.labbook.activityRecords.edges && nextProps.labbook.activityRecords.edges[0].node
+
+      if(prevCommit && prevCommit !== newcommit){
         this.setState({expandedClusterObject: new Map()}, () => this.setState({activityRecords: this._transformActivity(activityRecords)}))
       } else{
         this.setState({activityRecords: this._transformActivity(activityRecords)})
+
       }
     }
 
@@ -94,13 +99,11 @@ class Activity extends Component {
 
     window.addEventListener('scroll', this._handleScroll)
     window.addEventListener('visibilitychange', this._handleVisibilityChange)
-    if((activityRecords.pageInfo.hasNextPage && activityRecords.edges.length < 2)){
+
+    if (activityRecords.pageInfo.hasNextPage && (this._countUnexpandedRecords() < 7)) {
 
       this._loadMore()
-    } else {
-      if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
-        this._loadMore()
-      }
+
     }
 
     if(activityRecords.edges && activityRecords.edges.length){
@@ -293,7 +296,7 @@ class Activity extends Component {
        if(error){
          console.error(error)
        }
-       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
+       if((this.props.labbook.activityRecords.pageInfo.hasNextPage) && (this._countUnexpandedRecords() < 7) && (this._countUnexpandedRecords() > 2)){
         self._loadMore();
        } else{
         this.setState({
@@ -341,11 +344,13 @@ class Activity extends Component {
     *
   */
   _setStickyDate(){
+    let isExpanded = (window.pageYOffset < this.offsetDistance) && (window.pageYOffset > 120)
+    this.offsetDistance = window.pageYOffset;
     let stickyDate = null;
     this.dates.forEach((date)=> {
       if(date && date.e){
         let bounds = date.e.getBoundingClientRect()
-        if(bounds.top < 80){
+        if((!isExpanded && bounds.top < 80) || (isExpanded && bounds.top < 120)){
           stickyDate = date.time
           date.e.classList.add('not-visible')
           date.e.nextSibling && date.e.nextSibling.classList.add('next-element')
@@ -599,6 +604,7 @@ class Activity extends Component {
     let rollbackableDetails = obj.edge.node.detailObjects.filter((detailObjs) => {
       return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
     })
+    let isCompressed = this.state.compressedElements.has(obj.flatIndex)
     return (
       <Fragment key={obj.edge.node.id}>
         <div className="ActivityCard__wrapper">
@@ -634,22 +640,22 @@ class Activity extends Component {
             }
             </div>
           }
-          {j === 0 &&
+          {j === 0 && isCompressed &&
             <div className="Activity__submenu--flat">&nbsp;</div>
           }
           {
-            obj.isExpandedHead && this.state.compressedElements.has(obj.flatIndex) &&
+            obj.isExpandedHead && isCompressed &&
               <div className="Activity__compressed-bar--top" style={{height: `${((obj.attachedCluster.length - 1) * 7.5) + 30}px`}}></div>
           }
           {
-            obj.isExpandedEnd && this.state.compressedElements.has(obj.flatIndex) &&
+            obj.isExpandedEnd && isCompressed &&
               <div className="Activity__compressed-bar--bottom" style={{height: `${((obj.attachedCluster.length - 1) * 7.5) + 30}px`}}></div>
           }
           <ActivityCard
             isFirstCard={j === 0}
             addCluster={this._addCluster}
             compressExpanded={this._compressExpanded}
-            isCompressed={this.state.compressedElements.has(obj.flatIndex)}
+            isCompressed={isCompressed}
             isExpandedHead={obj.isExpandedHead}
             isExpandedEnd={obj.isExpandedEnd}
             isExpandedNode={obj.isExpandedNode}
@@ -662,7 +668,7 @@ class Activity extends Component {
             edge={obj.edge}
           />
         </div>
-        {(j === this.state.activityRecords[k].length - 1) &&
+        {(j === this.state.activityRecords[k].length - 1) && isCompressed &&
           <div className="Activity__submenu--flat">&nbsp;</div>
         }
       </Fragment>
@@ -767,7 +773,11 @@ class Activity extends Component {
 
     if(this.props.labbook){
       let recordDates = Object.keys(this.state.activityRecords)
-
+      let stickyDateCSS = classNames({
+        'Activity__date-tab': true,
+        'fixed': this.state.stickyDate,
+        'is-expanded': store.getState().labbook.isExpanded
+      })
       return(
         <div key={this.props.labbook} className={activityCSS}>
           {
@@ -783,7 +793,7 @@ class Activity extends Component {
           }
           {
             this.state.stickyDate &&
-            <div className="Activity__date-tab fixed">
+            <div className={stickyDateCSS}>
               <div className="Activity__date-day">{this.state.stickyDate.split('_')[2]}</div>
               <div className="Activity__date-sub">
                 <div className="Activity__date-month">{ config.months[parseInt(this.state.stickyDate.split('_')[1], 10)] }</div>

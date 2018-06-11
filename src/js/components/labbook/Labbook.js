@@ -114,27 +114,30 @@ class Labbook extends Component {
     dispatches sticky state to redux to update state
   */
   _setStickHeader(){
-      let sticky = 50;
-      let isSticky = window.pageYOffset >= sticky
-      if(store.getState().labbook.isSticky !== isSticky) {
-        store.dispatch({
-          type: 'UPDATE_STICKY_STATE',
-          payload: {
-            isSticky
-          }
-        })
-      }
-
-      if(isSticky){
-        store.dispatch({
-          type: 'MERGE_MODE',
-          payload: {
-            brancfahesOpen: false,
-            mergeFilter: false
-          }
-        })
-      }
+    let isExpanded = (window.pageYOffset < this.offsetDistance) && (window.pageYOffset > 120)
+    this.offsetDistance = window.pageYOffset;
+    let sticky = 50;
+    let isSticky = window.pageYOffset >= sticky
+    if((store.getState().labbook.isSticky !== isSticky) || (store.getState().labbook.isExpanded !== isExpanded)) {
+      store.dispatch({
+        type: 'UPDATE_STICKY_STATE',
+        payload: {
+          isSticky,
+          isExpanded
+        }
+      })
     }
+
+    if(isSticky){
+      store.dispatch({
+        type: 'MERGE_MODE',
+        payload: {
+          brancfahesOpen: false,
+          mergeFilter: false
+        }
+      })
+    }
+  }
   /**
     @param {object} labbook
     updates state of labbook when prompted ot by the store
@@ -276,6 +279,7 @@ class Labbook extends Component {
         onClick={()=> this._setSelectedComponent(item.id)}
         >
         <Link
+          onClick={()=> window.scrollTo(0, 0)}
           to={`../../../labbooks/${this.state.owner}/${this.props.match.params.labbookName}/${item.id}`}
           replace
         >
@@ -392,7 +396,8 @@ class Labbook extends Component {
 
       const labbookHeaderCSS = classNames({
         'Labbook__header': true,
-        'is-sticky': this.state.isSticky
+        'is-sticky': this.state.isSticky,
+        'is-expanded': this.state.isExpanded
       })
 
       return(
@@ -410,6 +415,21 @@ class Labbook extends Component {
                        {
                          this.state.isSticky &&
                          <span className="Labbook__name-branch">{name}</span>
+                       }
+                       {
+                         this.state.isExpanded &&
+                         <div className="Labbook__navigation-container--header flex-0-0-auto column-1-span-11">
+                           <ul className="Labbook__navigation Labbook__navigation--header flex flex--row">
+                            {
+                              Config.navigation_items.map((item, index) => {
+                                return (this._getNavItem(item, index))
+                              })
+                            }
+                            {
+                              this._changeSlider()
+                            }
+                          </ul>
+                        </div>
                        }
                      </div>
 

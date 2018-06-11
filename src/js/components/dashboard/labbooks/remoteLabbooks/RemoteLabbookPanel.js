@@ -35,7 +35,6 @@ export default class LocalLabbookPanel extends Component {
     * validates user's session and then triggers toggleDeleteModal which passes parameters to the DeleteLabbook component
   */
   _handleDelete(edge) {
-
     if(localStorage.getItem('username') !== edge.node.owner){
       store.dispatch({
         type: 'WARNING_MESSAGE',

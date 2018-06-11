@@ -30,6 +30,7 @@ export default (
    'previousDetailMode': false,
    'branchesOpen': false,
    'isSticky': false,
+   'isExpanded': false,
    'mergeFilter': false
  },
  action
@@ -46,7 +47,8 @@ export default (
    //preventing detail mode from opening until feature has been fully implemented
    return {
      ...state,
-     'isSticky': action.payload.isSticky //state.detailMode,
+     'isSticky': action.payload.isSticky ,
+     'isExpanded': action.payload.isExpanded
   };
 }else  if (action.type === MERGE_MODE) {
 
