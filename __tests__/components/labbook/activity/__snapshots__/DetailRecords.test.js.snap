@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test DetailRecords 1`] = `
+<div
+  className="DetailsRecords__loader-group"
+>
+  <div
+    className="DetailsRecords__loader"
+  />
+  <div
+    className="DetailsRecords__loader"
+  />
+  <div
+    className="DetailsRecords__loader"
+  />
+</div>
+`;

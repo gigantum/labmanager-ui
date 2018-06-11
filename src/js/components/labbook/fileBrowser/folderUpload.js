@@ -2,6 +2,7 @@
 import {
   graphql,
 } from 'react-relay'
+import uuidv4 from 'uuid/v4'
 //environment
 import {fetchQuery} from 'JS/createRelayEnvironment';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation';
@@ -144,7 +145,9 @@ sectionId,
 path,
 section,
 prefix,
-chunkLoader, chunckCallback) =>{
+chunkLoader,
+transactionId,
+chunckCallback) =>{
 
   files.forEach((file, count) =>{
 
@@ -157,18 +160,21 @@ chunkLoader, chunckCallback) =>{
       if(filePath.indexOf('/') === 0){
         filePath = filePath.replace('/', '')
       }
+
       let data = {
           file: file.file,
           filepath: filePath,
           username: owner,
           accessToken: localStorage.getItem('access_token'),
-          connectionKey: connectionKey,
-          labbookName: labbookName,
           parentId: sectionId,
-          section: section
+          connectionKey,
+          labbookName,
+          section,
+          transactionId
         }
 
-        chunkLoader(filePath, file, data, true, files, count, chunckCallback)
+
+        chunkLoader(data, chunckCallback)
       }
 
       fileReader.readAsArrayBuffer(file.file);
@@ -342,20 +348,20 @@ const FolderUpload = {
   *  uploads file and folder if checks pass
   *  @return {boolean}
   */
-  uploadFiles: (files, prefix, labbookName, owner, section, connectionKey, sectionId, chunkLoader, totalFiles) =>{
-    let count = 0;//
+  uploadFiles: (files, prefix, labbookName, owner, section, connectionKey, sectionId, chunkLoader, totalFiles, count) =>{
+
     let existingPaths = []
     let filePaths = []
     let batchCount = 0
-    let bathCallbackCount = 0
+    let batchCallbackCount = 0
+    let transactionId = uuidv4()
+    let isPaused = false;
     /**
     *  @param {object} fileItem
     *  recursive function that loops through a object that replicates a folders structure
     *  pushes fileItems into an array to make a flat keyed structure - similar to s3
     *  @return {boolean}
     */
-
-
     CreateFolders(files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck, totalFiles)
 
     function fileCheck(fileItem){
@@ -365,47 +371,80 @@ const FolderUpload = {
 
       if(fileItem && fileItem.entry){
         if(fileItem.entry.isFile){
-          batchCount++;
-          new Promise(function(resolve, reject){
-            addFiles([fileItem],
-              connectionKey,
-              owner,
-              labbookName,
-              sectionId,
-              fileItem.file.name,
-              section,
-              prefix,
-              chunkLoader,
-              (result)=>{
-                if(result.addLabbookFile){
-                  bathCallbackCount++
-                  if(batchCount === bathCallbackCount){
-                    batchCount = 0
-                    bathCallbackCount = 0
-                    fileCheck(files[count])
-                  }
-                }
-              })
+           if(!store.getState().fileBrowser.pause){
+            batchCount++;
+            new Promise(function(resolve, reject){
 
-          })
+              addFiles([fileItem],
+                connectionKey,
+                owner,
+                labbookName,
+                sectionId,
+                fileItem.file.name,
+                section,
+                prefix,
+                chunkLoader,
+                transactionId,
+                (result, pause)=>{
+                  isPaused = pause
+
+                  if(!store.getState().fileBrowser.pause){
+
+
+                    store.dispatch({
+                      type: "PAUSE_UPLOAD_DATA",
+                      payload:{
+                        files,
+                        count: count,
+                        transactionId,
+                        prefix,
+                        totalFiles
+                      }
+                    })
+
+                  }
+
+
+                  if(result.addLabbookFile){
+
+                    batchCallbackCount++
+
+                    if(batchCount === batchCallbackCount){
+                      batchCount = 0
+                      batchCallbackCount = 0
+
+                      if(!store.getState().fileBrowser.pause){
+                        fileCheck(files[count])
+                      }
+                    }
+                  }
+                })
+
+            })
+          }
         }
-        if(batchCount < 6){
-          fileCheck(files[count])
-        }
+
+       if(!store.getState().fileBrowser.pause){
+          if(batchCount < 3){
+            fileCheck(files[count])
+          }
+       }
 
       }else{
         if(fileItem){
 
           let filePath = fileItem.entry ?  fileItem.entry.fullPath : fileItem.fullPath;
+
           const path = prefix !== '/' ? prefix + filePath.slice(1, filePath.length) : filePath.slice(1, filePath.length)
           const folderNames = path.split('/')
 
           let folderPaths = getFolderPaths(folderNames, prefix);
-
           let directoryExistsAll = getFolderExistsQueryPromises(folderPaths, labbookName, owner, section)
 
           Promise.all(directoryExistsAll).then((labbooks)=>{
+
             let index = 0;
+
             function iterate(response){
               if(response.labbook[section].files === null){
 
@@ -429,10 +468,15 @@ const FolderUpload = {
                   })
 
               }else{
+
                 index++;
+
                 if(index > labbooks.length){
+
                   fileCheck(files[count])
+
                 }else{
+
                   iterate(labbooks[index])
                 }
                 existingPaths.push(response.variables.path)

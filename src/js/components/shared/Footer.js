@@ -85,6 +85,20 @@ export default class Footer extends Component {
     },1000)
   }
 
+  /**
+   @param {}
+   stops user and pops a modal prompting them to cancel continue or save changes
+  */
+  _pauseUpload(){
+    store.dispatch({
+      type:'PAUSE_UPLOAD',
+      payload:
+      {
+        pause: true
+      }
+   })
+  }
+
 
 
  /**
@@ -92,13 +106,14 @@ export default class Footer extends Component {
   gets upload message which tracks progess
  */
  _closeFooter(){
-   store.dispatch({type:'UPLOAD_MESSAGE_REMOVE',
-   payload:
-   {
-     uploadMessage: '',
-     id: '',
-     progressBarPercentage: 0
-   }
+   store.dispatch({
+     type:'UPLOAD_MESSAGE_REMOVE',
+     payload:
+     {
+       uploadMessage: '',
+       id: '',
+       progressBarPercentage: 0
+     }
   })
  }
  /**
@@ -218,7 +233,7 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
           <ul>
             {
               mostRecentMessage.messageBody.map((error, index) => {
-              
+
                 return(<li key={`${mostRecentMessage.id}_${index}`}>{error.message}</li>)
               })
             }
@@ -232,6 +247,8 @@ const MainStatusMessage = ({mostRecentMessage, self}) =>{
     </div>
   )
 }
+
+
 
 let ListStatusMessages = ({self}) =>{
 
@@ -303,6 +320,12 @@ const FooterUpload = ({self}) => {
           style={{width: self.state.progessBarPercentage + '%'}}
           className="Footer__progress-bar">
         </div>
+
+        {/* <button // commented out until backend bugs are fixed
+          onClick={() =>{ self._pauseUpload() }}
+          className="Footer__button Footer__button--cancel">
+          Cancel
+        </button> */}
         {
           self.state.uploadError &&
             <div

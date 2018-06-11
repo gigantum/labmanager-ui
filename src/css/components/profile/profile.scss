@@ -1,0 +1,42 @@
+.Profile{
+  margin: 25px;
+}
+
+.Profile__indent{
+  padding:  40px  0 0 140px;
+}
+
+
+.Profile__input-row{
+  @include flex(flex-start, row);
+  align-items: center;
+
+  margin: 20px 0;
+  label{
+    color: $jet;
+    font-size: 18px;
+    @extend .column-6-span-2;
+  }
+  input[type="text"]{
+    border-radius: 8px;
+    background-color: $white;
+    border: 1px solid $romanSilver;
+    margin: 0 20px;
+    @extend .column-1-span-7;
+  }
+
+  input[type="text"]:focus{
+    border: 1px solid $turquise;
+    box-shadow: none !important;
+  }
+
+  input[type="text"]:disabled{
+    opacity: 0.4;
+  }
+}
+
+
+
+.Profile__save{
+    text-align: center;
+}

@@ -98,12 +98,12 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__containerStatus"
         >
           <button
-            className="LocalLabbooks__containerStatus--state Rebuild"
+            className="LocalLabbooks__containerStatus--state Stopped"
             onClick={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
           >
-            Rebuild
+            Stopped
           </button>
         </div>
       </div>
@@ -117,187 +117,7 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
             className="LocalLabbooks__panel-title"
             onClick={[Function]}
           >
-            76e68030-f74d-4d2b-905f-49d1f92953a7
-          </h6>
-        </div>
-        <p
-          className="LocalLabbooks__owner"
-        >
-          Created by cbutler
-        </p>
-        <p
-          className="LocalLabbooks__description"
-        >
-          This is a test labbook
-        </p>
-      </div>
-    </div>
-    <div
-      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      onClick={[Function]}
-    >
-      <div
-        className="LocalLabbooks__icon-row"
-      >
-        <div
-          className="LocalLabbooks__containerStatus"
-        >
-          <button
-            className="LocalLabbooks__containerStatus--state Rebuild"
-            onClick={[Function]}
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
-          >
-            Rebuild
-          </button>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__text-row"
-      >
-        <div
-          className="LocalLabbooks__title-row"
-        >
-          <h6
-            className="LocalLabbooks__panel-title"
-            onClick={[Function]}
-          >
-            95a26266-276b-43d8-bdbd-2e5373624fb4
-          </h6>
-        </div>
-        <p
-          className="LocalLabbooks__owner"
-        >
-          Created by cbutler
-        </p>
-        <p
-          className="LocalLabbooks__description"
-        >
-          This is a test labbook
-        </p>
-      </div>
-    </div>
-    <div
-      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      onClick={[Function]}
-    >
-      <div
-        className="LocalLabbooks__icon-row"
-      >
-        <div
-          className="LocalLabbooks__containerStatus"
-        >
-          <button
-            className="LocalLabbooks__containerStatus--state Rebuild"
-            onClick={[Function]}
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
-          >
-            Rebuild
-          </button>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__text-row"
-      >
-        <div
-          className="LocalLabbooks__title-row"
-        >
-          <h6
-            className="LocalLabbooks__panel-title"
-            onClick={[Function]}
-          >
-            867e715e-a63c-48ee-8cd3-a8ccbcf39538
-          </h6>
-        </div>
-        <p
-          className="LocalLabbooks__owner"
-        >
-          Created by cbutler
-        </p>
-        <p
-          className="LocalLabbooks__description"
-        >
-          This is a test labbook
-        </p>
-      </div>
-    </div>
-    <div
-      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      onClick={[Function]}
-    >
-      <div
-        className="LocalLabbooks__icon-row"
-      >
-        <div
-          className="LocalLabbooks__containerStatus"
-        >
-          <button
-            className="LocalLabbooks__containerStatus--state Rebuild"
-            onClick={[Function]}
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
-          >
-            Rebuild
-          </button>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__text-row"
-      >
-        <div
-          className="LocalLabbooks__title-row"
-        >
-          <h6
-            className="LocalLabbooks__panel-title"
-            onClick={[Function]}
-          >
-            3874fb64-5ae5-4c8a-af51-8241319f3525
-          </h6>
-        </div>
-        <p
-          className="LocalLabbooks__owner"
-        >
-          Created by cbutler
-        </p>
-        <p
-          className="LocalLabbooks__description"
-        >
-          This is a test labbook
-        </p>
-      </div>
-    </div>
-    <div
-      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      onClick={[Function]}
-    >
-      <div
-        className="LocalLabbooks__icon-row"
-      >
-        <div
-          className="LocalLabbooks__containerStatus"
-        >
-          <button
-            className="LocalLabbooks__containerStatus--state Rebuild"
-            onClick={[Function]}
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
-          >
-            Rebuild
-          </button>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__text-row"
-      >
-        <div
-          className="LocalLabbooks__title-row"
-        >
-          <h6
-            className="LocalLabbooks__panel-title"
-            onClick={[Function]}
-          >
-            added-new-lab
+            labbook-test-activity
           </h6>
         </div>
         <p
@@ -309,6 +129,186 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__description"
         >
           
+        </p>
+      </div>
+    </div>
+    <div
+      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      onClick={[Function]}
+    >
+      <div
+        className="LocalLabbooks__icon-row"
+      >
+        <div
+          className="LocalLabbooks__containerStatus"
+        >
+          <button
+            className="LocalLabbooks__containerStatus--state Stopped"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            Stopped
+          </button>
+        </div>
+      </div>
+      <div
+        className="LocalLabbooks__text-row"
+      >
+        <div
+          className="LocalLabbooks__title-row"
+        >
+          <h6
+            className="LocalLabbooks__panel-title"
+            onClick={[Function]}
+          >
+            data-shader
+          </h6>
+        </div>
+        <p
+          className="LocalLabbooks__owner"
+        >
+          Created by cbutler
+        </p>
+        <p
+          className="LocalLabbooks__description"
+        >
+          
+        </p>
+      </div>
+    </div>
+    <div
+      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      onClick={[Function]}
+    >
+      <div
+        className="LocalLabbooks__icon-row"
+      >
+        <div
+          className="LocalLabbooks__containerStatus"
+        >
+          <button
+            className="LocalLabbooks__containerStatus--state Rebuild"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            Rebuild
+          </button>
+        </div>
+      </div>
+      <div
+        className="LocalLabbooks__text-row"
+      >
+        <div
+          className="LocalLabbooks__title-row"
+        >
+          <h6
+            className="LocalLabbooks__panel-title"
+            onClick={[Function]}
+          >
+            857255a0-f22e-46b5-b70f-95af00d5d17e
+          </h6>
+        </div>
+        <p
+          className="LocalLabbooks__owner"
+        >
+          Created by cbutler
+        </p>
+        <p
+          className="LocalLabbooks__description"
+        >
+          This is a test labbook
+        </p>
+      </div>
+    </div>
+    <div
+      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      onClick={[Function]}
+    >
+      <div
+        className="LocalLabbooks__icon-row"
+      >
+        <div
+          className="LocalLabbooks__containerStatus"
+        >
+          <button
+            className="LocalLabbooks__containerStatus--state Rebuild"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            Rebuild
+          </button>
+        </div>
+      </div>
+      <div
+        className="LocalLabbooks__text-row"
+      >
+        <div
+          className="LocalLabbooks__title-row"
+        >
+          <h6
+            className="LocalLabbooks__panel-title"
+            onClick={[Function]}
+          >
+            917e4606-8d98-46cb-986c-4dd424e0bff7
+          </h6>
+        </div>
+        <p
+          className="LocalLabbooks__owner"
+        >
+          Created by cbutler
+        </p>
+        <p
+          className="LocalLabbooks__description"
+        >
+          This is a test labbook
+        </p>
+      </div>
+    </div>
+    <div
+      className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      onClick={[Function]}
+    >
+      <div
+        className="LocalLabbooks__icon-row"
+      >
+        <div
+          className="LocalLabbooks__containerStatus"
+        >
+          <button
+            className="LocalLabbooks__containerStatus--state Rebuild"
+            onClick={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            Rebuild
+          </button>
+        </div>
+      </div>
+      <div
+        className="LocalLabbooks__text-row"
+      >
+        <div
+          className="LocalLabbooks__title-row"
+        >
+          <h6
+            className="LocalLabbooks__panel-title"
+            onClick={[Function]}
+          >
+            11c2d7ed-f4ea-4e43-ae77-cf1b7388ea0d
+          </h6>
+        </div>
+        <p
+          className="LocalLabbooks__owner"
+        >
+          Created by cbutler
+        </p>
+        <p
+          className="LocalLabbooks__description"
+        >
+          This is a test labbook
         </p>
       </div>
     </div>

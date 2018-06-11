@@ -99,10 +99,15 @@ export default class Branches extends Component {
     if(this.props.labbook){
       const listPositionIndex = this.state.listPositionIndex
       const {labbook} = this.props
+      
       const branchArrayToFilter = this.props.mergeFilter ?  labbook.mergeableBranchNames : labbook.availableBranchNames
+
       const branches = this._filterBranches(branchArrayToFilter);
       const branchesVisibleCount = this._determineVisibleBranchCount();
+
       const showRightBumper = (listPositionIndex < (labbook.availableBranchNames.length - branchesVisibleCount))
+
+
       const branchesCSS = classNames({
         'Branches': this.props.branchesOpen,
         'Branches--closed': !this.props.branchesOpen

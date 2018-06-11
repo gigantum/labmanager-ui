@@ -216,10 +216,10 @@ class Activity extends Component {
 
       let getNewActivity = () =>{
 
-        NewActivity.getNewActivity(labbookName, owner).then((data)=>{
+        NewActivity.getNewActivity(labbookName, owner).then((response)=>{
 
           let firstRecordCommitId = self.props.labbook.activityRecords.edges[0].node.commit
-          let newRecordCommitId = data.labbook.activityRecords.edges[0].node.commit
+          let newRecordCommitId = response.data.labbook.activityRecords.edges[0].node.commit
 
           if(firstRecordCommitId === newRecordCommitId){
 
@@ -237,7 +237,6 @@ class Activity extends Component {
             this.setState({'newActivityAvailable': true})
 
           }
-
 
        }).catch(error => console.log(error))
 

@@ -236,3 +236,15 @@
 .FileBrowser__close-modal{
   @include close();
 }
+
+.FileBrowser__cancel-content{
+  @include flex(space-between, column);
+  height: 260px;
+}
+
+.FileBrowser__cancel-buttons{
+  @include flex(space-between, row);
+  button{
+    margin: 5px 10px;
+  }
+}
