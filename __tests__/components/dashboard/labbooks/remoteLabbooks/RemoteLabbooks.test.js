@@ -9,7 +9,7 @@ import relayTestingUtils from 'relay-testing-utils'
 
 
 const variables = {first:20}
-let json = {data: {}}
+
 const fixtures = {
   remoteLabbooks: json.data.remoteLabbooks
 }

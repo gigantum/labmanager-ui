@@ -126,7 +126,7 @@ export default class UserNote extends Component {
 
 
   render(){
-   
+
     const {tags} = this.state;
     return(
       <div className="UserNote flex flex--column">
@@ -144,11 +144,12 @@ export default class UserNote extends Component {
           id="markDown"></textarea>
 
         <ReactTags
-              id='TagsInput'
-              tags={tags}
-              handleDelete={(index) => {this._handleDelete(index)}}
-              handleAddition={(tag) => {this._handleAddition(tag)}}
-              handleDrag={(tag, currPos, newPos) => {this._handleDrag(tag, currPos, newPos)}} />
+            id='TagsInput'
+            tags={tags}
+            handleDelete={(index) => {this._handleDelete(index)}}
+            handleAddition={(tag) => {this._handleAddition(tag)}}
+            handleDrag={(tag, currPos, newPos) => {this._handleDrag(tag, currPos, newPos)}}
+       />
 
         <button
           className="UserNote__add-note"

@@ -30,9 +30,9 @@ const NewActivity = {
 
     return new Promise((resolve, reject) =>{
 
-        fetchQuery(activityFetchQuery(), variables).then((response) => {
+        fetchQuery(activityFetchQuery(), variables).then((response, error) => {
 
-           resolve(response.data)
+           resolve(response)
 
         }).catch((error) =>{
           console.log(error)

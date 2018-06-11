@@ -5,6 +5,45 @@ exports[`Test CreateLabbook rendering 1`] = `
   className="CreateLabbook"
 >
   <div
+    className="hidden"
+  >
+    <div
+      className="BranchModal--close"
+      onClick={[Function]}
+    />
+    <div
+      className="LoginPrompt"
+    >
+      <div>
+        <p>
+          You need an active session to perform this action
+        </p>
+        <p>
+          Do you want login?
+        </p>
+      </div>
+      <div
+        className="LoginPrompt__button-container"
+      >
+        <button
+          onClick={[Function]}
+        >
+          Yes
+        </button>
+        <button
+          onClick={[Function]}
+        >
+          no
+        </button>
+      </div>
+    </div>
+  </div>
+  <h4
+    className="CreateLabbook__header"
+  >
+    Create LabBook
+  </h4>
+  <div
     className="CreateLabbook__modal-inner-container flex flex--column justify--space-between"
   >
     <div>
@@ -20,7 +59,7 @@ exports[`Test CreateLabbook rendering 1`] = `
       <span
         className="hidden"
       >
-        Error: Title may only contain alphanumeric characters separated by hyphens. (e.g. lab-book-title)
+        Error: Title may only contain lowercase alphanumeric and \`-\`. (e.g. lab-book-title)
       </span>
     </div>
     <div>
@@ -29,28 +68,16 @@ exports[`Test CreateLabbook rendering 1`] = `
       </label>
       <textarea
         className="CreateLabbook__description-input"
+        maxLength="260"
         onChange={[Function]}
-        placeholder="Briefly describe this lab book, its purpose and any other key details. "
+        placeholder="Briefly describe this LabBook, its purpose and any other key details. "
         type="text"
       />
-    </div>
-    <div
-      className="CreateLabbook__text-divider-container"
-    >
-      <span
-        className="CreateLabbook__text-divider"
+      <p
+        className="CreateLabbook__warning hidden"
       >
-        or
-      </span>
-    </div>
-    <div>
-      <label>
-        Add public Lab Books
-      </label>
-      <input
-        placeholder="Enter URL Location"
-        type="text"
-      />
+        0 characters remaining
+      </p>
     </div>
   </div>
 </div>

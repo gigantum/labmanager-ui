@@ -14,6 +14,7 @@ import Footer from 'Components/shared/Footer';
 import Prompt from 'Components/shared/Prompt';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
+import Profile from 'Components/profile/Profile'
 //
 import store from 'JS/redux/store'
 
@@ -210,6 +211,17 @@ export default class Routes extends Component {
                       return (
                         <Callback
                           {...props}
+                        />
+                      )
+                    }}
+                  />
+
+                  <Route
+                    path="/profile"
+                    render={(props)=>{
+                      return(
+                        <Profile
+
                         />
                       )
                     }}

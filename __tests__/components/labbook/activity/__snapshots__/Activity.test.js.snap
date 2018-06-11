@@ -1,0 +1,1276 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Activity 1`] = `
+<div
+  className="Activity"
+>
+  <div
+    className="Activity__inner-container flex flex--row flex--wrap justify--space-around"
+  >
+    <div
+      className="Activity__sizer flex-1-0-auto"
+    >
+      <div />
+      <div>
+        <div
+          className="Activity__date-tab column-1-span-1 flex flex--column justify--space-around"
+        >
+          <div
+            className="Activity__date-day"
+          >
+            29
+          </div>
+          <div
+            className="Activity__date-month"
+          >
+            May
+          </div>
+        </div>
+        <div
+          className="UserActivity__container"
+        >
+          <div
+            className="Activity__user-note"
+          >
+            <div
+              className="Activity__user-note-menu-icon"
+              onClick={[Function]}
+            />
+            <div
+              className="Activity__user-note-menu"
+            >
+              <div
+                className="Activity__add-note"
+              >
+                <button
+                  className="Activity__add-note-button"
+                  onClick={[Function]}
+                />
+                <h5>
+                  Add Note
+                </h5>
+              </div>
+              <div
+                className="Activity__add-branch"
+              >
+                <button
+                  className="Activity__add-branch-button"
+                  onClick={[Function]}
+                />
+                <h5>
+                  Add Branch
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div
+            className="hidden"
+          >
+            <div
+              className="UserNote flex flex--column"
+            >
+              <input
+                className="UserNote__summary"
+                id="UserNoteTitle"
+                onKeyUp={[Function]}
+                placeholder="Add a summary title"
+              />
+              <textarea
+                className="UserNote__summary"
+                id="markDown"
+              />
+              <button
+                className="UserNote__add-note"
+                disabled={true}
+                onClick={[Function]}
+              >
+                Add Note
+              </button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="ActivityCard card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      10:00am
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Executed cell in notebook code/nyc_taxi.ipynb and generated a result
+                  </h6>
+                </div>
+                <div
+                  className="ActivityDetail"
+                >
+                  <div
+                    className="ActivityDetail__details"
+                  >
+                    <div
+                      className="ActivityDetail__details-title ActivityDetail__details-title--open"
+                      onClick={[Function]}
+                    >
+                      <div
+                        className="ActivityDetail__header"
+                      >
+                        <div
+                          className="ActivityDetail__badge ActivityDetail__badge--result"
+                        />
+                        <div
+                          className="ActivityDetail__content"
+                        >
+                          <p>
+                            Result (10)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="ActivtyDetail_list"
+                    >
+                      <div
+                        className="DetailsRecords__loader-group"
+                      >
+                        <div
+                          className="DetailsRecords__loader"
+                        />
+                        <div
+                          className="DetailsRecords__loader"
+                        />
+                        <div
+                          className="DetailsRecords__loader"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="ActivityDetail__details"
+                  >
+                    <div
+                      className="ActivityDetail__details-title ActivityDetail__details-title--closed"
+                      onClick={[Function]}
+                    >
+                      <div
+                        className="ActivityDetail__header"
+                      >
+                        <div
+                          className="ActivityDetail__badge ActivityDetail__badge--input_data"
+                        />
+                        <div
+                          className="ActivityDetail__content"
+                        >
+                          <p>
+                            Input data (5)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="ActivityDetail__details"
+                  >
+                    <div
+                      className="ActivityDetail__details-title ActivityDetail__details-title--closed"
+                      onClick={[Function]}
+                    >
+                      <div
+                        className="ActivityDetail__header"
+                      >
+                        <div
+                          className="ActivityDetail__badge ActivityDetail__badge--code"
+                        />
+                        <div
+                          className="ActivityDetail__content"
+                        >
+                          <p>
+                            Code (1)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="ActivityDetail__details"
+                  >
+                    <div
+                      className="ActivityDetail__details-title ActivityDetail__details-title--closed"
+                      onClick={[Function]}
+                    >
+                      <div
+                        className="ActivityDetail__header"
+                      >
+                        <div
+                          className="ActivityDetail__badge ActivityDetail__badge--code_executed"
+                        />
+                        <div
+                          className="ActivityDetail__content"
+                        >
+                          <p>
+                            Code executed (10)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          className="Activity__date-tab column-1-span-1 flex flex--column justify--space-around"
+        >
+          <div
+            className="Activity__date-day"
+          >
+            25
+          </div>
+          <div
+            className="Activity__date-month"
+          >
+            May
+          </div>
+        </div>
+        <div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      9:51pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Executed cell in notebook code/nyc_taxi.ipynb
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      9:45pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Executed 4 cells in notebook code/nyc_taxi-nongeo.ipynb
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      9:45pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Executed cell in notebook code/nyc_taxi-nongeo.ipynb
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          className="Activity__date-tab column-1-span-1 flex flex--column justify--space-around"
+        >
+          <div
+            className="Activity__date-day"
+          >
+            22
+          </div>
+          <div
+            className="Activity__date-month"
+          >
+            May
+          </div>
+        </div>
+        <div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      6:06pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Code file code/@1xGigantum (1)/About.pdf
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      6:06pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Code file code/@1xGigantum (1)/Homepage.pdf
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      6:06pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Code file code/@1xGigantum (1)/Plain-text.pdf
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      6:06pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Code file code/down-arrow.textClipping
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      6:06pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Code file code/down-arrow.svg
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      6:06pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Code file code/down-arrow.textClipping
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      6:06pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Code file code/down-arrow.svg
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      6:06pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Code file code/@1xGigantum (1)/About.pdf
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      6:05pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Code file code/@1xGigantum (1)/Homepage.pdf
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      6:05pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Code file code/@1xGigantum (1)/Plain-text.pdf
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      6:05pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Created new Code directory \`code/@1xGigantum (1)/\`
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--input_data"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      1:37pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Input Data file input/nyc_taxi.zip
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--input_data"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      1:36pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Input Data file input/nyc_taxi.ipynb
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--input_data"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      1:36pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Input Data file input/v2.zip
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard--collapsed card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--input_data"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      1:33pm
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Added new Input Data file input/v2.zip
+                  </h6>
+                </div>
+                <div
+                  className="ActivityCard__ellipsis"
+                  onClick={[Function]}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          className="Activity__date-tab column-1-span-1 flex flex--column justify--space-around"
+        >
+          <div
+            className="Activity__date-day"
+          >
+            19
+          </div>
+          <div
+            className="Activity__date-month"
+          >
+            May
+          </div>
+        </div>
+        <div>
+          <div
+            className="ActivtyCard__wrapper"
+          >
+            <div
+              className="Activity__submenu-container"
+            />
+            <div
+              className="ActivityCard card column-1-span-9"
+            >
+              <div
+                className="ActivityCard__badge ActivityCard__badge--code"
+              />
+              <div
+                className="ActivityCard__content"
+              >
+                <div
+                  className="ActivityCard__title flex flex--row justify--space-between"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="ActivityCard__stack"
+                  >
+                    <p
+                      className="ActivityCard__time"
+                    >
+                      9:05am
+                    </p>
+                    <div
+                      className="ActivityCard__user"
+                    />
+                  </div>
+                  <h6
+                    className="ActivityCard__commit-message"
+                  >
+                    <b>
+                      cbutler - 
+                    </b>
+                    Executed cell in notebook code/nyc_taxi.ipynb
+                  </h6>
+                </div>
+                <div
+                  className="ActivityDetail"
+                >
+                  <div
+                    className="ActivityDetail__details"
+                  >
+                    <div
+                      className="ActivityDetail__details-title ActivityDetail__details-title--open"
+                      onClick={[Function]}
+                    >
+                      <div
+                        className="ActivityDetail__header"
+                      >
+                        <div
+                          className="ActivityDetail__badge ActivityDetail__badge--result"
+                        />
+                        <div
+                          className="ActivityDetail__content"
+                        >
+                          <p>
+                            Result (2)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="ActivtyDetail_list"
+                    >
+                      <div
+                        className="DetailsRecords__loader-group"
+                      >
+                        <div
+                          className="DetailsRecords__loader"
+                        />
+                        <div
+                          className="DetailsRecords__loader"
+                        />
+                        <div
+                          className="DetailsRecords__loader"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="ActivityDetail__details"
+                  >
+                    <div
+                      className="ActivityDetail__details-title ActivityDetail__details-title--closed"
+                      onClick={[Function]}
+                    >
+                      <div
+                        className="ActivityDetail__header"
+                      >
+                        <div
+                          className="ActivityDetail__badge ActivityDetail__badge--code_executed"
+                        />
+                        <div
+                          className="ActivityDetail__content"
+                        >
+                          <p>
+                            Code executed (2)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="ActivityCard ActivityCard__loader-hidden column-1-span-9"
+      />
+      <div
+        className="ActivityCard ActivityCard__loader-hidden column-1-span-9"
+      />
+      <div
+        className="ActivityCard ActivityCard__loader-hidden column-1-span-9"
+      />
+      <div
+        className="ActivityCard ActivityCard__loader-hidden column-1-span-9"
+      />
+      <div
+        className="ActivityCard ActivityCard__loader-hidden column-1-span-9"
+      />
+    </div>
+  </div>
+</div>
+`;
