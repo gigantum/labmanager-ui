@@ -17,6 +17,13 @@
     background: url(../images/icons/left-arrow-silver.svg) no-repeat 50% 50%;
     background-size: 30px;
   }
+  .slick-arrow:hover{
+    border: none;
+  }
+  .slick-disabled{
+    cursor: auto;
+    opacity: 0.2;
+  }
 
   .slick-list, .slick-initialized{
     height: 100%;

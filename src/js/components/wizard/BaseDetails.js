@@ -47,7 +47,7 @@ export default class BaseDetails extends React.Component {
                 <ul>
                 {
                   base.languages.map((language)=>{
-                    return(<li>{language}</li>)
+                    return(<li key={language}>{language}</li>)
                   })
                 }
                 </ul>
@@ -57,7 +57,7 @@ export default class BaseDetails extends React.Component {
                 <ul>
                 {
                   base.developmentTools.map((tool)=>{
-                    return(<li>{tool}</li>)
+                    return(<li key={tool}>{tool}</li>)
                   })
                 }
                 </ul>
@@ -69,7 +69,7 @@ export default class BaseDetails extends React.Component {
                     Object.keys(installedPackagesDictionary).length ?
                     Object.keys(installedPackagesDictionary).map(manager => {
                       return(
-                        <Fragment>
+                        <Fragment key={manager}>
                           <li>{`${manager} (${installedPackagesDictionary[manager].length})`}</li>
                         </Fragment>
                      )
@@ -98,7 +98,7 @@ export default class BaseDetails extends React.Component {
                     return installedPackagesDictionary[manager].map((pkg) => {
                       return (
                         <tr
-                          key={manager + index}
+                          key={manager + pkg.pkgName + pkg.pgkVersion}
                           className="BaseDetails__table-row"
                         >
                           <td>{manager}</td>

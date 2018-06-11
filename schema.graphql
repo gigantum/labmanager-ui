@@ -1,5 +1,9 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Fri Jun 01 2018 13:14:06 GMT-0400 (EDT)
+<<<<<<< HEAD
+# timestamp: Fri Jun 08 2018 11:03:42 GMT-0400 (EDT)
+=======
+# timestamp: Mon Jun 11 2018 14:12:27 GMT-0400 (EDT)
+>>>>>>> integration
 
 schema {
   query: LabbookQuery
@@ -147,11 +151,13 @@ input AddLabbookFileInput {
   section: String!
   filePath: String!
   chunkUploadParams: ChunkUploadInput!
+  transactionId: String!
   clientMutationId: String
 }
 
 """
-Mutation to add a file to a labbook. File should be sent in the `uploadFile` key as a multi-part/form upload.
+Mutation to add a file to a labbook. File should be sent in the
+`uploadFile` key as a multi-part/form upload.
 file_path is the relative path from the labbook section specified.
 """
 type AddLabbookFilePayload {
@@ -274,6 +280,23 @@ input ChunkUploadInput {
   chunkIndex: Int!
   filename: String!
   uploadId: String!
+}
+
+input CompleteBatchUploadTransactionInput {
+  owner: String!
+  labbookName: String!
+  transactionId: String!
+  cancel: Boolean
+  rollback: Boolean
+  clientMutationId: String
+}
+
+type CompleteBatchUploadTransactionPayload {
+<<<<<<< HEAD
+=======
+  success: Boolean
+>>>>>>> integration
+  clientMutationId: String
 }
 
 """An enumeration for container image status"""
@@ -730,6 +753,7 @@ type LabbookMutations {
   addCustomDocker(input: AddCustomDockerInput!): AddCustomDockerPayload
   removeCustomDocker(input: RemoveCustomDockerInput!): RemoveCustomDockerPayload
   addLabbookFile(input: AddLabbookFileInput!): AddLabbookFilePayload
+  completeBatchUploadTransaction(input: CompleteBatchUploadTransactionInput!): CompleteBatchUploadTransactionPayload
   moveLabbookFile(input: MoveLabbookFileInput!): MoveLabbookFilePayload
   deleteLabbookFile(input: DeleteLabbookFileInput!): DeleteLabbookFilePayload
   makeLabbookDirectory(input: MakeLabbookDirectoryInput!): MakeLabbookDirectoryPayload
