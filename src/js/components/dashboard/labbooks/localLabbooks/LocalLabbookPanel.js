@@ -25,7 +25,10 @@ export default class LocalLabbookPanel extends Component {
     this._getContainerStatusText = this._getContainerStatusText.bind(this)
     this._stopStartContainer = this._stopStartContainer.bind(this)
   }
-
+  /***
+  * @param {Object} nextProps
+  * processes container lookup and assigns container status to labbook card
+  */
   componentWillReceiveProps(nextProps) {
     let {environment} = nextProps
     if(environment){
@@ -34,7 +37,10 @@ export default class LocalLabbookPanel extends Component {
     this.setState({status: status, textStatus: status})
     }
   }
-
+  /***
+  * @param {}
+  * if environment exists when components will mount it will populate container status
+  */
   componentWillMount(){
     let {environment} = this.props
     if(environment){
@@ -43,7 +49,10 @@ export default class LocalLabbookPanel extends Component {
       this.setState({status: status, textStatus: status})
     }
   }
-
+  /***
+  * @param {string, string} containerStatus, imageStatus
+  * returns corrent container status by checking both container and imagestatus
+  */
   _getContainerStatusText(containerStatus, imageStatus){
 
     let status = 'Running';

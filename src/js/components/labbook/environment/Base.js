@@ -29,9 +29,6 @@ class Base extends Component {
   */
   _openModal = () =>{
       this.setState({'modal_visible': true})
-      if(document.getElementById('modal__cover')){
-        document.getElementById('modal__cover').classList.remove('hidden')
-      }
   }
   /**
   *  @param {none}
@@ -39,9 +36,6 @@ class Base extends Component {
   */
   _hideModal = () => {
     this.setState({'modal_visible': false})
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.add('hidden')
-    }
   }
   /**
   *  @param {Object}

@@ -159,37 +159,6 @@
   padding: 0 10px;
 }
 
-.RemoteLabbooks--close {
-  @include close()
-}
-
-.RemoteLabbooks--delete-modal {
-  justify-content: flex-start;
-
-  padding: 20px 40px;
-
-  @include flex(space-between, column);
-  @include modal(300px, 600px);
-
-  .LoginPrompt__button-container {
-    @include flex(space-around, row);
-  }
-
-  .DeleteLabbook{
-    align-items: center;
-
-    height: 300px;
-
-    @include flex(space-between, column);
-    p{
-      margin: 0;
-    }
-    hr{
-      border-bottom: 1px solid $azure;
-    }
-  }
-}
-
 .RemoteLabbooks__loader {
   position: absolute;
   top: 50%;

@@ -150,9 +150,6 @@ export default class SelectBase extends React.Component {
 
     return(
       <div className="SelectBase">
-        <p className="SelectedBase__modal-header">Create LabBook</p>
-        <h4 className="SelectedBase__header"> Select a Base </h4>
-
         <QueryRenderer
           variables={{
             first: 20

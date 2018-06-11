@@ -25,7 +25,10 @@ export class LocalLabbooks extends Component {
     this._containerLookup = this._containerLookup.bind(this)
   }
 
-
+  /***
+  * @param {}
+  * adds event listener for pagination and fetches container status
+  */
   componentDidMount() {
     if(!this.props.loading){
       window.addEventListener('scroll', this._captureScroll);
@@ -33,6 +36,19 @@ export class LocalLabbooks extends Component {
     }
   }
 
+  /***
+  * @param {}
+  * removes event listener for pagination and removes timeout for container status
+  */
+  componentWillUnmount() {
+    clearTimeout(this.containerLookup)
+    window.removeEventListener("scroll", this._captureScroll)
+  }
+
+  /***
+  * @param {}
+  * calls ContainerLookup query and attaches the returned data to the state
+  */
   _containerLookup(){
     let self = this;
     let idArr = this.props.localLabbooks.localLabbooks.edges.map(edges =>edges.node.id)
@@ -40,7 +56,6 @@ export class LocalLabbooks extends Component {
       if(res && res.data && res.data.labbookList && res.data.labbookList.localById){
         let containerListCopy = new Map(this.state.containerList)
         res.data.labbookList.localById.forEach((node) => {
-          console.log(node)
           containerListCopy.set(node.id, node.environment)
         })
         self.setState({containerList: containerListCopy})
@@ -49,12 +64,6 @@ export class LocalLabbooks extends Component {
         }, 10000)
       }
     })
-  }
-
-
-  componentWillUnmount() {
-    clearTimeout(this.containerLookup)
-    window.removeEventListener("scroll", this._captureScroll)
   }
 
   /**
@@ -116,7 +125,7 @@ export class LocalLabbooks extends Component {
             labbooks.map((edge, index) => {
               return (
                 <LocalLabbookPanel
-                  key={edge.node.name}
+                  key={`${edge.node.owner}/${edge.node.name}`}
                   ref={'LocalLabbookPanel' + edge.node.name}
                   className="LocalLabbooks__panel"
                   edge={edge}
@@ -159,7 +168,6 @@ export default createPaginationContainer(
             name
             description
             owner
-            creationDateUtc
           }
           cursor
         }

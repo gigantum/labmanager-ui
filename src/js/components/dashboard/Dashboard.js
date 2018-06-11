@@ -20,7 +20,7 @@ const RemoteListingQuery = graphql`query DashboardRemoteQuery($first: Int!, $cur
 export default class DashboardContainer extends Component {
   constructor(props){
     super(props);
-    let {sort, reverse} = queryString.parse(this.props.history.location.search)
+    let {sort, reverse} = queryString.parse(this.props.history.location.search.slice(1))
     reverse = reverse === 'true'
     this.state = {
       selectedComponent: props.match.params.id,
@@ -52,9 +52,8 @@ export default class DashboardContainer extends Component {
   }
 
   /**
-    * @param {}
-    * fires when component unmounts
-    * unsubscribe from redux store
+    * @param {string, boolean} sort, reverse
+    * sets state of sort and reverse, passed to child components
   */
   _refetchSort(sort, reverse) {
     if(this.state.sort !== sort || this.state.reverse !== reverse){

@@ -137,19 +137,14 @@ export const CollaboratorsQuery =  graphql`
 
                     {
                       this.state.collaboratorModalVisible &&
-
-                        [<CollaboratorsModal
+                        <CollaboratorsModal
                           key="CollaboratorsModal"
                           ref="collaborators"
                           collaborators={labbook.collaborators}
                           owner={owner}
                           labbookName={labbookName}
                           toggleCollaborators={this._toggleCollaborators}
-                        />,
-                        <div
-                          key="CollaboratorsModal__cover"
-                          className="modal__cover--nested"></div>
-                      ]
+                        />
 
                     }
                   </li>

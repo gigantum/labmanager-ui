@@ -20,7 +20,7 @@ export default class Labbooks extends Component {
     super(props);
 
     const {filterText} = store.getState().labbookListing
-    let {filter, sort, reverse} = queryString.parse(this.props.history.location.search)
+    let {filter, sort, reverse} = queryString.parse(this.props.history.location.search.slice(1))
     reverse = reverse === 'true'
     this.state = {
       'labbookModalVisible': false,
@@ -119,7 +119,6 @@ export default class Labbooks extends Component {
     this.setState({
       'showLoginPrompt': false
     })
-    document.getElementById('modal__cover').classList.add('hidden')
   }
 
   /**
@@ -181,10 +180,6 @@ export default class Labbooks extends Component {
       newLabbookName:'',
       showNamingError: false
     })
-
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.add('hidden')
-    }
   }
 
   /**
@@ -293,7 +288,6 @@ export default class Labbooks extends Component {
             this._handleSortFilter(sort, reverse);
           } else {
             this.setState({'showLoginPrompt': true})
-            document.getElementById('modal__cover').classList.remove('hidden')
           }
         }
       })
@@ -329,7 +323,6 @@ export default class Labbooks extends Component {
       } else {
         if(!this.state.showLoginPrompt) {
           this.setState({'showLoginPrompt': true})
-          document.getElementById('modal__cover').classList.remove('hidden')
         }
       }
     })
@@ -347,7 +340,10 @@ export default class Labbooks extends Component {
       }
     })
   }
-
+  /**
+    *  @param {}
+    *  gets filter value and displays it to the UI more clearly
+  */
   _getFilter(){
     switch(this.state.filter){
       case 'all':
@@ -360,7 +356,10 @@ export default class Labbooks extends Component {
         return this.state.filter
     }
   }
-
+  /**
+    *  @param {}
+    *  gets sort and reverse value and displays it to the UI more clearly
+  */
   _getSelectedSort(){
     if(this.state.sort === 'modified_on'){
       return `Modified Date ${this.state.reverse ? '(Oldest)' : '(Newest)'}`
@@ -370,17 +369,18 @@ export default class Labbooks extends Component {
       return this.state.reverse ? 'Z-A' : 'A-Z';
     }
   }
+
+  /**
+    *  @param {object} newValues
+    *  changes the query params to new sort and filter values
+  */
   _changeSearchParam(newValues){
-    let searchObj = Object.assign({}, queryString.parse(this.props.history.location.search), newValues)
+    let searchObj = Object.assign({}, queryString.parse(this.props.history.location.search.slice(1)), newValues)
     this.props.history.replace(`..${this.props.history.location.pathname}?${queryString.stringify(searchObj)}`)
   }
 
   render(){
       let {props} = this;
-      let loginPromptModalCss = classNames({
-        'CreateLabbook--login-prompt': this.state.showLoginPrompt,
-        'hidden': !this.state.showLoginPrompt
-      })
       if(props.labbookList !== null || props.loading){
 
         return(
@@ -534,19 +534,16 @@ export default class Labbooks extends Component {
                 filterState={this.state.filter}
                 forceLocalView={()=> {
                   this.setState({selectedSection: 'local'})
-                  this.setState({'showLoginPrompt': true})
-                  document.getElementById('modal__cover').classList.remove('hidden')}
+                  this.setState({'showLoginPrompt': true})}
                 }
                 changeRefetchState={(bool) => this.setState({refetchLoading: bool})}
                 {...props}
               />
           }
-          <div className={loginPromptModalCss}>
-            <div
-              onClick={()=>{this._closeLoginPromptModal()}}
-              className="BranchModal--close"></div>
+          {
+            this.state.showLoginPrompt &&
             <LoginPrompt closeModal={this._closeLoginPromptModal}/>
-          </div>
+          }
         </div>
       )
       } else if (props.labbookList === null) {
