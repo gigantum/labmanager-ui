@@ -133,7 +133,7 @@
 .ActivityCard__title {
   h6 {
     padding: 5px;
-    word-break: break-all;
+    word-break: break-word;
   }
 }
 
@@ -234,7 +234,7 @@
   align-self: center;
   flex: 1 0 auto;
   font-size: 16px;
-  margin: 18px 15px;
+  margin: 18px 40px 18px 15px;
 }
 
 .ActivityCard__tags-list {
@@ -275,18 +275,22 @@
   display: none !important;
 }
 
-.Activity__date-tab {
-    position: relative;
-    margin: 30px 1px 0 0;
-    z-index: index($elements, date);
-    height: 50px;
-    width: 115px;
-    border: 2px solid $azure;
-    border-radius: 40px;
-    background: $white;
+.Activity__date-tab.is-expanded{
+  top: 90px;
+}
 
-    font-weight: lighter;
-    @include flex(center, row)
+.Activity__date-tab {
+  position: relative;
+  margin: 30px 1px 0 0;
+  z-index: index($elements, date);
+  height: 50px;
+  width: 115px;
+  border: 2px solid $azure;
+  border-radius: 40px;
+  background: $white;
+
+  font-weight: lighter;
+  @include flex(center, row)
 }
 
 .Activity__date-sub{
@@ -833,7 +837,7 @@
   z-index: index($elements, card) + 1;
 }
 
-.Activity__card-container--last .ActivityCard__wrapper:last-child:before{
+.Activity__card-container--last .ActivityCard__wrapper:last-child:before {
   display: none;
 }
 
