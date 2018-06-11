@@ -70,12 +70,14 @@ class Activity extends Component {
   componentWillReceiveProps(nextProps) {
     let activityRecords = nextProps.labbook.activityRecords
     if(JSON.stringify(this._transformActivity(activityRecords)) !== JSON.stringify(this.state.activityRecords)) {
-      let prevCommit = this.props.labbook && this.props.labbook.activityRecords && this.props.labbook.activityRecords.edges && this.props.labbook.activityRecords.edges[0] && this.props.labbook.activityRecords.edges[0].node && this.props.labbook.activityRecords.edges[0].node.commit
-      let newcommit = nextProps.labbook && nextProps.labbook.activityRecords && nextProps.labbook.activityRecords.edges && nextProps.labbook.activityRecords.edges[0] && nextProps.labbook.activityRecords.edges[0].node && nextProps.labbook.activityRecords.edges[0].node.commit
+      let prevCommit = this.props.labbook && this.props.labbook.activityRecords.edges && this.props.labbook.activityRecords.edges[0].node
+      let newcommit = nextProps.labbook && nextProps.labbook.activityRecords.edges && nextProps.labbook.activityRecords.edges[0].node
+
       if(prevCommit && prevCommit !== newcommit){
         this.setState({expandedClusterObject: new Map()}, () => this.setState({activityRecords: this._transformActivity(activityRecords)}))
       } else{
         this.setState({activityRecords: this._transformActivity(activityRecords)})
+
       }
     }
 
@@ -97,13 +99,11 @@ class Activity extends Component {
 
     window.addEventListener('scroll', this._handleScroll)
     window.addEventListener('visibilitychange', this._handleVisibilityChange)
-    if((activityRecords.pageInfo.hasNextPage && activityRecords.edges.length <= 2)){
+
+    if (activityRecords.pageInfo.hasNextPage && (this._countUnexpandedRecords() < 7)) {
 
       this._loadMore()
-    } else {
-      if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
-        this._loadMore()
-      }
+
     }
 
     if(activityRecords.edges && activityRecords.edges.length){
@@ -296,7 +296,7 @@ class Activity extends Component {
        if(error){
          console.error(error)
        }
-       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7 && this._countUnexpandedRecords() > 2){
+       if((this.props.labbook.activityRecords.pageInfo.hasNextPage) && (this._countUnexpandedRecords() < 7) && (this._countUnexpandedRecords() > 2)){
         self._loadMore();
        } else{
         this.setState({
@@ -344,7 +344,7 @@ class Activity extends Component {
     *
   */
   _setStickyDate(){
-    let isExpanded = window.pageYOffset < this.offsetDistance && window.pageYOffset > 120
+    let isExpanded = (window.pageYOffset < this.offsetDistance) && (window.pageYOffset > 120)
     this.offsetDistance = window.pageYOffset;
     let stickyDate = null;
     this.dates.forEach((date)=> {
