@@ -44,10 +44,10 @@ if (action.type === CLOSE_ENVIRONMENT_MENUS) {
      detailMode: false
    };
  } else if(action.type === CONTAINER_MENU_WARNING) {
-  return {
-    ...state,
-    containerMenuWarning: action.payload.message
-  }
+    return {
+      ...state,
+      containerMenuWarning: action.payload.message
+    }
 } else if (action.type === UPDATE_CONTAINER_MENU_VISIBILITY) {
 
   return {

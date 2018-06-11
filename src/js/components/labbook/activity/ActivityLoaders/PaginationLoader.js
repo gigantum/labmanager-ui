@@ -7,7 +7,7 @@ export default class PaginationLoader extends Component {
     let PaginationLoaderCSS = classNames({
       [`ActivityCard ActivityCard__loader ActivityCard__loader--${this.props.index} card`]: this.props.isLoadingMore,
       'ActivityCard ActivityCard__loader-hidden': !this.props.isLoadingMore,
-      'column-1-span-9': true
+      'column-1-span-10': true
     })
 
     return(

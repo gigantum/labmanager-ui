@@ -8,6 +8,10 @@ html, body, .root {
   //position: relative;
 }
 
+.root.no-overflow{
+  overflow: hidden;
+}
+
 body {
   overflow-y: auto;
   overflow-x: auto;
