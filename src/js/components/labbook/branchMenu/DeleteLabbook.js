@@ -5,6 +5,7 @@ import DeleteLabbookMutation from 'Mutations/DeleteLabbookMutation'
 import DeleteRemoteLabbookMutation from 'Mutations/DeleteRemoteLabbookMutation'
 //components
 import ButtonLoader from 'Components/shared/ButtonLoader'
+import Modal from 'Components/shared/Modal'
 //store
 import store from 'JS/redux/store'
 
@@ -161,27 +162,33 @@ export default class DeleteLabbook extends Component {
     let deleteText = this.props.remoteDelete ? 'Delete Remote Labbook' : 'Delete Labbook'
     const {labbookName} = this.props.remoteDelete ? {labbookName: this.props.remoteLabbookName} : store.getState().routes
     return(
-      <div className="DeleteLabbook">
-        <h4 className="DeleteLabbook__header">{deleteText}</h4>
-        {this._getExplanationText()}
-        <input
-          id="deleteInput"
-          placeholder={`Enter ${labbookName} to delete`}
-          onKeyUp={(evt)=>{this._setLabbookName(evt)}}
-          onChange={(evt)=>{this._setLabbookName(evt)}}
-          type="text"
-        />
+      <Modal
+        header={deleteText}
+        handleClose={()=> this.props.handleClose()}
+        size="medium"
+        renderContent={()=>
+          <div className="DeleteLabbook">
+            {this._getExplanationText()}
+            <input
+              id="deleteInput"
+              placeholder={`Enter ${labbookName} to delete`}
+              onKeyUp={(evt)=>{this._setLabbookName(evt)}}
+              onChange={(evt)=>{this._setLabbookName(evt)}}
+              type="text"
+            />
 
 
-        <ButtonLoader
-          buttonState={this.state.deleteLabbookButtonState}
-          buttonText={deleteText}
-          className=""
-          params={{}}
-          buttonDisabled={this.state.deletePending}
-          clicked={this._deleteLabbook}
-        />
-      </div>
+            <ButtonLoader
+              buttonState={this.state.deleteLabbookButtonState}
+              buttonText={deleteText}
+              className=""
+              params={{}}
+              buttonDisabled={this.state.deletePending || labbookName !== this.state.labbookName}
+              clicked={this._deleteLabbook}
+            />
+          </div>
+        }
+      />
     )
   }
 }

@@ -1,5 +1,7 @@
 //vendor
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
+//component
+import Modal from 'Components/shared/Modal'
 
 export default class ForceMerge extends Component {
   /**
@@ -14,16 +16,13 @@ export default class ForceMerge extends Component {
   }
 
   render() {
-
-
-      return (
-        <div
-          key="ForceMege"
-          className="ForceMege">
-            <div
-              onClick={() => this.props.toggleModal('forceMergeVisible')}
-              className="ForceMege__close"></div>
-            <h4 className="ForceMege__header">Force Merge</h4>
+    return (
+      <Modal
+        handleClose={()=> this.props.toggleModal('forceMergeVisible')}
+        header="Force Merge"
+        size="medium"
+        renderContent={()=>
+          <Fragment>
             <p className="ForceMege__text">Merge failed. Do you want to force merge?</p>
             <div className="ForceMege__button-container">
               <button
@@ -35,6 +34,9 @@ export default class ForceMerge extends Component {
                 No
               </button>
             </div>
-        </div>)
+          </Fragment>
         }
-      }
+      />
+    )
+  }
+}

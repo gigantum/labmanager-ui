@@ -133,13 +133,13 @@ export default class Routes extends Component {
                     exact
                     path="/:id"
                     render={(props) =>
-                      <Redirect to="/labbooks/all"/>
+                      <Redirect to="/labbooks/local"/>
                     }
                   />
 
                   <Route
                     exact
-                    path="/labbooks/:labbookFilter"
+                    path="/labbooks/:labbookSection"
                     render={(props) =>
                       <Home
                         history={history}

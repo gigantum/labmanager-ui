@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Wed May 30 2018 10:55:53 GMT-0400 (EDT)
+# timestamp: Fri Jun 01 2018 13:14:06 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -460,7 +460,7 @@ type Environment implements Node & GitRepository {
   containerStatus: ContainerStatus
   base: BaseComponent
   packageDependencies(before: String, after: String, first: Int, last: Int): PackageComponentConnection
-  customDependencies(before: String, after: String, first: Int, last: Int): CustomComponentConnection
+  customDependencies(before: String, after: String, first: Int, last: Int): CustomComponentConnection @deprecated(reason: "Custom Dependencies have been replaced with custom docker interface")
   dockerSnippet: String
 }
 
@@ -696,6 +696,7 @@ NOTE: Currently all RemoteLabbook description fields will return empty strings
 type LabbookList implements Node {
   """The ID of the object."""
   id: ID!
+  localById(ids: [String]): [Labbook]
   localLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): LabbookConnection
   remoteLabbooks(sort: String = "az", reverse: Boolean = false, before: String, after: String, first: Int, last: Int): RemoteLabbookConnection
 }
