@@ -190,7 +190,8 @@ export default class FileBrowserWrapper extends Component {
       let fileSizeNotAllowedString = fileSizeNotAllowedNames.join(', ')
 
       if(fileSizeNotAllowedString.length > 0){
-        let message = `Cannot upload files over 100 Mb to the code directory. The following files have not been added ${fileSizeNotAllowedString}`
+        let size = this.props.section === 'code' ? '100 MB' : '1.8 GB'
+        let message = `Cannot upload files over ${size} to the ${this.props.section} directory. The following files have not been added ${fileSizeNotAllowedString}`
 
         store.dispatch({
           type: 'WARNING_MESSAGE',
@@ -271,7 +272,6 @@ export default class FileBrowserWrapper extends Component {
   *
   */
   _startFileUpload(files, prefix, fileSizeData){
-
     let fileMetaData =  getTotalFileLength(files),
     totalFiles = fileMetaData.fileCount - fileSizeData.fileSizeNotAllowed,
     hasDirectoryUpload = fileMetaData.hasDirectoryUpload,
@@ -350,10 +350,11 @@ export default class FileBrowserWrapper extends Component {
   *
   * @return {number} totalFiles
   */
-  _checkFileSize = (files) => {
+  _checkFileSize = (files, noPrompt) => {
 
     const tenMB = 10 * 1000 * 1000;
     const oneHundredMB = 100 * 1000 * 1000;
+    const eighteenHundredMB = oneHundredMB * 18;
     let fileSizePrompt = []
     let fileSizeNotAllowed = []
 
@@ -372,13 +373,18 @@ export default class FileBrowserWrapper extends Component {
         let extension = file.name ? file.name.replace(/.*\./, '') : file.entry.fullPath.replace(/.*\./, '');
 
         if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && ((file.entry && file.entry.isFile) || (typeof file.type === 'string'))){
+          if(!noPrompt){
+            if(file.size > oneHundredMB){
+              fileSizeNotAllowed.push(file)
+            }
 
-          if(file.size > oneHundredMB){
-            fileSizeNotAllowed.push(file)
-          }
-
-          if((file.size > tenMB) && (file.size < oneHundredMB)){
-            fileSizePrompt.push(file)
+            if((file.size > tenMB) && (file.size < oneHundredMB)){
+              fileSizePrompt.push(file)
+            }
+          } else {
+            if(file.size > eighteenHundredMB){
+              fileSizeNotAllowed.push(file)
+            }
           }
         }
       }
@@ -413,7 +419,8 @@ export default class FileBrowserWrapper extends Component {
           this._promptUserToAcceptUpload()
         }
       }else{
-        this._startFileUpload(files, prefix, {fileSizeNotAllowed: [], fileSizePrompt: []});
+        let fileSizeData = this._checkFileSize(files, true);
+        this._startFileUpload(files, prefix, fileSizeData);
       }
     }
   }
