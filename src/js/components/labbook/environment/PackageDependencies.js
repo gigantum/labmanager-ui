@@ -40,7 +40,9 @@ class PackageDependencies extends Component {
       'disableInstall': false,
       'installDependenciesButtonState': '',
       'hardDisable': false,
+      'latestVersion': store.getState().environment.latestPackages
     };
+
     //bind functions here
     this._loadMore = this._loadMore.bind(this)
     this._setSelectedTab = this._setSelectedTab.bind(this)
@@ -53,6 +55,25 @@ class PackageDependencies extends Component {
       this._loadMore() //routes query only loads 2, call loadMore
 
     }
+    let nextPackages= nextProps.environment.packageDependencies
+
+    if(nextPackages.edges && nextPackages.edges[0] && nextPackages.edges[0].node.latestVersion){
+      let latestPackages = {};
+      nextPackages.edges.forEach(({node}) =>{
+        if (latestPackages[node.manager]) {
+          latestPackages[node.manager][node.package] = node.latestVersion
+        } else {
+          latestPackages[node.manager] = {[node.package]: node.latestVersion}
+        }
+      })
+      store.dispatch({
+        type: 'SET_LATEST_PACKAGES',
+        payload: {
+          latestPackages
+        }
+      })
+    }
+
   }
   /*
     handle state and addd listeners when component mounts
@@ -61,7 +82,7 @@ class PackageDependencies extends Component {
     if(this.props.environment.packageDependencies.pageInfo.hasNextPage){
       this._loadMore() //routes query only loads 2, call loadMore
     }else{
-      //this._refetch() //removed for latest  version fix
+      // this._refetch() //removed for latest  version fix
     }
 
     if(this.state.selectedTab === ''){
@@ -111,7 +132,7 @@ class PackageDependencies extends Component {
 
          self._loadMore()
        }else{
-         //self._refetch() commented out to stop latest version check
+         self._refetch() //commented out to stop latest version check'
        }
      }
    );
@@ -133,7 +154,6 @@ class PackageDependencies extends Component {
       relay.refetchConnection(
         totalCount + 5,
         (response) =>{
-
           self.setState({forceRender: true})
         },
         {
@@ -452,7 +472,7 @@ class PackageDependencies extends Component {
 
               setTimeout(()=>{
                 self.setState({installDependenciesButtonState: ''})
-                //self._refetch() removed refetch so on latest version
+                self._refetch()
                 self.props.buildCallback()
               }, 2000)
 
@@ -580,7 +600,7 @@ class PackageDependencies extends Component {
                             className={`PackageDependencies__table-row--${node.validity}` }
                             key={node.packageName + node.version}>
                             <td className="PackageDependencies__td-package">{`${node.packageName}`}</td>
-                            <td className="PackageDependencies__td-version">{node.validity === 'checking' ? `retrieving ${version === 'latest'?'latest version': `v${version}`}` : version}
+                            <td className="PackageDependencies__td-version">{node.validity === 'checking' ? `retrieving ${version === 'latest'?'latest version': `${version}`}` : version}
                             {
                               node.validity === 'checking' &&
                               <div className="PackageDependencies__version-loading"></div>
@@ -630,7 +650,7 @@ class PackageDependencies extends Component {
               <tr>
                 <th>Package Name</th>
                 <th>Current</th>
-                {/* <th>Latest</th> disabled for beta release*/ }
+                <th>Latest</th>
                 <th>Installed By</th>
                 <th></th>
               </tr>
@@ -655,11 +675,14 @@ class PackageDependencies extends Component {
 
   _packageRow(edge, index){
     const installer = edge.node.fromBase ? 'System' : 'User'
-    //temporarily removed latestVersion
-    const {version, /* latestVersion */} = edge.node
+    const {version, latestVersion} = edge.node
     const versionText = version ?  `v${version}` : ''
-    // disbaled for beta release
-    // const latestVersionText = latestVersion ?  `v${latestVersion}` : ''
+    let latestVersionText = latestVersion ?  `v${latestVersion}` : null
+    if(!latestVersionText) {
+      if(this.state.latestVersion[edge.node.manager] && this.state.latestVersion[edge.node.manager][edge.node.package]){
+        latestVersionText = this.state.latestVersion[edge.node.manager][edge.node.package]
+      }
+    }
     let trCSS = classNames({
       'PackageDependencies__optimistic-updating': edge.node.id === undefined
     })
@@ -670,7 +693,7 @@ class PackageDependencies extends Component {
          key={edge.node.package + edge.node.manager + index}>
         <td>{edge.node.package}</td>
         <td>{versionText}</td>
-        {/* <td>{latestVersionText}</td>  disabled for beta release*/}
+        <td>{latestVersionText}</td>
         <td>{installer}</td>
         <td width="60">
           <button

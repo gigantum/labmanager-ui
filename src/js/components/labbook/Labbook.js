@@ -91,8 +91,12 @@ class Labbook extends Component {
   */
   componentWillUnmount() {
     unsubscribe()
-
-
+    store.dispatch({
+      type: 'SET_LATEST_PACKAGES',
+      payload: {
+        latestPackages: {}
+      }
+    })
     window.removeEventListener('scroll', this._setStickHeader)
 
     window.removeEventListener('click', this._branchViewClickedOff)

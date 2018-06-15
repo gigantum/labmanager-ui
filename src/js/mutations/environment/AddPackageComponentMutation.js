@@ -114,7 +114,7 @@ export default function AddPackageComponentMutation(
               schema,
               version,
               // removed temporarily
-              // latestVersion,
+              latestVersion,
               fromBase } = response.addPackageComponent.newPackageComponentEdge.node
 
           //TODO use edge from linked record
@@ -125,6 +125,7 @@ export default function AddPackageComponentMutation(
             node.setValue(manager, 'manager')
             node.setValue(packageName, 'package')
             node.setValue(version, 'version')
+            node.setValue(latestVersion, 'latestVersion')
             node.setValue(schema, 'schema')
             node.setValue(fromBase, 'fromBase')
             node.setValue(response.addPackageComponent.newPackageComponentEdge.node.id, 'id')
