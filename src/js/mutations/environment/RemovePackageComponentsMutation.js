@@ -6,8 +6,8 @@ import environment from 'JS/createRelayEnvironment'
 import RelayRuntime from 'relay-runtime'
 let tempID = 0;
 const mutation = graphql`
-  mutation RemovePackageComponentMutation($input: RemovePackageComponentInput!){
-    removePackageComponent(input: $input){
+  mutation RemovePackageComponentsMutation($input: RemovePackageComponentsInput!){
+    removePackageComponents(input: $input){
       success
       clientMutationId
     }
@@ -29,11 +29,11 @@ function sharedUpdater(store, parentID, deletedId, connectionKey) {
       );
       store.delete(deletedId)
     }
-    
+
   }
 }
 
-export default function RemovePackageComponentMutation(
+export default function RemovePackageComponentsMutation(
   labbookName,
   owner,
   manager,
