@@ -61,6 +61,10 @@ export default class DashboardContainer extends Component {
     }
   }
 
+  componentDidCatch(){
+    this.props.auth.login();
+  }
+
 
 
   /**
