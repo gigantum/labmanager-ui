@@ -76,8 +76,8 @@ function getClientEnvironment(publicUrl) {
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
 
-        GIGANTUM_API:':10001/labbook/', // (process.env.NODE_ENV === 'development') ? 'http://127.0.0.1:5000/labbook/' : 'http://api.localhost:5000/labbook/'
-        PING_API:':10001/ping/'
+        GIGANTUM_API: '/api/labbook/', // (process.env.NODE_ENV === 'development') ? 'http://127.0.0.1:5000/labbook/' : 'http://api.localhost:5000/labbook/'
+        PING_API: '/api/ping'
 
       }
     );
