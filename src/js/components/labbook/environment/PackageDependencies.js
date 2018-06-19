@@ -132,7 +132,7 @@ class PackageDependencies extends Component {
 
          self._loadMore()
        }else{
-         self._refetch() //commented out to stop latest version check'
+         self._refetch()
        }
      }
    );
