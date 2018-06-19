@@ -14,22 +14,23 @@ const mutation = graphql`
   }
 `;
 
-function sharedUpdater(store, parentID, deletedId, connectionKey) {
+function sharedUpdater(store, parentID, deletedIdArr, connectionKey) {
   const environmentProxy = store.get(parentID);
   if(environmentProxy) {
-    const conn = RelayRuntime.ConnectionHandler.getConnection(
-      environmentProxy,
-      connectionKey,
-    );
-
-    if(conn){
-      RelayRuntime.ConnectionHandler.deleteNode(
-        conn,
-        deletedId,
+    deletedIdArr.forEach(deleteId =>{
+      const conn = RelayRuntime.ConnectionHandler.getConnection(
+        environmentProxy,
+        connectionKey,
       );
-      store.delete(deletedId)
-    }
 
+      if(conn){
+        RelayRuntime.ConnectionHandler.deleteNode(
+          conn,
+          deleteId,
+        );
+        store.delete(deleteId)
+      }
+    })
   }
 }
 
@@ -37,13 +38,20 @@ export default function RemovePackageComponentsMutation(
   labbookName,
   owner,
   manager,
-  packageName,
-  nodeID,
+  packages,
+  packageIDArr,
   clientMutationId,
   environmentId,
   connection,
   callback
 ) {
+
+  const config = packageIDArr.map(id => {
+    return {
+      type: 'NODE_DELETE',
+      deletedIDFieldName: id,
+    }
+  })
 
 
   const variables = {
@@ -51,7 +59,7 @@ export default function RemovePackageComponentsMutation(
       labbookName,
       owner,
       manager,
-      package: packageName,
+      packages,
       clientMutationId: tempID++
     }
   }
@@ -60,10 +68,7 @@ export default function RemovePackageComponentsMutation(
     {
       mutation,
       variables,
-      config: [{
-        type: 'NODE_DELETE',
-        deletedIDFieldName: nodeID,
-      }],
+      config,
       onCompleted: (response, error) => {
         if(error){
           console.log(error)
@@ -72,10 +77,10 @@ export default function RemovePackageComponentsMutation(
       },
       onError: err => console.error(err),
       updater: (store, response) => {
-        sharedUpdater(store, environmentId, nodeID, 'PackageDependencies_packageDependencies')
+        sharedUpdater(store, environmentId, packageIDArr, 'PackageDependencies_packageDependencies')
       },
       optimisticUpdater: (store) => {
-        sharedUpdater(store, environmentId, nodeID, 'PackageDependencies_packageDependencies')
+        sharedUpdater(store, environmentId, packageIDArr, 'PackageDependencies_packageDependencies')
       },
     },
   )

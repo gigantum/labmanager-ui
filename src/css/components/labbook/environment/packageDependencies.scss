@@ -121,17 +121,21 @@ td.PackageDependencies__td-version {
   background-size: 16px;
 }
 
-.PackageDependencies__button--remove {
-  background: $azure url('../images/icons/close-white.svg') no-repeat 50% 50%;
-  background-size: 14px;
+.PackageDependencies__button--remove,
+.PackagesDependencies__button--remove:focus {
+  background: $azure url('../images/icons/close-white.svg') no-repeat 50% 50% !important;
+  background-size: 14px !important;
 }
-.PackageDependencies__button--remove:hover {
+.PackageDependencies__button--remove:hover,
+.PackageDependencies__button--remove--selected:focus,
+.PackageDependencies__button--remove--selected:hover,
+  .PackageDependencies__button--remove--selected  {
   background: $turquise url('../images/icons/close-white.svg') no-repeat 50% 50%;
   background-size: 14px;
 }
 
 .PackageDependencies__button--line-18:hover,
-.PackageDependencies__button--line-18:focus {
+.PackageDependencies__button--line-18:focus{
   color: $turquise !important;
   background: url('../images/icons/down-arrow-turquise.svg') no-repeat calc(50% + 90px) 50%;
   background-size: 25px;
