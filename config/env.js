@@ -77,7 +77,7 @@ function getClientEnvironment(publicUrl) {
         PUBLIC_URL: publicUrl,
 
         GIGANTUM_API: '/api/labbook/', // (process.env.NODE_ENV === 'development') ? 'http://127.0.0.1:5000/labbook/' : 'http://api.localhost:5000/labbook/'
-        PING_API: '/api/ping'
+        PING_API: '/api/ping/'
 
       }
     );
