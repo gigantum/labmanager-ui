@@ -59,6 +59,26 @@ function sharedDeleteUpdater(store, parentID, deletedId) {
   }
 }
 
+function sharedDeleter(store, parentID, deletedIdArr, connectionKey) {
+  const environmentProxy = store.get(parentID);
+  if(environmentProxy) {
+    deletedIdArr.forEach(deleteId =>{
+      const conn = RelayRuntime.ConnectionHandler.getConnection(
+        environmentProxy,
+        connectionKey,
+      );
+
+      if(conn){
+        RelayRuntime.ConnectionHandler.deleteNode(
+          conn,
+          deleteId,
+        );
+        store.delete(deleteId)
+      }
+    })
+  }
+}
+
 export default function AddPackageComponentsMutation(
   labbookName,
   owner,
@@ -66,6 +86,7 @@ export default function AddPackageComponentsMutation(
   clientMutationId,
   environmentId,
   connection,
+  duplicates,
   callback
 ) {
 
@@ -78,20 +99,32 @@ export default function AddPackageComponentsMutation(
       clientMutationId: tempID++
     }
   }
+
+  const config = [{
+    type: 'RANGE_ADD',
+    parentID: environmentId,
+    connectionInfo: [{
+      key: 'PackageDependencies_packageDependencies',
+      rangeBehavior: 'prepend',
+    }],
+    edgeName: 'newPackageComponentEdge',
+  }]
+
+  if(duplicates.length) {
+    duplicates.forEach((id) =>{
+      config.unshift({
+        type: 'NODE_DELETE',
+        deletedIDFieldName: id,
+      })
+    })
+  }
+
   commitMutation(
     environment,
     {
       mutation,
       variables,
-      config: [{
-        type: 'RANGE_ADD',
-        parentID: environmentId,
-        connectionInfo: [{
-          key: 'PackageDependencies_packageDependencies',
-          rangeBehavior: 'prepend',
-        }],
-        edgeName: 'newPackageComponentEdge',
-      }],
+      config,
       onCompleted: (response, error) => {
         if(error){
           console.log(error)
@@ -122,7 +155,7 @@ export default function AddPackageComponentsMutation(
               );
 
               newEdge.setLinkedRecord(node, 'node');
-
+              sharedDeleter(store, environmentId, duplicates, 'PackageDependencies_packageDependencies')
               sharedUpdater(store, environmentId, newEdge);
             }
           })
@@ -151,7 +184,7 @@ export default function AddPackageComponentsMutation(
           if(newEdge) {
             newEdge.setLinkedRecord(node, 'node');
           }
-
+          sharedDeleter(store, environmentId, duplicates, 'PackageDependencies_packageDependencies')
           sharedUpdater(store, environmentId, newEdge);
 
           const labbookProxy = store.get(environmentId);

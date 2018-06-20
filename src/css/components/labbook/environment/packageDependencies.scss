@@ -121,21 +121,38 @@ td.PackageDependencies__td-version {
   background-size: 16px;
 }
 
+.PackageDependencies__button--remove--adder,
+.PackagesDependencies__button--remove-adder:focus {
+  background: $azure url('../images/icons/close-white.svg') no-repeat 50% 50%;
+  background-size: 14px;
+}
+
 .PackageDependencies__button--remove,
 .PackagesDependencies__button--remove:focus {
-  background: $azure url('../images/icons/close-white.svg') no-repeat 50% 50% !important;
-  background-size: 14px !important;
+  background: $white !important;
 }
-.PackageDependencies__button--remove:hover,
-.PackageDependencies__button--remove--selected:focus,
-.PackageDependencies__button--remove--selected:hover,
-  .PackageDependencies__button--remove--selected  {
+
+.PackageDependencies__button--remove--adder:hover {
   background: $turquise url('../images/icons/close-white.svg') no-repeat 50% 50%;
   background-size: 14px;
 }
 
-.PackageDependencies__button--line-18:hover,
-.PackageDependencies__button--line-18:focus{
+.PackageDependencies__button--remove:hover {
+  background: $azure url('../images/icons/close-white.svg') no-repeat 50% 50% !important;
+  background-size: 14px !important;
+  border-color: $azure;
+}
+
+.PackageDependencies__button--remove--selected:focus,
+.PackageDependencies__button--remove--selected:hover,
+  .PackageDependencies__button--remove--selected  {
+  background: $azure url('../images/icons/close-white.svg') no-repeat 50% 50%;
+  background-size: 14px;
+  border-color: $azure;
+
+}
+
+.PackageDependencies__button--line-18:hover{
   color: $turquise !important;
   background: url('../images/icons/down-arrow-turquise.svg') no-repeat calc(50% + 90px) 50%;
   background-size: 25px;
@@ -238,4 +255,14 @@ td.PackageDependencies__td-version {
   margin-left: 10px;
   display: inline-block;
   animation: spin 2s linear infinite;
+}
+
+.PackageDependencies__remove-row{
+  width: 100%;
+  @include flex(flex-end, row);
+  margin-top: 15px;
+}
+
+.PackageDependencies__select-row{
+  text-align: center;
 }
