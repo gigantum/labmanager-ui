@@ -1,5 +1,5 @@
 # source: http://localhost:10001/labbook/
-# timestamp: Mon Jun 11 2018 14:12:27 GMT-0400 (EDT)
+# timestamp: Wed Jun 20 2018 10:24:42 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -147,13 +147,11 @@ input AddLabbookFileInput {
   section: String!
   filePath: String!
   chunkUploadParams: ChunkUploadInput!
-  transactionId: String!
   clientMutationId: String
 }
 
 """
-Mutation to add a file to a labbook. File should be sent in the
-`uploadFile` key as a multi-part/form upload.
+Mutation to add a file to a labbook. File should be sent in the `uploadFile` key as a multi-part/form upload.
 file_path is the relative path from the labbook section specified.
 """
 type AddLabbookFilePayload {
@@ -276,20 +274,6 @@ input ChunkUploadInput {
   chunkIndex: Int!
   filename: String!
   uploadId: String!
-}
-
-input CompleteBatchUploadTransactionInput {
-  owner: String!
-  labbookName: String!
-  transactionId: String!
-  cancel: Boolean
-  rollback: Boolean
-  clientMutationId: String
-}
-
-type CompleteBatchUploadTransactionPayload {
-  success: Boolean
-  clientMutationId: String
 }
 
 """An enumeration for container image status"""
@@ -561,7 +545,7 @@ type JobStatus implements Node {
 }
 
 """
-A Connection for paging through all background jobs the system is aware of.
+A Connection for paging through all background jobs the system is aware of. 
 """
 type JobStatusConnection {
   pageInfo: PageInfo!
@@ -746,7 +730,6 @@ type LabbookMutations {
   addCustomDocker(input: AddCustomDockerInput!): AddCustomDockerPayload
   removeCustomDocker(input: RemoveCustomDockerInput!): RemoveCustomDockerPayload
   addLabbookFile(input: AddLabbookFileInput!): AddLabbookFilePayload
-  completeBatchUploadTransaction(input: CompleteBatchUploadTransactionInput!): CompleteBatchUploadTransactionPayload
   moveLabbookFile(input: MoveLabbookFileInput!): MoveLabbookFilePayload
   deleteLabbookFile(input: DeleteLabbookFileInput!): DeleteLabbookFilePayload
   makeLabbookDirectory(input: MakeLabbookDirectoryInput!): MakeLabbookDirectoryPayload
@@ -825,7 +808,7 @@ type LabbookRefEdge {
 
 """
 A type representing a section within a LabBook (i.e., code, input, output)
-
+    
 """
 type LabbookSection implements Node & GitRepository {
   """The ID of the object."""
@@ -861,7 +844,7 @@ input MergeFromBranchInput {
 }
 
 """
-Merge from another branch into the current active branch. Force if necessary.
+Merge from another branch into the current active branch. Force if necessary. 
 """
 type MergeFromBranchPayload {
   labbook: Labbook
