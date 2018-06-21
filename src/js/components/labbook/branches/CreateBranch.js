@@ -9,6 +9,7 @@ import ButtonLoader from 'Components/shared/ButtonLoader'
 import Modal from 'Components/shared/Modal'
 //utilities
 import validation from 'JS/utils/Validation'
+import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
 
@@ -169,6 +170,28 @@ export default class CreateBranchModal extends Component {
           }, 1000)
 
         }else{
+
+          if(this.props.selected){
+            this.props.setBuildingState(true)
+            BuildImageMutation(
+              labbookName,
+              owner,
+              false,
+              (response, error) => {
+                if(error){
+                  store.dispatch({
+                    type: 'ERROR_MESSAGE',
+                    payload:{
+                      message: `${labbookName} failed to build`,
+                      messageBody: error
+                    }
+                  })
+                }
+
+                return "finished"
+              }
+            )
+          }
 
           this.setState({buttonLoaderCreateBranch: 'finished'})
         }
