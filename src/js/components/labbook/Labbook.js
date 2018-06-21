@@ -551,6 +551,7 @@ class Labbook extends Component {
                               labbookId={labbook.id}
                               activeBranch={labbook.activeBranch}
                               isMainWorkspace={name === 'workspace'}
+                              setBuildingState={this._setBuildingState}
                               {...this.props}
                             />)
                         }} />
