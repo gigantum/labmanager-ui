@@ -57,10 +57,10 @@ export default class Login extends Component {
     const isUnauthorized = errorDescription === 'Gigantum is currently in a limited Beta. Access will be expanded soon!';
     return (
       <div className="Login">
-
         {
-          !isAuthenticated() && (
+          (!isAuthenticated() || this.props.forceLoginScreen)  && (
             <div className="Login__panel">
+                <div className="demo-header">Login or create an account to try out Gigantum. <a href="https://docs.gigantum.com/docs/frequently-asked-questions#section-why-do-i-need-to-log-in" rel="noopener noreferrer" target="_blank" >Why?</a></div>
               { errorType &&
 
                 <div className="LoginError">

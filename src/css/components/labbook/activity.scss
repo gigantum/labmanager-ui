@@ -86,6 +86,10 @@
   @extend .box-shadow;
 }
 
+.Activity__new-record.is-demo{
+  top: 200px;
+}
+
 .Activity__new-record:hover{
   color: $turquise;
   border: 1px solid $turquise;
@@ -277,6 +281,14 @@
 
 .Activity__date-tab.is-expanded{
   top: 90px;
+}
+
+.Activity__date-tab.is-demo{
+  top: 100px;
+}
+
+.Activity__date-tab.is-expanded.is-demo{
+  top: 140px;
 }
 
 .Activity__date-tab {

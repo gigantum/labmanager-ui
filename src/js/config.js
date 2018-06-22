@@ -55,7 +55,8 @@ const CONFIG = {
 
       return encodeURI(apiURL)
     }
-  }
+  },
+  demoHostName: 'localhost',
 }
 
 export default CONFIG
