@@ -808,6 +808,7 @@ class Activity extends Component {
                 activeBranch={this.props.activeBranch}
                 modalVisible={this.state.createBranchVisible}
                 toggleModal={this._toggleCreateModal}
+                setBuildingState={this.props.setBuildingState}
               />
               {
                 recordDates.map((k, i) => {
