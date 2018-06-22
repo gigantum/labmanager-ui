@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
+import {unregister} from './registerServiceWorker';
 import './../css/critical.scss';
 import UserIdentity from 'JS/Auth/UserIdentity'
 import Auth from 'JS/Auth/Auth'
@@ -40,4 +40,4 @@ render(
   , document.getElementById('root') || document.createElement('div')
 
 );
-registerServiceWorker();
+unregister();
