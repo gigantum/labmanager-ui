@@ -37,10 +37,10 @@ export default class ButtonLoader extends Component {
     })
 
     let buttonTestToDisplay = buttonState !== 'finished' ? buttonText : '✓'
-
+    console.log(buttonState, buttonDisabled)
     return (
       <button
-        disabled={buttonState !== '' || buttonDisabled}
+        disabled={ buttonDisabled}
         className={buttonLoaderCSS}
         onClick={(evt => this.props.clicked(evt, params))}>
 

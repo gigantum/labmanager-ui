@@ -38,11 +38,14 @@ class Activity extends Component {
       'newActivityPolling': false,
       'editorFullscreen': false,
       'hoveredRollback': null,
-      'expandedClusterObject': new Set(),
+      'expandedClusterObject': new Map(),
       'newActivityForcePaused': false,
       'refetchForcePaused': false,
-      'activityRecords': this._transformActivity(this.props.labbook.activityRecords)
+      'activityRecords': this._transformActivity(this.props.labbook.activityRecords),
+      'stickyDate': false,
+      'compressedElements': new Set(),
     };
+    this.dates = [];
 
     //bind functions here
     this._loadMore = this._loadMore.bind(this)
@@ -54,18 +57,28 @@ class Activity extends Component {
     this._scrollTo = this._scrollTo.bind(this)
     this._stopRefetch = this._stopRefetch.bind(this)
     this._toggleCreateModal = this._toggleCreateModal.bind(this)
-    this._getNewActivties = this._getNewActivties.bind(this)
+    this._getNewActivities = this._getNewActivities.bind(this)
     this._changeFullscreenState = this._changeFullscreenState.bind(this)
     this._handleVisibilityChange = this._handleVisibilityChange.bind(this)
     this._transformActivity = this._transformActivity.bind(this)
     this._countUnexpandedRecords = this._countUnexpandedRecords.bind(this)
+    this._addCluster = this._addCluster.bind(this)
+    this._compressExpanded = this._compressExpanded.bind(this)
+    this._setStickyDate =  this._setStickyDate.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
-
     let activityRecords = nextProps.labbook.activityRecords
     if(JSON.stringify(this._transformActivity(activityRecords)) !== JSON.stringify(this.state.activityRecords)) {
-      this.setState({activityRecords: this._transformActivity(activityRecords)})
+      let prevCommit = this.props.labbook && this.props.labbook.activityRecords.edges && this.props.labbook.activityRecords.edges[0].node
+      let newcommit = nextProps.labbook && nextProps.labbook.activityRecords.edges && nextProps.labbook.activityRecords.edges[0].node
+
+      if(prevCommit && prevCommit !== newcommit){
+        this.setState({expandedClusterObject: new Map()}, () => this.setState({activityRecords: this._transformActivity(activityRecords)}))
+      } else{
+        this.setState({activityRecords: this._transformActivity(activityRecords)})
+
+      }
     }
 
     if(activityRecords.pageInfo.hasNextPage && (activityRecords.edges.length < 3)){
@@ -86,13 +99,11 @@ class Activity extends Component {
 
     window.addEventListener('scroll', this._handleScroll)
     window.addEventListener('visibilitychange', this._handleVisibilityChange)
-    if((activityRecords.pageInfo.hasNextPage && activityRecords.edges.length < 2)){
+
+    if (activityRecords.pageInfo.hasNextPage && (this._countUnexpandedRecords() < 7)) {
 
       this._loadMore()
-    } else {
-      if(activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
-        this._loadMore()
-      }
+
     }
 
     if(activityRecords.edges && activityRecords.edges.length){
@@ -160,7 +171,7 @@ class Activity extends Component {
    * kicks off scroll to top
    * @return {}
    */
-  _getNewActivties(){
+  _getNewActivities(){
 
     window.addEventListener('scroll', this._scrollTo)
 
@@ -284,7 +295,7 @@ class Activity extends Component {
        if(error){
          console.error(error)
        }
-       if(this.props.labbook.activityRecords.pageInfo.hasNextPage && this._countUnexpandedRecords() < 7){
+       if((this.props.labbook.activityRecords.pageInfo.hasNextPage) && (this._countUnexpandedRecords() < 7) && (this._countUnexpandedRecords() > 2)){
         self._loadMore();
        } else{
         this.setState({
@@ -327,12 +338,39 @@ class Activity extends Component {
     return visibleRecords.length + recordCount;
   }
   /**
+    *  @param {}
+    *   determines value of stickyDate by checking vertical offset and assigning it to the state
+    *
+  */
+  _setStickyDate(){
+    let isExpanded = (window.pageYOffset < this.offsetDistance) && (window.pageYOffset > 120)
+    this.offsetDistance = window.pageYOffset;
+    let stickyDate = null;
+    this.dates.forEach((date)=> {
+      if(date && date.e){
+        let bounds = date.e.getBoundingClientRect()
+        if((!isExpanded && bounds.top < 80) || (isExpanded && bounds.top < 120)){
+          stickyDate = date.time
+          date.e.classList.add('not-visible')
+          date.e.nextSibling && date.e.nextSibling.classList.add('next-element')
+        } else {
+          date.e.classList.remove('not-visible')
+          date.e.nextSibling && date.e.nextSibling.classList.remove('next-element')
+
+        }
+      }
+    })
+    if (stickyDate !== this.state.stickyDate){
+      this.setState({stickyDate})
+    }
+  }
+  /**
   *  @param {evt}
   *   handles scolls and passes off loading to pagination container
   *
   */
   _handleScroll(evt){
-
+    this._setStickyDate()
     let {isPaginating} = this.state
 
     let activityRecords = this.props.labbook.activityRecords,
@@ -367,11 +405,16 @@ class Activity extends Component {
 
       if(edge && edge.node){
         let date = (edge.node && edge.node.timestamp) ? new Date(edge.node.timestamp) : new Date()
-        let timeHash = `${date.getYear()}_${date.getMonth()}_${date.getDate()}`;
+        let timeHash = `${date.getFullYear()}_${date.getMonth()}_${date.getDate()}`;
         count = edge.node.show || (previousTimeHash && timeHash !== previousTimeHash) ? 0 : count + 1;
         previousTimeHash = timeHash;
 
-        let newActivityObject = {edge: edge, date: date, collapsed: (count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state))), flatIndex: index}
+        let isExpandedHead = this.state && this.state.expandedClusterObject.has(index) && !this.state.expandedClusterObject.has(index - 1)
+        let isExpandedEnd =  this.state && this.state.expandedClusterObject.has(index) && !this.state.expandedClusterObject.has(index + 1)
+        let isExpandedNode = this.state && this.state.expandedClusterObject.has(index)
+        let attachedCluster = this.state && this.state.expandedClusterObject.has(index) && this.state.expandedClusterObject.get(index)
+
+        let newActivityObject = {edge: edge, date: date, collapsed: (count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state))), flatIndex: index, isExpandedHead, isExpandedEnd, isExpandedNode, attachedCluster}
 
         if(count > 2 && ((this.state && !this.state.expandedClusterObject.has(index)) || (!this.state)) ){
           activityTime[timeHash][activityTime[timeHash].length - 1].collapsed =  true;
@@ -414,9 +457,7 @@ class Activity extends Component {
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
     if(canEditEnvironment) {
-      this.setState({selectedNode: node})
-      document.getElementById('modal__cover').classList.remove('hidden')
-      this.setState({createBranchVisible: true})
+      this.setState({selectedNode: node, createBranchVisible: true})
     } else {
       store.dispatch({
         type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
@@ -453,20 +494,18 @@ class Activity extends Component {
     const {status} = store.getState().containerStatus;
     const canEditEnvironment = config.containerStatus.canEditEnvironment(status)
     if(canEditEnvironment){
-      document.getElementById('modal__cover').classList.remove('hidden')
       this.setState({createBranchVisible: true, selectedNode: null})
     } else {
-      store.dispatch({
-        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-        payload: {
-          containerMenuOpen: true
-        }
-      })
-
       store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
           message: 'Stop LabBook before creating branches. \n Be sure to save your changes.'
+        }
+      })
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
         }
       })
     }
@@ -491,15 +530,47 @@ class Activity extends Component {
   *   @return {}
   */
   _deleteCluster(clusterElements){
-    let newExpandedClusterObject = new Set(this.state.expandedClusterObject)
+    let newExpandedClusterObject = new Map(this.state.expandedClusterObject)
     if (newExpandedClusterObject !== {}){
       clusterElements.forEach((val) => {
-        newExpandedClusterObject.add(val)
+        newExpandedClusterObject.set(val, clusterElements)
       })
     }
     this.setState({expandedClusterObject: newExpandedClusterObject}, ()=> {
       this.setState({activityRecords: this._transformActivity(this.props.labbook.activityRecords)})
     })
+  }
+
+  /**
+    *   @param {array} clusterElements
+    *   modifies expandedClusterObject from state
+    *   @return {}
+  */
+ _addCluster(clusterElements){
+  let newExpandedClusterObject = new Map(this.state.expandedClusterObject)
+  if (newExpandedClusterObject !== {}){
+    clusterElements.forEach((val) => {
+      newExpandedClusterObject.delete(val)
+    })
+  }
+  this.setState({expandedClusterObject: newExpandedClusterObject}, ()=> {
+    this.setState({activityRecords: this._transformActivity(this.props.labbook.activityRecords)})
+    this._compressExpanded(clusterElements, true)
+  })
+}
+
+  _compressExpanded(clusterElements, remove){
+    let newCompressedElements = new Set(this.state.compressedElements)
+    if(remove){
+      clusterElements.forEach((val) => {
+        newCompressedElements.delete(val)
+      })
+    } else{
+      clusterElements.forEach((val) => {
+        newCompressedElements.add(val)
+      })
+    }
+    this.setState({compressedElements: newCompressedElements});
   }
 
   /**
@@ -526,56 +597,80 @@ class Activity extends Component {
   */
 
   _visibleCardRenderer(obj, clusterElements, i, j, k){
-    clusterElements = [];
     let isLastRecordObj = i === Object.keys(this.state.activityRecords).length -1;
     let isLastRecordNode = j === this.state.activityRecords[k].length -1;
     let isLastPage = !this.props.labbook.activityRecords.pageInfo.hasNextPage;
     let rollbackableDetails = obj.edge.node.detailObjects.filter((detailObjs) => {
       return detailObjs.type !== 'RESULT' && detailObjs.type !=='CODE_EXECUTED';
     })
+    let isCompressed = this.state.compressedElements.has(obj.flatIndex)
     return (
-      <div className="ActivtyCard__wrapper"  key={obj.edge.node.id}>
-        { ((i !== 0 ) || (j !== 0)) &&
-          <div className="Activity__submenu-container">
-          {
-            (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) &&
-          <Fragment>
-            <div
-                className="Activity__submenu-circle"
-                onClick={(evt)=>this._toggleSubmenu(evt)}
-              >
-              </div>
-              <div className="Activity__submenu-subcontainer">
-                <div
-                  className="Activity__rollback"
-                  onMouseOver={() => this.setState({hoveredRollback: obj.flatIndex})}
-                  onMouseOut={() => this.setState({hoveredRollback : null})}
-                  onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+      <Fragment key={obj.edge.node.id}>
+        <div className="ActivityCard__wrapper">
+          { ((i !== 0 ) || (j !== 0)) &&
+            <div className="Activity__submenu-container">
+            {
+              (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) && this.state.compressedElements.size === 0 &&
+            <Fragment>
+              <div
+                  className="Activity__submenu-circle"
+                  onClick={(evt)=>this._toggleSubmenu(evt)}
                 >
-                  <button
-                    className="Activity__rollback-button"
-                  >
-                  </button>
-                  <h5
-                    className="Activity__rollback-text"
-                  >
-                    Rollback
-                  </h5>
                 </div>
-              </div>
-            </Fragment>
+                <div className="Activity__submenu-subcontainer">
+                  <div
+                    className="Activity__rollback"
+                    onMouseOver={() => this.setState({hoveredRollback: obj.flatIndex})}
+                    onMouseOut={() => this.setState({hoveredRollback : null})}
+                    onClick={() => this._toggleRollbackMenu(obj.edge.node)}
+                  >
+                    <button
+                      className="Activity__rollback-button"
+                    >
+                    </button>
+                    <h5
+                      className="Activity__rollback-text"
+                    >
+                      Rollback
+                    </h5>
+                  </div>
+                </div>
+              </Fragment>
+            }
+            </div>
           }
-          </div>
+          {j === 0 && isCompressed &&
+            <div className="Activity__submenu--flat">&nbsp;</div>
+          }
+          {
+            obj.isExpandedHead && isCompressed &&
+              <div className="Activity__compressed-bar--top" style={{height: `${((obj.attachedCluster.length - 1) * 7.5) + 30}px`}}></div>
+          }
+          {
+            obj.isExpandedEnd && isCompressed &&
+              <div className="Activity__compressed-bar--bottom" style={{height: `${((obj.attachedCluster.length - 1) * 7.5) + 30}px`}}></div>
+          }
+          <ActivityCard
+            isFirstCard={j === 0}
+            addCluster={this._addCluster}
+            compressExpanded={this._compressExpanded}
+            isCompressed={isCompressed}
+            isExpandedHead={obj.isExpandedHead}
+            isExpandedEnd={obj.isExpandedEnd}
+            isExpandedNode={obj.isExpandedNode}
+            attachedCluster={obj.attachedCluster}
+            collapsed={obj.collapsed}
+            clusterObject={this.state.clusterObject}
+            position={obj.flatIndex}
+            hoveredRollback={this.state.hoveredRollback}
+            key={`${obj.edge.node.id}_activity-card`}
+            edge={obj.edge}
+          />
+        </div>
+        {(j === this.state.activityRecords[k].length - 1) && isCompressed &&
+          <div className="Activity__submenu--flat">&nbsp;</div>
         }
-        <ActivityCard
-          collapsed={obj.collapsed}
-          clusterObject={this.state.clusterObject}
-          position={obj.flatIndex}
-          hoveredRollback={this.state.hoveredRollback}
-          key={`${obj.edge.node.id}_activity-card`}
-          edge={obj.edge}
-        />
-      </div>
+      </Fragment>
     )
   }
 
@@ -589,7 +684,7 @@ class Activity extends Component {
     let shouldBeFaded = this.state.hoveredRollback > obj.flatIndex
     let clusterCSS = classNames({
       'ActivityCard--cluster': true,
-      'column-1-span-9': true,
+      'column-1-span-10': true,
       'faded': shouldBeFaded,
     });
     clusterElements.push(obj.flatIndex)
@@ -598,15 +693,18 @@ class Activity extends Component {
       return undefined;
     }
     return (
-      <div className="ActivtyCard__wrapper" key={obj.flatIndex}>
+      <div className="ActivityCard__wrapper" key={obj.flatIndex}>
       {
         (clusterElements[0] !== 0) &&
         <div className="Activity__submenu-container">
         </div>
       }
-      <div className={clusterCSS} ref={'cluster--'+ obj.flatindex}>
-        {clusterElements.length} Minor Activities
-        <div className="ActivityCard__ellipsis" onClick={()=> this._deleteCluster(clusterRef, i)}></div>
+      <div className={clusterCSS} ref={'cluster--'+ obj.flatindex} onClick={()=> this._deleteCluster(clusterRef, i)}>
+        <div className="ActivityCard__cluster--layer1">
+          {clusterElements.length} Minor Activities
+        </div>
+        <div className="ActivityCard__cluster--layer2"></div>
+        <div className="ActivityCard__cluster--layer3"></div>
       </div>
     </div>
     )
@@ -673,22 +771,36 @@ class Activity extends Component {
     })
 
     if(this.props.labbook){
-
-
+      let recordDates = Object.keys(this.state.activityRecords)
+      let stickyDateCSS = classNames({
+        'Activity__date-tab': true,
+        'fixed': this.state.stickyDate,
+        'is-expanded': store.getState().labbook.isExpanded
+      })
       return(
         <div key={this.props.labbook} className={activityCSS}>
           {
             (!this.state.refetchEnabled && this.state.newActivityAvailable) &&
             <div
-              className="Activity__new-record-wrapper column-1-span-9">
+              className="Activity__new-record-wrapper column-1-span-10">
              <div
-               onClick={() => this._getNewActivties()}
+               onClick={() => this._getNewActivities()}
                className="Activity__new-record">
                 New Activity
              </div>
            §</div>
           }
-          <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--space-around">
+          {
+            this.state.stickyDate &&
+            <div className={stickyDateCSS}>
+              <div className="Activity__date-day">{this.state.stickyDate.split('_')[2]}</div>
+              <div className="Activity__date-sub">
+                <div className="Activity__date-month">{ config.months[parseInt(this.state.stickyDate.split('_')[1], 10)] }</div>
+                <div className="Activity__date-year">{this.state.stickyDate.split('_')[0]}</div>
+              </div>
+            </div>
+          }
+          <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--flex-start">
             <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Activity__sizer flex-1-0-auto">
               <CreateBranch
                 ref="createBranch"
@@ -698,21 +810,33 @@ class Activity extends Component {
                 toggleModal={this._toggleCreateModal}
               />
               {
-                Object.keys(this.state.activityRecords).map((k, i) => {
+                recordDates.map((k, i) => {
                   let clusterElements = [];
+                  let ActivityDateCSS= classNames({
+                    'Activity__date-tab': true,
+                    'note': (i===0)
+                  })
+                  let ActivityContainerCSS= classNames({
+                    'Activity__card-container': true,
+                    'Activity__card-container--last': recordDates.length === i + 1
+                  })
                   return (
                     <div key={k}>
-                      <div className="Activity__date-tab column-1-span-1 flex flex--column justify--space-around">
+                      <div ref={(evt)=> this.dates[i] = {e: evt, time: k}} className={ActivityDateCSS}>
                         <div className="Activity__date-day">{k.split('_')[2]}</div>
-                        <div className="Activity__date-month">{ config.months[parseInt(k.split('_')[1], 10)] }</div>
+                        <div className="Activity__date-sub">
+                          <div className="Activity__date-month">{ config.months[parseInt(k.split('_')[1], 10)] }</div>
+                          <div className="Activity__date-year">{k.split('_')[0]}</div>
+                        </div>
                       </div>
                       {
                         (i===0) && this._renderUserNote()
                       }
-                      <div key={`${k}__card`}>
+                      <div key={`${k}__card`} className={ActivityContainerCSS}>
                         {
                           this.state.activityRecords[k].map((obj, j) => {
                             if(!obj.collapsed){
+                              clusterElements = [];
                               return this._visibleCardRenderer(obj, clusterElements, i, j, k);
                             } else {
                               return this._cardClusterRenderer(obj, clusterElements, i, j, k)

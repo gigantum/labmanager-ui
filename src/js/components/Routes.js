@@ -152,7 +152,7 @@ export default class Routes extends Component {
                     render={(props) =>{
                       console.log(props)
                       if(config.routes.noRedirect.indexOf(props.location.pathname) < 0){
-                        return(<Redirect to="/labbooks/all"/>)
+                        return(<Redirect to="/labbooks/local"/>)
                       }else{
                         return null
                       }
@@ -163,7 +163,7 @@ export default class Routes extends Component {
 
                   <Route
                     exact
-                    path="/labbooks/:labbookFilter"
+                    path="/labbooks/:labbookSection"
                     render={(props) =>
                       <Home
                         history={history}
@@ -239,8 +239,6 @@ export default class Routes extends Component {
                       )
                     }}
                   />
-
-
 
                   <Prompt
                     ref="prompt"

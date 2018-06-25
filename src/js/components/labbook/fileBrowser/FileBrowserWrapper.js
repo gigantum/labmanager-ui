@@ -1,14 +1,17 @@
 // vendor
 import React, { Component } from 'react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
+import uuidv4 from 'uuid/v4'
 //components
 import DetailPanel from './../detail/DetailPanel'
+import Modal from 'Components/shared/Modal'
 //mutations
 import DeleteLabbookFileMutation from 'Mutations/fileBrowser/DeleteLabbookFileMutation'
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
 import MoveLabbookFileMutation from 'Mutations/fileBrowser/MoveLabbookFileMutation'
 import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
 import RemoveFavoriteMutation from 'Mutations/fileBrowser/RemoveFavoriteMutation'
+import CompleteBatchUploadTransactionMutation from 'Mutations/fileBrowser/CompleteBatchUploadTransactionMutation'
 //helpers
 import FolderUpload from './folderUpload'
 //Config
@@ -70,6 +73,7 @@ export default class FileBrowserWrapper extends Component {
       'files': this._formatFileJson(props.files),
       'fileSizePromptVisible': false,
       'uploadData': {},
+      'pause': false,
       labbookName,
       owner,
       uploading
@@ -89,7 +93,7 @@ export default class FileBrowserWrapper extends Component {
 
   componentDidMount() {
     this.unsubscribe = store.subscribe(() =>{
-      this.setState({uploading: store.getState().fileBrowser.uploading})
+      this.setState({uploading: store.getState().fileBrowser.uploading, pause: store.getState().fileBrowser.pause})
     })
   }
 
@@ -140,10 +144,10 @@ export default class FileBrowserWrapper extends Component {
   *  @param {string, file, object, boolean, array, number} key,prefix  file key, prefix is root folder -
   *  creates a file using AddLabbookFileMutation by passing a blob
   */
-  _chunkLoader(filepath, file, data, batchUpload, files, index, callback){
+  _chunkLoader(data, callback, chunkIndex){
 
 
-    ChunkUploader.chunkFile(data, callback)
+    ChunkUploader.chunkFile(data, callback, chunkIndex)
   }
 
   /**
@@ -244,6 +248,7 @@ export default class FileBrowserWrapper extends Component {
 
       return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
     })
+    let count = 0
 
     FolderUpload.uploadFiles(
       filterFiles,
@@ -254,7 +259,8 @@ export default class FileBrowserWrapper extends Component {
       this.props.connection,
       this.props.parentId,
       this._chunkLoader,
-      totalFiles
+      totalFiles,
+      count
     )
   }
 
@@ -312,10 +318,11 @@ export default class FileBrowserWrapper extends Component {
               connectionKey: self.props.connection,
               labbookName: self.state.labbookName,
               parentId: self.props.parentId,
-              section: self.props.section
+              section: self.props.section,
+              transactionId: uuidv4()
             }
 
-            self._chunkLoader(filepath, file, data, batchUpload, files, index, (data)=>{
+            self._chunkLoader(data, (data)=>{
 
             })
           }
@@ -641,6 +648,8 @@ export default class FileBrowserWrapper extends Component {
       return edge && edge.node && (oldKey === edge.node.key)
     })[0]
 
+    //TODO fix this function, there are too many nested if else statements
+
     if(edgeToMove){
       MoveLabbookFileMutation(
         this.props.connection,
@@ -716,7 +725,6 @@ export default class FileBrowserWrapper extends Component {
               )
             }
           }
-
         }
       )
     }
@@ -851,6 +859,7 @@ export default class FileBrowserWrapper extends Component {
         }
       )
     } else {
+
       DeleteLabbookFileMutation(
         this.props.connection,
         this.state.owner,
@@ -884,6 +893,7 @@ export default class FileBrowserWrapper extends Component {
 
     let formatedArray = []
     let idExists = []
+
     if(files){
       files.edges.forEach((edge) => {
         if(edge && edge.node){
@@ -960,7 +970,7 @@ export default class FileBrowserWrapper extends Component {
   }
   /**
   *  @param {object} file
-  *  gets a file objext with name, extension, key, url properties
+  *  gets a file object with name, extension, key, url properties
   *  sets as selected item
   */
   openDetailPanel(file){
@@ -975,6 +985,139 @@ export default class FileBrowserWrapper extends Component {
         detailMode: true
       }
     })
+  }
+  /**
+  *  @param {}
+  *  continues file upload
+  *
+  */
+  _continueUpload(){
+    store.dispatch({
+      type: 'PAUSE_UPLOAD',
+      payload: {
+        pause: false
+      }
+    })
+    const {files, count, prefix, totalFiles} = store.getState().fileBrowser
+    const {connection, section, parentId} = this.props
+    const {owner, labbookName} = this.state
+
+    FolderUpload.uploadFiles(
+      files,
+      prefix,
+      labbookName,
+      owner,
+      section,
+      connection,
+      parentId,
+      this._chunkLoader,
+      totalFiles,
+      count
+    )
+
+    if(store.getState().fileBrowser.chunkUploadData.data){
+      const {chunkUploadData} = store.getState().fileBrowser
+      this._chunkLoader(chunkUploadData.data, ()=>{}, chunkUploadData.chunkData.chunkIndex)
+    }
+
+    store.dispatch({
+      type: "PAUSE_UPLOAD_DATA",
+      payload:{
+        files: [],
+        count: 0,
+        transactionId: '',
+        prefix: '',
+        totalFiles: 0
+      }
+    })
+
+    store.dispatch({
+      type: "RESET_CHUNK_UPLOAD",
+      payload:{
+      }
+    })
+  }
+
+  /**
+  *  @param {}
+  *  cancels file upload but keeps files already uploaded and commits them
+  *
+  */
+  _cancelKeep(){
+    const {connection} = this.props
+    const {owner, labbookName} = this.state
+    const {transactionId} = store.getState().fileBrowser
+
+    store.dispatch({
+      type: 'PAUSE_UPLOAD',
+      payload: {
+        pause: false
+      }
+    })
+
+    let uploadData = store.getState().footer.uploadStack[0]
+
+    store.dispatch({
+      type: 'UPLOAD_MESSAGE_REMOVE',
+      payload: {
+        message: '',
+        id: uploadData.id,
+        progessBarPercentage:  0
+      }
+    })
+
+    CompleteBatchUploadTransactionMutation(
+       connection,
+       owner,
+       labbookName,
+       true,
+       false,
+       transactionId,
+       (response, error)=>{
+
+       }
+    )
+  }
+
+  /**
+  *  @param {}
+  *  cancels file upload and removes files that have been uploaded
+  *
+  */
+  _cancel(){
+      const {connection} = this.props
+      const {owner, labbookName} = this.state
+      const {transactionId} = store.getState().fileBrowser
+
+      store.dispatch({
+         type: 'PAUSE_UPLOAD',
+         payload: {
+           pause: false
+         }
+      })
+
+      let uploadData = store.getState().footer.uploadStack[0]
+
+      store.dispatch({
+        type: 'UPLOAD_MESSAGE_REMOVE',
+        payload: {
+          message: '',
+          id: uploadData.id,
+          progessBarPercentage:  0
+        }
+      })
+
+      CompleteBatchUploadTransactionMutation(
+        connection,
+        owner,
+        labbookName,
+        true,
+        true,
+        transactionId,
+        (response, error)=>{
+
+        }
+      )
   }
 
   render(){
@@ -1039,12 +1182,14 @@ export default class FileBrowserWrapper extends Component {
                 <p>You're uploading some large files to the Code Section, are you sure you don't want to place these in the Input Section? Note, putting large files in the Code Section can hurt performance.</p>
 
                 <div className="FileBrowser__button-container">
+
                   <button
                     className="button--flat"
                     onClick={() => this._cancelUpload()}>Cancel Upload</button>
-                  <button onClick={() => this._userRejectsUpload()}>Skip Large Files</button>
-                  <button onClick={() => this._userAcceptsUpload()}>Continue Upload</button>
 
+                  <button onClick={() => this._userRejectsUpload()}>Skip Large Files</button>
+
+                  <button onClick={() => this._userAcceptsUpload()}>Continue Upload</button>
 
                 </div>
 
@@ -1058,6 +1203,32 @@ export default class FileBrowserWrapper extends Component {
             </div>
           ]
         }
+
+        {this.state.pause &&
+          [<Modal
+            key="cancelUploadModal"
+            header="Cancel Upload"
+            icon={null}
+            size="medium"
+            handleClose={() => { this._continueUpload() }}
+            renderContent={()=>
+              <div className="FileBrowser__cancel-content">
+                <p>Upload has been paused, choose an action from the following options.</p>
+                <div className="FileBrowser__cancel-buttons">
+                  <button onClick={()=>this._continueUpload()}>Dismiss and Continue</button>
+                  <button onClick={()=>this._cancelKeep()}>Cancel and Keep Uploaded</button>
+                  {/* <button onClick={()=>this._cancel()}>Cancel upload</button> */}
+                </div>
+              </div>
+            }/>,
+
+            <div
+              key="FileBrowserCancelCover"
+              className="modal__cover">
+            </div>
+
+            ]
+          }
 
       </div>
     )

@@ -99,7 +99,7 @@ export default class Branches extends Component {
     if(this.props.labbook){
       const listPositionIndex = this.state.listPositionIndex
       const {labbook} = this.props
-      console.log(labbook)
+      
       const branchArrayToFilter = this.props.mergeFilter ?  labbook.mergeableBranchNames : labbook.availableBranchNames
 
       const branches = this._filterBranches(branchArrayToFilter);

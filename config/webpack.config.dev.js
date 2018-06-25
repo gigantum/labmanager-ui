@@ -212,18 +212,10 @@ module.exports = {
         loaders: [
           'style-loader',
           'css-loader',
-          // {
-          //   loader: 'css-loader',
-          //   sourceMap: true
-          // },
           {
             loader: 'sass-loader',
             options:{
-              sourceMap: true,
-              includePaths: [
-                require("bourbon").includePaths[0],
-                require("bourbon-neat").includePaths[0]
-              ]
+              sourceMap: true
             }
           }
         ]

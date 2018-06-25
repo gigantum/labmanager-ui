@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ButtonLoader from 'Components/shared/ButtonLoader'
 
 export default class Home extends Component {
   constructor(props){
@@ -11,8 +12,11 @@ export default class Home extends Component {
       username,
       email,
       firstName,
-      lastName
+      lastName,
+      loadingState: "sitting"
     }
+
+    this._saveUserUpdates = this._saveUserUpdates.bind(this)
   }
 
   /**
@@ -31,7 +35,14 @@ export default class Home extends Component {
    *
    */
   _saveUserUpdates(){
+    this.setState({loadingState: "loading"})
 
+    setTimeout(()=>{
+       this.setState({loadingState: "finished"})
+       setTimeout(()=>{
+         this.setState({loadingState: "sitting"})
+       }, 2000)
+    }, 2000)
   }
 
   render() {
@@ -42,6 +53,7 @@ export default class Home extends Component {
         <p>
           Update your profile information here.
         </p>
+
         <div className="Profile__indent">
           <div className="Profile__input-row">
             <label>Username</label>
@@ -51,6 +63,7 @@ export default class Home extends Component {
               placeholder={this.state.username}
             />
           </div>
+
           <div className="Profile__input-row">
             <label>Email</label>
             <input
@@ -80,10 +93,17 @@ export default class Home extends Component {
           </div>
 
           <div className="Profile__save">
-            <button onClick={() => this._saveUserUpdates()}>Save</button>
+            <ButtonLoader
+              ref="buttonLoaderProfile"
+              buttonState={this.state.loadingState}
+              params={{}}
+              buttonText={"Save"}
+              buttonDisabled={false}
+              clicked={this._saveUserUpdates}
+            />
+
           </div>
         </div>
-
 
       </div>
     )

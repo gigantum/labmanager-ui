@@ -37,6 +37,8 @@
 @import 'components/shared/header';
 
 @import 'components/profile/profile';
+@import 'components/shared/modal';
+
 //
 @import 'components/routes.scss';
 @import 'components/login.scss';
@@ -64,7 +66,6 @@
 @import 'components/labbook/branches/createBranch.scss';
 @import 'components/labbook/branches/forceMerge.scss';
 @import 'components/labbook/branches/collaborators.scss';
-@import 'components/labbook/createBranch.scss';
 @import 'components/labbook/branchMenu.scss';
 @import 'components/labbook/codeBlock.scss';
 //environment
@@ -84,8 +85,7 @@
 @import 'components/wizard/baseDetails';
 @import 'components/wizard/trackingToggle';
 
-.modal__cover,
-.modal__cover--nested{
+.modal__cover{
   position: fixed;
   top: 0px;
   bottom: 0px;
@@ -100,9 +100,14 @@
   z-index: index($elements, modalCover);
 }
 
-.modal__cover--nested{
-  z-index: index($elements, modalCoverNested);
+.LoginPrompt{
+  text-align: center;
 }
+.LoginPrompt__button-container {
+  @include flex(space-around, row);
+}
+
+
 
 @keyframes fade-in-modal{
   0% {

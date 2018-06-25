@@ -41,7 +41,8 @@
 
 
 .PackageDependencies__table-row--checking,
-.PackageDependencies__table-row--valid, {
+.PackageDependencies__table-row--valid,
+.PackageDependencies__table-row--invalid, {
   @include flex(flex-start, row);
 }
 

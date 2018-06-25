@@ -415,6 +415,12 @@
   color: $romanSilver;
   background-color: transparent !important;
 }
+.LocalLabbooks__containerStatus--state.loading,
+.LocalLabbooks__containerStatus--state.loading:hover,
+.LocalLabbooks__containerStatus--state.loading:focus{
+  background: $grey !important;
+  opacity: 0.5;
+}
 
 .LocalLabbooks__containerStatus--state.Stopped {
   transition: box-shadow 0.5s;
@@ -780,26 +786,4 @@
   white-space: nowrap;
 
   font-size: 24px;
-}
-
-
-.LocalLabbooks--login-prompt {
-  z-index: index($elements, modal);
-
-  justify-content: flex-start;
-
-  padding: 20px;
-
-  color: $jet;
-
-  @include flex(space-between, column);
-  @include modal(200px, 400px);
-
-  .LoginPrompt__button-container {
-    @include flex(space-around, row);
-  }
-}
-
-.LocalLabbooks-login-prompt--close {
-  @include close()
 }

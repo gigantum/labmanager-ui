@@ -81,6 +81,7 @@ export default function AddLabbookFileMutation(
   chunk,
   accessToken,
   section,
+  transactionId,
   callback
 ) {
 
@@ -103,6 +104,7 @@ export default function AddLabbookFileMutation(
         uploadId: chunk.uploadId,
       },
       section,
+      transactionId,
       clientMutationId: id
     }
   }
@@ -156,9 +158,9 @@ export default function AddLabbookFileMutation(
 
       },
       updater: (store, response) => {
+
         deleteEdge(store, labbookId, optimisticId, connectionKey)
         deleteEdge(store, labbookId, optimisticId, recentConnectionKey)
-
 
         if(response.addLabbookFile && response.addLabbookFile.newLabbookFileEdge && response.addLabbookFile.newLabbookFileEdge.node){
 

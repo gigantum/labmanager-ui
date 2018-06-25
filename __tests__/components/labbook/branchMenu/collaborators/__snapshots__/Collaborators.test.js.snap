@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Collaborators renders invalid 1`] = `
+<li
+  className="BranchMenu__item--collaborators disabled"
+>
+  <button
+    className="BranchMenu__item--flat-button disabled"
+    onClick={[Function]}
+  >
+    Collaborators
+  </button>
+</li>
+`;
+
+exports[`Test Collaborators renders valid 1`] = `
+<li
+  className="BranchMenu__item--collaborators disabled"
+>
+  <button
+    className="BranchMenu__item--flat-button disabled"
+    onClick={[Function]}
+  >
+    Collaborators
+  </button>
+</li>
+`;

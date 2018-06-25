@@ -124,13 +124,15 @@ export default class SelectBase extends React.Component {
   _getTabStructure(availableBases){
       let sortedBases = {tabs:[], bases: {}}
       availableBases.edges.forEach((edge) => {
-        let languages = edge.node.languages.join('')
-        if(sortedBases.tabs.indexOf(languages) < 0){
-          sortedBases.tabs.push(languages)
-          sortedBases.bases[languages] = [edge.node]
-        }else{
-          sortedBases.bases[languages].push(edge.node)
-        }
+        let languages = edge.node.languages
+        languages.forEach((language) =>{
+          if(sortedBases.tabs.indexOf(language) < 0){
+            sortedBases.tabs.push(language)
+            sortedBases.bases[language] = [edge.node]
+          }else{
+            sortedBases.bases[language].push(edge.node)
+          }
+        })
       })
 
       return sortedBases
@@ -150,9 +152,6 @@ export default class SelectBase extends React.Component {
 
     return(
       <div className="SelectBase">
-        <p className="SelectedBase__modal-header">Create LabBook</p>
-        <h4 className="SelectedBase__header"> Select a Base </h4>
-
         <QueryRenderer
           variables={{
             first: 20
@@ -167,7 +166,6 @@ export default class SelectBase extends React.Component {
 
                 if(props){
                   const sortedBaseItems = this._getTabStructure(props.availableBases);
-
                   const selecBaseImage = classNames({
                     'SelectBase__images': true,
                     'SelectBase__images--hidden': (this.state.selectedTab === 'none')
