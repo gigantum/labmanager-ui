@@ -10,6 +10,10 @@
   width: $sideBarWidth;
 }
 
+.SideBar.is-demo {
+  top: 60px;
+}
+
 .SideBar__logo {
   max-width: 80%;
   height: 30px;

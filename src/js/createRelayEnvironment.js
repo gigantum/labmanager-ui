@@ -50,7 +50,7 @@ function fetchQuery(
     body.append('uploadChunk', uploadables[0])
   }
 
-  const apiURL = `${window.location.protocol}//${window.location.hostname}${process.env.GIGANTUM_API}`
+  const apiURL = `${window.location.protocol}//${window.location.host}${process.env.GIGANTUM_API}`
   return fetch(apiURL, {
     'method': 'POST',
     'headers': headers,

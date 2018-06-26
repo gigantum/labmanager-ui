@@ -1,6 +1,8 @@
 //vendor
 import React, { Component } from 'react';
 import store from 'JS/redux/store'
+//config
+import config from 'JS/config'
 
 let unsubscribe;
 //import CreatePage from './components/CreatePage';
@@ -57,10 +59,13 @@ export default class Login extends Component {
     const isUnauthorized = errorDescription === 'Gigantum is currently in a limited Beta. Access will be expanded soon!';
     return (
       <div className="Login">
-
         {
-          !isAuthenticated() && (
+          (!isAuthenticated() || this.props.forceLoginScreen)  && (
             <div className="Login__panel">
+                {
+                  window.location.hostname === config.demoHostName &&
+                <div className="demo-header">Login or create an account to try out Gigantum. <a href="https://docs.gigantum.com/docs/frequently-asked-questions#section-why-do-i-need-to-log-in" rel="noopener noreferrer" target="_blank" >Why?</a></div>
+                }
               { errorType &&
 
                 <div className="LoginError">
