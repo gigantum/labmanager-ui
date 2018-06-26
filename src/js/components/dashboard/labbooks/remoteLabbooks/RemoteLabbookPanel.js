@@ -1,6 +1,7 @@
 //vendor
 import React, { Component } from 'react'
 import uuidv4 from 'uuid/v4'
+import Highlighter from 'react-highlight-words'
 import classNames from 'classnames'
 //muations
 import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
@@ -236,14 +237,26 @@ export default class LocalLabbookPanel extends Component {
           <div className="RemoteLabbooks__title-row">
             <h6
               className="RemoteLabbooks__panel-title">
-              {edge.node.name}
+              <Highlighter
+                highlightClassName='LocalLabbooks__highlighted'
+                searchWords={[store.getState().labbookListing.filterText]}
+                autoEscape={false}
+                caseSensitive={false}
+                textToHighlight={edge.node.name}
+              />
             </h6>
 
           </div>
           <p className="RemoteLabbooks__owner">{'Created by ' + edge.node.owner}</p>
           <p
             className="RemoteLabbooks__description">
-            {edge.node.description}
+            <Highlighter
+              highlightClassName='LocalLabbooks__highlighted'
+              searchWords={[store.getState().labbookListing.filterText]}
+              autoEscape={false}
+              caseSensitive={false}
+              textToHighlight={edge.node.description}
+            />
           </p>
         </div>
         {

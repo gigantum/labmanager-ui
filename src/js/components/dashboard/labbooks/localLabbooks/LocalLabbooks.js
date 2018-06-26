@@ -10,6 +10,8 @@ import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
 import ImportModule from 'Components/import/ImportModule'
 //helpers
 import ContainerLookup from './ContainerLookup'
+//store
+import store from 'JS/redux/store'
 
 
 export class LocalLabbooks extends Component {
@@ -137,7 +139,7 @@ export class LocalLabbooks extends Component {
         <div className='LocalLabbooks__labbooks'>
         <div className="LocalLabbooks__sizer grid">
           {
-            (this.props.section === 'local' || !this.props.loading) &&
+            (this.props.section === 'local' || !this.props.loading) && !store.getState().labbookListing.filterText &&
             <ImportModule
               ref="ImportModule_localLabooks"
               {...this.props}
@@ -146,6 +148,7 @@ export class LocalLabbooks extends Component {
             />
           }
           {
+            labbooks.length ?
             labbooks.map((edge, index) => {
               return (
                 <LocalLabbookPanel
@@ -158,6 +161,16 @@ export class LocalLabbooks extends Component {
                   goToLabbook={this.props.goToLabbook}/>
               )
             })
+            :
+            !this.props.loading &&
+            <div className="Labbooks__no-results">
+              <h3>No Results Found</h3>
+              <p>Edit your filters above or <span
+                onClick={()=> this.props.setFilterValue({target: {value: ''}})}
+              >clear
+              </span> to try again.</p>
+
+            </div>
           }
           {
             Array(5).fill(1).map((value, index) => {
