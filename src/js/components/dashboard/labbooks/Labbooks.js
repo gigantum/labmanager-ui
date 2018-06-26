@@ -435,7 +435,8 @@ export default class Labbooks extends Component {
             <div className="Labbooks__subheader">
               <div className="Labbooks__search-container">
                 {
-                  this.state.showSearchCancel && store.getState().labbookListing.filterText.length !== 0 &&
+                  this.state.showSearchCancel &&
+                  (store.getState().labbookListing.filterText.length !== 0) &&
                   <Fragment>
                     <div
                       className="Labbooks__search-cancel"
