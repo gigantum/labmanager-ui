@@ -658,6 +658,7 @@ Labbook__nav end
   }
   ul {
     position: absolute;
+    padding: 5px;
     z-index: index($elements, popup);
     right: 2px;
 
@@ -672,8 +673,9 @@ Labbook__nav end
     @extend .box-shadow;
 
     li {
-      height: 30px;
-      padding: 5px !important;
+      white-space: nowrap;
+      height: 40px;
+      padding: 10px 5px !important;
       padding-top: 2px;
 
       user-select: none;
@@ -681,10 +683,16 @@ Labbook__nav end
       border-bottom: 1px solid $grey;
     }
 
+    li:last-child{
+      border-bottom: none;
+    }
+
+
     li:hover {
       transition: background-color 0.25s ease-in-out;
 
-      background: $background-color;
+      background: $azure;
+      color: $white;
     }
   }
 }
@@ -713,6 +721,7 @@ Labbook__nav end
     background-size: 15px;
   }
   ul {
+    padding: 5px;
     position: absolute;
     z-index: index($elements, popup);
     right: 296px;
@@ -728,19 +737,23 @@ Labbook__nav end
     @extend .box-shadow;
 
     li {
-      height: 30px;
-      padding: 5px !important;
+      height: 40px;
+      padding: 10px 5px !important;
       padding-top: 2px;
 
       user-select: none;
 
       border-bottom: 1px solid $grey;
     }
+    li:last-child{
+      border-bottom: none;
+    }
 
     li:hover {
       transition: background-color 0.25s ease-in-out;
 
-      background: $background-color;
+      background: $azure;
+      color: $white;
     }
   }
 }
