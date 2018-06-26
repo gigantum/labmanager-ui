@@ -1,21 +1,53 @@
 
-      import React from 'react'
+      import React, {Component} from 'react'
       import renderer from 'react-test-renderer';
       import {mount} from 'enzyme'
       import MostRecentCode from 'Components/labbook/filesShared/MostRecentCode';
+      import store from 'JS/redux/store'
+
+      import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+
+      import json from './__relaydata__/MostRecentCode.json'
 
       import relayTestingUtils from 'relay-testing-utils'
 
-      test('Test MostRecentCode', () => {
+      const fixtures = {
+        edgeId: json.data.labbook.code.id,
+        code: json.data.labbook.code
+      }
 
-        const wrapper = renderer.create(
+      store.dispatch({
+        type: 'UPDATE_CALLBACK_ROUTE',
+        payload: {
+          callbackRoute: '/labbooks/username/labbookName/code'
+        }
+      })
 
-           <MostRecentCode />
+      class MostRecentCodeComponent extends Component{
+        render(){
+          return(relayTestingUtils.relayWrap(<MostRecentCode {...fixtures}/>, {}, json.data.labbook.code))
+        }
+      }
 
-        );
+      describe('Test MostRecentCode', () => {
 
-        const tree = wrapper.toJSON()
+        it('Renders snapshot', ()=> {
+          const wrapper = renderer.create(
+             <Router>
+                <Switch>
+                <Route
+                  path=""
+                  render={()=>
+                     <MostRecentCodeComponent />
+                  }
+                />
+              </Switch>
+             </Router>
+          );
 
-        expect(tree).toMatchSnapshot()
+          const tree = wrapper.toJSON()
+
+          expect(tree).toMatchSnapshot()
+        })
 
       })

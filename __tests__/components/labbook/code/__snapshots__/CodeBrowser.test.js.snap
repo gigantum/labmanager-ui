@@ -1,3 +1,970 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test CodeBrowser 1`] = `null`;
+exports[`Test CodeBrowser snapshot renders 1`] = `
+<div
+  className="Code flex flex-row justify-center"
+  id="code"
+>
+  <div
+    className="rendered-react-keyed-file-browser"
+  >
+    <div
+      className="rendered-file-browser"
+    >
+      <div
+        className="action-bar"
+      >
+        <input
+          onChange={[Function]}
+          placeholder="Filter files"
+          type="search"
+          value=""
+        />
+        <ul
+          className="item-actions"
+        >
+          <li>
+            <a
+              className="btn btn-primary btn-sm"
+              href="#"
+              onClick={[Function]}
+              role="button"
+            >
+              <i
+                aria-hidden="true"
+                className="fa fa-folder-o"
+              />
+               Add Folder
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div
+        className="files"
+        id="CodeBrowser_allFiles"
+      >
+        <table
+          cellPadding="0"
+          cellSpacing="0"
+        >
+          <thead>
+            <tr
+              className="folder"
+            >
+              <th>
+                File
+              </th>
+              <th />
+              <th
+                className="size"
+              >
+                Size
+              </th>
+              <th
+                className="modified"
+              >
+                Last Modified
+              </th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="folder"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      onClick={[Function]}
+                    >
+                      <i
+                        aria-hidden="true"
+                        className="fa fa-folder-o"
+                      />
+                      @1xGigantum (1)
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td />
+              <td />
+              <td />
+            </tr>
+            <tr
+              className="folder"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      onClick={[Function]}
+                    >
+                      <i
+                        aria-hidden="true"
+                        className="fa fa-folder-o"
+                      />
+                      export
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td />
+              <td />
+              <td />
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon database-icon"
+                      />
+                      datasets.yml
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                4 kB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon svg-icon"
+                      />
+                      down-arrow.svg
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                463 B
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon null"
+                      />
+                      down-arrow.textClipping
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                203 B
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon database-icon"
+                      />
+                      environment.yml
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                744 B
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon python-icon"
+                      />
+                      filetimes.py
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                16 kB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon terminal-icon"
+                      />
+                      filetimes.sh
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                3 kB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon database-icon"
+                      />
+                      filetimes.yml
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                521 B
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon terminal-icon"
+                      />
+                      get_raster_data.sh
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                138 B
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon jupyter-icon"
+                      />
+                      nyc_taxi-nongeo.ipynb
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                8.70 MB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon jupyter-icon"
+                      />
+                      nyc_taxi.ipynb
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                11.34 MB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon python-icon"
+                      />
+                      pcap_to_parquet.py
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                3 kB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon python-icon"
+                      />
+                      raster.py
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                3 kB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon book-icon"
+                      />
+                      README.md
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                8 kB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon database-icon"
+                      />
+                      small.yml
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                484 B
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon jupyter-icon"
+                      />
+                      streaming-aggregation.ipynb
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                15 kB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon python-icon"
+                      />
+                      streaming.py
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                5 kB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon python-icon"
+                      />
+                      taxi_preprocessing_example.py
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                3 kB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div
+    className="DetailPanel hidden"
+  >
+    <div
+      className="DetailPanel--close"
+      onClick={[Function]}
+    >
+      X
+    </div>
+    <p />
+    <p />
+  </div>
+</div>
+`;
