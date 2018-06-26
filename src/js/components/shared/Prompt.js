@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Sniffr from 'sniffr'
 
 const pingServer = () => {
-  const url = `${window.location.protocol}//${window.location.hostname}${process.env.PING_API}`;
+  const url = `${window.location.protocol}//${window.location.host}${process.env.PING_API}`;
   return fetch(url, {
     'method': 'GET'
   }).then(response => {
