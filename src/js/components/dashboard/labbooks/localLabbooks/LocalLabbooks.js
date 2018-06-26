@@ -33,6 +33,13 @@ export class LocalLabbooks extends Component {
     if(!this.props.loading){
       window.addEventListener('scroll', this._captureScroll);
       this._containerLookup();
+      if(this.props.localLabbooks && this.props.localLabbooks.localLabbooks && this.props.localLabbooks.localLabbooks.edges && this.props.localLabbooks.localLabbooks.edges.length === 0){
+        setTimeout(()=>{
+          this.props.relay.refetchConnection(20, () => {
+            this._containerLookup();
+          })
+        }, 3000)
+      }
     }
   }
 

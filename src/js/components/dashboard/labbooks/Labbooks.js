@@ -388,7 +388,6 @@ export default class Labbooks extends Component {
         'is-demo': window.location.hostname === config.demoHostName,
       })
       if(props.labbookList !== null || props.loading){
-
         return(
 
           <div className={labbooksCSS}>
