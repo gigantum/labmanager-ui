@@ -544,7 +544,7 @@ Labbook__nav end
 
   display: flex;
   justify-content: flex-start;
-
+  height: 28px;
   margin: 10px;
   margin: 60px 0 10px 0;
 }
@@ -553,10 +553,36 @@ Labbook__nav end
   flex-grow: 1;
   margin-right: 20px;
   align-self: flex-end;
+  position: relative;
 }
 .Labbooks__search {
-  height: 20px !important;
+  height: 28px !important;
   margin: 0px !important;
+  color: $azure !important;
+}
+.Labbooks__search[type="text"]:focus {
+  background: white;
+  border: none !important;
+  box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+.Labbooks__search-cancel{
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  top: 2px;
+  right: 6px;
+  background: url('./../images/icons/close.svg') no-repeat center center;
+  background-size: 24px;
+  cursor: pointer;
+}
+
+.Labbooks__search-cancel--text{
+  color: $romanSilver;
+  position: absolute;
+  right: 35px;
+  top: 4px;
+  text-align: right;
 }
 
 .Labbooks__section {

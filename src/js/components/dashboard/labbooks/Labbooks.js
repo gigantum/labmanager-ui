@@ -1,7 +1,8 @@
 //vendor
 import store from 'JS/redux/store'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import queryString from 'querystring'
+import classNames from 'classnames'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
@@ -332,6 +333,7 @@ export default class Labbooks extends Component {
   *  sets the filterValue in state
   */
   _setFilterValue(evt) {
+    console.log(evt)
     store.dispatch({
       type: 'SET_FILTER_TEXT',
       payload: {
@@ -380,6 +382,10 @@ export default class Labbooks extends Component {
 
   render(){
       let {props} = this;
+      let searchCSS = classNames({
+        'Labbooks__search no--margin': true,
+        // 'Labbooks__search-cancel': this.state.showSearchCancel
+      })
       if(props.labbookList !== null || props.loading){
 
         return(
@@ -415,12 +421,29 @@ export default class Labbooks extends Component {
             </div>
             <div className="Labbooks__subheader">
               <div className="Labbooks__search-container">
+                {
+                  this.state.showSearchCancel && store.getState().labbookListing.filterText.length !== 0 &&
+                  <Fragment>
+                    <div
+                      className="Labbooks__search-cancel"
+                      onClick={()=> this._setFilterValue({target: {value: ''}})}
+                    >
+                    </div>
+                    <div className="Labbooks__search-cancel--text">Clear</div>
+                  </Fragment>
+                }
                 <input
                   type="text"
-                  className="Labbooks__search no--margin"
+                  className={searchCSS}
                   placeholder="Filter Labbooks by name or description"
                   defaultValue={this.state.filterValue}
                   onKeyUp={(evt) => this._setFilterValue(evt)}
+                  onFocus={(evt) => this.setState({showSearchCancel: true})}
+                  onBlur={(evt) =>  {
+                    evt.preventDefault()
+                    console.log(evt.target.className)
+                    this.setState({showSearchCancel: false})
+                  }}
                 />
               </div>
               <div className="Labbooks__filter">
