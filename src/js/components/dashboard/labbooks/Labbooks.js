@@ -2,7 +2,6 @@
 import store from 'JS/redux/store'
 import React, { Component, Fragment } from 'react'
 import queryString from 'querystring'
-import classNames from 'classnames'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
@@ -50,6 +49,8 @@ export default class Labbooks extends Component {
     this._filterLabbooks = this._filterLabbooks.bind(this)
     this._setfilter = this._setfilter.bind(this)
     this._changeSearchParam = this._changeSearchParam.bind(this)
+    this._hideSearchClear = this._hideSearchClear.bind(this)
+    this._setFilterValue = this._setFilterValue.bind(this)
   }
 
   /**
@@ -99,6 +100,8 @@ export default class Labbooks extends Component {
     window.removeEventListener('click', this._closeSortMenu)
     window.removeEventListener('click', this._closeFiltertMenu)
     window.removeEventListener("scroll", this._captureScroll)
+    window.removeEventListener("click", this._hideSearchClear)
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -156,8 +159,19 @@ export default class Labbooks extends Component {
   */
   componentDidMount() {
     window.addEventListener('scroll', this._captureScroll);
+    window.addEventListener('click', this._hideSearchClear);
   }
 
+  /**
+    * @param {}
+    * fires on window clock
+    * hides search cancel button when clicked off
+  */
+  _hideSearchClear(evt){
+    if(this.state.showSearchCancel && evt.target.className !== 'Labbooks__search-cancel' && evt.target.className !== 'Labbooks__search no--margin'){
+      this.setState({showSearchCancel: false})
+    }
+  }
 
   /**
     *  @param {string} labbookName - inputs a labbook name
@@ -223,7 +237,7 @@ export default class Labbooks extends Component {
    * returns true if labbook's name or description exists in filtervalue, else returns false
   */
   _filterSearch(labbook){
-    if(this.state.filterValue === '' || labbook.node.name.indexOf(this.state.filterValue) > -1 || labbook.node.description.indexOf(this.state.filterValue) > -1){
+    if(this.state.filterValue === '' || labbook.node.name.toLowerCase().indexOf(this.state.filterValue.toLowerCase()) > -1 || labbook.node.description.toLowerCase().indexOf(this.state.filterValue.toLowerCase()) > -1){
       return true;
     }
     return false;
@@ -333,13 +347,15 @@ export default class Labbooks extends Component {
   *  sets the filterValue in state
   */
   _setFilterValue(evt) {
-    console.log(evt)
     store.dispatch({
       type: 'SET_FILTER_TEXT',
       payload: {
         filterText: evt.target.value
       }
     })
+    if(this.refs.labbookSearch.value !== evt.target.value){
+      this.refs.labbookSearch.value = evt.target.value
+    }
   }
   /**
     *  @param {}
@@ -382,10 +398,7 @@ export default class Labbooks extends Component {
 
   render(){
       let {props} = this;
-      let searchCSS = classNames({
-        'Labbooks__search no--margin': true,
-        // 'Labbooks__search-cancel': this.state.showSearchCancel
-      })
+
       if(props.labbookList !== null || props.loading){
 
         return(
@@ -434,16 +447,12 @@ export default class Labbooks extends Component {
                 }
                 <input
                   type="text"
-                  className={searchCSS}
+                  ref="labbookSearch"
+                  className="Labbooks__search no--margin"
                   placeholder="Filter Labbooks by name or description"
                   defaultValue={this.state.filterValue}
                   onKeyUp={(evt) => this._setFilterValue(evt)}
-                  onFocus={(evt) => this.setState({showSearchCancel: true})}
-                  onBlur={(evt) =>  {
-                    evt.preventDefault()
-                    console.log(evt.target.className)
-                    this.setState({showSearchCancel: false})
-                  }}
+                  onFocus={() => this.setState({showSearchCancel: true})}
                 />
               </div>
               <div className="Labbooks__filter">
@@ -543,6 +552,7 @@ export default class Labbooks extends Component {
                 goToLabbook={this._goToLabbook}
                 filterLabbooks={this._filterLabbooks}
                 filterState={this.state.filter}
+                setFilterValue={this._setFilterValue}
                 changeRefetchState={(bool) => this.setState({refetchLoading: bool})}
                 {...props}
               />
@@ -554,6 +564,7 @@ export default class Labbooks extends Component {
                 goToLabbook={this._goToLabbook}
                 filterLabbooks={this._filterLabbooks}
                 filterState={this.state.filter}
+                setFilterValue={this._setFilterValue}
                 forceLocalView={()=> {
                   this.setState({selectedSection: 'local'})
                   this.setState({'showLoginPrompt': true})}
