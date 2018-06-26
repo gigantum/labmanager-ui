@@ -38,7 +38,7 @@ export class LocalLabbooks extends Component {
           this.props.relay.refetchConnection(20, () => {
             this._containerLookup();
           })
-        }, 3000)
+        }, 4000)
       }
     }
   }
