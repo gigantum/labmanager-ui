@@ -25,6 +25,7 @@ export class LocalLabbooks extends Component {
     this._captureScroll = this._captureScroll.bind(this)
     this._loadMore = this._loadMore.bind(this)
     this._containerLookup = this._containerLookup.bind(this)
+    this._fetchDemo = this._fetchDemo.bind(this)
   }
 
   /***
@@ -35,6 +36,29 @@ export class LocalLabbooks extends Component {
     if(!this.props.loading){
       window.addEventListener('scroll', this._captureScroll);
       this._containerLookup();
+      if(this.props.localLabbooks && this.props.localLabbooks.localLabbooks && this.props.localLabbooks.localLabbooks.edges && this.props.localLabbooks.localLabbooks.edges.length === 0){
+        this._fetchDemo()
+      }
+    }
+  }
+
+  /***
+    * @param {integer} count
+    * attempts to fetch a demo if no labbooks are present, 3 times
+  */
+  _fetchDemo(count = 0){
+    if(count < 3){
+      let self = this;
+      let relay = this.props.relay
+      setTimeout(()=>{
+        relay.refetchConnection(20, (response, error) => {
+          if(self.props.localLabbooks.localLabbooks.edges.length > 0){
+          self._containerLookup();
+          } else {
+          self._fetchDemo(count + 1)
+          }
+        })
+      }, 3000)
     }
   }
 

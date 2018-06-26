@@ -8,6 +8,10 @@
   transition: width 0.25s;
 }
 
+.Labbook.is-demo {
+  margin-top: 70px;
+}
+
 .Labbook__inner-container {
   width: calc(100% - 50px);
   margin: 20px 5px 20px 20px;

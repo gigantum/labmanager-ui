@@ -19,10 +19,12 @@ export default class Home extends Component {
   }
   render() {
     const { isAuthenticated } = this.props.auth;
+    const { forceLoginScreen } = this.props;
+
     return (
       <div className="Home">
         {
-          isAuthenticated() && (
+          isAuthenticated() && !forceLoginScreen && (
             <Dashboard
               auth={this.props.auth}
               footerWorkerCallback={this.footerWorkerCallback}
@@ -32,8 +34,8 @@ export default class Home extends Component {
           )
         }
         {
-          !isAuthenticated() && (
-              <Login auth={this.props.auth}/>
+          (!isAuthenticated() || forceLoginScreen) && (
+              <Login auth={this.props.auth} forceLoginScreen={forceLoginScreen}/>
             )
         }
 

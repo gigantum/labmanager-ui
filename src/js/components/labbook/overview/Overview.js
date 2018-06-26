@@ -63,9 +63,9 @@ class Overview extends Component {
         simple.value(this.props.readme ? this.props.readme : '')
         this.setState({simpleExists: true})
         let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0]
-        fullscreenButton && fullscreenButton.addEventListener('click', this.setState({editorFullscreen: !this.state.editorFullscreen}))
+        fullscreenButton && fullscreenButton.addEventListener('click', () => this.setState({editorFullscreen: !this.state.editorFullscreen}))
         let sideBySideButton = document.getElementsByClassName('fa-columns')[0]
-        sideBySideButton && sideBySideButton.addEventListener('click',this.setState({editorFullscreen: true}))
+        sideBySideButton && sideBySideButton.addEventListener('click', () => this.setState({editorFullscreen: true}))
       }
     }
   }

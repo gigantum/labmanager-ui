@@ -2,6 +2,7 @@
 import store from 'JS/redux/store'
 import React, { Component, Fragment } from 'react'
 import queryString from 'querystring'
+import classNames from 'classnames'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
@@ -12,6 +13,8 @@ import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 import Validation from 'JS/utils/Validation'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
+//config
+import config from 'JS/config'
 
 export default class Labbooks extends Component {
 
@@ -398,12 +401,14 @@ export default class Labbooks extends Component {
 
   render(){
       let {props} = this;
-
+      let labbooksCSS = classNames({
+        'Labbooks': true,
+        'is-demo': window.location.hostname === config.demoHostName,
+      })
       if(props.labbookList !== null || props.loading){
-
         return(
 
-          <div className="Labbooks">
+          <div className={labbooksCSS}>
             <WizardModal
               ref="wizardModal"
               handler={this.handler}
