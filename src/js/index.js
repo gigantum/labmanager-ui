@@ -36,7 +36,11 @@ UserIdentity.getUserIdentity().then((response)=>{
 })
 
 render(
-  <Routes auth={auth} forceLoginScreen={forceLoginScreen} ref={(route) => routeRef = route} />
+  <Routes
+    auth={auth}
+    forceLoginScreen={forceLoginScreen}
+    ref={(route) => routeRef = route}
+  />
   , document.getElementById('root') || document.createElement('div')
 
 );
