@@ -6,7 +6,10 @@ const pingServer = () => {
   return fetch(url, {
     'method': 'GET'
   }).then(response => {
-    return true;
+    if(response.status === 200 && (response.headers.get('content-type') === 'application/json')){
+      return true;
+    }
+    return false;
   }).catch(error => {
     return false;
   });
