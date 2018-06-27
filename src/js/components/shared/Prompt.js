@@ -6,7 +6,13 @@ const pingServer = () => {
   return fetch(url, {
     'method': 'GET'
   }).then(response => {
-    return true;
+    response.json()
+    .then(() => {
+      return true;
+    })
+    .catch(() => {
+      return false;
+    })
   }).catch(error => {
     return false;
   });
