@@ -162,7 +162,6 @@ let relayQueries = genteratedFiles.filter((route) => {
 
   //if test does not exist create a snapshot test
   if(!exists){
-    //console.log(`Please create test in ${testFile}`)
 
     createSnapshotTest(testFile, route)
   }
