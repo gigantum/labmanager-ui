@@ -13,7 +13,6 @@ const CONFIG = {
     {'id': 'selectBaseImage', 'description': 'Base Image'},
     {'id': 'selectDevelopmentEnvironment', 'description': 'Dev Environment'},
     {'id': 'addEnvironmentPackage', 'description': 'Add Dependencies'},
-    {'id': 'addCustomDependencies', 'description': 'Custom Dependencies'},
     {'id': 'successMessage', 'description': 'Success'}
   ],
   'months': [
@@ -56,7 +55,8 @@ const CONFIG = {
 
       return encodeURI(apiURL)
     }
-  }
+  },
+  demoHostName: 'try.gigantum.com',
 }
 
 export default CONFIG

@@ -36,12 +36,6 @@ export default class PackageCount extends Component {
             }
           </ul>
         </div>
-        <div className="PackageCount__dependencies">
-          <h6 className={'Overview__header'}>Custom Dependencies</h6>
-          <ul className="flex flex--wrap">
-            <li className="PackageCount__item">{ `${overview.numCustomDependencies} custom package(s)` }</li>
-          </ul>
-        </div>
       </div>)
 
 

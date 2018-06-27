@@ -35,6 +35,7 @@
 @import 'components/shared/buttonLoader';
 @import 'components/shared/user';
 @import 'components/shared/header';
+@import 'components/shared/modal';
 //
 @import 'components/routes.scss';
 @import 'components/login.scss';
@@ -62,14 +63,12 @@
 @import 'components/labbook/branches/createBranch.scss';
 @import 'components/labbook/branches/forceMerge.scss';
 @import 'components/labbook/branches/collaborators.scss';
-@import 'components/labbook/createBranch.scss';
 @import 'components/labbook/branchMenu.scss';
 @import 'components/labbook/codeBlock.scss';
 //environment
 @import 'components/labbook/environment/environment.scss';
 @import 'components/labbook/environment/packageDependencies.scss';
 @import 'components/labbook/environment/base.scss';
-@import 'components/labbook/environment/customDependencies.scss';
 @import 'components/labbook/environment/customDockerfile.scss';
 //overview
 @import 'components/labbook/overview/overview.scss';
@@ -83,8 +82,7 @@
 @import 'components/wizard/baseDetails';
 @import 'components/wizard/trackingToggle';
 
-.modal__cover,
-.modal__cover--nested{
+.modal__cover{
   position: fixed;
   top: 0px;
   bottom: 0px;
@@ -99,9 +97,14 @@
   z-index: index($elements, modalCover);
 }
 
-.modal__cover--nested{
-  z-index: index($elements, modalCoverNested);
+.LoginPrompt{
+  text-align: center;
 }
+.LoginPrompt__button-container {
+  @include flex(space-around, row);
+}
+
+
 
 @keyframes fade-in-modal{
   0% {
@@ -128,4 +131,28 @@
 code {
   color: $slateBlue !important;
   background: $background-color !important;
+}
+
+.demo-header{
+  position: fixed;
+  color: $white;
+  height: 50px;
+  width: 100%;
+  padding: 13px 0 13px 165px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 100;
+  z-index: index($elements, head);
+  background: url('./../images/logos/horizontal-divider-line.svg') no-repeat center center;
+  white-space: nowrap;
+  top: 0;
+  text-align: left;
+  background-size: 120%;
+  a,
+  a:visited{
+    text-decoration: underline;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+  }
 }

@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom'
 import User from './User'
 //store
 import store from 'JS/redux/store'
+//config
+import config from 'JS/config'
 
 export default class SideBar extends Component {
   /**
@@ -15,7 +17,7 @@ export default class SideBar extends Component {
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
       payload: {
-        'callbackRoute': '/labbooks/all'
+        'callbackRoute': '/labbooks/local'
       }
     })
   }
@@ -32,7 +34,8 @@ export default class SideBar extends Component {
     let authed = isAuthenticated();
     let sidebarCSS = classNames({
       'SideBar col-sm-1': authed,
-      'hidden': !authed
+      'hidden': !authed,
+      'is-demo': window.location.hostname === config.demoHostName
     })
     return (
       <div className={sidebarCSS}>
@@ -43,7 +46,7 @@ export default class SideBar extends Component {
               <Link
                 onClick={() => this._updateCallbackRoute()}
                 className={isLabbooks ? 'SideBar__nav-item SideBar__nav-item--labbooks SideBar__nav-item--selected' : 'SideBar__nav-item SideBar__nav-item--labbooks'}
-                to={{pathname: '/labbooks/all'}}
+                to={{pathname: '/labbooks/local'}}
               >
                 <div className={isLabbooks ? 'SideBar__icon SideBar__icon--labbooks-selected' : 'SideBar__icon SideBar__icon--labbooks'}></div>
                 LabBooks

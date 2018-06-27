@@ -114,27 +114,30 @@ class Labbook extends Component {
     dispatches sticky state to redux to update state
   */
   _setStickHeader(){
-      let sticky = 50;
-      let isSticky = window.pageYOffset >= sticky
-      if(store.getState().labbook.isSticky !== isSticky) {
-        store.dispatch({
-          type: 'UPDATE_STICKY_STATE',
-          payload: {
-            isSticky
-          }
-        })
-      }
-
-      if(isSticky){
-        store.dispatch({
-          type: 'MERGE_MODE',
-          payload: {
-            brancfahesOpen: false,
-            mergeFilter: false
-          }
-        })
-      }
+    let isExpanded = (window.pageYOffset < this.offsetDistance) && (window.pageYOffset > 120)
+    this.offsetDistance = window.pageYOffset;
+    let sticky = 50;
+    let isSticky = window.pageYOffset >= sticky
+    if((store.getState().labbook.isSticky !== isSticky) || (store.getState().labbook.isExpanded !== isExpanded)) {
+      store.dispatch({
+        type: 'UPDATE_STICKY_STATE',
+        payload: {
+          isSticky,
+          isExpanded
+        }
+      })
     }
+
+    if(isSticky){
+      store.dispatch({
+        type: 'MERGE_MODE',
+        payload: {
+          brancfahesOpen: false,
+          mergeFilter: false
+        }
+      })
+    }
+  }
   /**
     @param {object} labbook
     updates state of labbook when prompted ot by the store
@@ -276,6 +279,7 @@ class Labbook extends Component {
         onClick={()=> this._setSelectedComponent(item.id)}
         >
         <Link
+          onClick={()=> window.scrollTo(0, 0)}
           to={`../../../labbooks/${this.state.owner}/${this.props.match.params.labbookName}/${item.id}`}
           replace
         >
@@ -289,15 +293,6 @@ class Labbook extends Component {
     updates html element classlist and labbook state
   */
   _showLabbookModal = () => {
-
-    if(document.getElementById('labbookModal')){
-      document.getElementById('labbookModal').classList.remove('hidden')
-    }
-
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.remove('hidden')
-    }
-
     if(!this.state.modalVisible){
       store.dispatch(
         {
@@ -349,16 +344,15 @@ class Labbook extends Component {
       })
     } else {
       store.dispatch({
-        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-        payload: {
-          containerMenuOpen: true
-        }
-      })
-
-      store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
           message: 'Stop LabBook before switching branches. \n Be sure to save your changes.',
+        }
+      })
+      store.dispatch({
+        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+        payload: {
+          containerMenuOpen: true
         }
       })
     }
@@ -391,7 +385,8 @@ class Labbook extends Component {
       const labbookCSS = classNames({
         'Labbook': true,
         'Labbook--detail-mode': this.state.detailMode,
-        'Labbook-branch-mode': branchesOpen
+        'Labbook-branch-mode': branchesOpen,
+        'is-demo': window.location.hostname === Config.demoHostName,
       })
 
       const branchNameCSS = classNames({
@@ -402,7 +397,8 @@ class Labbook extends Component {
 
       const labbookHeaderCSS = classNames({
         'Labbook__header': true,
-        'is-sticky': this.state.isSticky
+        'is-sticky': this.state.isSticky,
+        'is-expanded': this.state.isExpanded
       })
 
       return(
@@ -416,7 +412,26 @@ class Labbook extends Component {
                   <div className="Labbook__row-container">
                    <div className="Labbook__column-container--flex-1">
                      <div className="Labbook__name-title">
-                       {labbook.owner + '/' + labbookName}
+                       {`${labbook.owner}/${labbookName}${this.state.isSticky ? '/ ': ''}`}
+                       {
+                         this.state.isSticky &&
+                         <span className="Labbook__name-branch">{name}</span>
+                       }
+                       {
+                         this.state.isExpanded &&
+                         <div className="Labbook__navigation-container--header flex-0-0-auto column-1-span-11">
+                           <ul className="Labbook__navigation Labbook__navigation--header flex flex--row">
+                            {
+                              Config.navigation_items.map((item, index) => {
+                                return (this._getNavItem(item, index))
+                              })
+                            }
+                            {
+                              this._changeSlider()
+                            }
+                          </ul>
+                        </div>
+                       }
                      </div>
 
                      <div className={branchNameCSS}>
@@ -537,6 +552,7 @@ class Labbook extends Component {
                               labbookId={labbook.id}
                               activeBranch={labbook.activeBranch}
                               isMainWorkspace={name === 'workspace'}
+                              setBuildingState={this._setBuildingState}
                               {...this.props}
                             />)
                         }} />
@@ -635,7 +651,6 @@ const LabbookFragmentContainer = createFragmentContainer(
             numConda2Packages
             numConda3Packages
             numPipPackages
-            numCustomDependencies
           }
 
 

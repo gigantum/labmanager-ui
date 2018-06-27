@@ -63,9 +63,9 @@ class Overview extends Component {
         simple.value(this.props.readme ? this.props.readme : '')
         this.setState({simpleExists: true})
         let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0]
-        fullscreenButton && fullscreenButton.addEventListener('click', this.setState({editorFullscreen: !this.state.editorFullscreen}))
+        fullscreenButton && fullscreenButton.addEventListener('click', () => this.setState({editorFullscreen: !this.state.editorFullscreen}))
         let sideBySideButton = document.getElementsByClassName('fa-columns')[0]
-        sideBySideButton && sideBySideButton.addEventListener('click',this.setState({editorFullscreen: true}))
+        sideBySideButton && sideBySideButton.addEventListener('click', () => this.setState({editorFullscreen: true}))
       }
     }
   }
@@ -184,8 +184,11 @@ class Overview extends Component {
       'Overview': true,
       'fullscreen': this.state.editorFullscreen
     })
-    let readmeCSS = this.state.readmeExpanded ? 'ReadmeMarkdown--expanded' : 'ReadmeMarkdown';
-    let descriptionCSS = this.state.descriptionText ? 'column-1-span-9' : 'column-1-span-9 empty'
+    let readmeCSS = classNames({
+      'ReadmeMarkdown--expanded': this.state.readmeExpanded,
+      'ReadmeMarkdown': !this.state.readmeExpanded
+    })
+    let descriptionCSS = this.state.descriptionText ? 'column-1-span-10' : 'column-1-span-10 empty'
     if (this.props.labbook) {
       const { owner, labbookName } = store.getState().routes
       return (
@@ -196,7 +199,7 @@ class Overview extends Component {
             <Fragment>
               <textarea
                 maxLength="260"
-                className="Overview__description-input column-1-span-9"
+                className="Overview__description-input column-1-span-10"
                 type="text"
                 onChange={(evt)=>{this.setState({descriptionText: evt.target.value.replace(/\n/g,' ')})}}
                 placeholder="Short description of labbook"
@@ -350,7 +353,6 @@ export default createFragmentContainer(
       numConda2Packages
       numConda3Packages
       numPipPackages
-      numCustomDependencies
       recentActivity{
         id
         owner

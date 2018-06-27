@@ -1,1 +1,19 @@
-{"errors":[{"message":"Data loader batch_load_fn function raised an Exception: ValueError('LabBook `ui-test-labbook` not found locally.',)","locations":[{"line":17,"column":3}]}],"data":{"labbook":{"environment":{"customDependencies":null,"id":"RW52aXJvbm1lbnQ6ZGVmYXVsdCZ1aS10ZXN0LWxhYmJvb2s="},"id":"TGFiYm9vazpkZWZhdWx0JnVpLXRlc3QtbGFiYm9vaw=="}}}
+{
+ "data": {
+  "labbook": {
+   "environment": {
+    "customDependencies": {
+     "edges": [],
+     "pageInfo": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": null,
+      "endCursor": null
+     }
+    },
+    "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZkYXRhLXNoYWRlcg=="
+   },
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy"
+  }
+ }
+}

@@ -1,1 +1,349 @@
-{"data":{"labbookList":{"id":"TGFiYm9va0xpc3Q6","localLabbooks":{"edges":[{"node":{"name":"76e68030-f74d-4d2b-905f-49d1f92953a7","description":"This is a test labbook","owner":"cbutler","creationDateUtc":"2018-04-10T20:46:28.121836","environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciY3NmU2ODAzMC1mNzRkLTRkMmItOTA1Zi00OWQxZjkyOTUzYTc=","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJjc2ZTY4MDMwLWY3NGQtNGQyYi05MDVmLTQ5ZDFmOTI5NTNhNw==","__typename":"Labbook"},"cursor":"MA=="},{"node":{"name":"95a26266-276b-43d8-bdbd-2e5373624fb4","description":"This is a test labbook","owner":"cbutler","creationDateUtc":"2018-04-10T20:45:24.918608","environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciY5NWEyNjI2Ni0yNzZiLTQzZDgtYmRiZC0yZTUzNzM2MjRmYjQ=","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJjk1YTI2MjY2LTI3NmItNDNkOC1iZGJkLTJlNTM3MzYyNGZiNA==","__typename":"Labbook"},"cursor":"MQ=="},{"node":{"name":"867e715e-a63c-48ee-8cd3-a8ccbcf39538","description":"This is a test labbook","owner":"cbutler","creationDateUtc":"2018-03-30T15:27:31.384978","environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciY4NjdlNzE1ZS1hNjNjLTQ4ZWUtOGNkMy1hOGNjYmNmMzk1Mzg=","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJjg2N2U3MTVlLWE2M2MtNDhlZS04Y2QzLWE4Y2NiY2YzOTUzOA==","__typename":"Labbook"},"cursor":"Mg=="},{"node":{"name":"3874fb64-5ae5-4c8a-af51-8241319f3525","description":"This is a test labbook","owner":"cbutler","creationDateUtc":"2018-04-10T19:42:46.306719","environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciYzODc0ZmI2NC01YWU1LTRjOGEtYWY1MS04MjQxMzE5ZjM1MjU=","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJjM4NzRmYjY0LTVhZTUtNGM4YS1hZjUxLTgyNDEzMTlmMzUyNQ==","__typename":"Labbook"},"cursor":"Mw=="},{"node":{"name":"added-new-lab","description":"","owner":"cbutler","creationDateUtc":null,"environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZhZGRlZC1uZXctbGFi","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmFkZGVkLW5ldy1sYWI=","__typename":"Labbook"},"cursor":"NA=="},{"node":{"name":"asaasddasdas","description":"","owner":"cbutler","creationDateUtc":null,"environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZhc2Fhc2RkYXNkYXM=","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmFzYWFzZGRhc2Rhcw==","__typename":"Labbook"},"cursor":"NQ=="},{"node":{"name":"asdaaddsad","description":"","owner":"cbutler","creationDateUtc":"2018-04-26T18:45:39.265408","environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZhc2RhYWRkc2Fk","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmFzZGFhZGRzYWQ=","__typename":"Labbook"},"cursor":"Ng=="},{"node":{"name":"asdasasd","description":"","owner":"cbutler","creationDateUtc":"2018-05-08T16:04:07.033803","environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZhc2Rhc2FzZA==","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmFzZGFzYXNk","__typename":"Labbook"},"cursor":"Nw=="},{"node":{"name":"asdasdad","description":"","owner":"cbutler","creationDateUtc":null,"environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZhc2Rhc2RhZA==","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmFzZGFzZGFk","__typename":"Labbook"},"cursor":"OA=="},{"node":{"name":"asddasdasdasdaadsdsadasadwerrewtterfd","description":"","owner":"cbutler","creationDateUtc":null,"environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZhc2RkYXNkYXNkYXNkYWFkc2RzYWRhc2Fkd2VycmV3dHRlcmZk","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmFzZGRhc2Rhc2Rhc2RhYWRzZHNhZGFzYWR3ZXJyZXd0dGVyZmQ=","__typename":"Labbook"},"cursor":"OQ=="},{"node":{"name":"asdsasadasdads","description":"","owner":"cbutler","creationDateUtc":null,"environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZhc2RzYXNhZGFzZGFkcw==","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmFzZHNhc2FkYXNkYWRz","__typename":"Labbook"},"cursor":"MTA="},{"node":{"name":"asdsasaddasds","description":"","owner":"cbutler","creationDateUtc":null,"environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZhc2RzYXNhZGRhc2Rz","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmFzZHNhc2FkZGFzZHM=","__typename":"Labbook"},"cursor":"MTE="},{"node":{"name":"awful-intersections-demo","description":"A fun demo LabBook to automatically find and generate cringe-worthy maps of horrible intersections\n\n\n\n\n\n\nSome of the code in this LabBook was originally created by Jordan Matelsky (@j6m8) and was inspired by amazing work by Peter Gorman at BarelyMaps","owner":"cbutler","creationDateUtc":null,"environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZhd2Z1bC1pbnRlcnNlY3Rpb25zLWRlbW8=","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmF3ZnVsLWludGVyc2VjdGlvbnMtZGVtbw==","__typename":"Labbook"},"cursor":"MTI="},{"node":{"name":"awful-intersections-demo","description":"A fun demo LabBook to automatically find and generate cringe-worthy maps of horrible intersections\n\n\n\n\n\n\nSome of the code in this LabBook was originally created by Jordan Matelsky (@j6m8) and was inspired by amazing work by Peter Gorman at BarelyMaps","owner":"rjvgigantum","creationDateUtc":null,"environment":{"id":"RW52aXJvbm1lbnQ6cmp2Z2lnYW50dW0mYXdmdWwtaW50ZXJzZWN0aW9ucy1kZW1v","imageStatus":"EXISTS","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpyanZnaWdhbnR1bSZhd2Z1bC1pbnRlcnNlY3Rpb25zLWRlbW8=","__typename":"Labbook"},"cursor":"MTM="},{"node":{"name":"b8eb658d-51d5-45f9-8776-f615483edfd2","description":"This is a test labbook","owner":"cbutler","creationDateUtc":"2018-03-30T13:53:02.977208","environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZiOGViNjU4ZC01MWQ1LTQ1ZjktODc3Ni1mNjE1NDgzZWRmZDI=","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmI4ZWI2NThkLTUxZDUtNDVmOS04Nzc2LWY2MTU0ODNlZGZkMg==","__typename":"Labbook"},"cursor":"MTQ="},{"node":{"name":"branch-testing-labbook","description":"","owner":"cbutler","creationDateUtc":"2018-04-10T14:34:54.926431","environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZicmFuY2gtdGVzdGluZy1sYWJib29r","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmJyYW5jaC10ZXN0aW5nLWxhYmJvb2s=","__typename":"Labbook"},"cursor":"MTU="},{"node":{"name":"cb-test-2","description":"","owner":"cbutler","creationDateUtc":null,"environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZjYi10ZXN0LTI=","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmNiLXRlc3QtMg==","__typename":"Labbook"},"cursor":"MTY="},{"node":{"name":"data-shader","description":"","owner":"cbutler","creationDateUtc":"2018-05-18T17:31:30.282011","environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZkYXRhLXNoYWRlcg==","imageStatus":"EXISTS","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy","__typename":"Labbook"},"cursor":"MTc="},{"node":{"name":"does-this-fail-on-syncing","description":"Check if this fails on sync","owner":"bill2","creationDateUtc":null,"environment":{"id":"RW52aXJvbm1lbnQ6YmlsbDImZG9lcy10aGlzLWZhaWwtb24tc3luY2luZw==","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpiaWxsMiZkb2VzLXRoaXMtZmFpbC1vbi1zeW5jaW5n","__typename":"Labbook"},"cursor":"MTg="},{"node":{"name":"ec6d81ca-8c4b-4afc-92ff-9b4eed018156","description":"This is a test labbook","owner":"cbutler","creationDateUtc":"2018-04-10T20:46:30.345898","environment":{"id":"RW52aXJvbm1lbnQ6Y2J1dGxlciZlYzZkODFjYS04YzRiLTRhZmMtOTJmZi05YjRlZWQwMTgxNTY=","imageStatus":"DOES_NOT_EXIST","containerStatus":"NOT_RUNNING"},"id":"TGFiYm9vazpjYnV0bGVyJmVjNmQ4MWNhLThjNGItNGFmYy05MmZmLTliNGVlZDAxODE1Ng==","__typename":"Labbook"},"cursor":"MTk="}],"pageInfo":{"endCursor":"MTk=","hasNextPage":true,"hasPreviousPage":false,"startCursor":"MA=="}},"remoteLabbooks":{"edges":[{"node":{"name":"76e68030-f74d-4d2b-905f-49d1f92953a7","description":"","owner":"cbutler","id":"UmVtb3RlTGFiYm9vazpjYnV0bGVyJjc2ZTY4MDMwLWY3NGQtNGQyYi05MDVmLTQ5ZDFmOTI5NTNhNw==","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"MA=="},{"node":{"name":"abbb","description":"","owner":"dmk","id":"UmVtb3RlTGFiYm9vazpkbWsmYWJiYg==","isLocal":false,"__typename":"RemoteLabbook"},"cursor":"MQ=="},{"node":{"name":"added-new-lab","description":"","owner":"cbutler","id":"UmVtb3RlTGFiYm9vazpjYnV0bGVyJmFkZGVkLW5ldy1sYWI=","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"Mg=="},{"node":{"name":"asdaaddsad","description":"","owner":"cbutler","id":"UmVtb3RlTGFiYm9vazpjYnV0bGVyJmFzZGFhZGRzYWQ=","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"Mw=="},{"node":{"name":"awful-intersections-demo","description":"","owner":"rjvgigantum","id":"UmVtb3RlTGFiYm9vazpyanZnaWdhbnR1bSZhd2Z1bC1pbnRlcnNlY3Rpb25zLWRlbW8=","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"NA=="},{"node":{"name":"darpa-demo","description":"","owner":"dmk","id":"UmVtb3RlTGFiYm9vazpkbWsmZGFycGEtZGVtbw==","isLocal":false,"__typename":"RemoteLabbook"},"cursor":"NQ=="},{"node":{"name":"data-shader","description":"","owner":"cbutler","id":"UmVtb3RlTGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"Ng=="},{"node":{"name":"ghjgh","description":"","owner":"dmk","id":"UmVtb3RlTGFiYm9vazpkbWsmZ2hqZ2g=","isLocal":false,"__typename":"RemoteLabbook"},"cursor":"Nw=="},{"node":{"name":"log-volume-audit","description":"","owner":"bill2","id":"UmVtb3RlTGFiYm9vazpiaWxsMiZsb2ctdm9sdW1lLWF1ZGl0","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"OA=="},{"node":{"name":"new-demo","description":"","owner":"dmk","id":"UmVtb3RlTGFiYm9vazpkbWsmbmV3LWRlbW8=","isLocal":false,"__typename":"RemoteLabbook"},"cursor":"OQ=="},{"node":{"name":"no-internet","description":"","owner":"dmk","id":"UmVtb3RlTGFiYm9vazpkbWsmbm8taW50ZXJuZXQ=","isLocal":false,"__typename":"RemoteLabbook"},"cursor":"MTA="},{"node":{"name":"pandas-pipeline","description":"","owner":"ericw95","id":"UmVtb3RlTGFiYm9vazplcmljdzk1JnBhbmRhcy1waXBlbGluZQ==","isLocal":false,"__typename":"RemoteLabbook"},"cursor":"MTE="},{"node":{"name":"publish-332","description":"","owner":"cbutler","id":"UmVtb3RlTGFiYm9vazpjYnV0bGVyJnB1Ymxpc2gtMzMy","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"MTI="},{"node":{"name":"publish-temp7","description":"","owner":"cbutler","id":"UmVtb3RlTGFiYm9vazpjYnV0bGVyJnB1Ymxpc2gtdGVtcDc=","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"MTM="},{"node":{"name":"publish-temp8","description":"","owner":"cbutler","id":"UmVtb3RlTGFiYm9vazpjYnV0bGVyJnB1Ymxpc2gtdGVtcDg=","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"MTQ="},{"node":{"name":"publish-temp9","description":"","owner":"cbutler","id":"UmVtb3RlTGFiYm9vazpjYnV0bGVyJnB1Ymxpc2gtdGVtcDk=","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"MTU="},{"node":{"name":"random-picture-generator","description":"","owner":"cbutler","id":"UmVtb3RlTGFiYm9vazpjYnV0bGVyJnJhbmRvbS1waWN0dXJlLWdlbmVyYXRvcg==","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"MTY="},{"node":{"name":"temp-labook22","description":"","owner":"cbutler","id":"UmVtb3RlTGFiYm9vazpjYnV0bGVyJnRlbXAtbGFib29rMjI=","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"MTc="},{"node":{"name":"test-lb","description":"","owner":"dmk","id":"UmVtb3RlTGFiYm9vazpkbWsmdGVzdC1sYg==","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"MTg="},{"node":{"name":"testing-activity-feed","description":"","owner":"cbutler","id":"UmVtb3RlTGFiYm9vazpjYnV0bGVyJnRlc3RpbmctYWN0aXZpdHktZmVlZA==","isLocal":true,"__typename":"RemoteLabbook"},"cursor":"MTk="}],"pageInfo":{"endCursor":"MTk=","hasNextPage":false,"hasPreviousPage":false,"startCursor":"MA=="}}}}}
+{
+ "errors": [
+  {
+   "message": "Failed to get user access key from server",
+   "locations": [
+    {
+     "line": 46,
+     "column": 3
+    }
+   ]
+  }
+ ],
+ "data": {
+  "labbookList": {
+   "id": "TGFiYm9va0xpc3Q6",
+   "localLabbooks": {
+    "edges": [
+     {
+      "node": {
+       "name": "labbook-test-activity",
+       "description": "",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-05-29T14:05:06.762037",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZsYWJib29rLXRlc3QtYWN0aXZpdHk=",
+        "imageStatus": "EXISTS",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJmxhYmJvb2stdGVzdC1hY3Rpdml0eQ==",
+       "__typename": "Labbook"
+      },
+      "cursor": "MA=="
+     },
+     {
+      "node": {
+       "name": "data-shader",
+       "description": "",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-05-18T17:31:30.282011",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZkYXRhLXNoYWRlcg==",
+        "imageStatus": "EXISTS",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy",
+       "__typename": "Labbook"
+      },
+      "cursor": "MQ=="
+     },
+     {
+      "node": {
+       "name": "857255a0-f22e-46b5-b70f-95af00d5d17e",
+       "description": "This is a test labbook",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-05-26T01:31:31.547500",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciY4NTcyNTVhMC1mMjJlLTQ2YjUtYjcwZi05NWFmMDBkNWQxN2U=",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJjg1NzI1NWEwLWYyMmUtNDZiNS1iNzBmLTk1YWYwMGQ1ZDE3ZQ==",
+       "__typename": "Labbook"
+      },
+      "cursor": "Mg=="
+     },
+     {
+      "node": {
+       "name": "917e4606-8d98-46cb-986c-4dd424e0bff7",
+       "description": "This is a test labbook",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-05-26T01:31:35.909661",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciY5MTdlNDYwNi04ZDk4LTQ2Y2ItOTg2Yy00ZGQ0MjRlMGJmZjc=",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJjkxN2U0NjA2LThkOTgtNDZjYi05ODZjLTRkZDQyNGUwYmZmNw==",
+       "__typename": "Labbook"
+      },
+      "cursor": "Mw=="
+     },
+     {
+      "node": {
+       "name": "11c2d7ed-f4ea-4e43-ae77-cf1b7388ea0d",
+       "description": "This is a test labbook",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-05-26T01:31:29.186318",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciYxMWMyZDdlZC1mNGVhLTRlNDMtYWU3Ny1jZjFiNzM4OGVhMGQ=",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJjExYzJkN2VkLWY0ZWEtNGU0My1hZTc3LWNmMWI3Mzg4ZWEwZA==",
+       "__typename": "Labbook"
+      },
+      "cursor": "NA=="
+     },
+     {
+      "node": {
+       "name": "random-picture-generator",
+       "description": "This labBook create random piuctures.",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-05-03T15:13:39.619263",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZyYW5kb20tcGljdHVyZS1nZW5lcmF0b3I=",
+        "imageStatus": "EXISTS",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJnJhbmRvbS1waWN0dXJlLWdlbmVyYXRvcg==",
+       "__typename": "Labbook"
+      },
+      "cursor": "NQ=="
+     },
+     {
+      "node": {
+       "name": "awful-intersections-demo",
+       "description": "A fun demo LabBook to automatically find and generate cringe-worthy maps of horrible intersections\n\n\n\n\n\n\nSome of the code in this LabBook was originally created by Jordan Matelsky (@j6m8) and was inspired by amazing work by Peter Gorman at BarelyMaps",
+       "owner": "rjvgigantum",
+       "creationDateUtc": null,
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6cmp2Z2lnYW50dW0mYXdmdWwtaW50ZXJzZWN0aW9ucy1kZW1v",
+        "imageStatus": "EXISTS",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpyanZnaWdhbnR1bSZhd2Z1bC1pbnRlcnNlY3Rpb25zLWRlbW8=",
+       "__typename": "Labbook"
+      },
+      "cursor": "Ng=="
+     },
+     {
+      "node": {
+       "name": "new-labbook-345",
+       "description": "",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-05-16T03:58:23.457802",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZuZXctbGFiYm9vay0zNDU=",
+        "imageStatus": "EXISTS",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJm5ldy1sYWJib29rLTM0NQ==",
+       "__typename": "Labbook"
+      },
+      "cursor": "Nw=="
+     },
+     {
+      "node": {
+       "name": "log-volume-audit",
+       "description": "An analysis for figuring out where most of the logging material comes from, and to identifiy places to eliminated it.",
+       "owner": "bill2",
+       "creationDateUtc": "2018-04-19T16:11:06.730375",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6YmlsbDImbG9nLXZvbHVtZS1hdWRpdA==",
+        "imageStatus": "EXISTS",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpiaWxsMiZsb2ctdm9sdW1lLWF1ZGl0",
+       "__typename": "Labbook"
+      },
+      "cursor": "OA=="
+     },
+     {
+      "node": {
+       "name": "does-this-fail-on-syncing",
+       "description": "Check if this fails on sync",
+       "owner": "bill2",
+       "creationDateUtc": null,
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6YmlsbDImZG9lcy10aGlzLWZhaWwtb24tc3luY2luZw==",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpiaWxsMiZkb2VzLXRoaXMtZmFpbC1vbi1zeW5jaW5n",
+       "__typename": "Labbook"
+      },
+      "cursor": "OQ=="
+     },
+     {
+      "node": {
+       "name": "asdasasd",
+       "description": "",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-05-08T16:04:07.033803",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZhc2Rhc2FzZA==",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJmFzZGFzYXNk",
+       "__typename": "Labbook"
+      },
+      "cursor": "MTA="
+     },
+     {
+      "node": {
+       "name": "temp-labook22",
+       "description": "this is a description of a labbook sadodaadadad adsdasadsdassad ssaddadsads adsadsdad adsd adasdsadsjkdsjfjnfjdjfdjnfdjfdjfdjn . asdad das ad sad sd asd dsa d ads adsad sad . da das sad das da d da sd da dada ad s d ad",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-05-02T03:03:08.491593",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZ0ZW1wLWxhYm9vazIy",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJnRlbXAtbGFib29rMjI=",
+       "__typename": "Labbook"
+      },
+      "cursor": "MTE="
+     },
+     {
+      "node": {
+       "name": "asdaaddsad",
+       "description": "",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-04-26T18:45:39.265408",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZhc2RhYWRkc2Fk",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJmFzZGFhZGRzYWQ=",
+       "__typename": "Labbook"
+      },
+      "cursor": "MTI="
+     },
+     {
+      "node": {
+       "name": "test-lb",
+       "description": "This a short description",
+       "owner": "dmk",
+       "creationDateUtc": "2018-04-30T13:29:31.229822",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6ZG1rJnRlc3QtbGI=",
+        "imageStatus": "EXISTS",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpkbWsmdGVzdC1sYg==",
+       "__typename": "Labbook"
+      },
+      "cursor": "MTM="
+     },
+     {
+      "node": {
+       "name": "labbook-37",
+       "description": "",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-04-26T17:51:22.882025",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZsYWJib29rLTM3",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJmxhYmJvb2stMzc=",
+       "__typename": "Labbook"
+      },
+      "cursor": "MTQ="
+     },
+     {
+      "node": {
+       "name": "labbook-38",
+       "description": "",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-04-26T17:50:21.419334",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZsYWJib29rLTM4",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJmxhYmJvb2stMzg=",
+       "__typename": "Labbook"
+      },
+      "cursor": "MTU="
+     },
+     {
+      "node": {
+       "name": "testing-activity-feed",
+       "description": "testing labbook activity feed",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-04-20T19:05:58.915317",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZ0ZXN0aW5nLWFjdGl2aXR5LWZlZWQ=",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJnRlc3RpbmctYWN0aXZpdHktZmVlZA==",
+       "__typename": "Labbook"
+      },
+      "cursor": "MTY="
+     },
+     {
+      "node": {
+       "name": "test-activity",
+       "description": "",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-04-20T20:39:00.482299",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZ0ZXN0LWFjdGl2aXR5",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJnRlc3QtYWN0aXZpdHk=",
+       "__typename": "Labbook"
+      },
+      "cursor": "MTc="
+     },
+     {
+      "node": {
+       "name": "ec6d81ca-8c4b-4afc-92ff-9b4eed018156",
+       "description": "This is a test labbook",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-04-10T20:46:30.345898",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZlYzZkODFjYS04YzRiLTRhZmMtOTJmZi05YjRlZWQwMTgxNTY=",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJmVjNmQ4MWNhLThjNGItNGFmYy05MmZmLTliNGVlZDAxODE1Ng==",
+       "__typename": "Labbook"
+      },
+      "cursor": "MTg="
+     },
+     {
+      "node": {
+       "name": "76e68030-f74d-4d2b-905f-49d1f92953a7",
+       "description": "This is a test labbook",
+       "owner": "cbutler",
+       "creationDateUtc": "2018-04-10T20:46:28.121836",
+       "environment": {
+        "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciY3NmU2ODAzMC1mNzRkLTRkMmItOTA1Zi00OWQxZjkyOTUzYTc=",
+        "imageStatus": "DOES_NOT_EXIST",
+        "containerStatus": "NOT_RUNNING"
+       },
+       "id": "TGFiYm9vazpjYnV0bGVyJjc2ZTY4MDMwLWY3NGQtNGQyYi05MDVmLTQ5ZDFmOTI5NTNhNw==",
+       "__typename": "Labbook"
+      },
+      "cursor": "MTk="
+     }
+    ],
+    "pageInfo": {
+     "endCursor": "MTk=",
+     "hasNextPage": true,
+     "hasPreviousPage": false,
+     "startCursor": "MA=="
+    }
+   },
+   "remoteLabbooks": null
+  }
+ }
+}

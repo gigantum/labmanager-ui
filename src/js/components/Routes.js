@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import classNames from 'classnames';
 import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
-import Auth from 'JS/Auth/Auth';
 import history from 'JS/history';
 import {QueryRenderer, graphql} from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
@@ -14,8 +13,11 @@ import Footer from 'Components/shared/Footer';
 import Prompt from 'Components/shared/Prompt';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
+import Profile from 'Components/profile/Profile'
 //
 import store from 'JS/redux/store'
+//config
+import config from 'JS/config'
 
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
@@ -27,10 +29,8 @@ export const LabbookQuery =  graphql`
     }
   }`
 
-const auth = new Auth();
 
-
-const handleAuthentication = (nextState, replace) => {
+const handleAuthentication = (auth, nextState, replace) => {
   if (/access_token|id_token|error/.test(nextState.location.hash)) {
     auth.handleAuthentication();
   }
@@ -44,9 +44,20 @@ export default class Routes extends Component {
     this.state = {
       history: history,
       hasError: false,
+      forceLoginScreen: this.props.forceLoginScreen,
     }
-
+    this._setForceLoginScreen = this._setForceLoginScreen.bind(this)
     this.setRouteStore = this.setRouteStore.bind(this)
+
+  }
+  /**
+    @param {}
+    changes css of demo-header if on the demo page
+  */
+  componentDidMount(){
+    if(window.location.hostname === config.demoHostName){
+      document.getElementById('demo-header').classList.remove('hidden')
+    }
 
   }
 
@@ -80,6 +91,17 @@ export default class Routes extends Component {
   }
 
   /**
+    @param {boolean} forceLoginScreen
+    sets state of forceloginscreen
+  */
+  _setForceLoginScreen(forceLoginScreen) {
+    console.log(forceLoginScreen)
+    if(forceLoginScreen !== this.state.forceLoginScreen){
+      this.setState({forceLoginScreen})
+    }
+  }
+
+  /**
     @param {Error, Object} error, info
     shows error message when runtime error occurs
   */
@@ -89,16 +111,18 @@ export default class Routes extends Component {
 
   render(){
     if(!this.state.hasError){
-      let authed = auth.isAuthenticated();
+      let authed = this.props.auth.isAuthenticated();
       let self = this
       let headerCSS = classNames({
         'Header': authed,
-        'hidden': !authed
+        'hidden': !authed,
+        'is-demo': window.location.hostname === config.demoHostName,
       })
       let routesCSS = classNames({
         'Routes__main': authed,
         'Routes__main-no-auth': !authed
       })
+
       return(
 
           <Router>
@@ -111,7 +135,7 @@ export default class Routes extends Component {
                 <div className="Routes">
                   <div className={headerCSS}></div>
                   <SideBar
-                    auth={auth} history={history}
+                    auth={this.props.auth} history={history}
                   />
                   <div className={routesCSS}>
 
@@ -120,8 +144,9 @@ export default class Routes extends Component {
                     path="/"
                     render={(props) =>
                       <Home
+                        forceLoginScreen={this.state.forceLoginScreen}
                         history={history}
-                        auth={auth}
+                        auth={this.props.auth}
                         {...props}
                       />
                     }
@@ -132,17 +157,18 @@ export default class Routes extends Component {
                     exact
                     path="/:id"
                     render={(props) =>
-                      <Redirect to="/labbooks/all"/>
+                      <Redirect to="/labbooks/local"/>
                     }
                   />
 
                   <Route
                     exact
-                    path="/labbooks/:labbookFilter"
+                    path="/labbooks/:labbookSection"
                     render={(props) =>
                       <Home
+                        forceLoginScreen={this.state.forceLoginScreen}
                         history={history}
-                        auth={auth}
+                        auth={this.props.auth}
                         {...props}
                       />
                     }
@@ -150,7 +176,7 @@ export default class Routes extends Component {
 
                   <Route
                     path="/labbooks/:owner/:labbookName"
-                    auth={auth}
+                    auth={this.props.auth}
                     render={(parentProps) =>{
 
                         const labbookName = parentProps.match.params.labbookName;
@@ -183,7 +209,7 @@ export default class Routes extends Component {
 
                                 return (<Labbook
                                   key={labbookName}
-                                  auth={auth}
+                                  auth={this.props.auth}
                                   labbookName={labbookName}
                                   query={props.query}
                                   labbook={props.labbook}
@@ -206,10 +232,21 @@ export default class Routes extends Component {
                   <Route
                     path="/callback"
                     render={(props) => {
-                      handleAuthentication(props);
+                      handleAuthentication(this.props.auth, props);
                       return (
                         <Callback
                           {...props}
+                        />
+                      )
+                    }}
+                  />
+
+                  <Route
+                    path="/profile"
+                    render={(props)=>{
+                      return(
+                        <Profile
+
                         />
                       )
                     }}
@@ -232,7 +269,7 @@ export default class Routes extends Component {
     } else {
       return (
         <div className="Routes__error">
-     
+
           <p>An error has occured. Please try refreshing the page.</p>
         </div>
       )

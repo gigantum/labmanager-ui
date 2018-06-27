@@ -65,7 +65,7 @@ export default class ContainerStatus extends Component {
     }
   }
   componentWillMount() {
-   
+
     this._getContainerStatusText(this.props.containerStatus, this.props.imageStatus)
   }
   /**
@@ -184,7 +184,6 @@ export default class ContainerStatus extends Component {
     let containerMenuClicked = (evt.target.className.indexOf('ContainerStatus__container-state') > -1) ||
       (evt.target.className.indexOf('ContainerStatus__button-menu') > -1) ||
       (evt.target.className.indexOf('PackageDependencies__button') > -1) ||
-      (evt.target.className.indexOf('CustomDependencies__button') > -1) ||
       (evt.target.className.indexOf('BranchMenu') > -1) ||
       (evt.target.className.indexOf('BranchMenu__sync-button') > -1) ||
       (evt.target.className.indexOf('BranchMenu__remote-button') > -1) ||
@@ -195,6 +194,7 @@ export default class ContainerStatus extends Component {
       (evt.target.className.indexOf('Labbook__branch-toggle') > -1) ||
       (evt.target.className.indexOf('Acitivty__rollback-button') > -1) ||
       (evt.target.className.indexOf('Activity__add-branch-button') > -1) ||
+      (evt.target.className.indexOf('PackageDependencies__remove-button') > -1) ||
       (evt.target.className.indexOf('BranchCard__delete-labbook') > -1)
 
     if(!containerMenuClicked &&
@@ -406,7 +406,7 @@ export default class ContainerStatus extends Component {
     store.dispatch({
       type: 'INFO_MESSAGE',
       payload:{
-        message: `Starting ${developmentTool}`,
+        message: `Starting ${developmentTool}, make sure to allow popups.`,
       }
     })
 
@@ -416,8 +416,7 @@ export default class ContainerStatus extends Component {
       developmentTool,
       (response, error)=>{
           if(response.startDevTool){
-
-            let path = response.startDevTool.path.replace('0.0.0.0', window.location.hostname)
+            let path = `${window.location.protocol}//${window.location.hostname}${response.startDevTool.path}`
             window.open(path, '_blank')
           }
           if(error){

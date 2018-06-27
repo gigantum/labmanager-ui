@@ -1,5 +1,6 @@
 //vendor
 import React, { Component } from 'react'
+import Highlighter from 'react-highlight-words'
 //muations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
@@ -17,7 +18,7 @@ export default class LocalLabbookPanel extends Component {
 
     this.state = {
       'exportPath': '',
-      'status': '',
+      'status': 'loading',
       'textStatus': '',
       'labbookName': props.edge.node.name,
       'owner': props.edge.node.owner
@@ -25,15 +26,34 @@ export default class LocalLabbookPanel extends Component {
     this._getContainerStatusText = this._getContainerStatusText.bind(this)
     this._stopStartContainer = this._stopStartContainer.bind(this)
   }
-
-  componentWillMount() {
-    const {environment} = this.props.edge.node
+  /***
+  * @param {Object} nextProps
+  * processes container lookup and assigns container status to labbook card
+  */
+  componentWillReceiveProps(nextProps) {
+    let {environment} = nextProps
+    if(environment){
     let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
 
     this.setState({status: status, textStatus: status})
-
+    }
   }
+  /***
+  * @param {}
+  * if environment exists when components will mount it will populate container status
+  */
+  componentWillMount(){
+    let {environment} = this.props
+    if(environment){
+      let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
 
+      this.setState({status: status, textStatus: status})
+    }
+  }
+  /***
+  * @param {string, string} containerStatus, imageStatus
+  * returns corrent container status by checking both container and imagestatus
+  */
   _getContainerStatusText(containerStatus, imageStatus){
 
     let status = 'Running';
@@ -57,6 +77,13 @@ export default class LocalLabbookPanel extends Component {
       this._startContainerMutation()
     }else if(status === "Running"){
       this._stopContainerMutation()
+    } else if(status === "loading"){
+      store.dispatch({
+        type: 'INFO_MESSAGE',
+        payload:{
+          message: `Container status is still loading. The status will update when it is available.`
+        }
+      })
     }else{
       store.dispatch({
         type: 'INFO_MESSAGE',
@@ -146,16 +173,20 @@ export default class LocalLabbookPanel extends Component {
   ***/
   _updateTextStatusOver(evt, status){
     let newStatus = status;
-    newStatus = (status === "Running") ? 'Stop' : newStatus;
-    newStatus = (status === "Stopped") ? 'Run' : newStatus;
-    this.setState({textStatus: newStatus})
+    if(status !== 'loading'){
+      newStatus = (status === "Running") ? 'Stop' : newStatus;
+      newStatus = (status === "Stopped") ? 'Run' : newStatus;
+      this.setState({textStatus: newStatus})
+    }
   }
   /***
   * @param {objectstring} evt,status
   * stops labbbok conatainer
   ***/
   _updateTextStatusOut(evt, status){
+    if(status !== 'loading'){
     this.setState({textStatus: status})
+    }
   }
 
   render(){
@@ -187,14 +218,26 @@ export default class LocalLabbookPanel extends Component {
             <h6
               className="LocalLabbooks__panel-title"
               onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}>
-              {edge.node.name}
+              <Highlighter
+                highlightClassName='LocalLabbooks__highlighted'
+                searchWords={[store.getState().labbookListing.filterText]}
+                autoEscape={false}
+                caseSensitive={false}
+                textToHighlight={edge.node.name}
+              />
             </h6>
 
           </div>
           <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner}</p>
           <p
             className="LocalLabbooks__description">
-            {edge.node.description}
+            <Highlighter
+              highlightClassName='LocalLabbooks__highlighted'
+              searchWords={[store.getState().labbookListing.filterText]}
+              autoEscape={false}
+              caseSensitive={false}
+              textToHighlight={edge.node.description}
+            />
           </p>
         </div>
     </div>)

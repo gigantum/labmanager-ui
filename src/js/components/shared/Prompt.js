@@ -2,10 +2,14 @@ import React, { Component } from 'react'
 import Sniffr from 'sniffr'
 
 const pingServer = () => {
-  return fetch(window.location.protocol + '//' + window.location.hostname + `${process.env.GIGANTUM_API}`, {
-    'method': 'OPTIONS'
+  const url = `${window.location.protocol}//${window.location.host}${process.env.PING_API}`;
+  return fetch(url, {
+    'method': 'GET'
   }).then(response => {
-    return true;
+    if(response.status === 200 && (response.headers.get('content-type') === 'application/json')){
+      return true;
+    }
+    return false;
   }).catch(error => {
     return false;
   });
@@ -41,7 +45,7 @@ export default class Prompt extends Component {
           clearInterval(this.intervalId);
           this.intervalId = setInterval(this._handlePing.bind(this), 10000);
         } else {
-          if (this.state.connected) window.location.reload();
+
           this.setState({ failureCount: this.state.failureCount + 1, promptState: false });
           clearInterval(this.intervalId);
           this.intervalId = setInterval(this._handlePing.bind(this), 2500);

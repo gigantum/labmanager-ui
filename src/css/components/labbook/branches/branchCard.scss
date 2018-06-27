@@ -83,12 +83,12 @@
   background: none;
 }
 
-.BranchCard__delete-modal{
-  @include modal(440px, 660px);
-  @include flex(flex-start, column);
-  padding: 40px;
-  z-index: index($elements, modal);
-}
+// .BranchCard__delete-modal{
+//   @include modal(440px, 660px);
+//   @include flex(flex-start, column);
+//   padding: 40px;
+//   z-index: index($elements, modal);
+// }
 
 
 .BranchCard__header {

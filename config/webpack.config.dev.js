@@ -12,7 +12,6 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 
-
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/';
@@ -58,6 +57,7 @@ module.exports = {
     require.resolve('react-error-overlay'),
     // Finally, this is your app's code:
     paths.appIndexJs,
+    paths.dahshboardJs,
     // We include the app code last so that if there is a runtime error during
     // initialization, it doesn't blow up the WebpackDevServer client, and
     // changing JS code would still trigger a refresh.
@@ -211,18 +211,10 @@ module.exports = {
         loaders: [
           'style-loader',
           'css-loader',
-          // {
-          //   loader: 'css-loader',
-          //   sourceMap: true
-          // },
           {
             loader: 'sass-loader',
             options:{
-              sourceMap: true,
-              includePaths: [
-                require("bourbon").includePaths[0],
-                require("bourbon-neat").includePaths[0]
-              ]
+              sourceMap: true
             }
           }
         ]

@@ -31,7 +31,7 @@ exports[`Test Header rendering 1`] = `
           <div
             className="Header__labbook-icon"
           />
-          Lab Books
+          LabBooks
         </a>
       </li>
     </ul>
@@ -39,12 +39,17 @@ exports[`Test Header rendering 1`] = `
       className="User"
       id="user"
     >
+      <div
+        className="User__image"
+      >
+         
+      </div>
       <h6
         className="User__name"
         id="username"
         onClick={[Function]}
       >
-        
+        cbutler
       </h6>
       <div
         className="hidden"
@@ -57,7 +62,7 @@ exports[`Test Header rendering 1`] = `
           id="logout"
           onClick={[Function]}
         >
-          Log Out
+          Logout
         </button>
       </div>
     </div>

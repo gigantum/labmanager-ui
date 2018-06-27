@@ -10,27 +10,18 @@ const relay = jest.genMockFromModule('react-relay');
 const RelayPaginationProps = {
   // relay:{
       hasMore: jest.fn(),
-      loadMore: () => {
-
-      },
-      isLoading: jest.fn()
+      loadMore: jest.fn(),
+      isLoading: jest.fn(),
+      refetchConnection: jest.fn()
 
 }
 
-// function makeRelayWrapper<
-//   Props: {},
-//   TComponent: React.ComponentType<Props>,
-// >(
-//   Component: TComponent,
-// ) : React.ComponentType<
-//   $RelayProps<React.ElementConfig<TCompnent>, RelayPaginationProps>,> {
-//
 const makeRelayWrapper = (Comp) => {
 
   class Container extends Component{
     constructor(props, context){
     	super(props);
-     
+
     	this.state = {};
     }
 
@@ -46,14 +37,6 @@ const makeRelayWrapper = (Comp) => {
   return Container
 }
 
-
-// return <Comp {...relayProps}/>
-
-  // return function () {
-  //
-  //      console.log(Comp)
-  //      return <Comp {...props} {...relayProps}/>;
-  //  };
 
 
 relay.createFragmentContainer = (c) => c;
@@ -75,7 +58,6 @@ const loadMore = (props, value, ha) => {
 relay.loadMore = loadMore
 
 class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
-;
 
   constructor(props: Props, context: Object, data: Data) {
     super(props, context);
@@ -83,10 +65,10 @@ class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
     this._rootSubscription = null;
     this._selectionReference = null;
 
-    let type =  props.query().query.selections[0].name;
+    let name = props.query().query.selections[0].name;
 
-    type = type.charAt(0).toLowerCase() + type.slice(1)
-    console.log(type, global.data)
+    let type = name.charAt(0).toLowerCase() + name.slice(1)
+    console.log(type)
     this.state = {
       readyState: {
         props: (type !== false) ? global.data[type] : global.data
@@ -100,7 +82,7 @@ class ReactRelayQueryRenderer extends React.Component<Props, State, Data> {
   }
 }
 
-relay.QueryRenderer = ReactRelayQueryRenderer
+relay.QueryRenderer = QueryRenderer //ReactRelayQueryRenderer
 
 //relay.QueryRendererMock = ReactRelayQueryRenderer
 

@@ -4,9 +4,11 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import Auth from 'JS/Auth/Auth';
 import { Router } from "react-router";
-const auth = new Auth();
-auth.isAuthenticated = function(){return false};
 
+const auth = new Auth();
+
+
+auth.isAuthenticated = function(){return false};
 
 auth.login = function(){return 'logged in'}
 

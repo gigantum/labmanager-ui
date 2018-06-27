@@ -8,8 +8,11 @@ exports[`Test Home Rendering 1`] = `
     className="Login"
   >
     <div
-      className="Login__panel flex flex--column justify--space-around"
+      className="Login__panel"
     >
+      <div
+        className="Login__logo"
+      />
       <button
         className="Login__button"
         onClick={[Function]}
