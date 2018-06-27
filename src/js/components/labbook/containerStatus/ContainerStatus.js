@@ -406,7 +406,7 @@ export default class ContainerStatus extends Component {
     store.dispatch({
       type: 'INFO_MESSAGE',
       payload:{
-        message: `Starting ${developmentTool}`,
+        message: `Starting ${developmentTool}, make sure to allow popups.`,
       }
     })
 
