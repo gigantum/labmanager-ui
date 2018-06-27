@@ -104,9 +104,9 @@ describe("Test Modal Visible", () =>{
       baseImage={json.data.labbook.environment.baseImage}
     />, {}, json.data.labbook.environment)
   );
-  console.log(wrapper)
+
   const component = mount(wrapper._component._currentElement)
-  console.log(component)
+  
   it('calls componentDidMount', () => {
 
     //expect(CustomDependencies.prototype.componentDidMount.calledOnce).to.equal(true);

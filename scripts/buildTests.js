@@ -30,11 +30,12 @@ process.env.NODE_ENV = 'development';
 const createSnapshotTest = (testFile, route) => {
 
   let componentRelativePath = testFile.split('__tests__')[1]
-  let componentImportPath = componentRelativePath.replace('.test.js', '').replace('/components', 'Components')
-  let componentName = testFile.split('/')[testFile.split('/').length - 1].replace('.test.js', '')
-  let relayData = require(__dirname + '/../' + route) //relay query
 
-  //console.log(relayData)
+  let componentImportPath = componentRelativePath.replace('.test.js', '').replace('/components', 'Components')
+
+  let componentName = testFile.split('/')[testFile.split('/').length - 1].replace('.test.js', '')
+
+  let relayData = require(__dirname + '/../' + route) //relay query
 
   const fileContent = `
       import React from 'react'
@@ -57,6 +58,8 @@ const createSnapshotTest = (testFile, route) => {
         expect(tree).toMatchSnapshot()
 
       })`
+
+
       function ensureDirectoryExistence(filePath) {
           var dirname = path.dirname(filePath);
           if (fs.existsSync(dirname)) {

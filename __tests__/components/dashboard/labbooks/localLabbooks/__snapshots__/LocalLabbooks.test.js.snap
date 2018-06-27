@@ -51,40 +51,6 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
       </div>
       <div
         className="hidden"
-      >
-        <div
-          className="Labbooks-login-prompt--close"
-          onClick={[Function]}
-        />
-        <div
-          className="LoginPrompt"
-        >
-          <div>
-            <p>
-              You need an active session to perform this action
-            </p>
-            <p>
-              Do you want login?
-            </p>
-          </div>
-          <div
-            className="LoginPrompt__button-container"
-          >
-            <button
-              onClick={[Function]}
-            >
-              Yes
-            </button>
-            <button
-              onClick={[Function]}
-            >
-              no
-            </button>
-          </div>
-        </div>
-      </div>
-      <div
-        className="hidden"
       />
     </div>
     <div
@@ -98,12 +64,12 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__containerStatus"
         >
           <button
-            className="LocalLabbooks__containerStatus--state Stopped"
+            className="LocalLabbooks__containerStatus--state loading"
             onClick={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
           >
-            Stopped
+            
           </button>
         </div>
       </div>
@@ -143,12 +109,12 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__containerStatus"
         >
           <button
-            className="LocalLabbooks__containerStatus--state Stopped"
+            className="LocalLabbooks__containerStatus--state loading"
             onClick={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
           >
-            Stopped
+            
           </button>
         </div>
       </div>
@@ -188,12 +154,12 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__containerStatus"
         >
           <button
-            className="LocalLabbooks__containerStatus--state Rebuild"
+            className="LocalLabbooks__containerStatus--state loading"
             onClick={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
           >
-            Rebuild
+            
           </button>
         </div>
       </div>
@@ -233,12 +199,12 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__containerStatus"
         >
           <button
-            className="LocalLabbooks__containerStatus--state Rebuild"
+            className="LocalLabbooks__containerStatus--state loading"
             onClick={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
           >
-            Rebuild
+            
           </button>
         </div>
       </div>
@@ -278,12 +244,12 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__containerStatus"
         >
           <button
-            className="LocalLabbooks__containerStatus--state Rebuild"
+            className="LocalLabbooks__containerStatus--state loading"
             onClick={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
           >
-            Rebuild
+            
           </button>
         </div>
       </div>

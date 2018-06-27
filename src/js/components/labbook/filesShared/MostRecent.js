@@ -18,7 +18,7 @@ export default class MostRecent extends Component {
     if (selectedPath === 'inputData' || selectedPath === 'outputData') {
       selectedPath = selectedPath.substring(0, selectedPath.length - 4);
     }
-    console.log(selectedPath, this.props[selectedPath])
+  
     this.state = {
       loading: false,
       showAmount: 3,

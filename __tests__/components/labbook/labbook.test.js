@@ -30,7 +30,7 @@ test('Test Labbook Rendering', async () => {
         </MemoryRouter>
       )
 
-      console.log(component._component._currentElement.props.child.props.children)
+     
       let tree = component.toJSON();
       expect(tree).toMatchSnapshot();
 })

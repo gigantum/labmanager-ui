@@ -6,11 +6,25 @@
 
       import relayTestingUtils from 'relay-testing-utils'
 
-      test('Test OutputFavorites', () => {
+      import json from './__relaydata__/OutputFavorites.json'
+
+
+      const setContainerState = () =>{
+
+      }
+
+      const fixtures = {
+        labbook: json.data.labbook,
+        labbookId: json.data.labbook.id,
+        isLocked: false,
+        setContainerState
+      }
+
+      test('Test InputFavorites', () => {
 
         const wrapper = renderer.create(
 
-           <OutputFavorites />
+           <OutputFavorites {...fixtures}/>
 
         );
 
