@@ -128,6 +128,8 @@ const buildQueryVariables = (route) => {
   defs.forEach((def)=>{
      if(variableReference[def.name]){
        variables[def.name] = variableReference[def.name]
+     }else{
+       console.log('missing variable' + def.name)
      }
   })
 
@@ -198,7 +200,7 @@ relayQueries.forEach((queryData) => {
   let variables = queryData.variables
   console.log(variables)
   //fetchData for test from the api
-  fetch('http://localhost:10001/labbook/', {
+  fetch('https://localhost:10000/api/labbook/', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
