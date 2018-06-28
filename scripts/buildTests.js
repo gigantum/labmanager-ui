@@ -117,16 +117,20 @@ const variableReference = {
   cursor: null,
   hasNext: false,
   reverse: false,
-  sort: 'modified_on'
+  sort: 'modified_on',
+  keys: '',
+  input: '',
+  ids: [],
+  path: ''
+
 
 }
 
 const buildQueryVariables = (route) => {
   const defs = require(__dirname + '/../' + route).operation.argumentDefinitions
-  console.log(defs)
   let variables = {}
   defs.forEach((def)=>{
-     if(variableReference[def.name]){
+     if(variableReference[def.name] !== undefined){
        variables[def.name] = variableReference[def.name]
      }else{
        console.log('missing variable' + def.name)
@@ -164,9 +168,9 @@ let relayQueries = genteratedFiles.filter((route) => {
 
   //if test does not exist create a snapshot test
   if(!exists){
-
     createSnapshotTest(testFile, route)
   }
+
   let isComponent = (route.indexOf('component') > -1)
 
   return isComponent
@@ -200,7 +204,7 @@ relayQueries.forEach((queryData) => {
   let variables = queryData.variables
   console.log(variables)
   //fetchData for test from the api
-  fetch('https://localhost:10000/api/labbook/', {
+  fetch('http://localhost:10000/api/labbook/', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
