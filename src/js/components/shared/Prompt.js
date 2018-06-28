@@ -2,11 +2,15 @@ import React, { Component } from 'react'
 import Sniffr from 'sniffr'
 
 const pingServer = () => {
-  const url = `${window.location.protocol}//${window.location.hostname}${process.env.PING_API}`;
+  let apiHost = process.env.NODE_ENV === 'development' ? 'localhost:10000' : window.location.host
+  const url = `${window.location.protocol}//${apiHost}${process.env.PING_API}`;
   return fetch(url, {
     'method': 'GET'
   }).then(response => {
-    return true;
+    if(response.status === 200 && (response.headers.get('content-type') === 'application/json')){
+      return true;
+    }
+    return false;
   }).catch(error => {
     return false;
   });

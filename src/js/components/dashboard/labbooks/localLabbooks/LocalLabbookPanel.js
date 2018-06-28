@@ -1,5 +1,6 @@
 //vendor
 import React, { Component } from 'react'
+import Highlighter from 'react-highlight-words'
 //muations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
@@ -217,14 +218,26 @@ export default class LocalLabbookPanel extends Component {
             <h6
               className="LocalLabbooks__panel-title"
               onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}>
-              {edge.node.name}
+              <Highlighter
+                highlightClassName='LocalLabbooks__highlighted'
+                searchWords={[store.getState().labbookListing.filterText]}
+                autoEscape={false}
+                caseSensitive={false}
+                textToHighlight={edge.node.name}
+              />
             </h6>
 
           </div>
           <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner}</p>
           <p
             className="LocalLabbooks__description">
-            {edge.node.description}
+            <Highlighter
+              highlightClassName='LocalLabbooks__highlighted'
+              searchWords={[store.getState().labbookListing.filterText]}
+              autoEscape={false}
+              caseSensitive={false}
+              textToHighlight={edge.node.description}
+            />
           </p>
         </div>
     </div>)

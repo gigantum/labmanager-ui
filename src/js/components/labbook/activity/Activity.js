@@ -343,13 +343,16 @@ class Activity extends Component {
     *
   */
   _setStickyDate(){
-    let isExpanded = (window.pageYOffset < this.offsetDistance) && (window.pageYOffset > 120)
+    let isDemo = window.location.hostname === config.demoHostName
+    let upperBound = isDemo ? 170: 120;
+    let lowerBound = isDemo ? 130 : 80;
+    let isExpanded = (window.pageYOffset < this.offsetDistance) && (window.pageYOffset > upperBound)
     this.offsetDistance = window.pageYOffset;
     let stickyDate = null;
     this.dates.forEach((date)=> {
       if(date && date.e){
         let bounds = date.e.getBoundingClientRect()
-        if((!isExpanded && bounds.top < 80) || (isExpanded && bounds.top < 120)){
+        if((!isExpanded && bounds.top < lowerBound) || (isExpanded && bounds.top < upperBound)){
           stickyDate = date.time
           date.e.classList.add('not-visible')
           date.e.nextSibling && date.e.nextSibling.classList.add('next-element')
@@ -769,13 +772,18 @@ class Activity extends Component {
       'Activity': true,
       'fullscreen': this.state.editorFullscreen
     })
+    let newActivityCSS= classNames({
+      'Activity__new-record': true,
+      'is-demo': window.location.hostname === config.demoHostName
+    })
 
     if(this.props.labbook){
       let recordDates = Object.keys(this.state.activityRecords)
       let stickyDateCSS = classNames({
         'Activity__date-tab': true,
         'fixed': this.state.stickyDate,
-        'is-expanded': store.getState().labbook.isExpanded
+        'is-expanded': store.getState().labbook.isExpanded,
+        'is-demo': window.location.hostname === config.demoHostName,
       })
       return(
         <div key={this.props.labbook} className={activityCSS}>
@@ -785,7 +793,7 @@ class Activity extends Component {
               className="Activity__new-record-wrapper column-1-span-10">
              <div
                onClick={() => this._getNewActivities()}
-               className="Activity__new-record">
+               className={newActivityCSS}>
                 New Activity
              </div>
            §</div>
@@ -808,6 +816,7 @@ class Activity extends Component {
                 activeBranch={this.props.activeBranch}
                 modalVisible={this.state.createBranchVisible}
                 toggleModal={this._toggleCreateModal}
+                setBuildingState={this.props.setBuildingState}
               />
               {
                 recordDates.map((k, i) => {

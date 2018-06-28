@@ -2,8 +2,8 @@
 import fs from 'fs'
 import os from 'os'
 //mutations
-import AddPackageComponentMutation from 'Mutations/environment/AddPackageComponentMutation';
-import RemovePackageComponentMutation from 'Mutations/environment/RemovePackageComponentMutation';
+import AddPackageComponentsMutation from 'Mutations/environment/AddPackageComponentsMutation';
+import RemovePackageComponentsMutation from 'Mutations/environment/RemovePackageComponentsMutation';
 import AddCustomComponentMutation from 'Mutations/environment/AddCustomComponentMutation';
 import RemoveCustomComponentMutation from 'Mutations/environment/RemoveCustomComponentMutation';
 //config
@@ -27,7 +27,7 @@ const {
 const PackageComponents = {
 
   addPackageComponent: (labbbookName, clientMutationId, environmentId, callback) => {
-    AddPackageComponentMutation(
+    AddPackageComponentsMutation(
       labbbookName,
       owner,
       manager,
@@ -41,7 +41,7 @@ const PackageComponents = {
     )
   },
   removePackageComponent: (labbbookName, nodeId, environmentId, callback) => {
-    RemovePackageComponentMutation(
+    RemovePackageComponentsMutation(
       labbbookName,
       owner,
       manager,

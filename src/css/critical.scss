@@ -132,3 +132,27 @@ code {
   color: $slateBlue !important;
   background: $background-color !important;
 }
+
+.demo-header{
+  position: fixed;
+  color: $white;
+  height: 50px;
+  width: 100%;
+  padding: 13px 0 13px 165px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 100;
+  z-index: index($elements, head);
+  background: url('./../images/logos/horizontal-divider-line.svg') no-repeat center center;
+  white-space: nowrap;
+  top: 0;
+  text-align: left;
+  background-size: 120%;
+  a,
+  a:visited{
+    text-decoration: underline;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+  }
+}

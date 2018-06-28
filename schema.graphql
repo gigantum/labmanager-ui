@@ -1,5 +1,9 @@
 # source: http://localhost:10001/labbook/
+<<<<<<< HEAD
 # timestamp: Wed Jun 13 2018 11:14:58 GMT-0400 (EDT)
+=======
+# timestamp: Mon Jun 25 2018 17:17:16 GMT-0400 (EDT)
+>>>>>>> integration
 
 schema {
   query: LabbookQuery
@@ -174,25 +178,21 @@ type AddLabbookRemotePayload {
   clientMutationId: String
 }
 
-input AddPackageComponentInput {
+input AddPackageComponentsInput {
   owner: String!
   labbookName: String!
-  manager: String!
-  package: String!
-  version: String
-  skipValidation: Boolean
+  packages: [PackageComponentInput]
   clientMutationId: String
 }
 
 """
-Mutation to add a new package to labbook
+Mutation to add or update packages to labbook
 
-The optional argument `skipValidation` will skip the validation step when adding the package.
 You MUST have previously validated the package information or errors can occur at build time.
 You MUST include a version, since auto-addition of a package version is done during validation.
 """
-type AddPackageComponentPayload {
-  newPackageComponentEdge: PackageComponentEdge
+type AddPackageComponentsPayload {
+  newPackageComponentEdges: [PackageComponentEdge]
   clientMutationId: String
 }
 
@@ -611,7 +611,7 @@ type Labbook implements Node & GitRepository {
   detailRecord(key: String): ActivityDetailObject
   detailRecords(keys: [String]): [ActivityDetailObject]
   backgroundJobs: [JobStatus]
-  package(manager: String, package: String, version: String = ""): PackageComponent
+  packages(packageInput: [PackageComponentInput]): [PackageComponent]
 }
 
 """An object representing a commit to a LabBook"""
@@ -741,8 +741,8 @@ type LabbookMutations {
   createUserNote(input: CreateUserNoteInput!): CreateUserNotePayload
   addCustomComponent(input: AddCustomComponentInput!): AddCustomComponentPayload
   removeCustomComponent(input: RemoveCustomComponentInput!): RemoveCustomComponentPayload
-  addPackageComponent(input: AddPackageComponentInput!): AddPackageComponentPayload
-  removePackageComponent(input: RemovePackageComponentInput!): RemovePackageComponentPayload
+  addPackageComponents(input: AddPackageComponentsInput!): AddPackageComponentsPayload
+  removePackageComponents(input: RemovePackageComponentsInput!): RemovePackageComponentsPayload
   addCustomDocker(input: AddCustomDockerInput!): AddCustomDockerPayload
   removeCustomDocker(input: RemoveCustomDockerInput!): RemoveCustomDockerPayload
   addLabbookFile(input: AddLabbookFileInput!): AddLabbookFilePayload
@@ -902,6 +902,7 @@ type PackageComponent implements Node {
   version: String!
   latestVersion: String
   fromBase: Boolean
+  isValid: Boolean
 }
 
 """A Connection for paging through Package components"""
@@ -916,6 +917,13 @@ type PackageComponentEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
+}
+
+"""An input type to support Batch interfaces that use Package Components"""
+input PackageComponentInput {
+  manager: String!
+  package: String!
+  version: String
 }
 
 type PageInfo {
@@ -1054,16 +1062,16 @@ type RemoveLabbookFavoritePayload {
   clientMutationId: String
 }
 
-input RemovePackageComponentInput {
+input RemovePackageComponentsInput {
   owner: String!
   labbookName: String!
   manager: String!
-  package: String!
+  packages: [String]!
   clientMutationId: String
 }
 
-"""Mutation to remove a package from labbook"""
-type RemovePackageComponentPayload {
+"""Mutation to remove packages from labbook"""
+type RemovePackageComponentsPayload {
   success: Boolean
   clientMutationId: String
 }

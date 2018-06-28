@@ -35,8 +35,8 @@ function fetchQuery(
     }
   }
 
-
-  const apiURL = `${window.location.protocol}//${window.location.hostname}${process.env.GIGANTUM_API}`
+  let apiHost = process.env.NODE_ENV === 'development' ? 'localhost:10000' : window.location.host
+  const apiURL = `${window.location.protocol}//${apiHost}${process.env.GIGANTUM_API}`
   if(uploadables === undefined){
 
     headers['content-type'] = 'application/json';

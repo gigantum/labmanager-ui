@@ -389,7 +389,8 @@ class Labbook extends Component {
       const labbookCSS = classNames({
         'Labbook': true,
         'Labbook--detail-mode': this.state.detailMode,
-        'Labbook-branch-mode': branchesOpen
+        'Labbook-branch-mode': branchesOpen,
+        'is-demo': window.location.hostname === Config.demoHostName,
       })
 
       const branchNameCSS = classNames({
@@ -555,6 +556,7 @@ class Labbook extends Component {
                               labbookId={labbook.id}
                               activeBranch={labbook.activeBranch}
                               isMainWorkspace={name === 'workspace'}
+                              setBuildingState={this._setBuildingState}
                               {...this.props}
                             />)
                         }} />
