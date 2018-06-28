@@ -9,4 +9,4 @@ jobs:
       - run:
           name: Build frontend production code
           command: npm install &
-           npm run build
+           npm run build 
