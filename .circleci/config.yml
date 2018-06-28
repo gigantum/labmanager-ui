@@ -8,4 +8,5 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build frontend production code
-          command: npm run build
+          command: npm install &
+           npm run build
