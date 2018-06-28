@@ -91,8 +91,12 @@ class Labbook extends Component {
   */
   componentWillUnmount() {
     unsubscribe()
-
-
+    store.dispatch({
+      type: 'SET_LATEST_PACKAGES',
+      payload: {
+        latestPackages: {}
+      }
+    })
     window.removeEventListener('scroll', this._setStickHeader)
 
     window.removeEventListener('click', this._branchViewClickedOff)
@@ -385,7 +389,8 @@ class Labbook extends Component {
       const labbookCSS = classNames({
         'Labbook': true,
         'Labbook--detail-mode': this.state.detailMode,
-        'Labbook-branch-mode': branchesOpen
+        'Labbook-branch-mode': branchesOpen,
+        'is-demo': window.location.hostname === Config.demoHostName,
       })
 
       const branchNameCSS = classNames({

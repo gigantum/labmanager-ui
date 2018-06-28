@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom'
 import User from './User'
 //store
 import store from 'JS/redux/store'
+//config
+import config from 'JS/config'
 
 export default class SideBar extends Component {
   /**
@@ -32,7 +34,8 @@ export default class SideBar extends Component {
     let authed = isAuthenticated();
     let sidebarCSS = classNames({
       'SideBar col-sm-1': authed,
-      'hidden': !authed
+      'hidden': !authed,
+      'is-demo': window.location.hostname === config.demoHostName
     })
     return (
       <div className={sidebarCSS}>
