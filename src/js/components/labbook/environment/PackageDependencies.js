@@ -477,6 +477,7 @@ class PackageDependencies extends Component {
                     packages: [],
                     installDependenciesButtonState: 'finished'
                   })
+                  self._refetch()
                   setTimeout(()=>{
                   self.setState({installDependenciesButtonState: ''})
                   }, 2000)
@@ -635,9 +636,9 @@ class PackageDependencies extends Component {
                         return (
                           <tr
                             className={`PackageDependencies__table-row--${node.validity}` }
-                            key={node.packageName + node.version}>
-                            <td className="PackageDependencies__td-package">{`${node.packageName}`}</td>
-                            <td className="PackageDependencies__td-version">{node.validity === 'checking' ? `retrieving ${version === 'latest'?'latest version': `${version}`}` : version}
+                            key={node.package + node.version}>
+                            <td className="PackageDependencies__td-package">{`${node.package}`}</td>
+                            <td className="PackageDependencies__td-version">{versionText}
                             {
                               node.validity === 'checking' &&
                               <div className="PackageDependencies__version-loading"></div>
