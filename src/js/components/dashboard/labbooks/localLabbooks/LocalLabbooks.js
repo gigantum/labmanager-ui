@@ -163,6 +163,7 @@ export class LocalLabbooks extends Component {
             })
             :
             !this.props.loading &&
+            store.getState().labbookListing.filterText &&
             <div className="Labbooks__no-results">
               <h3>No Results Found</h3>
               <p>Edit your filters above or <span

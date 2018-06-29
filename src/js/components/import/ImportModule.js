@@ -222,7 +222,7 @@ export default class ImportModule extends Component {
     for (let i=0; i < dataTransfer.files.length; i++) {
 
       let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
-      if(file.name.slice(file.name.length - 4, file.name.length) !== '.lbk'){
+      if(file.name.slice(file.name.length - 4, file.name.length) !== '.lbk' && file.name.slice(file.name.length - 4, file.name.length) !== '.zip'){
 
         this.setState({error: true})
 
@@ -479,7 +479,7 @@ export default class ImportModule extends Component {
   *  @return {string} returns text to be rendered
   */
   _getImportDescriptionText(){
-    return this.state.error ? 'File must be .lbk' : 'Drag & Drop .lbk file, or click to select.'
+    return this.state.error ? 'File must be .zip' : 'Drag & Drop .zip file, or click to select.'
   }
 
   _showModal(evt){
@@ -698,13 +698,13 @@ export default class ImportModule extends Component {
               </p>
             </div>
             <p id="dropZone__subtext">
-              Drag .lbk File Here
+              Drag .zip File Here
             </p>
             <label
               className="Labbooks__file-system"
               id="file__input-label"
               htmlFor="file__input">
-              Browse & Upload .lbk File
+              Browse & Upload .zip File
             </label>
             <input
               id="file__input"
