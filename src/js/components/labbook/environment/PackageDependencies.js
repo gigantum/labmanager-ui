@@ -625,7 +625,7 @@ class PackageDependencies extends Component {
                   onClick={()=>this._addStatePackage()}
                   className="PackageDependencies__button--round PackageDependencies__button--add"></button>
               </div>
-
+  test
               <div className="PackageDependencies__table--border">
                 <table>
                   <tbody>
