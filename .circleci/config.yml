@@ -16,4 +16,4 @@ jobs:
             npm install
             npm install relay
             npm run relay
-            CI=false npm run build
+            unset CI && npm run build
