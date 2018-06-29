@@ -754,8 +754,16 @@ class PackageDependencies extends Component {
         className={trCSS}
          key={edge.node.package + edge.node.manager + index}>
         <td>{edge.node.package}</td>
-        <td>{versionText}</td>
-        <td>{latestVersionText}</td>
+        <td>
+          {versionText}
+        </td>
+        <td>
+          {latestVersionText}
+          {
+            latestVersionText && (latestVersionText !== versionText) &&
+            <div>Up</div>
+          }
+        </td>
         <td>{installer}</td>
         <td width="60" className="PackageDependencies__select-row">
           <button
