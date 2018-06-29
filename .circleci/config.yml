@@ -8,6 +8,6 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build frontend production code
-          command:
-            yarn install
-            yarn build
+          command: |
+            npm install
+            npm run build
