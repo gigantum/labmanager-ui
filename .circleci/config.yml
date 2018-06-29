@@ -10,6 +10,6 @@ jobs:
           name: Build frontend production code
           command: |
             npm install
-            npm install -g relay
+            npm install relay
             npm run relay
             npm run build
