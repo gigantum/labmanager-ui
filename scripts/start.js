@@ -12,7 +12,7 @@ process.on('unhandledRejection', err => {
 });
 
 // Ensure environment variables are read.
-require('../config/env'); 
+require('../config/env');
 
 const fs = require('fs');
 const chalk = require('chalk');
@@ -20,7 +20,7 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const clearConsole = require('react-dev-utils/clearConsole');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
-const {
+const { 
   choosePort,
   createCompiler,
   prepareProxy,
