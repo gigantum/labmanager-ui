@@ -167,7 +167,7 @@
   "babel": {
     "presets": [
       "react-app",
-      "es2015"
+      "@babel/preset-env"
     ],
     "plugins": [
       "relay",
