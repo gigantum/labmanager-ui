@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import Sniffr from 'sniffr'
 
 const pingServer = () => {
-  const url = `${window.location.protocol}//${window.location.host}${process.env.PING_API}`;
+  let apiHost = process.env.NODE_ENV === 'development' ? 'localhost:10000' : window.location.host
+  const url = `${window.location.protocol}//${apiHost}${process.env.PING_API}`;
   return fetch(url, {
     'method': 'GET'
   }).then(response => {

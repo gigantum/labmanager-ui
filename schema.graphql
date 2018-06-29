@@ -557,7 +557,7 @@ type JobStatus implements Node {
 }
 
 """
-A Connection for paging through all background jobs the system is aware of. 
+A Connection for paging through all background jobs the system is aware of.
 """
 type JobStatusConnection {
   pageInfo: PageInfo!
@@ -821,7 +821,7 @@ type LabbookRefEdge {
 
 """
 A type representing a section within a LabBook (i.e., code, input, output)
-    
+
 """
 type LabbookSection implements Node & GitRepository {
   """The ID of the object."""
@@ -857,7 +857,7 @@ input MergeFromBranchInput {
 }
 
 """
-Merge from another branch into the current active branch. Force if necessary. 
+Merge from another branch into the current active branch. Force if necessary.
 """
 type MergeFromBranchPayload {
   labbook: Labbook
