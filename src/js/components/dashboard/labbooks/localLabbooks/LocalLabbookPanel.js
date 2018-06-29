@@ -84,7 +84,14 @@ export default class LocalLabbookPanel extends Component {
           message: `Container status is still loading. The status will update when it is available.`
         }
       })
-    }else{
+    }else if(status === "Building"){
+      store.dispatch({
+        type: 'INFO_MESSAGE',
+        payload:{
+          message: `Container is still building and the process may not be interrupted.`
+        }
+      })
+    } else {
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload:{
