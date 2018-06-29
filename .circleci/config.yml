@@ -9,5 +9,5 @@ jobs:
       - run:
           name: Build frontend production code
           command:
-            npm install
-            npm run build
+            yarn install
+            yarn build
