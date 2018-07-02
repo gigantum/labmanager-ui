@@ -1224,7 +1224,7 @@ export default class FileBrowserWrapper extends Component {
                 <div className="FileBrowser__cancel-buttons">
                   <button onClick={()=>this._continueUpload()}>Dismiss and Continue</button>
                   <button onClick={()=>this._cancelKeep()}>Cancel and Keep Uploaded</button>
-                  {/* <button onClick={()=>this._cancel()}>Cancel upload</button> */}
+                  <button onClick={()=>this._cancel()}>Cancel upload</button>
                 </div>
               </div>
             }/>,
