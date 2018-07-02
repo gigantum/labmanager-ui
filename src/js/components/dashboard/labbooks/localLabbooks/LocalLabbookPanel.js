@@ -95,7 +95,7 @@ export default class LocalLabbookPanel extends Component {
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload:{
-          message: `Container must be rebuilt. Open LabBook first and then try to run again.`
+          message: `Container must be rebuilt. Open Project first and then try to run again.`
         }
       })
     }
@@ -124,13 +124,13 @@ export default class LocalLabbookPanel extends Component {
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
-              message: `There was a problem starting ${this.state.labbookName}, go to LabBook and try again`,
+              message: `There was a problem starting ${this.state.labbookName}, go to Project and try again`,
               messageBody: error
             }
           })
           self.setState({textStatus: "Stopped", status: "Stopped"})
         }else{
-          self.props.history.replace(`../../labbooks/${owner}/${labbookName}`)
+          self.props.history.replace(`../../projects/${owner}/${labbookName}`)
         }
       }
     )

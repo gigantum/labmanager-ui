@@ -66,7 +66,7 @@ export default class CreateLabbook extends React.Component {
               type: "MULTIPART_INFO_MESSAGE",
               payload: {
                 id: id,
-                message: 'Importing LabBook please wait',
+                message: 'Importing Project please wait',
                 isLast: false,
                 error: false
               }
@@ -85,7 +85,7 @@ export default class CreateLabbook extends React.Component {
                     type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
                       id: id,
-                      message: 'ERROR: Could not import remote LabBook',
+                      message: 'ERROR: Could not import remote Project',
                       messageBody: error,
                       error: true
                   }
@@ -98,7 +98,7 @@ export default class CreateLabbook extends React.Component {
                     type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
                       id: id,
-                      message: `Successfully imported remote LabBook ${labbookName}`,
+                      message: `Successfully imported remote Project ${labbookName}`,
                       isLast: true,
                       error: false
                     }
@@ -122,7 +122,7 @@ export default class CreateLabbook extends React.Component {
                     })
                   }
                 })
-                self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
+                self.props.history.replace(`/projects/${owner}/${labbookName}`)
               }else{
 
                 BuildImageMutation(
@@ -265,7 +265,7 @@ export default class CreateLabbook extends React.Component {
                 type="text"
                 onChange={(evt) => this._updateTextState(evt, 'description')}
 
-                placeholder="Briefly describe this LabBook, its purpose and any other key details. "
+                placeholder="Briefly describe this Project, its purpose and any other key details. "
               />
               <p className={'CreateLabbook__warning ' + this.state.textWarning}>{`${this.state.textLength} characters remaining`}</p>
             </div>

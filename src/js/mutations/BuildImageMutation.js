@@ -43,7 +43,7 @@ export default function BuildImageMutation(
           reduxStore.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
-              message: 'ERROR: LabBook failed to build:',
+              message: 'ERROR: Project failed to build:',
               messageBody: error
             }
           })
