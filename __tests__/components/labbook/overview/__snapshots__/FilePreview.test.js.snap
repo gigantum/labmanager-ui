@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`labbook component Test Labbook Rendering 1`] = `
+exports[`Test FilePreview renders snapshot 1`] = `
 <div
   className="Loader"
 />

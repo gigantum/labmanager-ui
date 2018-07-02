@@ -321,11 +321,11 @@ const FooterUpload = ({self}) => {
           className="Footer__progress-bar">
         </div>
 
-        {/* <button // commented out until backend bugs are fixed
+        <button // commented out until backend bugs are fixed
           onClick={() =>{ self._pauseUpload() }}
           className="Footer__button Footer__button--cancel">
           Cancel
-        </button> */}
+        </button>
         {
           self.state.uploadError &&
             <div

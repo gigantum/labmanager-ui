@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: gigantum/circleci-service-client:679848cf-2018-06-26
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Initialize submodules
+          command: |
+            git submodule update --init --recursive
+      - run:
+          name: Build frontend production code
+          command: |
+            npm install
+            npm install relay
+            npm run relay
+            unset CI && npm run build
