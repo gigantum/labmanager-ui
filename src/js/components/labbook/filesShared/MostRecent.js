@@ -18,7 +18,7 @@ export default class MostRecent extends Component {
     if (selectedPath === 'inputData' || selectedPath === 'outputData') {
       selectedPath = selectedPath.substring(0, selectedPath.length - 4);
     }
-  
+
     this.state = {
       loading: false,
       showAmount: 3,
@@ -85,7 +85,7 @@ export default class MostRecent extends Component {
 
 
   render(){
-    console.log(this.props)
+
     if(this.state.files && this.state.files.allFiles){
       let loadingClass = (this.state.showAmount < this.state.files.allFiles.edges.length) ? 'Recent__action-bar' : 'hidden'
       loadingClass = (this.state.loading) ? 'Recent__action-bar--loading' : loadingClass
