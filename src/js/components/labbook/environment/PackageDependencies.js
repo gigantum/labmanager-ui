@@ -759,10 +759,11 @@ class PackageDependencies extends Component {
         </td>
         <td>
           {latestVersionText}
-          {
+          {/* {
+            //pending icon
             latestVersionText && (latestVersionText !== versionText) &&
             <div>Up</div>
-          }
+          } */}
         </td>
         <td>{installer}</td>
         <td width="60" className="PackageDependencies__select-row">
