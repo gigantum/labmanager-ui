@@ -1,5 +1,5 @@
 
-      import React from 'react'
+      import React, {Component} from 'react'
       import renderer from 'react-test-renderer';
       import {mount} from 'enzyme'
       import CodeBrowser from 'Components/labbook/code/CodeBrowser';
@@ -10,6 +10,7 @@
       import json from './__relaydata__/CodeBrowser.json'
 
       import relayTestingUtils from 'relay-testing-utils'
+
       const loadStatus = ()=>{
 
       }
@@ -46,17 +47,24 @@
         loadStatus
       }
 
-      test('Test CodeBrowser', () => {
-        const RelayWrap = relayTestingUtils.relayWrap(<CodeBrowser {...fixtures}/>, {}, json.data.labbook)
-        const CodeComp = DragDropContext(backend)(<RelayWrap />)
-        const wrapper = renderer.create(
+      class CodeCompInstance extends Component{
+        render(){
+          return (relayTestingUtils.relayWrap(<CodeBrowser {...fixtures}/>, {}, json.data.labbook))
+        }
+      }
+      const CodeBrowserComponent = DragDropContext(backend)(CodeCompInstance)
 
-           <CodeComp />
+      describe('Test CodeBrowser', () => {
 
-        );
+        it('snapshot renders', () => {
+          const wrapper = renderer.create(
+             <CodeBrowserComponent />
+          );
 
-        const tree = wrapper.toJSON()
+          const tree = wrapper.toJSON()
 
-        expect(tree).toMatchSnapshot()
+          expect(tree).toMatchSnapshot()
+        })
+
 
       })

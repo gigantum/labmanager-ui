@@ -4,48 +4,7 @@ exports[`Test CreateLabbook rendering 1`] = `
 <div
   className="CreateLabbook"
 >
-  <div
-    className="hidden"
-  >
-    <div
-      className="BranchModal--close"
-      onClick={[Function]}
-    />
-    <div
-      className="LoginPrompt"
-    >
-      <div>
-        <p>
-          You need an active session to perform this action
-        </p>
-        <p>
-          Do you want login?
-        </p>
-      </div>
-      <div
-        className="LoginPrompt__button-container"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Yes
-        </button>
-        <button
-          onClick={[Function]}
-        >
-          no
-        </button>
-      </div>
-    </div>
-  </div>
-  <h4
-    className="CreateLabbook__header"
-  >
-    Create LabBook
-  </h4>
-  <div
-    className="CreateLabbook__modal-inner-container flex flex--column justify--space-between"
-  >
+  <div>
     <div>
       <label>
         Title
@@ -74,7 +33,7 @@ exports[`Test CreateLabbook rendering 1`] = `
         type="text"
       />
       <p
-        className="CreateLabbook__warning hidden"
+        className="CreateLabbook__warning CreateLabbook__warning--hidden"
       >
         0 characters remaining
       </p>

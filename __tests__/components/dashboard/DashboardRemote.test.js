@@ -2,15 +2,15 @@
       import React from 'react'
       import renderer from 'react-test-renderer';
       import {mount} from 'enzyme'
-      import CustomDependenciesDropdown from 'Components/labbook/environment/CustomDependenciesDropdown';
+      import DashboardRemote from 'Components/dashboard/DashboardRemote';
 
       import relayTestingUtils from 'relay-testing-utils'
 
-      test('Test CustomDependenciesDropdown', () => {
+      test('Test DashboardRemote', () => {
 
         const wrapper = renderer.create(
 
-           <CustomDependenciesDropdown />
+           <DashboardRemote />
 
         );
 
