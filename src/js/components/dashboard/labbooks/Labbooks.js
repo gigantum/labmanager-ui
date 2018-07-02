@@ -455,7 +455,7 @@ export default class Labbooks extends Component {
                   type="text"
                   ref="labbookSearch"
                   className="Labbooks__search no--margin"
-                  placeholder="Filter Labbooks by name or description"
+                  placeholder="Filter Projects by name or description"
                   defaultValue={this.state.filterValue}
                   onKeyUp={(evt) => this._setFilterValue(evt)}
                   onFocus={() => this.setState({showSearchCancel: true})}
