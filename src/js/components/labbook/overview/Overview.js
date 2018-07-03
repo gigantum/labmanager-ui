@@ -202,7 +202,7 @@ class Overview extends Component {
                 className="Overview__description-input column-1-span-10"
                 type="text"
                 onChange={(evt)=>{this.setState({descriptionText: evt.target.value.replace(/\n/g,' ')})}}
-                placeholder="Short description of labbook"
+                placeholder="Short description of Project"
                 defaultValue={this.state.descriptionText ? this.state.descriptionText: ''}
               >
               </textarea>
@@ -300,7 +300,7 @@ class Overview extends Component {
               !this.state.editingReadme &&
             <FileEmpty
               section="edit"
-              mainText="This LabBook does not have a readme."
+              mainText="This Project does not have a readme."
               subText="Click here to create one"
               callback ={this._editReadme}
             />
@@ -311,7 +311,7 @@ class Overview extends Component {
           <div className="Overview__title-container">
             <h5 className="Overview__title">Environment</h5>
             <Link
-              to={{ pathname: `../../../../labbooks/${owner}/${labbookName}/environment` }}
+              to={{ pathname: `../../../../projects/${owner}/${labbookName}/environment` }}
               replace
             >
               Environment Details >

@@ -1164,7 +1164,7 @@ export default class FileBrowserWrapper extends Component {
         {
           this.props.isLocked.locked &&
           <div className="Code--uploading flex">
-            Please wait for LabBook to finish {this.props.isLocked.isPublishing ? 'publishing' : this.props.isLocked.isExporting ? 'exporting': 'syncing'}.
+            Please wait for Project to finish {this.props.isLocked.isPublishing ? 'publishing' : this.props.isLocked.isExporting ? 'exporting': 'syncing'}.
             <span className="Code__loading--browser" />
           </div>
         }

@@ -244,7 +244,7 @@ const ChunkUploader = {
 
         if(chunkIndex <= totalChunks){ //if  there is still chunks to process do next chunk
           //select type of mutation
-          if(file.name.indexOf('.lbk') > -1){
+          if(file.name.indexOf('.lbk') > -1 || file.name.indexOf('.zip') > -1){
 
             uploadLabbookChunk(
               file,

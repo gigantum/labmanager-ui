@@ -111,7 +111,7 @@ export default class Labbooks extends Component {
     let paths = nextProps.history.location.pathname.split('/')
     let sectionRoute = paths.length > 2 ?  paths[2] : 'local'
     if(paths[2] !== 'cloud' && paths[2] !== 'local'){
-      this.props.history.replace(`../labbooks/local`)
+      this.props.history.replace(`../projects/local`)
     }
     this.setState({'selectedSection': sectionRoute})
   }
@@ -182,7 +182,7 @@ export default class Labbooks extends Component {
   */
   _goToLabbook = (labbookName, owner) => {
     this.setState({'labbookName': labbookName, 'owner': owner})
-    this.props.history.replace(`/labbooks/${owner}/${labbookName}`)
+    this.props.history.replace(`/projects/${owner}/${labbookName}`)
   }
 
 
@@ -232,7 +232,7 @@ export default class Labbooks extends Component {
     if(section === 'cloud'){
       this._viewRemote();
     } else {
-      this.props.history.replace(`../labbooks/${section}${this.props.history.location.search}`)
+      this.props.history.replace(`../projects/${section}${this.props.history.location.search}`)
     }
   }
   /**
@@ -335,7 +335,7 @@ export default class Labbooks extends Component {
   _viewRemote(){
     UserIdentity.getUserIdentity().then(response => {
       if(response.data && response.data.userIdentity.isSessionValid){
-        this.props.history.replace(`../labbooks/cloud${this.props.history.location.search}`)
+        this.props.history.replace(`../projects/cloud${this.props.history.location.search}`)
         this.setState({selectedSection: 'cloud'})
       } else {
         if(!this.state.showLoginPrompt) {
@@ -419,7 +419,7 @@ export default class Labbooks extends Component {
             <div className="Labbooks__title-bar">
               <h6 className="Labbooks__username">{localStorage.getItem('username')}</h6>
               <h2 className="Labbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
-                LabBooks
+                Projects
               </h2>
 
             </div>
@@ -455,7 +455,7 @@ export default class Labbooks extends Component {
                   type="text"
                   ref="labbookSearch"
                   className="Labbooks__search no--margin"
-                  placeholder="Filter Labbooks by name or description"
+                  placeholder="Filter Projects by name or description"
                   defaultValue={this.state.filterValue}
                   onKeyUp={(evt) => this._setFilterValue(evt)}
                   onFocus={() => this.setState({showSearchCancel: true})}
@@ -592,13 +592,13 @@ export default class Labbooks extends Component {
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
-                message: `Failed to fetch LabBooks.`,
-                messageBody: [{ message: 'There was an error while fetching LabBooks. This likely means you have a corrupted LabBook file.' }]
+                message: `Failed to fetch Projects.`,
+                messageBody: [{ message: 'There was an error while fetching Projects. This likely means you have a corrupted Project directory.' }]
               }
             })
             return (
               <div className="Labbooks__fetch-error">
-                There was an error attempting to fetch LabBooks. <br />
+                There was an error attempting to fetch Projects. <br />
                 Try restarting Gigantum and refresh the page.<br />
                 If the problem persists <a target="_blank" href="https://docs.gigantum.com/discuss" rel="noopener noreferrer">request assistance here.</a>
               </div>

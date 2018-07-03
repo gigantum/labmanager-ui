@@ -92,7 +92,7 @@ class OutputFavorites extends Component {
         return(
           <FileEmpty
             section="outputData"
-            mainText="This LabBook has No Output Favorites"
+            mainText="This Project has No Output Favorites"
           />
         )
       }

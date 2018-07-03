@@ -40,7 +40,7 @@ export default class LocalLabbookPanel extends Component {
       store.dispatch({
         type: 'WARNING_MESSAGE',
         payload: {
-          message: 'You can only delete remote LabBooks that you have created.',
+          message: 'You can only delete remote Projects that you have created.',
         }
       })
     } else {
@@ -107,7 +107,7 @@ export default class LocalLabbookPanel extends Component {
           type: "MULTIPART_INFO_MESSAGE",
           payload: {
             id: id,
-            message: 'Importing LabBook please wait',
+            message: 'Importing Project please wait',
             isLast: false,
             error: false
           }
@@ -126,7 +126,7 @@ export default class LocalLabbookPanel extends Component {
                 type: 'MULTIPART_INFO_MESSAGE',
                 payload: {
                   id: id,
-                  message: 'ERROR: Could not import remote LabBook',
+                  message: 'ERROR: Could not import remote Project',
                   messageBody: error,
                   error: true
               }
@@ -139,7 +139,7 @@ export default class LocalLabbookPanel extends Component {
                 type: 'MULTIPART_INFO_MESSAGE',
                 payload: {
                   id: id,
-                  message: `Successfully imported remote LabBook ${labbookName}`,
+                  message: `Successfully imported remote Project ${labbookName}`,
                   isLast: true,
                   error: false
                 }
@@ -163,7 +163,7 @@ export default class LocalLabbookPanel extends Component {
                 })
               }
             })
-            self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
+            self.props.history.replace(`/projects/${owner}/${labbookName}`)
           }else{
 
             BuildImageMutation(

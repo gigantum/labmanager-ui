@@ -32,6 +32,7 @@ const CONFIG = {
   'fileBrowser':{
     'excludedFiles': [
       'DS_Store',
+      'zip',
       'lbk',
       'pyc',
       'gitkeep'

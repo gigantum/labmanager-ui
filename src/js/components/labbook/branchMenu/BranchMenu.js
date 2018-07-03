@@ -144,7 +144,7 @@ export default class BranchMenu extends Component {
   */
   _showContainerMenuMessage(action, containerRunning) {
 
-    let dispatchMessage = containerRunning ? `Stop LabBook before ${action}. \n Be sure to save your changes.` : `LabBook is ${action}. \n Please do not refresh the page.`
+    let dispatchMessage = containerRunning ? `Stop Project before ${action}. \n Be sure to save your changes.` : `Project is ${action}. \n Please do not refresh the page.`
 
     store.dispatch({
       type: 'CONTAINER_MENU_WARNING',
@@ -189,7 +189,7 @@ export default class BranchMenu extends Component {
                 type: 'MULTIPART_INFO_MESSAGE',
                 payload: {
                   id: id,
-                  message: 'Publishing LabBook to Gigantum cloud ...',
+                  message: 'Publishing Project to Gigantum cloud ...',
                   isLast: false,
                   error: false
                 }
@@ -303,7 +303,7 @@ export default class BranchMenu extends Component {
                 type: 'MULTIPART_INFO_MESSAGE',
                 payload: {
                   id: id,
-                  message: 'Syncing LabBook with Gigantum cloud ...',
+                  message: 'Syncing Project with Gigantum cloud ...',
                   isLast: false,
                   error: false
                 }
@@ -385,7 +385,7 @@ export default class BranchMenu extends Component {
         store.dispatch({
           type: 'CONTAINER_MENU_WARNING',
           payload: {
-            message: 'Stop LabBook before syncing. \n Be sure to save your changes.'
+            message: 'Stop Project before syncing. \n Be sure to save your changes.'
           }
         });
         store.dispatch({
@@ -545,7 +545,7 @@ export default class BranchMenu extends Component {
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload: {
-          message: `Exporting ${this.state.labbookName} LabBook`,
+          message: `Exporting ${this.state.labbookName} Project`,
         }
       })
       this.props.setExportingState(true);

@@ -337,7 +337,7 @@ class PackageDependencies extends Component {
     store.dispatch({
       type: 'CONTAINER_MENU_WARNING',
       payload: {
-        message: 'Stop LabBook before editing the environment. \n Be sure to save your changes.'
+        message: 'Stop Project before editing the environment. \n Be sure to save your changes.'
       }
     })
     store.dispatch({
@@ -754,8 +754,17 @@ class PackageDependencies extends Component {
         className={trCSS}
          key={edge.node.package + edge.node.manager + index}>
         <td>{edge.node.package}</td>
-        <td>{versionText}</td>
-        <td>{latestVersionText}</td>
+        <td>
+          {versionText}
+        </td>
+        <td>
+          {latestVersionText}
+          {/* {
+            //pending icon
+            latestVersionText && (latestVersionText !== versionText) &&
+            <div>Up</div>
+          } */}
+        </td>
         <td>{installer}</td>
         <td width="60" className="PackageDependencies__select-row">
           <button

@@ -88,7 +88,7 @@ export default class FilePreview extends Component {
                 <div className="FilePreview__title-container">
                   <h5>Code</h5>
                   <Link
-                    to={{pathname: `../../../../labbooks/${owner}/${labbookName}/code`}}
+                    to={{pathname: `../../../../projects/${owner}/${labbookName}/code`}}
                     replace
                   >
                     Code Details >
@@ -103,8 +103,8 @@ export default class FilePreview extends Component {
                     }) :
                     <FileEmpty
                       section="code"
-                      mainText="This LabBook has No Code Favorites"
-                      subText="View LabBook Code Details"
+                      mainText="This Project has No Code Favorites"
+                      subText="View Project Code Details"
                     />
                   }
                 </div>
@@ -114,7 +114,7 @@ export default class FilePreview extends Component {
                 <div className="FilePreview__title-container">
                   <h5>Input Data</h5>
                   <Link
-                    to={{pathname: `../../../../labbooks/${owner}/${labbookName}/inputData`}}
+                    to={{pathname: `../../../../projects/${owner}/${labbookName}/inputData`}}
                     replace
                   >
                     Input Data Details >
@@ -129,8 +129,8 @@ export default class FilePreview extends Component {
                     }) :
                     <FileEmpty
                       section="inputData"
-                      mainText="This LabBook has No Input Favorites"
-                      subText="View LabBook Input Data Details"
+                      mainText="This Project has No Input Favorites"
+                      subText="View Project Input Data Details"
                     />
                   }
                 </div>
@@ -139,7 +139,7 @@ export default class FilePreview extends Component {
                 <div className="FilePreview__title-container">
                   <h5>Ouput Data</h5>
                   <Link
-                    to={{pathname: `../../../../labbooks/${owner}/${labbookName}/outputData`}}
+                    to={{pathname: `../../../../projects/${owner}/${labbookName}/outputData`}}
                     replace
                   >
                     Output Data Details >
@@ -154,8 +154,8 @@ export default class FilePreview extends Component {
                     }) :
                     <FileEmpty
                       section="outputData"
-                      mainText="This LabBook has No Output Favorites"
-                      subText="View LabBook Output Data Details"
+                      mainText="This Project has No Output Favorites"
+                      subText="View Project Output Data Details"
                     />
                   }
                 </div>

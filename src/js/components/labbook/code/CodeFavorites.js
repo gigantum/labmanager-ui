@@ -111,7 +111,7 @@ class CodeFavorites extends Component {
         return(
           <FileEmpty
             section="code"
-            mainText="This LabBook has No Code Favorites"
+            mainText="This Project has No Code Favorites"
           />
         )
       }

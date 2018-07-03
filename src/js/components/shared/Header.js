@@ -31,10 +31,10 @@ export default class Header extends Component {
             <li>
               <Link
                 className="Header__nav-item Header__nav-item--labbooks flex flex--row justify--space-between"
-                to={{pathname: '/labbooks'}}
+                to={{pathname: '/projects'}}
               >
                 <div className="Header__labbook-icon"></div>
-                LabBooks
+                Projects
               </Link>
             </li>
 
