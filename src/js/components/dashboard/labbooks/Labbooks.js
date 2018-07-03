@@ -593,7 +593,7 @@ export default class Labbooks extends Component {
               type: 'ERROR_MESSAGE',
               payload: {
                 message: `Failed to fetch Projects.`,
-                messageBody: [{ message: 'There was an error while fetching Projects. This likely means you have a corrupted Project.' }]
+                messageBody: [{ message: 'There was an error while fetching Projects. This likely means you have a corrupted Project directory.' }]
               }
             })
             return (
