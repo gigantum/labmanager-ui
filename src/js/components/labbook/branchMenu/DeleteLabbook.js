@@ -61,7 +61,10 @@ export default class DeleteLabbook extends Component {
               setTimeout(()=>{
                 this.setState({'labbookName': '', deletePending: false, deleteLabbookButtonState: ''})
                 this.props.toggleModal();
-                document.getElementById('deleteInput').value = '';
+
+                if(document.getElementById('deleteInput')){
+                  document.getElementById('deleteInput').value = ''
+                }
               }, 1000)
             }else{
               store.dispatch({
