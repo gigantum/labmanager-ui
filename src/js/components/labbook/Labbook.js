@@ -284,7 +284,7 @@ class Labbook extends Component {
         >
         <Link
           onClick={()=> window.scrollTo(0, 0)}
-          to={`../../../labbooks/${this.state.owner}/${this.props.match.params.labbookName}/${item.id}`}
+          to={`../../../projects/${this.state.owner}/${this.props.match.params.labbookName}/${item.id}`}
           replace
         >
           {item.name}
@@ -350,7 +350,7 @@ class Labbook extends Component {
       store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
-          message: 'Stop LabBook before switching branches. \n Be sure to save your changes.',
+          message: 'Stop Project before switching branches. \n Be sure to save your changes.',
         }
       })
       store.dispatch({

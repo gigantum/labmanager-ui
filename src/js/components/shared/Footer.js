@@ -64,7 +64,7 @@ export default class Footer extends Component {
 
   _openLabbook(){
     this._clearState()
-    this.props.history.replace(`/labbooks/${this.state.labbookName}`)
+    this.props.history.replace(`/projects/${this.state.labbookName}`)
   }
   /**
     @param {}
@@ -338,7 +338,7 @@ const FooterUpload = ({self}) => {
             <button
               className="Footer__button"
               onClick={() => self._openLabbook()}>
-              Open LabBook
+              Open Project
             </button>
         }
     </div>

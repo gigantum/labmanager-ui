@@ -96,7 +96,7 @@ class InputFavorites extends Component {
         return(
           <FileEmpty
             section="inputData"
-            mainText="This LabBook has No Input Favorites"
+            mainText="This Project has No Input Favorites"
           />
         )
       }

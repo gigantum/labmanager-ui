@@ -119,7 +119,7 @@ export default class MostRecent extends Component {
         return(
           <FileEmpty
             section={this.state.fullPathName}
-            mainText="This LabBook has No Recent Files"
+            mainText="This Project has No Recent Files"
           />
         )
       }

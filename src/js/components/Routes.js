@@ -157,13 +157,13 @@ export default class Routes extends Component {
                     exact
                     path="/:id"
                     render={(props) =>
-                      <Redirect to="/labbooks/local"/>
+                      <Redirect to="/projects/local"/>
                     }
                   />
 
                   <Route
                     exact
-                    path="/labbooks/:labbookSection"
+                    path="/projects/:labbookSection"
                     render={(props) =>
                       <Home
                         forceLoginScreen={this.state.forceLoginScreen}
@@ -175,7 +175,7 @@ export default class Routes extends Component {
                   />
 
                   <Route
-                    path="/labbooks/:owner/:labbookName"
+                    path="/projects/:owner/:labbookName"
                     auth={this.props.auth}
                     render={(parentProps) =>{
 

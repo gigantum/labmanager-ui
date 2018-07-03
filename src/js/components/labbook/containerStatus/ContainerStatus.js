@@ -152,7 +152,7 @@ export default class ContainerStatus extends Component {
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
-                message: 'LabBook failed to build:',
+                message: 'Project failed to build:',
                 messageBody: [{ message: 'Check for and remove invalid dependencies and try again.' }]
               }
             })

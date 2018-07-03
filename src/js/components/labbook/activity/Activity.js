@@ -472,7 +472,7 @@ class Activity extends Component {
       store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
-          message: 'Stop LabBook before editing the environment. \n Be sure to save your changes.'
+          message: 'Stop Project before editing the environment. \n Be sure to save your changes.'
         }
       })
     }
@@ -502,7 +502,7 @@ class Activity extends Component {
       store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
-          message: 'Stop LabBook before creating branches. \n Be sure to save your changes.'
+          message: 'Stop Project before creating branches. \n Be sure to save your changes.'
         }
       })
       store.dispatch({
