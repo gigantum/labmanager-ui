@@ -10,17 +10,27 @@ import {MemoryRouter } from 'react-router-dom'
 import environment from 'JS/createRelayEnvironment'
 
 const variables = {first:5}
+const goToLabbook = () =>{
 
+}
 
 const fixtures = {
-  props: json.data.labbookList.localLabbooks[0]
+  edge: json.data.labbookList.localLabbooks.edges[0],
+  key:'key',
+  className: "LocalLabbooks__panel",
+  history: history,
+  environment: false,
+  goToLabbook: goToLabbook
 }
 
 test('Test LocalLabbooks rendering', () => {
 
   const localLabbooks = renderer.create(
 
-     relayTestingUtils.relayWrap(<LocalLabbookPanel history={history} {...fixtures} feed={json.data.localLabbooks.edges[0]}/>, {}, json.data.localLabbooks[0])
+     relayTestingUtils.relayWrap(
+       <LocalLabbookPanel
+         {...fixtures}
+       />, {}, json.data.labbookList.localLabbooks.edges[0])
 
   );
 

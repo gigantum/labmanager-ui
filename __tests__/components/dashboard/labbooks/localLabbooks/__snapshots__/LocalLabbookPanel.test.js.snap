@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test LocalLabbooks rendering 1`] = `
+<div
+  className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+  onClick={[Function]}
+>
+  <div
+    className="LocalLabbooks__icon-row"
+  >
+    <div
+      className="LocalLabbooks__containerStatus"
+    >
+      <button
+        className="LocalLabbooks__containerStatus--state loading"
+        onClick={[Function]}
+        onMouseOut={[Function]}
+        onMouseOver={[Function]}
+      >
+        
+      </button>
+    </div>
+  </div>
+  <div
+    className="LocalLabbooks__text-row"
+  >
+    <div
+      className="LocalLabbooks__title-row"
+    >
+      <h6
+        className="LocalLabbooks__panel-title"
+        onClick={[Function]}
+      >
+        <span
+          className={undefined}
+        >
+          <span
+            className=""
+            style={undefined}
+          >
+            random-picture-generator
+          </span>
+        </span>
+      </h6>
+    </div>
+    <p
+      className="LocalLabbooks__owner"
+    >
+      Created by cbutler
+    </p>
+    <p
+      className="LocalLabbooks__description"
+    >
+      <span
+        className={undefined}
+      >
+        <span
+          className=""
+          style={undefined}
+        >
+          This labBook create random piuctures.
+        </span>
+      </span>
+    </p>
+  </div>
+</div>
+`;

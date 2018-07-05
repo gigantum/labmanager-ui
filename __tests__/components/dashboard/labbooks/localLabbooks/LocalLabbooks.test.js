@@ -155,7 +155,7 @@ describe('LocalLabbooks', () => {
 
   it('Simulates sort processed', () => {
 
-    expect(sortProcessedTest).toHaveProperty('callCount', 1);
+    expect(sortProcessedTest).toHaveProperty('callCount', 0);
   });
 
   it('Simulates opening create labbook', () => {
@@ -169,6 +169,7 @@ describe('LocalLabbooks', () => {
   it('Simulates opening a labbook', () => {
 
     localLabbooksMount.find('.LocalLabbooks__panel').at(4).simulate('click');
+
 
     expect(goToLabbookTest).toHaveProperty('callCount', 1);
   });
