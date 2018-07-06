@@ -163,6 +163,14 @@ export default class Routes extends Component {
 
                   <Route
                     exact
+                    path="/labbooks/:section"
+                    render={(props) =>
+                      <Redirect to="/projects/local"/>
+                    }
+                  />
+
+                  <Route
+                    exact
                     path="/projects/:labbookSection"
                     render={(props) =>
                       <Home
