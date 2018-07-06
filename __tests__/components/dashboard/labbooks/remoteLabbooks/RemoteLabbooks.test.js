@@ -106,6 +106,7 @@ describe('Test RemoteLabbooks edges output', () => {
   expect(localLabbooks.find('.RemoteLabbooks__labbooks .RemoteLabbooks__text-row h4').at(0).text()).toEqual(json.data.localLabbooks.edges[0].node.name)
 
 })
+
 describe('Test scroll functon', () => {
 
   const localLabbooks = mount(
@@ -113,7 +114,7 @@ describe('Test scroll functon', () => {
       <RemoteLabbooks history={history} feed={json.data}/>
 
   );
-  //console.log(localLabbooks.find('.RemoteLabbooks__panel').at(20))
+
   localLabbooks.find('.RemoteLabbooks__panel').at(20).simulate('scroll')
 
 

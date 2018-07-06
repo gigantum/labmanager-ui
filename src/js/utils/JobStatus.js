@@ -13,6 +13,8 @@ const jobStatusQuery = graphql`
       status
       startedAt
       finishedAt
+      jobMetadata
+      failureMessage
       result
     }
   }

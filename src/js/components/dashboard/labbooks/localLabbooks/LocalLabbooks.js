@@ -36,7 +36,7 @@ export class LocalLabbooks extends Component {
     if(!this.props.loading){
       window.addEventListener('scroll', this._captureScroll);
       this._containerLookup();
-      if(this.props.localLabbooks && this.props.localLabbooks.localLabbooks && this.props.localLabbooks.localLabbooks.edges && this.props.localLabbooks.localLabbooks.edges.length === 0){
+      if(this.props.labbookList && this.props.localLabbooks.localLabbooks && this.props.localLabbooks.localLabbooks.edges && this.props.localLabbooks.localLabbooks.edges.length === 0){
         this._fetchDemo()
       }
     }
@@ -77,6 +77,7 @@ export class LocalLabbooks extends Component {
   */
   _containerLookup(){
     let self = this;
+    console.log(this.props)
     let idArr = this.props.localLabbooks.localLabbooks.edges.map(edges =>edges.node.id)
     ContainerLookup.query(idArr).then((res)=>{
       if(res && res.data && res.data.labbookList && res.data.labbookList.localById){
@@ -131,7 +132,7 @@ export class LocalLabbooks extends Component {
   }
 
   render(){
-   
+console.log(this.props)
     if((this.props.localLabbooks && this.props.localLabbooks.localLabbooks && this.props.localLabbooks.localLabbooks.edges) || this.props.loading){
 
       let labbooks = !this.props.loading ? this.props.filterLabbooks(this.props.localLabbooks.localLabbooks.edges, this.props.filterState) : [];

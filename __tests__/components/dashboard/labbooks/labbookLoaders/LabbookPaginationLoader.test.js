@@ -1,5 +1,36 @@
+import React from 'react'
+import renderer from 'react-test-renderer';
+import {mount} from 'enzyme'
+import LabbookPaginationLoader from 'Components/dashboard/labbooks/labbookLoaders/LabbookPaginationLoader';
+import relayTestingUtils from 'relay-testing-utils'
 
+describe('Snapshot LabbookPaginationLoader',()=>{
 
-const variables = {first:5}
+  it('LabbookPaginationLoader isLoading true', () => {
 
-export default variables
+    const datasets = renderer.create(
+
+       <LabbookPaginationLoader  isLoadingMore={true}/>
+
+    );
+
+    const tree = datasets.toJSON()
+
+    expect(tree).toMatchSnapshot()
+
+  })
+
+  it('LabbookPaginationLoader isLoading false', () => {
+
+    const datasets = renderer.create(
+
+       <LabbookPaginationLoader  isLoadingMore={false}/>
+
+    );
+
+    const tree = datasets.toJSON()
+
+    expect(tree).toMatchSnapshot()
+
+  })
+})

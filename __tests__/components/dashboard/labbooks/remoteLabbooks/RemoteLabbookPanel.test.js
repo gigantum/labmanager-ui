@@ -13,7 +13,7 @@ import RemoteLabbooks from 'Components/dashboard/labbooks/remoteLabbooks/RemoteL
 const variables = {first:20}
 
 const fixtures = {
-  remoteLabbooks: json.data.remoteLabbooks[0]
+  remoteLabbooks: json.data.labbookList.remoteLabbooks.edges[0]
 }
 
 

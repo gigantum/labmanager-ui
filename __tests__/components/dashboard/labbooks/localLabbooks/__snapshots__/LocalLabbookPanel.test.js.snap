@@ -38,7 +38,7 @@ exports[`Test LocalLabbooks rendering 1`] = `
             className=""
             style={undefined}
           >
-            random-picture-generator
+            857255a0-f22e-46b5-b70f-95af00d5d17e
           </span>
         </span>
       </h6>
@@ -58,7 +58,7 @@ exports[`Test LocalLabbooks rendering 1`] = `
           className=""
           style={undefined}
         >
-          This labBook create random piuctures.
+          This is a test labbook
         </span>
       </span>
     </p>
