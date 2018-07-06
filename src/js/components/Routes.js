@@ -9,7 +9,7 @@ import environment from 'JS/createRelayEnvironment'
 // components
 import Home from 'Components/home/Home';
 import SideBar from 'Components/shared/SideBar';
-import Footer from 'Components/shared/Footer';
+import Footer from 'Components/shared/footer/Footer';
 import Prompt from 'Components/shared/Prompt';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
