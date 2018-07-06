@@ -168,7 +168,7 @@
   "babel": {
     "presets": [
       "react-app",
-      "@babel/preset-env"
+      "env"
     ],
     "plugins": [
       "relay",
