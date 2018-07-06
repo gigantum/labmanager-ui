@@ -112,7 +112,6 @@ export default class Routes extends Component {
     sets state of forceloginscreen
   */
   _setForceLoginScreen(forceLoginScreen) {
-    console.log(forceLoginScreen)
     if(forceLoginScreen !== this.state.forceLoginScreen){
       this.setState({forceLoginScreen})
     }
