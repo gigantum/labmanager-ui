@@ -1,6 +1,7 @@
 //vendor
 import React, {Component} from 'react';
 import classNames from 'classnames';
+import YouTube from 'react-youtube';
 import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
 import history from 'JS/history';
@@ -48,6 +49,7 @@ export default class Routes extends Component {
     }
     this._setForceLoginScreen = this._setForceLoginScreen.bind(this)
     this.setRouteStore = this.setRouteStore.bind(this)
+    this._flipDemoHeaderText = this._flipDemoHeaderText.bind(this)
 
   }
   /**
@@ -58,7 +60,22 @@ export default class Routes extends Component {
     if(window.location.hostname === config.demoHostName){
       document.getElementById('demo-header').classList.remove('hidden')
     }
+    this._flipDemoHeaderText();
+//         Curious what can Gigantum do for you? <a>Watch this overview video.</a>
+  }
+  _flipDemoHeaderText(){
+    let self = this;
+    setTimeout(()=>{
+      let demoHeader = document.getElementById('demo-header')
+      let firstChar = demoHeader.innerHTML[0];
+      demoHeader.innerHTML = firstChar === 'Y' ? `Curious what can Gigantum do for you? <a onclick="document.getElementById('yt-lightbox').classList.remove('hidden')">  Watch this overview video.</a>`: `You're using the Gigantum web demo. Data is wiped hourly. To continue using Gigantum
+      <a href="http://gigantum.com/download" rel="noopener noreferrer" target="_blank">
+        download the Gigantum client.
+      </a>`
 
+      self._flipDemoHeaderText()
+
+    }, 15000)
   }
 
   /**
@@ -133,12 +150,22 @@ export default class Routes extends Component {
                 path=""
                 render={(location) => {return(
                 <div className="Routes">
+                  <div
+                    id="yt-lightbox"
+                    className="yt-lightbox hidden"
+                    onClick={() => document.getElementById('yt-lightbox').classList.add('hidden')}
+                  >
+                    <YouTube
+                      opts={{height: '576', width: '1024'}}
+                      className="yt-frame"
+                      videoId="https://youtu.be/1DwijJfVbBg"
+                    />
+                  </div>
                   <div className={headerCSS}></div>
                   <SideBar
                     auth={this.props.auth} history={history}
                   />
                   <div className={routesCSS}>
-
                   <Route
                     exact
                     path="/"
@@ -259,7 +286,6 @@ export default class Routes extends Component {
                       )
                     }}
                   />
-
                   <Prompt
                     ref="prompt"
                   />
