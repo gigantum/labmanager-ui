@@ -57,7 +57,7 @@ const CONFIG = {
       return encodeURI(apiURL)
     }
   },
-  demoHostName: 'try.gigantum.com',
+  demoHostName: 'try.gigantum.co',
 }
 
 export default CONFIG
