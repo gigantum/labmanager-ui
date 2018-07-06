@@ -22,13 +22,18 @@ function fetchQuery(
 
   if(uploadables && uploadables[0]){
     if(uploadables[1]){
+      const idToken = localStorage.getItem('id_token')
       headers['authorization'] = `Bearer ${uploadables[1]}`
+      headers['Identity'] = `${idToken}`
+
     }
 
   } else{
     if(localStorage.getItem('access_token')){
       const accessToken = localStorage.getItem('access_token')
+      const idToken = localStorage.getItem('id_token')
       headers['authorization'] = `Bearer ${accessToken}`
+      headers['Identity'] = `${idToken}`
     }
   }
 
