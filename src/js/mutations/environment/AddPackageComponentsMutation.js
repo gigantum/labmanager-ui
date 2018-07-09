@@ -90,7 +90,6 @@ export default function AddPackageComponentsMutation(
   callback
 ) {
 
-
   const variables = {
     input: {
       labbookName,

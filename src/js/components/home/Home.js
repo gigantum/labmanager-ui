@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-
 import Dashboard from 'Components/dashboard/Dashboard';
 import Login from 'Components/login/Login';
 
@@ -33,6 +32,7 @@ export default class Home extends Component {
             />
           )
         }
+
         {
           (!isAuthenticated() || forceLoginScreen) && (
               <Login auth={this.props.auth} forceLoginScreen={forceLoginScreen}/>
