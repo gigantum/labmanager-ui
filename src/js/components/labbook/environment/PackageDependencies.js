@@ -65,14 +65,17 @@ class PackageDependencies extends Component {
       let latestPackages = {};
 
       nextPackages.edges.forEach(({node}) =>{
+
         if (latestPackages[node.manager]) {
           latestPackages[node.manager][node.package] = node.latestVersion
         } else {
           latestPackages[node.manager] = {[node.package]: node.latestVersion}
         }
+
         if(updateCheck[node.manager] && updateCheck[node.manager][node.package]){
           updateCheck[node.manager][node.package].version = node.latestVersion
         }
+
       })
 
       store.dispatch({
@@ -128,9 +131,11 @@ class PackageDependencies extends Component {
     unsubscribe from redux store
   */
   storeDidUpdate = (environmentStore) => {
+
     if(this.state.packageMenuVisible !== environmentStore.packageMenuVisible){
       this.setState({packageMenuVisible: environmentStore.packageMenuVisible});//triggers re-render when store updates
     }
+
   }
   /*
     @param
@@ -144,17 +149,19 @@ class PackageDependencies extends Component {
     this.props.relay.loadMore(
     5, // Fetch the next 5 feed items
     (response, error) => {
+
        if(error){
          console.error(error)
        }
 
        if(self.props.environment.packageDependencies &&
          self.props.environment.packageDependencies.pageInfo.hasNextPage) {
-
          self._loadMore()
+
        }else{
          self._refetch()
        }
+
      }
    );
   }
@@ -224,6 +231,7 @@ class PackageDependencies extends Component {
     if(navigator.onLine){
 
       if(canEditEnvironment){
+
         if(!this.state.hardDisable){
           const {labbookName, owner} = store.getState().routes
           const {environmentId} = this.props
@@ -400,6 +408,7 @@ class PackageDependencies extends Component {
     this.setState({packages})
 
     PackageLookup.query(labbookName, owner, filteredInput).then((response)=>{
+
       if(response.errors){
         packages = packages.map((pkg) => {
           pkg.validity = 'valid'
@@ -416,8 +425,7 @@ class PackageDependencies extends Component {
             messageBody: response.errors
           }
         })
-      }
-      else{
+      } else{
         let resPackages = response.data.labbook.packages;
         let invalidCount = 0;
         let lastInvalid = null;
@@ -453,6 +461,7 @@ class PackageDependencies extends Component {
           })
 
           let duplicates = existingPackages.edges.reduce((filtered, option) =>{
+
             if(flatPackages.indexOf(option.node.package) > -1){
               filtered.push(option.node.id)
               versionReference[option.node.package] = option.node.version
@@ -554,34 +563,42 @@ class PackageDependencies extends Component {
 
     if(newRemovalPackages[manager]){
       let index = Object.keys(newRemovalPackages[manager]).indexOf(pkg)
+
       if(index > -1) {
         delete newRemovalPackages[manager][pkg]
       } else{
         newRemovalPackages[manager][pkg] = id
       }
+
     } else {
       newRemovalPackages[manager] = {[pkg]: id}
     }
 
     if(!version){
+
       if(updateCheck[manager]){
         updateCheck[manager][pkg] = {id}
       } else{
         updateCheck[manager] = {[pkg]: {id}}
       }
+
     }
 
     if(updateAvailable && version){
+
       if(newUpdatePackages[manager]){
         let index = Object.keys(newUpdatePackages[manager]).indexOf(pkg)
+
         if(index > -1) {
           delete newUpdatePackages[manager][pkg]
         } else{
           newUpdatePackages[manager][pkg] = {id, version}
         }
+
       } else {
         newUpdatePackages[manager] = {[pkg]: {id, version}}
       }
+
     }
 
     this.setState({removalPackages: newRemovalPackages, updatePackages: newUpdatePackages})
@@ -599,10 +616,12 @@ class PackageDependencies extends Component {
     if(navigator.onLine){
 
       if(canEditEnvironment){
+
         const {labbookName, owner} = store.getState().routes
         const {environmentId} = this.props
         let filteredInput = [];
         let duplicates = []
+
         Object.keys(this.state.updatePackages).forEach(manager =>{
           Object.keys(this.state.updatePackages[manager]).forEach(pkg =>{
             filteredInput.push({manager, package: pkg, version: this.state.updatePackages[manager][pkg].version })
@@ -868,11 +887,13 @@ class PackageDependencies extends Component {
     const {version, latestVersion} = edge.node
     const versionText = version ?  version : ''
     let latestVersionText = latestVersion ?  latestVersion : null
+
     if(!latestVersionText) {
       if(this.state.latestVersion[edge.node.manager] && this.state.latestVersion[edge.node.manager][edge.node.package]){
         latestVersionText = this.state.latestVersion[edge.node.manager][edge.node.package]
       }
     }
+
     let trCSS = classNames({
       'PackageDependencies__optimistic-updating': edge.node.id === undefined
     })
@@ -882,6 +903,7 @@ class PackageDependencies extends Component {
       'PackageDependencies__button--round PackageDependencies__button--remove--selected': isSelected
 
     })
+
     return(
       <tr
         className={trCSS}
