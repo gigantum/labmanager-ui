@@ -1,0 +1,80 @@
+{
+ "data": {
+  "labbook": {
+   "input": {
+    "allFiles": {
+     "edges": [
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dCZueWNfY3JpbWVfMi5jc3Y=",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672122,
+        "key": "nyc_crime_2.csv",
+        "size": "216578377",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MA=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dCZueWNfdGF4aS5jc3Y=",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672143,
+        "key": "nyc_taxi.csv",
+        "size": "1510609630",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MQ=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dCZueWNfdGF4aS5pcHluYg==",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1527010595,
+        "key": "nyc_taxi.ipynb",
+        "size": "15245255",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "Mg=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dCZueWNfdGF4aS56aXA=",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1527010644,
+        "key": "nyc_taxi.zip",
+        "size": "432291366",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "Mw=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dCZ2Mi56aXA=",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1527010592,
+        "key": "v2.zip",
+        "size": "5022747",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "NA=="
+      }
+     ],
+     "pageInfo": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "MA==",
+      "endCursor": "NA=="
+     }
+    },
+    "id": "TGFiYm9va1NlY3Rpb246Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dA=="
+   },
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy"
+  }
+ }
+}

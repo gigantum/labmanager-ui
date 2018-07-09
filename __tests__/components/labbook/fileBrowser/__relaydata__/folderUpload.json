@@ -1,0 +1,41 @@
+{
+ "data": {
+  "labbook": {
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy",
+   "code": {
+    "files": {
+     "edges": [
+      {
+       "node": {
+        "isDir": true,
+        "key": "@1xGigantum (1)/",
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJkAxeEdpZ2FudHVtICgxKS8="
+       }
+      }
+     ]
+    },
+    "id": "TGFiYm9va1NlY3Rpb246Y2J1dGxlciZkYXRhLXNoYWRlciZjb2Rl"
+   },
+   "input": {
+    "files": {
+     "edges": [
+      {
+       "node": {
+        "isDir": false,
+        "key": "nyc_crime_2.csv",
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dCZueWNfY3JpbWVfMi5jc3Y="
+       }
+      }
+     ]
+    },
+    "id": "TGFiYm9va1NlY3Rpb246Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dA=="
+   },
+   "output": {
+    "files": {
+     "edges": []
+    },
+    "id": "TGFiYm9va1NlY3Rpb246Y2J1dGxlciZkYXRhLXNoYWRlciZvdXRwdXQ="
+   }
+  }
+ }
+}
