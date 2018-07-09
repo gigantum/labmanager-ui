@@ -291,47 +291,18 @@ const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, co
     let directoryExistsAll = getFolderExistsQueryPromises(uniqueFolderPaths, labbookName, owner, section)
 
     Promise.all(directoryExistsAll).then((labbooks)=>{
-
       let index = 0;
+
       function createFolder(response){
-
-          if(response && ((response.labbook[section].files === null) || (directoryExists.indexOf(response.variables.path) < -1))){
-            directoryExists.push(response.variables.path)
-
-            makeDirectory(
-                connectionKey,
-                owner,
-                labbookName,
-                sectionId,
-                response.variables.path,
-                section)
-                .then((result)=>{
-                  index++
-
-                  if(labbooks[index]){
-                    createFolder(labbooks[index])
-                  }else{
-                    fileCheck(files[0])
-                    if(totalFiles === 0){
-                      store.dispatch({
-                        type: 'FINISHED_UPLOADING',
-                      })
-                    }
-                  }
-              })
-
-
+        index++
+        if(labbooks[index]){
+          createFolder(labbooks[index])
         }else{
-          index++
-          if(labbooks[index]){
-            createFolder(labbooks[index])
-          }else{
-            fileCheck(files[0])
-            if(totalFiles === 0){
-              store.dispatch({
-                type: 'FINISHED_UPLOADING',
-              })
-            }
+          fileCheck(files[0])
+          if(totalFiles === 0){
+            store.dispatch({
+              type: 'FINISHED_UPLOADING',
+            })
           }
         }
       }
@@ -446,8 +417,8 @@ const FolderUpload = {
             let index = 0;
 
             function iterate(response){
-              if(response.labbook[section].files === null){
 
+              if(response.labbook[section].files === null){
                 makeDirectory(
                     connectionKey,
                     owner,
