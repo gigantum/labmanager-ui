@@ -17,3 +17,7 @@ jobs:
             npm install relay
             npm run relay
             unset CI && npm run build
+      - run:
+          name: Initialize submodules
+          command: |
+            jest dashboard -u

@@ -15,7 +15,8 @@
         auth: ()=>{
 
         },
-        labbookList: json.data.labbookList,
+        labbookList: json.data,
+        remoteLabbooks: json.data.labbookList,
         history: history,
         refetchSort: ()=>{
 
@@ -30,9 +31,8 @@
 
         );
 
-        const component = wrapper.getInstance().setState({selectedSection: 'cloud'})
-        console.log(component)
-        const tree = component.toJSON()
+
+        const tree = wrapper.toJSON()
 
         expect(tree).toMatchSnapshot()
 
