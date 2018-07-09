@@ -12,6 +12,7 @@ const variables = {first:20}
 
 const fixtures = {
   remoteLabbooks: json.data.remoteLabbooks,
+  labbookList: json.data.remoteLabbooks,
   auth: {
     login: ()=>{
     }
