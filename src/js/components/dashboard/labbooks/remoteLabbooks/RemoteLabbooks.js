@@ -10,6 +10,8 @@ import DeleteLabbook from 'Components/labbook/branchMenu/DeleteLabbook'
 import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
+//store
+import store from 'JS/redux/store'
 
 class RemoteLabbooks extends Component {
   constructor(props){
@@ -25,30 +27,23 @@ class RemoteLabbooks extends Component {
       isPaginating: false,
     }
     this._toggleDeleteModal = this._toggleDeleteModal.bind(this)
+    this._loadMore = this._loadMore.bind(this)
   }
-
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this._captureScroll)
-  }
-
-
-  componentDidMount() {
-    window.addEventListener('scroll', this._captureScroll);
-  }
-
-  /**
-    *  @param {}
-    *  fires when user scrolls
-    *  if nextPage exists and user is scrolled down, it will cause loadmore to fire
+  /*
+    loads more remote labbooks on mount
   */
-  _captureScroll = () => {
-    let root = document.getElementById('root')
-    let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
-        expandOn = root.offsetHeight;
-    if(this.props.remoteLabbooks.remoteLabbooks){
-      if ((distanceY > expandOn) && !this.state.isPaginating && this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage) {
-        this._loadMore();
-      }
+  componentDidMount() {
+    if(this.props.remoteLabbooks.remoteLabbooks && this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
+      this._loadMore()
+    }
+  }
+
+  /*
+    loads more remote labbooks if available
+  */
+ componentWillReceiveProps(nextProps) {
+    if(nextProps.remoteLabbooks.remoteLabbooks && nextProps.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
+      this._loadMore()
     }
   }
 
@@ -56,7 +51,6 @@ class RemoteLabbooks extends Component {
     *  @param {}
     *  loads more labbooks using the relay pagination container
   */
-
   _loadMore = () => {
     UserIdentity.getUserIdentity().then(response => {
       if(response.data){
@@ -67,7 +61,7 @@ class RemoteLabbooks extends Component {
 
           if(this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
             this.props.relay.loadMore(
-              10, // Fetch the next 10 items
+              20, // Fetch the next 20 items
               (ev) => {
                 this.setState({
                   'isPaginating': false
@@ -114,6 +108,7 @@ class RemoteLabbooks extends Component {
         <div className='LocalLabbooks__labbooks'>
         <div className="LocalLabbooks__sizer grid">
           {
+            labbooks.length ?
             labbooks.map((edge) => {
               return (
                 <RemoteLabbookPanel
@@ -128,6 +123,16 @@ class RemoteLabbooks extends Component {
                   />
               )
             })
+            :
+            !this.state.isPaginating &&
+            store.getState().labbookListing.filterText &&
+            <div className="Labbooks__no-results">
+              <h3>No Results Found</h3>
+              <p>Edit your filters above or <span
+                onClick={()=> this.props.setFilterValue({target: {value: ''}})}
+              >clear
+              </span> to try again.</p>
+            </div>
           }
           {
             Array(5).fill(1).map((value, index) => {
@@ -160,7 +165,14 @@ class RemoteLabbooks extends Component {
       </div>
       )
     } else {
-      this.props.auth.login();
+      UserIdentity.getUserIdentity().then(response => {
+        if(response.data){
+          if(!response.data.userIdentity.isSessionValid){
+            this.props.auth.login();
+          }
+        }
+      })
+
       return(<div></div>)
     }
   }
@@ -170,7 +182,7 @@ export default createPaginationContainer(
   RemoteLabbooks,
   graphql`
     fragment RemoteLabbooks_remoteLabbooks on LabbookList{
-      remoteLabbooks(first: $first, after: $cursor, sort: $sort, reverse: $reverse)@connection(key: "RemoteLabbooks_remoteLabbooks", filters: []){
+      remoteLabbooks(first: $first, after: $cursor, orderBy: $orderBy, sort: $sort)@connection(key: "RemoteLabbooks_remoteLabbooks", filters: []){
         edges {
           node {
             name
@@ -201,16 +213,16 @@ export default createPaginationContainer(
         first: first
       };
     },
-    getVariables(props, {first, cursor, sort, reverse}, fragmentVariables) {
-      first = 10;
+    getVariables(props, {first, cursor, orderBy, sort}, fragmentVariables) {
+      first = 20;
       cursor = props.remoteLabbooks.remoteLabbooks.pageInfo.endCursor;
-      sort = fragmentVariables.sort;
-      reverse = fragmentVariables.reverse
+      orderBy = fragmentVariables.orderBy;
+      sort = fragmentVariables.sort
       return {
         first,
         cursor,
-        sort,
-        reverse
+        orderBy,
+        sort
         // in most cases, for variables other than connection filters like
         // `first`, `after`, etc. you may want to use the previous values.
       };
@@ -219,8 +231,8 @@ export default createPaginationContainer(
       query RemoteLabbooksPaginationQuery(
         $first: Int!
         $cursor: String
+        $orderBy: String
         $sort: String
-        $reverse: Boolean
       ) {
         labbookList{
           ...RemoteLabbooks_remoteLabbooks

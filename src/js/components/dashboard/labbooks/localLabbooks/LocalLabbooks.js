@@ -221,7 +221,7 @@ export default createPaginationContainer(
   LocalLabbooks,
   graphql`
     fragment LocalLabbooks_localLabbooks on LabbookList{
-      localLabbooks(first: $first, after: $cursor, sort: $sort, reverse: $reverse)@connection(key: "LocalLabbooks_localLabbooks", filters: []){
+      localLabbooks(first: $first, after: $cursor, orderBy: $orderBy, sort: $sort)@connection(key: "LocalLabbooks_localLabbooks", filters: []){
         edges {
           node {
             id
@@ -251,16 +251,16 @@ export default createPaginationContainer(
         first: first
       };
     },
-    getVariables(props, {first, cursor, sort, reverse}, fragmentVariables) {
+    getVariables(props, {first, cursor, orderBy, sort}, fragmentVariables) {
       first = 10;
       cursor = props.localLabbooks.localLabbooks.pageInfo.endCursor;
-      sort = fragmentVariables.sort;
-      reverse = fragmentVariables.reverse
+      orderBy = fragmentVariables.orderBy;
+      sort = fragmentVariables.sort
       return {
         first,
         cursor,
-        sort,
-        reverse
+        orderBy,
+        sort
         // in most cases, for variables other than connection filters like
         // `first`, `after`, etc. you may want to use the previous values.
       };
@@ -269,8 +269,8 @@ export default createPaginationContainer(
       query LocalLabbooksPaginationQuery(
         $first: Int!
         $cursor: String
+        $orderBy: String
         $sort: String
-        $reverse: Boolean
       ) {
         labbookList{
           ...LocalLabbooks_localLabbooks

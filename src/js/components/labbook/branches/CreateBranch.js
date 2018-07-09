@@ -49,9 +49,6 @@ export default class CreateBranchModal extends Component {
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
-
-  }
   /**
   *   @param {}
   *   shows modal by setting state
