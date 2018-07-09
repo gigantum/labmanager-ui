@@ -101,6 +101,7 @@ class RemoteLabbooks extends Component {
   }
 
   render(){
+    console.log(this.props)
     if(this.props.remoteLabbooks && this.props.remoteLabbooks.remoteLabbooks !== null){
       let labbooks = this.props.filterLabbooks(this.props.remoteLabbooks.remoteLabbooks.edges, this.props.filterState)
 

@@ -67,20 +67,25 @@ export default class Auth {
 
   logout() {
 
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('expires_at');
-    localStorage.removeItem('family_name');
-    localStorage.removeItem('given_name');
-    localStorage.removeItem('email');
-    localStorage.removeItem('username');
-    sessionStorage.removeItem('CALLBACK_ROUTE');
-
 
     RemoveUserIdentityMutation(()=>{
       //redirect to root when user logs out
+
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('id_token');
+      localStorage.removeItem('expires_at');
+      localStorage.removeItem('family_name');
+      localStorage.removeItem('given_name');
+      localStorage.removeItem('email');
+      localStorage.removeItem('username');
+      sessionStorage.removeItem('CALLBACK_ROUTE');
+
       history.replace('/');
     })
+
+
+
+
   }
 
   isAuthenticated() {

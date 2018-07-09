@@ -7,16 +7,27 @@ import json from './__relaydata__/RemoteLabbooks.json'
 import RemoteLabbooks from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbooks';
 import relayTestingUtils from 'relay-testing-utils'
 
+history.location.pathname = 'hostname/labbooks/cloud'
 
 const variables = {first:20}
 
 const fixtures = {
-  remoteLabbooks: json.data.remoteLabbooks,
-  labbookList: json.data.remoteLabbooks,
+  remoteLabbooks: json.data.labbookList,
+  labbookList: json.data.labbookList,
+  labbookListId: json.data.labbookList.remoteLabbooks.id,
   auth: {
     login: ()=>{
     }
-  }
+  },
+  history: history,
+  showModal: ()=>{},
+  goToLabbook: ()=>{},
+  filterLabbooks: ()=>{},
+  filterState: 'cloud',
+  setFilterValue: ()=>{},
+  forceLocalView: ()=>{},
+  changeRefetchState: ()=>{},
+
 }
 
 
@@ -25,7 +36,7 @@ test('Test RemoteLabbooks rendering', () => {
 
   const localLabbooks = renderer.create(
 
-     relayTestingUtils.relayWrap(<RemoteLabbooks history={history} {...fixtures} feed={json.data}/>, {}, json.data)
+     relayTestingUtils.relayWrap(<RemoteLabbooks {...fixtures} />, {}, json.data)
 
   );
 
