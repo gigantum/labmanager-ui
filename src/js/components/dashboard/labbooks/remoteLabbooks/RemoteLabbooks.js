@@ -152,7 +152,15 @@ class RemoteLabbooks extends Component {
       </div>
       )
     } else {
-      this.props.auth.login();
+      UserIdentity.getUserIdentity().then(response => {
+        if(response.data){
+          if(!response.data.userIdentity.isSessionValid){
+            this.props.auth.login();
+          }
+        }
+      })
+
+      return(<div></div>)
     }
   }
 }
