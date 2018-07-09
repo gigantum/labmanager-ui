@@ -22,7 +22,9 @@ const fixtures = {
   history: history,
   showModal: ()=>{},
   goToLabbook: ()=>{},
-  filterLabbooks: ()=>{},
+  filterLabbooks: (labbooks, filter)=>{
+    return labbooks
+  },
   filterState: 'cloud',
   setFilterValue: ()=>{},
   forceLocalView: ()=>{},

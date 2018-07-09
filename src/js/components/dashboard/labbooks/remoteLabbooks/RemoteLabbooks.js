@@ -101,10 +101,10 @@ class RemoteLabbooks extends Component {
   }
 
   render(){
-    console.log(this.props)
+
     if(this.props.remoteLabbooks && this.props.remoteLabbooks.remoteLabbooks !== null){
       let labbooks = this.props.filterLabbooks(this.props.remoteLabbooks.remoteLabbooks.edges, this.props.filterState)
-
+     
       return(
         <div className='LocalLabbooks__labbooks'>
         <div className="LocalLabbooks__sizer grid">
