@@ -30,6 +30,7 @@ test('Test RemoteLabbooks rendering', () => {
 
   const tree = localLabbooks.toJSON()
 
+
   expect(tree).toMatchSnapshot()
 })
 

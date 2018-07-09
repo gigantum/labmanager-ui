@@ -9,6 +9,8 @@
 
       import relayTestingUtils from 'relay-testing-utils'
 
+      history.location.pathname = 'hostname/labbooks/cloud'
+
       const fixtures = {
         auth: ()=>{
 
@@ -20,7 +22,7 @@
         }
       }
 
-      test('Test DashboardLocal', () => {
+      test('Test DashboardRemote', () => {
 
         const wrapper = renderer.create(
 
