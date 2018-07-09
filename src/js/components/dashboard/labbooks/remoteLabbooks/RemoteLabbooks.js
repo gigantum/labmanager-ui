@@ -161,6 +161,7 @@ class RemoteLabbooks extends Component {
       )
     } else {
       this.props.auth.login();
+      return(<div></div>)
     }
   }
 }

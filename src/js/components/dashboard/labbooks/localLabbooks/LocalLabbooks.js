@@ -132,10 +132,11 @@ export class LocalLabbooks extends Component {
   }
 
   render(){
-console.log(this.props)
-    if((this.props.localLabbooks && this.props.localLabbooks.localLabbooks && this.props.localLabbooks.localLabbooks.edges) || this.props.loading){
+    let labbookList = this.props.localLabbooks// labbookList is passed as localLabbooks
 
-      let labbooks = !this.props.loading ? this.props.filterLabbooks(this.props.localLabbooks.localLabbooks.edges, this.props.filterState) : [];
+    if((labbookList && labbookList.localLabbooks && labbookList.localLabbooks.edges) || this.props.loading){
+
+      let labbooks = !this.props.loading ? this.props.filterLabbooks(labbookList.localLabbooks.edges, this.props.filterState) : [];
 
       return(
         <div className='LocalLabbooks__labbooks'>

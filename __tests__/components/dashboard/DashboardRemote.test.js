@@ -32,6 +32,6 @@
         console.log(component)
         const tree = component.toJSON()
 
-        expect(component).toMatchSnapshot()
+        expect(tree).toMatchSnapshot()
 
       })

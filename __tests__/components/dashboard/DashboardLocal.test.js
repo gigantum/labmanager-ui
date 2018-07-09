@@ -13,6 +13,7 @@
         auth: ()=>{
 
         },
+        localLabbooks: json.data.labbookList,
         labbookList: json.data.labbookList,
         history: history,
         refetchSort: ()=>{
@@ -20,7 +21,7 @@
         }
       }
 
-      test('Test DashboardLocal', () => {
+      test('Test DashboardLocal snapshot', () => {
 
         const wrapper = renderer.create(
 

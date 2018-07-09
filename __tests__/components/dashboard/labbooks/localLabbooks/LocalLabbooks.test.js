@@ -66,11 +66,11 @@ const loadMore = (props, value, ha) => {
   return labbooks
 }
 
-let labbooks = json.data.labbookList.localLabbooks
-labbooks.edges = labbooks.edges.slice(0, 5)
+let labbookList = json.data.labbookList
+labbookList.localLabbooks.edges = labbookList.localLabbooks.edges.slice(0, 5)
 
 const fixtures = {
-  localLabbooks: {localLabbooks: labbooks},
+  localLabbooks: labbookList,
   wasSorted: false,
   sort: 'modified_on',
   reverse: false,
