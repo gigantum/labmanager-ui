@@ -10,6 +10,8 @@ import DeleteLabbook from 'Components/labbook/branchMenu/DeleteLabbook'
 import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
+//store
+import store from 'JS/redux/store'
 
 class RemoteLabbooks extends Component {
   constructor(props){
@@ -31,7 +33,7 @@ class RemoteLabbooks extends Component {
     loads more remote labbooks on mount
   */
   componentDidMount() {
-    if(this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
+    if(this.props.remoteLabbooks.remoteLabbooks && this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
       this._loadMore()
     }
   }
@@ -106,6 +108,7 @@ class RemoteLabbooks extends Component {
         <div className='LocalLabbooks__labbooks'>
         <div className="LocalLabbooks__sizer grid">
           {
+            labbooks.length ?
             labbooks.map((edge) => {
               return (
                 <RemoteLabbookPanel
@@ -120,6 +123,16 @@ class RemoteLabbooks extends Component {
                   />
               )
             })
+            :
+            !this.state.isPaginating &&
+            store.getState().labbookListing.filterText &&
+            <div className="Labbooks__no-results">
+              <h3>No Results Found</h3>
+              <p>Edit your filters above or <span
+                onClick={()=> this.props.setFilterValue({target: {value: ''}})}
+              >clear
+              </span> to try again.</p>
+            </div>
           }
           {
             Array(5).fill(1).map((value, index) => {
