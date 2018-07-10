@@ -24,7 +24,7 @@ class CodeBrowser extends Component {
   /*
     update component when props are reloaded
   */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if(nextProps.code.allFiles.pageInfo.hasNextPage && nextProps.code.allFiles.edges.length > 3){
       this._loadMore()
     } else {
@@ -79,7 +79,7 @@ class CodeBrowser extends Component {
   }
 
   render(){
- 
+
     this.props.loadStatus(this.state.moreLoading);
     if(this.props.code && this.props.code.allFiles){
 

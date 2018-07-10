@@ -24,7 +24,7 @@ class OutputDataBrowser extends Component {
   /*
     update component when props are reloaded
   */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
 
     if(nextProps.output.allFiles.pageInfo.hasNextPage && nextProps.output.allFiles.edges.length > 3){
       this._loadMore()
