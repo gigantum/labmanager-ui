@@ -1,22 +1,30 @@
 import React, { Component } from 'react';
 import {graphql, QueryRenderer} from 'react-relay'
+import queryString from 'querystring'
 //components
 import DatasetSets from './datasets/DatasetSets';
-import Labbooks from './labbooks/Labbooks';
+import LocalLabbooksContainer from './labbooks/localLabbooks/LocalLabbooksContainer';
+import RemoteLabbooksContainer from './labbooks/remoteLabbooks/RemoteLabbooksContainer';
 import environment from 'JS/createRelayEnvironment'
 //store
 import store from "JS/redux/store"
 
-const LabbookListingQuery = graphql`query DashboardQuery($first: Int!, $cursor: String, $sort: String $reverse: Boolean){
-  ...Labbooks_labbookList
+const LocalListingQuery = graphql`query DashboardLocalQuery($first: Int!, $cursor: String, $orderBy: String $sort: String){
+  ...LocalLabbooksContainer_labbookList
+}`
+
+const RemoteListingQuery = graphql`query DashboardRemoteQuery($first: Int!, $cursor: String, $orderBy: String $sort: String){
+  ...RemoteLabbooksContainer_labbookList
 }`
 
 export default class DashboardContainer extends Component {
   constructor(props){
-
     super(props);
+    let {orderBy, sort} = queryString.parse(this.props.history.location.search.slice(1))
     this.state = {
       selectedComponent: props.match.params.id,
+      orderBy: orderBy || 'modified_on',
+      sort: sort || 'desc',
     }
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
@@ -24,12 +32,13 @@ export default class DashboardContainer extends Component {
         'callbackRoute': props.history.location.pathname
       }
     })
+    this._refetchSort = this._refetchSort.bind(this)
   }
   /**
   *  @param {Object} nextProps
   *  update select component before component renders
   */
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     this.setState({
       selectedComponent: nextProps.match.params.id
     })
@@ -42,45 +51,75 @@ export default class DashboardContainer extends Component {
   }
 
   /**
+    * @param {string, string} orderBy, sort
+    * sets state of orderBy and sort, passed to child components
+  */
+  _refetchSort(orderBy, sort) {
+    if(this.state.orderBy !== orderBy || this.state.sort !== sort){
+      this.setState({orderBy, sort})
+    }
+  }
+
+
+
+  /**
   *  @param {}
   *  returns jsx of selected component
   *  @return {jsx}
   */
   _displaySelectedComponent(){
-
     if(this.state.selectedComponent === 'datasets'){
 
       return (
         <DatasetSets/>)
     }else{
+      let paths = this.props.history.location.pathname.split('/')
+      let sectionRoute = paths.length > 2 ?  paths[2] : 'local'
+      if(paths[2] !== 'cloud' && paths[2] !== 'local'){
+        this.props.history.replace(`../projects/local`)
+      }
 
       return (
         <QueryRenderer
           environment={environment}
-          query={LabbookListingQuery}
+          query={sectionRoute === 'cloud' ? RemoteListingQuery : LocalListingQuery }
           variables={{
-            first: 100,
+            first: sectionRoute === 'cloud' ? 20 : 100,
             cursor: null,
-            sort: 'modified_on',
-            reverse: false,
+            orderBy: this.state.orderBy,
+            sort: this.state.sort,
           }}
           render={({error, props}) => {
             if (error) {
               console.log(error)
             } else if (props) {
+              if (sectionRoute === 'cloud'){
                 return (
-                  <Labbooks
+                  <RemoteLabbooksContainer
                     auth={this.props.auth}
                     labbookList={props}
                     history={this.props.history}
+                    refetchSort={this._refetchSort}
                   />
                 )
+              } else {
+                return (
+                  <LocalLabbooksContainer
+                    auth={this.props.auth}
+                    labbookList={props}
+                    history={this.props.history}
+                    refetchSort={this._refetchSort}
+                  />
+                )
+              }
             }else{
               return (
-                <Labbooks
+                <LocalLabbooksContainer
                   auth={this.props.auth}
                   labbookList={props}
                   history={this.props.history}
+                  section={sectionRoute}
+                  refetchSort={this._refetchSort}
                   loading
                 />
               )

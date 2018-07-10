@@ -7,6 +7,7 @@ import SelectBase from './SelectBase'
 import TrackingToggle from './TrackingToggle'
 import Loader from 'Components/shared/Loader'
 import ButtonLoader from 'Components/shared/ButtonLoader'
+import Modal from 'Components/shared/Modal'
 //mutations
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
@@ -84,9 +85,6 @@ export default class WizardModal extends React.Component {
       'nextComponentId': 'selectBase',
       'previousComponent': null
     })
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.remove('hidden')
-    }
   }
   /**
     @param {}
@@ -94,9 +92,6 @@ export default class WizardModal extends React.Component {
   */
   _hideModal = () => {
     this.setState({'modal_visible': false, menuVisibility: true})
-    if(document.getElementById('modal__cover')){
-      document.getElementById('modal__cover').classList.add('hidden')
-    }
   }
   /**
     @param {string} componentId
@@ -209,7 +204,7 @@ export default class WizardModal extends React.Component {
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload: {
-              message: `An error occured while trying to create Labbook '${name}'.`,
+              message: `An error occured while trying to create Project '${name}'.`,
               messageBody: error
             }
           })
@@ -236,11 +231,7 @@ export default class WizardModal extends React.Component {
             self._buildImage(name, owner)
 
 
-            self.props.history.push(`../labbooks/${owner}/${name}`)
-
-            if(document.getElementById('modal__cover')){
-              document.getElementById('modal__cover').classList.add('hidden')
-            }
+            self.props.history.push(`../projects/${owner}/${name}`)
 
             this.setState({
               createLabbookButtonState: ''
@@ -278,25 +269,24 @@ export default class WizardModal extends React.Component {
   }
 
   render(){
-    let modalCSS = classNames({
-      'WizardModal__modal': !this.state.modalBlur,
-      'WizardModal__modal--blur': this.state.modalBlur
-    });
     let loaderCSS = classNames({
       'hidden': !this.state.modalBlur
     })
+    let currentComponent = this._currentComponent()
     return(
-        <div className="WizardModal">
-          { this.state.modal_visible &&
-            <div className="WizardModal__container">
-              <div className={modalCSS}>
-                <div
-                  className="WizardModal__modal-close"
-                  onClick={() => this._hideModal()}>
-                </div>
-
-                {this._currentComponent()}
-
+      <div>
+        {
+          this.state.modal_visible &&
+          <Modal
+            size="large"
+            handleClose={() => this._hideModal()}
+            header={currentComponent.header}
+            preHeader={currentComponent.preHeader}
+            renderContent={() =>
+              <div>
+                {
+                  currentComponent.component
+                }
                 <ModalNav
                   self={this}
                   state={this.state}
@@ -307,49 +297,59 @@ export default class WizardModal extends React.Component {
                   createLabbookCallback={this._createLabbookCallback}
                 />
               </div>
-              {
-                this.state.modalBlur &&
-                <Loader className={loaderCSS}/>
-              }
-            </div>
-          }
-        </div>
+            }
+          />
+        }
+        {
+          this.state.modalBlur &&
+          <Loader className={loaderCSS}/>
+        }
+      </div>
       )
   }
 
   _currentComponent(){
     switch(this._getSelectedComponentId()){
-        case 'createLabbook':
-          return(
-            <CreateLabbook
+      case 'createLabbook':
+        return {
+          component:
+            (<CreateLabbook
               ref="createLabbook"
               createLabbookCallback={this._createLabbookCallback}
               toggleDisabledContinue={this._toggleDisabledContinue}
               history={this.props.history}
               hideModal={this._hideModal}
-            />)
-
-        case 'selectBase':
-          return(
-            <SelectBase
-              ref="selectBase"
-              selectBaseCallback={this._selectBaseCallback}
-              toggleDisabledContinue={this._toggleDisabledContinue}
-              createLabbookMutation={this._createLabbookMutation}
-              toggleMenuVisibility={this._toggleMenuVisibility}
-            />)
-        default:
-          return(
-            <CreateLabbook
-              ref="createLabbook"
-              toggleDisabledContinue={this._toggleDisabledContinue}
-              setComponent={this._setComponent}
-              setLabbookName={this._setLabbookName}
-              nextWindow={'selectBase'}
-            />)
-
+            />),
+          header: "Create Project"
         }
+
+      case 'selectBase':
+        return {
+          component:
+          (<SelectBase
+            ref="selectBase"
+            selectBaseCallback={this._selectBaseCallback}
+            toggleDisabledContinue={this._toggleDisabledContinue}
+            createLabbookMutation={this._createLabbookMutation}
+            toggleMenuVisibility={this._toggleMenuVisibility}
+          />),
+          header: 'Select A Base',
+          preHeader: 'Create Project'
+        }
+      default:
+      return {
+        component:
+          (<CreateLabbook
+            ref="createLabbook"
+            createLabbookCallback={this._createLabbookCallback}
+            toggleDisabledContinue={this._toggleDisabledContinue}
+            history={this.props.history}
+            hideModal={this._hideModal}
+          />),
+        header: "Create Project"
       }
+    }
+  }
 
 }
 
@@ -410,9 +410,9 @@ function ModalNav({self, state, getSelectedComponentId, setComponent, hideModal,
           { (state.selectedComponentId === 'selectBase') &&
             <ButtonLoader
               buttonState={state.createLabbookButtonState}
-              buttonText={"Create Labbook"}
+              buttonText={"Create Project"}
               className=""
-              params={{isSkip: false, text: 'Create Labbook'}}
+              params={{isSkip: false, text: 'Create Project'}}
               buttonDisabled={state.continueDisabled}
               clicked={continueSave}
             />

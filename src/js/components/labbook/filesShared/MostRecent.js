@@ -9,9 +9,12 @@ import store from 'JS/redux/store'
 export default class MostRecent extends Component {
   constructor(props){
     super(props);
+
     let pathArray = store.getState().routes.callbackRoute.split('/')
+
     let selectedPath = (pathArray.length > 4) ? pathArray[pathArray.length - 1] : 'overview'
     let fullPathName = selectedPath
+
     if (selectedPath === 'inputData' || selectedPath === 'outputData') {
       selectedPath = selectedPath.substring(0, selectedPath.length - 4);
     }
@@ -75,13 +78,14 @@ export default class MostRecent extends Component {
     })
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ files: nextProps[this.state.selectedPath]});
 
   }
 
 
   render(){
+
     if(this.state.files && this.state.files.allFiles){
       let loadingClass = (this.state.showAmount < this.state.files.allFiles.edges.length) ? 'Recent__action-bar' : 'hidden'
       loadingClass = (this.state.loading) ? 'Recent__action-bar--loading' : loadingClass
@@ -115,7 +119,7 @@ export default class MostRecent extends Component {
         return(
           <FileEmpty
             section={this.state.fullPathName}
-            mainText="This LabBook has No Recent Files"
+            mainText="This Project has No Recent Files"
           />
         )
       }

@@ -99,7 +99,7 @@ export default class RecentActivity extends Component {
                 section="recentActivity"
               />
               </h5>
-            <Link to={`../../../../labbooks/${owner}/${labbookName}/activity`}>Activity Details ></Link>
+            <Link to={`../../../../projects/${owner}/${labbookName}/activity`}>Activity Details ></Link>
           </div>
           <div className="RecentActivity__list grid">
             {
@@ -117,7 +117,7 @@ export default class RecentActivity extends Component {
                     <div className="RecentActivity__fadeout hidden"></div>
                     <Link
                         className="RecentActivity__card-link hidden"
-                        to={{pathname: `../../../../labbooks/${owner}/${labbookName}/activity`}}
+                        to={{pathname: `../../../../projects/${owner}/${labbookName}/activity`}}
                         replace
                         ref={index}
                     >

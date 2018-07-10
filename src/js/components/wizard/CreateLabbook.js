@@ -1,6 +1,5 @@
 //vendor
 import React from 'react'
-import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
 //utilities
 import validation from 'JS/utils/Validation'
@@ -25,7 +24,7 @@ export default class CreateLabbook extends React.Component {
       'showError': false,
       'errorType': '',
       'remoteURL': '',
-      'textWarning': 'hidden',
+      'textWarning': 'CreateLabbook__warning--hidden',
       'textLength': 0,
       'isUserValid': false,
       'showLoginPrompt': false
@@ -67,7 +66,7 @@ export default class CreateLabbook extends React.Component {
               type: "MULTIPART_INFO_MESSAGE",
               payload: {
                 id: id,
-                message: 'Importing LabBook please wait',
+                message: 'Importing Project please wait',
                 isLast: false,
                 error: false
               }
@@ -86,7 +85,7 @@ export default class CreateLabbook extends React.Component {
                     type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
                       id: id,
-                      message: 'ERROR: Could not import remote LabBook',
+                      message: 'ERROR: Could not import remote Project',
                       messageBody: error,
                       error: true
                   }
@@ -99,7 +98,7 @@ export default class CreateLabbook extends React.Component {
                     type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
                       id: id,
-                      message: `Successfully imported remote LabBook ${labbookName}`,
+                      message: `Successfully imported remote Project ${labbookName}`,
                       isLast: true,
                       error: false
                     }
@@ -123,8 +122,7 @@ export default class CreateLabbook extends React.Component {
                     })
                   }
                 })
-                document.getElementById('modal__cover').classList.add('hidden')
-                self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
+                self.props.history.replace(`/projects/${owner}/${labbookName}`)
               }else{
 
                 BuildImageMutation(
@@ -180,7 +178,6 @@ export default class CreateLabbook extends React.Component {
     this.setState({
       'showLoginPrompt': false
     })
-    document.getElementById('modal__cover').classList.add('hidden')
   }
   /**
     @param {Object, string} evt,field
@@ -242,22 +239,13 @@ export default class CreateLabbook extends React.Component {
   }
 
   render(){
-
-    let loginPromptModalCss = classNames({
-      'CreateLabbook--login-prompt': this.state.showLoginPrompt,
-      'hidden': !this.state.showLoginPrompt
-    })
     return(
       <div className="CreateLabbook">
-          <div className={loginPromptModalCss}>
-            <div
-              onClick={()=>{this._closeLoginPromptModal()}}
-              className="BranchModal--close"></div>
-            <LoginPrompt closeModal={this._closeLoginPromptModal}/>
-          </div>
-          <h4 className="CreateLabbook__header">Create LabBook</h4>
-          <div className='CreateLabbook__modal-inner-container flex flex--column justify--space-between'>
-
+        {
+          this.state.showLoginPrompt &&
+          <LoginPrompt closeModal={this._closeLoginPromptModal}/>
+        }
+          <div>
             <div>
               <label>Title</label>
               <input
@@ -278,7 +266,7 @@ export default class CreateLabbook extends React.Component {
                 type="text"
                 onChange={(evt) => this._updateTextState(evt, 'description')}
 
-                placeholder="Briefly describe this LabBook, its purpose and any other key details. "
+                placeholder="Briefly describe this Project, its purpose and any other key details. "
               />
               <p className={'CreateLabbook__warning ' + this.state.textWarning}>{`${this.state.textLength} characters remaining`}</p>
             </div>

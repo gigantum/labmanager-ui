@@ -176,7 +176,7 @@ class Overview extends Component {
     *  fires when component recieves props
     *  changes the description text, particularly used when switching branches
   */
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     this.setState({descriptionText: nextProps.description.replace(/\n/g,' '), lastSavedDescription: nextProps.description.replace(/\n/g,' ')})
   }
 
@@ -185,8 +185,11 @@ class Overview extends Component {
       'Overview': true,
       'fullscreen': this.state.editorFullscreen
     })
-    let readmeCSS = this.state.readmeExpanded ? 'ReadmeMarkdown--expanded' : 'ReadmeMarkdown';
-    let descriptionCSS = this.state.descriptionText ? 'column-1-span-9' : 'column-1-span-9 empty'
+    let readmeCSS = classNames({
+      'ReadmeMarkdown--expanded': this.state.readmeExpanded,
+      'ReadmeMarkdown': !this.state.readmeExpanded
+    })
+    let descriptionCSS = this.state.descriptionText ? 'column-1-span-10' : 'column-1-span-10 empty'
     if (this.props.labbook) {
       const { owner, labbookName } = store.getState().routes
       return (
@@ -198,10 +201,10 @@ class Overview extends Component {
             <Fragment>
               <textarea
                 maxLength="260"
-                className="Overview__description-input column-1-span-9"
+                className="Overview__description-input column-1-span-10"
                 type="text"
                 onChange={(evt)=>{this.setState({descriptionText: evt.target.value.replace(/\n/g,' ')})}}
-                placeholder="Short description of labbook"
+                placeholder="Short description of Project"
                 defaultValue={this.state.descriptionText ? this.state.descriptionText: ''}
               >
               </textarea>
@@ -299,7 +302,7 @@ class Overview extends Component {
               !this.state.editingReadme &&
             <FileEmpty
               section="edit"
-              mainText="This LabBook does not have a readme."
+              mainText="This Project does not have a readme."
               subText="Click here to create one"
               callback ={this._editReadme}
             />
@@ -310,7 +313,7 @@ class Overview extends Component {
           <div className="Overview__title-container">
             <h5 className="Overview__title">Environment<ToolTip section="environmentOverview"/></h5>
             <Link
-              to={{ pathname: `../../../../labbooks/${owner}/${labbookName}/environment` }}
+              to={{ pathname: `../../../../projects/${owner}/${labbookName}/environment` }}
               replace
             >
               Environment Details >

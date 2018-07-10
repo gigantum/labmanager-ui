@@ -134,19 +134,22 @@ export default class UserNote extends Component {
   }
 
   render(){
+
     let variables ={
       keys: this.props.keys,
       owner: this.state.owner,
       name: this.state.labbookName
     }
+
     this.items = {};
+
     return(
       <QueryRenderer
         environment={environment}
         query={DetailRecordsQuery}
         variables={variables}
         render={({props, error})=>{
-
+            
             if(props){
                 return(
                   <div className="DetailsRecords">

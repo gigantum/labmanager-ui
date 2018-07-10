@@ -1,0 +1,92 @@
+{
+ "data": {
+  "labbook": {
+   "environment": {
+    "packageDependencies": {
+     "edges": [
+      {
+       "node": {
+        "id": "UGFja2FnZUNvbXBvbmVudDpjb25kYTMmYm9rZWgmMC4xMi4xNQ==",
+        "schema": 1,
+        "manager": "conda3",
+        "package": "bokeh",
+        "version": "0.12.15",
+        "fromBase": false,
+        "__typename": "PackageComponent"
+       },
+       "cursor": "MA=="
+      },
+      {
+       "node": {
+        "id": "UGFja2FnZUNvbXBvbmVudDpjb25kYTMmZGF0YXNoYWRlciYwLjYuNQ==",
+        "schema": 1,
+        "manager": "conda3",
+        "package": "datashader",
+        "version": "0.6.5",
+        "fromBase": false,
+        "__typename": "PackageComponent"
+       },
+       "cursor": "MQ=="
+      },
+      {
+       "node": {
+        "id": "UGFja2FnZUNvbXBvbmVudDpwaXAmY29sb3JjZXQmMC45LjE=",
+        "schema": 1,
+        "manager": "pip",
+        "package": "colorcet",
+        "version": "0.9.1",
+        "fromBase": false,
+        "__typename": "PackageComponent"
+       },
+       "cursor": "Mg=="
+      },
+      {
+       "node": {
+        "id": "UGFja2FnZUNvbXBvbmVudDpwaXAmaG9sb3ZpZXdzJjEuMTAuNA==",
+        "schema": 1,
+        "manager": "pip",
+        "package": "holoviews",
+        "version": "1.10.4",
+        "fromBase": false,
+        "__typename": "PackageComponent"
+       },
+       "cursor": "Mw=="
+      },
+      {
+       "node": {
+        "id": "UGFja2FnZUNvbXBvbmVudDpwaXAmbnVtcHkmMS4xNC4z",
+        "schema": 1,
+        "manager": "pip",
+        "package": "numpy",
+        "version": "1.14.3",
+        "fromBase": false,
+        "__typename": "PackageComponent"
+       },
+       "cursor": "NA=="
+      },
+      {
+       "node": {
+        "id": "UGFja2FnZUNvbXBvbmVudDpwaXAmcGFuZGFzJjAuMjMuMHJjMg==",
+        "schema": 1,
+        "manager": "pip",
+        "package": "pandas",
+        "version": "0.23.0rc2",
+        "fromBase": false,
+        "__typename": "PackageComponent"
+       },
+       "cursor": "NQ=="
+      }
+     ],
+     "pageInfo": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "MA==",
+      "endCursor": "NQ=="
+     }
+    },
+    "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZkYXRhLXNoYWRlcg=="
+   },
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy"
+  }
+ }
+}

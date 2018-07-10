@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 //components
-import DeleteLabbook from './DeleteLabbook'
+import DeleteBranch from './DeleteBranch'
 import ForceMerge from './ForceMerge'
 import ButtonLoader from 'Components/shared/ButtonLoader'
 //mutations
@@ -36,7 +36,7 @@ export default class BranchCard extends Component {
     this._handleToggleModal = this._handleToggleModal.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if(!nextProps.branchesOpen){
         this.setState({
           deleteModalVisible: false
@@ -229,16 +229,15 @@ export default class BranchCard extends Component {
     this._toggleModal(modal)
   } else {
     store.dispatch({
+      type: 'CONTAINER_MENU_WARNING',
+      payload: {
+        message: 'Stop Project before deleting branches. \n Be sure to save your changes.',
+      }
+    })
+    store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
         containerMenuOpen: true
-      }
-    })
-
-    store.dispatch({
-      type: 'CONTAINER_MENU_WARNING',
-      payload: {
-        message: 'Stop LabBook before deleting branches. \n Be sure to save your changes.',
       }
     })
   }
@@ -264,36 +263,24 @@ export default class BranchCard extends Component {
         }
         <h6 className="BranchCard__title">{branchName}</h6>
         { this.state.deleteModalVisible &&
-          [
-            <DeleteLabbook
-              key="BranchDelete__modal"
-              branchName={this.props.name}
-              cleanBranchName={branchName}
-              labbookName={this.state.labbookName}
-              labbookId={this.props.labbookId}
-              owner={owner}
-              toggleModal={this._toggleModal}
-            />,
-            <div
-              key="BranchDelete__modal-cover"
-              className="modal__cover--nested">
-            </div>
-          ]
+          <DeleteBranch
+            key="BranchDelete__modal"
+            branchName={this.props.name}
+            cleanBranchName={branchName}
+            labbookName={this.state.labbookName}
+            labbookId={this.props.labbookId}
+            owner={owner}
+            toggleModal={this._toggleModal}
+          />
         }
 
         { this.state.forceMergeVisible &&
-          [
           <ForceMerge
             key="ForceMerge__modal"
             merge={this._merge}
             params={{force: true}}
             toggleModal={this._toggleModal}
-          />,
-          <div
-            key="BranchDelete__modal-cover"
-            className="modal__cover--nested">
-          </div>
-          ]
+          />
         }
         {showDelete &&
           <button

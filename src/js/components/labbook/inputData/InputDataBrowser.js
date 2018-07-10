@@ -24,7 +24,7 @@ class InputDataBrowser extends Component {
   /*
     update component when props are reloaded
   */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
 
     if(nextProps.input.allFiles.pageInfo.hasNextPage && nextProps.input.allFiles.edges.length > 3){
       this._loadMore()

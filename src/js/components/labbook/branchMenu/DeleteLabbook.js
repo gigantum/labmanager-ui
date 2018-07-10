@@ -5,6 +5,7 @@ import DeleteLabbookMutation from 'Mutations/DeleteLabbookMutation'
 import DeleteRemoteLabbookMutation from 'Mutations/DeleteRemoteLabbookMutation'
 //components
 import ButtonLoader from 'Components/shared/ButtonLoader'
+import Modal from 'Components/shared/Modal'
 //store
 import store from 'JS/redux/store'
 
@@ -60,7 +61,10 @@ export default class DeleteLabbook extends Component {
               setTimeout(()=>{
                 this.setState({'labbookName': '', deletePending: false, deleteLabbookButtonState: ''})
                 this.props.toggleModal();
-                document.getElementById('deleteInput').value = '';
+
+                if(document.getElementById('deleteInput')){
+                  document.getElementById('deleteInput').value = ''
+                }
               }, 1000)
             }else{
               store.dispatch({
@@ -108,7 +112,7 @@ export default class DeleteLabbook extends Component {
               })
               this.setState({deleteLabbookButtonState: 'finished'})
               setTimeout(()=>{
-                this.props.history.replace('../../labbooks/')
+                this.props.history.replace('../../projects/')
               }, 2000)
             }
           }
@@ -136,7 +140,7 @@ export default class DeleteLabbook extends Component {
         return(
           <div>
             <p>This will delete <b>{this.props.remoteLabbookName}</b> from the cloud.</p>
-            <p>The LabBook will still exist locally.</p>
+            <p>The Project will still exist locally.</p>
           </div>
         )
       } else {
@@ -158,30 +162,36 @@ export default class DeleteLabbook extends Component {
   }
 
   render(){
-    let deleteText = this.props.remoteDelete ? 'Delete Remote Labbook' : 'Delete Labbook'
+    let deleteText = this.props.remoteDelete ? 'Delete Remote Project' : 'Delete Project'
     const {labbookName} = this.props.remoteDelete ? {labbookName: this.props.remoteLabbookName} : store.getState().routes
     return(
-      <div className="DeleteLabbook">
-        <h4 className="DeleteLabbook__header">{deleteText}</h4>
-        {this._getExplanationText()}
-        <input
-          id="deleteInput"
-          placeholder={`Enter ${labbookName} to delete`}
-          onKeyUp={(evt)=>{this._setLabbookName(evt)}}
-          onChange={(evt)=>{this._setLabbookName(evt)}}
-          type="text"
-        />
+      <Modal
+        header={deleteText}
+        handleClose={()=> this.props.handleClose()}
+        size="medium"
+        renderContent={()=>
+          <div className="DeleteLabbook">
+            {this._getExplanationText()}
+            <input
+              id="deleteInput"
+              placeholder={`Enter ${labbookName} to delete`}
+              onKeyUp={(evt)=>{this._setLabbookName(evt)}}
+              onChange={(evt)=>{this._setLabbookName(evt)}}
+              type="text"
+            />
 
 
-        <ButtonLoader
-          buttonState={this.state.deleteLabbookButtonState}
-          buttonText={deleteText}
-          className=""
-          params={{}}
-          buttonDisabled={this.state.deletePending}
-          clicked={this._deleteLabbook}
-        />
-      </div>
+            <ButtonLoader
+              buttonState={this.state.deleteLabbookButtonState}
+              buttonText={deleteText}
+              className=""
+              params={{}}
+              buttonDisabled={this.state.deletePending || labbookName !== this.state.labbookName}
+              clicked={this._deleteLabbook}
+            />
+          </div>
+        }
+      />
     )
   }
 }

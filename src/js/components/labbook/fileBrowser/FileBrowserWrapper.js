@@ -1,14 +1,17 @@
 // vendor
 import React, { Component } from 'react'
 import FileBrowser from 'Submodules/react-keyed-file-browser/FileBrowser/src/browser'
+import uuidv4 from 'uuid/v4'
 //components
 import DetailPanel from './../detail/DetailPanel'
+import Modal from 'Components/shared/Modal'
 //mutations
 import DeleteLabbookFileMutation from 'Mutations/fileBrowser/DeleteLabbookFileMutation'
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation'
 import MoveLabbookFileMutation from 'Mutations/fileBrowser/MoveLabbookFileMutation'
 import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
 import RemoveFavoriteMutation from 'Mutations/fileBrowser/RemoveFavoriteMutation'
+import CompleteBatchUploadTransactionMutation from 'Mutations/fileBrowser/CompleteBatchUploadTransactionMutation'
 //helpers
 import FolderUpload from './folderUpload'
 //Config
@@ -70,6 +73,7 @@ export default class FileBrowserWrapper extends Component {
       'files': this._formatFileJson(props.files),
       'fileSizePromptVisible': false,
       'uploadData': {},
+      'pause': false,
       labbookName,
       owner,
       uploading
@@ -89,7 +93,7 @@ export default class FileBrowserWrapper extends Component {
 
   componentDidMount() {
     this.unsubscribe = store.subscribe(() =>{
-      this.setState({uploading: store.getState().fileBrowser.uploading})
+      this.setState({uploading: store.getState().fileBrowser.uploading, pause: store.getState().fileBrowser.pause})
     })
   }
 
@@ -97,7 +101,7 @@ export default class FileBrowserWrapper extends Component {
     this.unsubscribe();
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     if(nextProps.selectedFiles.length > 0){
 
       this.handleCreateFiles(nextProps.selectedFiles, '')
@@ -140,10 +144,10 @@ export default class FileBrowserWrapper extends Component {
   *  @param {string, file, object, boolean, array, number} key,prefix  file key, prefix is root folder -
   *  creates a file using AddLabbookFileMutation by passing a blob
   */
-  _chunkLoader(filepath, file, data, batchUpload, files, index, callback){
+  _chunkLoader(data, callback, chunkIndex){
 
 
-    ChunkUploader.chunkFile(data, callback)
+    ChunkUploader.chunkFile(data, callback, chunkIndex)
   }
 
   /**
@@ -186,7 +190,8 @@ export default class FileBrowserWrapper extends Component {
       let fileSizeNotAllowedString = fileSizeNotAllowedNames.join(', ')
 
       if(fileSizeNotAllowedString.length > 0){
-        let message = `Cannot upload files over 100 Mb to the code directory. The following files have not been added ${fileSizeNotAllowedString}`
+        let size = this.props.section === 'code' ? '100 MB' : '1.8 GB'
+        let message = `Cannot upload files over ${size} to the ${this.props.section} directory. The following files have not been added ${fileSizeNotAllowedString}`
 
         store.dispatch({
           type: 'WARNING_MESSAGE',
@@ -244,6 +249,7 @@ export default class FileBrowserWrapper extends Component {
 
       return (config.fileBrowser.excludedFiles.indexOf(extension) < 0)
     })
+    let count = 0
 
     FolderUpload.uploadFiles(
       filterFiles,
@@ -254,7 +260,8 @@ export default class FileBrowserWrapper extends Component {
       this.props.connection,
       this.props.parentId,
       this._chunkLoader,
-      totalFiles
+      totalFiles,
+      count
     )
   }
 
@@ -265,7 +272,6 @@ export default class FileBrowserWrapper extends Component {
   *
   */
   _startFileUpload(files, prefix, fileSizeData){
-
     let fileMetaData =  getTotalFileLength(files),
     totalFiles = fileMetaData.fileCount - fileSizeData.fileSizeNotAllowed,
     hasDirectoryUpload = fileMetaData.hasDirectoryUpload,
@@ -312,10 +318,11 @@ export default class FileBrowserWrapper extends Component {
               connectionKey: self.props.connection,
               labbookName: self.state.labbookName,
               parentId: self.props.parentId,
-              section: self.props.section
+              section: self.props.section,
+              transactionId: uuidv4()
             }
 
-            self._chunkLoader(filepath, file, data, batchUpload, files, index, (data)=>{
+            self._chunkLoader(data, (data)=>{
 
             })
           }
@@ -343,10 +350,11 @@ export default class FileBrowserWrapper extends Component {
   *
   * @return {number} totalFiles
   */
-  _checkFileSize = (files) => {
+  _checkFileSize = (files, noPrompt) => {
 
     const tenMB = 10 * 1000 * 1000;
     const oneHundredMB = 100 * 1000 * 1000;
+    const eighteenHundredMB = oneHundredMB * 18;
     let fileSizePrompt = []
     let fileSizeNotAllowed = []
 
@@ -365,13 +373,18 @@ export default class FileBrowserWrapper extends Component {
         let extension = file.name ? file.name.replace(/.*\./, '') : file.entry.fullPath.replace(/.*\./, '');
 
         if((config.fileBrowser.excludedFiles.indexOf(extension) < 0) && ((file.entry && file.entry.isFile) || (typeof file.type === 'string'))){
+          if(!noPrompt){
+            if(file.size > oneHundredMB){
+              fileSizeNotAllowed.push(file)
+            }
 
-          if(file.size > oneHundredMB){
-            fileSizeNotAllowed.push(file)
-          }
-
-          if((file.size > tenMB) && (file.size < oneHundredMB)){
-            fileSizePrompt.push(file)
+            if((file.size > tenMB) && (file.size < oneHundredMB)){
+              fileSizePrompt.push(file)
+            }
+          } else {
+            if(file.size > eighteenHundredMB){
+              fileSizeNotAllowed.push(file)
+            }
           }
         }
       }
@@ -406,7 +419,8 @@ export default class FileBrowserWrapper extends Component {
           this._promptUserToAcceptUpload()
         }
       }else{
-        this._startFileUpload(files, prefix, {fileSizeNotAllowed: [], fileSizePrompt: []});
+        let fileSizeData = this._checkFileSize(files, true);
+        this._startFileUpload(files, prefix, fileSizeData);
       }
     }
   }
@@ -641,6 +655,8 @@ export default class FileBrowserWrapper extends Component {
       return edge && edge.node && (oldKey === edge.node.key)
     })[0]
 
+    //TODO fix this function, there are too many nested if else statements
+
     if(edgeToMove){
       MoveLabbookFileMutation(
         this.props.connection,
@@ -687,6 +703,9 @@ export default class FileBrowserWrapper extends Component {
                       }
                     })
                   }else{
+                    if(newKey[0] === '/'){
+                      newKey = newKey.slice(1)
+                    }
                     AddFavoriteMutation(
                       this.props.favoriteConnection,
                       this.props.connection,
@@ -716,7 +735,6 @@ export default class FileBrowserWrapper extends Component {
               )
             }
           }
-
         }
       )
     }
@@ -851,6 +869,7 @@ export default class FileBrowserWrapper extends Component {
         }
       )
     } else {
+
       DeleteLabbookFileMutation(
         this.props.connection,
         this.state.owner,
@@ -884,6 +903,7 @@ export default class FileBrowserWrapper extends Component {
 
     let formatedArray = []
     let idExists = []
+
     if(files){
       files.edges.forEach((edge) => {
         if(edge && edge.node){
@@ -960,7 +980,7 @@ export default class FileBrowserWrapper extends Component {
   }
   /**
   *  @param {object} file
-  *  gets a file objext with name, extension, key, url properties
+  *  gets a file object with name, extension, key, url properties
   *  sets as selected item
   */
   openDetailPanel(file){
@@ -975,6 +995,139 @@ export default class FileBrowserWrapper extends Component {
         detailMode: true
       }
     })
+  }
+  /**
+  *  @param {}
+  *  continues file upload
+  *
+  */
+  _continueUpload(){
+    store.dispatch({
+      type: 'PAUSE_UPLOAD',
+      payload: {
+        pause: false
+      }
+    })
+    const {files, count, prefix, totalFiles} = store.getState().fileBrowser
+    const {connection, section, parentId} = this.props
+    const {owner, labbookName} = this.state
+
+    FolderUpload.uploadFiles(
+      files,
+      prefix,
+      labbookName,
+      owner,
+      section,
+      connection,
+      parentId,
+      this._chunkLoader,
+      totalFiles,
+      count
+    )
+
+    if(store.getState().fileBrowser.chunkUploadData.data){
+      const {chunkUploadData} = store.getState().fileBrowser
+      this._chunkLoader(chunkUploadData.data, ()=>{}, chunkUploadData.chunkData.chunkIndex)
+    }
+
+    store.dispatch({
+      type: "PAUSE_UPLOAD_DATA",
+      payload:{
+        files: [],
+        count: 0,
+        transactionId: '',
+        prefix: '',
+        totalFiles: 0
+      }
+    })
+
+    store.dispatch({
+      type: "RESET_CHUNK_UPLOAD",
+      payload:{
+      }
+    })
+  }
+
+  /**
+  *  @param {}
+  *  cancels file upload but keeps files already uploaded and commits them
+  *
+  */
+  _cancelKeep(){
+    const {connection} = this.props
+    const {owner, labbookName} = this.state
+    const {transactionId} = store.getState().fileBrowser
+
+    store.dispatch({
+      type: 'PAUSE_UPLOAD',
+      payload: {
+        pause: false
+      }
+    })
+
+    let uploadData = store.getState().footer.uploadStack[0]
+
+    store.dispatch({
+      type: 'UPLOAD_MESSAGE_REMOVE',
+      payload: {
+        message: '',
+        id: uploadData.id,
+        progessBarPercentage:  0
+      }
+    })
+
+    CompleteBatchUploadTransactionMutation(
+       connection,
+       owner,
+       labbookName,
+       true,
+       false,
+       transactionId,
+       (response, error)=>{
+
+       }
+    )
+  }
+
+  /**
+  *  @param {}
+  *  cancels file upload and removes files that have been uploaded
+  *
+  */
+  _cancel(){
+      const {connection} = this.props
+      const {owner, labbookName} = this.state
+      const {transactionId} = store.getState().fileBrowser
+
+      store.dispatch({
+         type: 'PAUSE_UPLOAD',
+         payload: {
+           pause: false
+         }
+      })
+
+      let uploadData = store.getState().footer.uploadStack[0]
+
+      store.dispatch({
+        type: 'UPLOAD_MESSAGE_REMOVE',
+        payload: {
+          message: '',
+          id: uploadData.id,
+          progessBarPercentage:  0
+        }
+      })
+
+      CompleteBatchUploadTransactionMutation(
+        connection,
+        owner,
+        labbookName,
+        true,
+        true,
+        transactionId,
+        (response, error)=>{
+
+        }
+      )
   }
 
   render(){
@@ -1014,7 +1167,7 @@ export default class FileBrowserWrapper extends Component {
         {
           this.props.isLocked.locked &&
           <div className="Code--uploading flex">
-            Please wait for LabBook to finish {this.props.isLocked.isPublishing ? 'publishing' : this.props.isLocked.isExporting ? 'exporting': 'syncing'}.
+            Please wait for Project to finish {this.props.isLocked.isPublishing ? 'publishing' : this.props.isLocked.isExporting ? 'exporting': 'syncing'}.
             <span className="Code__loading--browser" />
           </div>
         }
@@ -1039,12 +1192,14 @@ export default class FileBrowserWrapper extends Component {
                 <p>You're uploading some large files to the Code Section, are you sure you don't want to place these in the Input Section? Note, putting large files in the Code Section can hurt performance.</p>
 
                 <div className="FileBrowser__button-container">
+
                   <button
                     className="button--flat"
                     onClick={() => this._cancelUpload()}>Cancel Upload</button>
-                  <button onClick={() => this._userRejectsUpload()}>Skip Large Files</button>
-                  <button onClick={() => this._userAcceptsUpload()}>Continue Upload</button>
 
+                  <button onClick={() => this._userRejectsUpload()}>Skip Large Files</button>
+
+                  <button onClick={() => this._userAcceptsUpload()}>Continue Upload</button>
 
                 </div>
 
@@ -1058,6 +1213,32 @@ export default class FileBrowserWrapper extends Component {
             </div>
           ]
         }
+
+        {this.state.pause &&
+          [<Modal
+            key="cancelUploadModal"
+            header="Cancel Upload"
+            icon={null}
+            size="medium"
+            handleClose={() => { this._continueUpload() }}
+            renderContent={()=>
+              <div className="FileBrowser__cancel-content">
+                <p>Upload has been paused, choose an action from the following options.</p>
+                <div className="FileBrowser__cancel-buttons">
+                  <button onClick={()=>this._continueUpload()}>Dismiss and Continue</button>
+                  <button onClick={()=>this._cancelKeep()}>Cancel and Keep Uploaded</button>
+                  <button onClick={()=>this._cancel()}>Cancel upload</button>
+                </div>
+              </div>
+            }/>,
+
+            <div
+              key="FileBrowserCancelCover"
+              className="modal__cover">
+            </div>
+
+            ]
+          }
 
       </div>
     )

@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test MostRecentCode Renders snapshot 1`] = `
+<div
+  className="Recent"
+>
+  <div
+    className="Recent__list"
+  >
+    <div
+      className="Recent__card-wrapper"
+    >
+      <div
+        className="Recent__card card"
+      >
+        <div
+          className="Favorite__star--off"
+          onClick={[Function]}
+        />
+        <div
+          className="Recent__header-section"
+        >
+          <h6
+            className="Recent__card-header"
+          >
+            nyc_taxi.ipynb
+          </h6>
+        </div>
+        <div
+          className="Recent__path-section"
+        >
+          <p
+            className="Recent__path"
+          >
+            root
+          </p>
+        </div>
+        <div
+          className="Recent__description-section"
+        >
+          <p>
+            Last Modified: 
+            a month ago
+          </p>
+          <p>
+            Size: 
+            11.9 MB
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      className="Recent__card-wrapper"
+    >
+      <div
+        className="Recent__card card"
+      >
+        <div
+          className="Favorite__star--off"
+          onClick={[Function]}
+        />
+        <div
+          className="Recent__header-section"
+        >
+          <h6
+            className="Recent__card-header"
+          >
+            nyc_taxi-nongeo.ipynb
+          </h6>
+        </div>
+        <div
+          className="Recent__path-section"
+        >
+          <p
+            className="Recent__path"
+          >
+            root
+          </p>
+        </div>
+        <div
+          className="Recent__description-section"
+        >
+          <p>
+            Last Modified: 
+            a month ago
+          </p>
+          <p>
+            Size: 
+            9.1 MB
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      className="Recent__card-wrapper"
+    >
+      <div
+        className="Recent__card card"
+      >
+        <div
+          className="Favorite__star--off"
+          onClick={[Function]}
+        />
+        <div
+          className="Recent__header-section"
+        >
+          <h6
+            className="Recent__card-header"
+          >
+            About.pdf
+          </h6>
+        </div>
+        <div
+          className="Recent__path-section"
+        >
+          <p
+            className="Recent__path"
+          >
+            @1xGigantum (1)/
+          </p>
+        </div>
+        <div
+          className="Recent__description-section"
+        >
+          <p>
+            Last Modified: 
+            a month ago
+          </p>
+          <p>
+            Size: 
+            4.9 MB
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="Recent__action-bar--loading"
+  >
+    <button
+      className="Recent__load-more"
+      onClick={[Function]}
+    >
+      Load More
+    </button>
+  </div>
+</div>
+`;
