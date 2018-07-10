@@ -175,7 +175,7 @@ class Overview extends Component {
     *  fires when component recieves props
     *  changes the description text, particularly used when switching branches
   */
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     this.setState({descriptionText: nextProps.description.replace(/\n/g,' '), lastSavedDescription: nextProps.description.replace(/\n/g,' ')})
   }
 

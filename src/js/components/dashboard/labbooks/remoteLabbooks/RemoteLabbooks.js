@@ -41,7 +41,7 @@ class RemoteLabbooks extends Component {
   /*
     loads more remote labbooks if available
   */
- componentWillReceiveProps(nextProps) {
+ UNSAFE_componentWillReceiveProps(nextProps) {
     if(nextProps.remoteLabbooks.remoteLabbooks && nextProps.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
       this._loadMore()
     }
@@ -104,7 +104,7 @@ class RemoteLabbooks extends Component {
 
     if(this.props.remoteLabbooks && this.props.remoteLabbooks.remoteLabbooks !== null){
       let labbooks = this.props.filterLabbooks(this.props.remoteLabbooks.remoteLabbooks.edges, this.props.filterState)
-     
+
       return(
         <div className='LocalLabbooks__labbooks'>
         <div className="LocalLabbooks__sizer grid">

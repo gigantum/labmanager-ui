@@ -38,7 +38,7 @@ export default class DashboardContainer extends Component {
   *  @param {Object} nextProps
   *  update select component before component renders
   */
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     this.setState({
       selectedComponent: nextProps.match.params.id
     })

@@ -56,12 +56,12 @@ class Labbook extends Component {
     })
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const {labbookName, owner} = store.getState().routes
     document.title = `${owner}/${labbookName}`
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
 
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
