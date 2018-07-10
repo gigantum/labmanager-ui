@@ -14,7 +14,7 @@ import UserIdentity from 'JS/Auth/UserIdentity'
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 import Loader from 'Components/shared/Loader';
 
-export default class LocalLabbookPanel extends Component {
+export default class RemoteLabbookPanel extends Component {
 
   constructor(props) {
     super(props);

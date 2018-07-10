@@ -1,0 +1,20 @@
+{
+ "data": {
+  "labbook": {
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy",
+   "description": "",
+   "output": {
+    "favorites": {
+     "edges": [],
+     "pageInfo": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": null,
+      "endCursor": null
+     }
+    },
+    "id": "TGFiYm9va1NlY3Rpb246Y2J1dGxlciZkYXRhLXNoYWRlciZvdXRwdXQ="
+   }
+  }
+ }
+}

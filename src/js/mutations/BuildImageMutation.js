@@ -5,12 +5,15 @@ import {
 import environment from 'JS/createRelayEnvironment'
 //redux store
 import reduxStore from 'JS/redux/store'
+//utils
+import FooterUtils from 'Components/shared/footer/FooterUtils'
 
 
 const mutation = graphql`
   mutation BuildImageMutation($input: BuildImageInput!){
     buildImage(input: $input){
       clientMutationId
+      backgroundJobKey
     }
   }
 `;
@@ -49,6 +52,8 @@ export default function BuildImageMutation(
           })
         }
         callback(response, error)
+
+        FooterUtils.getJobStatus(response)
       },
       onError: err => console.error(err),
 

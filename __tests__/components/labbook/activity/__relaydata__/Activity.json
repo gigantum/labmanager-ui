@@ -1,0 +1,863 @@
+{
+ "data": {
+  "labbook": {
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy",
+   "description": "",
+   "activityRecords": {
+    "edges": [
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYxZDM0NjIxMGQ5M2IwZmY0ZDVmN2JhNTRkMDM0NmE5MDIxNzI3MTRh",
+       "commit": "1d346210d93b0ff4d5f7ba54d0346a902172714a",
+       "linkedCommit": "679e6e9a6b2cb8eba4d56efd17e425b56e1687f2",
+       "type": "CODE",
+       "show": true,
+       "importance": 0,
+       "tags": [],
+       "message": "Executed cell in notebook code/nyc_taxi.ipynb and generated a result",
+       "timestamp": "2018-05-29T14:00:16+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBZWg4QUFGYnJBUUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAeh8AAFbrAQA=",
+         "show": true,
+         "importance": 255,
+         "type": "RESULT"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBNUFvQ0FMNDZBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA5AoCAL46AAA=",
+         "show": true,
+         "importance": 254,
+         "type": "RESULT"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBdGtVQ0FGd0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAtkUCAFwAAAA=",
+         "show": true,
+         "importance": 155,
+         "type": "RESULT"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBSmtZQ0FKc0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAJkYCAJsAAAA=",
+         "show": true,
+         "importance": 152,
+         "type": "RESULT"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBMVVZQ0FKc0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA1UYCAJsAAAA=",
+         "show": true,
+         "importance": 151,
+         "type": "RESULT"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBaEVjQ0FKc0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAhEcCAJsAAAA=",
+         "show": true,
+         "importance": 150,
+         "type": "RESULT"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBTTBnQ0FKc0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAM0gCAJsAAAA=",
+         "show": true,
+         "importance": 148,
+         "type": "RESULT"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBNGtnQ0FId0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA4kgCAHwAAAA=",
+         "show": false,
+         "importance": 254,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBY2trQ0FIZ0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAckkCAHgAAAA=",
+         "show": false,
+         "importance": 253,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBL2trQ0FId0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA/kkCAHwAAAA=",
+         "show": false,
+         "importance": 252,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBamtvQ0FIZ0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAjkoCAHgAAAA=",
+         "show": false,
+         "importance": 251,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBR2tzQ0FIQUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAGksCAHAAAAA=",
+         "show": false,
+         "importance": 250,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBbmtzQ0FIUUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAnksCAHQAAAA=",
+         "show": false,
+         "importance": 255,
+         "type": "CODE"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBSmt3Q0FHc0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAJkwCAGsAAAA=",
+         "show": false,
+         "importance": 255,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBcFV3Q0FLb0NBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAApUwCAKoCAAA=",
+         "show": false,
+         "importance": 254,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBWTA4Q0FGSUNBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAY08CAFICAAA=",
+         "show": false,
+         "importance": 253,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBeVZFQ0FGSUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAyVECAFIAAAA=",
+         "show": false,
+         "importance": 252,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBTDFJQ0FKSUJBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAL1ICAJIBAAA=",
+         "show": false,
+         "importance": 251,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBMVZNQ0FCSUJBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA1VMCABIBAAA=",
+         "show": false,
+         "importance": 250,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBKzFRQ0FQb0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA+1QCAPoAAAA=",
+         "show": false,
+         "importance": 249,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBQ1ZZQ0FGb0JBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAACVYCAFoBAAA=",
+         "show": false,
+         "importance": 248,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBZDFjQ0FMWUVBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAd1cCALYEAAA=",
+         "show": false,
+         "importance": 247,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBUVZ3Q0FGNEJBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAQVwCAF4BAAA=",
+         "show": false,
+         "importance": 246,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBczEwQ0FIOENBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAs10CAH8CAAA=",
+         "show": false,
+         "importance": 154,
+         "type": "RESULT"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBUm1BQ0FIOENBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAARmACAH8CAAA=",
+         "show": false,
+         "importance": 153,
+         "type": "RESULT"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBMldJQ0FPY0RBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA2WICAOcDAAA=",
+         "show": false,
+         "importance": 149,
+         "type": "RESULT"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "1d346210d93b0ff4d5f7ba54d0346a902172714a"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZiOWEzM2NhN2E0MDhjMzNiMGQzYzBjZWE2ODViYTFiYTBiZDRmYzYw",
+       "commit": "b9a33ca7a408c33b0d3c0cea685ba1ba0bd4fc60",
+       "linkedCommit": "c97c8d64fbd9f1ac12b474d7689ac464bf559354",
+       "type": "CODE",
+       "show": false,
+       "importance": 0,
+       "tags": [],
+       "message": "Executed cell in notebook code/nyc_taxi.ipynb",
+       "timestamp": "2018-05-26T01:51:28+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBR0JnQUFIWUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAGBgAAHYAAAA=",
+         "show": false,
+         "importance": 255,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBb2hnQUFISUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAohgAAHIAAAA=",
+         "show": false,
+         "importance": 254,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBS0JrQUFIWUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAKBkAAHYAAAA=",
+         "show": false,
+         "importance": 253,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBc2hrQUFISUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAshkAAHIAAAA=",
+         "show": false,
+         "importance": 252,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBT0JvQUFHb0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAOBoAAGoAAAA=",
+         "show": false,
+         "importance": 251,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBdGhvQUFMQUVBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAthoAALAEAAA=",
+         "show": false,
+         "importance": 255,
+         "type": "CODE_EXECUTED"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "b9a33ca7a408c33b0d3c0cea685ba1ba0bd4fc60"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZjYTIxNmU2MjA1NGViZDg1NzgxMjY3MzAyMmM2NzY1MWNhNGE2M2Fk",
+       "commit": "ca216e62054ebd857812673022c67651ca4a63ad",
+       "linkedCommit": "6c8c0e1d2f964080741efd7763002f1a471a17fc",
+       "type": "CODE",
+       "show": false,
+       "importance": 0,
+       "tags": [],
+       "message": "Executed 4 cells in notebook code/nyc_taxi-nongeo.ipynb",
+       "timestamp": "2018-05-26T01:45:09+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBcHd3QUFId0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAApwwAAHwAAAA=",
+         "show": false,
+         "importance": 255,
+         "type": "CODE"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBTncwQUFIUUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAANw0AAHQAAAA=",
+         "show": false,
+         "importance": 254,
+         "type": "CODE"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBdncwQUFBNEJBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAvw0AAA4BAAA=",
+         "show": false,
+         "importance": 255,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBNFE0QUFGWURBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA4Q4AAFYDAAA=",
+         "show": false,
+         "importance": 254,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBU3hJQUFGWURBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAASxIAAFYDAAA=",
+         "show": false,
+         "importance": 253,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBdFJVQUFFOENBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAtRUAAE8CAAA=",
+         "show": false,
+         "importance": 155,
+         "type": "RESULT"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "ca216e62054ebd857812673022c67651ca4a63ad"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYwMGQ1NzA3NzdhNDQ5NjUzOGIwNDJhN2JmYWNhN2Q5ZGQ2NTZlZWEw",
+       "commit": "00d570777a4496538b042a7bfaca7d9dd656eea0",
+       "linkedCommit": "f912e083b40de3b1313ea72a9bf8d9ccd26e3700",
+       "type": "CODE",
+       "show": false,
+       "importance": 0,
+       "tags": [],
+       "message": "Executed cell in notebook code/nyc_taxi-nongeo.ipynb",
+       "timestamp": "2018-05-26T01:45:06+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBMWdVQUFId0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA1gUAAHwAAAA=",
+         "show": false,
+         "importance": 254,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBWmdZQUFIZ0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAZgYAAHgAAAA=",
+         "show": false,
+         "importance": 253,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBOGdZQUFId0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA8gYAAHwAAAA=",
+         "show": false,
+         "importance": 252,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBZ2djQUFIZ0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAggcAAHgAAAA=",
+         "show": false,
+         "importance": 251,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBRGdnQUFIQUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAADggAAHAAAAA=",
+         "show": false,
+         "importance": 250,
+         "type": "INPUT_DATA"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBa2dnQUFId0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAkggAAHwAAAA=",
+         "show": false,
+         "importance": 255,
+         "type": "CODE"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBSWdrQUFBNEJBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAIgkAAA4BAAA=",
+         "show": false,
+         "importance": 255,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBUkFvQUFFOENBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAARAoAAE8CAAA=",
+         "show": false,
+         "importance": 155,
+         "type": "RESULT"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "00d570777a4496538b042a7bfaca7d9dd656eea0"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZlZDdhMDQzYjNjNmJjNWIzYzgzNzU5NzEwNWMwNmEzMTM0ZGVlODgx",
+       "commit": "ed7a043b3c6bc5b3c837597105c06a3134dee881",
+       "linkedCommit": "acc0110bbe09b8b6f67af5a9eb8bf1fe9ccca3b4",
+       "type": "CODE",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".pdf"
+       ],
+       "message": "Added new Code file code/@1xGigantum (1)/About.pdf",
+       "timestamp": "2018-05-22T22:06:15+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBVFFVQUFIVUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAATQUAAHUAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "CODE"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "ed7a043b3c6bc5b3c837597105c06a3134dee881"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZhYzY3MjM0ZGE3ZjZmMDE1NjIxODRhMmJhZTkyOTMxYzY5M2RhNzQw",
+       "commit": "ac67234da7f6f01562184a2bae92931c693da740",
+       "linkedCommit": "b184e32c0adbb6708283de7deb98fa26e487d0d0",
+       "type": "CODE",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".pdf"
+       ],
+       "message": "Added new Code file code/@1xGigantum (1)/Homepage.pdf",
+       "timestamp": "2018-05-22T22:06:14+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBd0FRQUFIa0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAwAQAAHkAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "CODE"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "ac67234da7f6f01562184a2bae92931c693da740"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY3MmEzNTc0NDM2NmU4OTE1YjZiNGU5NDQ3N2E5ZGQwYjkwZDJiNzgx",
+       "commit": "72a35744366e8915b6b4e94477a9dd0b90d2b781",
+       "linkedCommit": "f7a4ccbf959888fa48c1d8f03fa608735b427b00",
+       "type": "CODE",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".pdf"
+       ],
+       "message": "Added new Code file code/@1xGigantum (1)/Plain-text.pdf",
+       "timestamp": "2018-05-22T22:06:14+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBTHdRQUFIMEFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAALwQAAH0AAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "CODE"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "72a35744366e8915b6b4e94477a9dd0b90d2b781"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY2OTMwMzA0MmQwYTEwM2U5ZDZjZGQ3NzA0ZjA4NzgyMzY5MWMxNDdj",
+       "commit": "69303042d0a103e9d6cdd7704f087823691c147c",
+       "linkedCommit": "408aa51100e296ce76db1d618990ced113587d23",
+       "type": "CODE",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".textClipping"
+       ],
+       "message": "Added new Code file code/down-arrow.textClipping",
+       "timestamp": "2018-05-22T22:06:13+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBcWdNQUFIRUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAqgMAAHEAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "CODE"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "69303042d0a103e9d6cdd7704f087823691c147c"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZmMzRmNzU1MmJlNDIzNGJiMDhiZDFhM2E5OTAwMmNiOTk0ODc1Zjhk",
+       "commit": "f34f7552be4234bb08bd1a3a99002cb994875f8d",
+       "linkedCommit": "ea63aef65a38ddb35466f3b9535bb606b0301379",
+       "type": "CODE",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".svg"
+       ],
+       "message": "Added new Code file code/down-arrow.svg",
+       "timestamp": "2018-05-22T22:06:12+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBTVFNQUFHVUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAMQMAAGUAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "CODE"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "f34f7552be4234bb08bd1a3a99002cb994875f8d"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZhNWU4ODdmOTY0NDVkODczYjY5MDgxZWY3YTkwNjBmMzEwMTE2NTU5",
+       "commit": "a5e887f96445d873b69081ef7a9060f310116559",
+       "linkedCommit": "3c7ef15491682f3021d26bfd4238ebf80effc22f",
+       "type": "CODE",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".textClipping"
+       ],
+       "message": "Added new Code file code/down-arrow.textClipping",
+       "timestamp": "2018-05-22T22:06:07+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBckFJQUFIRUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAArAIAAHEAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "CODE"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "a5e887f96445d873b69081ef7a9060f310116559"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZmN2Q2NjA3NzllMjBiNGIyMmJjMDM1MGZkZjQ4NmIxZDlmNGQ4ZWI0",
+       "commit": "f7d660779e20b4b22bc0350fdf486b1d9f4d8eb4",
+       "linkedCommit": "0563d38e1fa62e9238b88aeed2ca8680e2662b21",
+       "type": "CODE",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".svg"
+       ],
+       "message": "Added new Code file code/down-arrow.svg",
+       "timestamp": "2018-05-22T22:06:07+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBTXdJQUFHVUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAMwIAAGUAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "CODE"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "f7d660779e20b4b22bc0350fdf486b1d9f4d8eb4"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYwZjNjN2ZjYTEyOGZjNzE5NTcxYzMzMTAxZDliNWY1OGI4YTczMmYy",
+       "commit": "0f3c7fca128fc719571c33101d9b5f58b8a732f2",
+       "linkedCommit": "b8846cce399961aba0789fa3f562dd6dfaa34d67",
+       "type": "CODE",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".pdf"
+       ],
+       "message": "Added new Code file code/@1xGigantum (1)/About.pdf",
+       "timestamp": "2018-05-22T22:06:01+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBcWdFQUFIVUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAqgEAAHUAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "CODE"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "0f3c7fca128fc719571c33101d9b5f58b8a732f2"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZhM2U2MDNhNWJhNTNhZTIzODE0YTFkYTM3ZjgwNzc4NmMwNjE3MzYz",
+       "commit": "a3e603a5ba53ae23814a1da37f807786c0617363",
+       "linkedCommit": "7ea2c2d0a49243fc26e597ddfd087422fae65c28",
+       "type": "CODE",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".pdf"
+       ],
+       "message": "Added new Code file code/@1xGigantum (1)/Homepage.pdf",
+       "timestamp": "2018-05-22T22:05:59+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBSFFFQUFIa0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAHQEAAHkAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "CODE"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "a3e603a5ba53ae23814a1da37f807786c0617363"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZjYTc5MTc4MjI2OWIwYWQ4NjUyZDNlYzZhNjc0NDBhZWFmYmQxOGFm",
+       "commit": "ca791782269b0ad8652d3ec6a67440aeafbd18af",
+       "linkedCommit": "05852ecf973ef02fb07597b840b3dddbf3aacd11",
+       "type": "CODE",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".pdf"
+       ],
+       "message": "Added new Code file code/@1xGigantum (1)/Plain-text.pdf",
+       "timestamp": "2018-05-22T22:05:59+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBakFBQUFIMEFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAjAAAAH0AAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "CODE"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "ca791782269b0ad8652d3ec6a67440aeafbd18af"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZlMjUyMzUwYmE0MmY2NzM3NjEwOTI1NDBhYTBjMDJmYTA3YTFlZTM4",
+       "commit": "e252350ba42f673761092540aa0c02fa07a1ee38",
+       "linkedCommit": "00265f8c45bb0594891a0f3f670e5fec0cbd2733",
+       "type": "CODE",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        "directory-create"
+       ],
+       "message": "Created new Code directory `code/@1xGigantum (1)/`",
+       "timestamp": "2018-05-22T22:05:58+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBQUFBQUFIZ0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAAAAAAHgAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "CODE"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "e252350ba42f673761092540aa0c02fa07a1ee38"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYxODViMDhhNjliNDExM2U1ZjhkNTJhMGE5YTlkMGQxNjI1NzdlMzgz",
+       "commit": "185b08a69b4113e5f8d52a0a9a9d0d162577e383",
+       "linkedCommit": "0c9d714264b93eed85b56c9efd2d4706ecc89caa",
+       "type": "INPUT_DATA",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".zip"
+       ],
+       "message": "Added new Input Data file input/nyc_taxi.zip",
+       "timestamp": "2018-05-22T17:37:32+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBbXIwR0FHMEFBQUE9",
+         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAmr0GAG0AAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "INPUT_DATA"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "185b08a69b4113e5f8d52a0a9a9d0d162577e383"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZkMmQ4MDZmZjc0MDAxZWRjMDNlYjUyNjhhOGNlMmQ5NzQxOTc1Zjcx",
+       "commit": "d2d806ff74001edc03eb5268a8ce2d9741975f71",
+       "linkedCommit": "4c22f0a9b00a85294bbe1a60bffbc89a6a8afd16",
+       "type": "INPUT_DATA",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".ipynb"
+       ],
+       "message": "Added new Input Data file input/nyc_taxi.ipynb",
+       "timestamp": "2018-05-22T17:36:34+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBRmIwR0FIRUFBQUE9",
+         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAFb0GAHEAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "INPUT_DATA"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "d2d806ff74001edc03eb5268a8ce2d9741975f71"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY3YjllMzM1ZWM3ZDEyNmEwMWY5YTI4YjczZmQ1OWNjOWQ1YWNjMGE4",
+       "commit": "7b9e335ec7d126a01f9a28b73fd59cc9d5acc0a8",
+       "linkedCommit": "cd477368378c5243c89d7ca4dd9d982fc45c99f7",
+       "type": "INPUT_DATA",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".zip"
+       ],
+       "message": "Added new Input Data file input/v2.zip",
+       "timestamp": "2018-05-22T17:36:31+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBbkx3R0FHVUFBQUE9",
+         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAnLwGAGUAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "INPUT_DATA"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "7b9e335ec7d126a01f9a28b73fd59cc9d5acc0a8"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY1MzM4NjA1OGZkYzc3MzU5ZGNjODZiNzNkY2QwYzM0YjFiMGY3YTQx",
+       "commit": "53386058fdc77359dcc86b73dcd0c34b1b0f7a41",
+       "linkedCommit": "bae47fbb7991212bed8552dc7a758bf13633ff37",
+       "type": "INPUT_DATA",
+       "show": true,
+       "importance": 255,
+       "tags": [
+        ".zip"
+       ],
+       "message": "Added new Input Data file input/v2.zip",
+       "timestamp": "2018-05-22T17:33:53+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBSTd3R0FHVUFBQUE9",
+         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAI7wGAGUAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "INPUT_DATA"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "53386058fdc77359dcc86b73dcd0c34b1b0f7a41"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY0YmI5ZDY2OWIxNTllOWI1NmE2YjU1MmU1N2U4OWZiMGFhN2ViNTQ4",
+       "commit": "4bb9d669b159e9b56a6b552e57e89fb0aa7eb548",
+       "linkedCommit": "8910587ba305c392db3f8ce028042814bdea1c61",
+       "type": "CODE",
+       "show": true,
+       "importance": 0,
+       "tags": [],
+       "message": "Executed cell in notebook code/nyc_taxi.ipynb",
+       "timestamp": "2018-05-19T13:05:03+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBSGJnR0FFb0FBQUE9",
+         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAHbgGAEoAAAA=",
+         "show": true,
+         "importance": 155,
+         "type": "RESULT"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBZTdnR0FFb0FBQUE9",
+         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAe7gGAEoAAAA=",
+         "show": true,
+         "importance": 154,
+         "type": "RESULT"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBMmJnR0FKRUJBQUE9",
+         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAA2bgGAJEBAAA=",
+         "show": false,
+         "importance": 255,
+         "type": "CODE_EXECUTED"
+        },
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBZnJvR0FKRUJBQUE9",
+         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAfroGAJEBAAA=",
+         "show": false,
+         "importance": 254,
+         "type": "CODE_EXECUTED"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "4bb9d669b159e9b56a6b552e57e89fb0aa7eb548"
+     }
+    ],
+    "pageInfo": {
+     "endCursor": "4bb9d669b159e9b56a6b552e57e89fb0aa7eb548",
+     "hasNextPage": true,
+     "hasPreviousPage": false,
+     "startCursor": null
+    }
+   }
+  }
+ }
+}

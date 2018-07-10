@@ -29,7 +29,7 @@ exports[`Test CreateLabbook rendering 1`] = `
         className="CreateLabbook__description-input"
         maxLength="260"
         onChange={[Function]}
-        placeholder="Briefly describe this LabBook, its purpose and any other key details. "
+        placeholder="Briefly describe this Project, its purpose and any other key details. "
         type="text"
       />
       <p
