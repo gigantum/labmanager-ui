@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test CodeBrowser snapshot renders 1`] = `
+<div
+  className="Code flex flex-row justify-center"
+  id="code"
+>
+  <div
+    className="rendered-react-keyed-file-browser"
+  >
+    <div
+      className="rendered-file-browser"
+    >
+      <div
+        className="action-bar"
+      >
+        <input
+          onChange={[Function]}
+          placeholder="Filter files"
+          type="search"
+          value=""
+        />
+        <ul
+          className="item-actions"
+        >
+          <li>
+            <a
+              className="btn btn-primary btn-sm"
+              href="#"
+              onClick={[Function]}
+              role="button"
+            >
+              <i
+                aria-hidden="true"
+                className="fa fa-folder-o"
+              />
+               Add Folder
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div
+        className="files"
+        id="OutputDataBrowser_allFiles"
+      >
+        <table
+          cellPadding="0"
+          cellSpacing="0"
+        >
+          <thead>
+            <tr
+              className="folder"
+            >
+              <th>
+                File
+              </th>
+              <th />
+              <th
+                className="size"
+              >
+                Size
+              </th>
+              <th
+                className="modified"
+              >
+                Last Modified
+              </th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="file FileBrowser__large-dropzone modified grey"
+            >
+              <td
+                colSpan="5"
+              >
+                Drag and Drop files here
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div
+    className="DetailPanel hidden"
+  >
+    <div
+      className="DetailPanel--close"
+      onClick={[Function]}
+    >
+      X
+    </div>
+    <p />
+    <p />
+  </div>
+</div>
+`;

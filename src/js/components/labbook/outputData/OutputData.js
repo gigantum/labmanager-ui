@@ -93,7 +93,7 @@ class OutputData extends Component {
               {this.state.loadingStatus &&
                 <div className="Code__loading"></div>
               }
-              <p className="Code__subtitle-sub">Currently only files under 2GB are supported.</p>
+              <p className="Code__subtitle-sub">Currently only files under 1.8GB are supported.</p>
             </div>
             <div className="Code__toolbar end">
               <p className="Code__import-text" id="Code__">

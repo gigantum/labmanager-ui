@@ -1,4 +1,3 @@
-import secret from './../config/secret'
 
 var localStorageMock = (function() {
   var store = {};

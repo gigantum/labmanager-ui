@@ -154,7 +154,7 @@ export default class ContainerStatus extends Component {
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
-                message: 'LabBook failed to build:',
+                message: 'Project failed to build:',
                 messageBody: [{ message: 'Check for and remove invalid dependencies and try again.' }]
               }
             })
@@ -196,6 +196,9 @@ export default class ContainerStatus extends Component {
       (evt.target.className.indexOf('Labbook__branch-toggle') > -1) ||
       (evt.target.className.indexOf('Acitivty__rollback-button') > -1) ||
       (evt.target.className.indexOf('Activity__add-branch-button') > -1) ||
+      (evt.target.className.indexOf('PackageDependencies__remove-button--full') > -1) ||
+      (evt.target.className.indexOf('PackageDependencies__remove-button--half') > -1) ||
+      (evt.target.className.indexOf('PackageDependencies__update-button') > -1) ||
       (evt.target.className.indexOf('BranchCard__delete-labbook') > -1)
 
     if(!containerMenuClicked &&
@@ -407,7 +410,7 @@ export default class ContainerStatus extends Component {
     store.dispatch({
       type: 'INFO_MESSAGE',
       payload:{
-        message: `Starting ${developmentTool}`,
+        message: `Starting ${developmentTool}, make sure to allow popups.`,
       }
     })
 
@@ -417,8 +420,7 @@ export default class ContainerStatus extends Component {
       developmentTool,
       (response, error)=>{
           if(response.startDevTool){
-
-            let path = response.startDevTool.path.replace('0.0.0.0', window.location.hostname)
+            let path = `${window.location.protocol}//${window.location.hostname}${response.startDevTool.path}`
             window.open(path, '_blank')
           }
           if(error){

@@ -59,28 +59,33 @@ export default class Auth {
     localStorage.setItem('email', authResult.idTokenPayload.email);
     localStorage.setItem('username', authResult.idTokenPayload.nickname);
     //redirect to labbooks when user logs in
-    let route = sessionStorage.getItem('CALLBACK_ROUTE') ? sessionStorage.getItem('CALLBACK_ROUTE') : '/labbooks';
+    let route = sessionStorage.getItem('CALLBACK_ROUTE') ? sessionStorage.getItem('CALLBACK_ROUTE') : '/projects';
 
-    route = route === '' ? '/labbook': route;
+    route = route === '' ? '/projects': route;
     history.replace(route)
   }
 
   logout() {
 
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('expires_at');
-    localStorage.removeItem('family_name');
-    localStorage.removeItem('given_name');
-    localStorage.removeItem('email');
-    localStorage.removeItem('username');
-    sessionStorage.removeItem('CALLBACK_ROUTE');
-
 
     RemoveUserIdentityMutation(()=>{
       //redirect to root when user logs out
+
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('id_token');
+      localStorage.removeItem('expires_at');
+      localStorage.removeItem('family_name');
+      localStorage.removeItem('given_name');
+      localStorage.removeItem('email');
+      localStorage.removeItem('username');
+      sessionStorage.removeItem('CALLBACK_ROUTE');
+
       history.replace('/');
     })
+
+
+
+
   }
 
   isAuthenticated() {

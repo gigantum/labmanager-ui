@@ -11,7 +11,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
-
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -212,18 +212,10 @@ module.exports = {
         loaders: [
           'style-loader',
           'css-loader',
-          // {
-          //   loader: 'css-loader',
-          //   sourceMap: true
-          // },
           {
             loader: 'sass-loader',
             options:{
-              sourceMap: true,
-              includePaths: [
-                require("bourbon").includePaths[0],
-                require("bourbon-neat").includePaths[0]
-              ]
+              sourceMap: true
             }
           }
         ]
@@ -265,8 +257,38 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-
-
+    new HardSourceWebpackPlugin({
+      // Either an absolute path or relative to webpack's options.context.
+      cacheDirectory: 'node_modules/.cache/hard-source/[confighash]',
+      // Either a string of object hash function given a webpack config.
+      configHash: function(webpackConfig) {
+        // node-object-hash on npm can be used to build this.
+        return require('node-object-hash')({sort: false}).hash(webpackConfig);
+      },
+      // Either false, a string, an object, or a project hashing function.
+      environmentHash: {
+        root: process.cwd(),
+        directories: [],
+        files: ['package-lock.json', 'yarn.lock'],
+      },
+      // An object.
+      info: {
+        // 'none' or 'test'.
+        mode: 'none',
+        // 'debug', 'log', 'info', 'warn', or 'error'.
+        level: 'debug',
+      },
+      // Clean up large, old caches automatically.
+      cachePrune: {
+        // Caches younger than `maxAge` are not considered for deletion. They must
+        // be at least this (default: 2 days) old in milliseconds.
+        maxAge: 2 * 24 * 60 * 60 * 1000,
+        // All caches together must be larger than `sizeThreshold` before any
+        // caches will be deleted. Together they must be at least this
+        // (default: 50 MB) big in bytes.
+        sizeThreshold: 50 * 1024 * 1024
+      }
+    }),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

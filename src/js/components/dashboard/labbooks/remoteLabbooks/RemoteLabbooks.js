@@ -4,14 +4,14 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
-import classNames from 'classnames'
 //components
 import RemoteLabbookPanel from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbookPanel'
 import DeleteLabbook from 'Components/labbook/branchMenu/DeleteLabbook'
-import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
+//store
+import store from 'JS/redux/store'
 
 class RemoteLabbooks extends Component {
   constructor(props){
@@ -24,97 +24,33 @@ class RemoteLabbooks extends Component {
         existsLocally: null,
       },
       deleteModalVisible: false,
-      'showLoginPrompt': false,
-      sort: this.props.sort,
-      reverse: this.props.reverse,
       isPaginating: false,
-      refetchLoading: false,
     }
     this._toggleDeleteModal = this._toggleDeleteModal.bind(this)
-    this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
-    this._refetch = this._refetch.bind(this);
+    this._loadMore = this._loadMore.bind(this)
   }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.sort !== this.state.sort || nextProps.reverse !== this.state.reverse) {
-      this.setState({sort: nextProps.sort, reverse: nextProps.reverse});
-      this._refetch(nextProps.sort, nextProps.reverse);
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this._captureScroll)
-  }
-
-  /**
-    * @param {}
-    * fires when user identity returns invalid session
-    * prompts user to revalidate their session
+  /*
+    loads more remote labbooks on mount
   */
-  _closeLoginPromptModal() {
-    this.setState({
-      'showLoginPrompt': false
-    })
-    document.getElementById('modal__cover').classList.add('hidden')
-  }
-
   componentDidMount() {
-    if(this.props.wasSorted) {
-      this._refetch(this.state.sort, this.state.reverse);
-    }
-    this.props.sortProcessed()
-    window.addEventListener('scroll', this._captureScroll);
-  }
-
-  /**
-    *  @param {}
-    *  fires when user scrolls
-    *  if nextPage exists and user is scrolled down, it will cause loadmore to fire
-  */
-  _captureScroll = () => {
-    let root = document.getElementById('root')
-    let distanceY = window.innerHeight + document.documentElement.scrollTop + 200,
-        expandOn = root.offsetHeight;
-    if(this.props.remoteLabbooks.remoteLabbooks){
-      if ((distanceY > expandOn) && !this.state.isPaginating && this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage) {
-        this._loadMore();
-      }
+    if(this.props.remoteLabbooks.remoteLabbooks && this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
+      this._loadMore()
     }
   }
 
-  /**
-    * @param {string, boolean} sort reverse
-    * fires when parent _refetch function is called
-    * causes relay to refetch with new parameters
+  /*
+    loads more remote labbooks if available
   */
-  _refetch(sort, reverse){
-    let self = this;
-    let relay = self.props.relay;
-    this.setState({refetchLoading: true})
-    this.props.changeRefetchState(true)
-
-    relay.refetchConnection(
-      20,
-      (res, err)=>{
-        if(err){
-          console.log(err)
-        }
-        this.setState({refetchLoading: false})
-        this.props.changeRefetchState(false)
-      },
-      {first: 100,
-        cursor: null,
-        sort: sort,
-        reverse: reverse,
-      }
-    )
+ componentWillReceiveProps(nextProps) {
+    if(nextProps.remoteLabbooks.remoteLabbooks && nextProps.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
+      this._loadMore()
+    }
   }
 
   /**
     *  @param {}
     *  loads more labbooks using the relay pagination container
   */
-
   _loadMore = () => {
     UserIdentity.getUserIdentity().then(response => {
       if(response.data){
@@ -125,7 +61,7 @@ class RemoteLabbooks extends Component {
 
           if(this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
             this.props.relay.loadMore(
-              10, // Fetch the next 10 items
+              20, // Fetch the next 20 items
               (ev) => {
                 this.setState({
                   'isPaginating': false
@@ -165,55 +101,58 @@ class RemoteLabbooks extends Component {
   }
 
   render(){
-    let labbooks = this.props.filterLabbooks(this.props.remoteLabbooks.remoteLabbooks.edges, this.props.filterState)
 
-    const deleteModalCSS = classNames({
-      'BranchModal--delete-modal': this.state.deleteModalVisible,
-      'hidden': !this.state.deleteModalVisible
-    })
-    let loginPromptModalCss = classNames({
-      'Labbooks--login-prompt': this.state.showLoginPrompt,
-      'hidden': !this.state.showLoginPrompt
-    })
-    return(
-      <div className='LocalLabbooks__labbooks'>
-      <div className="LocalLabbooks__sizer grid">
-        {
-          !this.state.refetchLoading && labbooks.map((edge) => {
-            return (
-              <RemoteLabbookPanel
-                toggleDeleteModal={this._toggleDeleteModal}
-                labbookListId={this.props.labbookListId}
-                key={edge.node.owner + edge.node.name}
-                ref={'LocalLabbookPanel' + edge.node.name}
-                className="LocalLabbooks__panel"
-                edge={edge}
-                history={this.props.history}
-                existsLocally={edge.node.isLocal}
-                />
-            )
-          })
-        }
-        {
-          Array(5).fill(1).map((value, index) => {
-
+    if(this.props.remoteLabbooks && this.props.remoteLabbooks.remoteLabbooks !== null){
+      let labbooks = this.props.filterLabbooks(this.props.remoteLabbooks.remoteLabbooks.edges, this.props.filterState)
+     
+      return(
+        <div className='LocalLabbooks__labbooks'>
+        <div className="LocalLabbooks__sizer grid">
+          {
+            labbooks.length ?
+            labbooks.map((edge) => {
               return (
-                <LabbooksPaginationLoader
-                  key={'LocalLabbooks_paginationLoader' + index}
-                  index={index}
-                  isLoadingMore={this.state.isPaginating ||this.state.refetchLoading}
-                />
-            )
-          })
-        }
-      </div>
-      <div className={deleteModalCSS}>
-          <div
-            onClick={() => { this._toggleDeleteModal() }}
-            className="RemoteLabbooks--close"></div>
+                <RemoteLabbookPanel
+                  toggleDeleteModal={this._toggleDeleteModal}
+                  labbookListId={this.props.remoteLabbooksId}
+                  key={edge.node.owner + edge.node.name}
+                  ref={'LocalLabbookPanel' + edge.node.name}
+                  className="LocalLabbooks__panel"
+                  edge={edge}
+                  history={this.props.history}
+                  existsLocally={edge.node.isLocal}
+                  />
+              )
+            })
+            :
+            !this.state.isPaginating &&
+            store.getState().labbookListing.filterText &&
+            <div className="Labbooks__no-results">
+              <h3>No Results Found</h3>
+              <p>Edit your filters above or <span
+                onClick={()=> this.props.setFilterValue({target: {value: ''}})}
+              >clear
+              </span> to try again.</p>
+            </div>
+          }
+          {
+            Array(5).fill(1).map((value, index) => {
 
+                return (
+                  <LabbooksPaginationLoader
+                    key={'LocalLabbooks_paginationLoader' + index}
+                    index={index}
+                    isLoadingMore={this.state.isPaginating}
+                  />
+              )
+            })
+          }
+        </div>
+        {
+          this.state.deleteModalVisible &&
           <DeleteLabbook
-            labbookListId={this.props.labbookListId}
+            handleClose={() => { this._toggleDeleteModal() }}
+            labbookListId={this.props.remoteLabbooksId}
             remoteId={this.state.deleteData.remoteId}
             remoteConnection={'RemoteLabbooks_remoteLabbooks'}
             toggleModal={this._toggleDeleteModal}
@@ -223,15 +162,20 @@ class RemoteLabbooks extends Component {
             remoteDelete={true}
             history={this.props.history}
           />
-        </div>
-        <div className={loginPromptModalCss}>
-          <div
-            onClick={() => { this._closeLoginPromptModal() }}
-            className="Labbooks-login-prompt--close"></div>
-          <LoginPrompt closeModal={this._closeLoginPromptModal} />
-        </div>
-    </div>
-    )
+        }
+      </div>
+      )
+    } else {
+      UserIdentity.getUserIdentity().then(response => {
+        if(response.data){
+          if(!response.data.userIdentity.isSessionValid){
+            this.props.auth.login();
+          }
+        }
+      })
+
+      return(<div></div>)
+    }
   }
 }
 
@@ -239,7 +183,7 @@ export default createPaginationContainer(
   RemoteLabbooks,
   graphql`
     fragment RemoteLabbooks_remoteLabbooks on LabbookList{
-      remoteLabbooks(first: $first, after: $cursor, sort: $sort, reverse: $reverse)@connection(key: "RemoteLabbooks_remoteLabbooks", filters: []){
+      remoteLabbooks(first: $first, after: $cursor, orderBy: $orderBy, sort: $sort)@connection(key: "RemoteLabbooks_remoteLabbooks", filters: []){
         edges {
           node {
             name
@@ -270,16 +214,16 @@ export default createPaginationContainer(
         first: first
       };
     },
-    getVariables(props, {first, cursor, sort, reverse}, fragmentVariables) {
-      first = 10;
+    getVariables(props, {first, cursor, orderBy, sort}, fragmentVariables) {
+      first = 20;
       cursor = props.remoteLabbooks.remoteLabbooks.pageInfo.endCursor;
-      sort = fragmentVariables.sort;
-      reverse = fragmentVariables.reverse
+      orderBy = fragmentVariables.orderBy;
+      sort = fragmentVariables.sort
       return {
         first,
         cursor,
-        sort,
-        reverse
+        orderBy,
+        sort
         // in most cases, for variables other than connection filters like
         // `first`, `after`, etc. you may want to use the previous values.
       };
@@ -288,8 +232,8 @@ export default createPaginationContainer(
       query RemoteLabbooksPaginationQuery(
         $first: Int!
         $cursor: String
+        $orderBy: String
         $sort: String
-        $reverse: Boolean
       ) {
         labbookList{
           ...RemoteLabbooks_remoteLabbooks

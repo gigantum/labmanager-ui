@@ -1,6 +1,7 @@
 //vendor
 import React, { Component } from 'react'
 import uuidv4 from 'uuid/v4'
+import Highlighter from 'react-highlight-words'
 import classNames from 'classnames'
 //muations
 import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
@@ -13,7 +14,7 @@ import UserIdentity from 'JS/Auth/UserIdentity'
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
 import Loader from 'Components/shared/Loader';
 
-export default class LocalLabbookPanel extends Component {
+export default class RemoteLabbookPanel extends Component {
 
   constructor(props) {
     super(props);
@@ -39,7 +40,7 @@ export default class LocalLabbookPanel extends Component {
       store.dispatch({
         type: 'WARNING_MESSAGE',
         payload: {
-          message: 'You can only delete remote LabBooks that you have created.',
+          message: 'You can only delete remote Projects that you have created.',
         }
       })
     } else {
@@ -49,7 +50,6 @@ export default class LocalLabbookPanel extends Component {
             this.props.toggleDeleteModal({remoteId: edge.node.id, remoteOwner: edge.node.owner, remoteLabbookName: edge.node.name, existsLocally: this.props.existsLocally})
           } else {
             this.setState({'showLoginPrompt': true})
-            document.getElementById('modal__cover').classList.remove('hidden')
           }
         }
       })
@@ -65,7 +65,6 @@ export default class LocalLabbookPanel extends Component {
     this.setState({
       'showLoginPrompt': false
     })
-    document.getElementById('modal__cover').classList.add('hidden')
   }
 
   /**
@@ -108,7 +107,7 @@ export default class LocalLabbookPanel extends Component {
           type: "MULTIPART_INFO_MESSAGE",
           payload: {
             id: id,
-            message: 'Importing LabBook please wait',
+            message: 'Importing Project please wait',
             isLast: false,
             error: false
           }
@@ -127,7 +126,7 @@ export default class LocalLabbookPanel extends Component {
                 type: 'MULTIPART_INFO_MESSAGE',
                 payload: {
                   id: id,
-                  message: 'ERROR: Could not import remote LabBook',
+                  message: 'ERROR: Could not import remote Project',
                   messageBody: error,
                   error: true
               }
@@ -140,7 +139,7 @@ export default class LocalLabbookPanel extends Component {
                 type: 'MULTIPART_INFO_MESSAGE',
                 payload: {
                   id: id,
-                  message: `Successfully imported remote LabBook ${labbookName}`,
+                  message: `Successfully imported remote Project ${labbookName}`,
                   isLast: true,
                   error: false
                 }
@@ -164,8 +163,7 @@ export default class LocalLabbookPanel extends Component {
                 })
               }
             })
-            document.getElementById('modal__cover').classList.add('hidden')
-            self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
+            self.props.history.replace(`/projects/${owner}/${labbookName}`)
           }else{
 
             BuildImageMutation(
@@ -192,7 +190,6 @@ export default class LocalLabbookPanel extends Component {
       )
     }else{
         this.setState({'showLoginPrompt': true})
-        document.getElementById('modal__cover').classList.remove('hidden')
     }
     }
   })
@@ -200,10 +197,6 @@ export default class LocalLabbookPanel extends Component {
 
   render(){
     let edge = this.props.edge;
-    let loginPromptModalCss = classNames({
-      'Labbooks--login-prompt': this.state.showLoginPrompt,
-      'hidden': !this.state.showLoginPrompt
-    })
     let descriptionCss = classNames({
       'RemoteLabbooks__text-row': true,
       'blur': this.state.isImporting
@@ -244,14 +237,26 @@ export default class LocalLabbookPanel extends Component {
           <div className="RemoteLabbooks__title-row">
             <h6
               className="RemoteLabbooks__panel-title">
-              {edge.node.name}
+              <Highlighter
+                highlightClassName='LocalLabbooks__highlighted'
+                searchWords={[store.getState().labbookListing.filterText]}
+                autoEscape={false}
+                caseSensitive={false}
+                textToHighlight={edge.node.name}
+              />
             </h6>
 
           </div>
           <p className="RemoteLabbooks__owner">{'Created by ' + edge.node.owner}</p>
           <p
             className="RemoteLabbooks__description">
-            {edge.node.description}
+            <Highlighter
+              highlightClassName='LocalLabbooks__highlighted'
+              searchWords={[store.getState().labbookListing.filterText]}
+              autoEscape={false}
+              caseSensitive={false}
+              textToHighlight={edge.node.description}
+            />
           </p>
         </div>
         {
@@ -261,12 +266,10 @@ export default class LocalLabbookPanel extends Component {
           </div>
         }
 
-        <div className={loginPromptModalCss}>
-          <div
-            onClick={() => { this._closeLoginPromptModal() }}
-            className="Labbooks-login-prompt--close"></div>
+        {
+          this.state.showLoginPrompt &&
           <LoginPrompt closeModal={this._closeLoginPromptModal} />
-        </div>
+        }
     </div>)
   }
 }

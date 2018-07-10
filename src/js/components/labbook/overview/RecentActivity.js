@@ -117,7 +117,7 @@ export default class RecentActivity extends Component {
                     <div className="RecentActivity__fadeout hidden"></div>
                     <Link
                         className="RecentActivity__card-link hidden"
-                        to={{pathname: `../../../../labbooks/${owner}/${labbookName}/activity`}}
+                        to={{pathname: `../../../../projects/${owner}/${labbookName}/activity`}}
                         replace
                         ref={index}
                     >

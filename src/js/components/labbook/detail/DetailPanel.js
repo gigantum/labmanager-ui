@@ -29,14 +29,16 @@ export default class DetailPanel extends Component {
       })
 
       if(this.props.name){
-        if(this.state.detailMode && !this.state.previousDetailMode){
+        if(this.state.detailMode && !this.state.previousDetailMode && this.refs['DetailPanel']){
           setTimeout(()=>{
 
               this.refs['DetailPanel'].classList.add('DetailPanel--open')
 
           },100)
         }else{
-          this.refs['DetailPanel'].classList.add('DetailPanel--open')
+          if(this.refs['DetailPanel']){
+            this.refs['DetailPanel'].classList.add('DetailPanel--open')
+          }
         }
       }
   }
@@ -50,11 +52,12 @@ export default class DetailPanel extends Component {
     opens or closes the detail panel
   */
   componentDidUpdate(prevProps, prevState) {
-
-    if(this.state.detailMode){
-      this.refs['DetailPanel'].classList.add('DetailPanel--open')
-    }else{
-        this.refs['DetailPanel'].classList.remove('DetailPanel--open')
+    if(this.refs['DetailPanel']){
+      if(this.state.detailMode){
+        this.refs['DetailPanel'].classList.add('DetailPanel--open')
+      }else{
+          this.refs['DetailPanel'].classList.remove('DetailPanel--open')
+      }
     }
 
   }

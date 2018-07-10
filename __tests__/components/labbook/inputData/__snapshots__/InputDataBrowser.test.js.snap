@@ -1,0 +1,330 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test CodeBrowser snapshot renders 1`] = `
+<div
+  className="Code flex flex-row justify-center"
+  id="code"
+>
+  <div
+    className="rendered-react-keyed-file-browser"
+  >
+    <div
+      className="rendered-file-browser"
+    >
+      <div
+        className="action-bar"
+      >
+        <input
+          onChange={[Function]}
+          placeholder="Filter files"
+          type="search"
+          value=""
+        />
+        <ul
+          className="item-actions"
+        >
+          <li>
+            <a
+              className="btn btn-primary btn-sm"
+              href="#"
+              onClick={[Function]}
+              role="button"
+            >
+              <i
+                aria-hidden="true"
+                className="fa fa-folder-o"
+              />
+               Add Folder
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div
+        className="files"
+        id="InputDataBrowser_allFiles"
+      >
+        <table
+          cellPadding="0"
+          cellSpacing="0"
+        >
+          <thead>
+            <tr
+              className="folder"
+            >
+              <th>
+                File
+              </th>
+              <th />
+              <th
+                className="size"
+              >
+                Size
+              </th>
+              <th
+                className="modified"
+              >
+                Last Modified
+              </th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon graph-icon"
+                      />
+                      nyc_crime_2.csv
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                206.55 MB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon graph-icon"
+                      />
+                      nyc_taxi.csv
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                1440.63 MB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon jupyter-icon"
+                      />
+                      nyc_taxi.ipynb
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                14.54 MB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon zip-icon"
+                      />
+                      nyc_taxi.zip
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                412.27 MB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+            <tr
+              className="file modified"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+            >
+              <td
+                className="name"
+              >
+                <div
+                  style={
+                    Object {
+                      "paddingLeft": "0px",
+                    }
+                  }
+                >
+                  <div>
+                    <a
+                      download="download"
+                      href="#"
+                      onClick={[Function]}
+                    >
+                      <span
+                        className="FileBrowser__icon zip-icon"
+                      />
+                      v2.zip
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td
+                width="30"
+              >
+                <div
+                  className="Favorite__star--empty"
+                  onClick={[Function]}
+                />
+              </td>
+              <td
+                className="size"
+              >
+                4.79 MB
+              </td>
+              <td
+                className="modified"
+              >
+                a month ago
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div
+    className="DetailPanel hidden"
+  >
+    <div
+      className="DetailPanel--close"
+      onClick={[Function]}
+    >
+      X
+    </div>
+    <p />
+    <p />
+  </div>
+</div>
+`;

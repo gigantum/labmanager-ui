@@ -102,7 +102,7 @@ const dispatchFinishedStatus = (filepath) =>{
    store.dispatch({
      type: 'IMPORT_MESSAGE_SUCCESS',
      payload: {
-       uploadMessage: `${route} LabBook is Ready`,
+       uploadMessage: `${route} Project is Ready`,
        id: '',
        labbookName: localStorage.getItem("username") + "/" + route //route is labbookName
      }
@@ -223,7 +223,7 @@ export default class ImportModule extends Component {
     for (let i=0; i < dataTransfer.files.length; i++) {
 
       let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
-      if(file.name.slice(file.name.length - 4, file.name.length) !== '.lbk'){
+      if(file.name.slice(file.name.length - 4, file.name.length) !== '.lbk' && file.name.slice(file.name.length - 4, file.name.length) !== '.zip'){
 
         this.setState({error: true})
 
@@ -375,11 +375,11 @@ export default class ImportModule extends Component {
 
         let importLabbook = wokerData.importLabbook
          JobStatus.getJobStatus(importLabbook.importJobKey).then((response)=>{
-
+           console.log(response)
            store.dispatch({
              type: 'UPLOAD_MESSAGE_UPDATE',
              payload: {
-               uploadMessage: 'Unzipping labbook',
+               uploadMessage: 'Unzipping Project',
                percentage: 100,
                id: ''
              }
@@ -480,7 +480,7 @@ export default class ImportModule extends Component {
   *  @return {string} returns text to be rendered
   */
   _getImportDescriptionText(){
-    return this.state.error ? 'File must be .lbk' : 'Drag & Drop .lbk file, or click to select.'
+    return this.state.error ? 'File must be .zip' : 'Drag & Drop .zip file, or click to select.'
   }
 
   _showModal(evt){
@@ -493,8 +493,8 @@ export default class ImportModule extends Component {
       store.dispatch({
         type: 'ERROR_MESSAGE',
         payload:{
-          message: `Cannot create a labbook at this time.`,
-          messageBody: [{message: 'An internet connection is required to create a Labbook.'}]
+          message: `Cannot create a Project at this time.`,
+          messageBody: [{message: 'An internet connection is required to create a Project.'}]
         }
       })
     }
@@ -549,7 +549,7 @@ export default class ImportModule extends Component {
             type: "MULTIPART_INFO_MESSAGE",
             payload: {
               id: id,
-              message: 'Importing LabBook please wait',
+              message: 'Importing Project please wait',
               isLast: false,
               error: false
             }
@@ -568,7 +568,7 @@ export default class ImportModule extends Component {
                   type: 'MULTIPART_INFO_MESSAGE',
                   payload: {
                     id: id,
-                    message: 'ERROR: Could not import remote LabBook',
+                    message: 'ERROR: Could not import remote Project',
                     messageBody: error,
                     error: true
                 }
@@ -581,7 +581,7 @@ export default class ImportModule extends Component {
                   type: 'MULTIPART_INFO_MESSAGE',
                   payload: {
                     id: id,
-                    message: `Successfully imported remote LabBook ${labbookName}`,
+                    message: `Successfully imported remote Project ${labbookName}`,
                     isLast: true,
                     error: false
                   }
@@ -605,8 +605,7 @@ export default class ImportModule extends Component {
                   })
                 }
               })
-              document.getElementById('modal__cover').classList.add('hidden')
-              self.props.history.replace(`/labbooks/${owner}/${labbookName}`)
+              self.props.history.replace(`/projects/${owner}/${labbookName}`)
             }else{
 
               BuildImageMutation(
@@ -633,7 +632,6 @@ export default class ImportModule extends Component {
         )
       }else{
           this.setState({'showLoginPrompt': true})
-          document.getElementById('modal__cover').classList.remove('hidden')
       }
       }
     })
@@ -646,7 +644,6 @@ export default class ImportModule extends Component {
     this.setState({
       'showLoginPrompt': false
     })
-    document.getElementById('modal__cover').classList.add('hidden')
   }
 
   render(){
@@ -654,10 +651,6 @@ export default class ImportModule extends Component {
       'Labbooks__labbook-button-import': this.state.importTransition === null,
       'Labbooks__labbook-button-import--expanding': this.state.importTransition,
       'Labbooks__labbook-button-import--collapsing': !this.state.importTransition && this.state.importTransition !== null
-    })
-    let loginPromptModalCss = classNames({
-      'Labbooks--login-prompt': this.state.showLoginPrompt,
-      'hidden': !this.state.showLoginPrompt
     })
 
     return(
@@ -679,7 +672,7 @@ export default class ImportModule extends Component {
               </div>
               <div
                 className="Labbooks__add-text">
-                <h4>Add LabBook</h4>
+                <h4>Add Project</h4>
               </div>
             </div>
             <div className="Labbooks__labbook-button"
@@ -708,13 +701,13 @@ export default class ImportModule extends Component {
               </p>
             </div>
             <p id="dropZone__subtext">
-              Drag .lbk File Here
+              Drag .zip File Here
             </p>
             <label
               className="Labbooks__file-system"
               id="file__input-label"
               htmlFor="file__input">
-              Browse & Upload .lbk File
+              Browse & Upload .zip File
             </label>
             <input
               id="file__input"
@@ -725,7 +718,7 @@ export default class ImportModule extends Component {
             <div className="Labbooks__labbook-paste">
               <input
                 type="text"
-                placeholder="Paste LabBook URL"
+                placeholder="Paste Project URL"
                 onChange={(evt) => this._updateRemoteUrl(evt)}
               />
               <button
@@ -737,12 +730,10 @@ export default class ImportModule extends Component {
             </div>
           </div>
         }
-        <div className={loginPromptModalCss}>
-          <div
-            onClick={() => { this._closeLoginPromptModal() }}
-            className="Labbooks-login-prompt--close"></div>
+        {
+          this.state.showLoginPrompt &&
           <LoginPrompt closeModal={this._closeLoginPromptModal} />
-        </div>
+        }
         <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
 
       </div>

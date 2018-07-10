@@ -13,6 +13,8 @@ const jobStatusQuery = graphql`
       status
       startedAt
       finishedAt
+      jobMetadata
+      failureMessage
       result
     }
   }
@@ -48,7 +50,26 @@ const JobStatus = {
 
       fetchData()
     })
-  }
+  },
+  updateFooterStatus: (jobKey) =>{
+      const variables = {jobKey: jobKey};
+
+    return new Promise((resolve, reject) =>{
+
+      let fetchData = function(){
+
+        fetchQuery(jobStatusQuery(), variables).then((response) => {
+
+          resolve(response)
+        }).catch((error) =>{
+          console.log(error)
+          reject(error)
+        })
+      }
+
+      fetchData()
+    })
+  },
 }
 
 export default JobStatus

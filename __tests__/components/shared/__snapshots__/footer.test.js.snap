@@ -6,13 +6,35 @@ exports[`Test Footer rendering 1`] = `
   id="footer"
 >
   <div
-    className="hidden"
+    className="Footer"
   >
-    NaN MB of NaN MB uploaded (undefined%)
+    <div
+      className="Footer__messages-section"
+    >
+      <div
+        className="Footer__message-list Footer__message-list--collapsed"
+      >
+        <ul />
+      </div>
+    </div>
   </div>
   <div
-    className="Footer__progress-bar"
-    id="footerProgressBar"
-  />
+    className="hidden"
+  >
+    <div
+      className="Footer__upload-message"
+    >
+      
+    </div>
+    <div
+      className="Footer__progress-bar"
+      id="footerProgressBar"
+      style={
+        Object {
+          "width": "undefined%",
+        }
+      }
+    />
+  </div>
 </div>
 `;

@@ -6,6 +6,9 @@
   margin: auto;
   padding: 0 25px;
 }
+.Labbooks.is-demo{
+  margin-top: 100px;
+}
 
 /*******************
 Labbook__nav start
@@ -51,16 +54,12 @@ Labbook__nav start
   @for $i from 0 through 2 {
     li.Labbooks__nav-item--#{$i}:hover ~ hr {
       @if $i == 0 {
-        width: 40px;
-        margin-left: 20px;
+        width: 50px;
+        margin-left: 25px;
       }
       @if $i == 1 {
-        width: 115px;
-        margin-left: 100px;
-      }
-      @if $i == 2 {
-        width: 125px;
-        margin-left: 260px;
+        width: 90px;
+        margin-left: 105px;
       }
     }
 
@@ -77,16 +76,12 @@ Labbook__nav start
       border: none;
       background: $turquise;
       @if $i == 0 {
-        width: 40px;
-        margin-left: 20px;
+        width: 50px;
+        margin-left: 25px;
       }
       @if $i == 1 {
-        width: 115px;
-        margin-left: 100px;
-      }
-      @if $i == 2 {
-        width: 125px;
-        margin-left: 260px;
+        width: 90px;
+        margin-left: 105px;
       }
     }
   }
@@ -552,60 +547,94 @@ Labbook__nav end
 
   display: flex;
   justify-content: flex-start;
-
+  height: 28px;
   margin: 10px;
   margin: 60px 0 10px 0;
 }
 
-.Labbooks__filter-container{
+.Labbooks__search-container{
   flex-grow: 1;
   margin-right: 20px;
   align-self: flex-end;
+  position: relative;
 }
-.Labbooks__filter {
-  height: 20px !important;
+.Labbooks__search {
+  height: 28px !important;
   margin: 0px !important;
+  color: $azure !important;
+}
+.Labbooks__search[type="text"]:focus {
+  background: white;
+  border: none !important;
+  box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+.Labbooks__search-cancel{
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  top: 2px;
+  right: 6px;
+  background: url('./../images/icons/close.svg') no-repeat center center;
+  background-size: 24px;
+  cursor: pointer;
+}
+
+.Labbooks__search-cancel--text{
+  color: $romanSilver;
+  position: absolute;
+  right: 35px;
+  top: 4px;
+  text-align: right;
 }
 
 .Labbooks__section {
   margin-left: 20px;
 }
 
-.Labbooks__local-button,
-.Labbooks__cloud-button {
+.Labbooks__all-button,
+.Labbooks__mine-button,
+.Labbooks__others-button {
   color: $grey;
   border: 2px solid $grey;
   background: $grey-light;
 }
 
-.Labbooks__local-button:disabled,
-.Labbooks__cloud-button:disabled,
-.Labbooks__local-button:focus,
-.Labbooks__cloud-button:focus {
+.Labbooks__all-button:disabled,
+.Labbooks__mine-button:disabled,
+.Labbooks__others-button:disabled,
+.Labbooks__all-button:focus,
+.Labbooks__mine-button:focus,
+.Labbooks__others-button:focus {
   color: $white;
   border-color: $azure;
   background: $azure;
 }
 
-.Labbooks__local-button,
-.Labbooks__local-button:hover,
-.Labbooks__local-button:disabled {
-  width: 125px;
+.Labbooks__all-button,
+.Labbooks__all-button:hover,
+.Labbooks__all-button:disabled {
+  width: 90px;
 
   border-right: none;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
 
-.Labbooks__cloud-button,
-.Labbooks__cloud-button:hover,
-.Labbooks__cloud-button:disabled {
-  width: 125px;
+.Labbooks__mine-button,
+.Labbooks__mine-button:hover,
+.Labbooks__mine-button:disabled {
+  width: 90px;
+  border-radius: 0;
+}
 
+.Labbooks__others-button,
+.Labbooks__others-button:hover,
+.Labbooks__others-button:disabled {
+  width: 90px;
   border-left: none;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
-
 }
 
 .Labbooks__sort {
@@ -632,8 +661,9 @@ Labbook__nav end
   }
   ul {
     position: absolute;
+    padding: 3px;
     z-index: index($elements, popup);
-    right: 270px;
+    right: 2px;
 
     width: 200px;
 
@@ -646,8 +676,9 @@ Labbook__nav end
     @extend .box-shadow;
 
     li {
-      height: 30px;
-      padding: 5px !important;
+      white-space: nowrap;
+      height: 40px;
+      padding: 10px 5px !important;
       padding-top: 2px;
 
       user-select: none;
@@ -655,13 +686,81 @@ Labbook__nav end
       border-bottom: 1px solid $grey;
     }
 
+    li:last-child{
+      border-bottom: none;
+    }
+
+
     li:hover {
       transition: background-color 0.25s ease-in-out;
 
-      background: $background-color;
+      background: $azure;
+      color: $white;
     }
   }
 }
+
+.Labbooks__filter {
+  margin-right: 20px;
+  color: $font-grey;
+  align-self: flex-end;
+  span {
+    display: inline-block;
+
+    width: 200px;
+    margin-left: 20px;
+
+    cursor: pointer;
+    user-select: none;
+
+    border-bottom: 1px solid $font-grey;
+  }
+  .Labbooks__filter-collapsed {
+    background: url('./../images/icons/down-arrow-silver.svg') no-repeat right;
+    background-size: 15px;
+  }
+  .Labbooks__filter-expanded {
+    background: url('./../images/icons/up-arrow-silver.svg') no-repeat right;
+    background-size: 15px;
+  }
+  ul {
+    padding: 3px;
+    position: absolute;
+    z-index: index($elements, popup);
+    right: 296px;
+
+    width: 200px;
+
+    cursor: pointer;
+    text-align: left;
+
+    border: 1px solid $grey;
+    background: $white;
+
+    @extend .box-shadow;
+
+    li {
+      height: 40px;
+      padding: 10px 5px !important;
+      padding-top: 2px;
+
+      user-select: none;
+
+      border-bottom: 1px solid $grey;
+    }
+    li:last-child{
+      border-bottom: none;
+    }
+
+    li:hover {
+      transition: background-color 0.25s ease-in-out;
+
+      background: $azure;
+      color: $white;
+    }
+  }
+}
+
 .Labbooks__labbook-button {
   position: relative;
 
@@ -850,28 +949,6 @@ Labbook__nav end
   font-size: 24px;
 }
 
-
-.Labbooks--login-prompt {
-  z-index: index($elements, modal);
-
-  justify-content: flex-start;
-
-  padding: 20px;
-
-  color: $jet;
-
-  @include flex(space-between, column);
-  @include modal(200px, 400px);
-
-  .LoginPrompt__button-container {
-    @include flex(space-around, row);
-  }
-}
-
-.Labbooks-login-prompt--close {
-  @include close()
-}
-
 .Labbook__loader-hidden {
   display: block;
   opacity: 0;
@@ -904,4 +981,25 @@ Labbook__nav end
 
 .Labbook-paginating__loader--4 {
   animation: fade-in forwards 3.6s;
+}
+
+.Labbooks__no-results{
+  color: $romanSilver;
+  width: 100%;
+  text-align: center;
+  margin-top: 150px;
+
+  h3{
+    font-weight: 100;
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  p{
+    margin-top: 10px;
+  }
+  span{
+    font-weight: 100;
+    cursor: pointer;
+    text-decoration: underline;
+  }
 }

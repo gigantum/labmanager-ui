@@ -7,6 +7,8 @@ export const TOGGLE_CUSTOM_MENU = 'TOGGLE_CUSTOM_MENU'
 export const RESET_DETAIL_STORE = 'RESET_DETAIL_STORE'
 export const CONTAINER_MENU_WARNING = 'CONTAINER_MENU_WARNING'
 export const UPDATE_CONTAINER_MENU_VISIBILITY = 'UPDATE_CONTAINER_MENU_VISIBILITY'
+export const SET_LATEST_PACKAGES = 'SET_LATEST_PACKAGES'
+export const SET_LATEST_FETCHED = 'SET_LATEST_FETCHED'
 
 
 
@@ -17,7 +19,9 @@ export default (
    'containerMenuWarning': '',
    'packageMenuVisible': false,
    'viewContainerVisible': false,
-   'detailMode': false
+   'detailMode': false,
+   'latestPackages': {},
+   'latestFetched': false,
  },
  action
 ) => {
@@ -44,16 +48,26 @@ if (action.type === CLOSE_ENVIRONMENT_MENUS) {
      detailMode: false
    };
  } else if(action.type === CONTAINER_MENU_WARNING) {
-  return {
-    ...state,
-    containerMenuWarning: action.payload.message
-  }
+    return {
+      ...state,
+      containerMenuWarning: action.payload.message
+    }
 } else if (action.type === UPDATE_CONTAINER_MENU_VISIBILITY) {
 
   return {
     ...state,
     containerMenuOpen: action.payload.containerMenuOpen
   };
+} else if (action.type === SET_LATEST_PACKAGES) {
+  return {
+    ...state,
+    latestPackages: action.payload.latestPackages
+  }
+} else if (action.type === SET_LATEST_FETCHED) {
+  return {
+    ...state,
+    latestFetched: action.payload.latestFetched
+  }
 }
 
  return state;

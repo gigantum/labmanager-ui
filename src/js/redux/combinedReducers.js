@@ -3,6 +3,8 @@ import footer from './reducers/footer';
 import login from './reducers/login';
 import routes from './reducers/routes';
 import helper from './reducers/helper';
+//labbook listing reducers
+import labbookListing from './reducers/labbookListing/labbookListing'
 //labbook reducers
 import labbook from './reducers/labbook/labbook';
 import detailView from './reducers/labbook/detail';
@@ -27,5 +29,6 @@ export default combineReducers({
   login,
   fileBrowser,
   collaborators,
-  helper
+  helper,
+  labbookListing
 });

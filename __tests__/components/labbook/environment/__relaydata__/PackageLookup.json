@@ -1,0 +1,13 @@
+{
+ "errors": [
+  {
+   "message": "Variable \"$input\" got invalid value \"\".\nExpected \"PackageComponentInput\", found not an object.",
+   "locations": [
+    {
+     "line": 4,
+     "column": 3
+    }
+   ]
+  }
+ ]
+}

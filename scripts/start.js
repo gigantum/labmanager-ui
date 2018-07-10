@@ -20,7 +20,7 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const clearConsole = require('react-dev-utils/clearConsole');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
-const {
+const { 
   choosePort,
   createCompiler,
   prepareProxy,
@@ -40,7 +40,7 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 }
 
 // Tools like Cloud9 rely on this.
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 10000;
+const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 10002;
 const HOST = process.env.HOST || '0.0.0.0';
 
 // We attempt to use the default port but if it is busy, we offer the user to

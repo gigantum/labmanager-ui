@@ -68,16 +68,15 @@ export default class CustomDockerfile extends Component {
         }
       } else {
         store.dispatch({
+          type: 'CONTAINER_MENU_WARNING',
+          payload: {
+            message: 'Stop Project before editing the environment. \n Be sure to save your changes.'
+          }
+        })
+        store.dispatch({
           type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
           payload: {
             containerMenuOpen: true
-          }
-        })
-
-        store.dispatch({
-          type: 'CONTAINER_MENU_WARNING',
-          payload: {
-            message: 'Stop LabBook before editing the environment. \n Be sure to save your changes.'
           }
         })
       }
@@ -100,16 +99,15 @@ export default class CustomDockerfile extends Component {
       this.setState({editingDockerfile: true});
     } else {
       store.dispatch({
+        type: 'CONTAINER_MENU_WARNING',
+        payload: {
+          message: 'Stop Project before editing the environment. \n Be sure to save your changes.'
+        }
+      })
+      store.dispatch({
         type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
         payload: {
           containerMenuOpen: true
-        }
-      })
-
-      store.dispatch({
-        type: 'CONTAINER_MENU_WARNING',
-        payload: {
-          message: 'Stop LabBook before editing the environment. \n Be sure to save your changes.'
         }
       })
     }

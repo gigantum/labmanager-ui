@@ -807,462 +807,144 @@ exports[`Test Routes Rendering 1`] = `
   className="Routes"
 >
   <div
-    className="Header flex flex--row justify--space-between"
+    className="hidden"
+  />
+  <div
+    className="hidden"
   >
     <div
-      className="flex justify--space-around flex-1-0-auto"
+      className="SideBar__inner-container"
     >
+      <div
+        className="SideBar__logo"
+      />
       <ul
-        className="Header__nav flex flex--row justify--space-between"
+        className="SideBar__nav"
       >
-        <li>
+        <li
+          className="SideBar__list-item--selected"
+        >
           <a
-            className="Header__nav-item Header__nav-item--datasets flex flex--row justify--space-between"
-            href="/datasets"
+            className="SideBar__nav-item SideBar__nav-item--labbooks SideBar__nav-item--selected"
+            href="/labbooks/all"
             onClick={[Function]}
           >
             <div
-              className="Header__datasets-icon"
+              className="SideBar__icon SideBar__icon--labbooks-selected"
             />
-            Datasets
+            LabBooks
           </a>
         </li>
-        <li>
-          <a
-            className="Header__nav-item Header__nav-item--labbooks flex flex--row justify--space-between"
-            href="/labbooks"
-            onClick={[Function]}
+        <li
+          className="SideBar__list-item"
+        >
+          <div
+            className="SideBar__nav-item SideBar__nav-item--datasets"
+            to={
+              Object {
+                "pathname": "/datasets",
+              }
+            }
           >
             <div
-              className="Header__labbook-icon"
+              className="SideBar__icon SideBar__icon--datasets"
             />
-            Lab Books
-          </a>
+            Datasets
+          </div>
         </li>
       </ul>
     </div>
   </div>
   <div
-    className="Home"
+    className="Routes__main-no-auth"
   >
     <div
-      className="Login"
+      className="Home"
     >
       <div
-        className="Login__panel flex flex--column justify--space-around"
+        className="Login"
       >
-        <button
-          className="Login__button"
-          onClick={[Function]}
+        <div
+          className="Login__panel"
         >
-          Log In
-        </button>
+          <div
+            className="Login__logo"
+          />
+          <button
+            className="Login__button"
+            onClick={[Function]}
+          >
+            Log In
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="Prompt"
+    >
+      <div
+        className="hidden"
+      >
+        <div
+          className="Prompt__logo"
+        />
+        <div
+          className="hidden"
+        >
+          Loading Please Wait...
+        </div>
+        <div
+          className="hidden"
+        >
+          <div
+            className="Prompt__failure-text"
+          >
+            <p>
+              There was a problem loading Gigantum
+            </p>
+            <p>
+              Ensure Gigantum is running or restart the application
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="Footer"
+      id="footer"
+    >
+      <div
+        className="Footer"
+      >
+        <div
+          className="Footer__messages-section"
+        >
+          <div
+            className="Footer__message-list Footer__message-list--collapsed"
+          >
+            <ul />
+          </div>
+        </div>
+      </div>
+      <div
+        className="hidden"
+      >
+        <div
+          className="Footer__upload-message"
+        >
+          
+        </div>
+        <div
+          className="Footer__progress-bar"
+          id="footerProgressBar"
+          style={
+            Object {
+              "width": "undefined%",
+            }
+          }
+        />
       </div>
     </div>
   </div>
-  <div
-    className="Footer"
-    id="footer"
-  >
-    <div
-      className="hidden"
-    >
-      NaN MB of NaN MB uploaded (undefined%)
-    </div>
-    <div
-      className="Footer__progress-bar"
-      id="footerProgressBar"
-    />
-  </div>
 </div>
-`;
-
-exports[`Test Routes View Change renders header routes 1`] = `
-ShallowWrapper {
-  "complexSelector": ComplexSelector {
-    "buildPredicate": [Function],
-    "childrenOfNode": [Function],
-    "findWhereUnwrapped": [Function],
-  },
-  "length": 1,
-  "node": <BrowserRouter
-    history={
-        Object {
-            "action": "POP",
-            "block": [Function],
-            "createHref": [Function],
-            "go": [Function],
-            "goBack": [Function],
-            "goForward": [Function],
-            "length": 1,
-            "listen": [Function],
-            "location": Object {
-              "hash": "",
-              "pathname": "/",
-              "search": "",
-              "state": undefined,
-            },
-            "push": [Function],
-            "replace": [Function],
-          }
-    }
->
-    <Switch>
-        <Route
-            path=""
-            render={[Function]}
-        />
-    </Switch>
-</BrowserRouter>,
-  "nodes": Array [
-    <BrowserRouter
-      history={
-            Object {
-                  "action": "POP",
-                  "block": [Function],
-                  "createHref": [Function],
-                  "go": [Function],
-                  "goBack": [Function],
-                  "goForward": [Function],
-                  "length": 1,
-                  "listen": [Function],
-                  "location": Object {
-                    "hash": "",
-                    "pathname": "/",
-                    "search": "",
-                    "state": undefined,
-                  },
-                  "push": [Function],
-                  "replace": [Function],
-                }
-      }
->
-      <Switch>
-            <Route
-                  path=""
-                  render={[Function]}
-            />
-      </Switch>
-</BrowserRouter>,
-  ],
-  "options": Object {},
-  "renderer": ReactShallowRenderer {
-    "_instance": ShallowComponentWrapper {
-      "_calledComponentWillUnmount": false,
-      "_compositeType": 0,
-      "_context": Object {},
-      "_currentElement": <Routes />,
-      "_debugID": 1,
-      "_hostContainerInfo": null,
-      "_hostParent": null,
-      "_instance": Routes {
-        "_reactInternalInstance": [Circular],
-        "context": Object {},
-        "props": Object {},
-        "refs": Object {},
-        "state": Object {
-          "history": Object {
-            "action": "POP",
-            "block": [Function],
-            "createHref": [Function],
-            "go": [Function],
-            "goBack": [Function],
-            "goForward": [Function],
-            "length": 1,
-            "listen": [Function],
-            "location": Object {
-              "hash": "",
-              "pathname": "/",
-              "search": "",
-              "state": undefined,
-            },
-            "push": [Function],
-            "replace": [Function],
-          },
-        },
-        "updater": Object {
-          "enqueueCallback": [Function],
-          "enqueueCallbackInternal": [Function],
-          "enqueueElementInternal": [Function],
-          "enqueueForceUpdate": [Function],
-          "enqueueReplaceState": [Function],
-          "enqueueSetState": [Function],
-          "isMounted": [Function],
-          "validateCallback": [Function],
-        },
-      },
-      "_mountOrder": 1,
-      "_pendingCallbacks": null,
-      "_pendingElement": null,
-      "_pendingForceUpdate": false,
-      "_pendingReplaceState": false,
-      "_pendingStateQueue": null,
-      "_renderedComponent": NoopInternalComponent {
-        "_currentElement": <BrowserRouter
-          history={
-                    Object {
-                              "action": "POP",
-                              "block": [Function],
-                              "createHref": [Function],
-                              "go": [Function],
-                              "goBack": [Function],
-                              "goForward": [Function],
-                              "length": 1,
-                              "listen": [Function],
-                              "location": Object {
-                                "hash": "",
-                                "pathname": "/",
-                                "search": "",
-                                "state": undefined,
-                              },
-                              "push": [Function],
-                              "replace": [Function],
-                            }
-          }
->
-          <Switch>
-                    <Route
-                              path=""
-                              render={[Function]}
-                    />
-          </Switch>
-</BrowserRouter>,
-        "_debugID": 2,
-        "_renderedOutput": <BrowserRouter
-          history={
-                    Object {
-                              "action": "POP",
-                              "block": [Function],
-                              "createHref": [Function],
-                              "go": [Function],
-                              "goBack": [Function],
-                              "goForward": [Function],
-                              "length": 1,
-                              "listen": [Function],
-                              "location": Object {
-                                "hash": "",
-                                "pathname": "/",
-                                "search": "",
-                                "state": undefined,
-                              },
-                              "push": [Function],
-                              "replace": [Function],
-                            }
-          }
->
-          <Switch>
-                    <Route
-                              path=""
-                              render={[Function]}
-                    />
-          </Switch>
-</BrowserRouter>,
-      },
-      "_renderedNodeType": 1,
-      "_rootNodeID": 0,
-      "_topLevelWrapper": null,
-      "_updateBatchNumber": null,
-      "_warnedAboutRefsInRender": false,
-    },
-    "getRenderOutput": [Function],
-    "render": [Function],
-  },
-  "root": [Circular],
-  "unrendered": <Routes />,
-}
-`;
-
-exports[`Test Routes View Change renders header routes 2`] = `
-ShallowWrapper {
-  "complexSelector": ComplexSelector {
-    "buildPredicate": [Function],
-    "childrenOfNode": [Function],
-    "findWhereUnwrapped": [Function],
-  },
-  "length": 1,
-  "node": <BrowserRouter
-    history={
-        Object {
-            "action": "POP",
-            "block": [Function],
-            "createHref": [Function],
-            "go": [Function],
-            "goBack": [Function],
-            "goForward": [Function],
-            "length": 1,
-            "listen": [Function],
-            "location": Object {
-              "hash": "",
-              "pathname": "/",
-              "search": "",
-              "state": undefined,
-            },
-            "push": [Function],
-            "replace": [Function],
-          }
-    }
->
-    <Switch>
-        <Route
-            path=""
-            render={[Function]}
-        />
-    </Switch>
-</BrowserRouter>,
-  "nodes": Array [
-    <BrowserRouter
-      history={
-            Object {
-                  "action": "POP",
-                  "block": [Function],
-                  "createHref": [Function],
-                  "go": [Function],
-                  "goBack": [Function],
-                  "goForward": [Function],
-                  "length": 1,
-                  "listen": [Function],
-                  "location": Object {
-                    "hash": "",
-                    "pathname": "/",
-                    "search": "",
-                    "state": undefined,
-                  },
-                  "push": [Function],
-                  "replace": [Function],
-                }
-      }
->
-      <Switch>
-            <Route
-                  path=""
-                  render={[Function]}
-            />
-      </Switch>
-</BrowserRouter>,
-  ],
-  "options": Object {},
-  "renderer": ReactShallowRenderer {
-    "_instance": ShallowComponentWrapper {
-      "_calledComponentWillUnmount": false,
-      "_compositeType": 0,
-      "_context": Object {},
-      "_currentElement": <Routes />,
-      "_debugID": 1,
-      "_hostContainerInfo": null,
-      "_hostParent": null,
-      "_instance": Routes {
-        "_reactInternalInstance": [Circular],
-        "context": Object {},
-        "props": Object {},
-        "refs": Object {},
-        "state": Object {
-          "history": Object {
-            "action": "POP",
-            "block": [Function],
-            "createHref": [Function],
-            "go": [Function],
-            "goBack": [Function],
-            "goForward": [Function],
-            "length": 1,
-            "listen": [Function],
-            "location": Object {
-              "hash": "",
-              "pathname": "/",
-              "search": "",
-              "state": undefined,
-            },
-            "push": [Function],
-            "replace": [Function],
-          },
-        },
-        "updater": Object {
-          "enqueueCallback": [Function],
-          "enqueueCallbackInternal": [Function],
-          "enqueueElementInternal": [Function],
-          "enqueueForceUpdate": [Function],
-          "enqueueReplaceState": [Function],
-          "enqueueSetState": [Function],
-          "isMounted": [Function],
-          "validateCallback": [Function],
-        },
-      },
-      "_mountOrder": 1,
-      "_pendingCallbacks": null,
-      "_pendingElement": null,
-      "_pendingForceUpdate": false,
-      "_pendingReplaceState": false,
-      "_pendingStateQueue": null,
-      "_renderedComponent": NoopInternalComponent {
-        "_currentElement": <BrowserRouter
-          history={
-                    Object {
-                              "action": "POP",
-                              "block": [Function],
-                              "createHref": [Function],
-                              "go": [Function],
-                              "goBack": [Function],
-                              "goForward": [Function],
-                              "length": 1,
-                              "listen": [Function],
-                              "location": Object {
-                                "hash": "",
-                                "pathname": "/",
-                                "search": "",
-                                "state": undefined,
-                              },
-                              "push": [Function],
-                              "replace": [Function],
-                            }
-          }
->
-          <Switch>
-                    <Route
-                              path=""
-                              render={[Function]}
-                    />
-          </Switch>
-</BrowserRouter>,
-        "_debugID": 2,
-        "_renderedOutput": <BrowserRouter
-          history={
-                    Object {
-                              "action": "POP",
-                              "block": [Function],
-                              "createHref": [Function],
-                              "go": [Function],
-                              "goBack": [Function],
-                              "goForward": [Function],
-                              "length": 1,
-                              "listen": [Function],
-                              "location": Object {
-                                "hash": "",
-                                "pathname": "/",
-                                "search": "",
-                                "state": undefined,
-                              },
-                              "push": [Function],
-                              "replace": [Function],
-                            }
-          }
->
-          <Switch>
-                    <Route
-                              path=""
-                              render={[Function]}
-                    />
-          </Switch>
-</BrowserRouter>,
-      },
-      "_renderedNodeType": 1,
-      "_rootNodeID": 0,
-      "_topLevelWrapper": null,
-      "_updateBatchNumber": null,
-      "_warnedAboutRefsInRender": false,
-    },
-    "getRenderOutput": [Function],
-    "render": [Function],
-  },
-  "root": [Circular],
-  "unrendered": <Routes />,
-}
 `;

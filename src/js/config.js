@@ -34,6 +34,7 @@ const CONFIG = {
   'fileBrowser':{
     'excludedFiles': [
       'DS_Store',
+      'zip',
       'lbk',
       'pyc',
       'gitkeep'
@@ -60,8 +61,8 @@ const CONFIG = {
   },
   getToolTipText: (section) =>{
     return tips[section]
-  }
-
+  },
+  demoHostName: 'try.gigantum.com',
 }
 
 export default CONFIG

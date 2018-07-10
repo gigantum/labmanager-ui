@@ -3,6 +3,11 @@ import fs from 'fs'
 import fetch from 'node-fetch'
 import FormData from 'form-data'
 
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
+
 //need to add root to JSDOM for mounting react
 const window = new JSDOM('<!DOCTYPE html><html><body><div id="root"></div></body></html>').window;
 
