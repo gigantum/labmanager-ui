@@ -30,7 +30,7 @@ export default class LocalLabbookPanel extends Component {
   * @param {Object} nextProps
   * processes container lookup and assigns container status to labbook card
   */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let {environment} = nextProps
     if(environment){
     let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
@@ -42,7 +42,7 @@ export default class LocalLabbookPanel extends Component {
   * @param {}
   * if environment exists when components will mount it will populate container status
   */
-  componentWillMount(){
+  UNSAFE_componentWillMount(){
     let {environment} = this.props
     if(environment){
       let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)

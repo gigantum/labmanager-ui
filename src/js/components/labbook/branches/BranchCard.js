@@ -36,7 +36,7 @@ export default class BranchCard extends Component {
     this._handleToggleModal = this._handleToggleModal.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if(!nextProps.branchesOpen){
         this.setState({
           deleteModalVisible: false

@@ -15,7 +15,7 @@ class OutputFavoriteList extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let favorites = this.state.favorites;
     let newFavorites = [];
     let nextPropsFavorites = nextProps.favorites

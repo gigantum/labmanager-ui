@@ -64,7 +64,7 @@ export default class ContainerStatus extends Component {
         this.setState({containerMenuOpen: containerStatusStore.containerMenuOpen, containerMenuWarning: containerStatusStore.containerMenuWarning}); //triggers  re-render when store updates
     }
   }
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
 
     this._getContainerStatusText(this.props.containerStatus, this.props.imageStatus)
   }
@@ -221,7 +221,7 @@ export default class ContainerStatus extends Component {
   *  @param {string} nextProps
   *  update container state before rendering new props
   */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
 
     let status = this._getContainerStatusText(nextProps.containerStatus, nextProps.imageStatus)
     const hasLabbookId = store.getState().overview.containerStates[this.props.labbookId]

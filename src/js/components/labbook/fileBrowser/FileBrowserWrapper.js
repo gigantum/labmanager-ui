@@ -101,7 +101,7 @@ export default class FileBrowserWrapper extends Component {
     this.unsubscribe();
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     if(nextProps.selectedFiles.length > 0){
 
       this.handleCreateFiles(nextProps.selectedFiles, '')

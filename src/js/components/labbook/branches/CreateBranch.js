@@ -35,7 +35,7 @@ export default class CreateBranchModal extends Component {
   }
 
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
 
     if(nextProps.modalVisible !== this.state.modalVisible){
       this.setState({'modalVisible': nextProps.modalVisible})
