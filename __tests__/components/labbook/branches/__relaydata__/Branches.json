@@ -1,0 +1,89 @@
+{
+ "data": {
+  "labbook": {
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy",
+   "description": "",
+   "branches": {
+    "edges": [
+     {
+      "node": {
+       "id": "TGFiYm9va1JlZjpOb25l",
+       "name": "data-shader",
+       "prefix": null,
+       "commit": {
+        "hash": "109c89a74b679ea849ac2a202b3b98c5d4e7a58e",
+        "shortHash": "109c89a7",
+        "committedOn": "2018-05-18T19:36:27+00:00",
+        "id": "TGFiYm9va0NvbW1pdDpOb25l"
+       },
+       "__typename": "LabbookRef"
+      },
+      "cursor": "MA=="
+     },
+     {
+      "node": {
+       "id": "TGFiYm9va1JlZjpOb25l",
+       "name": "data-shader",
+       "prefix": null,
+       "commit": {
+        "hash": "1d346210d93b0ff4d5f7ba54d0346a902172714a",
+        "shortHash": "1d346210",
+        "committedOn": "2018-05-29T14:00:16+00:00",
+        "id": "TGFiYm9va0NvbW1pdDpOb25l"
+       },
+       "__typename": "LabbookRef"
+      },
+      "cursor": "MQ=="
+     },
+     {
+      "node": {
+       "id": "TGFiYm9va1JlZjpOb25l",
+       "name": "data-shader",
+       "prefix": null,
+       "commit": {
+        "hash": "3181bd2ae257e748f907c4f788f12ebc6b48c858",
+        "shortHash": "3181bd2a",
+        "committedOn": "2018-05-18T17:31:29+00:00",
+        "id": "TGFiYm9va0NvbW1pdDpOb25l"
+       },
+       "__typename": "LabbookRef"
+      },
+      "cursor": "Mg=="
+     },
+     {
+      "node": {
+       "id": "TGFiYm9va1JlZjpOb25l",
+       "name": "data-shader",
+       "prefix": "origin",
+       "commit": {
+        "hash": "109c89a74b679ea849ac2a202b3b98c5d4e7a58e",
+        "shortHash": "109c89a7",
+        "committedOn": "2018-05-18T19:36:27+00:00",
+        "id": "TGFiYm9va0NvbW1pdDpOb25l"
+       },
+       "__typename": "LabbookRef"
+      },
+      "cursor": "Mw=="
+     }
+    ],
+    "pageInfo": {
+     "endCursor": "Mw==",
+     "hasNextPage": false,
+     "hasPreviousPage": false,
+     "startCursor": "MA=="
+    }
+   },
+   "activeBranch": {
+    "id": "TGFiYm9va1JlZjpOb25l",
+    "name": "data-shader",
+    "prefix": null,
+    "commit": {
+     "hash": "1d346210d93b0ff4d5f7ba54d0346a902172714a",
+     "shortHash": "1d346210",
+     "committedOn": "2018-05-29T14:00:16+00:00",
+     "id": "TGFiYm9va0NvbW1pdDpOb25l"
+    }
+   }
+  }
+ }
+}
