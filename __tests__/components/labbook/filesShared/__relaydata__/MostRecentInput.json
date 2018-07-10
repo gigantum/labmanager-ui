@@ -1,0 +1,81 @@
+{
+ "data": {
+  "labbook": {
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy",
+   "description": "",
+   "input": {
+    "allFiles": {
+     "edges": [
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dCZueWNfY3JpbWVfMi5jc3Y=",
+        "key": "nyc_crime_2.csv",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672122,
+        "size": "216578377",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MA=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dCZueWNfdGF4aS5jc3Y=",
+        "key": "nyc_taxi.csv",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672143,
+        "size": "1510609630",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MQ=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dCZueWNfdGF4aS5pcHluYg==",
+        "key": "nyc_taxi.ipynb",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1527010595,
+        "size": "15245255",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "Mg=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dCZueWNfdGF4aS56aXA=",
+        "key": "nyc_taxi.zip",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1527010644,
+        "size": "432291366",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "Mw=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dCZ2Mi56aXA=",
+        "key": "v2.zip",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1527010592,
+        "size": "5022747",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "NA=="
+      }
+     ],
+     "pageInfo": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "MA==",
+      "endCursor": "NA=="
+     }
+    },
+    "id": "TGFiYm9va1NlY3Rpb246Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dA=="
+   }
+  }
+ }
+}

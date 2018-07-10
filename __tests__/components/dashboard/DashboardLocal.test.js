@@ -1,16 +1,32 @@
 
       import React from 'react'
       import renderer from 'react-test-renderer';
+      import history from 'JS/history'
       import {mount} from 'enzyme'
-      import DashboardLocal from 'Components/dashboard/DashboardLocal';
+      import LocalLabbooksContainer from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooksContainer';
+
+      import json from './__relaydata__/DashboardLocal.json'
 
       import relayTestingUtils from 'relay-testing-utils'
+    
 
-      test('Test DashboardLocal', () => {
+      const fixtures = {
+        auth: ()=>{
+
+        },
+        localLabbooks: json.data.labbookList,
+        labbookList: json.data.labbookList,
+        history: history,
+        refetchSort: ()=>{
+
+        }
+      }
+
+      test('Test DashboardLocal snapshot', () => {
 
         const wrapper = renderer.create(
 
-           <DashboardLocal />
+           relayTestingUtils.relayWrap(<LocalLabbooksContainer {...fixtures} />, {}, json.data)
 
         );
 
