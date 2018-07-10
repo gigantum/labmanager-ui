@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test RemoteLabbooks rendering 1`] = `
+<div
+  className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+>
+  <div
+    className="RemoteLabbooks__icon-row"
+  >
+    <button
+      className="RemoteLabbooks__cloud-download"
+      disabled={false}
+      onClick={[Function]}
+    />
+    <button
+      className="RemoteLabbooks__cloud-delete--disabled"
+      disabled={false}
+      onClick={[Function]}
+    />
+  </div>
+  <div
+    className="RemoteLabbooks__text-row"
+  >
+    <div
+      className="RemoteLabbooks__title-row"
+    >
+      <h6
+        className="RemoteLabbooks__panel-title"
+      >
+        <span
+          className={undefined}
+        >
+          <span
+            className=""
+            style={undefined}
+          >
+            rootpy3
+          </span>
+        </span>
+      </h6>
+    </div>
+    <p
+      className="RemoteLabbooks__owner"
+    >
+      Created by randalg
+    </p>
+    <p
+      className="RemoteLabbooks__description"
+    >
+      <span
+        className={undefined}
+      />
+    </p>
+  </div>
+</div>
+`;

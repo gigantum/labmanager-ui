@@ -1,0 +1,12 @@
+{
+ "data": {
+  "labbook": {
+   "environment": {
+    "containerStatus": "NOT_RUNNING",
+    "imageStatus": "EXISTS",
+    "id": "RW52aXJvbm1lbnQ6Y2J1dGxlciZkYXRhLXNoYWRlcg=="
+   },
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy"
+  }
+ }
+}
