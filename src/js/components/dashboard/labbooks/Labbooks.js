@@ -9,6 +9,7 @@ import Loader from 'Components/shared/Loader'
 import LocalLabbooksContainer, {LocalLabbooks} from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooks'
 import RemoteLabbooks from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbooks'
 import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
+import ToolTip from 'Components/shared/ToolTip'
 //utils
 import Validation from 'JS/utils/Validation'
 //queries
@@ -433,6 +434,7 @@ export default class Labbooks extends Component {
                 {
                   this._changeSlider()
                 }
+                <ToolTip section="cloudLocal" />
               </ul>
 
             </div>
