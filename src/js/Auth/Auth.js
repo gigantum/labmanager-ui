@@ -37,6 +37,7 @@ export default class Auth {
         sessionStorage.removeItem('LOGIN_ERROR_TYPE')
 
       } else if (err) {
+        debugger;
         console.error(err);
         history.replace('/login')
         store.dispatch({type: 'LOGIN_ERROR', payload:{error: err}})
