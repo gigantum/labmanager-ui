@@ -263,7 +263,7 @@
 
 .Activity__date-tab.fixed{
   position: fixed;
-  z-index: index($elements, fixedDate);
+  z-index: index($elements, fixedDate) +1;
   top: 50px
 }
 

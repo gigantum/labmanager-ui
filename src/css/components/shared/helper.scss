@@ -1,13 +1,28 @@
 .Helper-button {
+  transition: all 0.25s;
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: $azure;
+  background: url('../images/icons/main.svg') no-repeat center center;
+  background-size: 60px;
   position: fixed;
   bottom: 25px;
   right: 25px;
   cursor: pointer;
   z-index: index($elements, helper);
+}
+
+.Helper-button--open{
+  transition: all 0.25s;
+  background: url('../images/icons/main-close.svg') no-repeat center center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-size: 40px;
+  z-index: index($elements, helper);
+  cursor: pointer;
+  bottom: 150px;
+  right: 25px;
 }
 
 .Helper_menu.hidden{
@@ -18,49 +33,62 @@
 .Helper__menu{
   animation: slide-left-fade-in forwards .25s;
   width: auto;
-  height: 40px;
+  height: 150px;
   position: fixed;
-  bottom: 35px;
-  right: 52px;
-  padding: 7px 50px 0 50px;
-  border-radius: 40px 0 0 40px;
-  background: $grey-background;
+  bottom: 0;
+  right: 18px;
+  border-radius: 10px 10px 0 0;
+  background: $azure;
+  color: $white;
   z-index: index($elements, helper) - 1;
-  @include flex(flex-end, row);
+  @include flex(center, column);
 }
 
 .Helper__menu-docs{
-  @include flex(flex-end, row);
+  background: url('../images/icons/docs.svg') no-repeat 15px center;
+  padding: 10px 20px;
+  width: 100%;
+  @include flex(space-between, row);
   button {
-    border-radius: 25px;
+    border-radius: 0;
     width: 25px;
     height: 25px;
-    padding: 0;
+    padding-left: 25px;
+    background: url('../images/icons/offsite.svg') no-repeat center center;
+    background-size: 20px;
   }
   h5 {
     margin: 5px 10px;
-    font-weight: 600;
+    font-weight: 100;
     font-size: 16px;
-    color: $romanSilver;
+    color: $white;
     user-select: none;
+    padding-left: 25px;
   }
+  border-bottom: 1px dashed $white;
 }
 
 .Helper__menu-discussion{
-  margin-left: 20px;
-  @include flex(flex-end, row);
+  background: url('../images/icons/discuss.svg') no-repeat 15px center;
+  padding: 10px 20px;
+  width: 100%;
+  @include flex(space-between, row);
   button {
-    border-radius: 25px;
+    border-radius: 0;
     width: 25px;
     height: 25px;
-    padding: 0;
+    background: url('../images/icons/offsite.svg') no-repeat center center;
+    background-size: 20px;
+
   }
   h5 {
     margin: 5px 10px;
-    font-weight: 600;
+    font-weight: 100;
     font-size: 16px;
-    color: $romanSilver;
+    color: $white;
     user-select: none;
+    padding-left: 25px;
   }
+  border-bottom: 1px dashed $white;
 }
 

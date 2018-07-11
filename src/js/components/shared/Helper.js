@@ -45,31 +45,35 @@ export default class Helper extends Component {
   render(){
     let menuCSS = classNames({
       'Helper__menu': this.state.isVisible,
-      hidden: !this.state.isVisible
+      'hidden': !this.state.isVisible
+    })
+    let helperButtonCSS = classNames({
+      'Helper-button': true,
+      'Helper-button--open': this.state.isVisible
     })
     return(
       <div className="Helper">
         <div
-          className="Helper-button"
+          className={helperButtonCSS}
           onClick={()=>this._toggleIsVisible()}
         >
         </div>
         <div className={menuCSS}>
-          <div className="Helper__menu-docs">
-            <button
-              className="Helper__docs-button"
-              onClick={()=> window.open('https://docs.gigantum.com/docs')}
-            >
-            </button>
-            <h5>Documentation</h5>
-          </div>
           <div className="Helper__menu-discussion">
+            <h5>Discuss</h5>
             <button
               className="Helper__discussion-button"
               onClick={()=> window.open('https://docs.gigantum.com/discuss')}
             >
             </button>
-            <h5>Discussion</h5>
+          </div>
+          <div className="Helper__menu-docs">
+            <h5>Docs</h5>
+            <button
+              className="Helper__docs-button"
+              onClick={()=> window.open('https://docs.gigantum.com/docs')}
+            >
+            </button>
           </div>
         </div>
       </div>
