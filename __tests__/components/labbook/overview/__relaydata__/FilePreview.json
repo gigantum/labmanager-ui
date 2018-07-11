@@ -1,0 +1,25 @@
+{
+ "data": {
+  "labbook": {
+   "code": {
+    "favorites": {
+     "edges": []
+    },
+    "id": "TGFiYm9va1NlY3Rpb246Y2J1dGxlciZkYXRhLXNoYWRlciZjb2Rl"
+   },
+   "input": {
+    "favorites": {
+     "edges": []
+    },
+    "id": "TGFiYm9va1NlY3Rpb246Y2J1dGxlciZkYXRhLXNoYWRlciZpbnB1dA=="
+   },
+   "output": {
+    "favorites": {
+     "edges": []
+    },
+    "id": "TGFiYm9va1NlY3Rpb246Y2J1dGxlciZkYXRhLXNoYWRlciZvdXRwdXQ="
+   },
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy"
+  }
+ }
+}

@@ -1,0 +1,261 @@
+{
+ "data": {
+  "labbook": {
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy",
+   "description": "",
+   "code": {
+    "allFiles": {
+     "edges": [
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJkAxeEdpZ2FudHVtICgxKS8=",
+        "key": "@1xGigantum (1)/",
+        "isDir": true,
+        "isFavorite": false,
+        "modifiedAt": 1527026758,
+        "size": "0",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MA=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJmV4cG9ydC8=",
+        "key": "export/",
+        "isDir": true,
+        "isFavorite": false,
+        "modifiedAt": 1526680301,
+        "size": "0",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MQ=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJlJFQURNRS5tZA==",
+        "key": "README.md",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672118,
+        "size": "8176",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "Mg=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJmRhdGFzZXRzLnltbA==",
+        "key": "datasets.yml",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672118,
+        "size": "3877",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "Mw=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJmRvd24tYXJyb3cuc3Zn",
+        "key": "down-arrow.svg",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1527026770,
+        "size": "463",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "NA=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJmRvd24tYXJyb3cudGV4dENsaXBwaW5n",
+        "key": "down-arrow.textClipping",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1527026771,
+        "size": "203",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "NQ=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJmVudmlyb25tZW50LnltbA==",
+        "key": "environment.yml",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672118,
+        "size": "744",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "Ng=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJmZpbGV0aW1lcy5weQ==",
+        "key": "filetimes.py",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672118,
+        "size": "16006",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "Nw=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJmZpbGV0aW1lcy5zaA==",
+        "key": "filetimes.sh",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672118,
+        "size": "2783",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "OA=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJmZpbGV0aW1lcy55bWw=",
+        "key": "filetimes.yml",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672118,
+        "size": "521",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "OQ=="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJmdldF9yYXN0ZXJfZGF0YS5zaA==",
+        "key": "get_raster_data.sh",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672118,
+        "size": "138",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MTA="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJm55Y190YXhpLW5vbmdlby5pcHluYg==",
+        "key": "nyc_taxi-nongeo.ipynb",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1527298947,
+        "size": "9119952",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MTE="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJm55Y190YXhpLmlweW5i",
+        "key": "nyc_taxi.ipynb",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1527602267,
+        "size": "11894115",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MTI="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJnBjYXBfdG9fcGFycXVldC5weQ==",
+        "key": "pcap_to_parquet.py",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672119,
+        "size": "2993",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MTM="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJnJhc3Rlci5weQ==",
+        "key": "raster.py",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672119,
+        "size": "3460",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MTQ="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJnNtYWxsLnltbA==",
+        "key": "small.yml",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672119,
+        "size": "484",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MTU="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJnN0cmVhbWluZy1hZ2dyZWdhdGlvbi5pcHluYg==",
+        "key": "streaming-aggregation.ipynb",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672119,
+        "size": "15004",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MTY="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJnN0cmVhbWluZy5weQ==",
+        "key": "streaming.py",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672119,
+        "size": "5139",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MTc="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJnRheGlfcHJlcHJvY2Vzc2luZ19leGFtcGxlLnB5",
+        "key": "taxi_preprocessing_example.py",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1526672119,
+        "size": "2785",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MTg="
+      },
+      {
+       "node": {
+        "id": "TGFiYm9va0ZpbGU6Y2J1dGxlciZkYXRhLXNoYWRlciZjb2RlJkAxeEdpZ2FudHVtICgxKS9BYm91dC5wZGY=",
+        "key": "@1xGigantum (1)/About.pdf",
+        "isDir": false,
+        "isFavorite": false,
+        "modifiedAt": 1527026773,
+        "size": "4924967",
+        "__typename": "LabbookFile"
+       },
+       "cursor": "MTk="
+      }
+     ],
+     "pageInfo": {
+      "hasNextPage": true,
+      "hasPreviousPage": false,
+      "startCursor": "MA==",
+      "endCursor": "MTk="
+     }
+    },
+    "id": "TGFiYm9va1NlY3Rpb246Y2J1dGxlciZkYXRhLXNoYWRlciZjb2Rl"
+   }
+  }
+ }
+}

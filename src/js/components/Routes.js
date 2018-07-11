@@ -10,7 +10,7 @@ import environment from 'JS/createRelayEnvironment'
 // components
 import Home from 'Components/home/Home';
 import SideBar from 'Components/shared/SideBar';
-import Footer from 'Components/shared/Footer';
+import Footer from 'Components/shared/footer/Footer';
 import Prompt from 'Components/shared/Prompt';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
@@ -46,6 +46,8 @@ export default class Routes extends Component {
       history: history,
       hasError: false,
       forceLoginScreen: this.props.forceLoginScreen,
+      showYT: false,
+      showDefaultMessage: true,
     }
     this._setForceLoginScreen = this._setForceLoginScreen.bind(this)
     this.setRouteStore = this.setRouteStore.bind(this)
@@ -54,27 +56,19 @@ export default class Routes extends Component {
   }
   /**
     @param {}
-    changes css of demo-header if on the demo page
+    calls flip header text function
   */
   componentDidMount(){
-    if(window.location.hostname === config.demoHostName){
-      document.getElementById('demo-header').classList.remove('hidden')
-    }
     this._flipDemoHeaderText();
-//         Curious what can Gigantum do for you? <a>Watch this overview video.</a>
   }
+  /**
+    @param {}
+    changes text of demo header message
+  */
   _flipDemoHeaderText(){
     let self = this;
     setTimeout(()=>{
-      let demoHeader = document.getElementById('demo-header')
-      let firstChar = demoHeader.innerHTML[0];
-      demoHeader.innerHTML = firstChar === 'Y' ? `Curious what can Gigantum do for you? <a onclick="document.getElementById('yt-lightbox').classList.remove('hidden')">  Watch this overview video.</a>`: `You're using the Gigantum web demo. Data is wiped hourly. To continue using Gigantum
-      <a href="http://gigantum.com/download" rel="noopener noreferrer" target="_blank">
-        download the Gigantum client.
-      </a>`
-
-      self._flipDemoHeaderText()
-
+      self.setState({showDefaultMessage: !this.state.showDefaultMessage})
     }, 15000)
   }
 
@@ -149,17 +143,47 @@ export default class Routes extends Component {
                 path=""
                 render={(location) => {return(
                 <div className="Routes">
-                  <div
-                    id="yt-lightbox"
-                    className="yt-lightbox hidden"
-                    onClick={() => document.getElementById('yt-lightbox').classList.add('hidden')}
-                  >
-                    <YouTube
-                      opts={{height: '576', width: '1024'}}
-                      className="yt-frame"
-                      videoId="RjGNtXlzf0o"
-                    />
-                  </div>
+                  {
+                    window.location.hostname === config.demoHostName &&
+                    (this.state.showDefaultMessage ?
+                    <div
+                      id="demo-header"
+                      class="demo-header"
+                    >
+                      You're using the Gigantum web demo. Data is wiped hourly. To continue using Gigantum&nbsp;
+                      <a
+                        href="http://gigantum.com/download"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        download the Gigantum client.
+                      </a>
+                    </div>
+                    :
+                    <div
+                      id="demo-header"
+                      class="demo-header"
+                    >
+                      Curious what can Gigantum do for you? &nbsp;
+                      <a onClick={() => this.setState({showYT: true})}>
+                         Watch this overview video.
+                      </a>
+                    </div>)
+                  }
+                  {
+                    this.state.showYT &&
+                      <div
+                        id="yt-lightbox"
+                        className="yt-lightbox"
+                        onClick={() => this.setState({showYT: false})}
+                      >
+                      <YouTube
+                        opts={{height: '576', width: '1024'}}
+                        className="yt-frame"
+                        videoId="RjGNtXlzf0o"
+                      />
+                    </div>
+                  }
                   <div className={headerCSS}></div>
                   <SideBar
                     auth={this.props.auth} history={history}

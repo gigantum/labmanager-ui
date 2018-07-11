@@ -67,7 +67,7 @@ class Activity extends Component {
     this._setStickyDate =  this._setStickyDate.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let activityRecords = nextProps.labbook.activityRecords
     if(JSON.stringify(this._transformActivity(activityRecords)) !== JSON.stringify(this.state.activityRecords)) {
       let prevCommit = this.props.labbook && this.props.labbook.activityRecords.edges && this.props.labbook.activityRecords.edges[0].node

@@ -41,7 +41,7 @@ class RemoteLabbooks extends Component {
   /*
     loads more remote labbooks if available
   */
- componentWillReceiveProps(nextProps) {
+ UNSAFE_componentWillReceiveProps(nextProps) {
     if(nextProps.remoteLabbooks.remoteLabbooks && nextProps.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
       this._loadMore()
     }
@@ -101,6 +101,7 @@ class RemoteLabbooks extends Component {
   }
 
   render(){
+
     if(this.props.remoteLabbooks && this.props.remoteLabbooks.remoteLabbooks !== null){
       let labbooks = this.props.filterLabbooks(this.props.remoteLabbooks.remoteLabbooks.edges, this.props.filterState)
 
@@ -113,7 +114,7 @@ class RemoteLabbooks extends Component {
               return (
                 <RemoteLabbookPanel
                   toggleDeleteModal={this._toggleDeleteModal}
-                  labbookListId={this.props.labbookListId}
+                  labbookListId={this.props.remoteLabbooksId}
                   key={edge.node.owner + edge.node.name}
                   ref={'LocalLabbookPanel' + edge.node.name}
                   className="LocalLabbooks__panel"
@@ -151,7 +152,7 @@ class RemoteLabbooks extends Component {
           this.state.deleteModalVisible &&
           <DeleteLabbook
             handleClose={() => { this._toggleDeleteModal() }}
-            labbookListId={this.props.labbookListId}
+            labbookListId={this.props.remoteLabbooksId}
             remoteId={this.state.deleteData.remoteId}
             remoteConnection={'RemoteLabbooks_remoteLabbooks'}
             toggleModal={this._toggleDeleteModal}

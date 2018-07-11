@@ -69,6 +69,8 @@ export default class Auth {
   logout() {
 
     store.dispatch({type: 'LOGOUT', payload:{logout: true}})
+
+
     RemoveUserIdentityMutation(()=>{
       //redirect to root when user logs out
 
@@ -83,6 +85,10 @@ export default class Auth {
 
       history.replace('/');
     })
+
+
+
+
   }
 
   isAuthenticated() {
