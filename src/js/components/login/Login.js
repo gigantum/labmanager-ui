@@ -16,11 +16,11 @@ export default class Login extends Component {
     subscribe to store to update state
   */
   componentDidMount() {
-
-    unsubscribe = store.subscribe(() => {
-
-      this.storeDidUpdate(store.getState().login)
-    })
+    // let self = this
+    // unsubscribe = store.subscribe(() => {
+    //
+    //   self.storeDidUpdate(store.getState().login)
+    // })
 
   }
   /**

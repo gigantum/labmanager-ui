@@ -24,6 +24,7 @@ export default class Auth {
   }
 
   login() {
+    store.dispatch({type: 'LOGOUT', payload:{logout: false}})
     this.auth0.authorize();
   }
 
@@ -37,7 +38,7 @@ export default class Auth {
         sessionStorage.removeItem('LOGIN_ERROR_TYPE')
 
       } else if (err) {
-        console.error(err);
+
         history.replace('/login')
         store.dispatch({type: 'LOGIN_ERROR', payload:{error: err}})
         sessionStorage.setItem('LOGIN_ERROR_TYPE', err.error)
@@ -66,6 +67,8 @@ export default class Auth {
   }
 
   logout() {
+
+    store.dispatch({type: 'LOGOUT', payload:{logout: true}})
 
 
     RemoveUserIdentityMutation(()=>{
