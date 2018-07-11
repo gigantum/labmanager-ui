@@ -9,16 +9,15 @@ import uuidv4 from 'uuid/v4'
       const id = uuidv4()
 
       JobStatus.updateFooterStatus(result.buildImage.backgroundJobKey).then((response)=>{
-        console.log(response)
+
         let fullMessage =  JSON.parse(response.data.jobStatus.jobMetadata).feedback
 
         if(fullMessage){
            fullMessage = fullMessage.slice(0, fullMessage.length - 2)
-          console.log(fullMessage.indexOf('\n'))
-          console.log(fullMessage.lastIndexOf('\n'), fullMessage.length - 1)
+
           let lastIndex = fullMessage.lastIndexOf('\n') > -1 ? fullMessage.lastIndexOf('\n') : 0;
           let message = fullMessage.slice(fullMessage.lastIndexOf('\n'), fullMessage.length - 1)
-          console.log(message)
+
           if(response.data.jobStatus.status === 'started'){
 
               store.dispatch({

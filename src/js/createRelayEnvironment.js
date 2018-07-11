@@ -1,3 +1,4 @@
+import reduxStore from 'JS/redux/store'
 const {
   Environment,
   Network,
@@ -5,12 +6,33 @@ const {
   Store,
 } = require('relay-runtime')
 
+
+
+
+
 function fetchQuery(
   operation,
   variables,
   cacheConfig,
   uploadables
 ) {
+
+  if(reduxStore.getState().login.logut && (operation.text.indexOf('RemoveUserIdentityMutation') === -1)){
+    return
+  }
+
+  const parseParams = (str) => {
+      var pieces = str.split("&"), data = {}, i, parts;
+      // process each query pair
+      for (i = 0; i < pieces.length; i++) {
+          parts = pieces[i].split("=");
+          if (parts.length < 2) {
+              parts.push("");
+          }
+          data[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+      }
+      return data;
+  }
 
   let queryString = operation.text.replace(/(\r\n|\n|\r)/gm,"");
   let body;
@@ -34,6 +56,17 @@ function fetchQuery(
       const idToken = localStorage.getItem('id_token')
       headers['authorization'] = `Bearer ${accessToken}`
       headers['Identity'] = `${idToken}`
+    }else if(window.location.href.indexOf('access_token') > -1){
+
+      const hashObj = parseParams(window.location.href.split('#')[1])
+
+      headers['authorization'] = `Bearer ${hashObj.access_token}`
+      headers['Identity'] = `${hashObj.id_token}`
+
+      localStorage.setItem('access_token', hashObj.access_token)
+      localStorage.setItem('id_token', hashObj.id_token)
+
+      window.location.hash = ''
     }
   }
 

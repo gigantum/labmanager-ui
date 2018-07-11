@@ -14,7 +14,7 @@ let routeRef;
 UserIdentity.getUserIdentity().then((response)=>{
   let expiresAt = JSON.stringify((new Date().getTime() * 1000) + new Date().getTime());
   let forceLoginScreen = true;
-
+  
   if(response.data){
 
     if(response.data.userIdentity){
