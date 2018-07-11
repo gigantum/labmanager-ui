@@ -616,6 +616,7 @@ class Activity extends Component {
             {
               (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) && this.state.compressedElements.size === 0 &&
             <Fragment>
+              <ToolTip section="activitySubmenu"/>
               <div
                   className="Activity__submenu-circle"
                   onClick={(evt)=>this._toggleSubmenu(evt)}
