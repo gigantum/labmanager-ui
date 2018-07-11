@@ -263,7 +263,7 @@
 
 .Activity__date-tab.fixed{
   position: fixed;
-  z-index: index($elements, fixedDate);
+  z-index: index($elements, fixedDate) +1;
   top: 50px
 }
 
@@ -327,7 +327,7 @@
 
 .Activity__user-note {
   @include flex(flex-start, row);
-  z-index: index($elements, card);
+  z-index: index($elements, card) + 1;
   position: relative;
   height: 49px;
   transition: height 0.5s;

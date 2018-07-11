@@ -250,6 +250,7 @@ export default class CreateLabbook extends React.Component {
               <label>Title</label>
               <input
                 type='text'
+                maxLength="36"
                 className={this.state.showError ? 'invalid' : ''}
                 onChange={(evt) => this._updateTextState(evt, 'name')}
                 placeholder="Enter a unique, descriptive title"

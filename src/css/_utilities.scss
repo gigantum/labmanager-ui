@@ -181,6 +181,17 @@
   filter: blur(5px);
 }
 
+@keyframes slide-left-fade-in{
+  0% {
+      opacity:0;
+      transform:  translate(40px,0px)  ;
+  }
+  100% {
+      opacity:1;
+      transform:  translate(0px,0px)  ;
+  }
+}
+
 @keyframes fade-in{
   0% {
     opacity:0;
