@@ -50,7 +50,7 @@ export default class MostRecent extends Component {
 
     this.setState({loading: true})
     this.props.relay.loadMore(
-     50, // Fetch the next 50 feed items
+     100, // Fetch the next 100 feed items
      (response, error) => {
        let files = self.props[this.state.selectedPath]
 
