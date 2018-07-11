@@ -6,8 +6,6 @@ import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrappe
 //store
 import store from 'JS/redux/store'
 
-let totalCount = 2
-
 class CodeBrowser extends Component {
   constructor(props){
   	super(props);
@@ -144,9 +142,9 @@ export default createPaginationContainer(
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
       const {owner, labbookName} = store.getState().routes
-      totalCount += count
+
       return {
-        first: totalCount,
+        first: count,
         cursor: cursor,
         owner: owner,
         name: labbookName
