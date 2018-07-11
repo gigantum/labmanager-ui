@@ -22,8 +22,7 @@ export default class Labbooks extends Component {
     super(props);
 
     const {filterText} = store.getState().labbookListing
-    let {filter, sort, reverse} = queryString.parse(this.props.history.location.search.slice(1))
-    reverse = reverse === 'true'
+    let {filter, orderBy, sort} = queryString.parse(this.props.history.location.search.slice(1))
     this.state = {
       'labbookModalVisible': false,
       'oldLabbookName': '',
@@ -35,8 +34,8 @@ export default class Labbooks extends Component {
       'refetchLoading': false,
       'selectedSection': 'local',
       'showLoginPrompt': false,
-      sort: sort || 'modified_on',
-      reverse: reverse || false,
+      orderBy: orderBy || 'modified_on',
+      sort: sort || 'desc',
       'filterValue': filterText,
       'filterMenuOpen': false,
     }
@@ -61,7 +60,7 @@ export default class Labbooks extends Component {
     * subscribe to store to update state
     * set unsubcribe for store
   */
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     let paths = this.props.history.location.pathname.split('/')
     let sectionRoute = paths.length > 2 ?  paths[2] : 'local'
     if(paths[2] !== 'cloud' && paths[2] !== 'local'){
@@ -107,7 +106,7 @@ export default class Labbooks extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let paths = nextProps.history.location.pathname.split('/')
     let sectionRoute = paths.length > 2 ?  paths[2] : 'local'
     if(paths[2] !== 'cloud' && paths[2] !== 'local'){
@@ -286,30 +285,30 @@ export default class Labbooks extends Component {
     * fires when setSortFilter validates user can sort
     * triggers a refetch with new sort parameters
   */
-  _handleSortFilter(sort, reverse) {
-    this.setState({sortMenuOpen: false, sort, reverse});
-    this._changeSearchParam({sort, reverse})
-    this.props.refetchSort(sort, reverse)
+  _handleSortFilter(orderBy, sort) {
+    this.setState({sortMenuOpen: false, orderBy, sort});
+    this._changeSearchParam({orderBy, sort})
+    this.props.refetchSort(orderBy, sort)
   }
 
   /**
-    *  @param {string, boolean} sort reverse
+    *  @param {string, boolean} orderBy sort
     * fires when user selects a sort option
     * checks session and selectedSection state before handing off to handleSortFilter
   */
-  _setSortFilter(sort, reverse) {
+  _setSortFilter(orderBy, sort) {
     if(this.state.selectedSection === 'remoteLabbooks') {
       UserIdentity.getUserIdentity().then(response => {
         if(response.data){
           if(response.data.userIdentity.isSessionValid){
-            this._handleSortFilter(sort, reverse);
+            this._handleSortFilter(orderBy, sort);
           } else {
             this.setState({'showLoginPrompt': true})
           }
         }
       })
     } else{
-      this._handleSortFilter(sort, reverse);
+      this._handleSortFilter(orderBy, sort);
     }
   }
 
@@ -378,15 +377,15 @@ export default class Labbooks extends Component {
   }
   /**
     *  @param {}
-    *  gets sort and reverse value and displays it to the UI more clearly
+    *  gets orderBy and sort value and displays it to the UI more clearly
   */
   _getSelectedSort(){
-    if(this.state.sort === 'modified_on'){
-      return `Modified Date ${this.state.reverse ? '(Oldest)' : '(Newest)'}`
-    } else if(this.state.sort === 'created_on'){
-      return `Creation Date ${this.state.reverse ? '(Oldest)' : '(Newest)'}`
+    if(this.state.orderBy === 'modified_on'){
+      return `Modified Date ${this.state.sort === 'asc' ? '(Oldest)' : '(Newest)'}`
+    } else if(this.state.orderBy === 'created_on'){
+      return `Creation Date ${this.state.sort === 'asc' ? '(Oldest)' : '(Newest)'}`
     } else {
-      return this.state.reverse ? 'Z-A' : 'A-Z';
+      return this.state.sort === 'asc' ? 'Z-A' : 'A-Z';
     }
   }
 
@@ -505,39 +504,39 @@ export default class Labbooks extends Component {
                 >
                   <li
                     className={'Labbooks__sort-item'}
-                    onClick={()=>this._setSortFilter('modified_on', false)}
+                    onClick={()=>this._setSortFilter('modified_on', 'desc')}
                   >
-                    Modified Date (Newest) {this.state.sort === 'modified_on' && !this.state.reverse ?  '✓ ' : ''}
+                    Modified Date (Newest) {this.state.orderBy === 'modified_on' && this.state.sort !== 'asc' ?  '✓ ' : ''}
                   </li>
                   <li
                     className={'Labbooks__sort-item'}
-                    onClick={()=>this._setSortFilter('modified_on', true)}
+                    onClick={()=>this._setSortFilter('modified_on', 'asc')}
                   >
-                    Modified Date (Oldest) {this.state.sort === 'modified_on' && this.state.reverse ?  '✓ ' : ''}
+                    Modified Date (Oldest) {this.state.orderBy === 'modified_on' && this.state.sort === 'asc' ?  '✓ ' : ''}
                   </li>
                   <li
                     className={'Labbooks__sort-item'}
-                    onClick={()=>this._setSortFilter('created_on', false)}
+                    onClick={()=>this._setSortFilter('created_on', 'desc')}
                   >
-                    Creation Date (Newest) {this.state.sort === 'created_on' && !this.state.reverse ?  '✓ ' : ''}
+                    Creation Date (Newest) {this.state.orderBy === 'created_on' && this.state.sort !== 'asc' ?  '✓ ' : ''}
                   </li>
                   <li
                     className={'Labbooks__sort-item'}
-                    onClick={()=>this._setSortFilter('created_on', true)}
+                    onClick={()=>this._setSortFilter('created_on', 'asc')}
                   >
-                    Creation Date (Oldest) {this.state.sort === 'created_on' && this.state.reverse ?  '✓ ' : ''}
+                    Creation Date (Oldest) {this.state.orderBy === 'created_on' && this.state.sort === 'asc' ?  '✓ ' : ''}
                   </li>
                   <li
                     className="Labbooks__sort-item"
-                    onClick={()=>this._setSortFilter('az', false)}
+                    onClick={()=>this._setSortFilter('name', 'desc')}
                   >
-                    A-Z {this.state.sort === 'az' && !this.state.reverse ?  '✓ ' : ''}
+                    A-Z {this.state.orderBy === 'name' && this.state.sort !== 'asc' ?  '✓ ' : ''}
                   </li>
                   <li
                     className="Labbooks__sort-item"
-                    onClick={()=>this._setSortFilter('az', true)}
+                    onClick={()=>this._setSortFilter('name', 'asc')}
                   >
-                    Z-A {this.state.sort === 'az' && this.state.reverse ?  '✓ ' : ''}
+                    Z-A {this.state.orderBy === 'name' && this.state.sort === 'asc' ?  '✓ ' : ''}
                   </li>
                 </ul>
               </div>

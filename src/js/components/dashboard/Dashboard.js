@@ -9,23 +9,22 @@ import environment from 'JS/createRelayEnvironment'
 //store
 import store from "JS/redux/store"
 
-const LocalListingQuery = graphql`query DashboardLocalQuery($first: Int!, $cursor: String, $sort: String $reverse: Boolean){
+const LocalListingQuery = graphql`query DashboardLocalQuery($first: Int!, $cursor: String, $orderBy: String $sort: String){
   ...LocalLabbooksContainer_labbookList
 }`
 
-const RemoteListingQuery = graphql`query DashboardRemoteQuery($first: Int!, $cursor: String, $sort: String $reverse: Boolean){
+const RemoteListingQuery = graphql`query DashboardRemoteQuery($first: Int!, $cursor: String, $orderBy: String $sort: String){
   ...RemoteLabbooksContainer_labbookList
 }`
 
 export default class DashboardContainer extends Component {
   constructor(props){
     super(props);
-    let {sort, reverse} = queryString.parse(this.props.history.location.search.slice(1))
-    reverse = reverse === 'true'
+    let {orderBy, sort} = queryString.parse(this.props.history.location.search.slice(1))
     this.state = {
       selectedComponent: props.match.params.id,
-      sort: sort || 'modified_on',
-      reverse: reverse || false,
+      orderBy: orderBy || 'modified_on',
+      sort: sort || 'desc',
     }
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
@@ -39,7 +38,7 @@ export default class DashboardContainer extends Component {
   *  @param {Object} nextProps
   *  update select component before component renders
   */
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     this.setState({
       selectedComponent: nextProps.match.params.id
     })
@@ -52,12 +51,12 @@ export default class DashboardContainer extends Component {
   }
 
   /**
-    * @param {string, boolean} sort, reverse
-    * sets state of sort and reverse, passed to child components
+    * @param {string, string} orderBy, sort
+    * sets state of orderBy and sort, passed to child components
   */
-  _refetchSort(sort, reverse) {
-    if(this.state.sort !== sort || this.state.reverse !== reverse){
-      this.setState({sort, reverse})
+  _refetchSort(orderBy, sort) {
+    if(this.state.orderBy !== orderBy || this.state.sort !== sort){
+      this.setState({orderBy, sort})
     }
   }
 
@@ -85,10 +84,10 @@ export default class DashboardContainer extends Component {
           environment={environment}
           query={sectionRoute === 'cloud' ? RemoteListingQuery : LocalListingQuery }
           variables={{
-            first: 100,
+            first: sectionRoute === 'cloud' ? 20 : 100,
             cursor: null,
+            orderBy: this.state.orderBy,
             sort: this.state.sort,
-            reverse: this.state.reverse,
           }}
           render={({error, props}) => {
             if (error) {

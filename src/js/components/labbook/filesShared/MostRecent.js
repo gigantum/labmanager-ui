@@ -78,7 +78,7 @@ export default class MostRecent extends Component {
     })
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ files: nextProps[this.state.selectedPath]});
 
   }

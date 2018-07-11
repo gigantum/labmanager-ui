@@ -17,7 +17,7 @@ class CodeFavorites extends Component {
   /*
     update component when props are reloaded
   */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
 
     //this._loadMore() //routes query only loads 2, call loadMore
     if(nextProps.code && nextProps.code.favorites && nextProps.code.favorites.pageInfo.hasNextPage && nextProps.code.favorites.edges.length < 3){

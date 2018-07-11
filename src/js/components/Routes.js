@@ -1,6 +1,7 @@
 //vendor
 import React, {Component} from 'react';
 import classNames from 'classnames';
+import YouTube from 'react-youtube';
 import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 import Callback from 'JS/Callback/Callback';
 import history from 'JS/history';
@@ -9,7 +10,7 @@ import environment from 'JS/createRelayEnvironment'
 // components
 import Home from 'Components/home/Home';
 import SideBar from 'Components/shared/SideBar';
-import Footer from 'Components/shared/Footer';
+import Footer from 'Components/shared/footer/Footer';
 import Prompt from 'Components/shared/Prompt';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
@@ -45,20 +46,30 @@ export default class Routes extends Component {
       history: history,
       hasError: false,
       forceLoginScreen: this.props.forceLoginScreen,
+      showYT: false,
+      showDefaultMessage: true,
     }
     this._setForceLoginScreen = this._setForceLoginScreen.bind(this)
     this.setRouteStore = this.setRouteStore.bind(this)
+    this._flipDemoHeaderText = this._flipDemoHeaderText.bind(this)
 
   }
   /**
     @param {}
-    changes css of demo-header if on the demo page
+    calls flip header text function
   */
   componentDidMount(){
-    if(window.location.hostname === config.demoHostName){
-      document.getElementById('demo-header').classList.remove('hidden')
-    }
-
+    this._flipDemoHeaderText();
+  }
+  /**
+    @param {}
+    changes text of demo header message
+  */
+  _flipDemoHeaderText(){
+    let self = this;
+    setTimeout(()=>{
+      self.setState({showDefaultMessage: !this.state.showDefaultMessage})
+    }, 15000)
   }
 
   /**
@@ -95,7 +106,6 @@ export default class Routes extends Component {
     sets state of forceloginscreen
   */
   _setForceLoginScreen(forceLoginScreen) {
-    console.log(forceLoginScreen)
     if(forceLoginScreen !== this.state.forceLoginScreen){
       this.setState({forceLoginScreen})
     }
@@ -133,12 +143,52 @@ export default class Routes extends Component {
                 path=""
                 render={(location) => {return(
                 <div className="Routes">
+                  {
+                    window.location.hostname === config.demoHostName &&
+                    (this.state.showDefaultMessage ?
+                    <div
+                      id="demo-header"
+                      class="demo-header"
+                    >
+                      You're using the Gigantum web demo. Data is wiped hourly. To continue using Gigantum&nbsp;
+                      <a
+                        href="http://gigantum.com/download"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        download the Gigantum client.
+                      </a>
+                    </div>
+                    :
+                    <div
+                      id="demo-header"
+                      class="demo-header"
+                    >
+                      Curious what can Gigantum do for you? &nbsp;
+                      <a onClick={() => this.setState({showYT: true})}>
+                         Watch this overview video.
+                      </a>
+                    </div>)
+                  }
+                  {
+                    this.state.showYT &&
+                      <div
+                        id="yt-lightbox"
+                        className="yt-lightbox"
+                        onClick={() => this.setState({showYT: false})}
+                      >
+                      <YouTube
+                        opts={{height: '576', width: '1024'}}
+                        className="yt-frame"
+                        videoId="RjGNtXlzf0o"
+                      />
+                    </div>
+                  }
                   <div className={headerCSS}></div>
                   <SideBar
                     auth={this.props.auth} history={history}
                   />
                   <div className={routesCSS}>
-
                   <Route
                     exact
                     path="/"
@@ -156,6 +206,14 @@ export default class Routes extends Component {
                   <Route
                     exact
                     path="/:id"
+                    render={(props) =>
+                      <Redirect to="/projects/local"/>
+                    }
+                  />
+
+                  <Route
+                    exact
+                    path="/labbooks/:section"
                     render={(props) =>
                       <Redirect to="/projects/local"/>
                     }
@@ -251,7 +309,6 @@ export default class Routes extends Component {
                       )
                     }}
                   />
-
                   <Prompt
                     ref="prompt"
                   />

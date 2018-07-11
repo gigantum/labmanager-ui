@@ -24,6 +24,7 @@ export default class Auth {
   }
 
   login() {
+    store.dispatch({type: 'LOGOUT', payload:{logout: false}})
     this.auth0.authorize();
   }
 
@@ -37,7 +38,7 @@ export default class Auth {
         sessionStorage.removeItem('LOGIN_ERROR_TYPE')
 
       } else if (err) {
-        console.error(err);
+
         history.replace('/login')
         store.dispatch({type: 'LOGIN_ERROR', payload:{error: err}})
         sessionStorage.setItem('LOGIN_ERROR_TYPE', err.error)
@@ -67,20 +68,27 @@ export default class Auth {
 
   logout() {
 
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('expires_at');
-    localStorage.removeItem('family_name');
-    localStorage.removeItem('given_name');
-    localStorage.removeItem('email');
-    localStorage.removeItem('username');
-    sessionStorage.removeItem('CALLBACK_ROUTE');
+    store.dispatch({type: 'LOGOUT', payload:{logout: true}})
 
 
     RemoveUserIdentityMutation(()=>{
       //redirect to root when user logs out
+
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('id_token');
+      localStorage.removeItem('expires_at');
+      localStorage.removeItem('family_name');
+      localStorage.removeItem('given_name');
+      localStorage.removeItem('email');
+      localStorage.removeItem('username');
+      sessionStorage.removeItem('CALLBACK_ROUTE');
+
       history.replace('/');
     })
+
+
+
+
   }
 
   isAuthenticated() {

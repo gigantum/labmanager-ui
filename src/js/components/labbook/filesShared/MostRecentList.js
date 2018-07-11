@@ -20,7 +20,7 @@ export default class MostRecentList extends Component {
     this.setState({ shownFiles: this.state.sortedFiles.slice(0, this.state.showAmount) });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ shownFiles: nextProps.allFiles.slice(0, nextProps.showAmount) });
 
   }

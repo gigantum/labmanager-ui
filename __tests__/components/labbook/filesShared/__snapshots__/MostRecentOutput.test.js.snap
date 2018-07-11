@@ -10,11 +10,11 @@ exports[`Test MostRecentOutput render snapshot 1`] = `
     <p
       className="FileEmpty__main-text"
     >
-      This LabBook has No Recent Files
+      This Project has No Recent Files
     </p>
     <a
       className="FileEmpty__sub-text"
-      href="../../../../labbooks///outputData"
+      href="../../../../projects///outputData"
       onClick={[Function]}
     />
   </div>

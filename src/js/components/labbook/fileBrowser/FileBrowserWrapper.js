@@ -101,7 +101,7 @@ export default class FileBrowserWrapper extends Component {
     this.unsubscribe();
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     if(nextProps.selectedFiles.length > 0){
 
       this.handleCreateFiles(nextProps.selectedFiles, '')
@@ -703,6 +703,9 @@ export default class FileBrowserWrapper extends Component {
                       }
                     })
                   }else{
+                    if(newKey[0] === '/'){
+                      newKey = newKey.slice(1)
+                    }
                     AddFavoriteMutation(
                       this.props.favoriteConnection,
                       this.props.connection,
