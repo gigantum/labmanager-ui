@@ -51,7 +51,9 @@ class Code extends Component {
 
         <div className="Code">
           <div className="Code__header">
-            <h5 className="Code__subtitle">Code Files</h5>
+            <h5 className="Code__subtitle">
+              Code Files
+            </h5>
             <div className="Code__toolbar">
               <a ref="favorites" className="Code__filter" onClick={()=> this._selectFilter('favorites')}>Favorites</a>
               <a ref="recent" className="Code__filter" onClick={()=> this._selectFilter('recent')}>Most Recent</a>
@@ -74,11 +76,15 @@ class Code extends Component {
           }
           </div>
           <div className="Code__header">
-            <h5 className="Code__subtitle">Code Browser</h5>
-            {this.state.loadingStatus &&
-              <div className="Code__loading"></div>
-            }
-            <div className="Code__toolbar">
+            <div className="Code__subtitle-container">
+              <h5 className="Code__subtitle">Code Browser</h5>
+              {this.state.loadingStatus &&
+                <div className="Code__loading"></div>
+              }
+              <p className="Code__subtitle-sub">To view and edit files, open JupyterLab. If in the "Stopped" state, click the container status button to "Run".</p>
+            </div>
+
+            <div className="Code__toolbar end">
               <p className="Code__import-text" id="Code__">
                 <label
                   className="Code__import-file"
