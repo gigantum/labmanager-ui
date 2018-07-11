@@ -16,7 +16,7 @@ class InputFavorites extends Component {
   /*
     update component when props are reloaded
   */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
 
     //this._loadMore() //routes query only loads 2, call loadMore
     if(nextProps.input && nextProps.input.favorites && nextProps.input.favorites.pageInfo.hasNextPage && nextProps.input.favorites.edges.length < 3){

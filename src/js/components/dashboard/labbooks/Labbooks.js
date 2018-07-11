@@ -60,7 +60,7 @@ export default class Labbooks extends Component {
     * subscribe to store to update state
     * set unsubcribe for store
   */
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     let paths = this.props.history.location.pathname.split('/')
     let sectionRoute = paths.length > 2 ?  paths[2] : 'local'
     if(paths[2] !== 'cloud' && paths[2] !== 'local'){
@@ -106,7 +106,7 @@ export default class Labbooks extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let paths = nextProps.history.location.pathname.split('/')
     let sectionRoute = paths.length > 2 ?  paths[2] : 'local'
     if(paths[2] !== 'cloud' && paths[2] !== 'local'){

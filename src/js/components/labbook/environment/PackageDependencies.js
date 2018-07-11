@@ -53,7 +53,7 @@ class PackageDependencies extends Component {
     this._updatePackages = this._updatePackages.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
 
     if(nextProps.environment.packageDependencies.pageInfo.hasNextPage && nextProps.environment.packageDependencies.edges.length < 3){
       this._loadMore() //routes query only loads 2, call loadMore

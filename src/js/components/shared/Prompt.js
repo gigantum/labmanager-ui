@@ -28,7 +28,7 @@ export default class Prompt extends Component {
     this._handlePing = this._handlePing.bind(this);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this._handlePing();
     this.intervalId = setInterval(this._handlePing.bind(this), 2500);
   }
