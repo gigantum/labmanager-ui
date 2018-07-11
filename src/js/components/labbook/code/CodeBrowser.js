@@ -33,7 +33,7 @@ class CodeBrowser extends Component {
   /*
     @param
     triggers relay pagination function loadMore
-    increments by 50
+    increments by 100
     logs callback
   */
 
