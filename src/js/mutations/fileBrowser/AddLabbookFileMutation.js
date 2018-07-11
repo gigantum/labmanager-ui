@@ -168,20 +168,44 @@ export default function AddLabbookFileMutation(
 
           let nodeExists = store.get(id)
 
-          if(!nodeExists){
-            const node = store.create(id, 'LabbookFile')
+            let responseKey = response.addLabbookFile.newLabbookFileEdge.node.key
+            let responseKeyArr = responseKey.split('/')
+            let temp = '';
 
+            responseKeyArr.forEach((key, index)=>{
+              if(!nodeExists || index !== responseKeyArr.length -1){
+                let node;
 
-            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.id, "id")
-            node.setValue(false, 'isDir')
-            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.key, 'key')
-            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
-            node.setValue(response.addLabbookFile.newLabbookFileEdge.node.size, 'size')
+                if(index === responseKeyArr.length -1){
+                  temp = temp + key;
+                } else{
+                  temp = temp + key + '/'
+                }
 
-            sharedUpdater(store, labbookId, connectionKey, node)
-            sharedUpdater(store, labbookId, recentConnectionKey, node)
+                if(index === responseKeyArr.length -1){
+                  node = store.create(id, 'LabbookFile')
+                  node.setValue(response.addLabbookFile.newLabbookFileEdge.node.size, 'size')
+                  node.setValue(false, 'isDir')
+                  node.setValue(response.addLabbookFile.newLabbookFileEdge.node.id, "id")
+                  node.setValue(response.addLabbookFile.newLabbookFileEdge.node.key, 'key')
+                  node.setValue(response.addLabbookFile.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
+                  sharedUpdater(store, labbookId, connectionKey, node)
+                  sharedUpdater(store, labbookId, recentConnectionKey, node)
+
+                } else if(!store.get(temp)){
+                  node = store.create(temp, 'LabbookFile')
+                  node.setValue(temp, "id")
+                  node.setValue(true, 'isDir')
+                  node.setValue(temp, 'key')
+                  node.setValue(0, 'size')
+                  node.setValue(response.addLabbookFile.newLabbookFileEdge.node.modifiedAt, 'modifiedAt')
+                  sharedUpdater(store, labbookId, connectionKey, node)
+                  sharedUpdater(store, labbookId, recentConnectionKey, node)
+                }
+
+              }
+            })
           }
-        }
 
       },
     },
