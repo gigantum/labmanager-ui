@@ -3,6 +3,10 @@
 
 }
 
+.Base__header-container{
+  @include flex(left, row)
+}
+
 .Base__header{
   color: $romanSilver;
 }

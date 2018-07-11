@@ -10,6 +10,8 @@ import BuildImageMutation from 'Mutations/BuildImageMutation'
 import store from 'JS/redux/store'
 //
 import FetchContainerStatus from './fetchContainerStatus'
+//components
+import ToolTip from 'Components/shared/ToolTip'
 
 let unsubscribe;
 
@@ -64,8 +66,8 @@ export default class ContainerStatus extends Component {
         this.setState({containerMenuOpen: containerStatusStore.containerMenuOpen, containerMenuWarning: containerStatusStore.containerMenuWarning}); //triggers  re-render when store updates
     }
   }
-  UNSAFE_componentWillMount() {
 
+  UNSAFE_componentWillMount() {
     this._getContainerStatusText(this.props.containerStatus, this.props.imageStatus)
   }
   /**
@@ -669,6 +671,9 @@ export default class ContainerStatus extends Component {
           </div>
 
         }
+      <ToolTip
+        section="containerStatus"
+      />
       </div>)
   }
 

@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import {Link} from 'react-router-dom'
 //components
 import User from './User'
+import ToolTip from 'Components/shared/ToolTip';
 //store
 import store from 'JS/redux/store'
 //config
@@ -51,6 +52,7 @@ export default class SideBar extends Component {
                 <div className={isLabbooks ? 'SideBar__icon SideBar__icon--labbooks-selected' : 'SideBar__icon SideBar__icon--labbooks'}></div>
                 Projects
               </Link>
+              <ToolTip section="labbookListing"/>
             </li>
             <li className={!isLabbooks ? 'SideBar__list-item--selected' : 'SideBar__list-item'}>
               <div
@@ -60,6 +62,7 @@ export default class SideBar extends Component {
                 <div className={!isLabbooks ? 'SideBar__icon SideBar__icon--datasets-selected' : 'SideBar__icon SideBar__icon--datasets'}></div>
                 Datasets
                </div>
+               <ToolTip section="dataSets"/>
             </li>
           </ul>
 
