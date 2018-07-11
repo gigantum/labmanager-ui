@@ -3,12 +3,14 @@
  */
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const LOGIN_CLEAR = 'LOGIN_CLEAR';
+export const LOGOUT = 'LOGOUT';
 
 
 
 export default (
  state = {
-   'error': false
+   'error': false,
+   'logout': false
  },
  action
 ) => {
@@ -21,6 +23,11 @@ export default (
    return {
      ...state,
      error: false
+   };
+ }else if(action.type === LOGOUT){
+   return {
+     ...state,
+     logout: action.payload.logout
    };
  }
 
