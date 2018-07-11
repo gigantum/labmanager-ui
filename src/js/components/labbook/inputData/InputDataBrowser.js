@@ -21,17 +21,6 @@ class InputDataBrowser extends Component {
       labbookName
     }
   }
-  /*
-    update component when props are reloaded
-  */
-  UNSAFE_componentWillReceiveProps(nextProps) {
-
-    if(nextProps.input.allFiles.pageInfo.hasNextPage && nextProps.input.allFiles.edges.length > 3){
-      this._loadMore()
-    } else {
-      this.setState({'moreLoading': false});
-    }
-  }
 
   /*
     handle state and addd listeners when component mounts
@@ -48,7 +37,7 @@ class InputDataBrowser extends Component {
   /*
     @param
     triggers relay pagination function loadMore
-    increments by 50
+    increments by 100
     logs callback
   */
 
@@ -56,7 +45,7 @@ class InputDataBrowser extends Component {
     this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
-     50, // Fetch the next 50 feed items
+     100, // Fetch the next 100 feed items
      (response, error) => {
        if(error){
          console.error(error)

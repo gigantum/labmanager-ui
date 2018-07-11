@@ -22,18 +22,6 @@ class OutputDataBrowser extends Component {
   }
 
   /*
-    update component when props are reloaded
-  */
-  UNSAFE_componentWillReceiveProps(nextProps) {
-
-    if(nextProps.output.allFiles.pageInfo.hasNextPage && nextProps.output.allFiles.edges.length > 3){
-      this._loadMore()
-    } else {
-      this.setState({'moreLoading': false});
-    }
-  }
-
-  /*
     handle state and add listeners when component mounts
   */
   componentDidMount() {
@@ -48,18 +36,19 @@ class OutputDataBrowser extends Component {
   /*
     @param
     triggers relay pagination function loadMore
-    increments by 50
+    increments by 100
     logs callback
   */
   _loadMore() {
     this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
-     50, // Fetch the next 50 feed items
+     100, // Fetch the next 100 feed items
      (response, error) => {
        if(error){
          console.error(error)
        }
+
        if(self.props.output.allFiles &&
         self.props.output.allFiles.pageInfo.hasNextPage) {
           self._loadMore()
