@@ -87,7 +87,17 @@ export default class ToolTip extends Component {
           className={toggleCSS}
           onClick={()=> this.setState({toolTipExpanded: !this.state.toolTipExpanded})}
         >
+          {
+            !this.state.toolTipExpanded &&
+            <div className="ToolTip__glow-container">
+              <div className="ToolTip__glow-ring-outer">
+                <div className="ToolTip__glow-ring-inner"></div>
+              </div>
+            </div>
+          }
         </div>
+
+
         <div className={pointerCSS}>
         </div>
         <div className={messsageCSS}>
