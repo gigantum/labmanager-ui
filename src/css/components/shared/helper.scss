@@ -14,15 +14,15 @@
 
 .Helper-button--open{
   transition: all 0.25s;
-  background: url('../images/icons/main-close.svg') no-repeat center center;
-  width: 40px;
-  height: 40px;
+  background: $white url('../images/icons/main-close.svg') no-repeat center center;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background-size: 40px;
+  background-size: 50px;
   z-index: index($elements, helper);
   cursor: pointer;
-  bottom: 150px;
-  right: 25px;
+  bottom: 177px;
+  right: 9px;
 }
 
 .Helper_menu.hidden{
@@ -31,25 +31,26 @@
 }
 
 .Helper__menu{
-  animation: slide-left-fade-in forwards .25s;
-  width: auto;
-  height: 150px;
+  animation: slide-up-fade-in forwards .25s;
+  width: 200px;
+  height: auto;
   position: fixed;
   bottom: 0;
-  right: 18px;
+  right: 5px;
   border-radius: 10px 10px 0 0;
   background: $azure;
   color: $white;
   z-index: index($elements, helper) - 1;
+  padding: 10px;
   @include flex(center, column);
 }
 
 .Helper__menu-docs{
   background: url('../images/icons/docs.svg') no-repeat 15px center;
-  padding: 10px 20px;
+  padding: 15px;
   width: 100%;
   @include flex(space-between, row);
-  button {
+  div {
     border-radius: 0;
     width: 25px;
     height: 25px;
@@ -66,14 +67,19 @@
     padding-left: 25px;
   }
   border-bottom: 1px dashed $white;
+  cursor: pointer;
+}
+
+.Helper__menu-docs:hover{
+  background: $turquise url('../images/icons/docs.svg') no-repeat 15px center;
 }
 
 .Helper__menu-discussion{
   background: url('../images/icons/discuss.svg') no-repeat 15px center;
-  padding: 10px 20px;
+  padding: 15px;
   width: 100%;
   @include flex(space-between, row);
-  button {
+  div {
     border-radius: 0;
     width: 25px;
     height: 25px;
@@ -90,5 +96,73 @@
     padding-left: 25px;
   }
   border-bottom: 1px dashed $white;
+  cursor: pointer;
 }
 
+.Helper__menu-discussion:hover{
+  background: $turquise url('../images/icons/discuss.svg') no-repeat 15px center;
+}
+
+.Helper__menu-guide{
+  background: url('../images/icons/guide.svg') no-repeat 15px center;
+  padding: 15px;
+  width: 100%;
+  @include flex(space-between, row);
+  h5 {
+    margin: 5px 10px;
+    font-weight: 100;
+    font-size: 16px;
+    color: $white;
+    user-select: none;
+    padding-left: 25px;
+  }
+}
+
+.Helper-guide-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 27px;
+  input {
+    display: none;
+  }
+  .Helper-guide-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $azure;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+    border: 2px solid $white;
+  }
+  .Helper-guide-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+  }
+  input:checked + .Helper-guide-slider {
+    background: url('../images/icons/check.svg') no-repeat -2px center;
+    background-size: 30px;
+    border: 2px solid $goldenLemon;
+  }
+  input:focus + .Helper-guide-slider {
+    box-shadow: 0 0 1px $slateBlueOpaque;
+  }
+  input:checked + .Helper-guide-slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+    background-color: $goldenLemon
+  }
+}

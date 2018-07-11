@@ -9,6 +9,7 @@ export default class Helper extends Component {
   constructor(props){
     super(props)
     this.state = store.getState().helper
+    this.state.helperMenuOpen = false;
     this._toggleIsVisible = this._toggleIsVisible.bind(this);
   }
 
@@ -23,10 +24,8 @@ export default class Helper extends Component {
     })
   }
   storeDidUpdate(helper){
-    let stateString = JSON.stringify(this.state)
-    let storeString = JSON.stringify(helper)
-    if(storeString !== stateString){
-      this.setState(helper)
+    if(this.state.isVisible !== helper.isVisible){
+      this.setState({isVisible: helper.isVisible})
     }
   }
   componentWillUnmount(){
@@ -44,36 +43,51 @@ export default class Helper extends Component {
 
   render(){
     let menuCSS = classNames({
-      'Helper__menu': this.state.isVisible,
-      'hidden': !this.state.isVisible
+      'Helper__menu': this.state.helperMenuOpen,
+      'hidden': !this.state.helperMenuOpen
     })
     let helperButtonCSS = classNames({
       'Helper-button': true,
-      'Helper-button--open': this.state.isVisible
+      'Helper-button--open': this.state.helperMenuOpen
     })
     return(
       <div className="Helper">
         <div
           className={helperButtonCSS}
-          onClick={()=>this._toggleIsVisible()}
+          onClick={()=> this.setState({helperMenuOpen: !this.state.helperMenuOpen})}
         >
         </div>
         <div className={menuCSS}>
-          <div className="Helper__menu-discussion">
+          <div
+            className="Helper__menu-discussion"
+            onClick={()=> window.open('https://docs.gigantum.com/discuss')}
+          >
             <h5>Discuss</h5>
-            <button
+            <div
               className="Helper__discussion-button"
-              onClick={()=> window.open('https://docs.gigantum.com/discuss')}
             >
-            </button>
+            </div>
           </div>
-          <div className="Helper__menu-docs">
+          <div
+            className="Helper__menu-docs"
+            onClick={()=> window.open('https://docs.gigantum.com/docs')}
+          >
             <h5>Docs</h5>
-            <button
+            <div
               className="Helper__docs-button"
-              onClick={()=> window.open('https://docs.gigantum.com/docs')}
             >
-            </button>
+            </div>
+          </div>
+          <div
+            className="Helper__menu-guide"
+          >
+            <h5>Guide</h5>
+            <label className="Helper-guide-switch">
+              <input type="checkbox"
+                onClick={()=>this._toggleIsVisible()}
+              />
+              <span className="Helper-guide-slider"></span>
+            </label>
           </div>
         </div>
       </div>
