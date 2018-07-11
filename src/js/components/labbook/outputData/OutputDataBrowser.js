@@ -22,18 +22,6 @@ class OutputDataBrowser extends Component {
   }
 
   /*
-    update component when props are reloaded
-  */
-  UNSAFE_componentWillReceiveProps(nextProps) {
-
-    if(nextProps.output.allFiles.pageInfo.hasNextPage && nextProps.output.allFiles.edges.length > 3){
-      this._loadMore()
-    } else {
-      this.setState({'moreLoading': false});
-    }
-  }
-
-  /*
     handle state and add listeners when component mounts
   */
   componentDidMount() {
@@ -60,6 +48,7 @@ class OutputDataBrowser extends Component {
        if(error){
          console.error(error)
        }
+
        if(self.props.output.allFiles &&
         self.props.output.allFiles.pageInfo.hasNextPage) {
           self._loadMore()

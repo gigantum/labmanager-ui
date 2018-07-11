@@ -332,7 +332,8 @@ td.PackageDependencies__td-version {
   background-size: 18px;
 }
 
-.PackageDependencies__table thead, tbody tr {
+.PackageDependencies__table thead,
+.PackageDependencies__table tbody tr {
   display: table;
   width: 100%;
   table-layout: fixed;

@@ -21,17 +21,6 @@ class InputDataBrowser extends Component {
       labbookName
     }
   }
-  /*
-    update component when props are reloaded
-  */
-  UNSAFE_componentWillReceiveProps(nextProps) {
-
-    if(nextProps.input.allFiles.pageInfo.hasNextPage && nextProps.input.allFiles.edges.length > 3){
-      this._loadMore()
-    } else {
-      this.setState({'moreLoading': false});
-    }
-  }
 
   /*
     handle state and addd listeners when component mounts
