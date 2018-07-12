@@ -18,7 +18,7 @@ import Profile from 'Components/profile/Profile'
 import store from 'JS/redux/store'
 //config
 import config from 'JS/config'
- console.log(history)
+ 
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
   query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String, $hasNext: Boolean!){
