@@ -36,7 +36,7 @@ function fetchQuery(
   let headers = {
       'accept': '*/*',
       'Access-Control-Allow-Origin': '*'
-  }
+  } 
 
   if(uploadables && uploadables[0]){
     if(uploadables[1]){
@@ -59,7 +59,7 @@ function fetchQuery(
       localStorage.setItem('id_token', hashObj.id_token)
 
       window.location.hash = ''
- 
+
     } else if(localStorage.getItem('access_token')){
 
        const accessToken = localStorage.getItem('access_token')
