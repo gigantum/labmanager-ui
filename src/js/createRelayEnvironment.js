@@ -37,7 +37,7 @@ function fetchQuery(
       'accept': '*/*',
       'Access-Control-Allow-Origin': '*'
   }
-       
+          
   if(uploadables && uploadables[0]){
     if(uploadables[1]){
       const idToken = localStorage.getItem('id_token')
