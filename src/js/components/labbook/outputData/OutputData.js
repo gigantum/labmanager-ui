@@ -89,10 +89,13 @@ class OutputData extends Component {
           </div>
           <div className="Code__header">
             <div className="Code__subtitle-container">
-              <h5 className="Code__subtitle">Output Browser  <ToolTip section="outputDataBrowser"/></h5>
-              {this.state.loadingStatus &&
+              <h5 className="Code__subtitle">Output Browser
+              <ToolTip section="outputDataBrowser"/>
+              {
+                this.state.loadingStatus &&
                 <div className="Code__loading"></div>
               }
+              </h5>
               <p className="Code__subtitle-sub">Currently only files under 1.8GB are supported.</p>
             </div>
             <div className="Code__toolbar end">
