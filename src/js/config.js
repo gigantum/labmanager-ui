@@ -1,3 +1,5 @@
+import tips from './tips'
+
 const CONFIG = {
   'api': process.env.NODE_ENV,
   'navigation_items': [
@@ -56,6 +58,9 @@ const CONFIG = {
 
       return encodeURI(apiURL)
     }
+  },
+  getToolTipText: (section) =>{
+    return tips[section]
   },
   demoHostName: 'try.gigantum.com',
 }

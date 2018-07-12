@@ -14,6 +14,7 @@ import UserNote from './UserNote'
 import PaginationLoader from './ActivityLoaders/PaginationLoader'
 import CreateBranch from '../branches/CreateBranch';
 import NewActivity from './NewActivity'
+import ToolTip from 'Components/shared/ToolTip'
 //config
 import config from 'JS/config'
 
@@ -615,6 +616,7 @@ class Activity extends Component {
             {
               (!(isLastRecordObj && isLastRecordNode && isLastPage) && this.props.isMainWorkspace && !!rollbackableDetails.length) && this.state.compressedElements.size === 0 &&
             <Fragment>
+              <ToolTip section="activitySubmenu"/>
               <div
                   className="Activity__submenu-circle"
                   onClick={(evt)=>this._toggleSubmenu(evt)}
@@ -702,6 +704,7 @@ class Activity extends Component {
         <div className="Activity__submenu-container">
         </div>
       }
+      <ToolTip section="activityCluster"/>
       <div className={clusterCSS} ref={'cluster--'+ obj.flatindex} onClick={()=> this._deleteCluster(clusterRef, i)}>
         <div className="ActivityCard__cluster--layer1">
           {clusterElements.length} Minor Activities
@@ -727,6 +730,7 @@ class Activity extends Component {
     return(
       <div className={userActivityContainerCSS}>
       <div className="Activity__user-note">
+        <ToolTip section="userNote"/>
         <div
           className="Activity__user-note-menu-icon"
           onClick={this.state.modalVisible ? (evt)=> {

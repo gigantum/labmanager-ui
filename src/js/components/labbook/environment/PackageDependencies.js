@@ -6,6 +6,7 @@ import uuidv4 from 'uuid/v4'
 //components
 import ButtonLoader from 'Components/shared/ButtonLoader'
 import Loader from 'Components/shared/Loader'
+import ToolTip from 'Components/shared/ToolTip';
 //store
 import store from 'JS/redux/store'
 //Mutations
@@ -55,17 +56,12 @@ class PackageDependencies extends Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
 
-    if(nextProps.environment.packageDependencies.pageInfo.hasNextPage && nextProps.environment.packageDependencies.edges.length < 3){
-      this._loadMore() //routes query only loads 2, call loadMore
-
-    }
     let nextPackages= nextProps.environment.packageDependencies
 
     if(nextPackages.edges && nextPackages.edges[0] && nextPackages.edges[0].node.latestVersion){
       let latestPackages = {};
 
       nextPackages.edges.forEach(({node}) =>{
-
         if (latestPackages[node.manager]) {
           latestPackages[node.manager][node.package] = node.latestVersion
         } else {
@@ -73,7 +69,11 @@ class PackageDependencies extends Component {
         }
 
         if(updateCheck[node.manager] && updateCheck[node.manager][node.package]){
-          updateCheck[node.manager][node.package].version = node.latestVersion
+          if(updateCheck[node.manager][node.package].oldVersion !== node.latestVersion){
+            updateCheck[node.manager][node.package].version = node.latestVersion
+          } else{
+            delete updateCheck[node.manager][node.package]
+          }
         }
 
       })
@@ -87,7 +87,15 @@ class PackageDependencies extends Component {
     }
 
     let newUpdatePackages = Object.assign({}, this.state.updatePackages, updateCheck)
+    Object.keys(newUpdatePackages).forEach(manager =>{
+      Object.keys(newUpdatePackages[manager]).forEach((pkg) =>{
 
+        if(!newUpdatePackages[manager][pkg].version){
+          delete newUpdatePackages[manager][pkg]
+        }
+
+      })
+    })
     this.setState({updatePackages: newUpdatePackages})
     updateCheck = {}
   }
@@ -557,7 +565,7 @@ class PackageDependencies extends Component {
   *  @param {String, String} pkg manager
   *  adds to removalpackages state pending removal of packages
   **/
-  _addRemovalPackage(pkg, manager, id, updateAvailable, version){
+  _addRemovalPackage(pkg, manager, id, updateAvailable, version, oldVersion){
     let newRemovalPackages = Object.assign({}, this.state.removalPackages)
     let newUpdatePackages = Object.assign({}, this.state.updatePackages)
 
@@ -577,11 +585,10 @@ class PackageDependencies extends Component {
     if(!version){
 
       if(updateCheck[manager]){
-        updateCheck[manager][pkg] = {id}
+        updateCheck[manager][pkg] = {id, oldVersion: oldVersion}
       } else{
-        updateCheck[manager] = {[pkg]: {id}}
+        updateCheck[manager] = {[pkg]: {id, oldVersion: oldVersion}}
       }
-
     }
 
     if(updateAvailable && version){
@@ -717,7 +724,7 @@ class PackageDependencies extends Component {
       <div className="PackageDependencies">
 
         <div className={blockClass + '__header-container'}>
-          <h5 className="PackageDependencies__header">Packages</h5>
+          <h5 className="PackageDependencies__header">Packages <ToolTip section="packagesEnvironment"/></h5>
         </div>
 
         <div className="PackageDependencies__card">
@@ -912,10 +919,11 @@ class PackageDependencies extends Component {
         <td>
           {versionText}
         </td>
-        <td>
+        <td className="PackageDependencies__latest-column">
+          <span>
           {latestVersionText}
+          </span>
           {
-            //pending icon
             latestVersionText && (latestVersionText !== versionText) && !edge.node.fromBase &&
             <div className="PackageDependencies__update-available"></div>
           }
@@ -925,7 +933,7 @@ class PackageDependencies extends Component {
           <button
             className={buttonCSS}
             disabled={edge.node.fromBase || (edge.node.id === undefined)}
-            onClick={() => this._addRemovalPackage(edge.node.package, edge.node.manager, edge.node.id, latestVersionText && (latestVersionText !== versionText) && !edge.node.fromBase, latestVersionText )}>
+            onClick={() => this._addRemovalPackage(edge.node.package, edge.node.manager, edge.node.id, latestVersionText && (latestVersionText !== versionText) && !edge.node.fromBase, latestVersionText, versionText )}>
           </button>
         </td>
       </tr>)

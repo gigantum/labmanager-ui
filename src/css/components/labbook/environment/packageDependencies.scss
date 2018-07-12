@@ -282,7 +282,8 @@ td.PackageDependencies__td-version {
   background-size: 25px;
   display: inline-block;
   position: relative;
-  top: 3px;
+  align-self: center;
+  right: 50%;
 }
 
 .PackageDependencies__last-row{
@@ -332,7 +333,8 @@ td.PackageDependencies__td-version {
   background-size: 18px;
 }
 
-.PackageDependencies__table thead, tbody tr {
+.PackageDependencies__table thead,
+.PackageDependencies__table tbody tr {
   display: table;
   width: 100%;
   table-layout: fixed;
@@ -342,4 +344,16 @@ td.PackageDependencies__td-version {
   display: block;
   max-height: 402px;
   overflow-y: auto;
+}
+
+.PackageDependencies__latest-column{
+  height: 66px;
+  flex-grow: 1;
+  @include flex(space-between, row);
+  span{
+    align-self: center;
+  }
+  div{
+    align-self: center;
+  }
 }

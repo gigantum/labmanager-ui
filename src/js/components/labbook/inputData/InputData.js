@@ -5,6 +5,7 @@ import {createFragmentContainer, graphql} from 'react-relay'
 import InputDataBrowser from './InputDataBrowser'
 import InputFavorites from './InputFavorites'
 import MostRecent from 'Components/labbook/filesShared/MostRecentInput';
+import ToolTip from 'Components/shared/ToolTip'
 //store
 import store from 'JS/redux/store'
 
@@ -70,7 +71,7 @@ class InputData extends Component {
             </div>
           }
           <div className="Code__header">
-            <h5 className="Code__subtitle">Input Files</h5>
+            <h5 className="Code__subtitle">Input Files  <ToolTip section="inputDataFiles"/></h5>
             <div className="Code__toolbar">
               <a ref="favorites" className="Code__filter" onClick={()=> this._selectFilter('favorites')}>Favorites</a>
               <a ref="recent" className="Code__filter" onClick={()=> this._selectFilter('recent')}>Most Recent</a>
@@ -95,7 +96,7 @@ class InputData extends Component {
           </div>
           <div className="Code__header">
             <div className="Code__subtitle-container">
-              <h5 className="Code__subtitle">Input Browser</h5>
+              <h5 className="Code__subtitle">Input Browser  <ToolTip section="inputDataBrowser"/></h5>
               {this.state.loadingStatus &&
                 <div className="Code__loading"></div>
               }

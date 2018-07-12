@@ -59,7 +59,7 @@ function fetchQuery(
       localStorage.setItem('id_token', hashObj.id_token)
 
       window.location.hash = ''
-
+ 
     } else if(localStorage.getItem('access_token')){
 
        const accessToken = localStorage.getItem('access_token')
