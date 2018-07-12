@@ -28,7 +28,7 @@ const FetchContainerStatus = {
       let fetchData = function(){
 
         fetchQuery(containerStatusQuery(), variables).then((response) => {
-
+          
           resolve(response.data)
 
         }).catch((error) =>{

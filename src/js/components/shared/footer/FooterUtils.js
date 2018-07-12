@@ -4,19 +4,22 @@ import {fetchQuery} from 'JS/createRelayEnvironment';
 import uuidv4 from 'uuid/v4'
 
  const FooterUtils = {
-  getJobStatus: (result) =>{
+  getJobStatus: (result, type, key) =>{
     const fetchStatus = ()=>{
+      console.log('fetch fired')
       const id = uuidv4()
-
-      JobStatus.updateFooterStatus(result.buildImage.backgroundJobKey).then((response)=>{
+      console.log(result)
+      JobStatus.updateFooterStatus(result[type][key]).then((response)=>{
+        console.log(response)
         if(response.data){
-          let fullMessage =  JSON.parse(response.data.jobStatus.jobMetadata).feedback
+          let feedbackMessage = JSON.parse(response.data.jobStatus.jobMetadata).feedback
+          let fullMessage =  feedbackMessage ? feedbackMessage : 'Preparing to Unzip';
 
-          if(fullMessage){
-             fullMessage = fullMessage.slice(0, fullMessage.length - 2)
+          if(fullMessage ){
+             fullMessage = fullMessage.lastIndexOf('\n') === (fullMessage.length - 1) ? fullMessage.slice(0, fullMessage.length - 2) : fullMessage
 
             let lastIndex = fullMessage.lastIndexOf('\n') > -1 ? fullMessage.lastIndexOf('\n') : 0;
-            let message = fullMessage.slice(fullMessage.lastIndexOf('\n'), fullMessage.length - 1)
+            let message =   fullMessage.slice(lastIndex, fullMessage.length)
 
             if(response.data.jobStatus.status === 'started'){
 
@@ -31,10 +34,10 @@ import uuidv4 from 'uuid/v4'
                 })
               setTimeout(()=>{
                 fetchStatus()
-              }, 250)
+              }, 500)
 
             }else if(response.data.jobStatus.status === 'finished'){
-
+              console.log(message)
               store.dispatch({
                 type: 'MULTIPART_INFO_MESSAGE',
                 payload: {
@@ -43,6 +46,17 @@ import uuidv4 from 'uuid/v4'
                   isLast: true
                 }
               })
+              setTimeout(()=>{
+                store.dispatch({
+                  type: 'MULTIPART_INFO_MESSAGE',
+                  payload: {
+                    id: response.data.jobStatus.id,
+                    message: '',
+                    isLast: true
+                  }
+                })
+              },3000)
+
             }else{
               store.dispatch({
                 type: '',

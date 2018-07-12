@@ -369,9 +369,11 @@ class Labbook extends Component {
   _sanitizeBranchName(branchName){
     const username = localStorage.getItem('username')
     const workspace = `gm.workspace-${username}`
-    const prettyBranchName = (branchName === workspace) ? 'workspace' : branchName.replace(`${workspace}.`, '')
+    if(branchName){
+      const prettyBranchName = (branchName === workspace) ? 'workspace' : branchName.replace(`${workspace}.`, '')
 
-    return prettyBranchName
+      return prettyBranchName
+    }
   }
 
   render(){

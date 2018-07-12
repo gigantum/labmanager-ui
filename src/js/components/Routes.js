@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import classNames from 'classnames';
 import YouTube from 'react-youtube';
 import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
-import Callback from 'JS/Callback/Callback';
 import history from 'JS/history';
 import {QueryRenderer, graphql} from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
@@ -19,7 +18,7 @@ import Profile from 'Components/profile/Profile'
 import store from 'JS/redux/store'
 //config
 import config from 'JS/config'
-
+ console.log(history)
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
   query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String, $hasNext: Boolean!){
@@ -285,18 +284,6 @@ export default class Routes extends Component {
                     }
 
                     }
-                  />
-
-                  <Route
-                    path="/callback"
-                    render={(props) => {
-                      handleAuthentication(this.props.auth, props);
-                      return (
-                        <Callback
-                          {...props}
-                        />
-                      )
-                    }}
                   />
 
                   <Route

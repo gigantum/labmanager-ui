@@ -6,10 +6,6 @@ const {
   Store,
 } = require('relay-runtime')
 
-
-
-
-
 function fetchQuery(
   operation,
   variables,
@@ -51,12 +47,8 @@ function fetchQuery(
     }
 
   } else{
-    if(localStorage.getItem('access_token')){
-      const accessToken = localStorage.getItem('access_token')
-      const idToken = localStorage.getItem('id_token')
-      headers['authorization'] = `Bearer ${accessToken}`
-      headers['Identity'] = `${idToken}`
-    }else if(window.location.href.indexOf('access_token') > -1){
+
+    if(window.location.href.indexOf('access_token') > -1){
 
       const hashObj = parseParams(window.location.href.split('#')[1])
 
@@ -67,6 +59,13 @@ function fetchQuery(
       localStorage.setItem('id_token', hashObj.id_token)
 
       window.location.hash = ''
+
+    } else if(localStorage.getItem('access_token')){
+
+       const accessToken = localStorage.getItem('access_token')
+       const idToken = localStorage.getItem('id_token')
+       headers['authorization'] = `Bearer ${accessToken}`
+       headers['Identity'] = `${idToken}`
     }
   }
 

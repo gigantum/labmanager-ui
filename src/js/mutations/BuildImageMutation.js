@@ -53,7 +53,7 @@ export default function BuildImageMutation(
         }
         callback(response, error)
 
-        FooterUtils.getJobStatus(response)
+        FooterUtils.getJobStatus(response, 'buildImage', 'buildImageJobKey')
       },
       onError: err => console.error(err),
 
