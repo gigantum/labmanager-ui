@@ -76,7 +76,7 @@ export default class DashboardContainer extends Component {
       let paths = this.props.history.location.pathname.split('/')
       let sectionRoute = paths.length > 2 ?  paths[2] : 'local'
       if(paths[2] !== 'cloud' && paths[2] !== 'local'){
-        this.props.history.replace(`../projects/local`)
+        this.props.history.replace(`../../../../projects/local`)
       }
 
       return (

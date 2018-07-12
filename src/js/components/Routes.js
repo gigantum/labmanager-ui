@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import classNames from 'classnames';
 import YouTube from 'react-youtube';
 import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
-import Callback from 'JS/Callback/Callback';
+
 import history from 'JS/history';
 import {QueryRenderer, graphql} from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
@@ -14,7 +14,6 @@ import Footer from 'Components/shared/footer/Footer';
 import Prompt from 'Components/shared/Prompt';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
-import Helper from 'Components/shared/Helper'
 import Profile from 'Components/profile/Profile'
 //
 import store from 'JS/redux/store'
@@ -224,12 +223,16 @@ export default class Routes extends Component {
                     exact
                     path="/projects/:labbookSection"
                     render={(props) =>
-                      <Home
-                        forceLoginScreen={this.state.forceLoginScreen}
-                        history={history}
-                        auth={this.props.auth}
-                        {...props}
-                      />
+
+
+                        <Home
+                          forceLoginScreen={this.state.forceLoginScreen}
+                          history={history}
+                          auth={this.props.auth}
+                          {...props}
+                        />
+
+                      
                     }
                   />
 
@@ -287,19 +290,6 @@ export default class Routes extends Component {
 
                     }
                   />
-
-                  <Route
-                    path="/callback"
-                    render={(props) => {
-                      handleAuthentication(this.props.auth, props);
-                      return (
-                        <Callback
-                          {...props}
-                        />
-                      )
-                    }}
-                  />
-                  <Helper/>
 
                   <Route
                     path="/profile"

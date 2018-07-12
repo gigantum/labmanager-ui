@@ -536,6 +536,60 @@ export default class BranchMenu extends Component {
   }
 
   /**
+  *  @param {jobKey}
+  *  polls jobStatus for export job message
+  *  updates footer with a message
+  *  @return {}
+  */
+  _jobStatus(jobKey){
+
+    let self = this;
+
+    JobStatus.getJobStatus(jobKey).then((data) => {
+      if(data.jobStatus.status !== 'queued'){
+        this.props.setExportingState(false);
+
+        if (data.jobStatus.result) {
+          store.dispatch({
+            type: 'INFO_MESSAGE',
+            payload: {
+              message: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
+            }
+          })
+        }
+
+        this.setState({ exporting: false });
+      }else{
+        setTimeout(()=>{
+          store.dispatch({
+            type: 'INFO_MESSAGE',
+            payload: {
+              message: `Exporting...`,
+            }
+          })
+          self._jobStatus(jobKey)
+        },500)
+
+      }
+    }).catch((error) => {
+
+      this.props.setExportingState(false);
+
+      console.log(error)
+
+      let errorArray = [{'message': 'Export failed.'}]
+      store.dispatch({
+        type: 'ERROR_MESSAGE',
+        payload: {
+          message: `${this.state.labbookName} failed to export `,
+          messageBody: errorArray
+        }
+      })
+      this.setState({ exporting: false });
+    })
+  }
+
+  /**
   *  @param {}
   *  runs export mutation if export has not been downloaded
   *  @return {}
@@ -552,32 +606,8 @@ export default class BranchMenu extends Component {
       this.props.setExportingState(true);
       ExportLabbookMutation(this.state.owner, this.state.labbookName, (response, error) => {
         if (response.exportLabbook) {
-          JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data) => {
-            this.props.setExportingState(false);
 
-            if (data.jobStatus.result) {
-              store.dispatch({
-                type: 'INFO_MESSAGE',
-                payload: {
-                  message: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-                }
-              })
-            }
-
-            this.setState({ exporting: false });
-          }).catch((error) => {
-            this.props.setExportingState(false);
-            console.log(error)
-            let errorArray = [{'message': 'Export failed.'}]
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `${this.state.labbookName} failed to export `,
-                messageBody: errorArray
-              }
-            })
-            this.setState({ exporting: false });
-          })
+          this._jobStatus(response.exportLabbook.jobKey)
         } else {
           console.log(error)
           this.props.setExportingState(false);

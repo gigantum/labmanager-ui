@@ -375,7 +375,7 @@ export default class ImportModule extends Component {
 
         let importLabbook = wokerData.importLabbook
          JobStatus.getJobStatus(importLabbook.importJobKey).then((response)=>{
-           console.log(response)
+         
            store.dispatch({
              type: 'UPLOAD_MESSAGE_UPDATE',
              payload: {
