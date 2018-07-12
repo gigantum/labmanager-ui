@@ -704,9 +704,10 @@ class Activity extends Component {
         <div className="Activity__submenu-container">
         </div>
       }
+      <ToolTip section="activityCluster"/>
       <div className={clusterCSS} ref={'cluster--'+ obj.flatindex} onClick={()=> this._deleteCluster(clusterRef, i)}>
         <div className="ActivityCard__cluster--layer1">
-          {clusterElements.length} Minor Activities <ToolTip section="activityCluster"/>
+          {clusterElements.length} Minor Activities
         </div>
         <div className="ActivityCard__cluster--layer2"></div>
         <div className="ActivityCard__cluster--layer3"></div>
