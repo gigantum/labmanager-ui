@@ -76,10 +76,13 @@ class Code extends Component {
           </div>
           <div className="Code__header">
             <div className="Code__subtitle-container">
-              <h5 className="Code__subtitle">Code Browser <ToolTip section="codeBrowser"/></h5>
-              {this.state.loadingStatus &&
-                <div className="Code__loading"></div>
-              }
+              <h5 className="Code__subtitle">Code Browser
+                <ToolTip section="codeBrowser"/>
+                {
+                  this.state.loadingStatus &&
+                  <div className="Code__loading"></div>
+                }
+              </h5>
               <p className="Code__subtitle-sub">To view and edit files, open JupyterLab. If in the "Stopped" state, click the container status button to "Run".</p>
             </div>
 
