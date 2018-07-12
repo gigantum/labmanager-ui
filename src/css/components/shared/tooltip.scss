@@ -217,16 +217,17 @@
 
 .ToolTip.activityCluster{
   .ToolTip__toggle{
-    top: 4px;
-    left: 10px;
+    top: 6px;
+    left: 583px;
+    z-index: index($elements, popup);
   }
   .ToolTip__pointer{
-    top: 22px;
-    left: 3px;
+    top: 24px;
+    left: 576px;
   }
   .ToolTip__message{
-    top: 36px;
-    left: -150px;
+    top: 38px;
+    left: 446px;
   }
 }
 
