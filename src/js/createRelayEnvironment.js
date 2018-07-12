@@ -36,7 +36,7 @@ function fetchQuery(
   let headers = {
       'accept': '*/*',
       'Access-Control-Allow-Origin': '*'
-  }
+  }   
 
   if(uploadables && uploadables[0]){
     if(uploadables[1]){
