@@ -15,6 +15,7 @@ import Prompt from 'Components/shared/Prompt';
 import Labbook from 'Components/labbook/Labbook';
 import Loader from 'Components/shared/Loader'
 import Profile from 'Components/profile/Profile'
+import Helper from 'Components/shared/Helper'
 //
 import store from 'JS/redux/store'
 //config
@@ -133,6 +134,8 @@ export default class Routes extends Component {
         'Routes__main-no-auth': !authed
       })
 
+      let demoText = "You're using the Gigantum web demo. Data is wiped hourly. To continue using Gigantum&nbsp;"
+
       return(
 
           <Router>
@@ -150,7 +153,7 @@ export default class Routes extends Component {
                       id="demo-header"
                       class="demo-header"
                     >
-                      You're using the Gigantum web demo. Data is wiped hourly. To continue using Gigantum&nbsp;
+                      {demoText}
                       <a
                         href="http://gigantum.com/download"
                         rel="noopener noreferrer"
@@ -232,7 +235,7 @@ export default class Routes extends Component {
                           {...props}
                         />
 
-                      
+
                     }
                   />
 
@@ -290,7 +293,7 @@ export default class Routes extends Component {
 
                     }
                   />
-
+                  <Helper />
                   <Route
                     path="/profile"
                     render={(props)=>{
