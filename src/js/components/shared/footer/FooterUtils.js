@@ -8,7 +8,7 @@ import uuidv4 from 'uuid/v4'
     const fetchStatus = ()=>{
       console.log('fetch fired')
       const id = uuidv4()
-      console.log(result)
+      console.log(result, result[type][key], type, key)
       JobStatus.updateFooterStatus(result[type][key]).then((response)=>{
         console.log(response)
         if(response.data){
