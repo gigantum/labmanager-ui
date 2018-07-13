@@ -51,15 +51,9 @@ import uuidv4 from 'uuid/v4'
 
 
             }else{
-              store.dispatch({
-                type: '',
-                payload: {
-                  id: response.data.jobStatus.id,
-                  message: message,
-                  isLast: true,
-                  error: false
-                }
-              })
+              setTimeout(()=>{
+                fetchStatus()
+              }, 500)
             }
           }
         }else{
