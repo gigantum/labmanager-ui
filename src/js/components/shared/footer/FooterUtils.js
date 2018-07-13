@@ -55,6 +55,10 @@ import uuidv4 from 'uuid/v4'
                 fetchStatus()
               }, 500)
             }
+          }else{
+            setTimeout(()=>{
+              fetchStatus()
+            }, 500)
           }
         }else{
           setTimeout(()=>{
