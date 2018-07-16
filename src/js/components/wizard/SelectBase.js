@@ -188,6 +188,7 @@ export default class SelectBase extends React.Component {
                                     key={tab}
                                     tab={tab}
                                     self={this}
+                                    length={sortedBaseItems.bases[tab].length}
                                 />)
                               })
                             }
@@ -241,7 +242,7 @@ export default class SelectBase extends React.Component {
 * returns tab jsx for
 * return {jsx}
 */
-const LanguageTab = ({tab, self}) => {
+const LanguageTab = ({tab, self, length}) => {
 
   let tabClass = classNames({
     "SelectBase__tab": true,
@@ -250,7 +251,7 @@ const LanguageTab = ({tab, self}) => {
   return(<li
     className={tabClass}
     onClick={()=>self._setSelectedTab(tab)}>
-    {tab}
+    {tab} ({length})
     </li>)
 }
 
@@ -266,8 +267,8 @@ const BaseSlide = ({node, self}) =>{
     'SelectBase__image--selected': (self.state.selectedBaseId === node.id)
   })
   return(<div
-
-    className={"SelectBase__image-wrapper slick-slide"}>
+      onClick={()=> self._selectBase(node)}
+      className={"SelectBase__image-wrapper slick-slide"}>
     <div
       className={selectedBaseImage}
       >
@@ -308,7 +309,7 @@ const BaseSlide = ({node, self}) =>{
         </div>
         <div className="SelectBase__image-actions">
           <button  onClick={()=> self._viewBase(node)} className="button--flat">View Details</button>
-          <button  onClick={()=> self._selectBase(node)}>Select</button>
+          {/* <button  onClick={()=> self._selectBase(node)}>Select</button> */}
         </div>
       </div>
     </div>

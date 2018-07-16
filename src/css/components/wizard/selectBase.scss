@@ -65,6 +65,7 @@
 
 .SelectBase__tab {
   @extend .tab;
+  width: 125px;
 }
 
 .SelectBase__tab--selected {
