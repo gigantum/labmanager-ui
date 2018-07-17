@@ -70,6 +70,7 @@ export default class Routes extends Component {
     let self = this;
     setTimeout(()=>{
       self.setState({showDefaultMessage: !this.state.showDefaultMessage})
+      self._flipDemoHeaderText();
     }, 15000)
   }
 
@@ -134,7 +135,7 @@ export default class Routes extends Component {
         'Routes__main-no-auth': !authed
       })
 
-      let demoText = "You're using the Gigantum web demo. Data is wiped hourly. To continue using Gigantum&nbsp;"
+      let demoText = "You're using the Gigantum web demo. Data is wiped hourly. To continue using Gigantum "
 
       return(
 
