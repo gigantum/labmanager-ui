@@ -251,7 +251,7 @@ const LanguageTab = ({tab, self, length}) => {
   return(<li
     className={tabClass}
     onClick={()=>self._setSelectedTab(tab)}>
-    {tab} ({length})
+    {`${tab} (${length})`}
     </li>)
 }
 
