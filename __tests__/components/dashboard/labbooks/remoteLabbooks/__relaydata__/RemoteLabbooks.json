@@ -1,0 +1,237 @@
+{
+ "data": {
+  "labbookList": {
+   "remoteLabbooks": {
+    "edges": [
+     {
+      "node": {
+       "name": "rootpy3",
+       "description": "",
+       "owner": "randalg",
+       "id": "UmVtb3RlTGFiYm9vazpyYW5kYWxnJnJvb3RweTM=",
+       "isLocal": false,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MA=="
+     },
+     {
+      "node": {
+       "name": "trump-tweets",
+       "description": "",
+       "owner": "dmk",
+       "id": "UmVtb3RlTGFiYm9vazpkbWsmdHJ1bXAtdHdlZXRz",
+       "isLocal": true,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MQ=="
+     },
+     {
+      "node": {
+       "name": "macroscale-connectomes",
+       "description": "",
+       "owner": "dmk",
+       "id": "UmVtb3RlTGFiYm9vazpkbWsmbWFjcm9zY2FsZS1jb25uZWN0b21lcw==",
+       "isLocal": false,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "Mg=="
+     },
+     {
+      "node": {
+       "name": "update-test",
+       "description": "",
+       "owner": "dmk",
+       "id": "UmVtb3RlTGFiYm9vazpkbWsmdXBkYXRlLXRlc3Q=",
+       "isLocal": false,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "Mw=="
+     },
+     {
+      "node": {
+       "name": "random-picture-generator",
+       "description": "",
+       "owner": "cbutler",
+       "id": "UmVtb3RlTGFiYm9vazpjYnV0bGVyJnJhbmRvbS1waWN0dXJlLWdlbmVyYXRvcg==",
+       "isLocal": true,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "NA=="
+     },
+     {
+      "node": {
+       "name": "temp",
+       "description": "",
+       "owner": "cbutler",
+       "id": "UmVtb3RlTGFiYm9vazpjYnV0bGVyJnRlbXA=",
+       "isLocal": true,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "NQ=="
+     },
+     {
+      "node": {
+       "name": "data-shader",
+       "description": "",
+       "owner": "cbutler",
+       "id": "UmVtb3RlTGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy",
+       "isLocal": true,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "Ng=="
+     },
+     {
+      "node": {
+       "name": "log-volume-audit",
+       "description": "",
+       "owner": "bill2",
+       "id": "UmVtb3RlTGFiYm9vazpiaWxsMiZsb2ctdm9sdW1lLWF1ZGl0",
+       "isLocal": true,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "Nw=="
+     },
+     {
+      "node": {
+       "name": "new-demo",
+       "description": "",
+       "owner": "dmk",
+       "id": "UmVtb3RlTGFiYm9vazpkbWsmbmV3LWRlbW8=",
+       "isLocal": false,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "OA=="
+     },
+     {
+      "node": {
+       "name": "awful-intersections-demo",
+       "description": "",
+       "owner": "rjvgigantum",
+       "id": "UmVtb3RlTGFiYm9vazpyanZnaWdhbnR1bSZhd2Z1bC1pbnRlcnNlY3Rpb25zLWRlbW8=",
+       "isLocal": true,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "OQ=="
+     },
+     {
+      "node": {
+       "name": "pandas-pipeline",
+       "description": "",
+       "owner": "ericw95",
+       "id": "UmVtb3RlTGFiYm9vazplcmljdzk1JnBhbmRhcy1waXBlbGluZQ==",
+       "isLocal": false,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MTA="
+     },
+     {
+      "node": {
+       "name": "test-lb",
+       "description": "",
+       "owner": "dmk",
+       "id": "UmVtb3RlTGFiYm9vazpkbWsmdGVzdC1sYg==",
+       "isLocal": true,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MTE="
+     },
+     {
+      "node": {
+       "name": "temp-labook22",
+       "description": "",
+       "owner": "cbutler",
+       "id": "UmVtb3RlTGFiYm9vazpjYnV0bGVyJnRlbXAtbGFib29rMjI=",
+       "isLocal": true,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MTI="
+     },
+     {
+      "node": {
+       "name": "asdaaddsad",
+       "description": "",
+       "owner": "cbutler",
+       "id": "UmVtb3RlTGFiYm9vazpjYnV0bGVyJmFzZGFhZGRzYWQ=",
+       "isLocal": true,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MTM="
+     },
+     {
+      "node": {
+       "name": "testing-activity-feed",
+       "description": "",
+       "owner": "cbutler",
+       "id": "UmVtb3RlTGFiYm9vazpjYnV0bGVyJnRlc3RpbmctYWN0aXZpdHktZmVlZA==",
+       "isLocal": true,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MTQ="
+     },
+     {
+      "node": {
+       "name": "abbb",
+       "description": "",
+       "owner": "dmk",
+       "id": "UmVtb3RlTGFiYm9vazpkbWsmYWJiYg==",
+       "isLocal": false,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MTU="
+     },
+     {
+      "node": {
+       "name": "ghjgh",
+       "description": "",
+       "owner": "dmk",
+       "id": "UmVtb3RlTGFiYm9vazpkbWsmZ2hqZ2g=",
+       "isLocal": false,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MTY="
+     },
+     {
+      "node": {
+       "name": "darpa-demo",
+       "description": "",
+       "owner": "dmk",
+       "id": "UmVtb3RlTGFiYm9vazpkbWsmZGFycGEtZGVtbw==",
+       "isLocal": false,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MTc="
+     },
+     {
+      "node": {
+       "name": "no-internet",
+       "description": "",
+       "owner": "dmk",
+       "id": "UmVtb3RlTGFiYm9vazpkbWsmbm8taW50ZXJuZXQ=",
+       "isLocal": false,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MTg="
+     },
+     {
+      "node": {
+       "name": "added-new-lab",
+       "description": "",
+       "owner": "cbutler",
+       "id": "UmVtb3RlTGFiYm9vazpjYnV0bGVyJmFkZGVkLW5ldy1sYWI=",
+       "isLocal": true,
+       "__typename": "RemoteLabbook"
+      },
+      "cursor": "MTk="
+     }
+    ],
+    "pageInfo": {
+     "endCursor": "MTk=",
+     "hasNextPage": false,
+     "hasPreviousPage": false,
+     "startCursor": "MA=="
+    }
+   },
+   "id": "TGFiYm9va0xpc3Q6"
+  }
+ }
+}

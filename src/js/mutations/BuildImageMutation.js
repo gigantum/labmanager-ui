@@ -5,12 +5,15 @@ import {
 import environment from 'JS/createRelayEnvironment'
 //redux store
 import reduxStore from 'JS/redux/store'
+//utils
+import FooterUtils from 'Components/shared/footer/FooterUtils'
 
 
 const mutation = graphql`
   mutation BuildImageMutation($input: BuildImageInput!){
     buildImage(input: $input){
       clientMutationId
+      backgroundJobKey
     }
   }
 `;
@@ -43,12 +46,14 @@ export default function BuildImageMutation(
           reduxStore.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
-              message: 'ERROR: LabBook failed to build:',
+              message: 'ERROR: Project failed to build:',
               messageBody: error
             }
           })
         }
         callback(response, error)
+
+        FooterUtils.getJobStatus(response, 'buildImage', 'backgroundJobKey')
       },
       onError: err => console.error(err),
 

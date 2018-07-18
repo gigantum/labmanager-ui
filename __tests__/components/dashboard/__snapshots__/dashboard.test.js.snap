@@ -8,8 +8,242 @@ exports[`Test Dashboard Labbooks 1`] = `
     className="Dashboard__view flex-1-0-auto"
   >
     <div
-      className="Loader"
-    />
+      className="Labbooks"
+    >
+      <div />
+      <div
+        className="Labbooks__title-bar"
+      >
+        <h6
+          className="Labbooks__username"
+        >
+          cbutler
+        </h6>
+        <h2
+          className="Labbooks__title"
+          onClick={[Function]}
+        >
+          Projects
+        </h2>
+      </div>
+      <div
+        className="Labbooks__menu  mui-container flex-0-0-auto"
+      >
+        <ul
+          className="Labbooks__nav  flex flex--row"
+        >
+          <li
+            className="Labbooks__nav-item--0 selected"
+          >
+            <a
+              onClick={[Function]}
+            >
+              Local
+            </a>
+          </li>
+          <li
+            className="Labbooks__nav-item--1"
+          >
+            <a
+              onClick={[Function]}
+            >
+              Cloud
+            </a>
+          </li>
+          <hr
+            className="Labbooks__navigation-slider Labbooks__navigation-slider--0"
+          />
+        </ul>
+      </div>
+      <div
+        className="Labbooks__subheader"
+      >
+        <div
+          className="Labbooks__search-container"
+        >
+          <input
+            className="Labbooks__search no--margin"
+            defaultValue=""
+            onFocus={[Function]}
+            onKeyUp={[Function]}
+            placeholder="Filter Projects by name or description"
+            type="text"
+          />
+        </div>
+        <div
+          className="Labbooks__filter"
+        >
+          Filter by:
+          <span
+            className="Labbooks__filter-collapsed"
+            onClick={[Function]}
+          >
+            All
+          </span>
+          <ul
+            className="hidden"
+          >
+            <li
+              className="Labbooks__filter-item"
+              onClick={[Function]}
+            >
+              All 
+              ✓ 
+            </li>
+            <li
+              className="Labbooks__filter-item"
+              onClick={[Function]}
+            >
+              My Labbooks 
+              
+            </li>
+            <li
+              className="Labbooks__filter-item"
+              onClick={[Function]}
+            >
+              Shared with me 
+              
+            </li>
+          </ul>
+        </div>
+        <div
+          className="Labbooks__sort"
+        >
+          Sort by:
+          <span
+            className="Labbooks__sort-collapsed"
+            onClick={[Function]}
+          >
+            Modified Date (Newest)
+          </span>
+          <ul
+            className="hidden"
+          >
+            <li
+              className="Labbooks__sort-item"
+              onClick={[Function]}
+            >
+              Modified Date (Newest) 
+              ✓ 
+            </li>
+            <li
+              className="Labbooks__sort-item"
+              onClick={[Function]}
+            >
+              Modified Date (Oldest) 
+              
+            </li>
+            <li
+              className="Labbooks__sort-item"
+              onClick={[Function]}
+            >
+              Creation Date (Newest) 
+              
+            </li>
+            <li
+              className="Labbooks__sort-item"
+              onClick={[Function]}
+            >
+              Creation Date (Oldest) 
+              
+            </li>
+            <li
+              className="Labbooks__sort-item"
+              onClick={[Function]}
+            >
+              A-Z 
+              
+            </li>
+            <li
+              className="Labbooks__sort-item"
+              onClick={[Function]}
+            >
+              Z-A 
+              
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        className="LocalLabbooks__labbooks"
+      >
+        <div
+          className="LocalLabbooks__sizer grid"
+        >
+          <div
+            className="ImportModule Labbooks__panel Labbooks__panel--add Labbooks__panel--import column-4-span-3"
+            id="dropZone"
+            onDragEnd={[Function]}
+            onDragOver={[Function]}
+            onDrop={[Function]}
+            type="file"
+          >
+            <div
+              className="Labbooks__labbook-main"
+            >
+              <div
+                className="Labbooks__labbook-header"
+              >
+                <div
+                  className="Labbooks__labbook-icon"
+                >
+                  <div
+                    className="Labbooks__title-add"
+                  />
+                </div>
+                <div
+                  className="Labbooks__add-text"
+                >
+                  <h4>
+                    Add Project
+                  </h4>
+                </div>
+              </div>
+              <div
+                className="Labbooks__labbook-button"
+                onClick={[Function]}
+              >
+                Create New
+              </div>
+              <div
+                className="Labbooks__labbook-button-import"
+                onClick={[Function]}
+              >
+                Import Existing
+              </div>
+            </div>
+            <div
+              className="hidden"
+            />
+          </div>
+          <div
+            className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--0"
+          >
+            <div />
+          </div>
+          <div
+            className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--1"
+          >
+            <div />
+          </div>
+          <div
+            className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--2"
+          >
+            <div />
+          </div>
+          <div
+            className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--3"
+          >
+            <div />
+          </div>
+          <div
+            className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--4"
+          >
+            <div />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;

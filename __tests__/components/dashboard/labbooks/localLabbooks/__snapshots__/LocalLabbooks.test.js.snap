@@ -32,7 +32,7 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
             className="Labbooks__add-text"
           >
             <h4>
-              Add LabBook
+              Add Project
             </h4>
           </div>
         </div>
@@ -51,40 +51,6 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
       </div>
       <div
         className="hidden"
-      >
-        <div
-          className="Labbooks-login-prompt--close"
-          onClick={[Function]}
-        />
-        <div
-          className="LoginPrompt"
-        >
-          <div>
-            <p>
-              You need an active session to perform this action
-            </p>
-            <p>
-              Do you want login?
-            </p>
-          </div>
-          <div
-            className="LoginPrompt__button-container"
-          >
-            <button
-              onClick={[Function]}
-            >
-              Yes
-            </button>
-            <button
-              onClick={[Function]}
-            >
-              no
-            </button>
-          </div>
-        </div>
-      </div>
-      <div
-        className="hidden"
       />
     </div>
     <div
@@ -98,12 +64,12 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__containerStatus"
         >
           <button
-            className="LocalLabbooks__containerStatus--state Stopped"
+            className="LocalLabbooks__containerStatus--state loading"
             onClick={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
           >
-            Stopped
+            
           </button>
         </div>
       </div>
@@ -117,7 +83,16 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
             className="LocalLabbooks__panel-title"
             onClick={[Function]}
           >
-            labbook-test-activity
+            <span
+              className={undefined}
+            >
+              <span
+                className=""
+                style={undefined}
+              >
+                857255a0-f22e-46b5-b70f-95af00d5d17e
+              </span>
+            </span>
           </h6>
         </div>
         <p
@@ -128,7 +103,16 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         <p
           className="LocalLabbooks__description"
         >
-          
+          <span
+            className={undefined}
+          >
+            <span
+              className=""
+              style={undefined}
+            >
+              This is a test labbook
+            </span>
+          </span>
         </p>
       </div>
     </div>
@@ -143,12 +127,12 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__containerStatus"
         >
           <button
-            className="LocalLabbooks__containerStatus--state Stopped"
+            className="LocalLabbooks__containerStatus--state loading"
             onClick={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
           >
-            Stopped
+            
           </button>
         </div>
       </div>
@@ -162,7 +146,16 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
             className="LocalLabbooks__panel-title"
             onClick={[Function]}
           >
-            data-shader
+            <span
+              className={undefined}
+            >
+              <span
+                className=""
+                style={undefined}
+              >
+                random-picture-generator
+              </span>
+            </span>
           </h6>
         </div>
         <p
@@ -173,7 +166,16 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         <p
           className="LocalLabbooks__description"
         >
-          
+          <span
+            className={undefined}
+          >
+            <span
+              className=""
+              style={undefined}
+            >
+              This labBook create random piuctures.
+            </span>
+          </span>
         </p>
       </div>
     </div>
@@ -188,12 +190,12 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__containerStatus"
         >
           <button
-            className="LocalLabbooks__containerStatus--state Rebuild"
+            className="LocalLabbooks__containerStatus--state loading"
             onClick={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
           >
-            Rebuild
+            
           </button>
         </div>
       </div>
@@ -207,18 +209,36 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
             className="LocalLabbooks__panel-title"
             onClick={[Function]}
           >
-            857255a0-f22e-46b5-b70f-95af00d5d17e
+            <span
+              className={undefined}
+            >
+              <span
+                className=""
+                style={undefined}
+              >
+                trump-tweets
+              </span>
+            </span>
           </h6>
         </div>
         <p
           className="LocalLabbooks__owner"
         >
-          Created by cbutler
+          Created by dmk
         </p>
         <p
           className="LocalLabbooks__description"
         >
-          This is a test labbook
+          <span
+            className={undefined}
+          >
+            <span
+              className=""
+              style={undefined}
+            >
+              A LabBook to analyze Trumps stupid tweets
+            </span>
+          </span>
         </p>
       </div>
     </div>
@@ -233,12 +253,12 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__containerStatus"
         >
           <button
-            className="LocalLabbooks__containerStatus--state Rebuild"
+            className="LocalLabbooks__containerStatus--state loading"
             onClick={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
           >
-            Rebuild
+            
           </button>
         </div>
       </div>
@@ -252,18 +272,43 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
             className="LocalLabbooks__panel-title"
             onClick={[Function]}
           >
-            917e4606-8d98-46cb-986c-4dd424e0bff7
+            <span
+              className={undefined}
+            >
+              <span
+                className=""
+                style={undefined}
+              >
+                awful-intersections-demo
+              </span>
+            </span>
           </h6>
         </div>
         <p
           className="LocalLabbooks__owner"
         >
-          Created by cbutler
+          Created by rjvgigantum
         </p>
         <p
           className="LocalLabbooks__description"
         >
-          This is a test labbook
+          <span
+            className={undefined}
+          >
+            <span
+              className=""
+              style={undefined}
+            >
+              A fun demo LabBook to automatically find and generate cringe-worthy maps of horrible intersections
+              
+              
+              
+              
+              
+              
+              Some of the code in this LabBook was originally created by Jordan Matelsky (@j6m8) and was inspired by amazing work by Peter Gorman at BarelyMaps
+            </span>
+          </span>
         </p>
       </div>
     </div>
@@ -278,12 +323,12 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           className="LocalLabbooks__containerStatus"
         >
           <button
-            className="LocalLabbooks__containerStatus--state Rebuild"
+            className="LocalLabbooks__containerStatus--state loading"
             onClick={[Function]}
             onMouseOut={[Function]}
             onMouseOver={[Function]}
           >
-            Rebuild
+            
           </button>
         </div>
       </div>
@@ -297,7 +342,16 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
             className="LocalLabbooks__panel-title"
             onClick={[Function]}
           >
-            11c2d7ed-f4ea-4e43-ae77-cf1b7388ea0d
+            <span
+              className={undefined}
+            >
+              <span
+                className=""
+                style={undefined}
+              >
+                labbook-test-activity
+              </span>
+            </span>
           </h6>
         </div>
         <p
@@ -308,7 +362,9 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         <p
           className="LocalLabbooks__description"
         >
-          This is a test labbook
+          <span
+            className={undefined}
+          />
         </p>
       </div>
     </div>

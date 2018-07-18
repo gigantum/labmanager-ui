@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test MostRecentOutput render snapshot 1`] = `
+<div
+  className="FileEmpty"
+>
+  <div
+    className="FileEmpty__container FileEmpty__container--outputData"
+  >
+    <p
+      className="FileEmpty__main-text"
+    >
+      This Project has No Recent Files
+    </p>
+    <a
+      className="FileEmpty__sub-text"
+      href="../../../../projects///outputData"
+      onClick={[Function]}
+    />
+  </div>
+</div>
+`;

@@ -204,7 +204,7 @@ export default class WizardModal extends React.Component {
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload: {
-              message: `An error occured while trying to create Labbook '${name}'.`,
+              message: `An error occured while trying to create Project '${name}'.`,
               messageBody: error
             }
           })
@@ -231,7 +231,7 @@ export default class WizardModal extends React.Component {
             self._buildImage(name, owner)
 
 
-            self.props.history.push(`../labbooks/${owner}/${name}`)
+            self.props.history.push(`../projects/${owner}/${name}`)
 
             this.setState({
               createLabbookButtonState: ''
@@ -320,7 +320,7 @@ export default class WizardModal extends React.Component {
               history={this.props.history}
               hideModal={this._hideModal}
             />),
-          header: "Create Labbook"
+          header: "Create Project"
         }
 
       case 'selectBase':
@@ -334,7 +334,7 @@ export default class WizardModal extends React.Component {
             toggleMenuVisibility={this._toggleMenuVisibility}
           />),
           header: 'Select A Base',
-          preHeader: 'Create Labbook'
+          preHeader: 'Create Project'
         }
       default:
       return {
@@ -346,7 +346,7 @@ export default class WizardModal extends React.Component {
             history={this.props.history}
             hideModal={this._hideModal}
           />),
-        header: "Create Labbook"
+        header: "Create Project"
       }
     }
   }
@@ -410,9 +410,9 @@ function ModalNav({self, state, getSelectedComponentId, setComponent, hideModal,
           { (state.selectedComponentId === 'selectBase') &&
             <ButtonLoader
               buttonState={state.createLabbookButtonState}
-              buttonText={"Create Labbook"}
+              buttonText={"Create Project"}
               className=""
-              params={{isSkip: false, text: 'Create Labbook'}}
+              params={{isSkip: false, text: 'Create Project'}}
               buttonDisabled={state.continueDisabled}
               clicked={continueSave}
             />

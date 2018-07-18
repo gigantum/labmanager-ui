@@ -20,6 +20,7 @@ import ForceSync from './ForceSync'
 import LoginPrompt from './LoginPrompt'
 import CreateBranch from 'Components/labbook/branches/CreateBranch'
 import Collaborators from './collaborators/Collaborators'
+import ToolTip from 'Components/shared/ToolTip';
 
 export default class BranchMenu extends Component {
   constructor(props) {
@@ -144,7 +145,7 @@ export default class BranchMenu extends Component {
   */
   _showContainerMenuMessage(action, containerRunning) {
 
-    let dispatchMessage = containerRunning ? `Stop LabBook before ${action}. \n Be sure to save your changes.` : `LabBook is ${action}. \n Please do not refresh the page.`
+    let dispatchMessage = containerRunning ? `Stop Project before ${action}. \n Be sure to save your changes.` : `Project is ${action}. \n Please do not refresh the page.`
 
     store.dispatch({
       type: 'CONTAINER_MENU_WARNING',
@@ -189,7 +190,7 @@ export default class BranchMenu extends Component {
                 type: 'MULTIPART_INFO_MESSAGE',
                 payload: {
                   id: id,
-                  message: 'Publishing LabBook to Gigantum cloud ...',
+                  message: 'Publishing Project to Gigantum cloud ...',
                   isLast: false,
                   error: false
                 }
@@ -303,7 +304,7 @@ export default class BranchMenu extends Component {
                 type: 'MULTIPART_INFO_MESSAGE',
                 payload: {
                   id: id,
-                  message: 'Syncing LabBook with Gigantum cloud ...',
+                  message: 'Syncing Project with Gigantum cloud ...',
                   isLast: false,
                   error: false
                 }
@@ -385,7 +386,7 @@ export default class BranchMenu extends Component {
         store.dispatch({
           type: 'CONTAINER_MENU_WARNING',
           payload: {
-            message: 'Stop LabBook before syncing. \n Be sure to save your changes.'
+            message: 'Stop Project before syncing. \n Be sure to save your changes.'
           }
         });
         store.dispatch({
@@ -535,6 +536,60 @@ export default class BranchMenu extends Component {
   }
 
   /**
+  *  @param {jobKey}
+  *  polls jobStatus for export job message
+  *  updates footer with a message
+  *  @return {}
+  */
+  _jobStatus(jobKey){
+
+    let self = this;
+
+    JobStatus.getJobStatus(jobKey).then((data) => {
+      if(data.jobStatus.status !== 'queued'){
+        this.props.setExportingState(false);
+
+        if (data.jobStatus.result) {
+          store.dispatch({
+            type: 'INFO_MESSAGE',
+            payload: {
+              message: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
+            }
+          })
+        }
+
+        this.setState({ exporting: false });
+      }else{
+        setTimeout(()=>{
+          store.dispatch({
+            type: 'INFO_MESSAGE',
+            payload: {
+              message: `Exporting...`,
+            }
+          })
+          self._jobStatus(jobKey)
+        },500)
+
+      }
+    }).catch((error) => {
+
+      this.props.setExportingState(false);
+
+      console.log(error)
+
+      let errorArray = [{'message': 'Export failed.'}]
+      store.dispatch({
+        type: 'ERROR_MESSAGE',
+        payload: {
+          message: `${this.state.labbookName} failed to export `,
+          messageBody: errorArray
+        }
+      })
+      this.setState({ exporting: false });
+    })
+  }
+
+  /**
   *  @param {}
   *  runs export mutation if export has not been downloaded
   *  @return {}
@@ -545,38 +600,14 @@ export default class BranchMenu extends Component {
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload: {
-          message: `Exporting ${this.state.labbookName} LabBook`,
+          message: `Exporting ${this.state.labbookName} Project`,
         }
       })
       this.props.setExportingState(true);
       ExportLabbookMutation(this.state.owner, this.state.labbookName, (response, error) => {
         if (response.exportLabbook) {
-          JobStatus.getJobStatus(response.exportLabbook.jobKey).then((data) => {
-            this.props.setExportingState(false);
 
-            if (data.jobStatus.result) {
-              store.dispatch({
-                type: 'INFO_MESSAGE',
-                payload: {
-                  message: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-                }
-              })
-            }
-
-            this.setState({ exporting: false });
-          }).catch((error) => {
-            this.props.setExportingState(false);
-            console.log(error)
-            let errorArray = [{'message': 'Export failed.'}]
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `${this.state.labbookName} failed to export `,
-                messageBody: errorArray
-              }
-            })
-            this.setState({ exporting: false });
-          })
+          this._jobStatus(response.exportLabbook.jobKey)
         } else {
           console.log(error)
           this.props.setExportingState(false);
@@ -786,6 +817,7 @@ export default class BranchMenu extends Component {
               </div>
             }
           </div>
+          <ToolTip section="actionMenu"/>
         </div>
     )
   }

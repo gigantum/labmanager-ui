@@ -35,6 +35,8 @@
 @import 'components/shared/buttonLoader';
 @import 'components/shared/user';
 @import 'components/shared/header';
+@import 'components/shared/helper';
+@import 'components/shared/tooltip';
 @import 'components/shared/modal';
 //
 @import 'components/routes.scss';
@@ -155,4 +157,20 @@ code {
     cursor: pointer;
     color: white;
   }
+}
+
+.yt-lightbox{
+  width: 100%;
+  height: 100%;
+  background: $slateBlueOpaque;
+  position: fixed;
+  z-index: index($elements, modal);
+
+}
+
+.yt-frame{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

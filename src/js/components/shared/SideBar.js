@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import {Link} from 'react-router-dom'
 //components
 import User from './User'
+import ToolTip from 'Components/shared/ToolTip';
 //store
 import store from 'JS/redux/store'
 //config
@@ -17,7 +18,7 @@ export default class SideBar extends Component {
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
       payload: {
-        'callbackRoute': '/labbooks/local'
+        'callbackRoute': '/projects/local'
       }
     })
   }
@@ -46,11 +47,12 @@ export default class SideBar extends Component {
               <Link
                 onClick={() => this._updateCallbackRoute()}
                 className={isLabbooks ? 'SideBar__nav-item SideBar__nav-item--labbooks SideBar__nav-item--selected' : 'SideBar__nav-item SideBar__nav-item--labbooks'}
-                to={{pathname: '/labbooks/local'}}
+                to={{pathname: '/projects/local'}}
               >
                 <div className={isLabbooks ? 'SideBar__icon SideBar__icon--labbooks-selected' : 'SideBar__icon SideBar__icon--labbooks'}></div>
-                LabBooks
+                Projects
               </Link>
+              <ToolTip section="labbookListing"/>
             </li>
             <li className={!isLabbooks ? 'SideBar__list-item--selected' : 'SideBar__list-item'}>
               <div
@@ -60,6 +62,7 @@ export default class SideBar extends Component {
                 <div className={!isLabbooks ? 'SideBar__icon SideBar__icon--datasets-selected' : 'SideBar__icon SideBar__icon--datasets'}></div>
                 Datasets
                </div>
+               <ToolTip section="dataSets"/>
             </li>
           </ul>
 

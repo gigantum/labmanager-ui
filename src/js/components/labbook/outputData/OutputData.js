@@ -5,6 +5,7 @@ import {createFragmentContainer, graphql} from 'react-relay'
 import OutputDataBrowser from './OutputDataBrowser'
 import OutputFavorites from './OutputFavorites'
 import MostRecent from 'Components/labbook/filesShared/MostRecentOutput';
+import ToolTip from 'Components/shared/ToolTip'
 
 class OutputData extends Component {
   constructor(props){
@@ -63,7 +64,7 @@ class OutputData extends Component {
             </div>
           }
           <div className="Code__header">
-            <h5 className="Code__subtitle">Output Files</h5>
+            <h5 className="Code__subtitle">Output Files  <ToolTip section="outputDataFiles"/></h5>
             <div className="Code__toolbar">
               <a ref="favorites" className="Code__filter" onClick={()=> this._selectFilter('favorites')}>Favorites</a>
               <a ref="recent" className="Code__filter" onClick={()=> this._selectFilter('recent')}>Most Recent</a>
@@ -88,10 +89,13 @@ class OutputData extends Component {
           </div>
           <div className="Code__header">
             <div className="Code__subtitle-container">
-              <h5 className="Code__subtitle">Output Browser</h5>
-              {this.state.loadingStatus &&
+              <h5 className="Code__subtitle">Output Browser
+              <ToolTip section="outputDataBrowser"/>
+              {
+                this.state.loadingStatus &&
                 <div className="Code__loading"></div>
               }
+              </h5>
               <p className="Code__subtitle-sub">Currently only files under 1.8GB are supported.</p>
             </div>
             <div className="Code__toolbar end">

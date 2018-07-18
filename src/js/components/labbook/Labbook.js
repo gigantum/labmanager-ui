@@ -22,6 +22,7 @@ import ContainerStatus from './containerStatus/ContainerStatus'
 import Loader from 'Components/shared/Loader'
 import Branches from './branches/Branches'
 import BranchMenu from './branchMenu/BranchMenu'
+import ToolTip from 'Components/shared/ToolTip';
 //utils
 import {getFilesFromDragEvent} from "JS/utils/html-dir-content";
 
@@ -56,12 +57,12 @@ class Labbook extends Component {
     })
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const {labbookName, owner} = store.getState().routes
     document.title = `${owner}/${labbookName}`
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
 
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
@@ -91,8 +92,12 @@ class Labbook extends Component {
   */
   componentWillUnmount() {
     unsubscribe()
-
-
+    store.dispatch({
+      type: 'SET_LATEST_PACKAGES',
+      payload: {
+        latestPackages: {}
+      }
+    })
     window.removeEventListener('scroll', this._setStickHeader)
 
     window.removeEventListener('click', this._branchViewClickedOff)
@@ -280,7 +285,7 @@ class Labbook extends Component {
         >
         <Link
           onClick={()=> window.scrollTo(0, 0)}
-          to={`../../../labbooks/${this.state.owner}/${this.props.match.params.labbookName}/${item.id}`}
+          to={`../../../projects/${this.state.owner}/${this.props.match.params.labbookName}/${item.id}`}
           replace
         >
           {item.name}
@@ -346,7 +351,7 @@ class Labbook extends Component {
       store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
-          message: 'Stop LabBook before switching branches. \n Be sure to save your changes.',
+          message: 'Stop Project before switching branches. \n Be sure to save your changes.',
         }
       })
       store.dispatch({
@@ -365,9 +370,11 @@ class Labbook extends Component {
   _sanitizeBranchName(branchName){
     const username = localStorage.getItem('username')
     const workspace = `gm.workspace-${username}`
-    const prettyBranchName = (branchName === workspace) ? 'workspace' : branchName.replace(`${workspace}.`, '')
+    if(branchName){
+      const prettyBranchName = (branchName === workspace) ? 'workspace' : branchName.replace(`${workspace}.`, '')
 
-    return prettyBranchName
+      return prettyBranchName
+    }
   }
 
   render(){
@@ -441,6 +448,7 @@ class Labbook extends Component {
                        <div
                          onClick={()=> this._toggleBranchesView(!branchesOpen, false)}
                         className="Labbook__branch-toggle"></div>
+                        <ToolTip section="branchView"/>
                      </div>
 
                 </div>

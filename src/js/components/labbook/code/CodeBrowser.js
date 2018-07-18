@@ -6,8 +6,6 @@ import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrappe
 //store
 import store from 'JS/redux/store'
 
-let totalCount = 2
-
 class CodeBrowser extends Component {
   constructor(props){
   	super(props);
@@ -22,16 +20,6 @@ class CodeBrowser extends Component {
   }
 
   /*
-    update component when props are reloaded
-  */
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.code.allFiles.pageInfo.hasNextPage && nextProps.code.allFiles.edges.length > 3){
-      this._loadMore()
-    } else {
-      this.setState({'moreLoading': false});
-    }
-  }
-  /*
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
@@ -45,7 +33,7 @@ class CodeBrowser extends Component {
   /*
     @param
     triggers relay pagination function loadMore
-    increments by 10
+    increments by 100
     logs callback
   */
 
@@ -54,7 +42,7 @@ class CodeBrowser extends Component {
     this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
-     50, // Fetch the next 50 feed items
+     100, // Fetch the next 100 feed items
      (response, error) => {
        if(error){
          console.error(error)
@@ -79,7 +67,7 @@ class CodeBrowser extends Component {
   }
 
   render(){
- 
+
     this.props.loadStatus(this.state.moreLoading);
     if(this.props.code && this.props.code.allFiles){
 
@@ -154,9 +142,9 @@ export default createPaginationContainer(
     },
     getVariables(props, {count, cursor}, fragmentVariables) {
       const {owner, labbookName} = store.getState().routes
-      totalCount += count
+
       return {
-        first: totalCount,
+        first: count,
         cursor: cursor,
         owner: owner,
         name: labbookName

@@ -30,7 +30,7 @@ export default class LocalLabbookPanel extends Component {
   * @param {Object} nextProps
   * processes container lookup and assigns container status to labbook card
   */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let {environment} = nextProps
     if(environment){
     let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
@@ -42,7 +42,7 @@ export default class LocalLabbookPanel extends Component {
   * @param {}
   * if environment exists when components will mount it will populate container status
   */
-  componentWillMount(){
+  UNSAFE_componentWillMount(){
     let {environment} = this.props
     if(environment){
       let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
@@ -84,11 +84,18 @@ export default class LocalLabbookPanel extends Component {
           message: `Container status is still loading. The status will update when it is available.`
         }
       })
-    }else{
+    }else if(status === "Building"){
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload:{
-          message: `Container must be rebuilt. Open LabBook first and then try to run again.`
+          message: `Container is still building and the process may not be interrupted.`
+        }
+      })
+    } else {
+      store.dispatch({
+        type: 'INFO_MESSAGE',
+        payload:{
+          message: `Container must be rebuilt. Open Project first and then try to run again.`
         }
       })
     }
@@ -117,13 +124,13 @@ export default class LocalLabbookPanel extends Component {
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
-              message: `There was a problem starting ${this.state.labbookName}, go to LabBook and try again`,
+              message: `There was a problem starting ${this.state.labbookName}, go to Project and try again`,
               messageBody: error
             }
           })
           self.setState({textStatus: "Stopped", status: "Stopped"})
         }else{
-          self.props.history.replace(`../../labbooks/${owner}/${labbookName}`)
+          self.props.history.replace(`../../projects/${owner}/${labbookName}`)
         }
       }
     )

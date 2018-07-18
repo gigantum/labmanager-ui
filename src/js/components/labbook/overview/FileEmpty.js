@@ -17,7 +17,7 @@ export default class FileEmpty extends Component {
                     {!this.props.callback ?
                         <Link
                             className="FileEmpty__sub-text"
-                            to={{pathname: `../../../../labbooks/${owner}/${labbookName}/${this.props.section}`}}
+                            to={{pathname: `../../../../projects/${owner}/${labbookName}/${this.props.section}`}}
                             replace
                         >
                             {subText}

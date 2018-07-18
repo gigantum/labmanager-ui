@@ -660,6 +660,7 @@ Labbook__nav end
     background-size: 15px;
   }
   ul {
+    animation: slide-down-fade-in forwards .25s;
     position: absolute;
     padding: 3px;
     z-index: index($elements, popup);
@@ -724,6 +725,7 @@ Labbook__nav end
     background-size: 15px;
   }
   ul {
+    animation: slide-down-fade-in forwards .25s;
     padding: 3px;
     position: absolute;
     z-index: index($elements, popup);
@@ -774,7 +776,6 @@ Labbook__nav end
 
   color: $lightBlue;
   border: 3px solid $lightBlue;
-  border-radius: 8px;
   background: $white;
 
   font-size: 22px;

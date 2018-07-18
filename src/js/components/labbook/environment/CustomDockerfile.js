@@ -1,5 +1,7 @@
 //vendor
 import React, { Component, Fragment } from 'react'
+//components
+import ToolTip from 'Components/shared/ToolTip';
 //mutations
 import AddCustomDockerMutation from 'Mutations/AddCustomDockerMutation'
 //store
@@ -68,7 +70,7 @@ export default class CustomDockerfile extends Component {
         store.dispatch({
           type: 'CONTAINER_MENU_WARNING',
           payload: {
-            message: 'Stop LabBook before editing the environment. \n Be sure to save your changes.'
+            message: 'Stop Project before editing the environment. \n Be sure to save your changes.'
           }
         })
         store.dispatch({
@@ -99,7 +101,7 @@ export default class CustomDockerfile extends Component {
       store.dispatch({
         type: 'CONTAINER_MENU_WARNING',
         payload: {
-          message: 'Stop LabBook before editing the environment. \n Be sure to save your changes.'
+          message: 'Stop Project before editing the environment. \n Be sure to save your changes.'
         }
       })
       store.dispatch({
@@ -119,7 +121,7 @@ export default class CustomDockerfile extends Component {
       <div className="CustomDockerfile">
         <div className="Environment__header-container">
           <h5 className="CustomDockerfile__header">
-            Custom Docker Instructions
+            Custom Docker Instructions <ToolTip section="dockerInstructionsEnvironment"/>
           </h5>
         </div>
         <div className="CustomDockerfile__sub-header">

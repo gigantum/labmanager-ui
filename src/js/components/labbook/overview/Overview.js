@@ -15,6 +15,7 @@ import RecentActivity from './RecentActivity'
 import Loader from 'Components/shared/Loader'
 import FileEmpty from 'Components/labbook/overview/FileEmpty'
 import CodeBlock from 'Components/labbook/renderers/CodeBlock'
+import ToolTip from 'Components/shared/ToolTip'
 //mutations
 import WriteReadmeMutation from 'Mutations/WriteReadmeMutation'
 import SetLabbookDescriptionMutation from 'Mutations/SetLabbookDescriptionMutation'
@@ -175,7 +176,7 @@ class Overview extends Component {
     *  fires when component recieves props
     *  changes the description text, particularly used when switching branches
   */
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     this.setState({descriptionText: nextProps.description.replace(/\n/g,' '), lastSavedDescription: nextProps.description.replace(/\n/g,' ')})
   }
 
@@ -193,6 +194,7 @@ class Overview extends Component {
       const { owner, labbookName } = store.getState().routes
       return (
         <div className={overviewCSS}>
+          <ToolTip section="descriptionOverview"/>
           <div className="Overview__description grid column-1-span-12">
           {
             this.state.editingDescription ?
@@ -202,7 +204,7 @@ class Overview extends Component {
                 className="Overview__description-input column-1-span-10"
                 type="text"
                 onChange={(evt)=>{this.setState({descriptionText: evt.target.value.replace(/\n/g,' ')})}}
-                placeholder="Short description of labbook"
+                placeholder="Short description of Project"
                 defaultValue={this.state.descriptionText ? this.state.descriptionText: ''}
               >
               </textarea>
@@ -236,7 +238,7 @@ class Overview extends Component {
           }
           </div>
           <div className="Overview__title-container">
-            <h5 className="Overview__title">Readme
+            <h5 className="Overview__title">Readme <ToolTip section="readMe"/>
             <button
               className={this.state.editingReadme || !this.props.readme ? 'hidden': 'Overview__readme-edit-button'}
               onClick={()=>this.setState({ editingReadme: true })}
@@ -300,7 +302,7 @@ class Overview extends Component {
               !this.state.editingReadme &&
             <FileEmpty
               section="edit"
-              mainText="This LabBook does not have a readme."
+              mainText="This Project does not have a readme."
               subText="Click here to create one"
               callback ={this._editReadme}
             />
@@ -309,9 +311,9 @@ class Overview extends Component {
             <RecentActivity recentActivity={this.props.labbook.overview.recentActivity} />
           </div>
           <div className="Overview__title-container">
-            <h5 className="Overview__title">Environment</h5>
+            <h5 className="Overview__title">Environment<ToolTip section="environmentOverview"/></h5>
             <Link
-              to={{ pathname: `../../../../labbooks/${owner}/${labbookName}/environment` }}
+              to={{ pathname: `../../../../projects/${owner}/${labbookName}/environment` }}
               replace
             >
               Environment Details >

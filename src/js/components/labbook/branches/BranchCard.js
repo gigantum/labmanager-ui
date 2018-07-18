@@ -36,7 +36,7 @@ export default class BranchCard extends Component {
     this._handleToggleModal = this._handleToggleModal.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if(!nextProps.branchesOpen){
         this.setState({
           deleteModalVisible: false
@@ -231,7 +231,7 @@ export default class BranchCard extends Component {
     store.dispatch({
       type: 'CONTAINER_MENU_WARNING',
       payload: {
-        message: 'Stop LabBook before deleting branches. \n Be sure to save your changes.',
+        message: 'Stop Project before deleting branches. \n Be sure to save your changes.',
       }
     })
     store.dispatch({

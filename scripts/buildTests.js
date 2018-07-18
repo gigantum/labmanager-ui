@@ -30,11 +30,12 @@ process.env.NODE_ENV = 'development';
 const createSnapshotTest = (testFile, route) => {
 
   let componentRelativePath = testFile.split('__tests__')[1]
-  let componentImportPath = componentRelativePath.replace('.test.js', '').replace('/components', 'Components')
-  let componentName = testFile.split('/')[testFile.split('/').length - 1].replace('.test.js', '')
-  let relayData = require(__dirname + '/../' + route) //relay query
 
-  //console.log(relayData)
+  let componentImportPath = componentRelativePath.replace('.test.js', '').replace('/components', 'Components')
+
+  let componentName = testFile.split('/')[testFile.split('/').length - 1].replace('.test.js', '')
+
+  let relayData = require(__dirname + '/../' + route) //relay query
 
   const fileContent = `
       import React from 'react'
@@ -57,6 +58,8 @@ const createSnapshotTest = (testFile, route) => {
         expect(tree).toMatchSnapshot()
 
       })`
+
+
       function ensureDirectoryExistence(filePath) {
           var dirname = path.dirname(filePath);
           if (fs.existsSync(dirname)) {
@@ -114,17 +117,23 @@ const variableReference = {
   cursor: null,
   hasNext: false,
   reverse: false,
-  sort: 'modified_on'
+  sort: 'modified_on',
+  keys: '',
+  input: '',
+  ids: [],
+  path: ''
+
 
 }
 
 const buildQueryVariables = (route) => {
   const defs = require(__dirname + '/../' + route).operation.argumentDefinitions
-  console.log(defs)
   let variables = {}
   defs.forEach((def)=>{
-     if(variableReference[def.name]){
+     if(variableReference[def.name] !== undefined){
        variables[def.name] = variableReference[def.name]
+     }else{
+       console.log('missing variable' + def.name)
      }
   })
 
@@ -159,10 +168,9 @@ let relayQueries = genteratedFiles.filter((route) => {
 
   //if test does not exist create a snapshot test
   if(!exists){
-    //console.log(`Please create test in ${testFile}`)
-
     createSnapshotTest(testFile, route)
   }
+
   let isComponent = (route.indexOf('component') > -1)
 
   return isComponent
@@ -196,7 +204,7 @@ relayQueries.forEach((queryData) => {
   let variables = queryData.variables
   console.log(variables)
   //fetchData for test from the api
-  fetch('http://localhost:10001/labbook/', {
+  fetch('http://localhost:10000/api/labbook/', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

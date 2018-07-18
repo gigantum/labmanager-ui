@@ -12,7 +12,7 @@ class OutputFavorites extends Component {
   /*
     update component when props are reloaded
   */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
 
     //this._loadMore() //routes query only loads 2, call loadMore
     if(nextProps.output && nextProps.output.favorites && nextProps.output.favorites.pageInfo.hasNextPage && nextProps.output.favorites.edges.length < 3){
@@ -92,7 +92,7 @@ class OutputFavorites extends Component {
         return(
           <FileEmpty
             section="outputData"
-            mainText="This LabBook has No Output Favorites"
+            mainText="This Project has No Output Favorites"
           />
         )
       }

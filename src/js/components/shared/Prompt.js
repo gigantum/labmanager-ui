@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import Sniffr from 'sniffr'
+import uuidv4 from 'uuid/v4'
 
 const pingServer = () => {
-  const url = `${window.location.protocol}//${window.location.host}${process.env.PING_API}`;
+  let apiHost = process.env.NODE_ENV === 'development' ? 'localhost:10000' : window.location.host
+  const url = `${window.location.protocol}//${apiHost}${process.env.PING_API}?v=${uuidv4()}`;
   return fetch(url, {
     'method': 'GET'
   }).then(response => {
@@ -27,7 +29,7 @@ export default class Prompt extends Component {
     this._handlePing = this._handlePing.bind(this);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this._handlePing();
     this.intervalId = setInterval(this._handlePing.bind(this), 2500);
   }

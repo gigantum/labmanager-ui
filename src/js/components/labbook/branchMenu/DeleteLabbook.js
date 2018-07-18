@@ -61,7 +61,10 @@ export default class DeleteLabbook extends Component {
               setTimeout(()=>{
                 this.setState({'labbookName': '', deletePending: false, deleteLabbookButtonState: ''})
                 this.props.toggleModal();
-                document.getElementById('deleteInput').value = '';
+
+                if(document.getElementById('deleteInput')){
+                  document.getElementById('deleteInput').value = ''
+                }
               }, 1000)
             }else{
               store.dispatch({
@@ -109,7 +112,7 @@ export default class DeleteLabbook extends Component {
               })
               this.setState({deleteLabbookButtonState: 'finished'})
               setTimeout(()=>{
-                this.props.history.replace('../../labbooks/')
+                this.props.history.replace('../../projects/')
               }, 2000)
             }
           }
@@ -137,7 +140,7 @@ export default class DeleteLabbook extends Component {
         return(
           <div>
             <p>This will delete <b>{this.props.remoteLabbookName}</b> from the cloud.</p>
-            <p>The LabBook will still exist locally.</p>
+            <p>The Project will still exist locally.</p>
           </div>
         )
       } else {
@@ -159,7 +162,7 @@ export default class DeleteLabbook extends Component {
   }
 
   render(){
-    let deleteText = this.props.remoteDelete ? 'Delete Remote Labbook' : 'Delete Labbook'
+    let deleteText = this.props.remoteDelete ? 'Delete Remote Project' : 'Delete Project'
     const {labbookName} = this.props.remoteDelete ? {labbookName: this.props.remoteLabbookName} : store.getState().routes
     return(
       <Modal

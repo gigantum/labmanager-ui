@@ -1,0 +1,131 @@
+{
+ "data": {
+  "labbook": {
+   "activityRecords": {
+    "edges": [
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYxZDM0NjIxMGQ5M2IwZmY0ZDVmN2JhNTRkMDM0NmE5MDIxNzI3MTRh",
+       "commit": "1d346210d93b0ff4d5f7ba54d0346a902172714a"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZiOWEzM2NhN2E0MDhjMzNiMGQzYzBjZWE2ODViYTFiYTBiZDRmYzYw",
+       "commit": "b9a33ca7a408c33b0d3c0cea685ba1ba0bd4fc60"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZjYTIxNmU2MjA1NGViZDg1NzgxMjY3MzAyMmM2NzY1MWNhNGE2M2Fk",
+       "commit": "ca216e62054ebd857812673022c67651ca4a63ad"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYwMGQ1NzA3NzdhNDQ5NjUzOGIwNDJhN2JmYWNhN2Q5ZGQ2NTZlZWEw",
+       "commit": "00d570777a4496538b042a7bfaca7d9dd656eea0"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZlZDdhMDQzYjNjNmJjNWIzYzgzNzU5NzEwNWMwNmEzMTM0ZGVlODgx",
+       "commit": "ed7a043b3c6bc5b3c837597105c06a3134dee881"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZhYzY3MjM0ZGE3ZjZmMDE1NjIxODRhMmJhZTkyOTMxYzY5M2RhNzQw",
+       "commit": "ac67234da7f6f01562184a2bae92931c693da740"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY3MmEzNTc0NDM2NmU4OTE1YjZiNGU5NDQ3N2E5ZGQwYjkwZDJiNzgx",
+       "commit": "72a35744366e8915b6b4e94477a9dd0b90d2b781"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY2OTMwMzA0MmQwYTEwM2U5ZDZjZGQ3NzA0ZjA4NzgyMzY5MWMxNDdj",
+       "commit": "69303042d0a103e9d6cdd7704f087823691c147c"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZmMzRmNzU1MmJlNDIzNGJiMDhiZDFhM2E5OTAwMmNiOTk0ODc1Zjhk",
+       "commit": "f34f7552be4234bb08bd1a3a99002cb994875f8d"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZhNWU4ODdmOTY0NDVkODczYjY5MDgxZWY3YTkwNjBmMzEwMTE2NTU5",
+       "commit": "a5e887f96445d873b69081ef7a9060f310116559"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZmN2Q2NjA3NzllMjBiNGIyMmJjMDM1MGZkZjQ4NmIxZDlmNGQ4ZWI0",
+       "commit": "f7d660779e20b4b22bc0350fdf486b1d9f4d8eb4"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYwZjNjN2ZjYTEyOGZjNzE5NTcxYzMzMTAxZDliNWY1OGI4YTczMmYy",
+       "commit": "0f3c7fca128fc719571c33101d9b5f58b8a732f2"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZhM2U2MDNhNWJhNTNhZTIzODE0YTFkYTM3ZjgwNzc4NmMwNjE3MzYz",
+       "commit": "a3e603a5ba53ae23814a1da37f807786c0617363"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZjYTc5MTc4MjI2OWIwYWQ4NjUyZDNlYzZhNjc0NDBhZWFmYmQxOGFm",
+       "commit": "ca791782269b0ad8652d3ec6a67440aeafbd18af"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZlMjUyMzUwYmE0MmY2NzM3NjEwOTI1NDBhYTBjMDJmYTA3YTFlZTM4",
+       "commit": "e252350ba42f673761092540aa0c02fa07a1ee38"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYxODViMDhhNjliNDExM2U1ZjhkNTJhMGE5YTlkMGQxNjI1NzdlMzgz",
+       "commit": "185b08a69b4113e5f8d52a0a9a9d0d162577e383"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZkMmQ4MDZmZjc0MDAxZWRjMDNlYjUyNjhhOGNlMmQ5NzQxOTc1Zjcx",
+       "commit": "d2d806ff74001edc03eb5268a8ce2d9741975f71"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY3YjllMzM1ZWM3ZDEyNmEwMWY5YTI4YjczZmQ1OWNjOWQ1YWNjMGE4",
+       "commit": "7b9e335ec7d126a01f9a28b73fd59cc9d5acc0a8"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY1MzM4NjA1OGZkYzc3MzU5ZGNjODZiNzNkY2QwYzM0YjFiMGY3YTQx",
+       "commit": "53386058fdc77359dcc86b73dcd0c34b1b0f7a41"
+      }
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY0YmI5ZDY2OWIxNTllOWI1NmE2YjU1MmU1N2U4OWZiMGFhN2ViNTQ4",
+       "commit": "4bb9d669b159e9b56a6b552e57e89fb0aa7eb548"
+      }
+     }
+    ]
+   },
+   "id": "TGFiYm9vazpjYnV0bGVyJmRhdGEtc2hhZGVy"
+  }
+ }
+}

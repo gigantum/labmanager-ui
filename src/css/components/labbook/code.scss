@@ -80,6 +80,7 @@
   text-align: left;
   color: $romanSilver;
   font-weight: 100;
+  position: relative;
 }
 
 .Code__subtitle-sub {
@@ -102,6 +103,7 @@
   margin-left: 200px;
   margin-top: 20px;
   animation: spin 2s linear infinite;
+  bottom: 0;
 }
 
 .Code__loading--browser {

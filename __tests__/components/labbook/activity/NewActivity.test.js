@@ -38,7 +38,6 @@
 
           NewActivity.getNewActivity(3, undefined).then((response)=>{
 
-            console.log(response)
 
             if(response.error) {
 

@@ -10,6 +10,8 @@ import BuildImageMutation from 'Mutations/BuildImageMutation'
 import store from 'JS/redux/store'
 //
 import FetchContainerStatus from './fetchContainerStatus'
+//components
+import ToolTip from 'Components/shared/ToolTip'
 
 let unsubscribe;
 
@@ -64,8 +66,8 @@ export default class ContainerStatus extends Component {
         this.setState({containerMenuOpen: containerStatusStore.containerMenuOpen, containerMenuWarning: containerStatusStore.containerMenuWarning}); //triggers  re-render when store updates
     }
   }
-  componentWillMount() {
 
+  UNSAFE_componentWillMount() {
     this._getContainerStatusText(this.props.containerStatus, this.props.imageStatus)
   }
   /**
@@ -152,7 +154,7 @@ export default class ContainerStatus extends Component {
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
-                message: 'LabBook failed to build:',
+                message: 'Project failed to build:',
                 messageBody: [{ message: 'Check for and remove invalid dependencies and try again.' }]
               }
             })
@@ -194,7 +196,9 @@ export default class ContainerStatus extends Component {
       (evt.target.className.indexOf('Labbook__branch-toggle') > -1) ||
       (evt.target.className.indexOf('Acitivty__rollback-button') > -1) ||
       (evt.target.className.indexOf('Activity__add-branch-button') > -1) ||
-      (evt.target.className.indexOf('PackageDependencies__remove-button') > -1) ||
+      (evt.target.className.indexOf('PackageDependencies__remove-button--full') > -1) ||
+      (evt.target.className.indexOf('PackageDependencies__remove-button--half') > -1) ||
+      (evt.target.className.indexOf('PackageDependencies__update-button') > -1) ||
       (evt.target.className.indexOf('BranchCard__delete-labbook') > -1)
 
     if(!containerMenuClicked &&
@@ -219,7 +223,7 @@ export default class ContainerStatus extends Component {
   *  @param {string} nextProps
   *  update container state before rendering new props
   */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
 
     let status = this._getContainerStatusText(nextProps.containerStatus, nextProps.imageStatus)
     const hasLabbookId = store.getState().overview.containerStates[this.props.labbookId]
@@ -667,6 +671,9 @@ export default class ContainerStatus extends Component {
           </div>
 
         }
+      <ToolTip
+        section="containerStatus"
+      />
       </div>)
   }
 

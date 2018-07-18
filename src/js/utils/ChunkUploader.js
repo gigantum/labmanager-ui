@@ -43,7 +43,7 @@ const uploadLabbookChunk = (file, chunk, accessToken, getChunkCallback) => {
 
 }
 
-const updateTotalStatus = (file, labbookName, owner, transactionId) =>{
+const updateTotalStatus = (file, labbookName, owner, transactionId) => {
 
   let fileCount = store.getState().footer.fileCount + 1
   let totalFiles = store.getState().footer.totalFiles
@@ -58,38 +58,40 @@ const updateTotalStatus = (file, labbookName, owner, transactionId) =>{
       open: true
     }
   })
-    if(fileCount === totalFiles){
-      setTimeout(()=>{
-        store.dispatch({
-          type: 'FINISHED_UPLOADING',
-        })
-        store.dispatch({
-          type: 'UPLOAD_MESSAGE_REMOVE',
-          payload:{
-            uploadMessage: `Uploaded ${fileCount} of ${totalFiles} files`,
-            fileCount: (store.getState().footer.fileCount + 1),
-            progessBarPercentage: ((fileCount/totalFiles) * 100),
-            error: false,
-            open: false
-          }
-        })
-      }, 2000)
+  
 
-      CompleteBatchUploadTransactionMutation(
-        'connectionKey',
-        owner,
-        labbookName,
-        false,
-        false,
-        transactionId,
-        (response, error) =>{
-
+  if(fileCount === totalFiles){
+    setTimeout(()=>{
+      store.dispatch({
+        type: 'FINISHED_UPLOADING',
       })
-    }
+      store.dispatch({
+        type: 'UPLOAD_MESSAGE_REMOVE',
+        payload:{
+          uploadMessage: `Uploaded ${fileCount} of ${totalFiles} files`,
+          fileCount: (store.getState().footer.fileCount + 1),
+          progessBarPercentage: ((fileCount/totalFiles) * 100),
+          error: false,
+          open: false
+        }
+      })
+    }, 2000)
+
+    CompleteBatchUploadTransactionMutation(
+      'connectionKey',
+      owner,
+      labbookName,
+      false,
+      false,
+      transactionId,
+      (response, error) =>{
+
+    })
+  }
 
 }
 
-const updateChunkStatus = (file, chunkData) =>{
+const updateChunkStatus = (file, chunkData, labbookName, owner, transactionId) =>{
 
   const {
       fileSizeKb,
@@ -125,6 +127,17 @@ const updateChunkStatus = (file, chunkData) =>{
         }
       })
     }, 2000)
+
+    CompleteBatchUploadTransactionMutation(
+      'connectionKey',
+      owner,
+      labbookName,
+      false,
+      false,
+      transactionId,
+      (response, error) =>{
+
+    })
   }
 }
 
@@ -150,7 +163,7 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
           if(store.getState().footer.totalFiles > 1){
             updateTotalStatus(file, data.labbookName, username, data.transactionId)
           }else{
-            updateChunkStatus(file, chunkData)
+            updateChunkStatus(file, chunkData, data.labbookName, username, data.transactionId)
           }
         }else{
           let errorBody = error.length && error[0].message ? error[0].message: error
@@ -231,7 +244,7 @@ const ChunkUploader = {
 
         if(chunkIndex <= totalChunks){ //if  there is still chunks to process do next chunk
           //select type of mutation
-          if(file.name.indexOf('.lbk') > -1){
+          if(file.name.indexOf('.lbk') > -1 || file.name.indexOf('.zip') > -1){
 
             uploadLabbookChunk(
               file,

@@ -101,7 +101,7 @@ export default class FileBrowserWrapper extends Component {
     this.unsubscribe();
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     if(nextProps.selectedFiles.length > 0){
 
       this.handleCreateFiles(nextProps.selectedFiles, '')
@@ -703,6 +703,9 @@ export default class FileBrowserWrapper extends Component {
                       }
                     })
                   }else{
+                    if(newKey[0] === '/'){
+                      newKey = newKey.slice(1)
+                    }
                     AddFavoriteMutation(
                       this.props.favoriteConnection,
                       this.props.connection,
@@ -1164,7 +1167,7 @@ export default class FileBrowserWrapper extends Component {
         {
           this.props.isLocked.locked &&
           <div className="Code--uploading flex">
-            Please wait for LabBook to finish {this.props.isLocked.isPublishing ? 'publishing' : this.props.isLocked.isExporting ? 'exporting': 'syncing'}.
+            Please wait for Project to finish {this.props.isLocked.isPublishing ? 'publishing' : this.props.isLocked.isExporting ? 'exporting': 'syncing'}.
             <span className="Code__loading--browser" />
           </div>
         }
@@ -1224,7 +1227,7 @@ export default class FileBrowserWrapper extends Component {
                 <div className="FileBrowser__cancel-buttons">
                   <button onClick={()=>this._continueUpload()}>Dismiss and Continue</button>
                   <button onClick={()=>this._cancelKeep()}>Cancel and Keep Uploaded</button>
-                  {/* <button onClick={()=>this._cancel()}>Cancel upload</button> */}
+                  <button onClick={()=>this._cancel()}>Cancel upload</button>
                 </div>
               </div>
             }/>,

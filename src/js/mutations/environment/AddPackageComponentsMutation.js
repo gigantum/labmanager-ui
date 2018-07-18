@@ -90,7 +90,6 @@ export default function AddPackageComponentsMutation(
   callback
 ) {
 
-
   const variables = {
     input: {
       labbookName,
@@ -138,7 +137,7 @@ export default function AddPackageComponentsMutation(
           sharedDeleteUpdater(store, environmentId, deletedId)
           let newEdges = response.addPackageComponents.newPackageComponentEdges;
           newEdges.forEach((edge) =>{
-            const {fromBase, id, manager, schema, version} = edge.node
+            const {fromBase, id, manager, schema, version, latestVersion} = edge.node
             let pkg = edge.node.package;
             store.delete(id);
             const node = store.create(id, 'package');
@@ -148,6 +147,7 @@ export default function AddPackageComponentsMutation(
               node.setValue(version, 'version')
               node.setValue(schema, 'schema')
               node.setValue(fromBase, 'fromBase')
+              node.setValue(latestVersion, 'latestVersion')
               node.setValue(id, 'id')
               const newEdge = store.create(
                 'client:newEdge:' + tempID++,

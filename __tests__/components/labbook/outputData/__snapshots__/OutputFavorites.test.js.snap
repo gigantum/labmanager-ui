@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test OutputFavorites 1`] = `
+exports[`Test InputFavorites 1`] = `
 <div>
   No Files Found
 </div>
