@@ -4,6 +4,8 @@ import classNames from 'classnames'
 
 //components
 import ActivityDetails from 'Components/labbook/activity/ActivityDetails'
+//config
+import config from 'JS/config'
 
 export default class ActivityCard extends Component {
   constructor(props){
@@ -118,7 +120,7 @@ export default class ActivityCard extends Component {
                 <p className="ActivityCard__time">
                   {this._getTimeOfDay(this.props.edge.node.timestamp)}
                 </p>
-                <div className="ActivityCard__user"></div>
+                <div className="ActivityCard__user" style={config.generateAvatar(this.props.edge.node.username)}><span className="ActivityCard__user-initials">{this.props.edge.node.username.slice(0, 2)}</span></div>
               </div>
               <h6 className="ActivityCard__commit-message">
                 <b>{this.props.edge.node.username + ' - '}</b>{this.props.edge.node.message}

@@ -63,6 +63,36 @@ const CONFIG = {
     return tips[section]
   },
   demoHostName: 'try.gigantum.com',
+  generateAvatar: (username) => {
+    let a = 1, c = 0, h, o, b, d;
+    let avatarColors = [
+      '#324156',
+      '#007DA7',
+      '#17D7BE',
+      '#E0EBF9',
+      '#9984BC',
+      '#703273',
+      '#A3AAB2',
+      '#6C6D6D',
+    ]
+    if (username) {
+        a = 0;
+        b = 0;
+        /*jshint plusplus:false bitwise:false*/
+        for (h = username.length - 1; h >= 0; h--) {
+            o = username.charCodeAt(h);
+            a = (a<<6&268435455) + o + (o<<14);
+            b = (a<<2&845674878) + o + (o<<12);
+            c = a & 266338304;
+            d = b & 849451581;
+            a = c!==0?a^c>>21:a;
+            b = d!==0?b^d>>11:b;
+        }
+    }
+    return {
+      background: `linear-gradient(${a % 360}deg, ${avatarColors[a % 6]},  ${avatarColors[b % 6]}`,
+    };
+  },
 }
 
 export default CONFIG

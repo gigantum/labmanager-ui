@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+//config
+import config from 'JS/config'
 
 export default class User extends Component {
 
@@ -62,7 +64,7 @@ export default class User extends Component {
       <div
         id="user"
         className="User">
-        <div className="User__image"> </div>
+        <div className="User__image" style={config.generateAvatar(localStorage.getItem('username'))}><span className="User__image-initials">{localStorage.getItem('username').slice(0, 2)}</span></div>
         <h6
           id="username"
           onClick={() => { this._toggleDropdown()}}
