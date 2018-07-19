@@ -45,6 +45,11 @@
   font-size: 12px;
   align-self: center;
   user-select: none;
+  text-shadow:
+  -0.6px -0.6px 0 #000,
+   0.6px -0.6px 0 #000,
+   -0.6px 0.6px 0 #000,
+    0.6px 0.6px 0 #000;
 }
 
 .ActivityCard__user {

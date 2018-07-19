@@ -11,6 +11,11 @@
   font-size: 28px;
   align-self: center;
   user-select: none;
+  text-shadow:
+  -1px -1px 0 #000,
+   1px -1px 0 #000,
+   -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
 .User__image {
