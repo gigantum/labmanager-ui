@@ -196,15 +196,15 @@ class PackageDependencies extends Component {
 
     if(packageDependencies.edges.length > 0){
 
-      let cursor =  packageDependencies.edges[packageDependencies.edges.length - 1].node.cursor
       relay.refetchConnection(
-        totalCount,
+        null,
         (response) =>{
           self.setState({forceRender: true})
         },
         {
+          first: 1000,
           hasNext: true,
-          cursor: cursor
+          cursor: null,
         }
       )
     }
