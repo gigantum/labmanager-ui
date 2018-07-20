@@ -64,7 +64,7 @@ const CONFIG = {
   },
   demoHostName: 'try.gigantum.com',
   generateAvatar: (username) => {
-    let a = 1, c = 0, h, o, d, b = 0;
+    let firstHash = 1, helper, usernameIndex, secondHash = 0;
     let avatarColors = [
       '#324156',
       '#007DA7',
@@ -76,23 +76,29 @@ const CONFIG = {
       '#6C6D6D',
     ]
     if (username) {
-      a = 0;
-      for (h = username.length - 1; h >= 0; h--) {
-          o = username.charCodeAt(h);
-          a = (a<<6&268435455) + o + (o<<14);
-          c = a & 266338304;
-          d = b & 849451581;
-          a = c!==0?a^c>>12:a;
+      firstHash = 0;
+
+      for (usernameIndex = username.length - 1; usernameIndex >= 0; usernameIndex--) {
+
+          let char = username.charCodeAt(usernameIndex);
+          firstHash = (firstHash << 6 & 268435455 ) + char + ( char <<14 );
+          helper = firstHash & 266338304;
+          firstHash = helper !==0 ? firstHash^helper >> 12 : firstHash;
+
       }
+
       for (let i = 0; i < username.length; i++) {
+
         let char = username.charCodeAt(i);
-        b = ((b<<5)-b)+char;
-        b = b & b;
+        secondHash = ((secondHash << 5)- secondHash)+char;
+        secondHash = secondHash & secondHash;
+
       }
-      b = Math.abs(b)
+
+      secondHash = Math.abs(secondHash)
     }
     return {
-      background: `linear-gradient(${(a + b) % 360}deg, ${avatarColors[a % 8]},  ${avatarColors[b % 8]}`,
+      background: `linear-gradient(${(firstHash + secondHash) % 360}deg, ${avatarColors[firstHash % 8]},  ${avatarColors[secondHash % 8]}`,
     };
   },
 }

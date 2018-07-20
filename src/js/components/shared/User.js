@@ -60,11 +60,16 @@ export default class User extends Component {
 
 
   render() {
+    let username = localStorage.getItem('username')
     return (
       <div
         id="user"
         className="User">
-        <div className="User__image" style={config.generateAvatar(localStorage.getItem('username'))}><span className="User__image-initials">{localStorage.getItem('username').slice(0, 2)}</span></div>
+        <div className="User__image" style={config.generateAvatar(username)}>
+          <span className="User__image-initials">
+            {username.slice(0, 2)}
+          </span>
+        </div>
         <h6
           id="username"
           onClick={() => { this._toggleDropdown()}}

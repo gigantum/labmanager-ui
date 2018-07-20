@@ -89,7 +89,8 @@ export default class ActivityCard extends Component {
     }
 
     let activityCardStyle = this._processCardStyle()
-
+    let username = this.props.edge.node.username
+    const avatarStyle = config.generateAvatar(username)
     return(
       <div className="column-1-span-10 ActivityCard__container">
         {
@@ -120,7 +121,11 @@ export default class ActivityCard extends Component {
                 <p className="ActivityCard__time">
                   {this._getTimeOfDay(this.props.edge.node.timestamp)}
                 </p>
-                <div className="ActivityCard__user" style={config.generateAvatar(this.props.edge.node.username)}><span className="ActivityCard__user-initials">{this.props.edge.node.username.slice(0, 2)}</span></div>
+                <div className="ActivityCard__user" style={avatarStyle}>
+                  <span className="ActivityCard__user-initials">
+                    {username.slice(0, 2)}
+                  </span>
+                </div>
               </div>
               <h6 className="ActivityCard__commit-message">
                 <b>{this.props.edge.node.username + ' - '}</b>{this.props.edge.node.message}
