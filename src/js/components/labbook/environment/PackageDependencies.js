@@ -52,6 +52,7 @@ class PackageDependencies extends Component {
     this._setSelectedTab = this._setSelectedTab.bind(this)
     this._addPackageComponentsMutation = this._addPackageComponentsMutation.bind(this)
     this._updatePackages = this._updatePackages.bind(this)
+    this._refetch = this._refetch.bind(this)
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -105,16 +106,17 @@ class PackageDependencies extends Component {
   componentDidMount() {
     if(this.props.environment.packageDependencies.pageInfo.hasNextPage){
       this._loadMore() //routes query only loads 2, call loadMore
-    }
+    } else{
+      if(!store.getState().environment.latestFetched){
+        store.dispatch({
+          type: 'SET_LATEST_FETCHED',
+          payload: {
+            latestFetched: true,
+          }
+        })
 
-    if(!store.getState().environment.latestFetched){
-      store.dispatch({
-        type: 'SET_LATEST_FETCHED',
-        payload: {
-          latestFetched: true,
-        }
-      })
-      this._refetch();
+        this._refetch();
+      }
     }
 
     if(this.state.selectedTab === ''){
@@ -143,6 +145,16 @@ class PackageDependencies extends Component {
     if(this.state.packageMenuVisible !== environmentStore.packageMenuVisible){
       this.setState({packageMenuVisible: environmentStore.packageMenuVisible});//triggers re-render when store updates
     }
+    if(environmentStore.forceRefetch){
+      this._refetch();
+      store.dispatch({
+        type: 'FORCE_REFETCH',
+        payload: {
+          forceRefetch: false,
+        }
+      })
+    }
+
 
   }
   /*
@@ -178,7 +190,6 @@ class PackageDependencies extends Component {
     refetches package dependencies
   */
   _refetch(){
-
     let self = this;
     let relay = this.props.relay
     let packageDependencies = this.props.environment.packageDependencies
@@ -506,13 +517,12 @@ class PackageDependencies extends Component {
                     }
                   })
                 } else {
-                  self.props.buildCallback()
+                  self.props.buildCallback(true)
                   self.setState({
                     disableInstall: false,
                     packages: [],
                     installDependenciesButtonState: 'finished'
                   })
-                  self._refetch()
                   setTimeout(()=>{
                   self.setState({installDependenciesButtonState: ''})
                   }, 2000)
@@ -659,13 +669,12 @@ class PackageDependencies extends Component {
                 }
               })
             } else {
-              self.props.buildCallback()
+              self.props.buildCallback(true)
               self.setState({
                 disableInstall: false,
                 packages: [],
                 installDependenciesButtonState: 'finished'
               })
-              self._refetch()
               setTimeout(()=>{
               self.setState({installDependenciesButtonState: ''})
               }, 2000)

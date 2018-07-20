@@ -71,6 +71,13 @@ class Environment extends Component {
                   })
                 }
 
+                store.dispatch({
+                  type: 'SET_REFETCH_PENDING',
+                  payload: {
+                    refetchPending: true
+                  }
+                })
+
                 return "finished"
               }
             )
@@ -93,6 +100,13 @@ class Environment extends Component {
               }
             })
           }
+
+          store.dispatch({
+            type: 'SET_REFETCH_PENDING',
+            payload: {
+              refetchPending: true
+            }
+          })
 
           return "finished"
         }
@@ -130,7 +144,7 @@ class Environment extends Component {
              />
 
             <PackageDependencies
-              ref="packageDependencies"
+              componentRef={ref => this.packageDependencies = ref}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               labbookId={this.props.labbook.id}
