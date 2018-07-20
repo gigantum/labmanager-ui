@@ -164,7 +164,7 @@ class PackageDependencies extends Component {
     logs callback
   */
   _loadMore() {
-
+    totalCount += 5;
     let self = this;
     this.props.relay.loadMore(
     5, // Fetch the next 5 feed items
@@ -197,9 +197,8 @@ class PackageDependencies extends Component {
     if(packageDependencies.edges.length > 0){
 
       let cursor =  packageDependencies.edges[packageDependencies.edges.length - 1].node.cursor
-
       relay.refetchConnection(
-        totalCount + 5,
+        totalCount,
         (response) =>{
           self.setState({forceRender: true})
         },
@@ -495,6 +494,7 @@ class PackageDependencies extends Component {
           })
 
           if(filteredInput.length){
+            totalCount += filteredInput.length
             AddPackageComponentsMutation(
               labbookName,
               owner,
@@ -992,7 +992,6 @@ export default createPaginationContainer(
    },
    getVariables(props, {count}, fragmentVariables) {
 
-    totalCount += count
     let first = totalCount;
     let length = props.environment.packageDependencies.edges.length
     const {labbookName} = store.getState().routes
