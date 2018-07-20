@@ -419,10 +419,12 @@ export default class ContainerStatus extends Component {
       labbookName,
       developmentTool,
       (response, error)=>{
+
           if(response.startDevTool){
             let path = `${window.location.protocol}//${window.location.hostname}${response.startDevTool.path}`
             window.open(path, '_blank')
           }
+
           if(error){
             store.dispatch({
               type: 'ERROR_MESSAGE',
@@ -433,7 +435,6 @@ export default class ContainerStatus extends Component {
             })
           }
       }
-
     )
   }
 

@@ -9,12 +9,11 @@ import Routes from './components/Routes';
 
 const auth = new Auth();
 
-let routeRef;
 
 UserIdentity.getUserIdentity().then((response)=>{
   let expiresAt = JSON.stringify((new Date().getTime() * 1000) + new Date().getTime());
   let forceLoginScreen = true;
-  
+
   if(response.data){
 
     if(response.data.userIdentity){
@@ -26,14 +25,12 @@ UserIdentity.getUserIdentity().then((response)=>{
 
       forceLoginScreen = false;
 
-
     }else{
       localStorage.removeItem('family_name')
       localStorage.removeItem('given_name')
       localStorage.removeItem('email')
       localStorage.removeItem('username')
       localStorage.removeItem('expires_at')
-      //routeRef._setForceLoginScreen(true)
     }
   }else{
     console.error(response)
@@ -43,7 +40,6 @@ UserIdentity.getUserIdentity().then((response)=>{
     <Routes
       auth={auth}
       forceLoginScreen={forceLoginScreen}
-
     />
     , document.getElementById('root') || document.createElement('div')
 

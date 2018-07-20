@@ -43,10 +43,68 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
           Create New
         </div>
         <div
+          className="hidden createLabbook"
+        >
+          <div
+            className="ToolTip__toggle createLabbook"
+            onClick={[Function]}
+          >
+            <div
+              className="ToolTip__glow-container"
+            >
+              <div
+                className="ToolTip__glow-ring-outer"
+              >
+                <div
+                  className="ToolTip__glow-ring-inner"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="hidden createLabbook"
+          />
+          <div
+            className="hidden createLabbook"
+          >
+            Clicking on the 'Create New' button will open the new Project window, letting you name and select a Base for the new Project.
+          </div>
+        </div>
+        <div
           className="Labbooks__labbook-button-import"
           onClick={[Function]}
         >
           Import Existing
+        </div>
+        <div
+          className="hidden importLabbook"
+        >
+          <div
+            className="ToolTip__toggle importLabbook"
+            onClick={[Function]}
+          >
+            <div
+              className="ToolTip__glow-container"
+            >
+              <div
+                className="ToolTip__glow-ring-outer"
+              >
+                <div
+                  className="ToolTip__glow-ring-inner"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="hidden importLabbook"
+          />
+          <div
+            className="hidden importLabbook"
+          >
+            Clicking on the Import Existing' button transition the card to Import mode. 
+             You can import by using a URL of a published Project or by uploading an exported Project's .zip file. 
+             You can also directly import Projects that have been shared with you in the Cloud view.
+          </div>
         </div>
       </div>
       <div

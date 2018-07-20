@@ -114,7 +114,7 @@ exports[`Test CodeBrowser snapshot renders 1`] = `
               <td
                 className="modified"
               >
-                a month ago
+                2 months ago
               </td>
             </tr>
             <tr
@@ -162,7 +162,7 @@ exports[`Test CodeBrowser snapshot renders 1`] = `
               <td
                 className="modified"
               >
-                a month ago
+                2 months ago
               </td>
             </tr>
             <tr
@@ -210,7 +210,7 @@ exports[`Test CodeBrowser snapshot renders 1`] = `
               <td
                 className="modified"
               >
-                a month ago
+                2 months ago
               </td>
             </tr>
             <tr
@@ -258,7 +258,7 @@ exports[`Test CodeBrowser snapshot renders 1`] = `
               <td
                 className="modified"
               >
-                a month ago
+                2 months ago
               </td>
             </tr>
             <tr
@@ -306,7 +306,7 @@ exports[`Test CodeBrowser snapshot renders 1`] = `
               <td
                 className="modified"
               >
-                a month ago
+                2 months ago
               </td>
             </tr>
           </tbody>
