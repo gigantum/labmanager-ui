@@ -11,6 +11,7 @@ exports[`Test CreateLabbook rendering 1`] = `
       </label>
       <input
         className=""
+        maxLength="36"
         onChange={[Function]}
         placeholder="Enter a unique, descriptive title"
         type="text"

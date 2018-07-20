@@ -539,8 +539,11 @@ class PackageDependencies extends Component {
             self.setState({
               disableInstall: false,
               packages: [],
-              installDependenciesButtonState: 'finished'
+              installDependenciesButtonState: 'error'
             })
+            setTimeout(()=>{
+              self.setState({installDependenciesButtonState: ''})
+              }, 2000)
           }
         }
       }

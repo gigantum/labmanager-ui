@@ -330,7 +330,6 @@ export default class WizardModal extends React.Component {
             ref="selectBase"
             selectBaseCallback={this._selectBaseCallback}
             toggleDisabledContinue={this._toggleDisabledContinue}
-            createLabbookMutation={this._createLabbookMutation}
             toggleMenuVisibility={this._toggleMenuVisibility}
           />),
           header: 'Select A Base',
