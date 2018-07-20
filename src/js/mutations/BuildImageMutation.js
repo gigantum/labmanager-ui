@@ -51,9 +51,9 @@ export default function BuildImageMutation(
             }
           })
         }
-        callback(response, error)
 
         FooterUtils.getJobStatus(response, 'buildImage', 'backgroundJobKey')
+        callback(response, error)
       },
       onError: err => console.error(err),
 
