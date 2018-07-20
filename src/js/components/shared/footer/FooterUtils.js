@@ -49,7 +49,7 @@ import uuidv4 from 'uuid/v4'
                 }
               setTimeout(()=>{
                 fetchStatus()
-              }, 500)
+              }, 1000)
 
             }else if(response.data.jobStatus.status === 'finished'){
 
@@ -66,17 +66,17 @@ import uuidv4 from 'uuid/v4'
             }else{
               setTimeout(()=>{
                 fetchStatus()
-              }, 500)
+              }, 1000)
             }
           }else{
             setTimeout(()=>{
               fetchStatus()
-            }, 500)
+            }, 1000)
           }
         }else{
           setTimeout(()=>{
             fetchStatus()
-          }, 500)
+          }, 1000)
         }
       })
     }
