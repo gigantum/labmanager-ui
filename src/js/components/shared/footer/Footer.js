@@ -43,7 +43,7 @@ export default class Footer extends Component {
     let footerString = JSON.stringify(footer)
     let stateString = JSON.stringify(this.state)
     if(footerString !== stateString){
-
+      console.log(footer)
       this.setState(footer);//triggers re-render when store updates
     }
 
@@ -55,7 +55,7 @@ export default class Footer extends Component {
 
           setTimeout(()=>{
 
-            this._removeMessage(messageItem)
+            //this._removeMessage(messageItem)
           }, timeInSeconds)
         }
       }
@@ -151,23 +151,9 @@ export default class Footer extends Component {
        'Footer--expand-extra': (this.state.open && this.state.uploadOpen)
       });
 
-    let mostRecentMessage = this.state.messageStack[this.state.messageStack.length - 1]
-
-    let statusClassType = '';
-
-    this.state.messageStack.forEach((messageItem)=>{
-      if(messageItem.className === "Footer__message--error"){
-          statusClassType = "error"
-      }else if((messageItem.className === "Footer__message--warning") && (statusClassType === '')){
-          statusClassType = "warning"
-      }
-    })
-
     let footerStatusClass = classNames({
         'Footer': !this.state.open,
-        'Footer__status': this.state.open,
-        'Footer__status--error': (statusClassType === 'error'),
-        'Footer__status--warning': (statusClassType === 'warning')
+        'Footer__status': this.state.open
     });
 
 
@@ -177,13 +163,13 @@ export default class Footer extends Component {
 
         <div
           className={footerStatusClass}>
-          { mostRecentMessage &&
+          {/* { mostRecentMessage &&
 
             <MainStatusMessage
               mostRecentMessage={mostRecentMessage}
               self={this}
             />
-          }
+          } */}
 
           <ListStatusMessages
             self={this}
@@ -257,10 +243,11 @@ let ListStatusMessages = ({self}) =>{
       'Footer__message-list--collapsed': !self.state.messageListOpen
     })
 
-  let mostRecentMessage = self.state.messageStack[self.state.messageStack.length - 1]
-  let messageList = self.state.messageStack.filter((messageItem)=>{
-    return (mostRecentMessage.id !== messageItem.id)
-  })
+  // let mostRecentMessage = self.state.messageStack[self.state.messageStack.length - 1]
+  let messageList = self.state.messageStack;
+  //self.state.messageStack.filter((messageItem)=>{
+  //   return (mostRecentMessage.id !== messageItem.id)
+  // })
 
 
   return (

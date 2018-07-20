@@ -83,7 +83,8 @@ export default (
     messageStack: messageStack,
     open: true,
     success: true,
-    showProgressBar: false
+    showProgressBar: false,
+    messageListOpen: true
   };
 }  else if (action.type === WARNING_MESSAGE) { //this is for only updating a single message
  let id = INFO_MESSAGE + tempId++
