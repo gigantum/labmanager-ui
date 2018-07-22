@@ -1,5 +1,5 @@
 //vendor
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
 //utilities
@@ -43,6 +43,7 @@ export default class BranchMenu extends Component {
       'collaboratorBeingRemoved': null,
       'collabKey': uuidv4(),
       'justOpened': true,
+      'syncWarningVisible': false,
       owner,
       labbookName
     }
@@ -90,11 +91,16 @@ export default class BranchMenu extends Component {
     closes menu
   */
   _closeMenu(evt) {
-    let isBranchMenu = (evt.target.className.indexOf('BranchMenu') > -1) || (evt.target.className.indexOf('CollaboratorModal') > -1)
+    let isBranchMenu = (evt.target.className.indexOf('BranchMenu') > -1) || (evt.target.className.indexOf('CollaboratorModal') > -1) || (evt.target.className.indexOf('BranchMenu__button-menu') > -1)
+
 
     if (!isBranchMenu && this.state.menuOpen) {
       this.setState({ menuOpen: false, justOpened: true })
       this.refs['collaborators'].setState({collaboratorModalVisible: false})
+    }
+
+    if(evt.target.className.indexOf('BranchMenu__sync-button') === -1){
+      this.setState({syncWarningVisible: false})
     }
 
   }
@@ -288,7 +294,9 @@ export default class BranchMenu extends Component {
     } else {
       const status = store.getState().containerStatus.status
 
-      this.setState({ menuOpen: false });
+      if(this.state.owner !== 'gigantum-examples'){
+        this.setState({ menuOpen: false });
+      }
 
       if((status === 'Stopped') || (status === 'Rebuild')){
 
@@ -300,79 +308,89 @@ export default class BranchMenu extends Component {
           if (response.data) {
 
             if (response.data.userIdentity.isSessionValid) {
-              store.dispatch({
-                type: 'MULTIPART_INFO_MESSAGE',
-                payload: {
-                  id: id,
-                  message: 'Syncing Project with Gigantum cloud ...',
-                  isLast: false,
-                  error: false
-                }
-              })
 
-              this.props.setSyncingState(true);
-              this._showContainerMenuMessage('syncing');
+              if(this.state.owner === 'gigantum-examples'){
 
-              SyncLabbookMutation(
-                this.state.owner,
-                this.state.labbookName,
-                false,
-                (error) => {
-                  this.props.setSyncingState(false);
-                  if (error) {
-                    store.dispatch({
-                      type: 'MULTIPART_INFO_MESSAGE',
-                      payload: {
-                        id: id,
-                        message: `Could not sync ${this.state.labbookName}`,
-                        messageBody: error,
-                        isLast: true,
-                        error: true
-                      }
-                    })
+                this.setState({syncWarningVisible: true})
 
-                    if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1) || (error[0].message.indexOf('Merge conflict') > -1)){
+              } else {
 
-                      self._toggleSyncModal()
-                    }
-                  } else {
-                    BuildImageMutation(
-                      this.state.labbookName,
-                      this.state.owner,
-                      false,
-                      (response, error) => {
-                        if (error) {
-                          console.error(error)
-                          store.dispatch(
-                            {
-                              type: 'MULTIPART_INFO_MESSAGE',
-                              payload: {
-                                id: id,
-                                message: `ERROR: Failed to build ${this.state.labookName}`,
-                                messsagesList: error,
-                                error: true
-                              }
-                            })
+                store.dispatch({
+                  type: 'MULTIPART_INFO_MESSAGE',
+                  payload: {
+                    id: id,
+                    message: 'Syncing Project with Gigantum cloud ...',
+                    isLast: false,
+                    error: false
+                  }
+                })
+
+                this.props.setSyncingState(true);
+                this._showContainerMenuMessage('syncing');
+
+                SyncLabbookMutation(
+                  this.state.owner,
+                  this.state.labbookName,
+                  false,
+                  (error) => {
+                    this.props.setSyncingState(false);
+                    if (error) {
+                      store.dispatch({
+                        type: 'MULTIPART_INFO_MESSAGE',
+                        payload: {
+                          id: id,
+                          message: `Could not sync ${this.state.labbookName}`,
+                          messageBody: error,
+                          isLast: true,
+                          error: true
                         }
                       })
-                    store.dispatch({
-                      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                      payload: {
-                        containerMenuOpen: false
+
+                      if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1) || (error[0].message.indexOf('Merge conflict') > -1)){
+
+                        self._toggleSyncModal()
                       }
-                    })
-                    store.dispatch({
-                      type: 'MULTIPART_INFO_MESSAGE',
-                      payload: {
-                        id: id,
-                        message: `Successfully synced ${this.state.labbookName}`,
-                        isLast: true,
-                        error: false
-                      }
-                    })
+                    } else {
+                      BuildImageMutation(
+                        this.state.labbookName,
+                        this.state.owner,
+                        false,
+                        (response, error) => {
+                          if (error) {
+                            console.error(error)
+                            store.dispatch(
+                              {
+                                type: 'MULTIPART_INFO_MESSAGE',
+                                payload: {
+                                  id: id,
+                                  message: `ERROR: Failed to build ${this.state.labookName}`,
+                                  messsagesList: error,
+                                  error: true
+                                }
+                              })
+                          }
+                        })
+                      store.dispatch({
+                        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+                        payload: {
+                          containerMenuOpen: false
+                        }
+                      })
+                      store.dispatch({
+                        type: 'MULTIPART_INFO_MESSAGE',
+                        payload: {
+                          id: id,
+                          message: `Successfully synced ${this.state.labbookName}`,
+                          isLast: true,
+                          error: false
+                        }
+                      })
+                    }
                   }
-                }
-              )
+                )
+
+              }
+
             } else {
 
               self.setState({
@@ -799,6 +817,20 @@ export default class BranchMenu extends Component {
               >
                 Sync Branch
                 </button>
+              {
+                this.state.syncWarningVisible &&
+                <Fragment>
+
+                  <div className="BranchMenu__menu-pointer">
+                  </div>
+
+                  <div className="BranchMenu__button-menu">
+                    Synching is disabled for example projects.
+                  </div>
+
+                </Fragment>
+              }
+
               </div>
             }
 
