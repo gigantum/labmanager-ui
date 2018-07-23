@@ -47,6 +47,34 @@ exports[`Test DashboardRemote 1`] = `
       <hr
         className="Labbooks__navigation-slider Labbooks__navigation-slider--1"
       />
+      <div
+        className="hidden cloudLocal"
+      >
+        <div
+          className="ToolTip__toggle cloudLocal"
+          onClick={[Function]}
+        >
+          <div
+            className="ToolTip__glow-container"
+          >
+            <div
+              className="ToolTip__glow-ring-outer"
+            >
+              <div
+                className="ToolTip__glow-ring-inner"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="hidden cloudLocal"
+        />
+        <div
+          className="hidden cloudLocal"
+        >
+          This allows you to switch between Local and Cloud Project listings. Both Projects you have created and Projects that have been shared with you will be visible.
+        </div>
+      </div>
     </ul>
   </div>
   <div

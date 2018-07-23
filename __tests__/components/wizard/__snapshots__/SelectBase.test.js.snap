@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test SelectBase 1`] = `
+exports[`SelectBase SelectBase snapshot 1`] = `
 <div
   className="SelectBase"
 >

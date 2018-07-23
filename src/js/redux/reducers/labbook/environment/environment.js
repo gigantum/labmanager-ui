@@ -9,6 +9,8 @@ export const CONTAINER_MENU_WARNING = 'CONTAINER_MENU_WARNING'
 export const UPDATE_CONTAINER_MENU_VISIBILITY = 'UPDATE_CONTAINER_MENU_VISIBILITY'
 export const SET_LATEST_PACKAGES = 'SET_LATEST_PACKAGES'
 export const SET_LATEST_FETCHED = 'SET_LATEST_FETCHED'
+export const SET_REFETCH_PENDING = 'SET_REFETCH_PENDING'
+export const FORCE_REFETCH = 'FORCE_REFETCH'
 
 
 
@@ -22,6 +24,8 @@ export default (
    'detailMode': false,
    'latestPackages': {},
    'latestFetched': false,
+   'refetchPending': false,
+   'forceRefetch': false,
  },
  action
 ) => {
@@ -67,6 +71,16 @@ if (action.type === CLOSE_ENVIRONMENT_MENUS) {
   return {
     ...state,
     latestFetched: action.payload.latestFetched
+  }
+} else if (action.type === SET_REFETCH_PENDING) {
+  return {
+    ...state,
+    refetchPending: action.payload.refetchPending
+  }
+} else if (action.type === FORCE_REFETCH) {
+  return {
+    ...state,
+    forceRefetch: action.payload.forceRefetch
   }
 }
 

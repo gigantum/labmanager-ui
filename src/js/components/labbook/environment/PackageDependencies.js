@@ -52,6 +52,7 @@ class PackageDependencies extends Component {
     this._setSelectedTab = this._setSelectedTab.bind(this)
     this._addPackageComponentsMutation = this._addPackageComponentsMutation.bind(this)
     this._updatePackages = this._updatePackages.bind(this)
+    this._refetch = this._refetch.bind(this)
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -105,16 +106,17 @@ class PackageDependencies extends Component {
   componentDidMount() {
     if(this.props.environment.packageDependencies.pageInfo.hasNextPage){
       this._loadMore() //routes query only loads 2, call loadMore
-    }
+    } else{
+      if(!store.getState().environment.latestFetched){
+        store.dispatch({
+          type: 'SET_LATEST_FETCHED',
+          payload: {
+            latestFetched: true,
+          }
+        })
 
-    if(!store.getState().environment.latestFetched){
-      store.dispatch({
-        type: 'SET_LATEST_FETCHED',
-        payload: {
-          latestFetched: true,
-        }
-      })
-      this._refetch();
+        this._refetch();
+      }
     }
 
     if(this.state.selectedTab === ''){
@@ -143,6 +145,16 @@ class PackageDependencies extends Component {
     if(this.state.packageMenuVisible !== environmentStore.packageMenuVisible){
       this.setState({packageMenuVisible: environmentStore.packageMenuVisible});//triggers re-render when store updates
     }
+    if(environmentStore.forceRefetch){
+      this._refetch();
+      store.dispatch({
+        type: 'FORCE_REFETCH',
+        payload: {
+          forceRefetch: false,
+        }
+      })
+    }
+
 
   }
   /*
@@ -152,7 +164,7 @@ class PackageDependencies extends Component {
     logs callback
   */
   _loadMore() {
-
+    totalCount += 5;
     let self = this;
     this.props.relay.loadMore(
     5, // Fetch the next 5 feed items
@@ -178,23 +190,21 @@ class PackageDependencies extends Component {
     refetches package dependencies
   */
   _refetch(){
-
     let self = this;
     let relay = this.props.relay
     let packageDependencies = this.props.environment.packageDependencies
 
     if(packageDependencies.edges.length > 0){
 
-      let cursor =  packageDependencies.edges[packageDependencies.edges.length - 1].node.cursor
-
       relay.refetchConnection(
-        totalCount + 5,
+        null,
         (response) =>{
           self.setState({forceRender: true})
         },
         {
+          first: 1000,
           hasNext: true,
-          cursor: cursor
+          cursor: null,
         }
       )
     }
@@ -484,6 +494,7 @@ class PackageDependencies extends Component {
           })
 
           if(filteredInput.length){
+            totalCount += filteredInput.length
             AddPackageComponentsMutation(
               labbookName,
               owner,
@@ -506,13 +517,12 @@ class PackageDependencies extends Component {
                     }
                   })
                 } else {
-                  self.props.buildCallback()
+                  self.props.buildCallback(true)
                   self.setState({
                     disableInstall: false,
                     packages: [],
                     installDependenciesButtonState: 'finished'
                   })
-                  self._refetch()
                   setTimeout(()=>{
                   self.setState({installDependenciesButtonState: ''})
                   }, 2000)
@@ -529,8 +539,11 @@ class PackageDependencies extends Component {
             self.setState({
               disableInstall: false,
               packages: [],
-              installDependenciesButtonState: 'finished'
+              installDependenciesButtonState: 'error'
             })
+            setTimeout(()=>{
+              self.setState({installDependenciesButtonState: ''})
+              }, 2000)
           }
         }
       }
@@ -659,13 +672,12 @@ class PackageDependencies extends Component {
                 }
               })
             } else {
-              self.props.buildCallback()
+              self.props.buildCallback(true)
               self.setState({
                 disableInstall: false,
                 packages: [],
                 installDependenciesButtonState: 'finished'
               })
-              self._refetch()
               setTimeout(()=>{
               self.setState({installDependenciesButtonState: ''})
               }, 2000)
@@ -980,7 +992,6 @@ export default createPaginationContainer(
    },
    getVariables(props, {count}, fragmentVariables) {
 
-    totalCount += count
     let first = totalCount;
     let length = props.environment.packageDependencies.edges.length
     const {labbookName} = store.getState().routes

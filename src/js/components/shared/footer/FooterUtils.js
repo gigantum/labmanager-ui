@@ -16,7 +16,7 @@ const FooterUtils = {
     const refetch = () => {
       setTimeout(() => {
         fetchStatus()
-      }, 500)
+      }, 1000)
     }
     /**
       *  @param {}
@@ -51,6 +51,22 @@ const FooterUtils = {
                 error: false
               }
             })
+
+
+            if(store.getState().environment.refetchPending){
+              store.dispatch({
+                type: 'FORCE_REFETCH',
+                payload: {
+                  forceRefetch: true,
+                }
+              })
+              store.dispatch({
+                type: 'SET_REFETCH_PENDING',
+                payload: {
+                  refetchPending: false
+                }
+              })
+            }
 
             refetch()
 

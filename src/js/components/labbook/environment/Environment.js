@@ -34,7 +34,7 @@ class Environment extends Component {
   *  @param {None}
   *  callback that triggers buildImage mutation
   */
-  _buildCallback = () => {
+  _buildCallback = (refetchPending) => {
     const {labbookName, owner} = this.state
     this.props.setBuildingState(true)
     if(store.getState().containerStatus.status === 'Running'){
@@ -71,6 +71,17 @@ class Environment extends Component {
                   })
                 }
 
+                if(refetchPending){
+
+                  store.dispatch({
+                    type: 'SET_REFETCH_PENDING',
+                    payload: {
+                      refetchPending: true
+                    }
+                  })
+
+                }
+
                 return "finished"
               }
             )
@@ -93,6 +104,16 @@ class Environment extends Component {
               }
             })
           }
+
+          if(refetchPending){
+            store.dispatch({
+              type: 'SET_REFETCH_PENDING',
+              payload: {
+                refetchPending: true
+              }
+            })
+          }
+
 
           return "finished"
         }
@@ -130,7 +151,7 @@ class Environment extends Component {
              />
 
             <PackageDependencies
-              ref="packageDependencies"
+              componentRef={ref => this.packageDependencies = ref}
               environment={this.props.labbook.environment}
               environmentId={this.props.labbook.environment.id}
               labbookId={this.props.labbook.id}
