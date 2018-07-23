@@ -144,6 +144,16 @@ td.PackageDependencies__td-version {
   border: none;
 }
 
+.PackageDependencies__button--remove:disabled{
+  opacity: 0.2;
+  border: none;
+}
+
+.PackageDependencies__button--remove:disabled:hover {
+  background: url('../images/icons/check-unselected.svg') no-repeat 50% 50% !important;
+  border: none;
+}
+
 .PackageDependencies__button--remove--selected:focus,
 .PackageDependencies__button--remove--selected:hover,
   .PackageDependencies__button--remove--selected  {
