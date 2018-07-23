@@ -131,7 +131,7 @@ export default class ContainerStatus extends Component {
 
       FetchContainerStatus.getContainerStatus(owner, labbookName).then((response, error) => {
 
-        if(response.labbook){
+        if(response && response.labbook){
 
           const { environment } = response.labbook
           //reset build flags
@@ -167,6 +167,14 @@ export default class ContainerStatus extends Component {
             })
           }
 
+        }else{
+          store.dispatch({
+            type: 'ERROR_MESSAGE',
+            payload: {
+              message: 'Failed to get project status',
+              messageBody: [{ message: 'If this error persists, restart docker and gigantum.' }]
+            }
+          })
         }
         //refetches status after a 3 second timeout
         setTimeout(() => {

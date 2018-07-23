@@ -24,6 +24,22 @@ $footerElements: basic, progressBar, status, section, message, button;
   font-weight: 400;
 }
 
+.Footer__disc-button{
+
+  transition: all 0.25s;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: $azure url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiP…I/IiBmaWxsPSIjMDA3RUE4Ij48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=) no-repeat center center;
+    background-size: 60px;
+    position: fixed;
+    bottom: 25px;
+    right: 95px;
+    cursor: pointer;
+    z-index: index($elements, helper);
+    border: 1px solid white;
+}
+
 .Footer--open {
   max-height: 240px;
 }
@@ -59,7 +75,8 @@ $footerElements: basic, progressBar, status, section, message, button;
   z-index: index($footerElements, section);
 
   width: calc(100% - 40px);
-  margin: 0 0px;
+  margin: 0 20px;
+  text-align: left;
 
   text-align: center;
 }
@@ -193,7 +210,9 @@ $footerElements: basic, progressBar, status, section, message, button;
     margin: 0 15px;
     vertical-align: middle;
     line-height: 40px;
-
+    padding-left: 30px;
+    background: url(../images/icons/warning.svg) no-repeat center left;
+    background-size: 18px;
 
   }
 

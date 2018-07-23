@@ -151,36 +151,31 @@ export default class Footer extends Component {
        'Footer--expand-extra': (this.state.open && this.state.uploadOpen)
       });
 
-    let footerStatusClass = classNames({
-        'Footer': !this.state.open,
-        'Footer__status': this.state.open
+    let footerButtonClass = classNames({
+        'Footer__disc-button': true,
+        'Footer__disc-button--open': this.state.open
     });
 
 
 
     return (
-      <div id="footer" className={footerClass}>
-
-        <div
-          className={footerStatusClass}>
-          {/* { mostRecentMessage &&
-
-            <MainStatusMessage
-              mostRecentMessage={mostRecentMessage}
-              self={this}
-            />
-          } */}
+      <div>
+        <div id="footer" className={footerClass}>
 
           <ListStatusMessages
             self={this}
           />
 
+          <FooterUpload
+            self={this}
+          />
+
         </div>
 
-        <FooterUpload
-          self={this}
-        />
-
+        <div
+          onCick={()=> this._toggleMessageList()}
+          className={footerButtonClass}>
+        </div>
       </div>
     )
   }
