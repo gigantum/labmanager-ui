@@ -145,8 +145,8 @@ export default class RemoteLabbookPanel extends Component {
                 }
               })
             BuildImageMutation(
-            labbookName,
-            owner,
+            response.importRemoteLabbook.newLabbookEdge.node.name,
+            response.importRemoteLabbook.newLabbookEdge.node.owner,
             false,
             (response, error)=>{
               if(error){
@@ -163,7 +163,7 @@ export default class RemoteLabbookPanel extends Component {
                 })
               }
             })
-            self.props.history.replace(`/projects/${owner}/${labbookName}`)
+            self.props.history.replace(`/projects/${response.importRemoteLabbook.newLabbookEdge.node.owner}/${response.importRemoteLabbook.newLabbookEdge.node.name}`)
           }else{
 
             BuildImageMutation(

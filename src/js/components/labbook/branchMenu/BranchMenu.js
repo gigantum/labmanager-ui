@@ -7,7 +7,6 @@ import JobStatus from 'JS/utils/JobStatus'
 //mutations
 import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
 import PublishLabbookMutation from 'Mutations/branches/PublishLabbookMutation'
-import PushActiveBranchToRemoteMutation from 'Mutations/branches/PushActiveBranchToRemoteMutation'
 import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //queries
@@ -417,38 +416,6 @@ export default class BranchMenu extends Component {
     }
   }
 
-  /**
-  *  @param {}
-  *  pushes code to remote
-  *  @return {string}
-  */
-  _pullFromRemote() {
-    let self = this;
-    this._checkSessionIsValid().then((response) => {
-      if (response.data) {
-
-        if (response.data.userIdentity.isSessionValid) {
-          PushActiveBranchToRemoteMutation(
-            this.state.owner,
-            this.state.labbookName,
-            'origin',
-            this.props.labbookId,
-            (error) => {
-              if (error) {
-                console.log(error)
-              }
-            }
-          )
-        } else {
-
-          //auth.login()
-          self.setState({
-            showLoginPrompt: true
-          })
-        }
-      }
-    })
-  }
   /**
   *  @param {}
   *  shows collaborators warning if user is not owner
