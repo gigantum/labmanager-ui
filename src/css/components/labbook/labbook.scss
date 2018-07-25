@@ -21,7 +21,7 @@
 
 .Labbook__name-branch{
   color: $jet;
-  font-size: 26px;
+  font-size: 1.4vw;
 
 }
 
@@ -31,10 +31,13 @@
   font-size: 48px;
   word-break: break-all;
   line-height: 48px;
-  height: 40px;
+  height: 49px;
   overflow: visible;
   align-content: baseline;
   align-self: flex-end;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .Labbook__branch-title{
   opacity: 1;
@@ -264,6 +267,7 @@
   @include flex(space-between, column);
 }
 .Labbook__column-container--flex-1{
+  max-width: 66%;
   @extend .Labbook__column-container;
   flex: 1;
 }
