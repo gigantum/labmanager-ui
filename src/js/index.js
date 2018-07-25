@@ -35,7 +35,7 @@ UserIdentity.getUserIdentity().then((response)=>{
   }else{
     console.error(response)
   }
-
+  console.log('renders')
   render(
     <Routes
       auth={auth}

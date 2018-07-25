@@ -28,7 +28,10 @@ const FooterUtils = {
 
       JobStatus.updateFooterStatus(result[type][key]).then((response) => {
 
-        if (response.data && response.data.jobStatus && response.data.jobStatus.jobMetadata && response.data.jobStatus.jobMetadata.feedback) {
+        if (response.data &&
+          response.data.jobStatus &&
+          response.data.jobStatus.jobMetadata &&
+          (response.data.jobStatus.jobMetadata.indexOf('feedback') > -1)){
 
           let fullMessage = JSON.parse(response.data.jobStatus.jobMetadata).feedback
           fullMessage = fullMessage.lastIndexOf('\n') === (fullMessage.length - 1)
@@ -47,6 +50,7 @@ const FooterUtils = {
               payload: {
                 id: response.data.jobStatus.id,
                 message: message,
+                messageBody: [{message: fullMessage}],
                 isLast: false,
                 error: false
               }
@@ -71,13 +75,15 @@ const FooterUtils = {
             refetch()
 
           } else if (response.data.jobStatus.status === 'finished') {
-
+            let fullMessage = JSON.parse(response.data.jobStatus.jobMetadata).feedback
             store.dispatch({
               type: 'MULTIPART_INFO_MESSAGE',
               payload: {
                 id: response.data.jobStatus.id,
                 message: message,
-                isLast: true
+                messageBody: [{message: fullMessage}],
+                isLast: true,
+
               }
             })
 

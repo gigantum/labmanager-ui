@@ -195,7 +195,7 @@ class PackageDependencies extends Component {
     let packageDependencies = this.props.environment.packageDependencies
 
     if(packageDependencies.edges.length > 0){
-
+      
       relay.refetchConnection(
         null,
         (response) =>{

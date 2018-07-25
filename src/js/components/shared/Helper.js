@@ -8,9 +8,15 @@ let unsubscribe;
 export default class Helper extends Component {
   constructor(props){
     super(props)
+
     this.state = store.getState().helper
+
     this.state.helperMenuOpen = false;
+
     this._toggleIsVisible = this._toggleIsVisible.bind(this);
+    this._resize = this._resize.bind(this)
+
+
   }
 
   /**
@@ -22,16 +28,34 @@ export default class Helper extends Component {
     unsubscribe = store.subscribe(() =>{
         this.storeDidUpdate(store.getState().helper)
     })
+
+    window.addEventListener("resize", this._resize);
   }
+  /**
+    * @param {}
+    * updates state from redux store
+  */
   storeDidUpdate(helper){
-    if(this.state.isVisible !== helper.isVisible){
-      this.setState({isVisible: helper.isVisible})
+
+    const helperString = JSON.stringify(helper)
+    const stateString = JSON.stringify(this.state)
+
+    if(stateString !== helperString){
+      this.setState({resize: helper.resize, isVisible: helper.helperMenuOpen})
     }
   }
+  /**
+    * @param {}
+    * unsubcribe from store
+  */
   componentWillUnmount(){
     unsubscribe();
   }
 
+  /**
+    * @param {}
+    * update store
+  */
   _toggleIsVisible(){
     store.dispatch({
       type: 'UPDATE_HELPER_VISIBILITY',
@@ -41,15 +65,31 @@ export default class Helper extends Component {
     })
   }
 
+  /**
+    * @param {}
+    * update store to risize component
+  */
+  _resize(){
+    store.dispatch({
+      type: 'RESIZE_HELPER',
+      payload: {}
+    })
+  }
+
   render(){
+    let bodyWidth = document.body.clientWidth;
+
     let menuCSS = classNames({
       'Helper__menu': this.state.helperMenuOpen,
       'hidden': !this.state.helperMenuOpen
     })
+
     let helperButtonCSS = classNames({
       'Helper-button': true,
-      'Helper-button--open': this.state.helperMenuOpen
+      'Helper-button--open': this.state.helperMenuOpen,
+      'Helper-button--side-view': bodyWidth < 1600
     })
+
     return(
       <div className="Helper">
         <div
@@ -70,7 +110,7 @@ export default class Helper extends Component {
           </div>
           <div
             className="Helper__menu-docs"
-            onClick={()=> window.open('https://docs.gigantum.com/docs')}
+            onClick={() => window.open('https://docs.gigantum.com/docs')}
           >
             <h5>Docs</h5>
             <div
