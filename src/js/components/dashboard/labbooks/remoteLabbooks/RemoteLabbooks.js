@@ -152,7 +152,7 @@ class RemoteLabbooks extends Component {
           this.state.deleteModalVisible &&
           <DeleteLabbook
             handleClose={() => { this._toggleDeleteModal() }}
-            labbookListId={this.props.remoteLabbooksId}
+            labbookListId={this.props.labbookListId}
             remoteId={this.state.deleteData.remoteId}
             remoteConnection={'RemoteLabbooks_remoteLabbooks'}
             toggleModal={this._toggleDeleteModal}

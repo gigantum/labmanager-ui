@@ -69,7 +69,7 @@ export const CollaboratorsQuery =  graphql`
       collaborators = collaborators && collaborators[labbookName];
       canManageCollaborators = canManageCollaborators && canManageCollaborators[labbookName];
       this.props.checkSessionIsValid().then((res) => {
-        if(res.data && res.data.userIdentity.isSessionValid) {
+        if(res.data && res.data.userIdentity && res.data.userIdentity.isSessionValid) {
           if(this.state.sessionValid === false){
             this.setState({sessionValid: true})
           }
