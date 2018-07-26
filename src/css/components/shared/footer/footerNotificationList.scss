@@ -1,4 +1,6 @@
 .Footer__messages-section {
+    position: relative;
+
     z-index: index($footerElements, section);
     background: $azure;
 
@@ -10,7 +12,7 @@
 
     text-align: left;
 
-    transition: height 0.25s, max-height 0.25s, opacity 0.1s;
+    transition: height 0.25s, max-height 0.25s, opacity 0.1s, width 0.25s;
 
     @extend .box-shadow;
 }
@@ -19,6 +21,10 @@
     //height: 0;
     max-height: 0px;
     border-width: 0;
+}
+
+.Footer__message-section--helper-open{
+  width: calc(100% - 280px);
 }
 
 .Footer__message{
@@ -40,6 +46,7 @@
 
 .Footer__message-body-content--text {
     white-space: pre-wrap;
+    word-break: break-all;
 }
 
 .Footer__flex-container {
@@ -79,7 +86,8 @@
 
 
 .Footer__message-list {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     width: 100%;
     height: auto;
@@ -103,7 +111,7 @@
 .Footer__button--view-all{
     position: absolute;
     top: -14px;
-    right: 140px;
+    right: 30px;
 
     width: 110px;
     padding: 2px 20px;

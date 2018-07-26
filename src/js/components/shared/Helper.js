@@ -41,7 +41,11 @@ export default class Helper extends Component {
     const stateString = JSON.stringify(this.state)
 
     if(stateString !== helperString){
-      this.setState({resize: helper.resize, isVisible: helper.helperMenuOpen})
+      this.setState({
+        resize: helper.resize,
+        isVisible: helper.helperMenuOpen,
+        footerVisible: helper.footerVisible
+      })
     }
   }
   /**
@@ -63,6 +67,29 @@ export default class Helper extends Component {
         isVisible: !store.getState().helper.isVisible
       }
     })
+
+    store.dispatch({
+      type: 'HELPER_VISIBLE',
+      payload:{
+        helperVisible: !store.getState().helper.isVisible
+      }
+    })
+  }
+  /**
+    * @param {}
+    * toggles menu view
+  */
+  _toggleMenuView(){
+    store.dispatch({
+      type: 'HELPER_VISIBLE',
+      payload:{
+        helperVisible: !this.state.helperMenuOpen
+      }
+    })
+
+    this.setState({helperMenuOpen: !this.state.helperMenuOpen})
+
+
   }
 
   /**
@@ -81,7 +108,8 @@ export default class Helper extends Component {
 
     let menuCSS = classNames({
       'Helper__menu': this.state.helperMenuOpen,
-      'hidden': !this.state.helperMenuOpen
+      'hidden': !this.state.helperMenuOpen,
+      'Helper__men--footer-open': this.state.footerVisible
     })
 
     let helperButtonCSS = classNames({
@@ -94,7 +122,7 @@ export default class Helper extends Component {
       <div className="Helper">
         <div
           className={helperButtonCSS}
-          onClick={()=> this.setState({helperMenuOpen: !this.state.helperMenuOpen})}
+          onClick={()=> this._toggleMenuView()}
         >
         </div>
         <div className={menuCSS}>

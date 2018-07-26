@@ -61,7 +61,7 @@ export default class Footer extends Component {
 
           setTimeout(() => {
 
-            //this._removeMessage(messageItem)
+            this._removeMessage(messageItem)
           }, timeInSeconds)
         }
       }
@@ -188,11 +188,9 @@ export default class Footer extends Component {
     let footerButtonClass = classNames({
       'Footer__disc-button': true,
       'Footer__disc-button--open': this.state.messageListOpen,
-      'Footer__dist-button--side-view': bodyWidth < 1600
+      'Footer__dist-button--side-view': bodyWidth < 1600,
+      'Footer__disc-button--helper-open': this.state.helperVisible
     });
-
-
-
 
 
     return (<div className="Footer__container">

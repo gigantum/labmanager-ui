@@ -11,8 +11,6 @@ $footerElements: basic, progressBar, status, section, message, button;
     bottom: 0;
     left: $sideBarWidth;
 
-    height: 0px;
-
     transition: height 0.5s;
 
     color: $white;
@@ -51,6 +49,18 @@ $footerElements: basic, progressBar, status, section, message, button;
   height: 40px;
   border-radius: 20px 0 0 20px;
   right: 0px;
+  transition: bottom 0.25s;
+}
+
+
+
+.Footer__dist-button--side-view.Footer__disc-button--helper-open{
+  right: 0px;
+  bottom: 240px;
+}
+
+.Footer__disc-button--helper-open.Footer__disc-button--open{
+  right: 240px;
 }
 
 .Footer__disc-button--open {

@@ -26,6 +26,7 @@ export const UPDATE_HISTORY_STACK_ITEM_VISIBILITY = 'UPDATE_HISTORY_STACK_ITEM_V
 
 export const RESIZE_FOOTER = 'RESIZE_FOOTER'
 export const UPDATE_HISTORY_VIEW = 'UPDATE_HISTORY_VIEW'
+export const HELPER_VISIBLE = 'HELPER_VISIBLE'
 
 let tempId = 0
 
@@ -47,7 +48,8 @@ export default(state = {
   totalBytes: 0,
   labbookSuccess: false,
   messageListOpen: false,
-  viewHistory: false
+  viewHistory: false,
+  helperVisible: false
 }, action) => {
 
   const checkHistoryStackLength = (messageStackHistory) => {
@@ -299,37 +301,51 @@ export default(state = {
   } else if (action.type === TOGGLE_MESSAGE_LIST) {
 
     let messageStack = []
+
+    let messageStackHistory = state.messageStackHistory.map((message)=>{
+      message.dismissed = true
+      return message
+    })
+
+    console.log(messageStackHistory)
+
     return {
       ...state,
       messageListOpen: action.payload.messageListOpen,
       viewHistory: action.payload.viewHistory,
-      messageStack
+      messageStack,
+      messageStackHistory
     }
 
   } else if (action.type === MULTIPART_INFO_MESSAGE) {
+
     let messageStackHistory = state.messageStackHistory,
         messageStack = state.messageStack,
         previousHistoryIndex = 0,
         previousIndex = 0,
-        messageBodyOpen = false;
-
-
+        messageBodyOpen = false,
+        messageListOpen = false;
 
     let doesMessageExist = messageStack.filter((message, index) => {
 
       if (message.id === action.payload.id) {
         previousIndex = index
         messageBodyOpen = message.messageBodyOpen
+        messageListOpen = true;
       }
 
       return message.id === action.payload.id
     })
 
+
     let doesHistoryMessageExist = messageStackHistory.filter((message, index) => {
 
       if (message.id === action.payload.id) {
-        previousHistoryIndex = index
+        previousHistoryIndex = index;
+        console.log(message.dismissed)
+        messageListOpen = !(message.dismissed === true);
       }
+
 
       return message.id === action.payload.id
     })
@@ -347,7 +363,7 @@ export default(state = {
         : [],
       error: action.payload.error,
       messageBodyOpen,
-      dismissed: false
+      dismissed: (doesHistoryMessageExist.length > 0) ? doesHistoryMessageExist[0].dismissed : false
     }
 
     if (doesMessageExist.length > 0) {
@@ -364,12 +380,9 @@ export default(state = {
       messageStackHistory.unshift(message)
     }
 
-
-
-
-
-
     messageStackHistory = checkHistoryStackLength(messageStackHistory)
+
+    messageListOpen = state.messageListOpen ? state.messageListOpen : messageListOpen
 
     return {
       ...state,
@@ -381,7 +394,7 @@ export default(state = {
       open: true,
       success: true,
       error: action.payload.error,
-      messageListOpen: true,
+      messageListOpen,
       viewHistory: false
     }
   } else if (action.type === RESET_FOOTER_STORE) {
@@ -432,6 +445,12 @@ export default(state = {
     return {
       ...state,
       viewHistory: true
+    };
+  }else if (action.type === HELPER_VISIBLE){
+
+    return {
+      ...state,
+      helperVisible: action.payload.helperVisible
     };
   }
 

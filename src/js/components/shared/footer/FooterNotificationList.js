@@ -17,7 +17,8 @@ export default class FooterNotificationList extends Component {
 
     let footerMessageSectionClass = classNames({
         'Footer__messages-section': true,
-        'Footer__messages-section--collapsed': !this.props.parentState.messageListOpen
+        'Footer__messages-section--collapsed': !this.props.parentState.messageListOpen,
+        'Footer__message-section--helper-open': this.props.parentState.helperVisible
     })
 
     let footerMessageListClass = classNames({
@@ -28,6 +29,7 @@ export default class FooterNotificationList extends Component {
     let viewAllButtonClass = classNames({
         'Footer__button--view-all': true,
         'hidden': this.props.parentState.viewHistory || !this.props.parentState.messageListOpen
+
     })
 
 
@@ -38,6 +40,7 @@ export default class FooterNotificationList extends Component {
     })
 
     let height = messageListOpenItems.length > 0 ?  document.body.clientHeight - 200 : 260;
+
 
     return (
       <div className={footerMessageSectionClass}>

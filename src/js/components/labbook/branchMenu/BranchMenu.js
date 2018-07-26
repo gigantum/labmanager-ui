@@ -102,7 +102,7 @@ export default class BranchMenu extends Component {
       this.refs['collaborators'].setState({collaboratorModalVisible: false})
     }
 
-    if(evt.target.className.indexOf('BranchMenu__sync-button') === -1){
+    if((evt.target.className.indexOf('BranchMenu__sync-button') === -1) && this.state.syncWarningVisible){
       this.setState({syncWarningVisible: false})
     }
 
