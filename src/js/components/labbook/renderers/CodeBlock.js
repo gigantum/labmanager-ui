@@ -17,10 +17,11 @@ class CodeBlock extends React.PureComponent {
 
   render() {
     let code = this.props.value
+    console.log(code)
     return (
       <SyntaxHighlighter
         className="CodeBlock"
-        language='python'
+        language='docker'
         style={customizedStyling}
       >
         {code}

@@ -1,6 +1,8 @@
 //vendor
 import React, { Component, Fragment } from 'react'
-//components
+import ReactMarkdown from 'react-markdown'
+//Components
+import CodeBlock from 'Components/labbook/renderers/CodeBlock'
 import ToolTip from 'Components/shared/ToolTip';
 //mutations
 import AddCustomDockerMutation from 'Mutations/AddCustomDockerMutation'
@@ -29,9 +31,15 @@ export default class CustomDockerfile extends Component {
         const validDictionary = new Set(['LABEL', 'RUN', 'ENV', '#'])
         let splitDockerSnippet = this.state.dockerfileContent.split(/\n|\\n/);
         let valid = true;
-        splitDockerSnippet.forEach((snippetLine) => {
+        splitDockerSnippet.forEach((snippetLine, index) => {
           let firstVal = snippetLine.split(' ')[0];
-          if (firstVal.length && !validDictionary.has(firstVal.toUpperCase()) && firstVal[0] !== "#") {
+          let previousLine = splitDockerSnippet[index - 1] && splitDockerSnippet[index - 1]
+          let isPreviousLineExtended = false
+          if(previousLine){
+            let strippedSpaces = previousLine.split(' ').join('')
+            isPreviousLineExtended = strippedSpaces[strippedSpaces.length - 1] === '\\'
+          }
+          if ((firstVal.length && !validDictionary.has(firstVal.toUpperCase()) && firstVal[0] !== "#") && !isPreviousLineExtended) {
             valid = false;
           }
         });
@@ -117,6 +125,7 @@ export default class CustomDockerfile extends Component {
 
   render() {
     let dockerfileCSS = this.state.dockerfileContent ? 'column-1-span-9' : 'column-1-span-9 empty'
+    let renderedContent = this.state.dockerfileContent ? this.state.dockerfileContent : 'No commands provided.'
     return (
       <div className="CustomDockerfile">
         <div className="Environment__header-container">
@@ -162,9 +171,9 @@ export default class CustomDockerfile extends Component {
             :
             <Fragment>
               <div className={dockerfileCSS}>
-                <p className={dockerfileCSS} >
-                  {this.state.dockerfileContent ? this.state.dockerfileContent : 'No commands provided.'}
-                </p>
+                  {/* <p className={dockerfileCSS} > */}
+                    <ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={renderedContent}/>
+                  {/* </p> */}
               </div>
               <div className="column-1-span-1">
                 <button
