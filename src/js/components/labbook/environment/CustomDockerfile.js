@@ -125,7 +125,7 @@ export default class CustomDockerfile extends Component {
 
   render() {
     let dockerfileCSS = this.state.dockerfileContent ? 'column-1-span-9' : 'column-1-span-9 empty'
-    let renderedContent = this.state.dockerfileContent ? this.state.dockerfileContent : 'No commands provided.'
+    let renderedContent = this.state.dockerfileContent ? '```\n' + this.state.dockerfileContent + '\n```' : 'No commands provided.'
     return (
       <div className="CustomDockerfile">
         <div className="Environment__header-container">
@@ -171,9 +171,11 @@ export default class CustomDockerfile extends Component {
             :
             <Fragment>
               <div className={dockerfileCSS}>
-                  {/* <p className={dockerfileCSS} > */}
-                    <ReactMarkdown renderers={{code: props => <CodeBlock  {...props }/>}} className="ReactMarkdown" source={renderedContent}/>
-                  {/* </p> */}
+                    <ReactMarkdown
+                      renderers={{code: props => <CodeBlock  {...props } language="dockerfile"/>}}
+                      className="ReactMarkdown"
+                      source={renderedContent}
+                    />
               </div>
               <div className="column-1-span-1">
                 <button

@@ -8,3 +8,12 @@
       background: $jet !important;
     }
 }
+.CodeBlock--docker{
+  background: $white !important;
+  code{
+    background: $white !important;
+    border: none;
+    max-height: none;
+    max-width: none;
+  }
+}
