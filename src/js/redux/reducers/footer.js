@@ -187,7 +187,7 @@ export default(state = {
     }
 
     let uploadStack = state.uploadStack
-    uploadStack.unshift(message)
+    uploadStack.push(message)
 
     return {
       ...state,
@@ -324,7 +324,8 @@ export default(state = {
         previousHistoryIndex = 0,
         previousIndex = 0,
         messageBodyOpen = false,
-        messageListOpen = false;
+        messageListOpen = state.messageListOpen,
+        hasBeenDismissed = false;
 
     let doesMessageExist = messageStack.filter((message, index) => {
 
@@ -342,10 +343,12 @@ export default(state = {
 
       if (message.id === action.payload.id) {
         previousHistoryIndex = index;
-        console.log(message.dismissed)
-        messageListOpen = !(message.dismissed === true);
-      }
+        hasBeenDismissed = message.dismissed ? true : false
 
+        if(doesMessageExist.length === 0){
+           messageBodyOpen = message.messageBodyOpen
+        }
+      }
 
       return message.id === action.payload.id
     })
@@ -366,12 +369,14 @@ export default(state = {
       dismissed: (doesHistoryMessageExist.length > 0) ? doesHistoryMessageExist[0].dismissed : false
     }
 
+
     if (doesMessageExist.length > 0) {
 
       messageStack.splice(previousIndex, 1, message);
     }else{
       messageStack.unshift(message)
     }
+
 
     if (doesHistoryMessageExist.length > 0) {
 
@@ -381,8 +386,6 @@ export default(state = {
     }
 
     messageStackHistory = checkHistoryStackLength(messageStackHistory)
-
-    messageListOpen = state.messageListOpen ? state.messageListOpen : messageListOpen
 
     return {
       ...state,
@@ -395,7 +398,7 @@ export default(state = {
       success: true,
       error: action.payload.error,
       messageListOpen,
-      viewHistory: false
+      viewHistory: hasBeenDismissed && state.viewHistory
     }
   } else if (action.type === RESET_FOOTER_STORE) {
     return {
@@ -414,10 +417,8 @@ export default(state = {
   }else if (action.type === UPDATE_MESSAGE_STACK_ITEM_VISIBILITY) {
     let messageStack = state.messageStack;
     let messageStackHistory = state.messageStackHistory;
-    let messageStackItem = messageStack[action.payload.index];
 
-    messageStackItem.messageBodyOpen = !messageStackItem.messageBodyOpen
-    messageStack[action.payload.index] = messageStackItem
+    messageStack[action.payload.index].messageBodyOpen = !messageStack[action.payload.index].messageBodyOpen
 
     return {
       messageStack,
@@ -427,11 +428,9 @@ export default(state = {
 
    let messageStack = state.messageStack;
    let messageStackHistory = state.messageStackHistory;
-   let messageStackItem = messageStackHistory[action.payload.index];
 
-   messageStackItem.messageBodyOpen = !messageStackItem.messageBodyOpen
-   messageStackHistory[action.payload.index] = messageStackItem
-
+   messageStackHistory[action.payload.index].messageBodyOpen = !messageStackHistory[action.payload.index].messageBodyOpen
+    console.log(messageStackHistory)
    return {
      messageStack,
      messageStackHistory

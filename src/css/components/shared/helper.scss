@@ -3,7 +3,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: $azure url('../images/icons/helper.svg') no-repeat center center;
+  background: $azure url('../images/icons/help/helper.svg') no-repeat center center;
   background-size: 60px;
   position: fixed;
   bottom: 25px;
@@ -18,12 +18,13 @@
   height: 40px;
   border-radius: 20px 0 0 20px !important;
   right: 0px;
-  background-size: 40px;
+  background: $azure url('../images/icons/help/helper-simple.svg') no-repeat center center;
+  background-size: 26px;
 }
 
 .Helper-button--open{
   transition: all 0.25s;
-  background: url('../images/icons/helper-close.svg') no-repeat center center;
+  background: url('../images/icons/help/helper-close.svg') no-repeat center center;
   width: 50px;
   height: 50px;
   border-radius: 50%;

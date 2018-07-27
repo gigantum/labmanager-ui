@@ -36,11 +36,10 @@ $footerElements: basic, progressBar, status, section, message, button;
 
     cursor: pointer;
     transition: all 0.25s;
-
-    border: 1px solid white;
     border-radius: 50%;
-    background: $azure url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiP…I/IiBmaWxsPSIjMDA3RUE4Ij48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=) no-repeat center center;
+    background: $azure url(../images/icons/notifications/notification.svg) no-repeat center center;
     background-size: 60px;
+    @extend .box-shadow;
 }
 
 .Footer__dist-button--side-view{
@@ -50,11 +49,16 @@ $footerElements: basic, progressBar, status, section, message, button;
   border-radius: 20px 0 0 20px;
   right: 0px;
   transition: bottom 0.25s;
+  background: $azure url(../images/icons/notifications/notification-simple.svg) no-repeat center center;
+  background-size: 26px;
 }
 
-
+.Footer__disc-button.Footer__disc-button--helper-open{
+  right: 240px;
+}
 
 .Footer__dist-button--side-view.Footer__disc-button--helper-open{
+
   right: 0px;
   bottom: 240px;
 }
@@ -71,11 +75,13 @@ $footerElements: basic, progressBar, status, section, message, button;
     width: 40px;
     height: 40px;
 
-    background: $azure url(./../images/icons/close-white.svg) no-repeat center center;
-    background-size: 18px;
+    background: $azure url(../images/icons/notifications/notification-close.svg) no-repeat center center;
+    background-size: 40px;
     border-radius: 50%;
 
 }
+
+
 
 
 
@@ -135,4 +141,31 @@ $footerElements: basic, progressBar, status, section, message, button;
     flex: 1;
 
     color: $white;
+}
+
+.Footer__message-icon{
+  background: url(../images/icons/notifications/info-exclamation.svg) no-repeat center center;
+  background-size: 26px;
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  transform: rotate(180deg);
+  align-self: center;
+  flex: 0 1 22px;
+  min-height: 22px;
+  min-width: 22px;
+}
+.Footer__message--error{
+  .Footer__message-icon{
+    background: $crimson url(../images/icons/notifications/info-exclamation.svg) no-repeat center center;
+    background-size: 26px;
+    transform: rotate(0deg);
+  }
+}
+.Footer__message--warning{
+  .Footer__message-icon{
+    background: $goldenLemon url(../images/icons/notifications/info-exclamation.svg) no-repeat center center;
+    background-size: 26px;
+    transform: rotate(0deg);
+  }
 }

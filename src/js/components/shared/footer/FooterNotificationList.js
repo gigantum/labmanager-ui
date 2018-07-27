@@ -70,6 +70,7 @@ export default class FooterNotificationList extends Component {
                     className={messageItem.className}>
                     <div className="Footer__message-body">
                       <div className="Footer__flex-container">
+                        <div className="Footer__message-icon"></div>
                         <div className="Footer__message-item">
                           <p className="Footer__message-title">
                             {messageItem.message}
@@ -77,7 +78,7 @@ export default class FooterNotificationList extends Component {
                         </div>
 
                         { (messageItem.messageBody.length > 0) &&
-                          <div className="Footer__message-item">
+                          <div className="Footer__message-expand">
                             <div
                               className={toggleButton}
                               onClick={()=>{this.props.showMessageBody(index)}}>
@@ -106,14 +107,6 @@ export default class FooterNotificationList extends Component {
                         </ul>
                       </div>
                     </div>
-
-
-                    {messageItem.error &&
-                      <i
-                        onClick={()=>{this.props.removeMessage(messageItem)}}
-                        className="Footer__message-dismiss fa">
-                      </i>
-                    }
 
                   </li>)
                 })

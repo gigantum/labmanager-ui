@@ -154,8 +154,7 @@ export default class ContainerStatus extends Component {
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
-                message: 'Project failed to build:',
-                messageBody: [{ message: 'Check for and remove invalid dependencies and try again.' }]
+                message: 'Project failed to build: Check for and remove invalid dependencies and try again.',
               }
             })
           }
@@ -167,14 +166,6 @@ export default class ContainerStatus extends Component {
             })
           }
 
-        }else{
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: 'Failed to get project status',
-              messageBody: [{ message: 'If this error persists, restart docker and gigantum.' }]
-            }
-          })
         }
         //refetches status after a 3 second timeout
         setTimeout(() => {

@@ -27,11 +27,15 @@
   width: calc(100% - 280px);
 }
 
-.Footer__message{
+.Footer__message,
+.Footer__message--error,
+.Footer__message--warning{
   border-bottom: 1px solid $white;
 }
 
-.Footer__message:last-child{
+.Footer__message:last-child,
+.Footer__message--error:last-child
+.Footer__message--warning:last-child{
   border-bottom: 0px solid $white;
 }
 
@@ -53,14 +57,18 @@
     display: flex;
     align-content: center;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 
 .Footer__message-item {
     align-self: center;
-
+    width: calc(100% - 100px);
     margin: 0 20px;
+}
+
+.Footer__message-expand{
+    align-self: center;
 }
 
 .Footer__message-dismiss {
@@ -78,6 +86,10 @@
     background-size: 10px;
 
     line-height: 18px;
+}
+
+.Footer__message-title{
+  word-break: break-all;
 }
 
 .Footer__message-dismiss:hover {
@@ -140,6 +152,7 @@
     cursor: pointer;
     background: url(./../images/icons/down-arrow-white.svg) no-repeat center center;
     background-size: 18px;
+    flex: 0 1 30px;
 }
 
 .Footer__button--toggle.open {
