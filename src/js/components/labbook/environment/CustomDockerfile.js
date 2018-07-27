@@ -124,7 +124,7 @@ export default class CustomDockerfile extends Component {
 
 
   render() {
-    let dockerfileCSS = this.state.dockerfileContent ? 'column-1-span-9' : 'column-1-span-10 empty'
+    let dockerfileCSS = this.state.dockerfileContent ? 'column-1-span-11' : 'column-1-span-11 empty'
     let renderedContent = this.state.dockerfileContent ? '```\n' + this.state.dockerfileContent + '\n```' : 'No commands provided.'
     return (
       <div className="CustomDockerfile">
@@ -153,27 +153,29 @@ export default class CustomDockerfile extends Component {
             this.state.editingDockerfile ?
             <Fragment>
               <textarea
-                className="CustomDockerfile__content-input column-1-span-10"
+                className="CustomDockerfile__content-input column-1-span-11"
                 type="text"
                 onChange={(evt)=>{this.setState({dockerfileContent: evt.target.value})}}
                 placeholder="Enter dockerfile commands here"
                 defaultValue={this.state.dockerfileContent ? this.state.dockerfileContent: ''}
               >
               </textarea>
-              <div className="column-1-span-3">
-                <button
-                  disabled={this.state.savingDockerfile}
-                  onClick={()=> this._saveDockerfile()}
-                  className="CustomDockerfile__content-save-button"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={()=> this.setState({editingDockerfile: false, dockerfileContent: this.state.lastSavedDockerfileContent })}
-                  className="CustomDockerfile__content-cancel-button button--flat"
-                >
-                  Cancel
-                </button>
+              <div className="CustomDockerfile__button-container column-1-span-11">
+                <div className="column-1-span-2">
+                  <button
+                    onClick={()=> this.setState({editingDockerfile: false, dockerfileContent: this.state.lastSavedDockerfileContent })}
+                    className="CustomDockerfile__content-cancel-button button--flat"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    disabled={this.state.savingDockerfile}
+                    onClick={()=> this._saveDockerfile()}
+                    className="CustomDockerfile__content-save-button"
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
             </Fragment>
             :
