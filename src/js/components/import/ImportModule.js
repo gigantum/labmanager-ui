@@ -592,8 +592,8 @@ export default class ImportModule extends Component {
               const owner = response.importRemoteLabbook.newLabbookEdge.node.owner
 
               BuildImageMutation(
-              response.importRemoteLabbook.newLabbookEdge.node.name,
-              response.importRemoteLabbook.newLabbookEdge.node.owner,
+              labbookName,
+              owner,
               false,
               (response, error)=>{
                 if(error){
@@ -610,7 +610,7 @@ export default class ImportModule extends Component {
                   })
                 }
               })
-              self.props.history.replace(`/projects/${response.importRemoteLabbook.newLabbookEdge.node.owner}/${response.importRemoteLabbook.newLabbookEdge.node.name}`)
+              self.props.history.replace(`/projects/${owner}/${labbookName}`)
             }else{
 
               BuildImageMutation(
