@@ -153,14 +153,14 @@ export default class CustomDockerfile extends Component {
             this.state.editingDockerfile ?
             <Fragment>
               <textarea
-                className="CustomDockerfile__content-input column-1-span-9"
+                className="CustomDockerfile__content-input column-1-span-10"
                 type="text"
                 onChange={(evt)=>{this.setState({dockerfileContent: evt.target.value})}}
                 placeholder="Enter dockerfile commands here"
                 defaultValue={this.state.dockerfileContent ? this.state.dockerfileContent: ''}
               >
               </textarea>
-              <div className="column-1-span-1">
+              <div className="column-1-span-3">
                 <button
                   disabled={this.state.savingDockerfile}
                   onClick={()=> this._saveDockerfile()}

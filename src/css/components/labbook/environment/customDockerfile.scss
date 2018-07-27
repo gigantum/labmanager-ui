@@ -40,6 +40,7 @@
   word-wrap: break-word;
   justify-content: space-between;
   flex-wrap: nowrap;
+  flex-direction: column;
 
   p {
     margin: 0
@@ -61,8 +62,10 @@
   button {
     margin-top: 2px;
   }
-  .column-1-span-1 {
-    @include flex(flex-start, column);
+  .column-1-span-3 {
+    align-self: flex-end;
+
+    @include flex(space-around, row);
   }
   .empty {
     color: $romanSilver;
@@ -72,10 +75,11 @@
 }
 
 .CustomDockerfile__content-input {
-  height: 100px;
+  height: 200px;
   font-family: monospace;
   font-size: 1em;
-  resize: none;
+  align-self: center;
+
 }
 
 .CustomDockerfile__content-input:focus {
