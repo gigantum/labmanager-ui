@@ -124,13 +124,21 @@ export default class CustomDockerfile extends Component {
 
 
   render() {
-    let dockerfileCSS = this.state.dockerfileContent ? 'column-1-span-9' : 'column-1-span-9 empty'
+    let dockerfileCSS = this.state.dockerfileContent ? 'column-1-span-9' : 'column-1-span-10 empty'
     let renderedContent = this.state.dockerfileContent ? '```\n' + this.state.dockerfileContent + '\n```' : 'No commands provided.'
     return (
       <div className="CustomDockerfile">
         <div className="Environment__header-container">
           <h5 className="CustomDockerfile__header">
             Custom Docker Instructions <ToolTip section="dockerInstructionsEnvironment"/>
+            {
+              !this.state.editingDockerfile &&
+              <button
+                onClick={()=> this._editDockerfile()}
+                className="CustomDockerfile__content-edit-button"
+              >
+              </button>
+            }
           </h5>
         </div>
         <div className="CustomDockerfile__sub-header">
@@ -176,13 +184,6 @@ export default class CustomDockerfile extends Component {
                       className="ReactMarkdown"
                       source={renderedContent}
                     />
-              </div>
-              <div className="column-1-span-1">
-                <button
-                  onClick={()=> this._editDockerfile()}
-                  className="CustomDockerfile__content-edit-button"
-                >
-                </button>
               </div>
             </Fragment>
           }
