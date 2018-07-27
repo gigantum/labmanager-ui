@@ -22,7 +22,6 @@ class CodeBlock extends React.PureComponent {
     let code = this.props.value
     let language = this.props.language ? this.props.language : 'python'
     let style = language === 'dockerfile' ? githubGist : customizedStyling
-    console.log(style)
     let codeCSS = classNames({
       'CodeBlock': language !== 'dockerfile',
       'CodeBlock--docker': language === 'dockerfile'
