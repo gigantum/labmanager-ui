@@ -225,7 +225,7 @@ export default class CreateBranchModal extends Component {
                   <label>Name</label>
                   <input
                     type='text'
-                    maxLength="100"
+                    maxLength="80"
                     className={this.state.showError ? 'invalid' : ''}
                     onChange={(evt) => this._updateTextState(evt, 'branchName')}
                     onKeyUp={(evt) => this._updateTextState(evt, 'branchName')}
