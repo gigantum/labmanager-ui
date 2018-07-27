@@ -1,5 +1,5 @@
 # source: http://localhost:10000/api/labbook/
-# timestamp: Wed Jul 11 2018 16:42:09 GMT-0400 (EDT)
+# timestamp: Wed Jul 25 2018 15:06:12 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -537,7 +537,7 @@ input ImportRemoteLabbookInput {
 }
 
 type ImportRemoteLabbookPayload {
-  activeBranch: String
+  newLabbookEdge: LabbookEdge
   clientMutationId: String
 }
 
@@ -721,14 +721,11 @@ type LabbookMutations {
   createLabbook(input: CreateLabbookInput!): CreateLabbookPayload
   deleteLabbook(input: DeleteLabbookInput!): DeleteLabbookPayload
   deleteRemoteLabbook(input: DeleteRemoteLabbookInput!): DeleteRemoteLabbookPayload
-  renameLabbook(input: RenameLabbookInput!): RenameLabbookPayload
   setLabbookDescription(input: SetLabbookDescriptionInput!): SetLabbookDescriptionPayload
   publishLabbook(input: PublishLabbookInput!): PublishLabbookPayload
   syncLabbook(input: SyncLabbookInput!): SyncLabbookPayload
   createBranch(input: CreateBranchInput!): CreateBranchPayload
   checkoutBranch(input: CheckoutBranchInput!): CheckoutBranchPayload
-  pullActiveBranchFromRemote(input: PullActiveBranchFromRemoteInput!): PullActiveBranchFromRemotePayload
-  pushActiveBranchToRemote(input: PushActiveBranchToRemoteInput!): PushActiveBranchToRemotePayload
   addLabbookRemote(input: AddLabbookRemoteInput!): AddLabbookRemotePayload
   buildImage(input: BuildImageInput!): BuildImagePayload
   startContainer(input: StartContainerInput!): StartContainerPayload
@@ -947,30 +944,6 @@ type PublishLabbookPayload {
   clientMutationId: String
 }
 
-input PullActiveBranchFromRemoteInput {
-  owner: String!
-  labbookName: String!
-  remoteName: String
-  clientMutationId: String
-}
-
-type PullActiveBranchFromRemotePayload {
-  success: Boolean
-  clientMutationId: String
-}
-
-input PushActiveBranchToRemoteInput {
-  owner: String!
-  labbookName: String!
-  remoteName: String
-  clientMutationId: String
-}
-
-type PushActiveBranchToRemotePayload {
-  success: Boolean
-  clientMutationId: String
-}
-
 """
 A type representing a LabBook stored on a remote server
 
@@ -1081,19 +1054,6 @@ Mutation to remove a locally stored user identity (no-op if not running in local
 """
 type RemoveUserIdentityPayload {
   userIdentityEdge: UserIdentity
-  clientMutationId: String
-}
-
-input RenameLabbookInput {
-  owner: String!
-  originalLabbookName: String!
-  newLabbookName: String!
-  clientMutationId: String
-}
-
-"""Rename a labbook"""
-type RenameLabbookPayload {
-  success: Boolean
   clientMutationId: String
 }
 

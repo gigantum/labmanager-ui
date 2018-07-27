@@ -587,6 +587,10 @@ export default class ImportModule extends Component {
                     error: false
                   }
                 })
+
+              const labbookName = response.importRemoteLabbook.newLabbookEdge.node.name
+              const owner = response.importRemoteLabbook.newLabbookEdge.node.owner
+
               BuildImageMutation(
               labbookName,
               owner,
