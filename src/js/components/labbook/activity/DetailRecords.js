@@ -149,7 +149,7 @@ export default class UserNote extends Component {
         query={DetailRecordsQuery}
         variables={variables}
         render={({props, error})=>{
-            
+
             if(props){
                 return(
                   <div className="DetailsRecords">

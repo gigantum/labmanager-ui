@@ -35,11 +35,12 @@
   @extend .card;
   padding: 10px !important;
   color: $jet;
-  white-space: pre-line;
+  white-space: pre-wrap;
   padding: 0;
   word-wrap: break-word;
   justify-content: space-between;
   flex-wrap: nowrap;
+  flex-direction: column;
 
   p {
     margin: 0
@@ -50,7 +51,6 @@
     /*
       have to use extend as ReactMarkDown does not inherit classNames
     */
-    @extend .column-1-span-9;
 
     margin-bottom: 0;
     p {
@@ -61,21 +61,25 @@
   button {
     margin-top: 2px;
   }
-  .column-1-span-1 {
-    @include flex(flex-start, column);
+  .column-1-span-2 {
+    align-self: flex-end;
+
+    @include flex(space-between, row);
   }
   .empty {
     color: $romanSilver;
     opacity: 0.5;
     font-style: oblique;
   }
+  .column-1-span-11{
+    align-self: center;
+  }
 }
 
 .CustomDockerfile__content-input {
-  height: 100px;
+  height: 200px;
   font-family: monospace;
   font-size: 1em;
-  resize: none;
 }
 
 .CustomDockerfile__content-input:focus {
@@ -102,4 +106,8 @@
 .CustomDockerfile__content-cancel-button:hover,
 .CustomDockerfile__content-cancel-button:focus {
   padding: 0;
+}
+
+.CustomDockerfile__button-container{
+  @include flex(flex-end, row);
 }

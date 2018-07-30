@@ -8,3 +8,16 @@
       background: $jet !important;
     }
 }
+.CodeBlock--docker{
+  background: $white !important;
+  code{
+    background: $white !important;
+    border: none;
+    max-height: none;
+    max-width: none;
+  }
+}
+.CodeBlock--docker *{
+  font-family: monospace;
+  font-size: 16px;
+}

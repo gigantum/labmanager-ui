@@ -21,7 +21,7 @@
 
 .Labbook__name-branch{
   color: $jet;
-  font-size: 26px;
+  font-size: 1.4vw;
 
 }
 
@@ -31,10 +31,13 @@
   font-size: 48px;
   word-break: break-all;
   line-height: 48px;
-  height: 40px;
+  height: 49px;
   overflow: visible;
   align-content: baseline;
   align-self: flex-end;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .Labbook__branch-title{
   opacity: 1;
@@ -57,8 +60,6 @@
   height: 24px;
   width: 24px;
   min-width: 24px;
-  border: 2px solid $romanSilver;
-  border-radius: 12px;
   margin: 20px 15px 0;
   cursor: pointer;
   align-self: center;
@@ -81,16 +82,21 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px -5px 6px 2px;
 }
 
+.Labbook__name:hover ~ .Labbook__branch-toggle {
+  opacity: 1;
+}
+
 .Labbook__branch-title--open {
   .Labbook__branch-toggle {
-    background: $white url('./../images/icons/up-arrow-silver.svg') no-repeat center center;
+    background: url('./../images/icons/up-arrow-silver.svg') no-repeat center center;
     background-size: 16px;
   }
 }
 
 .Labbook__branch-title--closed {
   .Labbook__branch-toggle {
-    background: $white url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
+    opacity: 0;
+    background: url('./../images/icons/down-arrow-silver.svg') no-repeat center center;
     background-size: 16px;
 
   }
@@ -261,6 +267,7 @@
   @include flex(space-between, column);
 }
 .Labbook__column-container--flex-1{
+  max-width: 66%;
   @extend .Labbook__column-container;
   flex: 1;
 }

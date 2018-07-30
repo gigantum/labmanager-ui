@@ -1,4 +1,6 @@
 import React, {Fragment} from 'react'
+import ReactMarkdown from 'react-markdown'
+
 
 export default class BaseDetails extends React.Component {
 
@@ -81,6 +83,9 @@ export default class BaseDetails extends React.Component {
               </div>
             </div>
           </div>
+          <hr/>
+          <ReactMarkdown source={base.readme} />
+          <hr/>
           {
             Object.keys(installedPackagesDictionary).length !== 0 &&
 

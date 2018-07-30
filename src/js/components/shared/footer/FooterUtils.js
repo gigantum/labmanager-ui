@@ -24,7 +24,6 @@ import uuidv4 from 'uuid/v4'
             let message = fullMessage.slice(lastIndex, fullMessage.length)
 
             if(response.data.jobStatus.status === 'started'){
-
                 store.dispatch({
                   type: 'MULTIPART_INFO_MESSAGE',
                   payload: {
@@ -34,9 +33,23 @@ import uuidv4 from 'uuid/v4'
                     error: false
                   }
                 })
+                if(store.getState().environment.refetchPending){
+                  store.dispatch({
+                    type: 'FORCE_REFETCH',
+                    payload: {
+                      forceRefetch: true,
+                    }
+                  })
+                  store.dispatch({
+                    type: 'SET_REFETCH_PENDING',
+                    payload: {
+                      refetchPending: false
+                    }
+                  })
+                }
               setTimeout(()=>{
                 fetchStatus()
-              }, 500)
+              }, 1000)
 
             }else if(response.data.jobStatus.status === 'finished'){
 
@@ -53,17 +66,17 @@ import uuidv4 from 'uuid/v4'
             }else{
               setTimeout(()=>{
                 fetchStatus()
-              }, 500)
+              }, 1000)
             }
           }else{
             setTimeout(()=>{
               fetchStatus()
-            }, 500)
+            }, 1000)
           }
         }else{
           setTimeout(()=>{
             fetchStatus()
-          }, 500)
+          }, 1000)
         }
       })
     }

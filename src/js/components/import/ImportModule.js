@@ -148,7 +148,7 @@ export default class ImportModule extends Component {
 
 
 
-    const dropzoneIds = ['dropZone', 'dropZone__subtext', 'dropZone__title', 'dropZone__create'];
+    const dropzoneIds = ['dropZone', 'dropZone__subtext', 'dropZone__title', 'dropZone__create', 'dropZone__paste', 'file__input-label', 'file__input', 'dropZone__paste-input', 'dropZone__paste-button', 'dropZone__create-header', 'dropZone__create-sub-header', 'dropZone__close'];
     let counter = 0;
     //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
     window.addEventListener('dragenter', (evt) => { //use evt, event is a reserved word in chrome
@@ -157,6 +157,7 @@ export default class ImportModule extends Component {
         this._showImportScreen();
         document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
       }
+
       if(dropzoneIds.indexOf(evt.target.id) < 0) {
         evt.preventDefault();
         evt.dataTransfer.effectAllowed = 'none';
@@ -375,7 +376,7 @@ export default class ImportModule extends Component {
 
         let importLabbook = wokerData.importLabbook
          JobStatus.getJobStatus(importLabbook.importJobKey).then((response)=>{
-         
+
            store.dispatch({
              type: 'UPLOAD_MESSAGE_UPDATE',
              payload: {
@@ -586,6 +587,10 @@ export default class ImportModule extends Component {
                     error: false
                   }
                 })
+
+              const labbookName = response.importRemoteLabbook.newLabbookEdge.node.name
+              const owner = response.importRemoteLabbook.newLabbookEdge.node.owner
+
               BuildImageMutation(
               labbookName,
               owner,
@@ -689,14 +694,21 @@ export default class ImportModule extends Component {
           :
           <div id="dropZone__title" className="Labbooks__labbook-importing">
             <div
+              id="dropZone__close"
               className="Labbooks__import-close"
               onClick={() => this._hideImportScreen()}>
             </div>
-            <div className="Labbooks__labbook-import-header">
-              <h4 id="dropZone__create">
+            <div className="Labbooks__labbook-import-header"
+              id="dropZone__create"
+            >
+              <h4
+                id="dropZone__create-header"
+              >
                 Import Existing
               </h4>
-              <p>
+              <p
+                id="dropZone__create-sub-header"
+              >
                 to import, do one of the following
               </p>
             </div>
@@ -715,13 +727,18 @@ export default class ImportModule extends Component {
               type="file"
               onChange={(evt) => { this._fileSelected(evt.files) }}
             />
-            <div className="Labbooks__labbook-paste">
+            <div
+              className="Labbooks__labbook-paste"
+              id="dropZone__paste"
+            >
               <input
+                id="dropZone__paste-input"
                 type="text"
                 placeholder="Paste Project URL"
                 onChange={(evt) => this._updateRemoteUrl(evt)}
               />
               <button
+                id="dropZone__paste-button"
                 onClick={() => this.importLabbook()}
                 disabled={!this.state.remoteURL.length && !this.state.isImporting}
               >
