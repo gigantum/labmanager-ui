@@ -796,7 +796,7 @@ export default class BranchMenu extends Component {
                   </div>
 
                   <div className="BranchMenu__button-menu">
-                    Synching is disabled for example projects.
+                    Syncing is disabled for example projects.
                   </div>
 
                 </Fragment>

@@ -7,7 +7,12 @@ import environment from 'JS/createRelayEnvironment'
 const mutation = graphql`
   mutation ImportRemoteLabbookMutation($input: ImportRemoteLabbookInput!){
     importRemoteLabbook(input: $input){
-      activeBranch
+      newLabbookEdge{
+        node{
+          owner
+          name
+        }
+      }
       clientMutationId
     }
   }

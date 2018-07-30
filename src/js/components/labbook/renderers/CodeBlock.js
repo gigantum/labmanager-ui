@@ -1,7 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import SyntaxHighlighter from 'react-syntax-highlighter/prism';
+import SyntaxHighlighterHLJS from 'react-syntax-highlighter';
+import {githubGist} from 'react-syntax-highlighter/styles/hljs';
 import customizedStyling from './CodeBlockStyle';
+import classNames from 'classnames';
 
 
 class CodeBlock extends React.PureComponent {
@@ -17,15 +20,34 @@ class CodeBlock extends React.PureComponent {
 
   render() {
     let code = this.props.value
-    return (
-      <SyntaxHighlighter
-        className="CodeBlock"
-        language='python'
-        style={customizedStyling}
+    let language = this.props.language ? this.props.language : 'python'
+    let style = language === 'dockerfile' ? githubGist : customizedStyling
+    let codeCSS = classNames({
+      'CodeBlock': language !== 'dockerfile',
+      'CodeBlock--docker': language === 'dockerfile'
+    })
+    if(language === 'dockerfile'){
+      return(
+        <SyntaxHighlighterHLJS
+        className={codeCSS}
+        language={language}
+        style={style}
+        showLineNumbers
       >
         {code}
-      </SyntaxHighlighter>
-    )
+      </SyntaxHighlighterHLJS>
+      )
+    } else{
+      return (
+        <SyntaxHighlighter
+          className={codeCSS}
+          language={language}
+          style={style}
+        >
+          {code}
+        </SyntaxHighlighter>
+      )
+    }
   }
 }
 
