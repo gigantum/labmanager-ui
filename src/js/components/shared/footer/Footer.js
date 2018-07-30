@@ -49,7 +49,7 @@ export default class Footer extends Component {
     let footerString = JSON.stringify(footer)
     let stateString = JSON.stringify(this.state)
     if (footerString !== stateString) {
-      //console.log(footer)
+
       this.setState(footer); //triggers re-render when store updates
     }
 

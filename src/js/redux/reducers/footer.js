@@ -49,7 +49,8 @@ export default(state = {
   labbookSuccess: false,
   messageListOpen: false,
   viewHistory: false,
-  helperVisible: false
+  helperVisible: false,
+  uuid: ''
 }, action) => {
 
   const checkHistoryStackLength = (messageStackHistory) => {
@@ -74,8 +75,6 @@ export default(state = {
             ? action.payload.messageBody
             : []
         };
-
-          console.log(messageStackHistory)
 
     messageStack.unshift(message)
     messageStackHistory.unshift(message)
@@ -108,7 +107,7 @@ export default(state = {
           isMultiPart: false,
           messageBodyOpen: false
         };
-          console.log(messageStackHistory)
+
     messageStack.unshift(message)
     messageStackHistory.unshift(message)
 
@@ -130,7 +129,7 @@ export default(state = {
     let id = INFO_MESSAGE + tempId++
     let messageStack = state.messageStack
     let messageStackHistory = state.messageStackHistory
-      console.log(messageStackHistory)
+
     let message = {
       message: action.payload.message,
       id: id,
@@ -307,8 +306,6 @@ export default(state = {
       return message
     })
 
-    console.log(messageStackHistory)
-
     return {
       ...state,
       messageListOpen: action.payload.messageListOpen,
@@ -324,15 +321,13 @@ export default(state = {
         previousHistoryIndex = 0,
         previousIndex = 0,
         messageBodyOpen = false,
-        messageListOpen = state.messageListOpen,
-        hasBeenDismissed = false;
+        messageListOpen = state.messageListOpen;
 
     let doesMessageExist = messageStack.filter((message, index) => {
 
       if (message.id === action.payload.id) {
         previousIndex = index
         messageBodyOpen = message.messageBodyOpen
-        messageListOpen = true;
       }
 
       return message.id === action.payload.id
@@ -343,7 +338,6 @@ export default(state = {
 
       if (message.id === action.payload.id) {
         previousHistoryIndex = index;
-        hasBeenDismissed = message.dismissed ? true : false
 
         if(doesMessageExist.length === 0){
            messageBodyOpen = message.messageBodyOpen
@@ -352,6 +346,19 @@ export default(state = {
 
       return message.id === action.payload.id
     })
+
+    if((doesHistoryMessageExist.length > 0) && doesHistoryMessageExist[0].dismissed){
+
+      if(state.messageListOpen && state.viewHistory){
+        messageListOpen = true;
+      }else{
+        messageListOpen = false;
+      }
+
+    }else{
+      messageListOpen = true;
+    }
+
 
     let message = {
       message: action.payload.message,
@@ -387,6 +394,7 @@ export default(state = {
 
     messageStackHistory = checkHistoryStackLength(messageStackHistory)
 
+
     return {
       ...state,
       id: action.payload.id,
@@ -398,7 +406,7 @@ export default(state = {
       success: true,
       error: action.payload.error,
       messageListOpen,
-      viewHistory: hasBeenDismissed && state.viewHistory
+      viewHistory: ((doesHistoryMessageExist.length > 0) && doesHistoryMessageExist[0].dismissed && state.viewHistory)
     }
   } else if (action.type === RESET_FOOTER_STORE) {
     return {
@@ -415,25 +423,29 @@ export default(state = {
       viewHistory: false
     }
   }else if (action.type === UPDATE_MESSAGE_STACK_ITEM_VISIBILITY) {
+
     let messageStack = state.messageStack;
-    let messageStackHistory = state.messageStackHistory;
 
     messageStack[action.payload.index].messageBodyOpen = !messageStack[action.payload.index].messageBodyOpen
 
     return {
+      ...state,
       messageStack,
-      messageStackHistory
+      uuid: uuidv4()
     }
  }else if (action.type === UPDATE_HISTORY_STACK_ITEM_VISIBILITY) {
 
-   let messageStack = state.messageStack;
    let messageStackHistory = state.messageStackHistory;
+   let messageStackItem = messageStackHistory[action.payload.index]
 
-   messageStackHistory[action.payload.index].messageBodyOpen = !messageStackHistory[action.payload.index].messageBodyOpen
-    console.log(messageStackHistory)
+   messageStackItem.messageBodyOpen = !messageStackItem.messageBodyOpen
+
+   messageStackHistory[action.payload.index] = messageStackItem
+
    return {
-     messageStack,
-     messageStackHistory
+     ...state,
+     messageStackHistory,
+      uuid: uuidv4()
    }
  } else if (action.type === RESIZE_FOOTER) {
     return {
@@ -441,9 +453,19 @@ export default(state = {
       resize: uuidv4()
     };
   }else if (action.type === UPDATE_HISTORY_VIEW){
+
+    let messageStack = []
+
+    let messageStackHistory = state.messageStackHistory.map((message)=>{
+      message.dismissed = true
+      return message
+    })
+
     return {
       ...state,
-      viewHistory: true
+      viewHistory: true,
+      messageStack,
+      messageStackHistory
     };
   }else if (action.type === HELPER_VISIBLE){
 

@@ -40,7 +40,7 @@ export default class FooterNotificationList extends Component {
     })
 
     let height = messageListOpenItems.length > 0 ?  document.body.clientHeight - 200 : 260;
-
+ 
 
     return (
       <div className={footerMessageSectionClass}>
