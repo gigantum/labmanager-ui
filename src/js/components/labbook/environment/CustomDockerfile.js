@@ -1,6 +1,8 @@
 //vendor
 import React, { Component, Fragment } from 'react'
-//components
+import ReactMarkdown from 'react-markdown'
+//Components
+import CodeBlock from 'Components/labbook/renderers/CodeBlock'
 import ToolTip from 'Components/shared/ToolTip';
 //mutations
 import AddCustomDockerMutation from 'Mutations/AddCustomDockerMutation'
@@ -29,9 +31,15 @@ export default class CustomDockerfile extends Component {
         const validDictionary = new Set(['LABEL', 'RUN', 'ENV', '#'])
         let splitDockerSnippet = this.state.dockerfileContent.split(/\n|\\n/);
         let valid = true;
-        splitDockerSnippet.forEach((snippetLine) => {
+        splitDockerSnippet.forEach((snippetLine, index) => {
           let firstVal = snippetLine.split(' ')[0];
-          if (firstVal.length && !validDictionary.has(firstVal.toUpperCase()) && firstVal[0] !== "#") {
+          let previousLine = splitDockerSnippet[index - 1] && splitDockerSnippet[index - 1]
+          let isPreviousLineExtended = false
+          if(previousLine){
+            let strippedSpaces = previousLine.split(' ').join('')
+            isPreviousLineExtended = strippedSpaces[strippedSpaces.length - 1] === '\\'
+          }
+          if ((firstVal.length && !validDictionary.has(firstVal.toUpperCase()) && firstVal[0] !== "#") && !isPreviousLineExtended) {
             valid = false;
           }
         });
@@ -116,12 +124,21 @@ export default class CustomDockerfile extends Component {
 
 
   render() {
-    let dockerfileCSS = this.state.dockerfileContent ? 'column-1-span-9' : 'column-1-span-9 empty'
+    let dockerfileCSS = this.state.dockerfileContent ? 'column-1-span-11' : 'column-1-span-11 empty'
+    let renderedContent = this.state.dockerfileContent ? '```\n' + this.state.dockerfileContent + '\n```' : 'No commands provided.'
     return (
       <div className="CustomDockerfile">
         <div className="Environment__header-container">
           <h5 className="CustomDockerfile__header">
             Custom Docker Instructions <ToolTip section="dockerInstructionsEnvironment"/>
+            {
+              !this.state.editingDockerfile &&
+              <button
+                onClick={()=> this._editDockerfile()}
+                className="CustomDockerfile__content-edit-button"
+              >
+              </button>
+            }
           </h5>
         </div>
         <div className="CustomDockerfile__sub-header">
@@ -136,42 +153,39 @@ export default class CustomDockerfile extends Component {
             this.state.editingDockerfile ?
             <Fragment>
               <textarea
-                className="CustomDockerfile__content-input column-1-span-9"
+                className="CustomDockerfile__content-input column-1-span-11"
                 type="text"
                 onChange={(evt)=>{this.setState({dockerfileContent: evt.target.value})}}
                 placeholder="Enter dockerfile commands here"
                 defaultValue={this.state.dockerfileContent ? this.state.dockerfileContent: ''}
               >
               </textarea>
-              <div className="column-1-span-1">
-                <button
-                  disabled={this.state.savingDockerfile}
-                  onClick={()=> this._saveDockerfile()}
-                  className="CustomDockerfile__content-save-button"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={()=> this.setState({editingDockerfile: false, dockerfileContent: this.state.lastSavedDockerfileContent })}
-                  className="CustomDockerfile__content-cancel-button button--flat"
-                >
-                  Cancel
-                </button>
+              <div className="CustomDockerfile__button-container column-1-span-11">
+                <div className="column-1-span-2">
+                  <button
+                    onClick={()=> this.setState({editingDockerfile: false, dockerfileContent: this.state.lastSavedDockerfileContent })}
+                    className="CustomDockerfile__content-cancel-button button--flat"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    disabled={this.state.savingDockerfile}
+                    onClick={()=> this._saveDockerfile()}
+                    className="CustomDockerfile__content-save-button"
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
             </Fragment>
             :
             <Fragment>
               <div className={dockerfileCSS}>
-                <p className={dockerfileCSS} >
-                  {this.state.dockerfileContent ? this.state.dockerfileContent : 'No commands provided.'}
-                </p>
-              </div>
-              <div className="column-1-span-1">
-                <button
-                  onClick={()=> this._editDockerfile()}
-                  className="CustomDockerfile__content-edit-button"
-                >
-                </button>
+                    <ReactMarkdown
+                      renderers={{code: props => <CodeBlock  {...props } language="dockerfile"/>}}
+                      className="ReactMarkdown"
+                      source={renderedContent}
+                    />
               </div>
             </Fragment>
           }
