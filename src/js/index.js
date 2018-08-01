@@ -14,10 +14,10 @@ let routeRef;
 UserIdentity.getUserIdentity().then((response)=>{
   let expiresAt = JSON.stringify((new Date().getTime() * 1000) + new Date().getTime());
   let forceLoginScreen = true;
-  
+
   if(response.data){
 
-    if(response.data.userIdentity){
+    if(response.data.userIdentity && ((response.data.userIdentity.isSessionValid && navigator.onLine) || !navigator.onLine)){
       localStorage.setItem('family_name', response.data.userIdentity.familyName);
       localStorage.setItem('given_name', response.data.userIdentity.givenName);
       localStorage.setItem('email', response.data.userIdentity.email);
