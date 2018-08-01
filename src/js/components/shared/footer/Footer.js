@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import classNames from 'classnames'
+
 //components
 import FooterNotificationList from './FooterNotificationList'
 import FooterUploadBar from './FooterUploadBar'
@@ -137,7 +138,7 @@ export default class Footer extends Component {
  */
 
   _toggleMessageList() {
-    if(this.state.messageStackHistory.length > 0){
+
       store.dispatch({
         type: 'TOGGLE_MESSAGE_LIST',
         payload: {
@@ -145,7 +146,6 @@ export default class Footer extends Component {
           viewHistory: true
         }
       })
-    }
   }
   /**
   @param {Int}
@@ -178,12 +178,13 @@ export default class Footer extends Component {
   render() {
 
     let bodyWidth = document.body.clientWidth;
-
     let footerClass = classNames({
       'Footer': true,
-      'Footer--expand': (this.state.open || this.state.uploadOpen),
+      'Footer--expand': (this.state.open) || this.state.uploadOpen,
       'Footer--expand-extra': (this.state.open && this.state.uploadOpen)
     });
+
+    console.log(this.state.messageStack)
 
     let footerButtonClass = classNames({
       'Footer__disc-button': true,
@@ -193,27 +194,26 @@ export default class Footer extends Component {
     });
 
 
-    return (<div className="Footer__container">
-      <div id="footer" className={footerClass}>
+    return (
+      <div className="Footer__container">
+        <div id="footer" className={footerClass}>
 
+          <FooterNotificationList
+            showMessageBody={this._showMessageBody}
+            removeMessage={this._removeMessage}
+            parentState={this.state}
+          />
 
+          <FooterUploadBar
+            closeFooter={this._closeFooter}
+            openLabbook={this._openLabbook}
+            parentState={this.state}
+          />
 
-        <FooterNotificationList
-          showMessageBody={this._showMessageBody}
-          removeMessage={this._removeMessage}
-          parentState={this.state}
-        />
-
-        <FooterUploadBar
-          closeFooter={this._closeFooter}
-          openLabbook={this._openLabbook}
-          parentState={this.state}
-        />
-
-        <div
-          onClick={() => this._toggleMessageList()}
-          className={footerButtonClass}>
-        </div>
+          <div
+            onClick={() => this._toggleMessageList()}
+            className={footerButtonClass}>
+          </div>
 
       </div>
     </div>)

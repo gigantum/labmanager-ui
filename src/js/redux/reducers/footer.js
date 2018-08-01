@@ -29,7 +29,9 @@ export const UPDATE_HISTORY_VIEW = 'UPDATE_HISTORY_VIEW'
 export const HELPER_VISIBLE = 'HELPER_VISIBLE'
 
 let tempId = 0
+let messageStackHistory = sessionStorage.getItem('messageStackHistory') ? JSON.parse(sessionStorage.getItem('messageStackHistory')) : []
 
+console.log(messageStackHistory)
 export default(state = {
   open: false,
   uploadOpen: false,
@@ -40,7 +42,7 @@ export default(state = {
   uploadError: false,
   success: false,
   labbookName: '',
-  messageStackHistory: [],
+  messageStackHistory,
   messageStack: [],
   uploadStack: [],
   fileCount: 0,
@@ -60,8 +62,9 @@ export default(state = {
 
       return messageStackHistory;
   }
-
+  let date = new Date();
   if (action.type === ERROR_MESSAGE) {
+
     let id = ERROR_MESSAGE + tempId++,
         messageStack = state.messageStack,
         messageStackHistory = state.messageStackHistory,
@@ -69,6 +72,7 @@ export default(state = {
           message: action.payload.message,
           id: id,
           error: true,
+          date,
           messageBodyOpen: false,
           className: 'Footer__message--error',
           messageBody: action.payload.messageBody
@@ -80,6 +84,8 @@ export default(state = {
     messageStackHistory.unshift(message)
 
     messageStackHistory = checkHistoryStackLength(messageStackHistory)
+
+    sessionStorage.setItem('messageStackHistory', JSON.stringify(messageStackHistory));
 
     return {
       ...state,
@@ -105,13 +111,17 @@ export default(state = {
             ? action.payload.messageBody
             : [],
           isMultiPart: false,
-          messageBodyOpen: false
+          messageBodyOpen: false,
+          date
         };
 
     messageStack.unshift(message)
     messageStackHistory.unshift(message)
 
     messageStackHistory = checkHistoryStackLength(messageStackHistory)
+
+   sessionStorage.setItem('messageStackHistory', JSON.stringify(messageStackHistory));
+
     return {
       ...state,
       messageStack,
@@ -139,12 +149,15 @@ export default(state = {
         ? action.payload.messageBody
         : [],
       messageBodyOpen: false,
+      date
     }
 
     messageStack.unshift(message)
 
     messageStackHistory.unshift(message)
     messageStackHistory = checkHistoryStackLength(messageStackHistory)
+
+    sessionStorage.setItem('messageStackHistory', JSON.stringify(messageStackHistory));
 
     return {
       ...state,
@@ -154,12 +167,12 @@ export default(state = {
       messageStackHistory,
       open: true,
       success: true,
-      showProgressBar: false,
-      messageListOpen: true,
-      viewHistory: false
+      showProgressBar: false
     };
   } else if (action.type === REMOVE_MESSAGE) { //this is for only updating a single message
     let messageStack = []
+
+    const messageListOpen = (state.viewHistory && state.messageListOpen) || (!state.viewHistory && (messageStack.length > 0))
 
     state.messageStack.forEach((messageItem) => {
       if (messageItem.id !== action.payload.id) {
@@ -176,7 +189,9 @@ export default(state = {
       messageStack: messageStack,
       open: messageStack.length > 0,
       success: true,
-      showProgressBar: false
+      showProgressBar: false,
+      messageListOpen
+
     };
   } else if (action.type === UPLOAD_MESSAGE_SETTER) {
     let message = {
@@ -373,7 +388,8 @@ export default(state = {
         : [],
       error: action.payload.error,
       messageBodyOpen,
-      dismissed: (doesHistoryMessageExist.length > 0) ? doesHistoryMessageExist[0].dismissed : false
+      dismissed: (doesHistoryMessageExist.length > 0) ? doesHistoryMessageExist[0].dismissed : false,
+      date
     }
 
 
@@ -394,6 +410,7 @@ export default(state = {
 
     messageStackHistory = checkHistoryStackLength(messageStackHistory)
 
+    sessionStorage.setItem('messageStackHistory', JSON.stringify(messageStackHistory));
 
     return {
       ...state,
