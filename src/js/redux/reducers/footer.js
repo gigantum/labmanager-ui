@@ -181,7 +181,7 @@ export default(state = {
 
     const messageListOpen = (state.viewHistory && state.messageListOpen) || (!state.viewHistory && (messageStack.length > 0))
     let lastIndex = messageStack.length - 1;
-    console.log('viewHistory', state.viewHistory, 'messageListOpen', state.messageListOpen, 'messageStackLength',(messageStack.length > 0), 'messageListOpen-set', messageListOpen)
+ 
     return {
       ...state,
       currentMessage: messageStack[lastIndex],

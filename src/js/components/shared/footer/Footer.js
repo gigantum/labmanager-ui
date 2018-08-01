@@ -60,7 +60,7 @@ export default class Footer extends Component {
       if (!messageItem.error) {
 
         if (!messageItem.isMultiPart || (messageItem.isMultiPart && messageItem.isLast)) {
-          console.log(messageItem)
+
           setTimeout(() => {
 
             this._removeMessage(messageItem)
@@ -180,13 +180,12 @@ export default class Footer extends Component {
   render() {
 
     let bodyWidth = document.body.clientWidth;
+
     let footerClass = classNames({
       'Footer': true,
       'Footer--expand': (this.state.open) || this.state.uploadOpen,
       'Footer--expand-extra': (this.state.open && this.state.uploadOpen)
     });
-
-    console.log(this.state)
 
     let footerButtonClass = classNames({
       'Footer__disc-button': true,
