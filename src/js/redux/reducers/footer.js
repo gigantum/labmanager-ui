@@ -31,7 +31,6 @@ export const HELPER_VISIBLE = 'HELPER_VISIBLE'
 let tempId = 0
 let messageStackHistory = sessionStorage.getItem('messageStackHistory') ? JSON.parse(sessionStorage.getItem('messageStackHistory')) : []
 
-console.log(messageStackHistory)
 export default(state = {
   open: false,
   uploadOpen: false,
@@ -172,7 +171,7 @@ export default(state = {
   } else if (action.type === REMOVE_MESSAGE) { //this is for only updating a single message
     let messageStack = []
 
-    const messageListOpen = (state.viewHistory && state.messageListOpen) || (!state.viewHistory && (messageStack.length > 0))
+
 
     state.messageStack.forEach((messageItem) => {
       if (messageItem.id !== action.payload.id) {
@@ -180,8 +179,9 @@ export default(state = {
       }
     })
 
+    const messageListOpen = (state.viewHistory && state.messageListOpen) || (!state.viewHistory && (messageStack.length > 0))
     let lastIndex = messageStack.length - 1;
-
+    console.log('viewHistory', state.viewHistory, 'messageListOpen', state.messageListOpen, 'messageStackLength',(messageStack.length > 0), 'messageListOpen-set', messageListOpen)
     return {
       ...state,
       currentMessage: messageStack[lastIndex],

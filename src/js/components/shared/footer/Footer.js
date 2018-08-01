@@ -54,12 +54,13 @@ export default class Footer extends Component {
       this.setState(footer); //triggers re-render when store updates
     }
 
+
     footer.messageStack.forEach((messageItem) => {
       const timeInSeconds = 15 * 1000
       if (!messageItem.error) {
 
         if (!messageItem.isMultiPart || (messageItem.isMultiPart && messageItem.isLast)) {
-
+          console.log(messageItem)
           setTimeout(() => {
 
             this._removeMessage(messageItem)
@@ -67,6 +68,7 @@ export default class Footer extends Component {
         }
       }
     })
+
   }
 
   _openLabbook() {
@@ -184,7 +186,7 @@ export default class Footer extends Component {
       'Footer--expand-extra': (this.state.open && this.state.uploadOpen)
     });
 
-    console.log(this.state.messageStack)
+    console.log(this.state)
 
     let footerButtonClass = classNames({
       'Footer__disc-button': true,
@@ -200,7 +202,6 @@ export default class Footer extends Component {
 
           <FooterNotificationList
             showMessageBody={this._showMessageBody}
-            removeMessage={this._removeMessage}
             parentState={this.state}
           />
 

@@ -42,8 +42,6 @@ export default class FooterNotificationList extends Component {
     })
 
 
-
-
     let height = messageListOpenItems.length > 0 ?  document.body.clientHeight - 200 : 260;
 
 
@@ -71,7 +69,7 @@ export default class FooterNotificationList extends Component {
                 })
                 return(
                   <li
-                    key={messageItem.id}
+                    key={messageItem.id + index}
                     className={messageItem.className}>
                     <div className="Footer__message-body">
                       <div className="Footer__flex-container">
