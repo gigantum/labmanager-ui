@@ -1,5 +1,5 @@
 # source: http://localhost:10000/api/labbook/
-# timestamp: Wed Jul 25 2018 15:06:12 GMT-0400 (EDT)
+# timestamp: Thu Aug 02 2018 12:41:37 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -936,6 +936,7 @@ type PageInfo {
 input PublishLabbookInput {
   owner: String!
   labbookName: String!
+  setPublic: Boolean
   clientMutationId: String
 }
 

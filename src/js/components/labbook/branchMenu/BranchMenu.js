@@ -42,6 +42,7 @@ export default class BranchMenu extends Component {
       'collaboratorBeingRemoved': null,
       'collabKey': uuidv4(),
       'justOpened': true,
+      'setPublic': false,
       'syncWarningVisible': false,
       owner,
       labbookName
@@ -90,7 +91,8 @@ export default class BranchMenu extends Component {
     closes menu
   */
   _closeMenu(evt) {
-    let isBranchMenu = (evt.target.className.indexOf('BranchMenu') > -1) || (evt.target.className.indexOf('CollaboratorModal') > -1) || (evt.target.className.indexOf('BranchMenu__button-menu') > -1)
+    let isBranchMenu = (evt.target.className.indexOf('BranchMenu') > -1) || (evt.target.className.indexOf('CollaboratorModal') > -1) || (evt.target.className.indexOf('BranchMenu__button-menu') > -1) ||
+    (evt.target.className.indexOf('TrackingToggle') > -1);
 
 
     if (!isBranchMenu && this.state.menuOpen) {
@@ -210,6 +212,7 @@ export default class BranchMenu extends Component {
                   self.state.owner,
                   self.state.labbookName,
                   self.props.labbookId,
+                  this.state.setPublic,
                   (response, error) => {
                     this.props.setPublishingState(false)
                     store.dispatch({
@@ -668,6 +671,10 @@ export default class BranchMenu extends Component {
     }
   }
 
+  _setPublic(){
+   this.setState({'setPublic': !this.state.setPublic})
+  }
+
   render() {
     const {labbookName, owner} = this.state
 
@@ -679,6 +686,18 @@ export default class BranchMenu extends Component {
     const exportCSS = classNames({
       'BranchMenu__item--export': !this.state.exporting,
       'BranchMenu__item--export--downloading': this.state.exporting
+    })
+
+    const toggleCheckboxCondition = classNames({
+        'TrackingToggle__checkbox': true,
+        'TrackingToggle__checkbox--on': this.state.setPulic,
+        'TrackingToggle__checkbox--off': !this.state.setPulic
+    })
+
+    const toggleCondition = classNames({
+        'TrackingToggle__label': true,
+        'TrackingToggle__label--on': this.state.setPulic,
+        'TrackingToggle__label--off': !this.state.setPulic
     })
 
     return (
@@ -767,12 +786,31 @@ export default class BranchMenu extends Component {
           <hr className="BranchMenu__line" />
           {!this.state.addedRemoteThisSession &&
             <div className="BranchMenu__publish">
+              <div className="TrackingToggle">
+                <div className="TrackingToggle__text">Make Project Public {this.state.setPublic}</div>
+                <span className={toggleCheckboxCondition}>
+
+                  <input
+                    data-on="&#x2714;"
+                    data-off="&#x2718;"
+                    onClick={()=>this._setPublic()}
+                    id="TrackingToggle__input"
+                    className="TrackingToggle__input"
+                    type="checkbox"
+                    defaultChecked={this.state.setPublic}
+                  />
+                  <label
+                    className={toggleCondition}
+                    htmlFor="TrackingToggle__input">
+                  </label>
+                </span>
+              </div>
               <button
                 className="BranchMenu__remote-button"
                 onClick={() => { this._publishLabbook() }}
               >
                 Publish
-                </button>
+              </button>
             </div>
           }
 
