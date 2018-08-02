@@ -21,7 +21,7 @@
   background-size: 50px;
   z-index: index($elements, helper);
   cursor: pointer;
-  bottom: 177px;
+  bottom: 232px;
   right: 9px;
 }
 
@@ -103,6 +103,7 @@
   background: $turquise url('../images/icons/discuss.svg') no-repeat 15px center;
 }
 
+
 .Helper__menu-guide{
   background: url('../images/icons/guide.svg') no-repeat 15px center;
   padding: 15px;
@@ -165,4 +166,33 @@
     transform: translateX(20px);
     background-color: $goldenLemon
   }
+}
+
+.Helper__menu-feedback{
+  background: url('../images/icons/feedback.svg') no-repeat 15px center;
+  padding: 15px;
+  width: 100%;
+  @include flex(space-between, row);
+  div {
+    border-radius: 0;
+    width: 25px;
+    height: 25px;
+    background: url('../images/icons/offsite.svg') no-repeat center center;
+    background-size: 20px;
+
+  }
+  h5 {
+    margin: 5px 10px;
+    font-weight: 100;
+    font-size: 16px;
+    color: $white;
+    user-select: none;
+    padding-left: 25px;
+  }
+  border-bottom: 1px dashed $white;
+  cursor: pointer;
+}
+
+.Helper__menu-feedback:hover{
+  background: $turquise url('../images/icons/feedback.svg') no-repeat 15px center;
 }
