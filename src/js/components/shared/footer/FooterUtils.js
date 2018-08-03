@@ -65,7 +65,6 @@ const FooterUtils = {
 
           }
 
-          console.log(response.data.jobStatus.status)
           if (response.data.jobStatus.status === 'started') {
 
             store.dispatch({

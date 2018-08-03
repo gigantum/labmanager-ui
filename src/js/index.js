@@ -33,9 +33,9 @@ UserIdentity.getUserIdentity().then((response)=>{
       localStorage.removeItem('expires_at')
     }
   }else{
-    console.error(response)
+
   }
-  console.log('renders')
+
   render(
     <Routes
       auth={auth}
