@@ -40,7 +40,9 @@ export default class FooterNotificationList extends Component {
         'hidden': (this.props.parentState.viewHistory || !this.props.parentState.messageListOpen)
     })
 
-    let height = messageListOpenItems.length > 0 ?  document.body.clientHeight - 200 : 260;
+    let height = messageList.length > 6 ?  260 : messageList.length * 60;
+    height = messageListOpenItems.length > 0 ?  document.body.clientHeight - 200 : height;
+
 
     return (
       <div className={footerMessageSectionClass}>
@@ -64,10 +66,15 @@ export default class FooterNotificationList extends Component {
                   'Footer__button--toggle': true,
                   'open': messageItem.messageBodyOpen
                 })
+
+                const bodyCSS = classNames({
+                  'Footer__body-height': messageItem.messageBodyOpen,
+                  [messageItem.className]: true
+                })
                 return(
                   <li
                     key={messageItem.id + index}
-                    className={messageItem.className}>
+                    className={bodyCSS}>
                     <div className="Footer__message-body">
                       <div className="Footer__flex-container">
                         <div className="Footer__message-icon"></div>

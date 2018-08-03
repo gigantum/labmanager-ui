@@ -161,15 +161,15 @@ export default class Footer extends Component {
   @return {}
  */
   _hideMessageList(evt){
-    
-    if(evt.target.className.indexOf('Footer') < 0){
-      store.dispatch({
-        type: 'HIDE_MESSAGE_LIST',
-        payload: {
-          messageListOpen: false
-        }
-      })
-    }
+
+    // if(evt.target.className.indexOf('Footer') < 0){
+    //   store.dispatch({
+    //     type: 'HIDE_MESSAGE_LIST',
+    //     payload: {
+    //       messageListOpen: false
+    //     }
+    //   })
+    // }
   }
   /**
   @param {Int}
