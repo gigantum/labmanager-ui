@@ -30,6 +30,11 @@
 .Footer__message--error,
 .Footer__message--warning{
   border-bottom: 1px solid $white;
+  height: 60px;
+}
+
+.Footer__body-height{
+  height: auto !important;
 }
 
 .Footer__message:last-child,
