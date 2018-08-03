@@ -69,8 +69,11 @@
 
 .Footer__message-time{
   min-width: 150px;
-  padding: 10px;
+  padding: 0 10px;
   align-content: center;
+  align-self: center;
+  font-size: 14px;
+  color: $backgroundGrey;
 }
 
 .Footer__message-expand{

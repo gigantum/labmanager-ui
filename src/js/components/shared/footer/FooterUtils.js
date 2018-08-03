@@ -65,7 +65,7 @@ const FooterUtils = {
 
           }
 
-
+          console.log(response.data.jobStatus.status)
           if (response.data.jobStatus.status === 'started') {
 
             store.dispatch({
@@ -98,6 +98,19 @@ const FooterUtils = {
             refetch()
 
           } else if (response.data.jobStatus.status === 'finished') {
+
+            store.dispatch({
+              type: 'MULTIPART_INFO_MESSAGE',
+              payload: {
+                id: response.data.jobStatus.id,
+                message: message,
+                messageBody: [{message: html}],
+                isLast: true,
+
+              }
+            })
+
+          } else if (response.data.jobStatus.status === 'failed') {
 
             store.dispatch({
               type: 'MULTIPART_INFO_MESSAGE',

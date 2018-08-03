@@ -16,6 +16,7 @@ export const IMPORT_MESSAGE_SUCCESS = 'IMPORT_MESSAGE_SUCCESS';
 //
 export const RESET_FOOTER_STORE = 'RESET_FOOTER_STORE'
 export const TOGGLE_MESSAGE_LIST = 'TOGGLE_MESSAGE_LIST'
+export const HIDE_MESSAGE_LIST = 'HIDE_MESSAGE_LIST'
 
 export const MULTIPART_INFO_MESSAGE = 'MULTIPART_INFO_MESSAGE'
 export const MULTIPART_ERROR_MESSAGE = 'MULTIPART_ERROR_MESSAGE'
@@ -181,7 +182,7 @@ export default(state = {
 
     const messageListOpen = (state.viewHistory && state.messageListOpen) || (!state.viewHistory && (messageStack.length > 0))
     let lastIndex = messageStack.length - 1;
- 
+
     return {
       ...state,
       currentMessage: messageStack[lastIndex],
@@ -327,6 +328,13 @@ export default(state = {
       viewHistory: action.payload.viewHistory,
       messageStack,
       messageStackHistory
+    }
+
+  } else if (action.type === HIDE_MESSAGE_LIST) {
+    console.log(HIDE_MESSAGE_LIST)
+    return {
+      ...state,
+      messageListOpen: false,
     }
 
   } else if (action.type === MULTIPART_INFO_MESSAGE) {

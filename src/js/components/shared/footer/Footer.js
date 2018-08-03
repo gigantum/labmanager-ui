@@ -20,6 +20,7 @@ export default class Footer extends Component {
     this._toggleMessageList = this._toggleMessageList.bind(this)
     this._showMessageBody = this._showMessageBody.bind(this)
     this._resize = this._resize.bind(this)
+    this._hideMessageList = this._hideMessageList.bind(this)
   }
   /**
     subscribe to store to update state
@@ -32,6 +33,7 @@ export default class Footer extends Component {
     })
 
     window.addEventListener("resize", this._resize);
+    window.addEventListener("click", this._hideMessageList);
 
   }
   /**
@@ -39,6 +41,8 @@ export default class Footer extends Component {
   */
   componentWillUnmount() {
     unsubscribe()
+    window.removeEventListener("resize", this._resize);
+    window.removeEventListener("click", this._hideMessageList);
   }
 
   /**
@@ -133,7 +137,7 @@ export default class Footer extends Component {
     })
   }
   /**
-  @param {boolean} value
+  @param {}
   toggles messages list to collapsed or expanded
   updates redux store
   @return {}
@@ -148,6 +152,24 @@ export default class Footer extends Component {
           viewHistory: true
         }
       })
+
+  }
+  /**
+  @param {}
+  hides messages list to collapsed
+  updates redux store
+  @return {}
+ */
+  _hideMessageList(evt){
+    console.log(evt)
+    if(evt.target.className.indexOf('Footer') < 0){
+      store.dispatch({
+        type: 'HIDE_MESSAGE_LIST',
+        payload: {
+          messageListOpen: false
+        }
+      })
+    }
   }
   /**
   @param {Int}

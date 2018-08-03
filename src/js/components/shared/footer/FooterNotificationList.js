@@ -125,7 +125,7 @@ export default class FooterNotificationList extends Component {
 
                         <div className="Footer__message-item">
                           <p className="Footer__message-title">
-                            No Activity
+                            No Notifications
                           </p>
                         </div>
                       </div>
