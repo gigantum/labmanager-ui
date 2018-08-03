@@ -18,8 +18,7 @@
 }
 
 .Footer__messages-section--collapsed{
-    //height: 0;
-    max-height: 0px;
+
     border-width: 0;
 }
 
@@ -116,7 +115,7 @@
     padding: 0 20px;
 
     opacity: 1;
-    transition: height 0.25s, max-height 0.25s, opacity 0.1s;
+    transition: height 0.25s, max-height 0.25s, opacity 0.25s;
 }
 
 .Footer__message-list::-webkit-scrollbar {
@@ -148,9 +147,7 @@
 .Footer__message-list--collapsed {
     overflow: hidden;
     height: 0px !important;
-
-    max-height: 0px !important;
-
+    min-height: 0px !important;
     opacity: 0 !important;
 }
 

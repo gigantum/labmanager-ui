@@ -50,7 +50,7 @@ export default class FooterNotificationList extends Component {
         >
           View All
         </div>
-        <div className={footerMessageListClass} style={{maxHeight: `${height}px`}}>
+        <div className={footerMessageListClass} style={{height: `${height}px`}}>
 
           <ul>
             {
