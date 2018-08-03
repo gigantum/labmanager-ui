@@ -8,9 +8,15 @@ let unsubscribe;
 export default class Helper extends Component {
   constructor(props){
     super(props)
+
     this.state = store.getState().helper
+
     this.state.helperMenuOpen = false;
+
     this._toggleIsVisible = this._toggleIsVisible.bind(this);
+    this._resize = this._resize.bind(this)
+
+
   }
 
   /**
@@ -22,16 +28,38 @@ export default class Helper extends Component {
     unsubscribe = store.subscribe(() =>{
         this.storeDidUpdate(store.getState().helper)
     })
+
+    window.addEventListener("resize", this._resize);
   }
+  /**
+    * @param {}
+    * updates state from redux store
+  */
   storeDidUpdate(helper){
-    if(this.state.isVisible !== helper.isVisible){
-      this.setState({isVisible: helper.isVisible})
+
+    const helperString = JSON.stringify(helper)
+    const stateString = JSON.stringify(this.state)
+
+    if(stateString !== helperString){
+      this.setState({
+        resize: helper.resize,
+        isVisible: helper.helperMenuOpen,
+        footerVisible: helper.footerVisible
+      })
     }
   }
+  /**
+    * @param {}
+    * unsubcribe from store
+  */
   componentWillUnmount(){
     unsubscribe();
   }
 
+  /**
+    * @param {}
+    * update store
+  */
   _toggleIsVisible(){
     store.dispatch({
       type: 'UPDATE_HELPER_VISIBILITY',
@@ -39,22 +67,62 @@ export default class Helper extends Component {
         isVisible: !store.getState().helper.isVisible
       }
     })
+
+    store.dispatch({
+      type: 'HELPER_VISIBLE',
+      payload:{
+        helperVisible: !store.getState().helper.isVisible
+      }
+    })
+  }
+  /**
+    * @param {}
+    * toggles menu view
+  */
+  _toggleMenuView(){
+    store.dispatch({
+      type: 'HELPER_VISIBLE',
+      payload:{
+        helperVisible: !this.state.helperMenuOpen
+      }
+    })
+
+    this.setState({helperMenuOpen: !this.state.helperMenuOpen})
+
+
+  }
+
+  /**
+    * @param {}
+    * update store to risize component
+  */
+  _resize(){
+    store.dispatch({
+      type: 'RESIZE_HELPER',
+      payload: {}
+    })
   }
 
   render(){
+    let bodyWidth = document.body.clientWidth;
+
     let menuCSS = classNames({
       'Helper__menu': this.state.helperMenuOpen,
-      'hidden': !this.state.helperMenuOpen
+      'hidden': !this.state.helperMenuOpen,
+      'Helper__men--footer-open': this.state.footerVisible
     })
+
     let helperButtonCSS = classNames({
       'Helper-button': true,
-      'Helper-button--open': this.state.helperMenuOpen
+      'Helper-button--open': this.state.helperMenuOpen,
+      'Helper-button--side-view': bodyWidth < 1600
     })
+
     return(
       <div className="Helper">
         <div
           className={helperButtonCSS}
-          onClick={()=> this.setState({helperMenuOpen: !this.state.helperMenuOpen})}
+          onClick={()=> this._toggleMenuView()}
         >
         </div>
         <div className={menuCSS}>
@@ -70,7 +138,7 @@ export default class Helper extends Component {
           </div>
           <div
             className="Helper__menu-docs"
-            onClick={()=> window.open('https://docs.gigantum.com/docs')}
+            onClick={() => window.open('https://docs.gigantum.com/docs')}
           >
             <h5>Docs</h5>
             <div
