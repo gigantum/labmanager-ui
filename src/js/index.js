@@ -24,7 +24,6 @@ UserIdentity.getUserIdentity().then((response)=>{
 
       forceLoginScreen = false;
 
-
     }else{
       localStorage.removeItem('family_name')
       localStorage.removeItem('given_name')
@@ -33,14 +32,13 @@ UserIdentity.getUserIdentity().then((response)=>{
       localStorage.removeItem('expires_at')
     }
   }else{
-    console.error(response)
+
   }
 
   render(
     <Routes
       auth={auth}
       forceLoginScreen={forceLoginScreen}
-
     />
     , document.getElementById('root') || document.createElement('div')
 

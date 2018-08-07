@@ -1,17 +1,16 @@
 import history from 'JS/history';
 import auth0 from 'auth0-js';
-import { AUTH_CONFIG } from './auth0-variables';
+import {AUTH_CONFIG} from './auth0-variables';
 import RemoveUserIdentityMutation from 'Mutations/RemoveUserIdentityMutation'
 //store
 import store from 'JS/redux/store'
-
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: AUTH_CONFIG.domain,
     clientID: AUTH_CONFIG.clientId,
     redirectUri: AUTH_CONFIG.callbackUrl,
-    audience:  AUTH_CONFIG.audience,
+    audience: AUTH_CONFIG.audience,
     responseType: 'token id_token',
     scope: 'openid profile email user_metadata'
   });
@@ -24,7 +23,12 @@ export default class Auth {
   }
 
   login() {
-    store.dispatch({type: 'LOGOUT', payload:{logout: false}})
+    store.dispatch({
+      type: 'LOGOUT',
+      payload: {
+        logout: false
+      }
+    })
     this.auth0.authorize();
   }
 
@@ -40,10 +44,15 @@ export default class Auth {
       } else if (err) {
 
         history.replace('/login')
-        store.dispatch({type: 'LOGIN_ERROR', payload:{error: err}})
+        store.dispatch({
+          type: 'LOGIN_ERROR',
+          payload: {
+            error: err
+          }
+        })
         sessionStorage.setItem('LOGIN_ERROR_TYPE', err.error)
         sessionStorage.setItem('LOGIN_ERROR_DESCRIPTION', err.errorDescription)
-      //  alert(`Error: ${err.error}. Check the console for further details.`); //TODO make this a modal or redirect to login failure page
+        //  alert(`Error: ${err.error}. Check the console for further details.`); TODO make this a modal or redirect to login failure page
       }
     });
   }
@@ -60,18 +69,27 @@ export default class Auth {
     localStorage.setItem('email', authResult.idTokenPayload.email);
     localStorage.setItem('username', authResult.idTokenPayload.nickname);
     //redirect to labbooks when user logs in
-    let route = sessionStorage.getItem('CALLBACK_ROUTE') ? sessionStorage.getItem('CALLBACK_ROUTE') : '/projects';
+    let route = sessionStorage.getItem('CALLBACK_ROUTE')
+      ? sessionStorage.getItem('CALLBACK_ROUTE')
+      : '/projects';
 
-    route = route === '' ? '/projects': route;
+    route = route === ''
+      ? '/projects'
+      : route;
+
     history.replace(route)
   }
 
   logout() {
 
-    store.dispatch({type: 'LOGOUT', payload:{logout: true}})
+    store.dispatch({
+      type: 'LOGOUT',
+      payload: {
+        logout: true
+      }
+    })
 
-
-    RemoveUserIdentityMutation(()=>{
+    RemoveUserIdentityMutation(() => {
       //redirect to root when user logs out
 
       localStorage.removeItem('access_token')
@@ -85,9 +103,6 @@ export default class Auth {
 
       history.replace('/');
     })
-
-
-
 
   }
 

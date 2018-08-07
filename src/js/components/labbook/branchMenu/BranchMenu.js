@@ -23,8 +23,11 @@ import ToolTip from 'Components/shared/ToolTip';
 
 export default class BranchMenu extends Component {
   constructor(props) {
+
     super(props);
+
     const { owner, labbookName } = store.getState().routes
+
     this.state = {
       'addNoteEnabled': false,
       'isValid': true,
@@ -46,6 +49,7 @@ export default class BranchMenu extends Component {
       owner,
       labbookName
     }
+
     this._openMenu = this._openMenu.bind(this)
     this._closeMenu = this._closeMenu.bind(this)
     this._toggleModal = this._toggleModal.bind(this)
@@ -98,7 +102,7 @@ export default class BranchMenu extends Component {
       this.refs['collaborators'].setState({collaboratorModalVisible: false})
     }
 
-    if(evt.target.className.indexOf('BranchMenu__sync-button') === -1){
+    if((evt.target.className.indexOf('BranchMenu__sync-button') === -1) && this.state.syncWarningVisible){
       this.setState({syncWarningVisible: false})
     }
 

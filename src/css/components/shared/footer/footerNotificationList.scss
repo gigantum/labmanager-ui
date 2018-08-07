@@ -1,0 +1,172 @@
+.Footer__messages-section {
+    position: relative;
+
+    z-index: index($footerElements, section);
+    background: $azure;
+
+    border-top: 4px solid #007ea8;
+    border-radius: 8px 8px 0 0;
+
+    width: calc(100% - 120px);
+    margin: 0 20px;
+
+    text-align: left;
+
+    transition: height 0.25s, max-height 0.25s, opacity 0.1s, width 0.25s;
+
+    @extend .box-shadow;
+}
+
+.Footer__messages-section--collapsed{
+
+    border-width: 0;
+}
+
+.Footer__message-section--helper-open{
+  width: calc(100% - 280px);
+}
+
+.Footer__message,
+.Footer__message--error,
+.Footer__message--warning{
+  border-bottom: 1px solid $white;
+  height: 60px;
+}
+
+.Footer__body-height{
+  height: auto !important;
+}
+
+.Footer__message:last-child,
+.Footer__message--error:last-child
+.Footer__message--warning:last-child{
+  border-bottom: 0px solid $white;
+}
+
+.Footer__message-body-content{
+    margin: 20px;
+    padding: 20px;
+
+    color: $romanSilver;
+    border-radius: 8px;
+    background: $white;
+}
+
+.Footer__message-body-content--text {
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.Footer__flex-container {
+    display: flex;
+    align-content: center;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+
+.Footer__message-item {
+    align-self: center;
+    width: calc(100% - 100px);
+    margin: 0 20px;
+}
+
+.Footer__message-time{
+  min-width: 150px;
+  padding: 0 10px;
+  align-content: center;
+  align-self: center;
+  font-size: 14px;
+  color: $backgroundGrey;
+}
+
+.Footer__message-expand{
+    align-self: center;
+}
+
+.Footer__message-dismiss {
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+    margin-left: 30px;
+
+    cursor: pointer;
+    text-align: center;
+
+    border: 1px solid white;
+    border-radius: 15px;
+    background: url('./../images/icons/close-white.svg') no-repeat center center;
+    background-size: 10px;
+
+    line-height: 18px;
+}
+
+.Footer__message-title{
+  word-break: break-all;
+}
+
+.Footer__message-dismiss:hover {
+    color: $turquise;
+}
+
+
+.Footer__message-list {
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    width: 100%;
+    height: auto;
+    min-height: 80px;
+    padding: 0 20px;
+
+    opacity: 1;
+    transition: height 0.25s, max-height 0.25s, opacity 0.25s;
+}
+
+.Footer__message-list::-webkit-scrollbar {
+  	width: 8px;
+
+  	background-color: rgba(255,255,255,0.5);
+}
+
+.Footer__message-list::-webkit-scrollbar-thumb {
+  	background-color: #fff;
+}
+
+.Footer__button--view-all{
+    position: absolute;
+    top: -14px;
+    right: 30px;
+
+    width: 110px;
+    padding: 2px 20px;
+
+    text-align: center;
+    cursor: pointer;
+
+    border: 1px solid $white;
+    border-radius: 12px;
+    background: $azure;
+}
+
+.Footer__message-list--collapsed {
+    overflow: hidden;
+    height: 0px !important;
+    min-height: 0px !important;
+    opacity: 0 !important;
+}
+
+
+.Footer__button--toggle {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background: url(./../images/icons/down-arrow-white.svg) no-repeat center center;
+    background-size: 18px;
+    flex: 0 1 30px;
+}
+
+.Footer__button--toggle.open {
+    background: url(./../images/icons/up-arrow-white.svg) no-repeat center center;
+    background-size: 18px;
+}

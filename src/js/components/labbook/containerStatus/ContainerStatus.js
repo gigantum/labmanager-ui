@@ -131,7 +131,7 @@ export default class ContainerStatus extends Component {
 
       FetchContainerStatus.getContainerStatus(owner, labbookName).then((response, error) => {
 
-        if(response.labbook){
+        if(response && response.labbook){
 
           const { environment } = response.labbook
           //reset build flags
@@ -154,8 +154,7 @@ export default class ContainerStatus extends Component {
             store.dispatch({
               type: 'ERROR_MESSAGE',
               payload: {
-                message: 'Project failed to build:',
-                messageBody: [{ message: 'Check for and remove invalid dependencies and try again.' }]
+                message: 'Project failed to build: Check for and remove invalid dependencies and try again.',
               }
             })
           }
@@ -419,10 +418,12 @@ export default class ContainerStatus extends Component {
       labbookName,
       developmentTool,
       (response, error)=>{
+
           if(response.startDevTool){
             let path = `${window.location.protocol}//${window.location.hostname}${response.startDevTool.path}`
             window.open(path, '_blank')
           }
+
           if(error){
             store.dispatch({
               type: 'ERROR_MESSAGE',
@@ -433,7 +434,6 @@ export default class ContainerStatus extends Component {
             })
           }
       }
-
     )
   }
 
