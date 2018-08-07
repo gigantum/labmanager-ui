@@ -16,7 +16,7 @@
   align-items: center;
   flex-wrap: wrap;
   position: absolute;
-  z-index: 100;
+  z-index: index($elements, login);
   width: 100%;
 }
 
