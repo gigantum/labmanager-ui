@@ -31,7 +31,17 @@ export const CollaboratorsQuery =  graphql`
     }
 
     _toggleCollaborators(){
-      this.state.sessionValid && navigator.onLine ? this.setState({collaboratorModalVisible: !this.state.collaboratorModalVisible}) : this.props.showLoginPrompt();
+      if(navigator.onLine){
+        if( this.state.sessionValid ){
+          this.setState({collaboratorModalVisible: !this.state.collaboratorModalVisible})
+        } else{
+          this.props.auth.renewToken(true, ()=>{
+            this.props.showLoginPrompt();
+          });
+        }
+      } else {
+        this.props.showLoginPrompt();
+      }
     }
 
     _getCollaboratorList(collaborators, collaboratorFilteredArr){
@@ -74,11 +84,9 @@ export const CollaboratorsQuery =  graphql`
             this.setState({sessionValid: true})
           }
         } else {
-          this.props.auth.renewToken(true, ()=>{
-            if(this.state.sessionValid === true){
-              this.setState({sessionValid: false})
-            }
-          });
+          if(this.state.sessionValid === true){
+            this.setState({sessionValid: false})
+          }
         }
       })
       return(
