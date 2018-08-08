@@ -301,13 +301,32 @@ export default class Labbooks extends Component {
   _setSortFilter(orderBy, sort) {
     if(this.state.selectedSection === 'remoteLabbooks') {
       UserIdentity.getUserIdentity().then(response => {
-        if(response.data){
-          if(response.data.userIdentity.isSessionValid){
-            this._handleSortFilter(orderBy, sort);
-          } else {
+
+        if(navigator.onLine){
+
+          if(response.data){
+
+            if(response.data.userIdentity.isSessionValid){
+
+              this._handleSortFilter(orderBy, sort);
+
+            } else {
+              this.props.auth.renewToken(true, ()=>{
+                if(!this.state.showLoginPrompt) {
+                  this.setState({'showLoginPrompt': true})
+                }
+              });
+
+            }
+          }
+
+        } else{
+
+          if(!this.state.showLoginPrompt) {
             this.setState({'showLoginPrompt': true})
           }
         }
+
       })
     } else{
       this._handleSortFilter(orderBy, sort);
@@ -335,14 +354,28 @@ export default class Labbooks extends Component {
   */
   _viewRemote(){
     UserIdentity.getUserIdentity().then(response => {
-      if(response.data && response.data.userIdentity.isSessionValid){
-        this.props.history.replace(`../projects/cloud${this.props.history.location.search}`)
-        this.setState({selectedSection: 'cloud'})
-      } else {
+
+      if(navigator.onLine){
+
+        if(response.data && response.data.userIdentity.isSessionValid){
+
+          this.props.history.replace(`../projects/cloud${this.props.history.location.search}`)
+          this.setState({selectedSection: 'cloud'})
+
+        } else {
+          this.props.auth.renewToken(true, ()=>{
+            if(!this.state.showLoginPrompt) {
+              this.setState({'showLoginPrompt': true})
+            }
+          });
+
+        }
+      } else{
         if(!this.state.showLoginPrompt) {
           this.setState({'showLoginPrompt': true})
         }
       }
+
     })
   }
 

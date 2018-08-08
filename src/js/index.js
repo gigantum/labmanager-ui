@@ -25,11 +25,15 @@ UserIdentity.getUserIdentity().then((response)=>{
       forceLoginScreen = false;
 
     }else{
-      localStorage.removeItem('family_name')
-      localStorage.removeItem('given_name')
-      localStorage.removeItem('email')
-      localStorage.removeItem('username')
-      localStorage.removeItem('expires_at')
+      if(response.data.userIdentity){
+        auth.renewToken()
+      } else{
+        localStorage.removeItem('family_name')
+        localStorage.removeItem('given_name')
+        localStorage.removeItem('email')
+        localStorage.removeItem('username')
+        localStorage.removeItem('expires_at')
+      }
     }
   }else{
 

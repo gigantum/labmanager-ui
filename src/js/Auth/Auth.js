@@ -20,6 +20,22 @@ export default class Auth {
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
+    this.renewToken = this.renewToken.bind(this);
+  }
+
+  renewToken(showModal, cb) {
+    this.auth0.checkSession({}, (err, result) => {
+        if (err) {
+          if(showModal){
+            cb();
+          } else{
+            this.login();
+          }
+        } else {
+          this.setSession(result);
+        }
+      }
+    );
   }
 
   login() {

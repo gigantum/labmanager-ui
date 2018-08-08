@@ -319,6 +319,7 @@ export default class WizardModal extends React.Component {
               toggleDisabledContinue={this._toggleDisabledContinue}
               history={this.props.history}
               hideModal={this._hideModal}
+              auth={this.props.auth}
             />),
           header: "Create Project"
         }
@@ -345,6 +346,7 @@ export default class WizardModal extends React.Component {
             toggleDisabledContinue={this._toggleDisabledContinue}
             history={this.props.history}
             hideModal={this._hideModal}
+            auth={this.props.auth}
           />),
         header: "Create Project"
       }

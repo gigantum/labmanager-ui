@@ -540,84 +540,28 @@ export default class ImportModule extends Component {
 
 
     UserIdentity.getUserIdentity().then(response => {
+      if(navigator.onLine){
+        if(response.data){
 
-    if(response.data){
-
-      if(response.data.userIdentity.isSessionValid){
-        this._importingState()
-        store.dispatch(
-          {
-            type: "MULTIPART_INFO_MESSAGE",
-            payload: {
-              id: id,
-              message: 'Importing Project please wait',
-              isLast: false,
-              error: false
-            }
-          })
-        ImportRemoteLabbookMutation(
-          owner,
-          labbookName,
-          remote,
-          (response, error) => {
-            this._clearState();
-
-            if(error){
-              console.error(error)
-              store.dispatch(
-                {
-                  type: 'MULTIPART_INFO_MESSAGE',
-                  payload: {
-                    id: id,
-                    message: 'ERROR: Could not import remote Project',
-                    messageBody: error,
-                    error: true
+          if(response.data.userIdentity.isSessionValid){
+            this._importingState()
+            store.dispatch(
+              {
+                type: "MULTIPART_INFO_MESSAGE",
+                payload: {
+                  id: id,
+                  message: 'Importing Project please wait',
+                  isLast: false,
+                  error: false
                 }
               })
-
-            }else if(response){
-
-              store.dispatch(
-                {
-                  type: 'MULTIPART_INFO_MESSAGE',
-                  payload: {
-                    id: id,
-                    message: `Successfully imported remote Project ${labbookName}`,
-                    isLast: true,
-                    error: false
-                  }
-                })
-
-              const labbookName = response.importRemoteLabbook.newLabbookEdge.node.name
-              const owner = response.importRemoteLabbook.newLabbookEdge.node.owner
-
-              BuildImageMutation(
-              labbookName,
+            ImportRemoteLabbookMutation(
               owner,
-              false,
-              (response, error)=>{
-                if(error){
-                  console.error(error)
-                  store.dispatch(
-                    {
-                      type: 'MULTIPART_INFO_MESSAGE',
-                      payload: {
-                        id: id,
-                        message: `ERROR: Failed to build ${labbookName}`,
-                        messsagesList: error,
-                        error: true
-                    }
-                  })
-                }
-              })
-              self.props.history.replace(`/projects/${owner}/${labbookName}`)
-            }else{
-
-              BuildImageMutation(
               labbookName,
-              localStorage.getItem('username'),
-              false,
-              (error)=>{
+              remote,
+              (response, error) => {
+                this._clearState();
+
                 if(error){
                   console.error(error)
                   store.dispatch(
@@ -625,19 +569,80 @@ export default class ImportModule extends Component {
                       type: 'MULTIPART_INFO_MESSAGE',
                       payload: {
                         id: id,
-                        message: `ERROR: Failed to build ${labbookName}`,
-                        messsagesList: error,
+                        message: 'ERROR: Could not import remote Project',
+                        messageBody: error,
                         error: true
                     }
                   })
+
+                }else if(response){
+
+                  store.dispatch(
+                    {
+                      type: 'MULTIPART_INFO_MESSAGE',
+                      payload: {
+                        id: id,
+                        message: `Successfully imported remote Project ${labbookName}`,
+                        isLast: true,
+                        error: false
+                      }
+                    })
+
+                  const labbookName = response.importRemoteLabbook.newLabbookEdge.node.name
+                  const owner = response.importRemoteLabbook.newLabbookEdge.node.owner
+
+                  BuildImageMutation(
+                  labbookName,
+                  owner,
+                  false,
+                  (response, error)=>{
+                    if(error){
+                      console.error(error)
+                      store.dispatch(
+                        {
+                          type: 'MULTIPART_INFO_MESSAGE',
+                          payload: {
+                            id: id,
+                            message: `ERROR: Failed to build ${labbookName}`,
+                            messsagesList: error,
+                            error: true
+                        }
+                      })
+                    }
+                  })
+                  self.props.history.replace(`/projects/${owner}/${labbookName}`)
+                }else{
+
+                  BuildImageMutation(
+                  labbookName,
+                  localStorage.getItem('username'),
+                  false,
+                  (error)=>{
+                    if(error){
+                      console.error(error)
+                      store.dispatch(
+                        {
+                          type: 'MULTIPART_INFO_MESSAGE',
+                          payload: {
+                            id: id,
+                            message: `ERROR: Failed to build ${labbookName}`,
+                            messsagesList: error,
+                            error: true
+                        }
+                      })
+                    }
+                  })
                 }
-              })
-            }
+              }
+            )
+          }else{
+            this.props.auth.renewToken(true, ()=>{
+              this.setState({'showLoginPrompt': true})
+            });
           }
-        )
-      }else{
-          this.setState({'showLoginPrompt': true})
-      }
+        }
+      } else{
+        this.setState({'showLoginPrompt': true})
       }
     })
   }
