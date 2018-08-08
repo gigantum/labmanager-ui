@@ -23,11 +23,11 @@ export default class Auth {
     this.renewToken = this.renewToken.bind(this);
   }
 
-  renewToken(showModal, cb) {
+  renewToken(showModal, showModalCallback) {
     this.auth0.checkSession({}, (err, result) => {
         if (err) {
           if(showModal){
-            cb();
+            showModalCallback();
           } else{
             this.login();
           }
