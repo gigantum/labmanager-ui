@@ -59,6 +59,10 @@ class PackageDependencies extends Component {
 
     let nextPackages= nextProps.environment.packageDependencies
 
+    if(nextPackages.edges && nextPackages.edges.length < 3 && nextPackages.pageInfo.hasNextPage){
+      this._loadMore();
+    }
+
     if(nextPackages.edges && nextPackages.edges[0] && nextPackages.edges[0].node.latestVersion){
       let latestPackages = {};
 
@@ -195,7 +199,7 @@ class PackageDependencies extends Component {
     let packageDependencies = this.props.environment.packageDependencies
 
     if(packageDependencies.edges.length > 0){
-      
+
       relay.refetchConnection(
         null,
         (response) =>{

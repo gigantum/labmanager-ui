@@ -23,6 +23,15 @@ class InputDataBrowser extends Component {
   }
 
   /*
+    loads more if branches are switched
+  */
+  componentDidUpdate(){
+    if(!this.state.moreLoading && this.props.input.allFiles && this.props.input.allFiles.edges.length < 3 && this.props.input.allFiles.pageInfo.hasNextPage){
+      this._loadMore();
+    }
+  }
+
+  /*
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
