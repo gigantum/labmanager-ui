@@ -23,6 +23,9 @@ export default class Auth {
     this.renewToken = this.renewToken.bind(this);
   }
 
+  /**
+   * Renews auth token if possible, otherwise prompt login
+  */
   renewToken(showModal, showModalCallback) {
     this.auth0.checkSession({}, (err, result) => {
         if (err) {
