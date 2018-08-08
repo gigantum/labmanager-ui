@@ -12,11 +12,20 @@ class CodeBrowser extends Component {
 
     this.state = {
       rootFolder: '',
-      moreLoading: 'false'
+      moreLoading: false
     }
 
     this.setRootFolder = this.setRootFolder.bind(this)
     this._loadMore = this._loadMore.bind(this)
+  }
+
+  /*
+    loads more if branches are switched
+  */
+  componentDidUpdate(){
+    if(!this.state.moreLoading && this.props.code.allFiles && this.props.code.allFiles.edges.length < 3 && this.props.code.allFiles.pageInfo.hasNextPage){
+      this._loadMore();
+    }
   }
 
   /*
@@ -38,7 +47,6 @@ class CodeBrowser extends Component {
   */
 
   _loadMore() {
-
     this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
