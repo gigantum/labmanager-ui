@@ -22,6 +22,15 @@ class OutputDataBrowser extends Component {
   }
 
   /*
+    loads more if branches are switched
+  */
+  componentDidUpdate(){
+    if(!this.state.moreLoading && this.props.output.allFiles && this.props.output.allFiles.edges.length < 3 && this.props.output.allFiles.pageInfo.hasNextPage){
+      this._loadMore();
+    }
+  }
+
+  /*
     handle state and add listeners when component mounts
   */
   componentDidMount() {

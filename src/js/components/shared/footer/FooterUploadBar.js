@@ -12,7 +12,7 @@ export default class FooterUploadBar extends Component {
       'Footer__upload-status': this.props.parentState.uploadOpen,
       'Footer__upload-error': this.props.parentState.uploadError
     });
-    
+
     return (
       <div className={footerUploadClass}>
         <div className="Footer__upload-message">
@@ -35,7 +35,7 @@ export default class FooterUploadBar extends Component {
               }} className="Footer__close"></div>
         }
         {
-          this.props.parentState.labbookSuccess && <button className="Footer__button" onClick={() => this.props._openLabbook()}>
+          this.props.parentState.labbookSuccess && <button className="Footer__button" onClick={() => this.props.openLabbook()}>
               Open Project
             </button>
         }

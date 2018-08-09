@@ -1,4 +1,4 @@
-.Helper-button {
+.Helper__button {
   transition: all 0.25s;
   width: 60px;
   height: 60px;
@@ -12,7 +12,7 @@
   z-index: index($elements, helper);
 }
 
-.Helper-button--side-view{
+.Helper__button--side-view{
   bottom: 20px;
   width: 40px;
   height: 40px;
@@ -22,7 +22,7 @@
   background-size: 26px;
 }
 
-.Helper-button--open{
+.Helper__button--open{
   transition: all 0.25s;
   background: url('../images/icons/help/helper-close.svg') no-repeat center center;
   width: 50px;
@@ -35,7 +35,9 @@
   right: 9px;
 }
 
-
+.Helper__button--bottom{
+  bottom: 50px;
+}
 
 .Helper_menu.hidden{
   transition: all 0.5s;
