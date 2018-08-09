@@ -177,7 +177,10 @@ export default class ImportModule extends Component {
      window.addEventListener('dragleave', this._dragleave)
      window.addEventListener('dragenter', this._dragenter)
   }
-
+  /**
+  *  @param {object}
+  *  detects when a file has been dropped
+  */
   _drop(evt){
     if(document.getElementById('dropZone')){
       this._hideImportScreen();
@@ -192,6 +195,10 @@ export default class ImportModule extends Component {
     }
   }
 
+  /**
+  *  @param {object}
+  *  detects when file has been dragged over the DOM
+  */
   _dragover(evt){
 
     if(document.getElementById('dropZone')){
@@ -204,7 +211,10 @@ export default class ImportModule extends Component {
       evt.dataTransfer.dropEffect = 'none';
     }
   }
-
+  /**
+  *  @param {object}
+  *  detects when file leaves dropzone
+  */
   _dragleave(evt){
     counter--;
     if(dropzoneIds.indexOf(evt.target.id) < 0) {
@@ -217,6 +227,10 @@ export default class ImportModule extends Component {
     }
   }
 
+  /**
+  *  @param {object}
+  *  detects when file enters dropzone
+  */
   _dragenter(evt){
 
     counter++;
