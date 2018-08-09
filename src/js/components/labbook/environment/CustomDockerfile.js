@@ -15,11 +15,24 @@ export default class CustomDockerfile extends Component {
   constructor(props){
     super(props);
     this.state = {
+      originalDockerfile: this.props.dockerfile,
       dockerfileContent: this.props.dockerfile,
       lastSavedDockerfileContent: this.props.dockerfile,
       editingDockerfile: false,
       savingDockerfile: false,
     }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if(props.dockerfile !== state.originalDockerfile){
+      return{
+        ...state,
+        originalDockerfile: props.dockerfile,
+        dockerfileContent: props.dockerfile,
+        lastSavedDockerfileContent: props.dockerfile
+      }
+    }
+    return state
   }
 
   _saveDockerfile() {

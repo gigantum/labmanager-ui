@@ -12,7 +12,7 @@ class CodeBrowser extends Component {
 
     this.state = {
       rootFolder: '',
-      moreLoading: 'false'
+      moreLoading: false
     }
 
     this.setRootFolder = this.setRootFolder.bind(this)
@@ -20,14 +20,23 @@ class CodeBrowser extends Component {
   }
 
   /*
-    handle state and add listeners when component mounts
+    loads more if branches are switched
+  */
+  componentDidUpdate(){
+    if(!this.state.moreLoading && this.props.code.allFiles && this.props.code.allFiles.edges.length < 3 && this.props.code.allFiles.pageInfo.hasNextPage){
+      this._loadMore();
+    }
+  }
+
+  /*
+    handle state and addd listeners when component mounts
   */
   componentDidMount() {
     if(this.props.code.allFiles &&
       this.props.code.allFiles.pageInfo.hasNextPage) {
         this._loadMore() //routes query only loads 2, call loadMore
     } else {
-      //this.setState({'moreLoading': false});
+      this.setState({'moreLoading': false});
     }
   }
   /*
@@ -37,8 +46,7 @@ class CodeBrowser extends Component {
     logs callback
   */
   _loadMore() {
-
-    //this.setState({'moreLoading': true});
+    this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
      100, // Fetch the next 100 feed items
@@ -51,7 +59,7 @@ class CodeBrowser extends Component {
          self.props.code.allFiles.pageInfo.hasNextPage) {
          self._loadMore()
        } else {
-         //this.setState({'moreLoading': false});
+         this.setState({'moreLoading': false});
       }
      }
    );
