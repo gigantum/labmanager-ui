@@ -1,5 +1,5 @@
 // vendor
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
 //utilities
@@ -699,101 +699,103 @@ export default class ImportModule extends Component {
     })
 
     return(
-      <div
-        id="dropZone"
-        type="file"
-        className="ImportModule Labbooks__panel Labbooks__panel--add Labbooks__panel--import column-4-span-3"
-        ref={(div) => this.dropZone = div}
-        onDragEnd={(evt) => this._dragendHandler(evt)}
-        onDrop={(evt) => this._dropHandler(evt)}
-        onDragOver={(evt) => this._dragoverHandler(evt)}
-        key={'addLabbook'}>
-        { !this.state.importingScreen ?
-          <div className="Labbooks__labbook-main">
-            <div className="Labbooks__labbook-header">
-              <div
-                className="Labbooks__labbook-icon">
-                <div className="Labbooks__title-add"></div>
+      <Fragment>
+        <div
+          id="dropZone"
+          type="file"
+          className="ImportModule Labbooks__panel Labbooks__panel--add Labbooks__panel--import column-4-span-3"
+          ref={(div) => this.dropZone = div}
+          onDragEnd={(evt) => this._dragendHandler(evt)}
+          onDrop={(evt) => this._dropHandler(evt)}
+          onDragOver={(evt) => this._dragoverHandler(evt)}
+          key={'addLabbook'}>
+          { !this.state.importingScreen ?
+            <div className="Labbooks__labbook-main">
+              <div className="Labbooks__labbook-header">
+                <div
+                  className="Labbooks__labbook-icon">
+                  <div className="Labbooks__title-add"></div>
+                </div>
+                <div
+                  className="Labbooks__add-text">
+                  <h4>Add Project</h4>
+                </div>
               </div>
-              <div
-                className="Labbooks__add-text">
-                <h4>Add Project</h4>
+              <div className="Labbooks__labbook-button"
+                onClick={(evt) => { this._showModal(evt) }}>
+                Create New
               </div>
-            </div>
-            <div className="Labbooks__labbook-button"
-              onClick={(evt) => { this._showModal(evt) }}>
-              Create New
-            </div>
-            <ToolTip section="createLabbook" />
-            <div className={importCSS}
-              onClick={()=>{this._showImportScreen()}}>
-              Import Existing
-            </div>
-            <ToolTip section="importLabbook" />
-          </div>
-          :
-          <div id="dropZone__title" className="Labbooks__labbook-importing">
-            <div
-              id="dropZone__close"
-              className="Labbooks__import-close"
-              onClick={() => this._hideImportScreen()}>
-            </div>
-            <div className="Labbooks__labbook-import-header"
-              id="dropZone__create"
-            >
-              <h4
-                id="dropZone__create-header"
-              >
+              <ToolTip section="createLabbook" />
+              <div className={importCSS}
+                onClick={()=>{this._showImportScreen()}}>
                 Import Existing
-              </h4>
-              <p
-                id="dropZone__create-sub-header"
+              </div>
+              <ToolTip section="importLabbook" />
+            </div>
+            :
+            <div id="dropZone__title" className="Labbooks__labbook-importing">
+              <div
+                id="dropZone__close"
+                className="Labbooks__import-close"
+                onClick={() => this._hideImportScreen()}>
+              </div>
+              <div className="Labbooks__labbook-import-header"
+                id="dropZone__create"
               >
-                to import, do one of the following
+                <h4
+                  id="dropZone__create-header"
+                >
+                  Import Existing
+                </h4>
+                <p
+                  id="dropZone__create-sub-header"
+                >
+                  to import, do one of the following
+                </p>
+              </div>
+              <p id="dropZone__subtext">
+                Drag .zip File Here
               </p>
-            </div>
-            <p id="dropZone__subtext">
-              Drag .zip File Here
-            </p>
-            <label
-              className="Labbooks__file-system"
-              id="file__input-label"
-              htmlFor="file__input">
-              Browse & Upload .zip File
-            </label>
-            <input
-              id="file__input"
-              className='hidden'
-              type="file"
-              onChange={(evt) => { this._fileSelected(evt.files) }}
-            />
-            <div
-              className="Labbooks__labbook-paste"
-              id="dropZone__paste"
-            >
+              <label
+                className="Labbooks__file-system"
+                id="file__input-label"
+                htmlFor="file__input">
+                Browse & Upload .zip File
+              </label>
               <input
-                id="dropZone__paste-input"
-                type="text"
-                placeholder="Paste Project URL"
-                onChange={(evt) => this._updateRemoteUrl(evt)}
+                id="file__input"
+                className='hidden'
+                type="file"
+                onChange={(evt) => { this._fileSelected(evt.files) }}
               />
-              <button
-                id="dropZone__paste-button"
-                onClick={() => this.importLabbook()}
-                disabled={!this.state.remoteURL.length && !this.state.isImporting}
+              <div
+                className="Labbooks__labbook-paste"
+                id="dropZone__paste"
               >
-                Go
-              </button>
+                <input
+                  id="dropZone__paste-input"
+                  type="text"
+                  placeholder="Paste Project URL"
+                  onChange={(evt) => this._updateRemoteUrl(evt)}
+                />
+                <button
+                  id="dropZone__paste-button"
+                  onClick={() => this.importLabbook()}
+                  disabled={!this.state.remoteURL.length && !this.state.isImporting}
+                >
+                  Go
+                </button>
+              </div>
             </div>
-          </div>
-        }
+          }
+          <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
+
+        </div>
         {
           this.state.showLoginPrompt &&
           <LoginPrompt closeModal={this._closeLoginPromptModal} />
         }
-        <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
-
-      </div>
+      </Fragment>
       )
   }
 }
