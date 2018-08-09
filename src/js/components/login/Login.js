@@ -54,7 +54,6 @@ export default class Login extends Component {
   }
 
   render() {
-    console.log(this.props.loadingRenew)
     const { isAuthenticated } = this.props.auth;
 
     const errorType = sessionStorage.getItem('LOGIN_ERROR_TYPE'),

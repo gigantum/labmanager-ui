@@ -26,13 +26,13 @@ export default class Auth {
   /**
    * Renews auth token if possible, otherwise prompt login
   */
-  renewToken(showModal, showModalCallback, successCallback, forceHistory) {
+  renewToken(showModal, showModalCallback, successCallback, forceHistory, failureCallback) {
     this.auth0.checkSession({}, (err, result) => {
         if (err) {
           if(showModal){
             showModalCallback();
           } else{
-            this.login();
+            failureCallback();
           }
         } else {
           this.setSession(result, true, forceHistory);

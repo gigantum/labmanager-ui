@@ -11,7 +11,6 @@ export default (
  state = {
    'error': false,
    'logout': false,
-   'showLoginPrompt': false,
  },
  action
 ) => {

@@ -245,40 +245,6 @@ class Routes extends Component {
                       }
                     />
 
-
-                    <Route
-                      exact
-                      path="/:id"
-                      render={(props) =>
-                        <Redirect to="/projects/local"/>
-                      }
-                    />
-
-                    <Route
-                      exact
-                      path="/labbooks/:section"
-                      render={(props) =>
-                        <Redirect to="/projects/local"/>
-                      }
-                    />
-
-                    <Route
-                      exact
-                      path="/projects/:labbookSection"
-                      render={(props) =>
-
-
-                          <Home
-                            forceLoginScreen={this.state.forceLoginScreen}
-                            history={history}
-                            auth={this.props.auth}
-                            {...props}
-                          />
-
-
-                      }
-                    />
-
                     <Route
                       path="/projects/:owner/:labbookName"
                       auth={this.props.auth}

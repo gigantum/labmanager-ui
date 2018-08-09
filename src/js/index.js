@@ -28,7 +28,9 @@ UserIdentity.getUserIdentity().then((response)=>{
     }else{
       if(response.data.userIdentity){
         loadingRenew = true;
-        auth.renewToken(null, null, null, true)
+        auth.renewToken(null, null, null, true, ()=>{
+          routes.setState({loadingRenew: false})
+        })
 
       } else{
         localStorage.removeItem('family_name')
@@ -42,7 +44,7 @@ UserIdentity.getUserIdentity().then((response)=>{
 
   }
 
-  render(
+  let routes = render(
     <Routes
       auth={auth}
       forceLoginScreen={forceLoginScreen}
