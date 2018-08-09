@@ -28,6 +28,25 @@
   border: 1px solid $white;
 }
 
+.Login__button--loading,
+.Login__button--loading:disabled,
+.Login__button--loading:focus,
+.Login__button--loading:hover{
+  background: $azure;
+  font-size: 24px;
+  height: 50px;
+  width: 300px;
+  align-self: center;
+  border: 1px solid $white;
+  cursor: auto;
+  position: relative;
+
+  .Code__loading{
+    bottom: 9px;
+    right: 20px;
+  }
+}
+
 .Login__logo {
   margin-top: -10%;
   width: 75%;

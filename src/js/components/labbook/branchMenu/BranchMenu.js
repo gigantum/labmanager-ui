@@ -270,6 +270,8 @@ export default class BranchMenu extends Component {
                 self.setState({
                   showLoginPrompt: true
                 })
+              }, ()=>{
+                self._publishLabbook();
               });
             }
           }
@@ -411,6 +413,8 @@ export default class BranchMenu extends Component {
                   self.setState({
                     showLoginPrompt: true
                   })
+                }, ()=>{
+                  self._sync();
                 });
               }
             }
@@ -500,6 +504,8 @@ export default class BranchMenu extends Component {
               self.setState({
                 showLoginPrompt: true
               })
+            }, ()=>{
+              self._toggleCollaborators();
             });
           }
         }

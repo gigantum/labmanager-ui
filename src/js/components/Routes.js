@@ -20,6 +20,7 @@ import Helper from 'Components/shared/Helper'
 import store from 'JS/redux/store'
 //config
 import config from 'JS/config'
+import { throws } from 'assert';
 
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
@@ -47,6 +48,7 @@ export default class Routes extends Component {
       history: history,
       hasError: false,
       forceLoginScreen: this.props.forceLoginScreen,
+      loadingRenew: this.props.loadingRenew,
       showYT: false,
       showDefaultMessage: true,
     }
@@ -198,6 +200,7 @@ export default class Routes extends Component {
                     path="/"
                     render={(props) =>
                       <Home
+                        loadingRenew={this.state.loadingRenew}
                         forceLoginScreen={this.state.forceLoginScreen}
                         history={history}
                         auth={this.props.auth}
@@ -230,6 +233,7 @@ export default class Routes extends Component {
 
 
                         <Home
+                          loadingRenew={this.state.loadingRenew}
                           forceLoginScreen={this.state.forceLoginScreen}
                           history={history}
                           auth={this.props.auth}

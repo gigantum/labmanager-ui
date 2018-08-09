@@ -1,6 +1,8 @@
 //vendor
 import React, { Component } from 'react';
 import store from 'JS/redux/store'
+//components
+import Loader from 'Components/shared/Loader'
 //config
 import config from 'JS/config'
 
@@ -52,6 +54,7 @@ export default class Login extends Component {
   }
 
   render() {
+    console.log(this.props.loadingRenew)
     const { isAuthenticated } = this.props.auth;
 
     const errorType = sessionStorage.getItem('LOGIN_ERROR_TYPE'),
@@ -102,12 +105,21 @@ export default class Login extends Component {
               <div
                 className="Login__logo">
               </div>
-
-              <button
-                className="Login__button"
-                onClick={this.login.bind(this)}>
-                Log In
-              </button>
+              {
+                this.props.loadingRenew ?
+                <button
+                  disabled
+                  className="Login__button--loading">
+                  Renewing Token
+                  <div className="Code__loading"></div>
+                </button>
+                :
+                <button
+                  className="Login__button"
+                  onClick={this.login.bind(this)}>
+                  Log In
+                </button>
+              }
             </div>
           )
         }

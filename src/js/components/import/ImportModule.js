@@ -638,6 +638,8 @@ export default class ImportModule extends Component {
           }else{
             this.props.auth.renewToken(true, ()=>{
               this.setState({'showLoginPrompt': true})
+            }, ()=>{
+              this.importLabbook()
             });
           }
         }

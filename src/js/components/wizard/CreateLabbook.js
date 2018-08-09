@@ -166,6 +166,8 @@ export default class CreateLabbook extends React.Component {
                   })
 
                 this.setState({'showLoginPrompt': true})
+              }, ()=>{
+                this.continueSave();
               });
             }
           }

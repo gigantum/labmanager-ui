@@ -52,6 +52,8 @@ export default class RemoteLabbookPanel extends Component {
             } else {
               this.props.auth.renewToken(true, ()=>{
                 this.setState({'showLoginPrompt': true})
+              }, ()=>{
+                this.props.toggleDeleteModal({remoteId: edge.node.id, remoteOwner: edge.node.owner, remoteLabbookName: edge.node.name, existsLocally: this.props.existsLocally})
               })
             }
           }
@@ -200,6 +202,8 @@ export default class RemoteLabbookPanel extends Component {
         }else{
           this.props.auth.renewToken(true, ()=>{
             this.setState({'showLoginPrompt': true})
+          }, ()=>{
+            this.importLabbook(owner, labbookName)
           });
         }
       }

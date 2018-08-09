@@ -315,6 +315,8 @@ export default class Labbooks extends Component {
                 if(!this.state.showLoginPrompt) {
                   this.setState({'showLoginPrompt': true})
                 }
+              }, ()=>{
+                this._handleSortFilter(orderBy, sort);
               });
 
             }
@@ -367,6 +369,9 @@ export default class Labbooks extends Component {
             if(!this.state.showLoginPrompt) {
               this.setState({'showLoginPrompt': true})
             }
+          }, ()=>{
+            this.props.history.replace(`../projects/cloud${this.props.history.location.search}`)
+            this.setState({selectedSection: 'cloud'})
           });
 
         }

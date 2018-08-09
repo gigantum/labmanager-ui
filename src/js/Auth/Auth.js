@@ -26,7 +26,7 @@ export default class Auth {
   /**
    * Renews auth token if possible, otherwise prompt login
   */
-  renewToken(showModal, showModalCallback) {
+  renewToken(showModal, showModalCallback, successCallback, forceHistory) {
     this.auth0.checkSession({}, (err, result) => {
         if (err) {
           if(showModal){
@@ -35,7 +35,10 @@ export default class Auth {
             this.login();
           }
         } else {
-          this.setSession(result);
+          this.setSession(result, true, forceHistory);
+          if(successCallback){
+            successCallback();
+          }
         }
       }
     );
@@ -76,7 +79,7 @@ export default class Auth {
     });
   }
 
-  setSession(authResult) {
+  setSession(authResult, silent, forceHistory) {
 
     // Set the time that the access token will expire at
     let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
@@ -96,7 +99,9 @@ export default class Auth {
       ? '/projects'
       : route;
 
-    history.replace(route)
+    if(!silent || forceHistory){
+      history.replace(route)
+    }
   }
 
   logout() {

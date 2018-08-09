@@ -37,6 +37,8 @@ export const CollaboratorsQuery =  graphql`
         } else{
           this.props.auth.renewToken(true, ()=>{
             this.props.showLoginPrompt();
+          }, ()=>{
+            this.setState({collaboratorModalVisible: !this.state.collaboratorModalVisible})
           });
         }
       } else {

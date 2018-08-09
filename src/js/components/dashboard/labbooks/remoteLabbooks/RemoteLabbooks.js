@@ -52,6 +52,7 @@ class RemoteLabbooks extends Component {
     *  loads more labbooks using the relay pagination container
   */
   _loadMore = () => {
+    let self = this
     UserIdentity.getUserIdentity().then(response => {
       if(navigator.onLine){
 
@@ -74,6 +75,8 @@ class RemoteLabbooks extends Component {
           } else {
             this.props.auth.renewToken(true, ()=>{
               this.props.forceLocalView();
+            }, () =>{
+              self._loadMore();
             });
           }
         }
