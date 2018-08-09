@@ -39,7 +39,7 @@ export default class Helper extends Component {
 
     const helperString = JSON.stringify(helper)
     const stateString = JSON.stringify(this.state)
-    console.log(footer)
+
     if((stateString !== helperString) || (this.state.uploadOpen !== footer.uploadOpen)){
       this.setState({
         resize: helper.resize,
@@ -119,7 +119,7 @@ export default class Helper extends Component {
       'Helper__button--side-view': bodyWidth < 1600,
       'Helper__button--bottom': this.state.uploadOpen && !this.state.helperMenuOpen
     })
-    console.log(this)
+
     return(
       <div className="Helper">
         <div
