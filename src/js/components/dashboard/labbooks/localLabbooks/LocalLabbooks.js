@@ -166,6 +166,7 @@ export class LocalLabbooks extends Component {
                 ref="ImportModule_localLabooks"
                 {...this.props}
                 showModal={this.props.showModal}
+                history={this.props.history}
                 className="LocalLabbooks__panel column-4-span-3 LocalLabbooks__panel--import"
               />
             }

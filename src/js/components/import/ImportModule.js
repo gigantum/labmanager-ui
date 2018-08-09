@@ -113,7 +113,9 @@ const dispatchFinishedStatus = (filepath) =>{
    // }
 }
 
+const dropzoneIds = ['dropZone', 'dropZone__subtext', 'dropZone__title', 'dropZone__create', 'dropZone__paste', 'file__input-label', 'file__input', 'dropZone__paste-input', 'dropZone__paste-button', 'dropZone__create-header', 'dropZone__create-sub-header', 'dropZone__close'];
 
+let counter = 0;
 
 export default class ImportModule extends Component {
   constructor(props){
@@ -144,66 +146,21 @@ export default class ImportModule extends Component {
     this._showImportScreen = this._showImportScreen.bind(this)
     this._hideImportScreen = this._hideImportScreen.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
+    this._drop = this._drop.bind(this)
+    this._dragover = this._dragover.bind(this)
+    this._dragleave = this._dragleave.bind(this)
+    this._dragenter = this._dragenter.bind(this)
 
-
-
-
-    const dropzoneIds = ['dropZone', 'dropZone__subtext', 'dropZone__title', 'dropZone__create', 'dropZone__paste', 'file__input-label', 'file__input', 'dropZone__paste-input', 'dropZone__paste-button', 'dropZone__create-header', 'dropZone__create-sub-header', 'dropZone__close'];
-    let counter = 0;
-    //this set of listeners prevent the browser tab from loading the file into the tab view when dropped outside the target element
-    window.addEventListener('dragenter', (evt) => { //use evt, event is a reserved word in chrome
-      counter++;
-      if(document.getElementById('dropZone')){
-        this._showImportScreen();
-        document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
-      }
-
-      if(dropzoneIds.indexOf(evt.target.id) < 0) {
-        evt.preventDefault();
-        evt.dataTransfer.effectAllowed = 'none';
-        evt.dataTransfer.dropEffect = 'none';
-
-      }
-    }, false);
-
-    window.addEventListener('dragleave', (evt) => { //use evt, event is a reserved word in chrome
-      counter--;
-      if(dropzoneIds.indexOf(evt.target.id) < 0) {
-        if(document.getElementById('dropZone')){
-          if (counter === 0) {
-            this._hideImportScreen();
-            document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
-          }
-        }
-      }
-    }, false);
-
-    window.addEventListener('dragover', (evt) => {  //use evt, event is a reserved word in chrome
-      if(document.getElementById('dropZone')){
-        this._showImportScreen();
-        document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
-      }
-      if(dropzoneIds.indexOf(evt.target.id) < 0) {
-        evt.preventDefault();
-        evt.dataTransfer.effectAllowed = 'none';
-        evt.dataTransfer.dropEffect = 'none';
-      }
-    });
-
-    window.addEventListener('drop', (evt) => { //use evt, event is a reserved word in chrome
-
-      if(document.getElementById('dropZone')){
-        this._hideImportScreen();
-        document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
-      }
-      if(dropzoneIds.indexOf(evt.target.id) < 0) {
-
-        evt.preventDefault();
-        evt.dataTransfer.effectAllowed = 'none';
-        evt.dataTransfer.dropEffect = 'none';
-      }
-    });
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('drop', this._drop)
+    window.removeEventListener('dragover', this._dragover)
+    window.removeEventListener('dragleave', this._dragleave)
+    window.removeEventListener('dragenter', this._dragenter)
+  }
+
+
   componentDidMount() {
     let fileInput = document.getElementById('file__input')
     if(fileInput) {
@@ -214,7 +171,69 @@ export default class ImportModule extends Component {
         evt.stopPropagation(evt)
       }
     }
+
+     window.addEventListener('drop', this._drop)
+     window.addEventListener('dragover', this._dragover)
+     window.addEventListener('dragleave', this._dragleave)
+     window.addEventListener('dragenter', this._dragenter)
   }
+
+  _drop(evt){
+    if(document.getElementById('dropZone')){
+      this._hideImportScreen();
+      document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+    }
+
+    if(dropzoneIds.indexOf(evt.target.id) < 0) {
+
+      evt.preventDefault();
+      evt.dataTransfer.effectAllowed = 'none';
+      evt.dataTransfer.dropEffect = 'none';
+    }
+  }
+
+  _dragover(evt){
+
+    if(document.getElementById('dropZone')){
+      this._showImportScreen();
+      document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
+    }
+    if(dropzoneIds.indexOf(evt.target.id) < 0) {
+      evt.preventDefault();
+      evt.dataTransfer.effectAllowed = 'none';
+      evt.dataTransfer.dropEffect = 'none';
+    }
+  }
+
+  _dragleave(evt){
+    counter--;
+    if(dropzoneIds.indexOf(evt.target.id) < 0) {
+      if(document.getElementById('dropZone')){
+        if (counter === 0) {
+          this._hideImportScreen();
+          document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
+        }
+      }
+    }
+  }
+
+  _dragenter(evt){
+
+    counter++;
+    if(document.getElementById('dropZone')){
+      this._showImportScreen();
+      document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
+    }
+
+    if(dropzoneIds.indexOf(evt.target.id) < 0) {
+      evt.preventDefault();
+      evt.dataTransfer.effectAllowed = 'none';
+      evt.dataTransfer.dropEffect = 'none';
+
+    }
+  }
+
+
   /**
   *  @param {object} dataTransfer
   *  preventDefault on dragOver event

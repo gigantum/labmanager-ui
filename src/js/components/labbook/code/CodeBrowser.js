@@ -20,14 +20,14 @@ class CodeBrowser extends Component {
   }
 
   /*
-    handle state and addd listeners when component mounts
+    handle state and add listeners when component mounts
   */
   componentDidMount() {
     if(this.props.code.allFiles &&
       this.props.code.allFiles.pageInfo.hasNextPage) {
         this._loadMore() //routes query only loads 2, call loadMore
     } else {
-      this.setState({'moreLoading': false});
+      //this.setState({'moreLoading': false});
     }
   }
   /*
@@ -36,10 +36,9 @@ class CodeBrowser extends Component {
     increments by 100
     logs callback
   */
-
   _loadMore() {
 
-    this.setState({'moreLoading': true});
+    //this.setState({'moreLoading': true});
     let self = this;
     this.props.relay.loadMore(
      100, // Fetch the next 100 feed items
@@ -52,7 +51,7 @@ class CodeBrowser extends Component {
          self.props.code.allFiles.pageInfo.hasNextPage) {
          self._loadMore()
        } else {
-         this.setState({'moreLoading': false});
+         //this.setState({'moreLoading': false});
       }
      }
    );

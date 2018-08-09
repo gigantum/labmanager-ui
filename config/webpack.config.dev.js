@@ -12,6 +12,7 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -59,6 +60,7 @@ module.exports = {
     // Finally, this is your app's code:
     paths.appIndexJs,
     paths.dahshboardJs,
+    paths.labbookJs
     // We include the app code last so that if there is a runtime error during
     // initialization, it doesn't blow up the WebpackDevServer client, and
     // changing JS code would still trigger a refresh.
@@ -225,7 +227,17 @@ module.exports = {
     ],
   },
   plugins: [
-
+    // new BundleAnalyzerPlugin({
+    //        analyzerMode: 'static'
+    // }), //comment back in when needed
+    new webpack.optimize.CommonsChunkPlugin({
+         name: 'node-static',
+         filename: 'node-static.js',
+         minChunks(module, count) {
+             var context = module.context;
+             return context && context.indexOf('node_modules') >= 0;
+         },
+     }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">

@@ -7,6 +7,8 @@ import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-do
 import history from 'JS/history';
 import {QueryRenderer, graphql} from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 // components
 import Home from 'Components/home/Home';
 import SideBar from 'Components/shared/SideBar';
@@ -20,6 +22,8 @@ import Helper from 'Components/shared/Helper'
 import store from 'JS/redux/store'
 //config
 import config from 'JS/config'
+//utils
+import {getFilesFromDragEvent} from "JS/utils/html-dir-content";
 
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
@@ -39,7 +43,7 @@ const handleAuthentication = (auth, nextState, replace) => {
 }
 
 
-export default class Routes extends Component {
+class Routes extends Component {
 
   constructor(props){
     super(props)
@@ -329,3 +333,6 @@ export default class Routes extends Component {
     }
   }
 }
+
+
+export default Routes

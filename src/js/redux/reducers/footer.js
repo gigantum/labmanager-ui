@@ -331,7 +331,7 @@ export default(state = {
     }
 
   } else if (action.type === HIDE_MESSAGE_LIST) {
-    console.log(HIDE_MESSAGE_LIST)
+    
     return {
       ...state,
       messageListOpen: false,
