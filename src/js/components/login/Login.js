@@ -110,7 +110,7 @@ export default class Login extends Component {
                 <button
                   disabled
                   className="Login__button--loading">
-                  Renewing Token
+                  Logging In
                   <div className="Code__loading"></div>
                 </button>
                 :
