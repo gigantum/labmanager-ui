@@ -51,6 +51,7 @@ class Routes extends Component {
       history: history,
       hasError: false,
       forceLoginScreen: this.props.forceLoginScreen,
+      loadingRenew: this.props.loadingRenew,
       showYT: false,
       showDefaultMessage: true,
     }
@@ -197,50 +198,50 @@ class Routes extends Component {
                     auth={this.props.auth} history={history}
                   />
                   <div className={routesCSS}>
-                    <Route
-                      exact
-                      path="/"
-                      render={(props) =>
+
+                  <Route
+                    exact
+                    path="/"
+                    render={(props) =>
+                      <Home
+                        loadingRenew={this.state.loadingRenew}
+                        forceLoginScreen={this.state.forceLoginScreen}
+                        history={history}
+                        auth={this.props.auth}
+                        {...props}
+                      />
+                    }
+                  />
+
+                  <Route
+                    exact
+                    path="/:id"
+                    render={(props) =>
+                      <Redirect to="/projects/local"/>
+                    }
+                  />
+
+                  <Route
+                    exact
+                    path="/labbooks/:section"
+                    render={(props) =>
+                      <Redirect to="/projects/local"/>
+                    }
+                  />
+
+                  <Route
+                    exact
+                    path="/projects/:labbookSection"
+                    render={(props) =>
+
+
                         <Home
+                          loadingRenew={this.state.loadingRenew}
                           forceLoginScreen={this.state.forceLoginScreen}
                           history={history}
                           auth={this.props.auth}
                           {...props}
                         />
-                      }
-                    />
-
-
-                    <Route
-                      exact
-                      path="/:id"
-                      render={(props) =>
-                        <Redirect to="/projects/local"/>
-                      }
-                    />
-
-                    <Route
-                      exact
-                      path="/labbooks/:section"
-                      render={(props) =>
-                        <Redirect to="/projects/local"/>
-                      }
-                    />
-
-                    <Route
-                      exact
-                      path="/projects/:labbookSection"
-                      render={(props) =>
-
-
-                          <Home
-                            forceLoginScreen={this.state.forceLoginScreen}
-                            history={history}
-                            auth={this.props.auth}
-                            {...props}
-                          />
-
-
                       }
                     />
 

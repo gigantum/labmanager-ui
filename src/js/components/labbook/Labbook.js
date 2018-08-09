@@ -466,6 +466,7 @@ class Labbook extends Component {
                      setExportingState={this._setExportingState}
                      toggleBranchesView={this._toggleBranchesView}
                      isMainWorkspace={name === 'workspace' || name === `gm.workspace-${localStorage.getItem('username')}`}
+                     auth={this.props.auth}
                     />
 
                      <ContainerStatus

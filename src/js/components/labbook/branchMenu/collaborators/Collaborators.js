@@ -31,7 +31,19 @@ export const CollaboratorsQuery =  graphql`
     }
 
     _toggleCollaborators(){
-      this.state.sessionValid ? this.setState({collaboratorModalVisible: !this.state.collaboratorModalVisible}) : this.props.showLoginPrompt();
+      if(navigator.onLine){
+        if( this.state.sessionValid ){
+          this.setState({collaboratorModalVisible: !this.state.collaboratorModalVisible})
+        } else{
+          this.props.auth.renewToken(true, ()=>{
+            this.props.showLoginPrompt();
+          }, ()=>{
+            this.setState({collaboratorModalVisible: !this.state.collaboratorModalVisible})
+          });
+        }
+      } else {
+        this.props.showLoginPrompt();
+      }
     }
 
     _getCollaboratorList(collaborators, collaboratorFilteredArr){
