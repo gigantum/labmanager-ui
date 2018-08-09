@@ -425,7 +425,7 @@ export default class Labbooks extends Component {
     } else if(this.state.orderBy === 'created_on'){
       return `Creation Date ${this.state.sort === 'asc' ? '(Oldest)' : '(Newest)'}`
     } else {
-      return this.state.sort === 'asc' ? 'Z-A' : 'A-Z';
+      return this.state.sort === 'asc' ? 'A-Z' : 'Z-A';
     }
   }
 
@@ -569,15 +569,15 @@ export default class Labbooks extends Component {
                   </li>
                   <li
                     className="Labbooks__sort-item"
-                    onClick={()=>this._setSortFilter('name', 'desc')}
+                    onClick={()=>this._setSortFilter('name', 'asc')}
                   >
-                    A-Z {this.state.orderBy === 'name' && this.state.sort !== 'asc' ?  '✓ ' : ''}
+                    A-Z {this.state.orderBy === 'name' && this.state.sort === 'asc' ?  '✓ ' : ''}
                   </li>
                   <li
                     className="Labbooks__sort-item"
-                    onClick={()=>this._setSortFilter('name', 'asc')}
+                    onClick={()=>this._setSortFilter('name', 'desc')}
                   >
-                    Z-A {this.state.orderBy === 'name' && this.state.sort === 'asc' ?  '✓ ' : ''}
+                    Z-A {this.state.orderBy === 'name' && this.state.sort !== 'asc' ?  '✓ ' : ''}
                   </li>
                 </ul>
               </div>

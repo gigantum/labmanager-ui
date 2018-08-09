@@ -80,7 +80,7 @@ export default class BranchCard extends Component {
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
-              message: "Problem Checking out Branch, check you have a valid session and connection",
+              message: "Problem Checking out Branch, check if you have a valid session and connection",
               messageBody: error,
             }
           })
