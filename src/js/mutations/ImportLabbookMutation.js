@@ -48,9 +48,12 @@ export default function ImportLabbookMutation(
       uploadables,
       onCompleted: (response, error ) => {
 
-        FooterUtils.getJobStatus(response, 'importLabbook', 'importJobKey')
+
         if(error){
           console.log(error)
+        }
+        if(response){
+          FooterUtils.getJobStatus(response, 'importLabbook', 'importJobKey')
         }
 
         callback(response, error)

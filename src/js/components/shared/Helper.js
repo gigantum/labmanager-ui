@@ -26,7 +26,7 @@ export default class Helper extends Component {
   */
   componentDidMount() {
     unsubscribe = store.subscribe(() =>{
-        this.storeDidUpdate(store.getState().helper)
+        this.storeDidUpdate(store.getState().helper, store.getState().footer)
     })
 
     window.addEventListener("resize", this._resize);
@@ -35,16 +35,17 @@ export default class Helper extends Component {
     * @param {}
     * updates state from redux store
   */
-  storeDidUpdate(helper){
+  storeDidUpdate(helper, footer){
 
     const helperString = JSON.stringify(helper)
     const stateString = JSON.stringify(this.state)
 
-    if(stateString !== helperString){
+    if((stateString !== helperString) || (this.state.uploadOpen !== footer.uploadOpen)){
       this.setState({
         resize: helper.resize,
         isVisible: helper.helperMenuOpen,
-        footerVisible: helper.footerVisible
+        footerVisible: helper.footerVisible,
+        uploadOpen: footer.uploadOpen
       })
     }
   }
@@ -113,9 +114,10 @@ export default class Helper extends Component {
     })
 
     let helperButtonCSS = classNames({
-      'Helper-button': true,
-      'Helper-button--open': this.state.helperMenuOpen,
-      'Helper-button--side-view': bodyWidth < 1600
+      'Helper__button': true,
+      'Helper__button--open': this.state.helperMenuOpen,
+      'Helper__button--side-view': bodyWidth < 1600,
+      'Helper__button--bottom': this.state.uploadOpen && !this.state.helperMenuOpen
     })
 
     return(

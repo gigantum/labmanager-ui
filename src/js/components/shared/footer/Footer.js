@@ -20,6 +20,7 @@ export default class Footer extends Component {
     this._toggleMessageList = this._toggleMessageList.bind(this)
     this._showMessageBody = this._showMessageBody.bind(this)
     this._resize = this._resize.bind(this)
+    this._openLabbook = this._openLabbook.bind(this)
   }
   /**
     subscribe to store to update state
@@ -194,7 +195,8 @@ export default class Footer extends Component {
       'Footer__disc-button': true,
       'Footer__disc-button--open': this.state.messageListOpen,
       'Footer__dist-button--side-view': bodyWidth < 1600,
-      'Footer__disc-button--helper-open': this.state.helperVisible
+      'Footer__disc-button--helper-open': this.state.helperVisible,
+      'Footer__disc-button--bottom': !this.state.messageListOpen && this.state.uploadOpen
     });
 
 

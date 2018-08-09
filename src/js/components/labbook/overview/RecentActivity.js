@@ -112,7 +112,7 @@ export default class RecentActivity extends Component {
         if( ReactDOM.findDOMNode(this.refs[key]).previousSibling){
           ReactDOM.findDOMNode(this.refs[key]).previousSibling.classList.add('hidden')
         }
-        
+
       } else {
 
         ReactDOM.findDOMNode(this.refs[key]).className = 'RecentActivity__card-link';
@@ -163,7 +163,7 @@ export default class RecentActivity extends Component {
                 <div className="RecentActivity__fadeout hidden"></div>
                 <Link className="RecentActivity__card-link hidden" to={{
                     pathname: `../../../../projects/${owner}/${labbookName}/activity`
-                  }} replace="replace" ref={index}>
+                  }} replace={true} ref={index}>
                   View More in Activity Feed >
                 </Link>
               </div>

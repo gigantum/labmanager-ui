@@ -45,7 +45,6 @@ class CodeBrowser extends Component {
     increments by 100
     logs callback
   */
-
   _loadMore() {
     this.setState({'moreLoading': true});
     let self = this;

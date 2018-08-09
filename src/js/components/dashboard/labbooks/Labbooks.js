@@ -135,7 +135,7 @@ export default class Labbooks extends Component {
   */
 
   _closeSortMenu(evt) {
-    let isSortMenu = evt.target.className.indexOf('Labbooks__sort') > -1
+    let isSortMenu = evt && evt.target && evt.target.className && (evt.target.className.indexOf('Labbooks__sort') > -1)
 
     if(!isSortMenu && this.state.sortMenuOpen) {
       this.setState({sortMenuOpen: false});

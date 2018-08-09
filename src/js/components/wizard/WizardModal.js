@@ -221,6 +221,7 @@ export default class WizardModal extends React.Component {
           },2000)
 
         }else{
+          
           const {owner, name} = response.createLabbook.labbook
 
           this.setState({
