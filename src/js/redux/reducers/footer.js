@@ -172,8 +172,6 @@ export default(state = {
   } else if (action.type === REMOVE_MESSAGE) { //this is for only updating a single message
     let messageStack = []
 
-
-
     state.messageStack.forEach((messageItem) => {
       if (messageItem.id !== action.payload.id) {
         messageStack.push(messageItem)
@@ -219,7 +217,6 @@ export default(state = {
       totalFiles: action.payload.totalFiles
         ? action.payload.totalFiles
         : 0,
-      messageListOpen: true,
       viewHistory: false
     };
   } else if (action.type === UPLOAD_MESSAGE_UPDATE) {
@@ -331,7 +328,7 @@ export default(state = {
     }
 
   } else if (action.type === HIDE_MESSAGE_LIST) {
-    
+
     return {
       ...state,
       messageListOpen: false,

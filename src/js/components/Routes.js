@@ -197,126 +197,131 @@ class Routes extends Component {
                     auth={this.props.auth} history={history}
                   />
                   <div className={routesCSS}>
-                  <Route
-                    exact
-                    path="/"
-                    render={(props) =>
-                      <Home
-                        forceLoginScreen={this.state.forceLoginScreen}
-                        history={history}
-                        auth={this.props.auth}
-                        {...props}
-                      />
-                    }
-                  />
-
-
-                  <Route
-                    exact
-                    path="/:id"
-                    render={(props) =>
-                      <Redirect to="/projects/local"/>
-                    }
-                  />
-
-                  <Route
-                    exact
-                    path="/labbooks/:section"
-                    render={(props) =>
-                      <Redirect to="/projects/local"/>
-                    }
-                  />
-
-                  <Route
-                    exact
-                    path="/projects/:labbookSection"
-                    render={(props) =>
-
-
+                    <Route
+                      exact
+                      path="/"
+                      render={(props) =>
                         <Home
                           forceLoginScreen={this.state.forceLoginScreen}
                           history={history}
                           auth={this.props.auth}
                           {...props}
                         />
+                      }
+                    />
 
 
-                    }
-                  />
+                    <Route
+                      exact
+                      path="/:id"
+                      render={(props) =>
+                        <Redirect to="/projects/local"/>
+                      }
+                    />
 
-                  <Route
-                    path="/projects/:owner/:labbookName"
-                    auth={this.props.auth}
-                    render={(parentProps) =>{
+                    <Route
+                      exact
+                      path="/labbooks/:section"
+                      render={(props) =>
+                        <Redirect to="/projects/local"/>
+                      }
+                    />
 
-                        const labbookName = parentProps.match.params.labbookName;
-                        const owner = parentProps.match.params.owner;
-
-                        self.setRouteStore(owner, labbookName)
-
-                        return (<QueryRenderer
-                          environment={environment}
-                          query={LabbookQuery}
-                          variables={
-                            {
-                              name: parentProps.match.params.labbookName,
-                              owner: parentProps.match.params.owner,
-                              first: 2,
-                              hasNext: false
-                            }
-                          }
-                          render={({error, props}) => {
-
-                            if(error){
-                              console.log(error)
-                              return (<div>{error.message}</div>)
-                            }
-                            else if(props){
-                              if(props.errors){
-                                return(<div>{props.errors[0].message}</div>)
-                              }else{
+                    <Route
+                      exact
+                      path="/projects/:labbookSection"
+                      render={(props) =>
 
 
-                                return (<Labbook
-                                  key={labbookName}
-                                  auth={this.props.auth}
-                                  labbookName={labbookName}
-                                  query={props.query}
-                                  labbook={props.labbook}
-                                  owner={owner}
-                                  {...parentProps}
-                                />)
+                          <Home
+                            forceLoginScreen={this.state.forceLoginScreen}
+                            history={history}
+                            auth={this.props.auth}
+                            {...props}
+                          />
+
+
+                      }
+                    />
+
+                    <Route
+                      path="/projects/:owner/:labbookName"
+                      auth={this.props.auth}
+                      render={(parentProps) =>{
+
+                          const labbookName = parentProps.match.params.labbookName;
+                          const owner = parentProps.match.params.owner;
+
+                          self.setRouteStore(owner, labbookName)
+
+                          return (<QueryRenderer
+                            environment={environment}
+                            query={LabbookQuery}
+                            variables={
+                              {
+                                name: parentProps.match.params.labbookName,
+                                owner: parentProps.match.params.owner,
+                                first: 2,
+                                hasNext: false
                               }
                             }
-                            else{
-                              return (<Loader />)
+                            render={({error, props}) => {
+
+                              if(error){
+                                console.log(error)
+                                return (<div>{error.message}</div>)
+                              }
+                              else if(props){
+                                if(props.errors){
+                                  return(<div>{props.errors[0].message}</div>)
+                                }else{
+
+
+                                  return (<Labbook
+                                    key={labbookName}
+                                    auth={this.props.auth}
+                                    labbookName={labbookName}
+                                    query={props.query}
+                                    labbook={props.labbook}
+                                    owner={owner}
+                                    {...parentProps}
+                                  />)
+                                }
+                              }
+                              else{
+                                return (<Loader />)
+                              }
                             }
                           }
-                        }
-                      />)
-                    }
+                        />)
+                      }
 
-                    }
-                  />
-                  <Helper />
-                  <Route
-                    path="/profile"
-                    render={(props)=>{
-                      return(
-                        <Profile
+                      }
+                    />
 
-                        />
-                      )
-                    }}
-                  />
-                  <Prompt
-                    ref="prompt"
-                  />
-                  <Footer
-                    ref="footer"
-                    history={history}
-                  />
-                </div>
+                    <Route
+                      path="/profile"
+                      render={(props)=>{
+                        return(
+                          <Profile
+
+                          />
+                        )
+                      }}
+                    />
+
+
+                    <Helper />
+
+                    <Prompt
+                      ref="prompt"
+                    />
+
+                    <Footer
+                      ref="footer"
+                      history={history}
+                    />
+                  </div>
                 </div>
               )}}
              />
