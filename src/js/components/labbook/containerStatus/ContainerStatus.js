@@ -485,7 +485,7 @@ export default class ContainerStatus extends Component {
        store.dispatch({
          type: 'CONTAINER_MENU_WARNING',
          payload: {
-           message: `Can't start container when environemnt is being edited`
+           message: `Can't start container when environment is being edited`
          }
        })
     }

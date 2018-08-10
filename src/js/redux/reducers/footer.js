@@ -168,7 +168,8 @@ export default(state = {
       open: true,
       success: true,
       showProgressBar: false,
-      messageListOpen: true
+      messageListOpen: true,
+      viewHistory: false,
     };
   } else if (action.type === REMOVE_MESSAGE) { //this is for only updating a single message
     let messageStack = []
