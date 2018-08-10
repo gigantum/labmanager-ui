@@ -482,6 +482,12 @@ export default class ContainerStatus extends Component {
       }
     }else{
        this._showMenu()
+       store.dispatch({
+         type: 'CONTAINER_MENU_WARNING',
+         payload: {
+           message: `Can't start container when environemnt is being edited`
+         }
+       })
     }
   }
 
@@ -694,7 +700,9 @@ export default class ContainerStatus extends Component {
 
           <div className="ContainerStatus__button-menu">
 
-            {store.getState().environment.containerMenuWarning}
+            {
+              store.getState().environment.containerMenuWarning
+            }
 
           </div>
 
