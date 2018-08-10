@@ -443,33 +443,51 @@ export default class ContainerStatus extends Component {
     @return {string} newStatus
    */
   _containerAction(status, evt){
-    if(status === "Stop"){
-      this.setState({
-        status: 'Stopping',
-        contanerMenuRunning: false
-      });
-      this._stopContainerMutation()
-    }else if(status === "Run"){
-      this.setState({
-        status: 'Starting',
-        contanerMenuRunning: false
-      })
-      store.dispatch({
-        type: 'MERGE_MODE',
-        payload: {
-          branchesOpen: false,
-          mergeFilter: false
-        }
-      })
-      this._startContainerMutation()
-    }else if((status === "Rebuild") || (status === "Rebuild")){
 
-      this.setState({
-        status: "Building",
-        contanerMenuRunning: false
-      });
+    if(!store.getState().containerStatus.isBuilding){
+      if(status === "Stop"){
 
-      this._rebuildContainer(evt, status)
+        this.setState({
+          status: 'Stopping',
+          contanerMenuRunning: false
+        });
+
+        this._stopContainerMutation()
+
+      }else if(status === "Run"){
+
+        this.setState({
+          status: 'Starting',
+          contanerMenuRunning: false
+        })
+
+        store.dispatch({
+          type: 'MERGE_MODE',
+          payload: {
+            branchesOpen: false,
+            mergeFilter: false
+          }
+        })
+
+        this._startContainerMutation()
+
+      }else if((status === "Rebuild") || (status === "Rebuild")){
+
+        this.setState({
+          status: "Building",
+          contanerMenuRunning: false
+        });
+
+        this._rebuildContainer(evt, status)
+      }
+    }else{
+       this._showMenu()
+       store.dispatch({
+         type: 'CONTAINER_MENU_WARNING',
+         payload: {
+           message: `Can't start container when environment is being edited`
+         }
+       })
     }
   }
 
@@ -478,6 +496,7 @@ export default class ContainerStatus extends Component {
     shows message plugin menu
   */
   _openPluginMenu(){
+
     this.setState({
       pluginsMenu: !this.state.pluginsMenu
     })
@@ -487,6 +506,7 @@ export default class ContainerStatus extends Component {
     shows message to stop container
   */
   _showMenu(){
+
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
@@ -525,15 +545,20 @@ export default class ContainerStatus extends Component {
     @return {}
   */
   _rebuildContainer(){
+
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
         containerMenuOpen: false
       }
     })
+
     let {labbookName, owner} = this.state
     let self = this
+
     this.setState({imageStatus: "BUILD_IN_PROGRESS"});
+
+
     BuildImageMutation(
       labbookName,
       owner,
@@ -542,10 +567,14 @@ export default class ContainerStatus extends Component {
           if(error){
             console.log(error)
           }
+
           self.setState({rebuildAttempts: this.state.rebuildAttempts + 1})
+
           if((this.state.status === 'Starting') && (this.state.rebuildAttempts < 1)){
+
             self._startContainerMutation()
           }else{
+
             self.setState({
               rebuildAttempts: 0,
               'status': ''
@@ -557,7 +586,9 @@ export default class ContainerStatus extends Component {
 
 
   render(){
+
     let status = this._getContainerStatusText(this.state)
+
     return(
         this._containerStatusJSX(status, 'setStatus')
     )
@@ -566,7 +597,9 @@ export default class ContainerStatus extends Component {
 
   _containerStatusJSX(status, key){
     let excludeStatuses = ['Stopping', 'Starting', 'Building', 'Publishing', 'Syncing']
+
     let notExcluded = excludeStatuses.indexOf(this.state.status) === -1
+
     const containerStatusCss = classNames({
       'ContainerStatus__container-state--menu-open': this.state.containerMenuOpen,
       'ContainerStatus__container-state': !this.state.containerMenuOpen,
@@ -577,6 +610,7 @@ export default class ContainerStatus extends Component {
       'ContainerStatus__container-state--expanded': this.state.isMouseOver && notExcluded && !this.state.isBuilding && !(this.state.imageStatus === 'BUILD_IN_PROGRESS') ,
       'ContainerStatus__container-remove-pointer': !notExcluded || this.state.isBuilding || (this.state.imageStatus === 'BUILD_IN_PROGRESS') || this.state.isSyncing ||this.state.isPublishing
     })
+
     const containerMenuIconCSS = classNames({
         'ContainerStatus__plugins-menu-arrow': true,
         'hidden': !this.state.pluginsMenu
@@ -666,7 +700,9 @@ export default class ContainerStatus extends Component {
 
           <div className="ContainerStatus__button-menu">
 
-            {store.getState().environment.containerMenuWarning}
+            {
+              store.getState().environment.containerMenuWarning
+            }
 
           </div>
 

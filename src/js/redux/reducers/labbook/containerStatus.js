@@ -4,7 +4,7 @@
 export const UPDATE_CONTAINER_STATUS = 'UPDATE_CONTAINER_STATUS'
 export const RESET_DETAIL_STORE = 'RESET_DETAIL_STORE'
 export const UPDATE_CONTAINER_MENU_VISIBILITY = 'UPDATE_CONTAINER_MENU_VISIBILITY'
-
+export const IS_BUILDING = 'IS_BUILDING'
 
 export default (
  state = {
@@ -29,6 +29,11 @@ if (action.type === UPDATE_CONTAINER_STATUS) {
    return {
      ...state,
      detailMode: false
+   };
+ }else if(action.type === IS_BUILDING){
+   return {
+     ...state,
+     isBuilding: action.payload.isBuilding
    };
  }
 

@@ -408,7 +408,7 @@ export default class Labbooks extends Component {
       case 'all':
         return 'All'
       case 'owner':
-        return 'My Labbooks'
+        return 'My Projects'
       case 'others':
         return 'Shared With Me'
       default:
@@ -522,7 +522,7 @@ export default class Labbooks extends Component {
                     className={'Labbooks__filter-item'}
                     onClick={()=>this._setfilter('owner')}
                   >
-                   My Labbooks {this.state.filter === 'owner' ?  '✓ ' : ''}
+                   My Projects {this.state.filter === 'owner' ?  '✓ ' : ''}
                   </li>
                   <li
                     className={'Labbooks__filter-item'}
