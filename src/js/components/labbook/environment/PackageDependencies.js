@@ -471,6 +471,12 @@ class PackageDependencies extends Component {
             messageBody: response.errors
           }
         })
+        store.dispatch({
+          type: 'IS_BUILDING',
+          payload: {
+            isBuilding: false,
+          }
+        })
       } else{
         let resPackages = response.data.labbook.packages;
         let invalidCount = 0;
@@ -494,6 +500,12 @@ class PackageDependencies extends Component {
             payload: {
               message: 'Packages could not be installed',
               messageBody: [{message}]
+            }
+          })
+          store.dispatch({
+            type: 'IS_BUILDING',
+            payload: {
+              isBuilding: false,
             }
           })
           this.setState({disableInstall: false, installDependenciesButtonState: ''})
@@ -564,6 +576,12 @@ class PackageDependencies extends Component {
               type: 'WARNING_MESSAGE',
               payload: {
                 message: `All packages attempted to be installed already exist.`,
+              }
+            })
+            store.dispatch({
+              type: 'IS_BUILDING',
+              payload: {
+                isBuilding: false,
               }
             })
             self.setState({

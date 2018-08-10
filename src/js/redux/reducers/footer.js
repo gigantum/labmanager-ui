@@ -94,7 +94,9 @@ export default(state = {
       currentId: id,
       showProgressBar: false,
       open: true,
-      success: false
+      success: false,
+      messageListOpen: true,
+      viewHistory: false
     };
 
   } else if (action.type === INFO_MESSAGE) { //this is for only updating a single message
