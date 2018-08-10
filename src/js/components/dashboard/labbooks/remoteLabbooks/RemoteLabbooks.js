@@ -52,26 +52,36 @@ class RemoteLabbooks extends Component {
     *  loads more labbooks using the relay pagination container
   */
   _loadMore = () => {
+    let self = this
     UserIdentity.getUserIdentity().then(response => {
-      if(response.data){
-        if(response.data.userIdentity.isSessionValid){
-          this.setState({
-            'isPaginating': true
-          })
+      if(navigator.onLine){
 
-          if(this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
-            this.props.relay.loadMore(
-              20, // Fetch the next 20 items
-              (ev) => {
-                this.setState({
-                  'isPaginating': false
-                })
-              }
-            );
+        if(response.data){
+          if(response.data.userIdentity.isSessionValid){
+            this.setState({
+              'isPaginating': true
+            })
+
+            if(this.props.remoteLabbooks.remoteLabbooks.pageInfo.hasNextPage){
+              this.props.relay.loadMore(
+                20, // Fetch the next 20 items
+                (ev) => {
+                  this.setState({
+                    'isPaginating': false
+                  })
+                }
+              );
+            }
+          } else {
+            this.props.auth.renewToken(true, ()=>{
+              this.props.forceLocalView();
+            }, () =>{
+              self._loadMore();
+            });
           }
-        } else {
-          this.props.forceLocalView();
         }
+      } else{
+        this.props.forceLocalView();
       }
     })
   }
@@ -121,6 +131,7 @@ class RemoteLabbooks extends Component {
                   edge={edge}
                   history={this.props.history}
                   existsLocally={edge.node.isLocal}
+                  auth={this.props.auth}
                   />
               )
             })
@@ -167,11 +178,17 @@ class RemoteLabbooks extends Component {
       )
     } else {
       UserIdentity.getUserIdentity().then(response => {
-        if(response.data){
-          if(!response.data.userIdentity.isSessionValid){
-            this.props.auth.login();
+        if(navigator.onLine){
+
+          if(response.data){
+            if(!response.data.userIdentity.isSessionValid){
+              this.props.auth.renewToken();
+            }
           }
+        } else{
+          this.props.forceLocalView();
         }
+
       })
 
       return(<div></div>)

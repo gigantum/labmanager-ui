@@ -129,6 +129,16 @@ export default class Helper extends Component {
         </div>
         <div className={menuCSS}>
           <div
+            className="Helper__menu-feedback"
+            onClick={()=> window.open('https://app.craft.io/share/C3174F4B2305843009657781316')}
+          >
+            <h5>Feedback</h5>
+            <div
+              className="Helper__feedback-button"
+            >
+            </div>
+          </div>
+          <div
             className="Helper__menu-discussion"
             onClick={()=> window.open('https://docs.gigantum.com/discuss')}
           >

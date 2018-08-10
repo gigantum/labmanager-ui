@@ -10,7 +10,7 @@ export const LOGOUT = 'LOGOUT';
 export default (
  state = {
    'error': false,
-   'logout': false
+   'logout': false,
  },
  action
 ) => {
@@ -29,7 +29,7 @@ export default (
      ...state,
      logout: action.payload.logout
    };
- }
+  }
 
  return state;
 };
