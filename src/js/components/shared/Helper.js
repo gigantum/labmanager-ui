@@ -68,13 +68,6 @@ export default class Helper extends Component {
         isVisible: !store.getState().helper.isVisible
       }
     })
-
-    store.dispatch({
-      type: 'HELPER_VISIBLE',
-      payload:{
-        helperVisible: !store.getState().helper.isVisible
-      }
-    })
   }
   /**
     * @param {}
