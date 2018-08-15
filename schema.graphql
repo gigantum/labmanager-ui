@@ -1,5 +1,5 @@
 # source: http://localhost:10000/api/labbook/
-# timestamp: Wed Jul 25 2018 15:06:12 GMT-0400 (EDT)
+# timestamp: Mon Aug 13 2018 16:44:07 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -709,8 +709,8 @@ type LabbookList implements Node {
   """The ID of the object."""
   id: ID!
   localById(ids: [String]): [Labbook]
-  localLabbooks(orderBy: String = "name", sort: String = "desc", before: String, after: String, first: Int, last: Int): LabbookConnection
-  remoteLabbooks(orderBy: String = "name", sort: String = "desc", before: String, after: String, first: Int, last: Int): RemoteLabbookConnection
+  localLabbooks(orderBy: String = "name", sort: String = "asc", before: String, after: String, first: Int, last: Int): LabbookConnection
+  remoteLabbooks(orderBy: String = "name", sort: String = "asc", before: String, after: String, first: Int, last: Int): RemoteLabbookConnection
 }
 
 """Entry point for all graphql mutations"""

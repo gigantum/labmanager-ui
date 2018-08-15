@@ -67,7 +67,7 @@ const FooterUtils = {
               message = fullMessage.slice(res[res.length - 2], res[res.length - 1])
 
             }
-
+            console.log(response.data)
             if (response.data.jobStatus.status === 'started') {
 
               store.dispatch({
