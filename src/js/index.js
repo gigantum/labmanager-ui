@@ -9,15 +9,14 @@ import Routes from './components/Routes';
 
 const auth = new Auth();
 
-let routeRef;
-
 UserIdentity.getUserIdentity().then((response)=>{
   let expiresAt = JSON.stringify((new Date().getTime() * 1000) + new Date().getTime());
   let forceLoginScreen = true;
-  
+  let loadingRenew = false;
+
   if(response.data){
 
-    if(response.data.userIdentity){
+    if(response.data.userIdentity && ((response.data.userIdentity.isSessionValid && navigator.onLine) || !navigator.onLine)){
       localStorage.setItem('family_name', response.data.userIdentity.familyName);
       localStorage.setItem('given_name', response.data.userIdentity.givenName);
       localStorage.setItem('email', response.data.userIdentity.email);
@@ -26,24 +25,30 @@ UserIdentity.getUserIdentity().then((response)=>{
 
       forceLoginScreen = false;
 
-
     }else{
-      localStorage.removeItem('family_name')
-      localStorage.removeItem('given_name')
-      localStorage.removeItem('email')
-      localStorage.removeItem('username')
-      localStorage.removeItem('expires_at')
-      //routeRef._setForceLoginScreen(true)
+      if(response.data.userIdentity){
+        loadingRenew = true;
+        auth.renewToken(null, null, null, true, ()=>{
+          routes.setState({loadingRenew: false})
+        })
+
+      } else{
+        localStorage.removeItem('family_name')
+        localStorage.removeItem('given_name')
+        localStorage.removeItem('email')
+        localStorage.removeItem('username')
+        localStorage.removeItem('expires_at')
+      }
     }
   }else{
-    console.error(response)
+
   }
 
-  render(
+  let routes = render(
     <Routes
       auth={auth}
       forceLoginScreen={forceLoginScreen}
-
+      loadingRenew={loadingRenew}
     />
     , document.getElementById('root') || document.createElement('div')
 

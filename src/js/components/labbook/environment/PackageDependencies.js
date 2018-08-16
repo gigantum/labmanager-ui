@@ -59,6 +59,10 @@ class PackageDependencies extends Component {
 
     let nextPackages= nextProps.environment.packageDependencies
 
+    if(nextPackages.edges && nextPackages.edges.length < 3 && nextPackages.pageInfo.hasNextPage){
+      this._loadMore();
+    }
+
     if(nextPackages.edges && nextPackages.edges[0] && nextPackages.edges[0].node.latestVersion){
       let latestPackages = {};
 
@@ -251,13 +255,16 @@ class PackageDependencies extends Component {
       if(canEditEnvironment){
 
         if(!this.state.hardDisable){
+
           const {labbookName, owner} = store.getState().routes
           const {environmentId} = this.props
           const manager = this.state.selectedTab
           const removalPackages = Object.keys(this.state.removalPackages[manager])
           const RemovalIDArr = Object.values(this.state.removalPackages[manager])
           const clientMutationId = uuidv4()
+
           this.setState({removalPackages: {}, updatePackages: {}})
+
           RemovePackageComponentsMutation(
             labbookName,
             owner,
@@ -268,19 +275,23 @@ class PackageDependencies extends Component {
             environmentId,
             'PackageDependencies_packageDependencies',
             (response, error) => {
+
               if(error){
                 console.log(error)
               }
+
               this.setState({hardDisable: false})
               self.props.buildCallback()
             }
           )
         }
       }else{
+
         this._promptUserToCloseContainer()
         this.setState({hardDisable: false})
       }
     } else {
+
       store.dispatch({
         type: 'ERROR_MESSAGE',
         payload:{
@@ -288,6 +299,7 @@ class PackageDependencies extends Component {
           messageBody: [{message: 'An internet connection is required to modify the environment.'}]
         }
       })
+
     }
   }
   /**
@@ -300,16 +312,20 @@ class PackageDependencies extends Component {
 
     if(navigator.onLine){
       if(canEditEnvironment){
+
         store.dispatch({
           type: 'TOGGLE_PACKAGE_MENU',
           payload:{
             packageMenuVisible: !this.state.packageMenuVisible
           }
         })
+
       }else{
+
         this._promptUserToCloseContainer()
       }
     } else {
+
       store.dispatch({
         type: 'ERROR_MESSAGE',
         payload:{
@@ -384,6 +400,7 @@ class PackageDependencies extends Component {
         message: 'Stop Project before editing the environment. \n Be sure to save your changes.'
       }
     })
+
     store.dispatch({
       type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
       payload: {
@@ -410,20 +427,31 @@ class PackageDependencies extends Component {
   *  triggers add package mutation
   */
   _addPackageComponentsMutation(){
-    let self = this;
-    let {packages} = this.state
-    const {labbookName, owner} = store.getState().routes
-    const {environmentId} = this.props
+    let self = this,
+        {packages} = this.state,
+        filteredInput = [];
 
-    this.setState({disableInstall: true, installDependenciesButtonState: 'loading'})
-    let filteredInput = [];
+    const {labbookName, owner} = store.getState().routes,
+          {environmentId} = this.props;
+
     packages = packages.map((pkg) => {
       pkg.validity = 'checking'
       filteredInput.push({manager: pkg.manager, package: pkg.package, version: pkg.version})
       return pkg;
     }).slice()
 
-    this.setState({packages})
+    this.setState({
+      packages,
+      disableInstall: true,
+      installDependenciesButtonState: 'loading'
+    })
+
+    store.dispatch({
+      type: 'IS_BUILDING',
+      payload: {
+        isBuilding: true
+      }
+    })
 
     PackageLookup.query(labbookName, owner, filteredInput).then((response)=>{
 
@@ -441,6 +469,12 @@ class PackageDependencies extends Component {
           payload: {
             message: `Error occured looking up packages`,
             messageBody: response.errors
+          }
+        })
+        store.dispatch({
+          type: 'IS_BUILDING',
+          payload: {
+            isBuilding: false,
           }
         })
       } else{
@@ -466,6 +500,12 @@ class PackageDependencies extends Component {
             payload: {
               message: 'Packages could not be installed',
               messageBody: [{message}]
+            }
+          })
+          store.dispatch({
+            type: 'IS_BUILDING',
+            payload: {
+              isBuilding: false,
             }
           })
           this.setState({disableInstall: false, installDependenciesButtonState: ''})
@@ -494,7 +534,9 @@ class PackageDependencies extends Component {
           })
 
           if(filteredInput.length){
+
             totalCount += filteredInput.length
+
             AddPackageComponentsMutation(
               labbookName,
               owner,
@@ -534,6 +576,12 @@ class PackageDependencies extends Component {
               type: 'WARNING_MESSAGE',
               payload: {
                 message: `All packages attempted to be installed already exist.`,
+              }
+            })
+            store.dispatch({
+              type: 'IS_BUILDING',
+              payload: {
+                isBuilding: false,
               }
             })
             self.setState({

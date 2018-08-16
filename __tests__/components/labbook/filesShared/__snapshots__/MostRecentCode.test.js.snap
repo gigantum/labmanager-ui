@@ -40,7 +40,7 @@ exports[`Test MostRecentCode Renders snapshot 1`] = `
         >
           <p>
             Last Modified: 
-            a month ago
+            2 months ago
           </p>
           <p>
             Size: 
@@ -82,7 +82,7 @@ exports[`Test MostRecentCode Renders snapshot 1`] = `
         >
           <p>
             Last Modified: 
-            a month ago
+            2 months ago
           </p>
           <p>
             Size: 
@@ -124,7 +124,7 @@ exports[`Test MostRecentCode Renders snapshot 1`] = `
         >
           <p>
             Last Modified: 
-            a month ago
+            2 months ago
           </p>
           <p>
             Size: 

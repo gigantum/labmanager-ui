@@ -169,7 +169,7 @@ var getDataTransferItemFiles = function getDataTransferItemFiles(item, options) 
  *  {options.bail} (default: 1000) - how many levels to follow recursively before bailing
  */
 var getFilesFromDragEvent = function getFilesFromDragEvent(evt) {
-
+	
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     options = initOptions(options);

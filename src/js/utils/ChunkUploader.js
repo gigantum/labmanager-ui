@@ -58,7 +58,7 @@ const updateTotalStatus = (file, labbookName, owner, transactionId) => {
       open: true
     }
   })
-  
+
 
   if(fileCount === totalFiles){
     setTimeout(()=>{
@@ -220,7 +220,6 @@ const ChunkUploader = {
     */
     const getChunk = (response, result) => {
 
-
       if(response.name){ //checks if response is a file
 
         let sliceUpperBound = (fileSize > (fileLoadedSize + chunkSize))
@@ -246,14 +245,18 @@ const ChunkUploader = {
           //select type of mutation
           if(file.name.indexOf('.lbk') > -1 || file.name.indexOf('.zip') > -1){
 
-            uploadLabbookChunk(
-              file,
-              chunkData,
-              data.accessToken,
-              getChunk
-            )
+            if(!data.connectionKey){
 
-            postMessage(chunkData, false) //post progress back to worker instantiator file
+              uploadLabbookChunk(
+                file,
+                chunkData,
+                data.accessToken,
+                getChunk
+              )
+
+              postMessage(chunkData, false) //post progress back to worker instantiator file
+
+            }
 
           }
           else{

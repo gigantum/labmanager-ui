@@ -1,7 +1,8 @@
+import uuidv4 from 'uuid/v4'
 /**
  * constants
  */
- //messages that have a constant state
+//messages that have a constant state
 export const ERROR_MESSAGE = 'ERROR_MESSAGE';
 export const INFO_MESSAGE = 'INFO_MESSAGE';
 export const WARNING_MESSAGE = 'WARNING_MESSAGE';
@@ -15,277 +16,490 @@ export const IMPORT_MESSAGE_SUCCESS = 'IMPORT_MESSAGE_SUCCESS';
 //
 export const RESET_FOOTER_STORE = 'RESET_FOOTER_STORE'
 export const TOGGLE_MESSAGE_LIST = 'TOGGLE_MESSAGE_LIST'
+export const HIDE_MESSAGE_LIST = 'HIDE_MESSAGE_LIST'
 
 export const MULTIPART_INFO_MESSAGE = 'MULTIPART_INFO_MESSAGE'
 export const MULTIPART_ERROR_MESSAGE = 'MULTIPART_ERROR_MESSAGE'
 
+export const UPDATE_MESSAGE_STACK_ITEM_VISIBILITY = 'UPDATE_MESSAGE_STACK_ITEM_VISIBILITY'
+export const UPDATE_HISTORY_STACK_ITEM_VISIBILITY = 'UPDATE_HISTORY_STACK_ITEM_VISIBILITY'
+
+
+export const RESIZE_FOOTER = 'RESIZE_FOOTER'
+export const UPDATE_HISTORY_VIEW = 'UPDATE_HISTORY_VIEW'
+export const HELPER_VISIBLE = 'HELPER_VISIBLE'
+
 let tempId = 0
+let messageStackHistory = sessionStorage.getItem('messageStackHistory') ? JSON.parse(sessionStorage.getItem('messageStackHistory')) : []
 
-export default (
- state = {
-   open: false,
-   uploadOpen: false,
-   currentMessage: '',
-   uploadMessage: '',
-   currentId: '',
-   currentUploadId: '',
-   uploadError: false,
-   success: false,
-   labbookName: '',
-   messageStack: [],
-   uploadStack: [],
-   fileCount: 0,
-   totalFiles: 0,
-   totalBytes: 0,
-   labbookSuccess: false,
-   messageListOpen: false
- },
- action
-) => {
- if (action.type === ERROR_MESSAGE) {
-   let id = ERROR_MESSAGE + tempId++
-   let messageStack = state.messageStack
+export default(state = {
+  open: false,
+  uploadOpen: false,
+  currentMessage: '',
+  uploadMessage: '',
+  currentId: '',
+  currentUploadId: '',
+  uploadError: false,
+  success: false,
+  labbookName: '',
+  messageStackHistory,
+  messageStack: [],
+  uploadStack: [],
+  fileCount: 0,
+  totalFiles: 0,
+  totalBytes: 0,
+  labbookSuccess: false,
+  messageListOpen: false,
+  viewHistory: false,
+  helperVisible: false,
+  uuid: ''
+}, action) => {
 
-   messageStack.push({
-     message: action.payload.message,
-     id: id,
-     error: true,
-     className: 'Footer__message--error',
-     messageBody: action.payload.messageBody ? action.payload.messageBody : [],
-   })
+  const checkHistoryStackLength = (messageStackHistory) => {
+      if(messageStackHistory.length > 50){
+        messageStackHistory.pop()
+      }
 
-   return {
-     ...state,
-    messageStack: messageStack,
-    currentId: id,
-    showProgressBar: false,
-    open: true,
-    success: false
-   };
- } else if (action.type === INFO_MESSAGE) { //this is for only updating a single message
-  let id = INFO_MESSAGE + tempId++
-  let messageStack = state.messageStack
+      return messageStackHistory;
+  }
+  let date = new Date();
+  if (action.type === ERROR_MESSAGE) {
 
-  messageStack.push(
-    {
+    let id = ERROR_MESSAGE + tempId++,
+        messageStack = state.messageStack,
+        messageStackHistory = state.messageStackHistory,
+        message = {
+          message: action.payload.message,
+          id: id,
+          error: true,
+          date,
+          messageBodyOpen: false,
+          className: 'Footer__message--error',
+          messageBody: action.payload.messageBody
+            ? action.payload.messageBody
+            : []
+        };
+
+    messageStack.unshift(message)
+    messageStackHistory.unshift(message)
+
+    messageStackHistory = checkHistoryStackLength(messageStackHistory)
+
+    sessionStorage.setItem('messageStackHistory', JSON.stringify(messageStackHistory));
+
+    return {
+      ...state,
+      messageStack,
+      messageStackHistory,
+      currentId: id,
+      showProgressBar: false,
+      open: true,
+      success: false,
+      messageListOpen: true,
+      viewHistory: false
+    };
+
+  } else if (action.type === INFO_MESSAGE) { //this is for only updating a single message
+
+    let id = INFO_MESSAGE + tempId++,
+        messageStack = state.messageStack,
+        messageStackHistory = state.messageStackHistory,
+        message = {
+          message: action.payload.message,
+          id: id,
+          error: false,
+          className: 'Footer__message',
+          messageBody: action.payload.messageBody
+            ? action.payload.messageBody
+            : [],
+          isMultiPart: false,
+          messageBodyOpen: false,
+          date
+        };
+
+    messageStack.unshift(message)
+    messageStackHistory.unshift(message)
+
+    messageStackHistory = checkHistoryStackLength(messageStackHistory)
+
+   sessionStorage.setItem('messageStackHistory', JSON.stringify(messageStackHistory));
+
+    return {
+      ...state,
+      messageStack,
+      messageStackHistory,
+      currentMessage: action.payload.message,
+      currentId: id,
+      open: true,
+      success: true,
+      showProgressBar: false,
+      messageListOpen: true,
+      viewHistory: false
+    };
+
+  } else if (action.type === WARNING_MESSAGE) { //this is for only updating a single message
+    let id = INFO_MESSAGE + tempId++
+    let messageStack = state.messageStack
+    let messageStackHistory = state.messageStackHistory
+
+    let message = {
       message: action.payload.message,
       id: id,
       error: false,
-      className: 'Footer__message',
-      messageBody: action.payload.messageBody ? action.payload.messageBody : [],
-      isMultiPart: false
-  })
+      className: 'Footer__message--warning',
+      messageBody: action.payload.messageBody
+        ? action.payload.messageBody
+        : [],
+      messageBodyOpen: false,
+      date
+    }
 
-  return {
-    ...state,
-    currentMessage: action.payload.message,
-    currentId: id,
-    messageStack: messageStack,
-    open: true,
-    success: true,
-    showProgressBar: false
-  };
-}  else if (action.type === WARNING_MESSAGE) { //this is for only updating a single message
- let id = INFO_MESSAGE + tempId++
- let messageStack = state.messageStack
+    messageStack.unshift(message)
 
- messageStack.push(
-   {
-     message: action.payload.message,
-     id: id,
-     error: false,
-     className: 'Footer__message--warning',
-     messageBody: action.payload.messageBody ? action.payload.messageBody : [],
- })
+    messageStackHistory.unshift(message)
+    messageStackHistory = checkHistoryStackLength(messageStackHistory)
 
- return {
-   ...state,
-   currentMessage: action.payload.message,
-   currentId: id,
-   messageStack: messageStack,
-   open: true,
-   success: true,
-   showProgressBar: false
- };
-} else if (action.type === REMOVE_MESSAGE) { //this is for only updating a single message
+    sessionStorage.setItem('messageStackHistory', JSON.stringify(messageStackHistory));
+
+    return {
+      ...state,
+      currentMessage: action.payload.message,
+      currentId: id,
+      messageStack,
+      messageStackHistory,
+      open: true,
+      success: true,
+      showProgressBar: false,
+      messageListOpen: true,
+      viewHistory: false,
+    };
+  } else if (action.type === REMOVE_MESSAGE) { //this is for only updating a single message
     let messageStack = []
 
-    state.messageStack.forEach((messageItem)=>{
-        if(messageItem.id !== action.payload.id){
-          messageStack.push(messageItem)
-        }
+    state.messageStack.forEach((messageItem) => {
+      if (messageItem.id !== action.payload.id) {
+        messageStack.push(messageItem)
+      }
     })
 
+    const messageListOpen = (state.viewHistory && state.messageListOpen) || (!state.viewHistory && (messageStack.length > 0))
     let lastIndex = messageStack.length - 1;
 
- return {
-   ...state,
-   currentMessage: messageStack[lastIndex],
-   currentId:  messageStack[lastIndex],
-   messageStack: messageStack,
-   open: messageStack.length > 0,
-   success: true,
-   showProgressBar: false
- };
-}else if (action.type === UPLOAD_MESSAGE_SETTER) {
-  let message = {
-    message: action.payload.currentMessage,
-    id: action.payload.id,
-    progessBarPercentage:  action.payload.percentage
-  }
+    return {
+      ...state,
+      currentMessage: messageStack[lastIndex],
+      currentId: messageStack[lastIndex],
+      messageStack: messageStack,
+      open: messageStack.length > 0,
+      success: true,
+      showProgressBar: false,
+      messageListOpen
 
-  let uploadStack = state.uploadStack
-  uploadStack.push(message)
+    };
+  } else if (action.type === UPLOAD_MESSAGE_SETTER) {
+    let message = {
+      message: action.payload.currentMessage,
+      id: action.payload.id,
+      progessBarPercentage: action.payload.percentage
+    }
 
-  return {
-    ...state,
-    uploadMessage: action.payload.uploadMessage,
-    uploadStack: uploadStack,
-    currentUploadId: message.id,
-    uploadOpen: true,
-    success: false,
-    uploadError: false,
-    fileCount: 0,
-    totalBytes: action.payload.totalBytes ? action.payload.totalBytes : 0,
-    totalFiles: action.payload.totalFiles ? action.payload.totalFiles : 0
-  };
-}else if (action.type === UPLOAD_MESSAGE_UPDATE) {
-  let message = {
-    message: action.payload.uploadMessage,
-    id: action.payload.id,
-    progessBarPercentage:  action.payload.percentage,
-  }
+    let uploadStack = state.uploadStack
+    uploadStack.push(message)
 
-  let uploadStack = state.uploadStack.map((messageItem)=>{
-      if(message.id === messageItem.id){
+    return {
+      ...state,
+      uploadStack,
+      uploadMessage: action.payload.uploadMessage,
+      currentUploadId: message.id,
+      uploadOpen: true,
+      success: false,
+      uploadError: false,
+      fileCount: 0,
+      totalBytes: action.payload.totalBytes
+        ? action.payload.totalBytes
+        : 0,
+      totalFiles: action.payload.totalFiles
+        ? action.payload.totalFiles
+        : 0,
+      viewHistory: false
+    };
+  } else if (action.type === UPLOAD_MESSAGE_UPDATE) {
+
+    let message = {
+      message: action.payload.uploadMessage,
+      id: action.payload.id,
+      progessBarPercentage: action.payload.percentage
+    }
+
+    let uploadStack = state.uploadStack.map((messageItem) => {
+      if (message.id === messageItem.id) {
         return message
-      }else{
+      } else {
         return messageItem
       }
-  })
-  const uploadError = action.payload.uploadError ? action.payload.uploadError : false;
-  const uploadMessage = action.payload.uploadError ? "Error Uploading" : action.payload.uploadMessage;
-  return {
-    ...state,
-    uploadMessage: uploadMessage,
-    currentUploadId: action.payload.id,
-    progessBarPercentage: action.payload.progessBarPercentage,
-    fileCount: action.payload.fileCount,
-    uploadStack: uploadStack,
-    uploadOpen: true,
-    uploadError: uploadError,
-    success: false
-  };
-} else if (action.type === UPLOAD_MESSAGE_REMOVE) {
-  let message = {
-    message: action.payload.uploadMessage,
-    id: action.payload.id,
-    progessBarPercentage:  action.payload.progessBarPercentage
-  }
+    })
 
-  let uploadStack = []
+    const uploadError = action.payload.uploadError
+      ? action.payload.uploadError
+      : false;
 
-  state.uploadStack.forEach((messageItem)=>{
-      if(message.id !== messageItem.id){
+    const uploadMessage = action.payload.uploadError
+      ? "Error Uploading"
+      : action.payload.uploadMessage;
+
+    return {
+      ...state,
+      uploadMessage,
+      currentUploadId: action.payload.id,
+      progessBarPercentage: action.payload.progessBarPercentage,
+      fileCount: action.payload.fileCount,
+      uploadStack: uploadStack,
+      uploadOpen: true,
+      uploadError: uploadError,
+      success: false
+    };
+  } else if (action.type === UPLOAD_MESSAGE_REMOVE) {
+
+    let message = {
+      message: action.payload.uploadMessage,
+      id: action.payload.id,
+      progessBarPercentage: action.payload.progessBarPercentage
+    }
+
+    let uploadStack = []
+
+    state.uploadStack.forEach((messageItem) => {
+      if (message.id !== messageItem.id) {
         uploadStack.push(messageItem)
       }
-  })
+    })
 
-  return {
-    ...state,
-    uploadMessage: '',
-    currentUploadId: message.id,
-    uploadStack: uploadStack,
-    progessBarPercentage: 0,
-    fileCount: 0,
-    totalFiles: 0,
-    uploadOpen: false,
-    success: true,
-    labbookName: '',
-    labbookSuccess: false
-  };
-} else if (action.type === IMPORT_MESSAGE_SUCCESS) {
+    return {
+      ...state,
+      uploadMessage: '',
+      currentUploadId: message.id,
+      uploadStack: uploadStack,
+      progessBarPercentage: 0,
+      fileCount: 0,
+      totalFiles: 0,
+      uploadOpen: false,
+      success: true,
+      labbookName: '',
+      labbookSuccess: false
+    };
+  } else if (action.type === IMPORT_MESSAGE_SUCCESS) {
 
-  let message = {
-    message: action.payload.uploadMessage,
-    id: action.payload.id,
-    progessBarPercentage: 100
-  }
+    let message = {
+      message: action.payload.uploadMessage,
+      id: action.payload.id,
+      progessBarPercentage: 100
+    }
 
-  let uploadStack = []
+    let uploadStack = []
 
-  state.uploadStack.forEach((messageItem)=>{
-      if(message.id !== messageItem.id){
+    state.uploadStack.forEach((messageItem) => {
+      if (message.id !== messageItem.id) {
         uploadStack.push(messageItem)
       }
-  })
+    })
 
-  return {
-    ...state,
-    uploadMessage: action.payload.uploadMessage,
-    labbookName: action.payload.labbookName,
-    currentUploadId: message.id,
-    uploadStack: uploadStack,
-    progessBarPercentage: 100,
-    uploadOpen: true,
-    success: true,
-    labbookSuccess: true
-  };
-}else if(action.type === TOGGLE_MESSAGE_LIST){
-   return {
-     ...state,
-     messageListOpen: action.payload.messageListOpen
-   }
- }else if(action.type === MULTIPART_INFO_MESSAGE){
-   let messageStack = state.messageStack;
-   let previousIndex = 0;
-   let doesMessageExist = messageStack.filter((message, index) => {
+    return {
+      ...state,
+      uploadMessage: action.payload.uploadMessage,
+      labbookName: action.payload.labbookName,
+      currentUploadId: message.id,
+      uploadStack: uploadStack,
+      progessBarPercentage: 100,
+      uploadOpen: true,
+      success: true,
+      labbookSuccess: true
+    };
+  } else if (action.type === TOGGLE_MESSAGE_LIST) {
 
-     if(message.id === action.payload.id){
-       previousIndex = index
-     }
-     return message.id === action.payload.id
-   })
-   if(doesMessageExist.length > 0){
+    let messageStack = []
 
-    messageStack.splice(previousIndex, 1);
-  }
+    let messageStackHistory = state.messageStackHistory.map((message)=>{
+      message.dismissed = true
+      return message
+    })
 
-  messageStack.push({
-    message: action.payload.message,
-    id: action.payload.id,
-    className: action.payload.error ? 'Footer__message--error' : 'Footer__message',
-    isLast: action.payload.isLast,
-    isMultiPart: true,
-    messageBody: action.payload.messageBody ? action.payload.messageBody : [],
-    error: action.payload.error
-  })
+    return {
+      ...state,
+      messageListOpen: action.payload.messageListOpen,
+      viewHistory: action.payload.viewHistory,
+      messageStack,
+      messageStackHistory
+    }
 
+  } else if (action.type === HIDE_MESSAGE_LIST) {
+
+    return {
+      ...state,
+      messageListOpen: false,
+    }
+
+  } else if (action.type === MULTIPART_INFO_MESSAGE) {
+
+    let messageStackHistory = state.messageStackHistory,
+        messageStack = state.messageStack,
+        previousHistoryIndex = 0,
+        previousIndex = 0,
+        messageBodyOpen = false,
+        messageListOpen = state.messageListOpen;
+
+    let doesMessageExist = messageStack.filter((message, index) => {
+
+      if (message.id === action.payload.id) {
+        previousIndex = index
+        messageBodyOpen = message.messageBodyOpen
+      }
+
+      return message.id === action.payload.id
+    })
+
+
+    let doesHistoryMessageExist = messageStackHistory.filter((message, index) => {
+
+      if (message.id === action.payload.id) {
+        previousHistoryIndex = index;
+
+        if(doesMessageExist.length === 0){
+           messageBodyOpen = message.messageBodyOpen
+        }
+      }
+
+      return message.id === action.payload.id
+    })
+
+    if((doesHistoryMessageExist.length > 0) && doesHistoryMessageExist[0].dismissed){
+
+      if(state.messageListOpen && state.viewHistory){
+        messageListOpen = true;
+      }else{
+        messageListOpen = false;
+      }
+
+    }else{
+      messageListOpen = true;
+    }
+
+
+    let message = {
+      message: action.payload.message,
+      id: action.payload.id,
+      className: action.payload.error
+        ? 'Footer__message--error'
+        : 'Footer__message',
+      isLast: action.payload.isLast,
+      isMultiPart: true,
+      messageBody: action.payload.messageBody
+        ? action.payload.messageBody
+        : [],
+      error: action.payload.error,
+      messageBodyOpen,
+      dismissed: (doesHistoryMessageExist.length > 0) ? doesHistoryMessageExist[0].dismissed : false,
+      date
+    }
+
+
+    if (doesMessageExist.length > 0) {
+
+      messageStack.splice(previousIndex, 1, message);
+    }else{
+      messageStack.unshift(message)
+    }
+
+
+    if (doesHistoryMessageExist.length > 0) {
+
+      messageStackHistory.splice(previousHistoryIndex, 1, message);
+    }else{
+      messageStackHistory.unshift(message)
+    }
+
+    messageStackHistory = checkHistoryStackLength(messageStackHistory)
+
+    sessionStorage.setItem('messageStackHistory', JSON.stringify(messageStackHistory));
 
     return {
       ...state,
       id: action.payload.id,
       message: action.payload.message,
       isLast: action.payload.isLast,
-      messageStack: messageStack,
+      messageStack,
+      messageStackHistory,
       open: true,
       success: true,
-      error: action.payload.error
+      error: action.payload.error,
+      messageListOpen,
+      viewHistory: ((doesHistoryMessageExist.length > 0) && doesHistoryMessageExist[0].dismissed && state.viewHistory)
     }
-  }else if(action.type === RESET_FOOTER_STORE){
+  } else if (action.type === RESET_FOOTER_STORE) {
+    return {
+      ...state,
+      open: false,
+      uploadOpen: false,
+      showProgressBar: true,
+      currentMessage: '',
+      currentId: '',
+      uploadError: false,
+      success: false,
+      labbookName: '',
+      messageListOpen: false,
+      viewHistory: false
+    }
+  }else if (action.type === UPDATE_MESSAGE_STACK_ITEM_VISIBILITY) {
+
+    let messageStack = state.messageStack;
+
+    messageStack[action.payload.index].messageBodyOpen = !messageStack[action.payload.index].messageBodyOpen
+
+    return {
+      ...state,
+      messageStack,
+      uuid: uuidv4()
+    }
+ }else if (action.type === UPDATE_HISTORY_STACK_ITEM_VISIBILITY) {
+
+   let messageStackHistory = state.messageStackHistory;
+   let messageStackItem = messageStackHistory[action.payload.index]
+
+   messageStackItem.messageBodyOpen = !messageStackItem.messageBodyOpen
+
+   messageStackHistory[action.payload.index] = messageStackItem
+
    return {
      ...state,
-     open: false,
-     uploadOpen: false,
-     showProgressBar: true,
-     currentMessage: '',
-     currentId: '',
-     uploadError: false,
-     success: false,
-     labbookName: '',
-     messageListOpen: false
+     messageStackHistory,
+      uuid: uuidv4()
    }
- }
+ } else if (action.type === RESIZE_FOOTER) {
+    return {
+      ...state,
+      resize: uuidv4()
+    };
+  }else if (action.type === UPDATE_HISTORY_VIEW){
 
- return state;
+    let messageStack = []
+
+    let messageStackHistory = state.messageStackHistory.map((message)=>{
+      message.dismissed = true
+      return message
+    })
+
+    return {
+      ...state,
+      viewHistory: true,
+      messageStack,
+      messageStackHistory
+    };
+  }else if (action.type === HELPER_VISIBLE){
+
+    return {
+      ...state,
+      helperVisible: action.payload.helperVisible
+    };
+  }
+
+  return state;
 };

@@ -156,8 +156,6 @@ export default class FileBrowserWrapper extends Component {
   */
   _creteFilesFooterMessage(totalFiles, hasDirectoryUpload, fileSizeData){
 
-
-
     if(totalFiles > 0){
       store.dispatch({
         type: 'STARTED_UPLOADING',
