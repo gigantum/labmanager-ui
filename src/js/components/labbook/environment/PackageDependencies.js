@@ -145,7 +145,6 @@ class PackageDependencies extends Component {
     unsubscribe from redux store
   */
   storeDidUpdate = (environmentStore) => {
-
     if(this.state.packageMenuVisible !== environmentStore.packageMenuVisible){
       this.setState({packageMenuVisible: environmentStore.packageMenuVisible});//triggers re-render when store updates
     }
@@ -155,6 +154,17 @@ class PackageDependencies extends Component {
         type: 'FORCE_REFETCH',
         payload: {
           forceRefetch: false,
+        }
+      })
+    }
+    if(environmentStore.forceCancelRefetch){
+      if(this.pendingRefetch){
+        this.pendingRefetch.dispose();
+      }
+      store.dispatch({
+        type: 'FORCE_CANCEL_REFETCH',
+        payload: {
+          forceCancelRefetch: false,
         }
       })
     }
@@ -194,7 +204,6 @@ class PackageDependencies extends Component {
     refetches package dependencies
   */
   _refetch(){
-    console.log(store.getState().environment.refetchOccuring)
     if(!store.getState().environment.refetchOccuring){
       let self = this;
       let relay = this.props.relay
@@ -208,7 +217,7 @@ class PackageDependencies extends Component {
           }
         })
 
-        let cancelRefetch = relay.refetchConnection(
+        self.pendingRefetch = relay.refetchConnection(
           null,
           () =>{
             store.dispatch({

@@ -91,6 +91,12 @@ export default class BranchCard extends Component {
           })
 
         }else{
+          store.dispatch({
+            type: 'FORCE_CANCEL_REFETCH',
+            payload: {
+              forceCancelRefetch: true,
+            }
+          })
 
           self.setState({
             showLoader: false,

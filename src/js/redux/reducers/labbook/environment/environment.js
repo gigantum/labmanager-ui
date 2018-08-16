@@ -13,6 +13,7 @@ export const SET_REFETCH_PENDING = 'SET_REFETCH_PENDING'
 export const SET_REFETCH_OCCURING = 'SET_REFETCH_OCCURING'
 export const SET_REFETCH_QUEUED = 'SET_REFETCH_QUEUED'
 export const FORCE_REFETCH = 'FORCE_REFETCH'
+export const FORCE_CANCEL_REFETCH = 'FORCE_CANCEL_REFETCH'
 
 
 
@@ -30,6 +31,7 @@ export default (
    'forceRefetch': false,
    'refetchOccuring': false,
    'refetchQueued': false,
+   'forceCancelRefetch': false,
  },
  action
 ) => {
@@ -95,6 +97,13 @@ if (action.type === CLOSE_ENVIRONMENT_MENUS) {
   return {
     ...state,
     refetchQueued: action.payload.refetchQueued
+  }
+} else if (action.type === FORCE_CANCEL_REFETCH) {
+  return {
+    ...state,
+    forceCancelRefetch: action.payload.forceCancelRefetch,
+    refetchOccuring: false,
+    refetchQueued: true,
   }
 }
 
