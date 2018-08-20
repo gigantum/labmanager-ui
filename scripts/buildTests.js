@@ -117,13 +117,11 @@ const variableReference = {
   cursor: null,
   hasNext: false,
   reverse: false,
-  sort: 'modified_on',
+  sort: 'desc',
   keys: '',
   input: '',
   ids: [],
   path: ''
-
-
 }
 
 const buildQueryVariables = (route) => {
