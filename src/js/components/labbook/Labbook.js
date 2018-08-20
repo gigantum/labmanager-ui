@@ -408,6 +408,11 @@ class Labbook extends Component {
         'is-expanded': this.state.isExpanded
       })
 
+      const labbookLockCSS = classNames({
+        'Labbook__private': true,
+        'Labbook__private--sticky': this.state.isSticky
+      })
+
       return(
         <div
           className={labbookCSS}>
@@ -420,9 +425,14 @@ class Labbook extends Component {
                    <div className="Labbook__column-container--flex-1">
                      <div className="Labbook__name-title">
                        {`${labbook.owner}/${labbookName}${this.state.isSticky ? '/ ': ''}`}
+
                        {
                          this.state.isSticky &&
                          <span className="Labbook__name-branch">{name}</span>
+                       }
+
+                       {  (this.props.labbook.publicVisibility === 'private') &&
+                         <div className={labbookLockCSS}></div>
                        }
                        {
                          this.state.isExpanded &&
@@ -645,6 +655,7 @@ const LabbookFragmentContainer = createFragmentContainer(
           defaultRemote
           owner
           creationDateUtc
+          publicVisibility
 
           environment{
             containerStatus

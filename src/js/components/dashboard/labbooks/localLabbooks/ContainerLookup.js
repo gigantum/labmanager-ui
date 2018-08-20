@@ -15,6 +15,7 @@ const ContainerLookupQuery = graphql`
           imageStatus
           containerStatus
         }
+        publicVisibility
       }
     }
   }

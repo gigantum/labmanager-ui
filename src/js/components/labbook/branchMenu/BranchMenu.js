@@ -17,6 +17,7 @@ import store from 'JS/redux/store'
 import DeleteLabbook from './DeleteLabbook'
 import ForceSync from './ForceSync'
 import LoginPrompt from './LoginPrompt'
+import PublishModal from './PublishModal'
 import CreateBranch from 'Components/labbook/branches/CreateBranch'
 import Collaborators from './collaborators/Collaborators'
 import ToolTip from 'Components/shared/ToolTip';
@@ -47,6 +48,7 @@ export default class BranchMenu extends Component {
       'justOpened': true,
       'setPublic': false,
       'syncWarningVisible': false,
+      'publishModalVisible': false,
       owner,
       labbookName
     }
@@ -62,7 +64,11 @@ export default class BranchMenu extends Component {
     this._switchBranch = this._switchBranch.bind(this)
     this._remountCollab = this._remountCollab.bind(this)
     this._handleToggleModal = this._handleToggleModal.bind(this)
-
+    this._togglePublishModal = this._togglePublishModal.bind(this)
+    this._resetState = this._resetState.bind(this)
+    this._resetPublishState = this._resetPublishState.bind(this)
+    this._setRemoteSession = this._setRemoteSession.bind(this)
+    this._showContainerMenuMessage = this._showContainerMenuMessage.bind(this)
   }
 
 
@@ -178,7 +184,7 @@ export default class BranchMenu extends Component {
   *  adds remote url to labbook
   *  @return {string}
   */
-  _publishLabbook() {
+  _togglePublishModal() {
     if (!this.props.isMainWorkspace) {
       store.dispatch({
         type: 'WARNING_MESSAGE',
@@ -187,106 +193,8 @@ export default class BranchMenu extends Component {
         }
       })
     } else {
-      let id = uuidv4()
-      let self = this;
-
-      this._checkSessionIsValid().then((response) => {
-        if(navigator.onLine){
-          if (response.data) {
-
-            if (response.data.userIdentity.isSessionValid) {
-              if(store.getState().containerStatus.status !== 'Running'){
-                self.setState({ menuOpen: false, 'publishDisabled': true})
-
-              if (!self.state.remoteUrl) {
-                this.props.setPublishingState(true)
-
-                this._showContainerMenuMessage('publishing');
-
-                store.dispatch({
-                  type: 'MULTIPART_INFO_MESSAGE',
-                  payload: {
-                    id: id,
-                    message: 'Publishing Project to Gigantum cloud ...',
-                    isLast: false,
-                    error: false
-                  }
-                })
-
-
-                  PublishLabbookMutation(
-                    self.state.owner,
-                    self.state.labbookName,
-                    self.props.labbookId,
-                    this.state.setPublic,
-                    (response, error) => {
-                      this.props.setPublishingState(false)
-                      store.dispatch({
-                        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                        payload: {
-                          containerMenuOpen: false
-                        }
-                      })
-                      if(error){
-                        console.log(error)
-
-                        store.dispatch({
-                          type: 'ERROR_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: 'Publish failed',
-                            messageBody: error,
-                          }
-                        })
-                      }
-                      self.setState({
-                        publishDisabled: false
-                      })
-                      if (response.publishLabbook && response.publishLabbook.success) {
-                        this._remountCollab();
-                        store.dispatch({
-                          type: 'MULTIPART_INFO_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: `Added remote https://gigantum.com/${self.state.owner}/${self.state.labbookName}`,
-                            isLast: true,
-                            error: false
-                          }
-                        })
-
-                        self.setState({
-                          addedRemoteThisSession: true,
-                          remoteUrl: `https://gigantum.com/${self.state.owner}/${self.state.labbookName}`
-
-                        })
-                      }
-                    }
-                  )
-                }
-              } else {
-                this._showContainerMenuMessage('publishing', true)
-              }
-            } else {
-              this.props.auth.renewToken(true, ()=>{
-                self.setState({
-                  'remoteUrl': ''
-                })
-                self.setState({
-                  showLoginPrompt: true
-                })
-              }, ()=>{
-                self._publishLabbook();
-              });
-            }
-          }
-        } else{
-          self.setState({
-            'remoteUrl': ''
-          })
-          self.setState({
-            showLoginPrompt: true
-          })
-        }
+      this.setState({
+        'publishModalVisible': !this.state.publishModalVisible
       })
     }
   }
@@ -706,10 +614,38 @@ export default class BranchMenu extends Component {
       this._showContainerMenuMessage(action, true)
     }
   }
-
-  _setPublic(){
-   this.setState({'setPublic': !this.state.setPublic})
+  /**
+  *  @param {}
+  *  resets state after publish
+  *  @return {}
+  */
+  _resetState(){
+    this.setState({
+      'remoteUrl': '',
+       showLoginPrompt: true
+    })
   }
+  /**
+  *  @param {}
+  *  resets state after publish
+  *  @return {}
+  */
+  _resetPublishState(publishDisabled){
+    this.setState({ menuOpen: false, 'publishDisabled': publishDisabled})
+  }
+  /**
+  *  @param {}
+  *  resets state after publish
+  *  @return {}
+  */
+  _setRemoteSession(){
+    this.setState({
+      addedRemoteThisSession: true,
+      remoteUrl: `https://gigantum.com/${this.state.owner}/${this.state.labbookName}`
+
+    })
+  }
+
 
   render() {
     const {labbookName, owner} = this.state
@@ -722,18 +658,6 @@ export default class BranchMenu extends Component {
     const exportCSS = classNames({
       'BranchMenu__item--export': !this.state.exporting,
       'BranchMenu__item--export--downloading': this.state.exporting
-    })
-
-    const toggleCheckboxCondition = classNames({
-        'TrackingToggle__checkbox': true,
-        'TrackingToggle__checkbox--on': this.state.setPulic,
-        'TrackingToggle__checkbox--off': !this.state.setPulic
-    })
-
-    const toggleCondition = classNames({
-        'TrackingToggle__label': true,
-        'TrackingToggle__label--on': this.state.setPulic,
-        'TrackingToggle__label--off': !this.state.setPulic
     })
 
     return (
@@ -754,6 +678,24 @@ export default class BranchMenu extends Component {
           this.state.forceSyncModalVisible &&
           <ForceSync toggleSyncModal={this._toggleSyncModal}/>
 
+        }
+        {
+          this.state.publishModalVisible &&
+          <PublishModal
+            owner={this.state.owner}
+            labbookName={this.state.labbookName}
+            labbookId={this.props.labbookId}
+            remoteUrl={this.props.remoteUrl}
+            auth={this.props.auth}
+            setPublishingState={this.props.setPublishingState}
+            checkSessionIsValid={this._checkSessionIsValid}
+            togglePublishModal={this._togglePublishModal}
+            showContainerMenuMessage={this._showContainerMenuMessage}
+            resetState={this._resetState}
+            resetPublishState={this._resetPublishState}
+            remountCollab={this._remountCollab}
+            setRemoteSession={this._setRemoteSession}
+          />
         }
 
         <CreateBranch
@@ -823,28 +765,10 @@ export default class BranchMenu extends Component {
           <hr className="BranchMenu__line" />
           {!this.state.addedRemoteThisSession &&
             <div className="BranchMenu__publish">
-              <div className="TrackingToggle">
-                <div className="TrackingToggle__text">Make Project Public {this.state.setPublic}</div>
-                <span className={toggleCheckboxCondition}>
 
-                  <input
-                    data-on="&#x2714;"
-                    data-off="&#x2718;"
-                    onClick={()=>this._setPublic()}
-                    id="TrackingToggle__input"
-                    className="TrackingToggle__input"
-                    type="checkbox"
-                    defaultChecked={this.state.setPublic}
-                  />
-                  <label
-                    className={toggleCondition}
-                    htmlFor="TrackingToggle__input">
-                  </label>
-                </span>
-              </div>
               <button
                 className="BranchMenu__remote-button"
-                onClick={() => { this._publishLabbook() }}
+                onClick={() => { this._togglePublishModal() }}
               >
                 Publish
               </button>

@@ -89,7 +89,9 @@ export class LocalLabbooks extends Component {
         let containerListCopy = new Map(this.state.containerList)
 
         res.data.labbookList.localById.forEach((node) => {
-          containerListCopy.set(node.id, node.environment)
+
+          containerListCopy.set(node.id, node)
+
         })
 
         self.setState({containerList: containerListCopy})
@@ -157,22 +159,27 @@ export class LocalLabbooks extends Component {
 
       let labbooks = !this.props.loading ? this.props.filterLabbooks(labbookList.localLabbooks.edges, this.props.filterState) : [];
 
+      const importVisible = (this.props.section === 'local' || !this.props.loading) && !store.getState().labbookListing.filterText;
+
       return(
+
         <div className='LocalLabbooks__labbooks'>
+
           <div className="LocalLabbooks__sizer grid">
             {
-              (this.props.section === 'local' || !this.props.loading) && !store.getState().labbookListing.filterText &&
-              <ImportModule
-                ref="ImportModule_localLabooks"
-                {...this.props}
-                showModal={this.props.showModal}
-                history={this.props.history}
-                className="LocalLabbooks__panel column-4-span-3 LocalLabbooks__panel--import"
-              />
+              importVisible &&
+
+                <ImportModule
+                  ref="ImportModule_localLabooks"
+                  {...this.props}
+                  showModal={this.props.showModal}
+                  history={this.props.history}
+                  className="LocalLabbooks__panel column-4-span-3 LocalLabbooks__panel--import"
+                />
+
             }
             {
-              labbooks.length ?
-              labbooks.map((edge, index) => {
+              labbooks.length ? labbooks.map((edge, index) => {
                 return (
                   <LocalLabbookPanel
                     key={`${edge.node.owner}/${edge.node.name}`}
@@ -180,22 +187,26 @@ export class LocalLabbooks extends Component {
                     className="LocalLabbooks__panel"
                     edge={edge}
                     history={this.props.history}
-                    environment={this.state.containerList.has(edge.node.id) && this.state.containerList.get(edge.node.id)}
+                    node={this.state.containerList.has(edge.node.id) && this.state.containerList.get(edge.node.id)}
                     goToLabbook={this.props.goToLabbook}/>
                 )
               })
-              :
-              !this.props.loading &&
-              store.getState().labbookListing.filterText &&
-              <div className="Labbooks__no-results">
-                <h3>No Results Found</h3>
-                <p>Edit your filters above or <span
-                  onClick={()=> this.props.setFilterValue({target: {value: ''}})}
-                >clear
-                </span> to try again.</p>
 
-              </div>
+              : !this.props.loading && store.getState().labbookListing.filterText &&
+
+                <div className="Labbooks__no-results">
+
+                  <h3>No Results Found</h3>
+
+                  <p>Edit your filters above or <span
+                    onClick={()=> this.props.setFilterValue({target: {value: ''}})}
+                  >clear
+
+                  </span> to try again.</p>
+
+                </div>
             }
+
             {
               Array(5).fill(1).map((value, index) => {
 
@@ -208,6 +219,7 @@ export class LocalLabbooks extends Component {
                 )
               })
             }
+
           </div>
         </div>
       )

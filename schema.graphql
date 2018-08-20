@@ -1,5 +1,5 @@
 # source: http://localhost:10000/api/labbook/
-# timestamp: Thu Aug 02 2018 12:41:37 GMT-0400 (EDT)
+# timestamp: Fri Aug 17 2018 14:36:53 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -608,6 +608,7 @@ type Labbook implements Node & GitRepository {
   detailRecords(keys: [String]): [ActivityDetailObject]
   backgroundJobs: [JobStatus]
   packages(packageInput: [PackageComponentInput]): [PackageComponent]
+  publicVisibility: String
 }
 
 """An object representing a commit to a LabBook"""
@@ -709,8 +710,8 @@ type LabbookList implements Node {
   """The ID of the object."""
   id: ID!
   localById(ids: [String]): [Labbook]
-  localLabbooks(orderBy: String = "name", sort: String = "desc", before: String, after: String, first: Int, last: Int): LabbookConnection
-  remoteLabbooks(orderBy: String = "name", sort: String = "desc", before: String, after: String, first: Int, last: Int): RemoteLabbookConnection
+  localLabbooks(orderBy: String = "name", sort: String = "asc", before: String, after: String, first: Int, last: Int): LabbookConnection
+  remoteLabbooks(orderBy: String = "name", sort: String = "asc", before: String, after: String, first: Int, last: Int): RemoteLabbookConnection
 }
 
 """Entry point for all graphql mutations"""
