@@ -7,6 +7,284 @@
     "edges": [
      {
       "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZmZDljMjQ1ZTE2YTU0NTE0NjM5YjQ0M2I2MjNiMjhiOGQ0OTZkMzVm",
+       "commit": "fd9c245e16a54514639b443b623b28b8d496d35f",
+       "linkedCommit": "67cf65877a60d03f6c577ecb3882b3729b61380a",
+       "type": "ENVIRONMENT",
+       "show": true,
+       "importance": 0,
+       "tags": [
+        "environment",
+        "docker",
+        "snippet"
+       ],
+       "message": "Wrote custom Docker snippet `user-custom-docker`",
+       "timestamp": "2018-07-20T20:12:53+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBbzJvQ0FHTUFBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAo2oCAGMAAAA=",
+         "show": true,
+         "importance": 0,
+         "type": "ENVIRONMENT"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "fd9c245e16a54514639b443b623b28b8d496d35f"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY1MTMzZjJhYTkwZjAxOTdlNjE0ODI2MDk4NmVmMmRiZDY1MWRkZmIy",
+       "commit": "5133f2aa90f0197e6148260986ef2dbd651ddfb2",
+       "linkedCommit": "11c50f69b9b47dc3ab56c8276092f657fdc5db10",
+       "type": "ENVIRONMENT",
+       "show": true,
+       "importance": 0,
+       "tags": [
+        "environment",
+        "docker",
+        "snippet"
+       ],
+       "message": "Wrote custom Docker snippet `user-custom-docker`",
+       "timestamp": "2018-07-20T20:12:40+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBTkdvQ0FGc0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAANGoCAFsAAAA=",
+         "show": true,
+         "importance": 0,
+         "type": "ENVIRONMENT"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "5133f2aa90f0197e6148260986ef2dbd651ddfb2"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYxZjQ5MDNlZDUwYTg2MTI2NmEwN2M4YzUzODExODg2NDBkMGVkZDBi",
+       "commit": "1f4903ed50a861266a07c8c5381188640d0edd0b",
+       "linkedCommit": "08ad08dfc4c930a96a01fca6902e92897f266bc5",
+       "type": "ENVIRONMENT",
+       "show": true,
+       "importance": 0,
+       "tags": [
+        "environment",
+        "docker",
+        "snippet"
+       ],
+       "message": "Wrote custom Docker snippet `user-custom-docker`",
+       "timestamp": "2018-07-20T20:07:47+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBeFdrQ0FGc0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAxWkCAFsAAAA=",
+         "show": true,
+         "importance": 0,
+         "type": "ENVIRONMENT"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "1f4903ed50a861266a07c8c5381188640d0edd0b"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZkZTdhNDEzYjkyZTc3MzNkMjI5NDljZGFmNjg3YmE0ZTViYTNiNDlm",
+       "commit": "de7a413b92e7733d22949cdaf687ba4e5ba3b49f",
+       "linkedCommit": "0df5201d64a4e6c8273464bff4c902875331e118",
+       "type": "ENVIRONMENT",
+       "show": true,
+       "importance": 0,
+       "tags": [
+        "environment",
+        "docker",
+        "snippet"
+       ],
+       "message": "Wrote custom Docker snippet `user-custom-docker`",
+       "timestamp": "2018-07-20T19:47:26+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBVm1rQ0FGc0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAVmkCAFsAAAA=",
+         "show": true,
+         "importance": 0,
+         "type": "ENVIRONMENT"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "de7a413b92e7733d22949cdaf687ba4e5ba3b49f"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZhMDA5Yzk1NTkzN2IwMTA0NGQyMGExMjY4NDE0NzI4Yzc2MzMzNzk5",
+       "commit": "a009c955937b01044d20a1268414728c76333799",
+       "linkedCommit": "dd8aae446461a7a8d268eb7713448d50f4f5d55a",
+       "type": "LABBOOK",
+       "show": false,
+       "importance": 255,
+       "tags": [
+        "readme"
+       ],
+       "message": "Updated LabBook README",
+       "timestamp": "2018-07-20T19:28:47+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBNjJnQ0FGY0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA62gCAFcAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "LABBOOK"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "a009c955937b01044d20a1268414728c76333799"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYzNzE0NTdlNGJhYWU2ZGM5YjM0NjMyZmQ4NTIxZDU0ODRkYTNjOGI4",
+       "commit": "371457e4baae6dc9b34632fd8521d5484da3c8b8",
+       "linkedCommit": "77c85e95c8526ad78871bed7796ad0e93857ec83",
+       "type": "LABBOOK",
+       "show": false,
+       "importance": 255,
+       "tags": [
+        "readme"
+       ],
+       "message": "Updated LabBook README",
+       "timestamp": "2018-07-20T19:28:29+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBZ0dnQ0FGY0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAgGgCAFcAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "LABBOOK"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "371457e4baae6dc9b34632fd8521d5484da3c8b8"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYzMGRlYWU1ZDE2YjI5ODBmZjhhODg0MTNlYjFjNTkxOTM4OTYyY2Rj",
+       "commit": "30deae5d16b2980ff8a88413eb1c591938962cdc",
+       "linkedCommit": "efa780c9a7cf7850ca325d2182ddcd1f686cc42f",
+       "type": "LABBOOK",
+       "show": false,
+       "importance": 255,
+       "tags": [
+        "readme"
+       ],
+       "message": "Updated LabBook README",
+       "timestamp": "2018-07-20T19:28:17+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBRldnQ0FGY0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAFWgCAFcAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "LABBOOK"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "30deae5d16b2980ff8a88413eb1c591938962cdc"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYxNTQyZDdiZWM2NWVlNmEzMzA2Y2IzZDg0NThmNTBiZGI4YjY3YzZh",
+       "commit": "1542d7bec65ee6a3306cb3d8458f50bdb8b67c6a",
+       "linkedCommit": "ec4d028dffbeec36a11c45061934696e1103cf40",
+       "type": "LABBOOK",
+       "show": false,
+       "importance": 255,
+       "tags": [
+        "readme"
+       ],
+       "message": "Updated LabBook README",
+       "timestamp": "2018-07-20T19:28:00+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBcW1jQ0FGY0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAqmcCAFcAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "LABBOOK"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "1542d7bec65ee6a3306cb3d8458f50bdb8b67c6a"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZhYTBjOTczNzMwZTU2YTM4ZDU1ZTRkMTNmY2U4OWFhMmI0MzVkNWE4",
+       "commit": "aa0c973730e56a38d55e4d13fce89aa2b435d5a8",
+       "linkedCommit": "d3d11fdc3b56a532905575dfb15e14894822c421",
+       "type": "LABBOOK",
+       "show": false,
+       "importance": 255,
+       "tags": [
+        "readme"
+       ],
+       "message": "Updated LabBook README",
+       "timestamp": "2018-07-20T19:27:43+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBUDJjQ0FGY0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAP2cCAFcAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "LABBOOK"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "aa0c973730e56a38d55e4d13fce89aa2b435d5a8"
+     },
+     {
+      "node": {
+       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYzZDk4NTgyOTViMDdhMTdiMjk4MTA1NGYwMzhlYTNlOTdkYzMxOGQ4",
+       "commit": "3d9858295b07a17b2981054f038ea3e97dc318d8",
+       "linkedCommit": "6d68474d0ff73be1c1bf4abe3476cf6b7930a364",
+       "type": "LABBOOK",
+       "show": false,
+       "importance": 255,
+       "tags": [
+        "readme"
+       ],
+       "message": "Added README to LabBook",
+       "timestamp": "2018-07-20T19:26:08+00:00",
+       "username": "cbutler",
+       "detailObjects": [
+        {
+         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBMUdZQ0FGY0FBQUE9",
+         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAA1GYCAFcAAAA=",
+         "show": false,
+         "importance": 0,
+         "type": "LABBOOK"
+        }
+       ],
+       "__typename": "ActivityRecordObject"
+      },
+      "cursor": "3d9858295b07a17b2981054f038ea3e97dc318d8"
+     },
+     {
+      "node": {
        "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYxZDM0NjIxMGQ5M2IwZmY0ZDVmN2JhNTRkMDM0NmE5MDIxNzI3MTRh",
        "commit": "1d346210d93b0ff4d5f7ba54d0346a902172714a",
        "linkedCommit": "679e6e9a6b2cb8eba4d56efd17e425b56e1687f2",
@@ -560,299 +838,10 @@
        "__typename": "ActivityRecordObject"
       },
       "cursor": "a5e887f96445d873b69081ef7a9060f310116559"
-     },
-     {
-      "node": {
-       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZmN2Q2NjA3NzllMjBiNGIyMmJjMDM1MGZkZjQ4NmIxZDlmNGQ4ZWI0",
-       "commit": "f7d660779e20b4b22bc0350fdf486b1d9f4d8eb4",
-       "linkedCommit": "0563d38e1fa62e9238b88aeed2ca8680e2662b21",
-       "type": "CODE",
-       "show": true,
-       "importance": 255,
-       "tags": [
-        ".svg"
-       ],
-       "message": "Added new Code file code/down-arrow.svg",
-       "timestamp": "2018-05-22T22:06:07+00:00",
-       "username": "cbutler",
-       "detailObjects": [
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBTXdJQUFHVUFBQUE9",
-         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAMwIAAGUAAAA=",
-         "show": false,
-         "importance": 0,
-         "type": "CODE"
-        }
-       ],
-       "__typename": "ActivityRecordObject"
-      },
-      "cursor": "f7d660779e20b4b22bc0350fdf486b1d9f4d8eb4"
-     },
-     {
-      "node": {
-       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYwZjNjN2ZjYTEyOGZjNzE5NTcxYzMzMTAxZDliNWY1OGI4YTczMmYy",
-       "commit": "0f3c7fca128fc719571c33101d9b5f58b8a732f2",
-       "linkedCommit": "b8846cce399961aba0789fa3f562dd6dfaa34d67",
-       "type": "CODE",
-       "show": true,
-       "importance": 255,
-       "tags": [
-        ".pdf"
-       ],
-       "message": "Added new Code file code/@1xGigantum (1)/About.pdf",
-       "timestamp": "2018-05-22T22:06:01+00:00",
-       "username": "cbutler",
-       "detailObjects": [
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBcWdFQUFIVUFBQUE9",
-         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAqgEAAHUAAAA=",
-         "show": false,
-         "importance": 0,
-         "type": "CODE"
-        }
-       ],
-       "__typename": "ActivityRecordObject"
-      },
-      "cursor": "0f3c7fca128fc719571c33101d9b5f58b8a732f2"
-     },
-     {
-      "node": {
-       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZhM2U2MDNhNWJhNTNhZTIzODE0YTFkYTM3ZjgwNzc4NmMwNjE3MzYz",
-       "commit": "a3e603a5ba53ae23814a1da37f807786c0617363",
-       "linkedCommit": "7ea2c2d0a49243fc26e597ddfd087422fae65c28",
-       "type": "CODE",
-       "show": true,
-       "importance": 255,
-       "tags": [
-        ".pdf"
-       ],
-       "message": "Added new Code file code/@1xGigantum (1)/Homepage.pdf",
-       "timestamp": "2018-05-22T22:05:59+00:00",
-       "username": "cbutler",
-       "detailObjects": [
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBSFFFQUFIa0FBQUE9",
-         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAHQEAAHkAAAA=",
-         "show": false,
-         "importance": 0,
-         "type": "CODE"
-        }
-       ],
-       "__typename": "ActivityRecordObject"
-      },
-      "cursor": "a3e603a5ba53ae23814a1da37f807786c0617363"
-     },
-     {
-      "node": {
-       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZjYTc5MTc4MjI2OWIwYWQ4NjUyZDNlYzZhNjc0NDBhZWFmYmQxOGFm",
-       "commit": "ca791782269b0ad8652d3ec6a67440aeafbd18af",
-       "linkedCommit": "05852ecf973ef02fb07597b840b3dddbf3aacd11",
-       "type": "CODE",
-       "show": true,
-       "importance": 255,
-       "tags": [
-        ".pdf"
-       ],
-       "message": "Added new Code file code/@1xGigantum (1)/Plain-text.pdf",
-       "timestamp": "2018-05-22T22:05:59+00:00",
-       "username": "cbutler",
-       "detailObjects": [
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBakFBQUFIMEFBQUE9",
-         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAjAAAAH0AAAA=",
-         "show": false,
-         "importance": 0,
-         "type": "CODE"
-        }
-       ],
-       "__typename": "ActivityRecordObject"
-      },
-      "cursor": "ca791782269b0ad8652d3ec6a67440aeafbd18af"
-     },
-     {
-      "node": {
-       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZlMjUyMzUwYmE0MmY2NzM3NjEwOTI1NDBhYTBjMDJmYTA3YTFlZTM4",
-       "commit": "e252350ba42f673761092540aa0c02fa07a1ee38",
-       "linkedCommit": "00265f8c45bb0594891a0f3f670e5fec0cbd2733",
-       "type": "CODE",
-       "show": true,
-       "importance": 255,
-       "tags": [
-        "directory-create"
-       ],
-       "message": "Created new Code directory `code/@1xGigantum (1)/`",
-       "timestamp": "2018-05-22T22:05:58+00:00",
-       "username": "cbutler",
-       "detailObjects": [
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfMzRiMjY0NGQ4NjEwN2NhNTg2ZTcxMjU5ODRjYzViODlYMTluWDE5c2MyNEFBQUFBQUFBQUFIZ0FBQUE9",
-         "key": "log_34b2644d86107ca586e7125984cc5b89X19nX19sc24AAAAAAAAAAHgAAAA=",
-         "show": false,
-         "importance": 0,
-         "type": "CODE"
-        }
-       ],
-       "__typename": "ActivityRecordObject"
-      },
-      "cursor": "e252350ba42f673761092540aa0c02fa07a1ee38"
-     },
-     {
-      "node": {
-       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciYxODViMDhhNjliNDExM2U1ZjhkNTJhMGE5YTlkMGQxNjI1NzdlMzgz",
-       "commit": "185b08a69b4113e5f8d52a0a9a9d0d162577e383",
-       "linkedCommit": "0c9d714264b93eed85b56c9efd2d4706ecc89caa",
-       "type": "INPUT_DATA",
-       "show": true,
-       "importance": 255,
-       "tags": [
-        ".zip"
-       ],
-       "message": "Added new Input Data file input/nyc_taxi.zip",
-       "timestamp": "2018-05-22T17:37:32+00:00",
-       "username": "cbutler",
-       "detailObjects": [
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBbXIwR0FHMEFBQUE9",
-         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAmr0GAG0AAAA=",
-         "show": false,
-         "importance": 0,
-         "type": "INPUT_DATA"
-        }
-       ],
-       "__typename": "ActivityRecordObject"
-      },
-      "cursor": "185b08a69b4113e5f8d52a0a9a9d0d162577e383"
-     },
-     {
-      "node": {
-       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZkMmQ4MDZmZjc0MDAxZWRjMDNlYjUyNjhhOGNlMmQ5NzQxOTc1Zjcx",
-       "commit": "d2d806ff74001edc03eb5268a8ce2d9741975f71",
-       "linkedCommit": "4c22f0a9b00a85294bbe1a60bffbc89a6a8afd16",
-       "type": "INPUT_DATA",
-       "show": true,
-       "importance": 255,
-       "tags": [
-        ".ipynb"
-       ],
-       "message": "Added new Input Data file input/nyc_taxi.ipynb",
-       "timestamp": "2018-05-22T17:36:34+00:00",
-       "username": "cbutler",
-       "detailObjects": [
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBRmIwR0FIRUFBQUE9",
-         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAFb0GAHEAAAA=",
-         "show": false,
-         "importance": 0,
-         "type": "INPUT_DATA"
-        }
-       ],
-       "__typename": "ActivityRecordObject"
-      },
-      "cursor": "d2d806ff74001edc03eb5268a8ce2d9741975f71"
-     },
-     {
-      "node": {
-       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY3YjllMzM1ZWM3ZDEyNmEwMWY5YTI4YjczZmQ1OWNjOWQ1YWNjMGE4",
-       "commit": "7b9e335ec7d126a01f9a28b73fd59cc9d5acc0a8",
-       "linkedCommit": "cd477368378c5243c89d7ca4dd9d982fc45c99f7",
-       "type": "INPUT_DATA",
-       "show": true,
-       "importance": 255,
-       "tags": [
-        ".zip"
-       ],
-       "message": "Added new Input Data file input/v2.zip",
-       "timestamp": "2018-05-22T17:36:31+00:00",
-       "username": "cbutler",
-       "detailObjects": [
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBbkx3R0FHVUFBQUE9",
-         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAnLwGAGUAAAA=",
-         "show": false,
-         "importance": 0,
-         "type": "INPUT_DATA"
-        }
-       ],
-       "__typename": "ActivityRecordObject"
-      },
-      "cursor": "7b9e335ec7d126a01f9a28b73fd59cc9d5acc0a8"
-     },
-     {
-      "node": {
-       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY1MzM4NjA1OGZkYzc3MzU5ZGNjODZiNzNkY2QwYzM0YjFiMGY3YTQx",
-       "commit": "53386058fdc77359dcc86b73dcd0c34b1b0f7a41",
-       "linkedCommit": "bae47fbb7991212bed8552dc7a758bf13633ff37",
-       "type": "INPUT_DATA",
-       "show": true,
-       "importance": 255,
-       "tags": [
-        ".zip"
-       ],
-       "message": "Added new Input Data file input/v2.zip",
-       "timestamp": "2018-05-22T17:33:53+00:00",
-       "username": "cbutler",
-       "detailObjects": [
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBSTd3R0FHVUFBQUE9",
-         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAI7wGAGUAAAA=",
-         "show": false,
-         "importance": 0,
-         "type": "INPUT_DATA"
-        }
-       ],
-       "__typename": "ActivityRecordObject"
-      },
-      "cursor": "53386058fdc77359dcc86b73dcd0c34b1b0f7a41"
-     },
-     {
-      "node": {
-       "id": "QWN0aXZpdHlSZWNvcmRPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciY0YmI5ZDY2OWIxNTllOWI1NmE2YjU1MmU1N2U4OWZiMGFhN2ViNTQ4",
-       "commit": "4bb9d669b159e9b56a6b552e57e89fb0aa7eb548",
-       "linkedCommit": "8910587ba305c392db3f8ce028042814bdea1c61",
-       "type": "CODE",
-       "show": true,
-       "importance": 0,
-       "tags": [],
-       "message": "Executed cell in notebook code/nyc_taxi.ipynb",
-       "timestamp": "2018-05-19T13:05:03+00:00",
-       "username": "cbutler",
-       "detailObjects": [
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBSGJnR0FFb0FBQUE9",
-         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAHbgGAEoAAAA=",
-         "show": true,
-         "importance": 155,
-         "type": "RESULT"
-        },
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBZTdnR0FFb0FBQUE9",
-         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAe7gGAEoAAAA=",
-         "show": true,
-         "importance": 154,
-         "type": "RESULT"
-        },
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBMmJnR0FKRUJBQUE9",
-         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAA2bgGAJEBAAA=",
-         "show": false,
-         "importance": 255,
-         "type": "CODE_EXECUTED"
-        },
-        {
-         "id": "QWN0aXZpdHlEZXRhaWxPYmplY3Q6Y2J1dGxlciZkYXRhLXNoYWRlciZsb2dfZDI3NDA3NDlhODQ0YzAzNjJmMWM2OWI3ZDk0OTg3MzlYMTluWDE5c2MyNEFBQUFBZnJvR0FKRUJBQUE9",
-         "key": "log_d2740749a844c0362f1c69b7d9498739X19nX19sc24AAAAAfroGAJEBAAA=",
-         "show": false,
-         "importance": 254,
-         "type": "CODE_EXECUTED"
-        }
-       ],
-       "__typename": "ActivityRecordObject"
-      },
-      "cursor": "4bb9d669b159e9b56a6b552e57e89fb0aa7eb548"
      }
     ],
     "pageInfo": {
-     "endCursor": "4bb9d669b159e9b56a6b552e57e89fb0aa7eb548",
+     "endCursor": "a5e887f96445d873b69081ef7a9060f310116559",
      "hasNextPage": true,
      "hasPreviousPage": false,
      "startCursor": null

@@ -38,7 +38,7 @@ exports[`Test LocalLabbooks rendering 1`] = `
             className=""
             style={undefined}
           >
-            857255a0-f22e-46b5-b70f-95af00d5d17e
+            zab
           </span>
         </span>
       </h6>
@@ -53,15 +53,11 @@ exports[`Test LocalLabbooks rendering 1`] = `
     >
       <span
         className={undefined}
-      >
-        <span
-          className=""
-          style={undefined}
-        >
-          This is a test labbook
-        </span>
-      </span>
+      />
     </p>
   </div>
+  <div
+    className="LocalLabbookPanel__public LocalLabbookPanel__public--loading"
+  />
 </div>
 `;

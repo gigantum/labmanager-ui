@@ -114,7 +114,11 @@
 .Labbook__name-title {
   flex: 1;
   margin: 30px 0 0 0;
-  font-size: 14px;
+  font-size: 16px;
+  color: $slateBlue !important;
+  padding: 0px;
+  line-height: 20px;
+  height: 20px;
 }
 
 .Labbook--detail-mode {
@@ -132,11 +136,6 @@
   min-width: 700px;
   margin-top: 15px;
   width: calc(100% - 190px);
-  .Labbook__name-title {
-    padding: 0px;
-    color: $romanSilver;
-    font-size: 14px;
-  }
 }
 
 .Labbook__title {
@@ -377,10 +376,20 @@
         }
       }
     }
-
-
-
   }
+}
+
+.Labbook__private{
+  display: inline-flex;
+  margin: 0 0 0 20px;
+  height: 20px;
+  width: 20px;
+  background: url(../images/icons/lock-grey.svg) no-repeat center center;
+  background-size: 16px;
+}
+.Labbook__private--sticky{
+  top: 40px;
+  left: 120px;
 }
 
 .Labbook__header.is-expanded{

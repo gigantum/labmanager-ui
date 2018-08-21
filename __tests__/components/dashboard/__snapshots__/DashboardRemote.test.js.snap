@@ -116,7 +116,7 @@ exports[`Test DashboardRemote 1`] = `
           className="Labbooks__filter-item"
           onClick={[Function]}
         >
-          My Labbooks 
+          My Projects 
           
         </li>
         <li
@@ -225,7 +225,7 @@ exports[`Test DashboardRemote 1`] = `
                   className=""
                   style={undefined}
                 >
-                  rootpy3
+                  update-test
                 </span>
               </span>
             </h6>
@@ -233,7 +233,7 @@ exports[`Test DashboardRemote 1`] = `
           <p
             className="RemoteLabbooks__owner"
           >
-            Created by randalg
+            Created by dmk
           </p>
           <p
             className="RemoteLabbooks__description"
@@ -328,263 +328,7 @@ exports[`Test DashboardRemote 1`] = `
                   className=""
                   style={undefined}
                 >
-                  macroscale-connectomes
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="RemoteLabbooks__owner"
-          >
-            Created by dmk
-          </p>
-          <p
-            className="RemoteLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      >
-        <div
-          className="RemoteLabbooks__icon-row"
-        >
-          <button
-            className="RemoteLabbooks__cloud-download"
-            disabled={false}
-            onClick={[Function]}
-          />
-          <button
-            className="RemoteLabbooks__cloud-delete--disabled"
-            disabled={false}
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="RemoteLabbooks__text-row"
-        >
-          <div
-            className="RemoteLabbooks__title-row"
-          >
-            <h6
-              className="RemoteLabbooks__panel-title"
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  update-test
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="RemoteLabbooks__owner"
-          >
-            Created by dmk
-          </p>
-          <p
-            className="RemoteLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      >
-        <div
-          className="RemoteLabbooks__icon-row"
-        >
-          <button
-            className="RemoteLabbooks__cloud-download--exists"
-            disabled={true}
-          />
-          <button
-            className="RemoteLabbooks__cloud-delete"
-            disabled={false}
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="RemoteLabbooks__text-row"
-        >
-          <div
-            className="RemoteLabbooks__title-row"
-          >
-            <h6
-              className="RemoteLabbooks__panel-title"
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  random-picture-generator
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="RemoteLabbooks__owner"
-          >
-            Created by cbutler
-          </p>
-          <p
-            className="RemoteLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      >
-        <div
-          className="RemoteLabbooks__icon-row"
-        >
-          <button
-            className="RemoteLabbooks__cloud-download--exists"
-            disabled={true}
-          />
-          <button
-            className="RemoteLabbooks__cloud-delete"
-            disabled={false}
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="RemoteLabbooks__text-row"
-        >
-          <div
-            className="RemoteLabbooks__title-row"
-          >
-            <h6
-              className="RemoteLabbooks__panel-title"
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  temp
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="RemoteLabbooks__owner"
-          >
-            Created by cbutler
-          </p>
-          <p
-            className="RemoteLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      >
-        <div
-          className="RemoteLabbooks__icon-row"
-        >
-          <button
-            className="RemoteLabbooks__cloud-download--exists"
-            disabled={true}
-          />
-          <button
-            className="RemoteLabbooks__cloud-delete"
-            disabled={false}
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="RemoteLabbooks__text-row"
-        >
-          <div
-            className="RemoteLabbooks__title-row"
-          >
-            <h6
-              className="RemoteLabbooks__panel-title"
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  data-shader
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="RemoteLabbooks__owner"
-          >
-            Created by cbutler
-          </p>
-          <p
-            className="RemoteLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      >
-        <div
-          className="RemoteLabbooks__icon-row"
-        >
-          <button
-            className="RemoteLabbooks__cloud-download--exists"
-            disabled={true}
-          />
-          <button
-            className="RemoteLabbooks__cloud-delete--disabled"
-            disabled={false}
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="RemoteLabbooks__text-row"
-        >
-          <div
-            className="RemoteLabbooks__title-row"
-          >
-            <h6
-              className="RemoteLabbooks__panel-title"
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  log-volume-audit
+                  tpub
                 </span>
               </span>
             </h6>
@@ -593,161 +337,6 @@ exports[`Test DashboardRemote 1`] = `
             className="RemoteLabbooks__owner"
           >
             Created by bill2
-          </p>
-          <p
-            className="RemoteLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      >
-        <div
-          className="RemoteLabbooks__icon-row"
-        >
-          <button
-            className="RemoteLabbooks__cloud-download"
-            disabled={false}
-            onClick={[Function]}
-          />
-          <button
-            className="RemoteLabbooks__cloud-delete--disabled"
-            disabled={false}
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="RemoteLabbooks__text-row"
-        >
-          <div
-            className="RemoteLabbooks__title-row"
-          >
-            <h6
-              className="RemoteLabbooks__panel-title"
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  new-demo
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="RemoteLabbooks__owner"
-          >
-            Created by dmk
-          </p>
-          <p
-            className="RemoteLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      >
-        <div
-          className="RemoteLabbooks__icon-row"
-        >
-          <button
-            className="RemoteLabbooks__cloud-download--exists"
-            disabled={true}
-          />
-          <button
-            className="RemoteLabbooks__cloud-delete--disabled"
-            disabled={false}
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="RemoteLabbooks__text-row"
-        >
-          <div
-            className="RemoteLabbooks__title-row"
-          >
-            <h6
-              className="RemoteLabbooks__panel-title"
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  awful-intersections-demo
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="RemoteLabbooks__owner"
-          >
-            Created by rjvgigantum
-          </p>
-          <p
-            className="RemoteLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      >
-        <div
-          className="RemoteLabbooks__icon-row"
-        >
-          <button
-            className="RemoteLabbooks__cloud-download"
-            disabled={false}
-            onClick={[Function]}
-          />
-          <button
-            className="RemoteLabbooks__cloud-delete--disabled"
-            disabled={false}
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="RemoteLabbooks__text-row"
-        >
-          <div
-            className="RemoteLabbooks__title-row"
-          >
-            <h6
-              className="RemoteLabbooks__panel-title"
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  pandas-pipeline
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="RemoteLabbooks__owner"
-          >
-            Created by ericw95
           </p>
           <p
             className="RemoteLabbooks__description"
@@ -799,6 +388,159 @@ exports[`Test DashboardRemote 1`] = `
             className="RemoteLabbooks__owner"
           >
             Created by dmk
+          </p>
+          <p
+            className="RemoteLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+      </div>
+      <div
+        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      >
+        <div
+          className="RemoteLabbooks__icon-row"
+        >
+          <button
+            className="RemoteLabbooks__cloud-download--exists"
+            disabled={true}
+          />
+          <button
+            className="RemoteLabbooks__cloud-delete--disabled"
+            disabled={false}
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="RemoteLabbooks__text-row"
+        >
+          <div
+            className="RemoteLabbooks__title-row"
+          >
+            <h6
+              className="RemoteLabbooks__panel-title"
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  testing-notifications
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="RemoteLabbooks__owner"
+          >
+            Created by dmk
+          </p>
+          <p
+            className="RemoteLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+      </div>
+      <div
+        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      >
+        <div
+          className="RemoteLabbooks__icon-row"
+        >
+          <button
+            className="RemoteLabbooks__cloud-download--exists"
+            disabled={true}
+          />
+          <button
+            className="RemoteLabbooks__cloud-delete"
+            disabled={false}
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="RemoteLabbooks__text-row"
+        >
+          <div
+            className="RemoteLabbooks__title-row"
+          >
+            <h6
+              className="RemoteLabbooks__panel-title"
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  testing-activity-feed
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="RemoteLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="RemoteLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+      </div>
+      <div
+        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      >
+        <div
+          className="RemoteLabbooks__icon-row"
+        >
+          <button
+            className="RemoteLabbooks__cloud-download--exists"
+            disabled={true}
+          />
+          <button
+            className="RemoteLabbooks__cloud-delete"
+            disabled={false}
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="RemoteLabbooks__text-row"
+        >
+          <div
+            className="RemoteLabbooks__title-row"
+          >
+            <h6
+              className="RemoteLabbooks__panel-title"
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  test-book
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="RemoteLabbooks__owner"
+          >
+            Created by cbutler
           </p>
           <p
             className="RemoteLabbooks__description"
@@ -892,58 +634,7 @@ exports[`Test DashboardRemote 1`] = `
                   className=""
                   style={undefined}
                 >
-                  asdaaddsad
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="RemoteLabbooks__owner"
-          >
-            Created by cbutler
-          </p>
-          <p
-            className="RemoteLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-      >
-        <div
-          className="RemoteLabbooks__icon-row"
-        >
-          <button
-            className="RemoteLabbooks__cloud-download--exists"
-            disabled={true}
-          />
-          <button
-            className="RemoteLabbooks__cloud-delete"
-            disabled={false}
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="RemoteLabbooks__text-row"
-        >
-          <div
-            className="RemoteLabbooks__title-row"
-          >
-            <h6
-              className="RemoteLabbooks__panel-title"
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  testing-activity-feed
+                  temp
                 </span>
               </span>
             </h6>
@@ -995,7 +686,7 @@ exports[`Test DashboardRemote 1`] = `
                   className=""
                   style={undefined}
                 >
-                  abbb
+                  t3
                 </span>
               </span>
             </h6>
@@ -1003,7 +694,211 @@ exports[`Test DashboardRemote 1`] = `
           <p
             className="RemoteLabbooks__owner"
           >
-            Created by dmk
+            Created by bill2
+          </p>
+          <p
+            className="RemoteLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+      </div>
+      <div
+        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      >
+        <div
+          className="RemoteLabbooks__icon-row"
+        >
+          <button
+            className="RemoteLabbooks__cloud-download--exists"
+            disabled={true}
+          />
+          <button
+            className="RemoteLabbooks__cloud-delete"
+            disabled={false}
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="RemoteLabbooks__text-row"
+        >
+          <div
+            className="RemoteLabbooks__title-row"
+          >
+            <h6
+              className="RemoteLabbooks__panel-title"
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  spade
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="RemoteLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="RemoteLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+      </div>
+      <div
+        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      >
+        <div
+          className="RemoteLabbooks__icon-row"
+        >
+          <button
+            className="RemoteLabbooks__cloud-download--exists"
+            disabled={true}
+          />
+          <button
+            className="RemoteLabbooks__cloud-delete--disabled"
+            disabled={false}
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="RemoteLabbooks__text-row"
+        >
+          <div
+            className="RemoteLabbooks__title-row"
+          >
+            <h6
+              className="RemoteLabbooks__panel-title"
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  snappy
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="RemoteLabbooks__owner"
+          >
+            Created by gigantum-examples
+          </p>
+          <p
+            className="RemoteLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+      </div>
+      <div
+        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      >
+        <div
+          className="RemoteLabbooks__icon-row"
+        >
+          <button
+            className="RemoteLabbooks__cloud-download--exists"
+            disabled={true}
+          />
+          <button
+            className="RemoteLabbooks__cloud-delete"
+            disabled={false}
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="RemoteLabbooks__text-row"
+        >
+          <div
+            className="RemoteLabbooks__title-row"
+          >
+            <h6
+              className="RemoteLabbooks__panel-title"
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  set-public-test-calum-true
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="RemoteLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="RemoteLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+      </div>
+      <div
+        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      >
+        <div
+          className="RemoteLabbooks__icon-row"
+        >
+          <button
+            className="RemoteLabbooks__cloud-download--exists"
+            disabled={true}
+          />
+          <button
+            className="RemoteLabbooks__cloud-delete"
+            disabled={false}
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="RemoteLabbooks__text-row"
+        >
+          <div
+            className="RemoteLabbooks__title-row"
+          >
+            <h6
+              className="RemoteLabbooks__panel-title"
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  set-public-test-calum
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="RemoteLabbooks__owner"
+          >
+            Created by cbutler
           </p>
           <p
             className="RemoteLabbooks__description"
@@ -1047,7 +942,7 @@ exports[`Test DashboardRemote 1`] = `
                   className=""
                   style={undefined}
                 >
-                  ghjgh
+                  sdfdsfsdfsdf
                 </span>
               </span>
             </h6>
@@ -1055,7 +950,7 @@ exports[`Test DashboardRemote 1`] = `
           <p
             className="RemoteLabbooks__owner"
           >
-            Created by dmk
+            Created by joel
           </p>
           <p
             className="RemoteLabbooks__description"
@@ -1099,7 +994,7 @@ exports[`Test DashboardRemote 1`] = `
                   className=""
                   style={undefined}
                 >
-                  darpa-demo
+                  rootpy3
                 </span>
               </span>
             </h6>
@@ -1107,7 +1002,109 @@ exports[`Test DashboardRemote 1`] = `
           <p
             className="RemoteLabbooks__owner"
           >
-            Created by dmk
+            Created by gigantum-examples
+          </p>
+          <p
+            className="RemoteLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+      </div>
+      <div
+        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      >
+        <div
+          className="RemoteLabbooks__icon-row"
+        >
+          <button
+            className="RemoteLabbooks__cloud-download--exists"
+            disabled={true}
+          />
+          <button
+            className="RemoteLabbooks__cloud-delete--disabled"
+            disabled={false}
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="RemoteLabbooks__text-row"
+        >
+          <div
+            className="RemoteLabbooks__title-row"
+          >
+            <h6
+              className="RemoteLabbooks__panel-title"
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  rootpy3
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="RemoteLabbooks__owner"
+          >
+            Created by randalg
+          </p>
+          <p
+            className="RemoteLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+      </div>
+      <div
+        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      >
+        <div
+          className="RemoteLabbooks__icon-row"
+        >
+          <button
+            className="RemoteLabbooks__cloud-download--exists"
+            disabled={true}
+          />
+          <button
+            className="RemoteLabbooks__cloud-delete"
+            disabled={false}
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="RemoteLabbooks__text-row"
+        >
+          <div
+            className="RemoteLabbooks__title-row"
+          >
+            <h6
+              className="RemoteLabbooks__panel-title"
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  random-picture-generator
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="RemoteLabbooks__owner"
+          >
+            Created by cbutler
           </p>
           <p
             className="RemoteLabbooks__description"
@@ -1151,7 +1148,7 @@ exports[`Test DashboardRemote 1`] = `
                   className=""
                   style={undefined}
                 >
-                  no-internet
+                  python-data-science-handbook
                 </span>
               </span>
             </h6>
@@ -1202,7 +1199,7 @@ exports[`Test DashboardRemote 1`] = `
                   className=""
                   style={undefined}
                 >
-                  added-new-lab
+                  pulish-temp4
                 </span>
               </span>
             </h6>

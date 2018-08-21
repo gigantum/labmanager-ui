@@ -205,6 +205,7 @@ export default createPaginationContainer(
           node {
             name
             description
+            publicVisibility
             owner
             id
             isLocal
