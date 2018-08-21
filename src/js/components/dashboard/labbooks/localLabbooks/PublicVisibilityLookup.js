@@ -6,21 +6,17 @@ import {
 import {fetchQuery} from 'JS/createRelayEnvironment';
 
 
-const ContainerLookupQuery = graphql`
-  query ContainerLookupQuery($ids: [String]!){
+const PublicVisibilityLookupQuery = graphql`
+  query PublicVisibilityLookupQuery($ids: [String]!){
     labbookList{
       localById(ids: $ids){
-        environment{
-          id
-          imageStatus
-          containerStatus
-        }
+        publicVisibility
       }
     }
   }
 `;
 
-const ContainerLookup = {
+const PublicVisibility = {
   query: (ids) =>{
     const variables = {ids};
 
@@ -28,7 +24,7 @@ const ContainerLookup = {
 
       let fetchData = function(){
 
-        fetchQuery(ContainerLookupQuery(), variables).then((response) => {
+        fetchQuery(PublicVisibilityLookupQuery(), variables).then((response) => {
           resolve(response)
         }).catch((error) =>{
           console.log(error)
@@ -41,4 +37,4 @@ const ContainerLookup = {
   }
 }
 
-export default ContainerLookup
+export default PublicVisibility

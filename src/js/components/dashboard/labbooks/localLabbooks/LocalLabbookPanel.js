@@ -222,6 +222,7 @@ export default class LocalLabbookPanel extends Component {
     let status = this.state.status
     let textStatus = this.state.textStatus
 
+
     return (
       <div
         onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}
@@ -281,8 +282,8 @@ export default class LocalLabbookPanel extends Component {
 
         </div>
 
-        { !(this.props.node.publicVisibility === 'public') &&
-          <div className={`LocalLabbookPanel__public LocalLabbookPanel__public--${status}`}></div>
+        { !(this.props.publicVisibility === 'local') &&
+          <div className={`LocalLabbookPanel__${this.props.publicVisibility}`}></div>
         }
     </div>)
   }
