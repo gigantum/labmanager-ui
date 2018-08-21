@@ -283,7 +283,10 @@ export default class LocalLabbookPanel extends Component {
         </div>
 
         { !(this.props.publicVisibility === 'local') &&
-          <div className={`LocalLabbookPanel__${this.props.publicVisibility}`}></div>
+          <div
+            data-tooltip={`${this.props.publicVisibility}`}
+            className={`Tooltip LocalLabbookPanel__${this.props.publicVisibility}`}>
+          </div>
         }
     </div>)
   }
