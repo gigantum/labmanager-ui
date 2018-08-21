@@ -277,8 +277,8 @@ export default class RemoteLabbookPanel extends Component {
             />
           </p>
         </div>
-        { !(edge.node.publicVisibility === 'local') &&
-          <div className={`RemoteLabbooks__${edge.node.publicVisibility}`}></div>
+        { !(edge.node.visibility === 'local') &&
+          <div className={`RemoteLabbooks__${edge.node.visibility}`}></div>
         }
         {
           this.state.isImporting &&

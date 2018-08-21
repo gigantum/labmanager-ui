@@ -6,25 +6,30 @@ import {
 import {fetchQuery} from 'JS/createRelayEnvironment';
 
 
-const PublicVisibilityLookupQuery = graphql`
-  query PublicVisibilityLookupQuery($ids: [String]!){
+const VisibilityLookupQuery = graphql`
+  query VisibilityLookupQuery($ids: [String]!){
     labbookList{
       localById(ids: $ids){
-        publicVisibility
+        visibility
       }
     }
   }
 `;
 
-const PublicVisibility = {
+const Visibility = {
+  constructor(){
+  	this.query = this.query;
+  },
+
   query: (ids) =>{
+
     const variables = {ids};
 
     return new Promise((resolve, reject) =>{
 
       let fetchData = function(){
 
-        fetchQuery(PublicVisibilityLookupQuery(), variables).then((response) => {
+        fetchQuery(VisibilityLookupQuery(), variables).then((response) => {
           resolve(response)
         }).catch((error) =>{
           console.log(error)
@@ -37,4 +42,4 @@ const PublicVisibility = {
   }
 }
 
-export default PublicVisibility
+export default Visibility

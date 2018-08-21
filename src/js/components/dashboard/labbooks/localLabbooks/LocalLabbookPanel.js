@@ -282,8 +282,8 @@ export default class LocalLabbookPanel extends Component {
 
         </div>
 
-        { !(this.props.publicVisibility === 'local') &&
-          <div className={`LocalLabbookPanel__${this.props.publicVisibility}`}></div>
+        { !(this.props.visibility === 'local') &&
+          <div className={`LocalLabbookPanel__${this.props.visibility}`}></div>
         }
     </div>)
   }
