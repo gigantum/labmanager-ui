@@ -166,3 +166,13 @@
 
   transform: scale(0.5);
 }
+
+.RemoteLabbooks__public{
+  height: 24px;
+  width: 24px;
+  padding: 20px;
+  background: url(../images/icons/lock-grey.svg) no-repeat center center;
+  background-size: 18px;
+  align-self: flex-end;
+
+}

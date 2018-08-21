@@ -1,5 +1,5 @@
 # source: http://localhost:10000/api/labbook/
-# timestamp: Fri Aug 17 2018 14:36:53 GMT-0400 (EDT)
+# timestamp: Tue Aug 21 2018 10:00:46 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -962,6 +962,7 @@ type RemoteLabbook implements Node & GitRepository {
   owner: String!
   name: String!
   description: String
+  publicVisibility: String
   creationDateUtc: String
   modifiedDateUtc: String
   isLocal: Boolean
