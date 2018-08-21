@@ -178,3 +178,36 @@ code {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.Tooltip{
+  position: relative;
+  font-weight: bolder;
+  cursor: pointer;
+  &:hover::before{
+    content: "";
+    border: solid transparent;
+    border-bottom-color: $white;
+    border-width: 10px;
+    position: absolute;
+    top: 20px;
+  }
+
+  &:hover::after{
+    content: attr(data-tooltip);
+    @extend .box-shadow;
+    position: absolute;
+    min-width: 100px;
+    font-weight: 100;
+    line-height: 1.3em;
+    font-size: 16px;
+    margin: 0;
+    background: $azure;
+    color: $white;
+    padding: 5px;
+    border-radius: 5px;
+    right: 40px;
+    bottom: 10px;
+    z-index: 1;
+    font-size: .7em;
+  }
+}
