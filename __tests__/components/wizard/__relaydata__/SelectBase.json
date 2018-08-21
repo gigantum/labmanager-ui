@@ -44,11 +44,11 @@
     },
     {
      "node": {
-      "id": "QmFzZUNvbXBvbmVudDpnaWdhbnR1bV9lbnZpcm9ubWVudC1jb21wb25lbnRzJnB5dGhvbjMtZGF0YS1zY2llbmNlJjQ=",
+      "id": "QmFzZUNvbXBvbmVudDpnaWdhbnR1bV9lbnZpcm9ubWVudC1jb21wb25lbnRzJnB5dGhvbjMtZGF0YS1zY2llbmNlJjU=",
       "schema": 1,
       "repository": "gigantum_environment-components",
       "componentId": "python3-data-science",
-      "revision": 4,
+      "revision": 5,
       "name": "Python3 Data Science Quick-Start",
       "description": "A Base containing Python 3.6, JupyterLab, and common data science packages pre-installed",
       "readme": "A Base containing Python 3.6, JupyterLab, and common Python data science packages pre-installed. OpenBLAS is enabled.\n\nThe following JupyterLab widgets are configured:\n\t- jupyterlab_bokeh\n\t- @jupyterlab/geojson-extension\n  - @jupyterlab/plotly-extension\n  - @jupyterlab/vega2-extension\n  - jupyterlab-toc\n",
@@ -103,18 +103,18 @@
       "dockerImageServer": "hub.docker.com",
       "dockerImageNamespace": "gigantum",
       "dockerImageRepository": "python3-data-science",
-      "dockerImageTag": "1effaaea-2018-05-23",
+      "dockerImageTag": "992bcbab-2018-07-03",
       "__typename": "BaseComponent"
      },
      "cursor": "MQ=="
     },
     {
      "node": {
-      "id": "QmFzZUNvbXBvbmVudDpnaWdhbnR1bV9lbnZpcm9ubWVudC1jb21wb25lbnRzJnB5dGhvbjMtbWluaW1hbCYz",
+      "id": "QmFzZUNvbXBvbmVudDpnaWdhbnR1bV9lbnZpcm9ubWVudC1jb21wb25lbnRzJnB5dGhvbjMtbWluaW1hbCY0",
       "schema": 1,
       "repository": "gigantum_environment-components",
       "componentId": "python3-minimal",
-      "revision": 3,
+      "revision": 4,
       "name": "Python3 Minimal",
       "description": "A minimal Base containing Python 3.6 and JupyterLab with no additional packages",
       "readme": "A minimal Base containing Python 3.6 and JupyterLab with no additional packages",
@@ -143,21 +143,21 @@
       "dockerImageServer": "hub.docker.com",
       "dockerImageNamespace": "gigantum",
       "dockerImageRepository": "python3-minimal",
-      "dockerImageTag": "1effaaea-2018-05-23",
+      "dockerImageTag": "df4dbd9a-2018-06-29",
       "__typename": "BaseComponent"
      },
      "cursor": "Mg=="
     },
     {
      "node": {
-      "id": "QmFzZUNvbXBvbmVudDpnaWdhbnR1bV9lbnZpcm9ubWVudC1jb21wb25lbnRzJnItdGlkeXZlcnNlJjE=",
+      "id": "QmFzZUNvbXBvbmVudDpnaWdhbnR1bV9lbnZpcm9ubWVudC1jb21wb25lbnRzJnItdGlkeXZlcnNlJjI=",
       "schema": 1,
       "repository": "gigantum_environment-components",
       "componentId": "r-tidyverse",
-      "revision": 1,
+      "revision": 2,
       "name": "R Tidyverse (+ Python3) in Jupyter Quickstart",
       "description": "A conda-managed JupyterLab install for R + tidyverse packages, etc.",
-      "readme": "A Base containing a conda-managed JupyterLab isntall for R with tidyverse\npackages pre-installed. MKL is enabled in a relatively \"stock\" miniconda\ninstall.\n",
+      "readme": "A Base containing a conda-managed JupyterLab install for R with tidyverse\npackages pre-installed. MKL is enabled in a relatively \"stock\" miniconda\ninstall.\n",
       "tags": [
        "ubuntu",
        "rstats",
@@ -189,7 +189,7 @@
       "dockerImageServer": "hub.docker.com",
       "dockerImageNamespace": "gigantum",
       "dockerImageRepository": "r-tidyverse",
-      "dockerImageTag": "9308c9eb-2018-06-12",
+      "dockerImageTag": "df4dbd9a-2018-06-29",
       "__typename": "BaseComponent"
      },
      "cursor": "Mw=="

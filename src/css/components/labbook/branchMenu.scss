@@ -399,3 +399,40 @@
   text-align: center;
   animation: slide-down-fade-in forwards .25s;
 }
+
+.PublishModal{
+  @include flex(space-between, column);
+  height: 100%;
+}
+
+.Publish__buttons{
+  @include flex(space-between, row);
+  width: 340px;
+  margin: 0 auto;
+
+}
+
+.Publish__private{
+  label{
+    width: 130px;
+    text-align: right;
+    background: url(../images/icons/lock.svg) no-repeat 40px center;
+    background-size: 20px;
+    color: $slateBlue;
+  }
+}
+
+.Publish__public{
+  label{
+    width: 124px;
+    text-align: right;
+    background: url(../images/icons/earth.svg) no-repeat 40px center;
+    background-size: 20px;
+    color: $slateBlue;
+  }
+}
+
+.Publish__paragraph{
+  padding: 0 0 0 80px;
+  color: $romanSilver;
+}

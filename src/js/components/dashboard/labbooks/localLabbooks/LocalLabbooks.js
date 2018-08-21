@@ -10,6 +10,7 @@ import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
 import ImportModule from 'Components/import/ImportModule'
 //helpers
 import ContainerLookup from './ContainerLookup'
+import PublicVisibilityLookup from './PublicVisibilityLookup'
 //store
 import store from 'JS/redux/store'
 
@@ -20,11 +21,13 @@ export class LocalLabbooks extends Component {
     this.state = {
       isPaginating: false,
       containerList: new Map(),
+      publicVisibilityList: new Map()
     }
 
     this._captureScroll = this._captureScroll.bind(this)
     this._loadMore = this._loadMore.bind(this)
     this._containerLookup = this._containerLookup.bind(this)
+    this._publicVisibilityLookup = this._publicVisibilityLookup.bind(this)
     this._fetchDemo = this._fetchDemo.bind(this)
   }
 
@@ -35,11 +38,28 @@ export class LocalLabbooks extends Component {
   componentDidMount() {
     if(!this.props.loading){
       window.addEventListener('scroll', this._captureScroll);
-      this._containerLookup();
-      if(this.props.labbookList && this.props.localLabbooks.localLabbooks && this.props.localLabbooks.localLabbooks.edges && this.props.localLabbooks.localLabbooks.edges.length === 0){
-        this._fetchDemo()
+
+      this._containerLookup()
+      this._publicVisibilityLookup()
+
+      if(this.props.labbookList &&
+         this.props.localLabbooks.localLabbooks &&
+         this.props.localLabbooks.localLabbooks.edges &&
+         this.props.localLabbooks.localLabbooks.edges.length === 0){
+
+           this._fetchDemo()
       }
     }
+  }
+  /***
+  * @param {}
+  * removes event listener for pagination and removes timeout for container status
+  */
+  componentWillUnmount() {
+
+    clearTimeout(this.containerLookup)
+
+    window.removeEventListener("scroll", this._captureScroll)
   }
 
   /***
@@ -54,6 +74,7 @@ export class LocalLabbooks extends Component {
         relay.refetchConnection(20, (response, error) => {
           if(self.props.localLabbooks.localLabbooks.edges.length > 0){
           self._containerLookup();
+          self._publicVisibilityLookup()
           } else {
           self._fetchDemo(count + 1)
           }
@@ -64,14 +85,31 @@ export class LocalLabbooks extends Component {
 
   /***
   * @param {}
-  * removes event listener for pagination and removes timeout for container status
+  * calls PublicVisibilityLookup query and attaches the returned data to the state
   */
-  componentWillUnmount() {
+  _publicVisibilityLookup(){
+    let self = this;
 
-    clearTimeout(this.containerLookup)
+    let idArr = this.props.localLabbooks.localLabbooks.edges.map(edges =>edges.node.id)
 
-    window.removeEventListener("scroll", this._captureScroll)
+    PublicVisibilityLookup.query(idArr).then((res)=>{
+
+      if(res && res.data && res.data.labbookList && res.data.labbookList.localById){
+
+        let publicVisibilityListCopy = new Map(this.state.publicVisibilityList)
+
+        res.data.labbookList.localById.forEach((node) => {
+
+          publicVisibilityListCopy.set(node.id, node)
+
+        })
+
+        self.setState({publicVisibilityList: publicVisibilityListCopy})
+      }
+
+    })
   }
+
 
   /***
   * @param {}
@@ -89,7 +127,9 @@ export class LocalLabbooks extends Component {
         let containerListCopy = new Map(this.state.containerList)
 
         res.data.labbookList.localById.forEach((node) => {
-          containerListCopy.set(node.id, node.environment)
+
+          containerListCopy.set(node.id, node)
+
         })
 
         self.setState({containerList: containerListCopy})
@@ -157,22 +197,29 @@ export class LocalLabbooks extends Component {
 
       let labbooks = !this.props.loading ? this.props.filterLabbooks(labbookList.localLabbooks.edges, this.props.filterState) : [];
 
+      const importVisible = (this.props.section === 'local' || !this.props.loading) && !store.getState().labbookListing.filterText;
+
       return(
+
         <div className='LocalLabbooks__labbooks'>
+
           <div className="LocalLabbooks__sizer grid">
             {
-              (this.props.section === 'local' || !this.props.loading) && !store.getState().labbookListing.filterText &&
-              <ImportModule
-                ref="ImportModule_localLabooks"
-                {...this.props}
-                showModal={this.props.showModal}
-                history={this.props.history}
-                className="LocalLabbooks__panel column-4-span-3 LocalLabbooks__panel--import"
-              />
+              importVisible &&
+
+                <ImportModule
+                  ref="ImportModule_localLabooks"
+                  {...this.props}
+                  showModal={this.props.showModal}
+                  history={this.props.history}
+                  className="LocalLabbooks__panel column-4-span-3 LocalLabbooks__panel--import"
+                />
+
             }
             {
-              labbooks.length ?
-              labbooks.map((edge, index) => {
+              labbooks.length ? labbooks.map((edge, index) => {
+
+                let publicVisibility = this.state.publicVisibilityList.has(edge.node.id) ? this.state.publicVisibilityList.get(edge.node.id).publicVisibility : 'loading'
                 return (
                   <LocalLabbookPanel
                     key={`${edge.node.owner}/${edge.node.name}`}
@@ -180,22 +227,27 @@ export class LocalLabbooks extends Component {
                     className="LocalLabbooks__panel"
                     edge={edge}
                     history={this.props.history}
-                    environment={this.state.containerList.has(edge.node.id) && this.state.containerList.get(edge.node.id)}
+                    node={this.state.containerList.has(edge.node.id) && this.state.containerList.get(edge.node.id)}
+                    publicVisibility={publicVisibility}
                     goToLabbook={this.props.goToLabbook}/>
                 )
               })
-              :
-              !this.props.loading &&
-              store.getState().labbookListing.filterText &&
-              <div className="Labbooks__no-results">
-                <h3>No Results Found</h3>
-                <p>Edit your filters above or <span
-                  onClick={()=> this.props.setFilterValue({target: {value: ''}})}
-                >clear
-                </span> to try again.</p>
 
-              </div>
+              : !this.props.loading && store.getState().labbookListing.filterText &&
+
+                <div className="Labbooks__no-results">
+
+                  <h3>No Results Found</h3>
+
+                  <p>Edit your filters above or <span
+                    onClick={()=> this.props.setFilterValue({target: {value: ''}})}
+                  >clear
+
+                  </span> to try again.</p>
+
+                </div>
             }
+
             {
               Array(5).fill(1).map((value, index) => {
 
@@ -208,6 +260,7 @@ export class LocalLabbooks extends Component {
                 )
               })
             }
+
           </div>
         </div>
       )
