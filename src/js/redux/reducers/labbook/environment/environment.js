@@ -10,7 +10,10 @@ export const UPDATE_CONTAINER_MENU_VISIBILITY = 'UPDATE_CONTAINER_MENU_VISIBILIT
 export const SET_LATEST_PACKAGES = 'SET_LATEST_PACKAGES'
 export const SET_LATEST_FETCHED = 'SET_LATEST_FETCHED'
 export const SET_REFETCH_PENDING = 'SET_REFETCH_PENDING'
+export const SET_REFETCH_OCCURING = 'SET_REFETCH_OCCURING'
+export const SET_REFETCH_QUEUED = 'SET_REFETCH_QUEUED'
 export const FORCE_REFETCH = 'FORCE_REFETCH'
+export const FORCE_CANCEL_REFETCH = 'FORCE_CANCEL_REFETCH'
 
 
 
@@ -26,6 +29,9 @@ export default (
    'latestFetched': false,
    'refetchPending': false,
    'forceRefetch': false,
+   'refetchOccuring': false,
+   'refetchQueued': false,
+   'forceCancelRefetch': false,
  },
  action
 ) => {
@@ -81,6 +87,23 @@ if (action.type === CLOSE_ENVIRONMENT_MENUS) {
   return {
     ...state,
     forceRefetch: action.payload.forceRefetch
+  }
+} else if (action.type === SET_REFETCH_OCCURING) {
+  return {
+    ...state,
+    refetchOccuring: action.payload.refetchOccuring
+  }
+} else if (action.type === SET_REFETCH_QUEUED) {
+  return {
+    ...state,
+    refetchQueued: action.payload.refetchQueued
+  }
+} else if (action.type === FORCE_CANCEL_REFETCH) {
+  return {
+    ...state,
+    forceCancelRefetch: action.payload.forceCancelRefetch,
+    refetchOccuring: false,
+    refetchQueued: true,
   }
 }
 

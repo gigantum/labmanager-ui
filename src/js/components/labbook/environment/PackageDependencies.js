@@ -145,7 +145,6 @@ class PackageDependencies extends Component {
     unsubscribe from redux store
   */
   storeDidUpdate = (environmentStore) => {
-
     if(this.state.packageMenuVisible !== environmentStore.packageMenuVisible){
       this.setState({packageMenuVisible: environmentStore.packageMenuVisible});//triggers re-render when store updates
     }
@@ -155,6 +154,17 @@ class PackageDependencies extends Component {
         type: 'FORCE_REFETCH',
         payload: {
           forceRefetch: false,
+        }
+      })
+    }
+    if(environmentStore.forceCancelRefetch){
+      if(this.pendingRefetch){
+        this.pendingRefetch.dispose();
+      }
+      store.dispatch({
+        type: 'FORCE_CANCEL_REFETCH',
+        payload: {
+          forceCancelRefetch: false,
         }
       })
     }
@@ -194,23 +204,55 @@ class PackageDependencies extends Component {
     refetches package dependencies
   */
   _refetch(){
-    let self = this;
-    let relay = this.props.relay
-    let packageDependencies = this.props.environment.packageDependencies
+    if(!store.getState().environment.refetchOccuring){
+      let self = this;
+      let relay = this.props.relay
+      let packageDependencies = this.props.environment.packageDependencies
 
-    if(packageDependencies.edges.length > 0){
+      if(packageDependencies.edges.length > 0){
+        store.dispatch({
+          type: 'SET_REFETCH_OCCURING',
+          payload: {
+            refetchOccuring: true,
+          }
+        })
 
-      relay.refetchConnection(
-        null,
-        (response) =>{
-          self.setState({forceRender: true})
-        },
-        {
-          first: 1000,
-          hasNext: true,
-          cursor: null,
+        self.pendingRefetch = relay.refetchConnection(
+          null,
+          () =>{
+            store.dispatch({
+              type: 'SET_REFETCH_OCCURING',
+              payload: {
+                refetchOccuring: false,
+              }
+            })
+
+            if(store.getState().environment.refetchQueued){
+              self._refetch();
+            }
+            self.setState({forceRender: true})
+            store.dispatch({
+              type: 'SET_REFETCH_OCCURING',
+              payload: {
+                refetchQueued: false,
+              }
+            })
+          },
+          {
+            first: 1000,
+            hasNext: true,
+            cursor: null,
+          }
+        )
+        // disposible.dispose()
+      }
+    } else{
+      store.dispatch({
+        type: 'SET_REFETCH_OCCURING',
+        payload: {
+          refetchQueued: true,
         }
-      )
+      })
     }
   }
   /**
