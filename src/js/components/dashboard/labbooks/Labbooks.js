@@ -101,7 +101,7 @@ export default class Labbooks extends Component {
   componentWillUnmount() {
     this.unsubscribe()
     window.removeEventListener('click', this._closeSortMenu)
-    window.removeEventListener('click', this._closeFiltertMenu)
+    window.removeEventListener('click', this._closeFilterMenu)
     window.removeEventListener("scroll", this._captureScroll)
     window.removeEventListener("click", this._hideSearchClear)
 
