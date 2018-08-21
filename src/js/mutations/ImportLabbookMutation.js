@@ -53,7 +53,6 @@ export default function ImportLabbookMutation(
           console.log(error)
         }
         if(response){
-          console.log(response)
           FooterUtils.getJobStatus(response, 'importLabbook', 'importJobKey')
           FooterUtils.getJobStatus(response, 'importLabbook', 'buildImageJobKey')
         }
