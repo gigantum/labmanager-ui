@@ -4,6 +4,7 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
+import uuidv4 from 'uuid/v4'
 //components
 import LocalLabbookPanel from 'Components/dashboard/labbooks/localLabbooks/LocalLabbookPanel'
 import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
@@ -89,25 +90,47 @@ export class LocalLabbooks extends Component {
   */
   _publicVisibilityLookup(){
     let self = this;
+    let uuid = uuidv4()
 
     let idArr = this.props.localLabbooks.localLabbooks.edges.map(edges =>edges.node.id)
 
-    PublicVisibilityLookup.query(idArr).then((res)=>{
+    let index = 0
 
-      if(res && res.data && res.data.labbookList && res.data.labbookList.localById){
+    function query(ids, index){
 
-        let publicVisibilityListCopy = new Map(this.state.publicVisibilityList)
+      let subsetIds = idArr.slice(index, index + 10)
 
-        res.data.labbookList.localById.forEach((node) => {
 
-          publicVisibilityListCopy.set(node.id, node)
+      PublicVisibilityLookup.query(subsetIds).then((res)=>{
 
-        })
+        if(res && res.data &&
+          res.data.labbookList &&
+          res.data.labbookList.localById){
 
-        self.setState({publicVisibilityList: publicVisibilityListCopy})
-      }
+          let publicVisibilityListCopy = new Map(self.state.publicVisibilityList)
 
-    })
+          res.data.labbookList.localById.forEach((node) => {
+
+            publicVisibilityListCopy.set(node.id, node)
+
+          })
+
+
+          if(index < idArr.length){
+
+            index += 10
+
+            query(ids, index)
+          }
+
+          self.setState({publicVisibilityList: publicVisibilityListCopy})
+        }
+
+
+       })
+     }
+
+     query(idArr, index)
   }
 
 
@@ -122,7 +145,9 @@ export class LocalLabbooks extends Component {
 
     ContainerLookup.query(idArr).then((res)=>{
 
-      if(res && res.data && res.data.labbookList && res.data.labbookList.localById){
+      if(res && res.data &&
+        res.data.labbookList &&
+        res.data.labbookList.localById){
 
         let containerListCopy = new Map(this.state.containerList)
 
@@ -168,9 +193,8 @@ export class LocalLabbooks extends Component {
     *  @param {}
     *  loads more labbooks using the relay pagination container
   */
-
   _loadMore = () => {
-
+    let self = this
     this.setState({
       'isPaginating': true
     })
@@ -184,6 +208,8 @@ export class LocalLabbooks extends Component {
           this.setState({
             'isPaginating': false
           })
+
+          this._publicVisibilityLookup()
 
         }
       );

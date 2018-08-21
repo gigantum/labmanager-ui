@@ -17,7 +17,12 @@ const PublicVisibilityLookupQuery = graphql`
 `;
 
 const PublicVisibility = {
+  constructor(){
+  	this.query = this.query;
+  },
+
   query: (ids) =>{
+
     const variables = {ids};
 
     return new Promise((resolve, reject) =>{

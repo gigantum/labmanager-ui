@@ -133,25 +133,25 @@ export default class RemoteLabbookPanel extends Component {
                   {
                     type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
-                      id: id,
-                      message: 'ERROR: Could not import remote Project',
-                      messageBody: error,
-                      error: true
+                        id: id,
+                        message: 'ERROR: Could not import remote Project',
+                        messageBody: error,
+                        error: true
                   }
                 })
 
               }else if(response){
 
-                store.dispatch(
-                  {
+                store.dispatch({
                     type: 'MULTIPART_INFO_MESSAGE',
                     payload: {
-                      id: id,
-                      message: `Successfully imported remote Project ${labbookName}`,
-                      isLast: true,
-                      error: false
+                        id: id,
+                        message: `Successfully imported remote Project ${labbookName}`,
+                        isLast: true,
+                        error: false
                     }
-                  })
+                 })
+
                 const labbookName = response.importRemoteLabbook.newLabbookEdge.node.name
                 const owner = response.importRemoteLabbook.newLabbookEdge.node.owner
 
@@ -160,43 +160,54 @@ export default class RemoteLabbookPanel extends Component {
                 owner,
                 false,
                 (response, error)=>{
+
                   if(error){
+
                     console.error(error)
-                    store.dispatch(
-                      {
+
+                    store.dispatch({
                         type: 'MULTIPART_INFO_MESSAGE',
                         payload: {
                           id: id,
                           message: `ERROR: Failed to build ${labbookName}`,
                           messsagesList: error,
                           error: true
-                      }
-                    })
-                  }
-                })
-                self.props.history.replace(`/projects/${owner}/${labbookName}`)
+                        }
+                     })
+
+                    }
+
+                  })
+
+                  self.props.history.replace(`/projects/${owner}/${labbookName}`)
               }else{
 
                 BuildImageMutation(
-                labbookName,
-                localStorage.getItem('username'),
-                false,
-                (error)=>{
-                  if(error){
-                    console.error(error)
-                    store.dispatch(
-                      {
-                        type: 'MULTIPART_INFO_MESSAGE',
-                        payload: {
-                          id: id,
-                          message: `ERROR: Failed to build ${labbookName}`,
-                          messsagesList: error,
-                          error: true
-                      }
-                    })
-                  }
-                })
+                  labbookName,
+                  localStorage.getItem('username'),
+                  false,
+                  (error)=>{
+
+                    if(error){
+
+                      console.error(error)
+
+                      store.dispatch(
+                        {
+                          type: 'MULTIPART_INFO_MESSAGE',
+                          payload: {
+                            id: id,
+                            message: `ERROR: Failed to build ${labbookName}`,
+                            messsagesList: error,
+                            error: true
+                        }
+                      })
+
+                    }
+
+                 })
               }
+
             }
           )
         }else{
