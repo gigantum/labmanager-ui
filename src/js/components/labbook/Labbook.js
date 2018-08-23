@@ -431,7 +431,7 @@ class Labbook extends Component {
                          <span className="Labbook__name-branch">{name}</span>
                        }
 
-                       {  (this.props.labbook.publicVisibility === 'private') &&
+                       {  (this.props.labbook.visibility === 'private') &&
                          <div className={labbookLockCSS}></div>
                        }
                        {
@@ -655,7 +655,7 @@ const LabbookFragmentContainer = createFragmentContainer(
           defaultRemote
           owner
           creationDateUtc
-          publicVisibility
+          visibility
 
           environment{
             containerStatus
