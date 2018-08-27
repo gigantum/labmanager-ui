@@ -241,7 +241,7 @@ export default class Labbooks extends Component {
    * returns true if labbook's name or description exists in filtervalue, else returns false
   */
   _filterSearch(labbook){
-    if(this.state.filterValue === '' || labbook.node.name.toLowerCase().indexOf(this.state.filterValue.toLowerCase()) > -1 || labbook.node.description.toLowerCase().indexOf(this.state.filterValue.toLowerCase()) > -1){
+    if(labbook.node.name && (this.state.filterValue === '' || labbook.node.name.toLowerCase().indexOf(this.state.filterValue.toLowerCase()) > -1 || labbook.node.description.toLowerCase().indexOf(this.state.filterValue.toLowerCase()) > -1)){
       return true;
     }
     return false;

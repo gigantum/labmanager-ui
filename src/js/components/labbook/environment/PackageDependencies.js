@@ -267,7 +267,7 @@ class PackageDependencies extends Component {
   *  hides packagemanager modal
   */
   _filterPackageDependencies(packageDependencies){
-      let searchValue = this.state.searchValue.toLowerCase()
+      let searchValue = this.state.searchValue && this.state.searchValue.toLowerCase()
 
       let packages = packageDependencies.edges.filter((edge) => {
 
