@@ -758,7 +758,7 @@ export default class BranchMenu extends Component {
                 onClick={() => this._toggleDeleteModal()}
                 className="BranchMenu__item--flat-button"
               >
-                Delete Labbook
+                Delete Project
               </button>
             </li>
           </ul>
