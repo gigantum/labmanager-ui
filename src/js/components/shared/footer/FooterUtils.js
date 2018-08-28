@@ -18,7 +18,7 @@ const FooterUtils = {
       *  @return {}
       */
     const refetch = () => {
-      console.log('refetch')
+      
       setTimeout(() => {
         fetchStatus()
       }, 1000)
@@ -35,7 +35,7 @@ const FooterUtils = {
 
       if(resultKey){
         JobStatus.updateFooterStatus(result[type][key]).then((response) => {
-          
+
           if (response.data &&
             response.data.jobStatus &&
             response.data.jobStatus.jobMetadata &&
