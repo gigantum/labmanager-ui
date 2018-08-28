@@ -145,11 +145,15 @@ class PackageDependencies extends Component {
     unsubscribe from redux store
   */
   storeDidUpdate = (environmentStore) => {
+
     if(this.state.packageMenuVisible !== environmentStore.packageMenuVisible){
       this.setState({packageMenuVisible: environmentStore.packageMenuVisible});//triggers re-render when store updates
     }
+
     if(environmentStore.forceRefetch){
+
       this._refetch();
+
       store.dispatch({
         type: 'FORCE_REFETCH',
         payload: {
@@ -157,10 +161,13 @@ class PackageDependencies extends Component {
         }
       })
     }
+
     if(environmentStore.forceCancelRefetch){
+
       if(this.pendingRefetch){
         this.pendingRefetch.dispose();
       }
+
       store.dispatch({
         type: 'FORCE_CANCEL_REFETCH',
         payload: {
@@ -168,7 +175,6 @@ class PackageDependencies extends Component {
         }
       })
     }
-
 
   }
   /*
@@ -209,7 +215,7 @@ class PackageDependencies extends Component {
       let relay = this.props.relay
       let packageDependencies = this.props.environment.packageDependencies
 
-      if(packageDependencies.edges.length > 0){
+      if((packageDependencies.edges.length > 0) && false){
         store.dispatch({
           type: 'SET_REFETCH_OCCURING',
           payload: {
@@ -219,7 +225,8 @@ class PackageDependencies extends Component {
 
         self.pendingRefetch = relay.refetchConnection(
           null,
-          () =>{
+          (props) =>{
+
             store.dispatch({
               type: 'SET_REFETCH_OCCURING',
               payload: {
@@ -227,16 +234,21 @@ class PackageDependencies extends Component {
               }
             })
 
+
+
             if(store.getState().environment.refetchQueued){
+
+              store.dispatch({
+                type: 'SET_REFETCH_OCCURING',
+                payload: {
+                  refetchQueued: false,
+                }
+              })
+
               self._refetch();
             }
             self.setState({forceRender: true})
-            store.dispatch({
-              type: 'SET_REFETCH_OCCURING',
-              payload: {
-                refetchQueued: false,
-              }
-            })
+
           },
           {
             first: 1000,

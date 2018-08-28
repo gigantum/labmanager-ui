@@ -408,11 +408,13 @@ class Labbook extends Component {
         'is-expanded': this.state.isExpanded
       })
 
+      const {visibility} = this.props.labbook
       const labbookLockCSS = classNames({
-        'Labbook__private': true,
-        'Labbook__private--sticky': this.state.isSticky
+        [`Labbook__${visibility}`]: true,
+        [`Labbook__${visibility}--sticky`]: this.state.isSticky
       })
 
+      console.log(this.props.labbook.visibility)
       return(
         <div
           className={labbookCSS}>
@@ -424,16 +426,20 @@ class Labbook extends Component {
                   <div className="Labbook__row-container">
                    <div className="Labbook__column-container--flex-1">
                      <div className="Labbook__name-title">
+                       <div>
                        {`${labbook.owner}/${labbookName}${this.state.isSticky ? '/ ': ''}`}
-
+                       </div>
                        {
                          this.state.isSticky &&
-                         <span className="Labbook__name-branch">{name}</span>
+                         <div className="Labbook__name-branch">{name}</div>
                        }
 
-                       {  (this.props.labbook.visibility === 'private') &&
-                         <div className={labbookLockCSS}></div>
+                       {  ((visibility === 'private') ||
+                           (visibility === 'public')) &&
+
+                           <div className={labbookLockCSS}></div>
                        }
+
                        {
                          this.state.isExpanded &&
                          <div className="Labbook__navigation-container--header flex-0-0-auto column-1-span-11">

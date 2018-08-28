@@ -41,6 +41,7 @@ export default class Helper extends Component {
     const stateString = JSON.stringify(this.state)
 
     if((stateString !== helperString) || (this.state.uploadOpen !== footer.uploadOpen)){
+
       this.setState({
         resize: helper.resize,
         isVisible: helper.helperMenuOpen,
