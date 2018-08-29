@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 //store
 import store from "JS/redux/store"
 //components
+import ContainerStatus from './containerStatus/ContainerStatus'
 import Login from 'Components/login/Login';
 import Activity from './activity/Activity'
 import Code from './code/Code'
