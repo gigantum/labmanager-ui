@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import { connect } from 'react-redux'
 //store
 import store from 'JS/redux/store'
 //config
 import config from 'JS/config';
 
-export default class ToolTip extends Component {
+class ToolTip extends Component {
   constructor(props){
     super(props)
     const {isVisible} = store.getState().helper
@@ -16,34 +17,27 @@ export default class ToolTip extends Component {
     this._hideToolTip = this._hideToolTip.bind(this);
   }
 
+
+  static getDerivedStateFromProps(props, state){
+    let toolTipExpanded = state.toolTipExpanded
+    return {
+      ...state,
+      toolTipExpanded: props.isVisible ? toolTipExpanded : false
+    }
+  }
+
   /**
     * @param {}
     * subscribe to store to update state
-    * set unsubcribe for store
   */
   componentDidMount() {
-    this.unsubscribe = store.subscribe(() =>{
-        this.storeDidUpdate(store.getState().helper)
-    })
     window.addEventListener("click", this._hideToolTip)
   }
   /**
-    * @param {object} helper
-    * will update component state based on redux state
-  */
-  storeDidUpdate(helper){
-    const {isVisible} = helper;
-    if(isVisible !== this.state.isVisible){
-      let toolTipExpanded = this.state.toolTipCSS
-      this.setState({isVisible, toolTipExpanded: isVisible ? toolTipExpanded : false})
-    }
-  }
-  /**
     @param {}
-    unsubscribe from redux store
+    unsubscribe from event listeners
   */
   componentWillUnmount(){
-    this.unsubscribe();
     window.removeEventListener("click", this._hideToolTip)
   }
   /**
@@ -60,8 +54,8 @@ export default class ToolTip extends Component {
   render(){
     const {section} = this.props;
     let toolTipCSS = classNames({
-      'ToolTip': this.state.isVisible,
-      'hidden': !this.state.isVisible,
+      'ToolTip': this.props.isVisible,
+      'hidden': !this.props.isVisible,
       [section]: true,
       'isSticky': store.getState().labbook.isSticky
     })
@@ -108,3 +102,16 @@ export default class ToolTip extends Component {
     )
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    isVisible: state.helper.isVisible
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ToolTip);

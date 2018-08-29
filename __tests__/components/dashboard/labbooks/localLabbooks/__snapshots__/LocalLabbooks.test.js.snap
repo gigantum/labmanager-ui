@@ -167,7 +167,8 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         </p>
       </div>
       <div
-        className="LocalLabbookPanel__public LocalLabbookPanel__public--loading"
+        className="Tooltip LocalLabbookPanel__loading"
+        data-tooltip="loading"
       />
     </div>
     <div
@@ -226,7 +227,8 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         </p>
       </div>
       <div
-        className="LocalLabbookPanel__public LocalLabbookPanel__public--loading"
+        className="Tooltip LocalLabbookPanel__loading"
+        data-tooltip="loading"
       />
     </div>
     <div
@@ -285,7 +287,8 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         </p>
       </div>
       <div
-        className="LocalLabbookPanel__public LocalLabbookPanel__public--loading"
+        className="Tooltip LocalLabbookPanel__loading"
+        data-tooltip="loading"
       />
     </div>
     <div
@@ -344,7 +347,8 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         </p>
       </div>
       <div
-        className="LocalLabbookPanel__public LocalLabbookPanel__public--loading"
+        className="Tooltip LocalLabbookPanel__loading"
+        data-tooltip="loading"
       />
     </div>
     <div
@@ -410,7 +414,8 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         </p>
       </div>
       <div
-        className="LocalLabbookPanel__public LocalLabbookPanel__public--loading"
+        className="Tooltip LocalLabbookPanel__loading"
+        data-tooltip="loading"
       />
     </div>
     <div

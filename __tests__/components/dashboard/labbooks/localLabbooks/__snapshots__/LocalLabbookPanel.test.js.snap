@@ -57,7 +57,8 @@ exports[`Test LocalLabbooks rendering 1`] = `
     </p>
   </div>
   <div
-    className="LocalLabbookPanel__public LocalLabbookPanel__public--loading"
+    className="Tooltip LocalLabbookPanel__undefined"
+    data-tooltip="undefined"
   />
 </div>
 `;

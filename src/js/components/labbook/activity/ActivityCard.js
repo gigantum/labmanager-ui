@@ -60,7 +60,7 @@ export default class ActivityCard extends Component {
 
   render(){
     const node = this.props.edge.node;
-    const type = this.props.edge.node.type.toLowerCase()
+    const type = node.type && node.type.toLowerCase()
     let shouldBeFaded = this.props.hoveredRollback > this.props.position
     const activityCardCSS = classNames({
       'ActivityCard card': this.state.showExtraInfo,

@@ -1,4 +1,6 @@
 import uuidv4 from 'uuid/v4'
+import dispatcher from 'JS/redux/dispatcher'
+
 /**
  * constants
  */
@@ -28,6 +30,15 @@ export const UPDATE_HISTORY_STACK_ITEM_VISIBILITY = 'UPDATE_HISTORY_STACK_ITEM_V
 export const RESIZE_FOOTER = 'RESIZE_FOOTER'
 export const UPDATE_HISTORY_VIEW = 'UPDATE_HISTORY_VIEW'
 export const HELPER_VISIBLE = 'HELPER_VISIBLE'
+
+
+/**
+ * actions
+ */
+export const setErrorMessage = (message, messageBody) => dispatcher(ERROR_MESSAGE, {message, messageBody})
+export const setWarningMessage = (message) => dispatcher(WARNING_MESSAGE, {message})
+export const setInfoMessage = (message) => dispatcher(INFO_MESSAGE, {message})
+
 
 let tempId = 0
 let messageStackHistory = sessionStorage.getItem('messageStackHistory') ? JSON.parse(sessionStorage.getItem('messageStackHistory')) : []
