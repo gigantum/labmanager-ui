@@ -71,7 +71,7 @@ export default class ActivityDefaultList extends Component {
   */
   _formatTitle(key){
     const tempTitle = key.split('_').join(' ') && key.split('_').join(' ').toLowerCase()
-    const title = tempTitle.charAt(0).toUpperCase() + tempTitle.slice(1);
+    const title = tempTitle.charAt(0) && tempTitle.charAt(0).toUpperCase() + tempTitle.slice(1);
     return title + ' (' + this.props.categorizedDetails.detailObjects[this.props.itemKey].length + ')'
   }
 
