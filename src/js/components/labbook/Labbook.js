@@ -18,7 +18,6 @@ import InputData from './inputData/InputData'
 import OutputData from './outputData/OutputData'
 import Overview from './overview/Overview'
 import Environment from './environment/Environment'
-import ContainerStatus from './containerStatus/ContainerStatus'
 import Loader from 'Components/shared/Loader'
 import Branches from './branches/Branches'
 import BranchMenu from './branchMenu/BranchMenu'
@@ -414,7 +413,6 @@ class Labbook extends Component {
         [`Labbook__${visibility}--sticky`]: this.state.isSticky
       })
 
-      console.log(this.props.labbook.visibility)
       return(
         <div
           className={labbookCSS}>
@@ -485,7 +483,7 @@ class Labbook extends Component {
                      auth={this.props.auth}
                     />
 
-                     <ContainerStatus
+                     {/* <ContainerStatus
                        ref="ContainerStatus"
                        base={labbook.environment.base}
                        containerStatus={labbook.environment.containerStatus}
@@ -496,7 +494,7 @@ class Labbook extends Component {
                        isSyncing={this.state.isSyncing}
                        isPublishing={this.state.isPublishing}
                        creationDateUtc={labbook.creationDateUtc}
-                     />
+                     /> */}
                   </div>
                 </div>
                 <div className={(this.state.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>

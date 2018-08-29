@@ -93,7 +93,11 @@ export default class FileBrowserWrapper extends Component {
 
   componentDidMount() {
     this.unsubscribe = store.subscribe(() =>{
-      this.setState({uploading: store.getState().fileBrowser.uploading, pause: store.getState().fileBrowser.pause})
+
+      this.setState({
+        uploading: store.getState().fileBrowser.uploading,
+        pause: store.getState().fileBrowser.pause
+      })
     })
   }
 
@@ -148,6 +152,7 @@ export default class FileBrowserWrapper extends Component {
 
 
     ChunkUploader.chunkFile(data, callback, chunkIndex)
+
   }
 
   /**
@@ -170,9 +175,11 @@ export default class FileBrowserWrapper extends Component {
         }
       })
     }else if(hasDirectoryUpload && (totalFiles === 0)){
+
       store.dispatch({
         type: 'STARTED_UPLOADING',
       })
+
       store.dispatch({
         type: 'INFO_MESSAGE',
         payload:{
@@ -278,7 +285,6 @@ export default class FileBrowserWrapper extends Component {
     folderFiles = []
 
     this._creteFilesFooterMessage(totalFiles, hasDirectoryUpload, fileSizeData)
-
     //loop through files and upload if file is a file
     files.forEach((file, index) => {
 
@@ -318,7 +324,7 @@ export default class FileBrowserWrapper extends Component {
               labbookName: self.state.labbookName,
               parentId: self.props.parentId,
               section: self.props.section,
-              transactionId 
+              transactionId
             }
 
             self._chunkLoader(data, (data)=>{
