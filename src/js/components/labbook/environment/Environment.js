@@ -72,7 +72,6 @@ class Environment extends Component {
                 }
 
                 if(refetchPending){
-
                   store.dispatch({
                     type: 'SET_REFETCH_PENDING',
                     payload: {

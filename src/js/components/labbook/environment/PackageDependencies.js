@@ -3,12 +3,26 @@ import React, { Component } from 'react'
 import {createPaginationContainer, graphql} from 'react-relay'
 import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
+import { connect } from 'react-redux'
+
 //components
 import ButtonLoader from 'Components/shared/ButtonLoader'
 import Loader from 'Components/shared/Loader'
 import ToolTip from 'Components/shared/ToolTip';
 //store
 import store from 'JS/redux/store'
+import {
+  setLatestFetched,
+  setForceRefetch,
+  setForceCancelRefetch,
+  setLatestPackages,
+  setRefetchOccuring,
+  setRefetchQueued,
+  setPackageMenuVisible,
+} from 'JS/redux/reducers/labbook/environment/packageDependencies'
+import { setErrorMessage, setWarningMessage } from 'JS/redux/reducers/footer'
+import { setContainerMenuWarningMessage} from 'JS/redux/reducers/labbook/environment/environment'
+import { setBuildingState} from 'JS/redux/reducers/labbook/labbook'
 //Mutations
 import AddPackageComponentsMutation from 'Mutations/environment/AddPackageComponentsMutation'
 import RemovePackageComponentsMutation from 'Mutations/environment/RemovePackageComponentsMutation'
@@ -19,7 +33,7 @@ import config from 'JS/config'
 
 
 let totalCount = 2
-let owner, unsubscribe
+let owner
 let updateCheck = {}
 
 class PackageDependencies extends Component {
@@ -42,9 +56,10 @@ class PackageDependencies extends Component {
       'disableInstall': false,
       'installDependenciesButtonState': '',
       'hardDisable': false,
-      'latestVersion': store.getState().environment.latestPackages,
+      'latestVersion': store.getState().packageDependencies.latestPackages,
       'removalPackages': {},
       'updatePackages': {},
+      'currentPackages': this.props.environment.packageDependencies
     };
 
     //bind functions here
@@ -55,18 +70,33 @@ class PackageDependencies extends Component {
     this._refetch = this._refetch.bind(this)
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(props, state) {
 
-    let nextPackages= nextProps.environment.packageDependencies
+    return state;
+  }
 
-    if(nextPackages.edges && nextPackages.edges.length < 3 && nextPackages.pageInfo.hasNextPage){
+  componentDidUpdate(){
+    if(this.props.forceRefetch){
+      this._refetch();
+      this.props.setForceRefetch(false)
+    }
+    if(this.props.forceCancelRefetch){
+      if(this.pendingRefetch){
+        this.pendingRefetch.dispose();
+      }
+      this.props.setForceCancelRefetch(false)
+    }
+
+    let newPackages= this.props.environment.packageDependencies
+
+    if(newPackages.edges && newPackages.edges.length < 3 && newPackages.pageInfo.hasNextPage){
       this._loadMore();
     }
 
-    if(nextPackages.edges && nextPackages.edges[0] && nextPackages.edges[0].node.latestVersion){
+    if(newPackages.edges && newPackages.edges[0] && newPackages.edges[0].node.latestVersion){
       let latestPackages = {};
 
-      nextPackages.edges.forEach(({node}) =>{
+      newPackages.edges.forEach(({node}) =>{
         if (latestPackages[node.manager]) {
           latestPackages[node.manager][node.package] = node.latestVersion
         } else {
@@ -82,13 +112,9 @@ class PackageDependencies extends Component {
         }
 
       })
-
-      store.dispatch({
-        type: 'SET_LATEST_PACKAGES',
-        payload: {
-          latestPackages
-        }
-      })
+      if(JSON.stringify(latestPackages) !== JSON.stringify(this.props.latestPackages)){
+        this.props.setLatestPackages(latestPackages)
+      }
     }
 
     let newUpdatePackages = Object.assign({}, this.state.updatePackages, updateCheck)
@@ -101,9 +127,13 @@ class PackageDependencies extends Component {
 
       })
     })
-    this.setState({updatePackages: newUpdatePackages})
+
+    if(JSON.stringify(newUpdatePackages) !== JSON.stringify(this.state.updatePackages)){
+      this.setState({updatePackages: newUpdatePackages})
+    }
     updateCheck = {}
   }
+
   /*
     handle state and addd listeners when component mounts
   */
@@ -111,14 +141,8 @@ class PackageDependencies extends Component {
     if(this.props.environment.packageDependencies.pageInfo.hasNextPage){
       this._loadMore() //routes query only loads 2, call loadMore
     } else{
-      if(!store.getState().environment.latestFetched){
-        store.dispatch({
-          type: 'SET_LATEST_FETCHED',
-          payload: {
-            latestFetched: true,
-          }
-        })
-
+      if(!store.getState().packageDependencies.latestFetched){
+        this.props.setLatestFetched(true)
         this._refetch();
       }
     }
@@ -127,56 +151,8 @@ class PackageDependencies extends Component {
       this.setState({selectedTab: this.props.base.packageManagers[0]})
     }
 
-    unsubscribe = store.subscribe(() =>{
-
-      this.storeDidUpdate(store.getState().environment)
-    })
   }
 
-  /**
-    unsubscribe from redux store
-  */
-  componentWillUnmount() {
-    unsubscribe()
-  }
-
-  /**
-    @param {object} footer
-    unsubscribe from redux store
-  */
-  storeDidUpdate = (environmentStore) => {
-
-    if(this.state.packageMenuVisible !== environmentStore.packageMenuVisible){
-      this.setState({packageMenuVisible: environmentStore.packageMenuVisible});//triggers re-render when store updates
-    }
-
-    if(environmentStore.forceRefetch){
-
-      this._refetch();
-
-      store.dispatch({
-        type: 'FORCE_REFETCH',
-        payload: {
-          forceRefetch: false,
-        }
-      })
-    }
-
-    if(environmentStore.forceCancelRefetch){
-
-      if(this.pendingRefetch){
-        this.pendingRefetch.dispose();
-      }
-
-      store.dispatch({
-        type: 'FORCE_CANCEL_REFETCH',
-        payload: {
-          forceCancelRefetch: false,
-        }
-      })
-    }
-
-  }
   /*
     @param
     triggers relay pagination function loadMore
@@ -210,45 +186,24 @@ class PackageDependencies extends Component {
     refetches package dependencies
   */
   _refetch(){
-    if(!store.getState().environment.refetchOccuring){
+    if(!store.getState().packageDependencies.refetchOccuring){
       let self = this;
       let relay = this.props.relay
       let packageDependencies = this.props.environment.packageDependencies
 
-      if((packageDependencies.edges.length > 0) && false){
-        store.dispatch({
-          type: 'SET_REFETCH_OCCURING',
-          payload: {
-            refetchOccuring: true,
-          }
-        })
+      if(packageDependencies.edges.length > 0){
+        this.props.setRefetchOccuring(true)
 
         self.pendingRefetch = relay.refetchConnection(
           null,
-          (props) =>{
+          () =>{
+            this.props.setRefetchOccuring(false)
 
-            store.dispatch({
-              type: 'SET_REFETCH_OCCURING',
-              payload: {
-                refetchOccuring: false,
-              }
-            })
-
-
-
-            if(store.getState().environment.refetchQueued){
-
-              store.dispatch({
-                type: 'SET_REFETCH_OCCURING',
-                payload: {
-                  refetchQueued: false,
-                }
-              })
-
+            if(store.getState().packageDependencies.refetchQueued){
+              this.props.setRefetchQueued(false)
               self._refetch();
             }
             self.setState({forceRender: true})
-
           },
           {
             first: 1000,
@@ -259,12 +214,7 @@ class PackageDependencies extends Component {
         // disposible.dispose()
       }
     } else{
-      store.dispatch({
-        type: 'SET_REFETCH_OCCURING',
-        payload: {
-          refetchQueued: true,
-        }
-      })
+      this.props.setRefetchQueued(true)
     }
   }
   /**
@@ -272,14 +222,14 @@ class PackageDependencies extends Component {
   *  hides packagemanager modal
   */
   _setSelectedTab(tab, isSelected){
-    this.setState({'selectedTab': tab, packageMenuVisible: isSelected ? this.state.packageMenuVisible : false, packages: isSelected ? this.state.packages : []})
+    this.setState({'selectedTab': tab, packageMenuVisible: isSelected ? this.props.packageMenuVisible : false, packages: isSelected ? this.state.packages : []})
   }
   /**
   *  @param {Object}
   *  hides packagemanager modal
   */
   _filterPackageDependencies(packageDependencies){
-      let searchValue = this.state.searchValue.toLowerCase()
+      let searchValue = this.state.searchValue && this.state.searchValue.toLowerCase()
 
       let packages = packageDependencies.edges.filter((edge) => {
 
@@ -345,15 +295,7 @@ class PackageDependencies extends Component {
         this.setState({hardDisable: false})
       }
     } else {
-
-      store.dispatch({
-        type: 'ERROR_MESSAGE',
-        payload:{
-          message: `Cannot remove package at this time.`,
-          messageBody: [{message: 'An internet connection is required to modify the environment.'}]
-        }
-      })
-
+      this.props.setErrorMessage(`Cannot remove package at this time.`, [{message: 'An internet connection is required to modify the environment.'}])
     }
   }
   /**
@@ -366,27 +308,13 @@ class PackageDependencies extends Component {
 
     if(navigator.onLine){
       if(canEditEnvironment){
-
-        store.dispatch({
-          type: 'TOGGLE_PACKAGE_MENU',
-          payload:{
-            packageMenuVisible: !this.state.packageMenuVisible
-          }
-        })
-
+        this.props.setPackageMenuVisible(!this.props.packageMenuVisible)
       }else{
 
         this._promptUserToCloseContainer()
       }
     } else {
-
-      store.dispatch({
-        type: 'ERROR_MESSAGE',
-        payload:{
-          message: `Cannot add package at this time.`,
-          messageBody: [{message: 'An internet connection is required to modify the environment.'}]
-        }
-      })
+      this.props.setErrorMessage(`Cannot add package at this time.`, [{message: 'An internet connection is required to modify the environment.'}])
     }
   }
   /**
@@ -448,19 +376,7 @@ class PackageDependencies extends Component {
   *  sends message to footer
   */
   _promptUserToCloseContainer(){
-    store.dispatch({
-      type: 'CONTAINER_MENU_WARNING',
-      payload: {
-        message: 'Stop Project before editing the environment. \n Be sure to save your changes.'
-      }
-    })
-
-    store.dispatch({
-      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-      payload: {
-        containerMenuOpen: true
-      }
-    })
+    this.props.setContainerMenuWarningMessage('Stop Project before editing the environment. \n Be sure to save your changes.')
   }
   /**
   *  @param {}
@@ -499,13 +415,7 @@ class PackageDependencies extends Component {
       disableInstall: true,
       installDependenciesButtonState: 'loading'
     })
-
-    store.dispatch({
-      type: 'IS_BUILDING',
-      payload: {
-        isBuilding: true
-      }
-    })
+    this.props.setBuildingState(true)
 
     PackageLookup.query(labbookName, owner, filteredInput).then((response)=>{
 
@@ -518,19 +428,8 @@ class PackageDependencies extends Component {
         setTimeout(()=>{
           self.setState({installDependenciesButtonState: ''})
         }, 2000)
-        store.dispatch({
-          type:"ERROR_MESSAGE",
-          payload: {
-            message: `Error occured looking up packages`,
-            messageBody: response.errors
-          }
-        })
-        store.dispatch({
-          type: 'IS_BUILDING',
-          payload: {
-            isBuilding: false,
-          }
-        })
+        this.props.setErrorMessage(`Error occured looking up packages`, response.errors)
+        this.props.setBuildingState(false)
       } else{
         let resPackages = response.data.labbook.packages;
         let invalidCount = 0;
@@ -549,19 +448,8 @@ class PackageDependencies extends Component {
 
         if(invalidCount){
           let message = invalidCount === 1 ? `Unable to find package '${lastInvalid.package}'.` : `Unable to find ${invalidCount} packages.`
-          store.dispatch({
-            type:"ERROR_MESSAGE",
-            payload: {
-              message: 'Packages could not be installed',
-              messageBody: [{message}]
-            }
-          })
-          store.dispatch({
-            type: 'IS_BUILDING',
-            payload: {
-              isBuilding: false,
-            }
-          })
+          this.props.setErrorMessage('Packages could not be installed', [{message}])
+          this.props.setBuildingState(false)
           this.setState({disableInstall: false, installDependenciesButtonState: ''})
         } else {
           filteredInput = [];
@@ -605,13 +493,7 @@ class PackageDependencies extends Component {
                   setTimeout(()=>{
                     self.setState({installDependenciesButtonState: ''})
                   }, 2000)
-                  store.dispatch({
-                    type: 'ERROR_MESSAGE',
-                    payload: {
-                      message: `Error adding packages.`,
-                      messageBody: error
-                    }
-                  })
+                  this.props.setErrorMessage(`Error adding packages.`, error)
                 } else {
                   self.props.buildCallback(true)
                   self.setState({
@@ -626,18 +508,8 @@ class PackageDependencies extends Component {
               }
             )
           } else {
-            store.dispatch({
-              type: 'WARNING_MESSAGE',
-              payload: {
-                message: `All packages attempted to be installed already exist.`,
-              }
-            })
-            store.dispatch({
-              type: 'IS_BUILDING',
-              payload: {
-                isBuilding: false,
-              }
-            })
+            this.props.setWarningMessage(`All packages attempted to be installed already exist.`)
+            this.props.setBuildingState(false)
             self.setState({
               disableInstall: false,
               packages: [],
@@ -766,13 +638,7 @@ class PackageDependencies extends Component {
               setTimeout(()=>{
                 self.setState({installDependenciesButtonState: ''})
               }, 2000)
-              store.dispatch({
-                type: 'ERROR_MESSAGE',
-                payload: {
-                  message: `Error adding packages.`,
-                  messageBody: error
-                }
-              })
+              this.props.setErrorMessage(`Error adding packages.`, error)
             } else {
               self.props.buildCallback(true)
               self.setState({
@@ -790,13 +656,7 @@ class PackageDependencies extends Component {
         this._promptUserToCloseContainer()
       }
     } else {
-      store.dispatch({
-        type: 'ERROR_MESSAGE',
-        payload:{
-          message: `Cannot remove package at this time.`,
-          messageBody: [{message: 'An internet connection is required to modify the environment.'}]
-        }
-      })
+      this.props.setErrorMessage(`Cannot remove package at this time.`, [{message: 'An internet connection is required to modify the environment.'}])
     }
   }
 
@@ -821,7 +681,7 @@ class PackageDependencies extends Component {
       let filteredPackageDependencies = this._filterPackageDependencies(packageDependencies)
       let packageMenu = classNames({
         'PackageDependencies__menu': true,
-        'PackageDependencies__menu--min-height':!this.state.packageMenuVisible
+        'PackageDependencies__menu--min-height':!this.props.packageMenuVisible
       })
       let packagesProcessing = this.state.packages.filter(packageItem =>{
         return packageItem.validity === 'checking'
@@ -829,7 +689,7 @@ class PackageDependencies extends Component {
 
       let addPackageCSS = classNames({
         'PackageDependencies__button': true, 'PackageDependencies__button--line-18': true,
-        'PackageDependencies__button--open': this.state.packageMenuVisible
+        'PackageDependencies__button--open': this.props.packageMenuVisible
       })
 
       let disableInstall = this.state.disableInstall || ((this.state.packages.length === 0) || (packagesProcessing.length > 0))
@@ -1054,8 +914,31 @@ class PackageDependencies extends Component {
   }
 }
 
+const mapStateToProps = (state, ownProps) => {
+  return state.packageDependencies
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      setLatestFetched,
+      setForceRefetch,
+      setForceCancelRefetch,
+      setLatestPackages,
+      setRefetchOccuring,
+      setRefetchQueued,
+      setPackageMenuVisible,
+      setErrorMessage,
+      setContainerMenuWarningMessage,
+      setBuildingState,
+      setWarningMessage,
+  }
+}
+
+const PackageDependenciesContainer =  connect(mapStateToProps, mapDispatchToProps)(PackageDependencies);
+
+
 export default createPaginationContainer(
-  PackageDependencies,
+  PackageDependenciesContainer,
   {
     environment: graphql`fragment PackageDependencies_environment on Environment {
     packageDependencies(first: $first, after: $cursor) @connection(key: "PackageDependencies_packageDependencies", filters: []){

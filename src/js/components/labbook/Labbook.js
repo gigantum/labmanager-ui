@@ -8,6 +8,7 @@ import {
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import classNames from 'classnames'
+import { connect } from 'react-redux'
 //store
 import store from "JS/redux/store"
 //components
@@ -27,18 +28,11 @@ import {getFilesFromDragEvent} from "JS/utils/html-dir-content";
 
 import Config from 'JS/config'
 
-let unsubscribe;
-
 class Labbook extends Component {
   constructor(props){
   	super(props);
 
     localStorage.setItem('owner', store.getState().routes.owner)
-    this.state = store.getState().labbook
-    this.state.isBuilding = false;
-    this.state.isSyncing = false;
-    this.state.isPublishing = false;
-    this.state.isExporting = false;
 
     //bind functions here
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
@@ -76,21 +70,15 @@ class Labbook extends Component {
     set unsubcribe for store
   */
   componentDidMount() {
-    unsubscribe = store.subscribe(() =>{
-        this.storeDidUpdate(store.getState().labbook)
-    })
-
-
     this._setStickHeader();
     window.addEventListener('scroll', this._setStickHeader)
     window.addEventListener('click', this._branchViewClickedOff )
   }
   /**
     @param {}
-    unsubscribe from redux store
+    removes event listeners
   */
   componentWillUnmount() {
-    unsubscribe()
     store.dispatch({
       type: 'SET_LATEST_PACKAGES',
       payload: {
@@ -143,26 +131,12 @@ class Labbook extends Component {
     }
   }
   /**
-    @param {object} labbook
-    updates state of labbook when prompted ot by the store
-    updates history prop
-  */
-  storeDidUpdate = (labbook) => {
-    let stateString = JSON.stringify(this.state).replace(/\s/g, '')
-    let labbookString = JSON.stringify(labbook).replace(/\s/g, '')
-
-    if(stateString !== labbookString){
-
-      this.setState(labbook);//triggers re-render when store updates
-    }
-  }
-  /**
     @param {string} componentName - input string componenetName
     updates state of selectedComponent
     updates history prop
   */
   _setSelectedComponent = (componentName) =>{
-    if(componentName !== this.state.selectedComponent){
+    if(componentName !== this.props.selectedComponent){
       if(store.getState().detailView.selectedComponent === true){
         store.dispatch({
           type: 'UPDATE_DETAIL_VIEW',
@@ -182,7 +156,7 @@ class Labbook extends Component {
   _setBuildingState = (isBuilding) =>{
     this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({'isBuilding': isBuilding})
 
-    if(this.state.isBuilding !== isBuilding){
+    if(this.props.isBuilding !== isBuilding){
       store.dispatch(
         {type: 'IS_BUILDING',
         payload:{
@@ -200,7 +174,7 @@ class Labbook extends Component {
   _setSyncingState = (isSyncing) => {
     this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isSyncing': isSyncing })
 
-    if (this.state.isSyncing !== isSyncing) {
+    if (this.props.isSyncing !== isSyncing) {
       store.dispatch(
         {
           type: 'IS_SYNCING',
@@ -220,7 +194,7 @@ class Labbook extends Component {
 
     this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isPublishing': isPublishing })
 
-    if (this.state.isPublishing !== isPublishing) {
+    if (this.props.isPublishing !== isPublishing) {
       store.dispatch(
         {
           type: 'IS_PUBLISHING',
@@ -240,7 +214,7 @@ class Labbook extends Component {
 
     this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isExporting': isExporting })
 
-    if (this.state.isExporting !== isExporting) {
+    if (this.props.isExporting !== isExporting) {
       store.dispatch(
         {
           type: 'IS_EXPORTING',
@@ -284,7 +258,7 @@ class Labbook extends Component {
         >
         <Link
           onClick={()=> window.scrollTo(0, 0)}
-          to={`../../../projects/${this.state.owner}/${this.props.match.params.labbookName}/${item.id}`}
+          to={`../../../projects/${this.props.owner}/${this.props.match.params.labbookName}/${item.id}`}
           replace
         >
           {item.name}
@@ -297,7 +271,7 @@ class Labbook extends Component {
     updates html element classlist and labbook state
   */
   _showLabbookModal = () => {
-    if(!this.state.modalVisible){
+    if(!this.props.modalVisible){
       store.dispatch(
         {
           type: 'MODAL_VISIBLE',
@@ -322,7 +296,7 @@ class Labbook extends Component {
       document.getElementById('modal__cover').classList.add('hidden')
     }
 
-    if(this.state.modalVisible){
+    if(this.props.modalVisible){
       store.dispatch(
         {
           type: 'MODAL_VISIBLE',
@@ -380,17 +354,17 @@ class Labbook extends Component {
 
     const { isAuthenticated } = this.props.auth
     const {labbookName} = this.props
-    const isLockedBrowser = {locked: (this.state.isPublishing || this.state.isSyncing || this.state.isExporting), isPublishing: this.state.isPublishing, isExporting: this.state.isExporting, isSyncing: this.state.isSyncing}
-    const isLockedEnvironment = this.state.isBuilding || this.state.isSyncing || this.state.isPublishing
+    const isLockedBrowser = {locked: (this.props.isPublishing || this.props.isSyncing || this.props.isExporting), isPublishing: this.props.isPublishing, isExporting: this.props.isExporting, isSyncing: this.props.isSyncing}
+    const isLockedEnvironment = this.props.isBuilding || this.props.isSyncing || this.props.isPublishing
 
     if(this.props.labbook){
 
       const {labbook} = this.props
       const name = this._sanitizeBranchName(this.props.labbook.activeBranchName)
-      const {branchesOpen} = this.state
+      const {branchesOpen} = this.props
       const labbookCSS = classNames({
         'Labbook': true,
-        'Labbook--detail-mode': this.state.detailMode,
+        'Labbook--detail-mode': this.props.detailMode,
         'Labbook-branch-mode': branchesOpen,
         'is-demo': window.location.hostname === Config.demoHostName,
       })
@@ -403,14 +377,14 @@ class Labbook extends Component {
 
       const labbookHeaderCSS = classNames({
         'Labbook__header': true,
-        'is-sticky': this.state.isSticky,
-        'is-expanded': this.state.isExpanded
+        'is-sticky': this.props.isSticky,
+        'is-expanded': this.props.isExpanded
       })
 
       const {visibility} = this.props.labbook
       const labbookLockCSS = classNames({
         [`Labbook__${visibility}`]: true,
-        [`Labbook__${visibility}--sticky`]: this.state.isSticky
+        [`Labbook__${visibility}--sticky`]: this.props.isSticky
       })
 
       return(
@@ -425,10 +399,10 @@ class Labbook extends Component {
                    <div className="Labbook__column-container--flex-1">
                      <div className="Labbook__name-title">
                        <div>
-                       {`${labbook.owner}/${labbookName}${this.state.isSticky ? '/ ': ''}`}
+                       {`${labbook.owner}/${labbookName}${this.props.isSticky ? '/ ': ''}`}
                        </div>
                        {
-                         this.state.isSticky &&
+                         this.props.isSticky &&
                          <div className="Labbook__name-branch">{name}</div>
                        }
 
@@ -439,7 +413,7 @@ class Labbook extends Component {
                        }
 
                        {
-                         this.state.isExpanded &&
+                         this.props.isExpanded &&
                          <div className="Labbook__navigation-container--header flex-0-0-auto column-1-span-11">
                            <ul className="Labbook__navigation Labbook__navigation--header flex flex--row">
                             {
@@ -490,29 +464,29 @@ class Labbook extends Component {
                        imageStatus={labbook.environment.imageStatus}
                        labbookId={labbook.id}
                        setBuildingState={this._setBuildingState}
-                       isBuilding={this.state.isBuilding}
-                       isSyncing={this.state.isSyncing}
-                       isPublishing={this.state.isPublishing}
+                       isBuilding={this.props.isBuilding}
+                       isSyncing={this.props.isSyncing}
+                       isPublishing={this.props.isPublishing}
                        creationDateUtc={labbook.creationDateUtc}
                      /> */}
                   </div>
                 </div>
-                <div className={(this.state.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
+                <div className={(this.props.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
 
-                  <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
+                  <div className={(this.props.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
 
                 <Branches
                   defaultRemote={labbook.defaultRemote}
-                  branchesOpen={this.state.branchesOpen}
+                  branchesOpen={this.props.branchesOpen}
                   labbook={labbook}
                   labbookId={labbook.id}
                   activeBranch={labbook.activeBranchName}
                   toggleBranchesView={this._toggleBranchesView}
-                  mergeFilter={this.state.mergeFilter}
+                  mergeFilter={this.props.mergeFilter}
                   setBuildingState={this._setBuildingState}
                 />
 
-                  <div className={(this.state.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
+                  <div className={(this.props.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
                 </div>
               </div>
                 <div className="Labbook__navigation-container mui-container flex-0-0-auto">
@@ -539,7 +513,7 @@ class Labbook extends Component {
                       render={() => {
 
                         return (<Overview
-                          key={this.state.labbookName + '_overview'}
+                          key={this.props.labbookName + '_overview'}
                           labbook={labbook}
                           description={labbook.description}
                           labbookId={labbook.id}
@@ -555,7 +529,7 @@ class Labbook extends Component {
                           path={`${this.props.match.path}/overview`}
                           render={() => {
                             return (<Overview
-                              key={this.state.labbookName + '_overview'}
+                              key={this.props.labbookName + '_overview'}
                               labbook={labbook}
                               description={labbook.description}
                               readme={labbook.readme}
@@ -569,7 +543,7 @@ class Labbook extends Component {
 
                           return (
                             <Activity
-                              key={this.state.labbookName + '_activity'}
+                              key={this.props.labbookName + '_activity'}
                               labbook={labbook}
                               activityRecords={this.props.activityRecords}
                               labbookId={labbook.id}
@@ -585,7 +559,7 @@ class Labbook extends Component {
                           render={() => {
                             return (
                               <Environment
-                                key={this.state.labbookName + '_environment'}
+                                key={this.props.labbookName + '_environment'}
                                 labbook={labbook}
                                 labbookId={labbook.id}
                                 setBuildingState={this._setBuildingState}
@@ -647,9 +621,20 @@ class Labbook extends Component {
   }
 }
 
+const mapStateToProps = (state, ownProps) => {
+  return state.labbook
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+  }
+}
+
+const LabbookContainer = connect(mapStateToProps, mapDispatchToProps)(Labbook);
+
 
 const LabbookFragmentContainer = createFragmentContainer(
-  Labbook,
+  LabbookContainer,
   {
     labbook: graphql`
       fragment Labbook_labbook on Labbook{

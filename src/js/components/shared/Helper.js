@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import { connect } from 'react-redux'
 //store
 import store from "JS/redux/store"
 
-let unsubscribe;
-
-export default class Helper extends Component {
+class Helper extends Component {
   constructor(props){
     super(props)
 
@@ -22,40 +21,10 @@ export default class Helper extends Component {
   /**
     * @param {}
     * subscribe to store to update state
-    * set unsubcribe for store
   */
   componentDidMount() {
-    unsubscribe = store.subscribe(() =>{
-        this.storeDidUpdate(store.getState().helper, store.getState().footer)
-    })
 
     window.addEventListener("resize", this._resize);
-  }
-  /**
-    * @param {}
-    * updates state from redux store
-  */
-  storeDidUpdate(helper, footer){
-
-    const helperString = JSON.stringify(helper)
-    const stateString = JSON.stringify(this.state)
-
-    if((stateString !== helperString) || (this.state.uploadOpen !== footer.uploadOpen)){
-
-      this.setState({
-        resize: helper.resize,
-        isVisible: helper.helperMenuOpen,
-        footerVisible: helper.footerVisible,
-        uploadOpen: footer.uploadOpen
-      })
-    }
-  }
-  /**
-    * @param {}
-    * unsubcribe from store
-  */
-  componentWillUnmount(){
-    unsubscribe();
   }
 
   /**
@@ -104,14 +73,14 @@ export default class Helper extends Component {
     let menuCSS = classNames({
       'Helper__menu': this.state.helperMenuOpen,
       'hidden': !this.state.helperMenuOpen,
-      'Helper__men--footer-open': this.state.footerVisible
+      'Helper__men--footer-open': this.props.footerVisible
     })
 
     let helperButtonCSS = classNames({
       'Helper__button': true,
       'Helper__button--open': this.state.helperMenuOpen,
       'Helper__button--side-view': bodyWidth < 1600,
-      'Helper__button--bottom': this.state.uploadOpen && !this.state.helperMenuOpen
+      'Helper__button--bottom': this.props.uploadOpen && !this.state.helperMenuOpen
     })
 
     return(
@@ -168,3 +137,22 @@ export default class Helper extends Component {
     )
   }
 }
+
+
+const mapStateToProps = (state, ownProps) => {
+
+  return {
+    resize: state.helper.resize,
+    isVisible: state.helper.helperMenuOpen,
+    footerVisible: state.helper.footerVisible,
+    uploadOpen: state.footer.uploadOpen
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Helper);

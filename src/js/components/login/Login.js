@@ -6,7 +6,6 @@ import Loader from 'Components/shared/Loader'
 //config
 import config from 'JS/config'
 
-let unsubscribe;
 //import CreatePage from './components/CreatePage';
 export default class Login extends Component {
   constructor(props) {
@@ -14,23 +13,6 @@ export default class Login extends Component {
     this.state = store.getState().login
   }
 
-  /**
-    subscribe to store to update state
-  */
-  componentDidMount() {
-    // let self = this
-    // unsubscribe = store.subscribe(() => {
-    //
-    //   self.storeDidUpdate(store.getState().login)
-    // })
-
-  }
-  /**
-    unsubscribe from redux store
-  */
-  componentWillUnmount() {
-    unsubscribe()
-  }
   /**
     @param {string} route
     update route
