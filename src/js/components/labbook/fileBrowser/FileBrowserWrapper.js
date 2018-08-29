@@ -271,6 +271,7 @@ export default class FileBrowserWrapper extends Component {
   */
   _startFileUpload(files, prefix, fileSizeData){
     let fileMetaData =  getTotalFileLength(files),
+    transactionId = uuidv4(),
     totalFiles = fileMetaData.fileCount - fileSizeData.fileSizeNotAllowed,
     hasDirectoryUpload = fileMetaData.hasDirectoryUpload,
     self = this,
@@ -317,7 +318,7 @@ export default class FileBrowserWrapper extends Component {
               labbookName: self.state.labbookName,
               parentId: self.props.parentId,
               section: self.props.section,
-              transactionId: uuidv4()
+              transactionId 
             }
 
             self._chunkLoader(data, (data)=>{
@@ -1006,6 +1007,7 @@ export default class FileBrowserWrapper extends Component {
         pause: false
       }
     })
+
     const {files, count, prefix, totalFiles} = store.getState().fileBrowser
     const {connection, section, parentId} = this.props
     const {owner, labbookName} = this.state
@@ -1024,7 +1026,9 @@ export default class FileBrowserWrapper extends Component {
     )
 
     if(store.getState().fileBrowser.chunkUploadData.data){
+
       const {chunkUploadData} = store.getState().fileBrowser
+
       this._chunkLoader(chunkUploadData.data, ()=>{}, chunkUploadData.chunkData.chunkIndex)
     }
 
