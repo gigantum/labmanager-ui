@@ -13,10 +13,12 @@ export default (
  state = {
    'isVisible': false,
    'resize': '',
-   'footerVisible': false
+   'footerVisible': false,
+   'uploadOpen': false
  },
  action
 ) => {
+ 
  if (action.type === UPDATE_HELPER_VISIBILITY) {
    return {
      ...state,
