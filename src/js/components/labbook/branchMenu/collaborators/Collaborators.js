@@ -110,6 +110,7 @@ export const CollaboratorsQuery =  graphql`
                     }
                   }
                 })
+
                 store.dispatch({
                   type: 'SET_CANMANAGECOLLABORATORS',
                   payload: {
