@@ -457,7 +457,7 @@ class Labbook extends Component {
                      auth={this.props.auth}
                     />
 
-                     {/* <ContainerStatus
+                     <ContainerStatus
                        ref="ContainerStatus"
                        base={labbook.environment.base}
                        containerStatus={labbook.environment.containerStatus}
@@ -468,7 +468,7 @@ class Labbook extends Component {
                        isSyncing={this.props.isSyncing}
                        isPublishing={this.props.isPublishing}
                        creationDateUtc={labbook.creationDateUtc}
-                     /> */}
+                     />
                   </div>
                 </div>
                 <div className={(this.props.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
