@@ -34,16 +34,6 @@ export default class Branches extends Component {
     window.removeEventListener('resize', this._windowResize)
   }
   /**
-  *  @param {object} overview
-  *  updates components state
-  *  @return
-  */
-  storeDidUpdate = (overview) => {
-    if(this.state !== overview){
-      this.setState(overview);//triggers re-render when store updates
-    }
-  }
-  /**
   *  @param {}
   *  triggers on resize
   * update width in state

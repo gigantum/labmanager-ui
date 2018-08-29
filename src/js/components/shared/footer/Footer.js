@@ -1,20 +1,16 @@
 import React, {Component} from 'react'
 import classNames from 'classnames'
-
 //components
 import FooterNotificationList from './FooterNotificationList'
 import FooterUploadBar from './FooterUploadBar'
+import { connect } from 'react-redux'
 //store
 import store from "JS/redux/store"
 
-let unsubscribe
-
-export default class Footer extends Component {
+class Footer extends Component {
 
   constructor(props) {
     super(props)
-
-    this.state = store.getState().footer
 
     this._clearState = this._clearState.bind(this)
     this._toggleMessageList = this._toggleMessageList.bind(this)
@@ -27,38 +23,21 @@ export default class Footer extends Component {
   */
   componentDidMount() {
 
-    unsubscribe = store.subscribe(() => {
-
-      this.storeDidUpdate(store.getState().footer)
-    })
-
     window.addEventListener("resize", this._resize);
 
   }
   /**
-    unsubscribe from redux store
+    unsubscribe from event listeners
   */
   componentWillUnmount() {
-    unsubscribe()
     window.removeEventListener("resize", this._resize);
 
   }
-
   /**
-    @param {object} footer
-    unsubscribe from redux store
+   hides messages in stack after 15 seconds
   */
-  storeDidUpdate = (footer) => {
-
-    let footerString = JSON.stringify(footer)
-    let stateString = JSON.stringify(this.state)
-    if (footerString !== stateString) {
-
-      this.setState(footer); //triggers re-render when store updates
-    }
-
-
-    footer.messageStack.forEach((messageItem) => {
+  componentDidUpdate(){
+    this.props.messageStack.forEach((messageItem) => {
       const timeInSeconds = 15 * 1000
       if (!messageItem.error) {
 
@@ -71,12 +50,11 @@ export default class Footer extends Component {
         }
       }
     })
-
   }
 
   _openLabbook() {
     this._clearState()
-    this.props.history.replace(`/projects/${this.state.labbookName}`)
+    this.props.history.replace(`/projects/${this.props.labbookName}`)
   }
   /**
     @param {}
@@ -147,7 +125,7 @@ export default class Footer extends Component {
       store.dispatch({
         type: 'TOGGLE_MESSAGE_LIST',
         payload: {
-          messageListOpen: !this.state.messageListOpen,
+          messageListOpen: !this.props.messageListOpen,
           viewHistory: true
         }
       })
@@ -162,7 +140,7 @@ export default class Footer extends Component {
   _showMessageBody(index) {
 
       store.dispatch({
-        type: !this.state.viewHistory
+        type: !this.props.viewHistory
         ? 'UPDATE_MESSAGE_STACK_ITEM_VISIBILITY'
         : 'UPDATE_HISTORY_STACK_ITEM_VISIBILITY',
         payload: {
@@ -187,16 +165,16 @@ export default class Footer extends Component {
 
     let footerClass = classNames({
       'Footer': true,
-      'Footer--expand': (this.state.open) || this.state.uploadOpen,
-      'Footer--expand-extra': (this.state.open && this.state.uploadOpen)
+      'Footer--expand': (this.props.open) || this.props.uploadOpen,
+      'Footer--expand-extra': (this.props.open && this.props.uploadOpen)
     });
 
     let footerButtonClass = classNames({
       'Footer__disc-button': true,
-      'Footer__disc-button--open': this.state.messageListOpen,
+      'Footer__disc-button--open': this.props.messageListOpen,
       'Footer__dist-button--side-view': bodyWidth < 1600,
-      'Footer__disc-button--helper-open': this.state.helperVisible,
-      'Footer__disc-button--bottom': !this.state.messageListOpen && this.state.uploadOpen
+      'Footer__disc-button--helper-open': this.props.helperVisible,
+      'Footer__disc-button--bottom': !this.props.messageListOpen && this.props.uploadOpen
     });
 
 
@@ -206,13 +184,13 @@ export default class Footer extends Component {
 
           <FooterNotificationList
             showMessageBody={this._showMessageBody}
-            parentState={this.state}
+            parentState={this.props}
           />
 
           <FooterUploadBar
             closeFooter={this._closeFooter}
             openLabbook={this._openLabbook}
-            parentState={this.state}
+            parentState={this.props}
           />
 
           <div
@@ -224,3 +202,14 @@ export default class Footer extends Component {
     </div>)
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return state.footer
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Footer);

@@ -13,6 +13,7 @@ import containerStatus from './reducers/labbook/containerStatus';
 import overview from './reducers/labbook/overview/overview';
 //labbooks/environment reducers
 import environment from './reducers/labbook/environment/environment';
+import packageDependencies from './reducers/labbook/environment/packageDependencies';
 //labbooks/fileBrowser reducers
 import fileBrowser from './reducers/labbook/fileBrowser/fileBrowserWrapper';
 //labbooks/branchMenu/collaborators reducers
@@ -26,6 +27,7 @@ export default combineReducers({
   routes,
   containerStatus,
   environment,
+  packageDependencies,
   login,
   fileBrowser,
   collaborators,

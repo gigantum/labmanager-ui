@@ -22,7 +22,6 @@ import SetLabbookDescriptionMutation from 'Mutations/SetLabbookDescriptionMutati
 //store
 import store from 'JS/redux/store'
 
-let unsubscribe;
 let simple;
 
 class Overview extends Component {
@@ -31,7 +30,7 @@ class Overview extends Component {
 
     this._openJupyter = this._openJupyter.bind(this)
 
-    this.state = Object.assign({
+    this.state = {
       editingReadme: false,
       readmeExpanded: false,
       overflowExists: false,
@@ -41,18 +40,18 @@ class Overview extends Component {
       lastSavedDescription: this.props.description.replace(/\n/g,' '),
       savingDescription: false,
       editorFullscreen: false,
-    }, store.getState().overview);
+    };
     this._editReadme = this._editReadme.bind(this);
   }
   /*
-    subscribe to store to update state
+    runs state check when component mounts
   */
   componentDidMount() {
     this._setExpand();
-    unsubscribe = store.subscribe(() => {
-      this.storeDidUpdate(Object.assign({}, this.state, store.getState().overview))
-    })
   }
+  /*
+    runs state check when component updates
+  */
   componentDidUpdate() {
     this._setExpand();
     if(!this.state.simpleExists){
@@ -68,24 +67,6 @@ class Overview extends Component {
         let sideBySideButton = document.getElementsByClassName('fa-columns')[0]
         sideBySideButton && sideBySideButton.addEventListener('click', () => this.setState({editorFullscreen: true}))
       }
-    }
-  }
-
-
-  /*
-    unsubscribe from redux store
-  */
-  componentWillUnmount() {
-    unsubscribe()
-  }
-  /*
-    @param {object} overview
-    updates components state
-  */
-  storeDidUpdate = (overview) => {
-    if (this.state !== overview) {
-      this.setState(overview);
-      //triggers re-render when store updates
     }
   }
 

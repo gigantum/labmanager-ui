@@ -9,6 +9,7 @@ import LocalLabbooks from 'Components/dashboard/labbooks/localLabbooks/LocalLabb
 import relayTestingUtils from 'relay-testing-utils'
 import {MemoryRouter } from 'react-router-dom'
 import environment from 'JS/createRelayEnvironment'
+import {Provider} from 'react-redux'
 import store from 'JS/redux/store'
 
 import Adapter from 'enzyme-adapter-react-16';
@@ -94,11 +95,13 @@ describe('LocalLabbooks', () => {
     const localLabbooksSnap = renderer.create(
 
        relayTestingUtils.relayWrap(
-         <LocalLabbooks
+         <Provider store={store}>
+          <LocalLabbooks
 
            {...fixtures}
 
-          />, {}, json.data.labbookList)
+          />
+          </Provider>, {}, json.data.labbookList)
 
     )
 
@@ -116,8 +119,9 @@ describe('LocalLabbooks', () => {
    *
    *****/
   const localLabbooksShallow = mount(
-
+    <Provider store={store}>
      <LocalLabbooks history={history} {...fixtures} feed={json.data}/>
+    </Provider>
 
   );
 
@@ -143,13 +147,15 @@ describe('LocalLabbooks', () => {
 
   const localLabbooksMount = mount(
     relayTestingUtils.relayWrap(
+      <Provider store={store}>
        <LocalLabbooks
          {...fixtures}
          showModal={showModalTest}
          goToLabbook={goToLabbookTest}
          sortProcessed={sortProcessedTest}
          relay={{loadMore: loadMore}}
-       />, {}, json.data.labbookList
+       />
+      </Provider>, {}, json.data.labbookList
      )
   );
 

@@ -1,5 +1,5 @@
 # source: http://localhost:10000/api/labbook/
-# timestamp: Tue Aug 21 2018 18:34:01 GMT-0400 (EDT)
+# timestamp: Tue Aug 28 2018 13:11:27 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery

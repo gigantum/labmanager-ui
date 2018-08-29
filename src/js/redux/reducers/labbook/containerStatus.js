@@ -1,10 +1,18 @@
+import dispatcher from 'JS/redux/dispatcher'
+
 /**
  * constants
  */
 export const UPDATE_CONTAINER_STATUS = 'UPDATE_CONTAINER_STATUS'
 export const RESET_DETAIL_STORE = 'RESET_DETAIL_STORE'
 export const UPDATE_CONTAINER_MENU_VISIBILITY = 'UPDATE_CONTAINER_MENU_VISIBILITY'
-export const IS_BUILDING = 'IS_BUILDING'
+
+/**
+ * actions
+ */
+
+export const setContainerStatus = (status) => dispatcher(UPDATE_CONTAINER_STATUS, {status})
+export const setContainerMenuVisibility = (containerMenuOpen) => dispatcher(UPDATE_CONTAINER_MENU_VISIBILITY, {containerMenuOpen})
 
 export default (
  state = {
@@ -29,11 +37,6 @@ if (action.type === UPDATE_CONTAINER_STATUS) {
    return {
      ...state,
      detailMode: false
-   };
- }else if(action.type === IS_BUILDING){
-   return {
-     ...state,
-     isBuilding: action.payload.isBuilding
    };
  }
 
