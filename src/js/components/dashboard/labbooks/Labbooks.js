@@ -3,6 +3,7 @@ import store from 'JS/redux/store'
 import React, { Component, Fragment } from 'react'
 import queryString from 'querystring'
 import classNames from 'classnames'
+import { connect } from 'react-redux'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
@@ -17,12 +18,11 @@ import UserIdentity from 'JS/Auth/UserIdentity'
 //config
 import config from 'JS/config'
 
-export default class Labbooks extends Component {
+class Labbooks extends Component {
 
   constructor(props){
     super(props);
 
-    const {filterText} = store.getState().labbookListing
     let {filter, orderBy, sort} = queryString.parse(this.props.history.location.search.slice(1))
     this.state = {
       'labbookModalVisible': false,
@@ -37,7 +37,6 @@ export default class Labbooks extends Component {
       'showLoginPrompt': false,
       orderBy: orderBy || 'modified_on',
       sort: sort || 'desc',
-      'filterValue': filterText,
       'filterMenuOpen': false,
     }
 
@@ -72,34 +71,14 @@ export default class Labbooks extends Component {
     document.title =  `Gigantum`
     window.addEventListener('click', this._closeSortMenu)
     window.addEventListener('click', this._closeFilterMenu)
-    this.unsubscribe = store.subscribe(() =>{
-      this.storeDidUpdate(store.getState().labbookListing)
-    })
-
   }
-
-
-  /**
-    @param {object} labbookListing
-    updates state of labbookListing when prompted to by the store
-  */
-  storeDidUpdate(labbookListing){
-    let newerState = {};
-    if(labbookListing.filterText !== this.state.filterValue){
-      newerState.filterValue = labbookListing.filterText
-    }
-    this.setState(newerState)
-  }
-
 
   /**
     * @param {}
     * fires when component unmounts
     * removes added event listeners
-    * unsubscribe from redux store
   */
   componentWillUnmount() {
-    this.unsubscribe()
     window.removeEventListener('click', this._closeSortMenu)
     window.removeEventListener('click', this._closeFilterMenu)
     window.removeEventListener("scroll", this._captureScroll)
@@ -241,7 +220,7 @@ export default class Labbooks extends Component {
    * returns true if labbook's name or description exists in filtervalue, else returns false
   */
   _filterSearch(labbook){
-    if(labbook.node.name && (this.state.filterValue === '' || labbook.node.name.toLowerCase().indexOf(this.state.filterValue.toLowerCase()) > -1 || labbook.node.description.toLowerCase().indexOf(this.state.filterValue.toLowerCase()) > -1)){
+    if(labbook.node.name && (this.props.filterText === '' || labbook.node.name.toLowerCase().indexOf(this.props.filterText.toLowerCase()) > -1 || labbook.node.description.toLowerCase().indexOf(this.props.filterText.toLowerCase()) > -1)){
       return true;
     }
     return false;
@@ -496,7 +475,7 @@ export default class Labbooks extends Component {
                   ref="labbookSearch"
                   className="Labbooks__search no--margin"
                   placeholder="Filter Projects by name or description"
-                  defaultValue={this.state.filterValue}
+                  defaultValue={this.props.filterText}
                   onKeyUp={(evt) => this._setFilterValue(evt)}
                   onFocus={() => this.setState({showSearchCancel: true})}
                 />
@@ -653,3 +632,16 @@ export default class Labbooks extends Component {
 
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    filterText: state.labbookListing.filterText
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Labbooks);

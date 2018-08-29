@@ -21,7 +21,6 @@ class Helper extends Component {
   /**
     * @param {}
     * subscribe to store to update state
-    * set unsubcribe for store
   */
   componentDidMount() {
 

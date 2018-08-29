@@ -3,16 +3,14 @@
   File information and activty details are explored here
 */
 // vendor
+import { connect } from 'react-redux'
 import React, { Component } from 'react'
 //store
 import store from 'JS/redux/store'
 
-let unsubscribe;
-export default class DetailPanel extends Component {
+class DetailPanel extends Component {
   constructor(props){
   	super(props);
-    //sets state to store
-    this.state = store.getState().detailView
 
     //bind functions here
     this._closePanel = this._closePanel.bind(this)
@@ -24,12 +22,9 @@ export default class DetailPanel extends Component {
     opens panel with or without transitions depeneding on components state
   */
   componentDidMount() {
-      unsubscribe = store.subscribe(() =>{
-        this.storeDidUpdate(store.getState().detailView)
-      })
 
       if(this.props.name){
-        if(this.state.detailMode && !this.state.previousDetailMode && this.refs['DetailPanel']){
+        if(this.props.detailMode && !this.props.previousDetailMode && this.refs['DetailPanel']){
           setTimeout(()=>{
 
               this.refs['DetailPanel'].classList.add('DetailPanel--open')
@@ -43,32 +38,17 @@ export default class DetailPanel extends Component {
       }
   }
   /*
-    must unsubscribe from the store on unmount
-  */
-  componentWillUnmount() {
-    unsubscribe()
-  }
-  /*
     opens or closes the detail panel
   */
   componentDidUpdate(prevProps, prevState) {
     if(this.refs['DetailPanel']){
-      if(this.state.detailMode){
+      if(this.props.detailMode){
         this.refs['DetailPanel'].classList.add('DetailPanel--open')
       }else{
           this.refs['DetailPanel'].classList.remove('DetailPanel--open')
       }
     }
 
-  }
-
-  /*
-    updates state if and only of state is different from the store
-  */
-  storeDidUpdate(detailView){
-    if(JSON.stringify(this.state) !== JSON.stringify(detailView)){
-      this.setState(detailView)
-    }
   }
 
   /*
@@ -105,3 +85,14 @@ export default class DetailPanel extends Component {
       )
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return state.detailView
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailPanel);
