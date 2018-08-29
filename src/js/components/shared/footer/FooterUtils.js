@@ -18,7 +18,7 @@ const FooterUtils = {
       *  @return {}
       */
     const refetch = () => {
-      
+
       setTimeout(() => {
         fetchStatus()
       }, 1000)

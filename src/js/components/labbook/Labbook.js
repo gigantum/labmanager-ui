@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 //store
 import store from "JS/redux/store"
 //components
+import ContainerStatus from './containerStatus/ContainerStatus'
 import Login from 'Components/login/Login';
 import Activity from './activity/Activity'
 import Code from './code/Code'
@@ -19,7 +20,6 @@ import InputData from './inputData/InputData'
 import OutputData from './outputData/OutputData'
 import Overview from './overview/Overview'
 import Environment from './environment/Environment'
-import ContainerStatus from './containerStatus/ContainerStatus'
 import Loader from 'Components/shared/Loader'
 import Branches from './branches/Branches'
 import BranchMenu from './branchMenu/BranchMenu'
