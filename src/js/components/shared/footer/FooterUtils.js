@@ -68,6 +68,21 @@ const FooterUtils = {
 
             }
 
+            if((response.data.jobStatus.status === 'started' || response.data.jobStatus.status === 'finished') && store.getState().packageDependencies.refetchPending){
+              store.dispatch({
+                type: 'FORCE_REFETCH',
+                payload: {
+                  forceRefetch: true,
+                }
+              })
+              store.dispatch({
+                type: 'SET_REFETCH_PENDING',
+                payload: {
+                  refetchPending: false
+                }
+              })
+            }
+
             if (response.data.jobStatus.status === 'started') {
 
               store.dispatch({
@@ -80,22 +95,6 @@ const FooterUtils = {
                   error: false
                 }
               })
-
-
-              if(store.getState().environment.refetchPending){
-                store.dispatch({
-                  type: 'FORCE_REFETCH',
-                  payload: {
-                    forceRefetch: true,
-                  }
-                })
-                store.dispatch({
-                  type: 'SET_REFETCH_PENDING',
-                  payload: {
-                    refetchPending: false
-                  }
-                })
-              }
 
               refetch()
 

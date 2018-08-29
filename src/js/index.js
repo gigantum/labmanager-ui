@@ -4,8 +4,11 @@ import {unregister} from './registerServiceWorker';
 import './../css/critical.scss';
 import UserIdentity from 'JS/Auth/UserIdentity'
 import Auth from 'JS/Auth/Auth'
+import {Provider} from 'react-redux'
 // components
 import Routes from './components/Routes';
+//store
+import store from "JS/redux/store"
 
 const auth = new Auth();
 
@@ -45,11 +48,13 @@ UserIdentity.getUserIdentity().then((response)=>{
   }
 
   let routes = render(
-    <Routes
-      auth={auth}
-      forceLoginScreen={forceLoginScreen}
-      loadingRenew={loadingRenew}
-    />
+    <Provider store={store}>
+      <Routes
+        auth={auth}
+        forceLoginScreen={forceLoginScreen}
+        loadingRenew={loadingRenew}
+      />
+    </Provider>
     , document.getElementById('root') || document.createElement('div')
 
   );

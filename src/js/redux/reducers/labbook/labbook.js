@@ -1,3 +1,5 @@
+import dispatcher from 'JS/redux/dispatcher'
+
 /**
  * constants
  */
@@ -14,6 +16,15 @@ export const UPDATE_BRANCHES_VIEW = 'UPDATE_BRANCHES_VIEW'
 export const UPDATE_ALL = 'UPDATE_ALL'
 export const UPDATE_STICKY_STATE = "UPDATE_STICKY_STATE"
 export const MERGE_MODE = 'MERGE_MODE'
+
+
+/**
+ * actions
+ */
+
+export const setBuildingState = (isBuilding) => dispatcher(IS_BUILDING, {isBuilding})
+export const setMergeMode = (branchesOpen, mergeFilter) => dispatcher(MERGE_MODE, {branchesOpen, mergeFilter})
+
 
 export default (
  state = {
