@@ -5,6 +5,7 @@ import history from 'JS/history'
 import {mount} from 'enzyme'
 import LocalLabbooksContainer from 'Components/dashboard/labbooks/localLabbooks/LocalLabbooksContainer';
 import store from "JS/redux/store"
+import {BrowserRouter as Router} from 'react-router-dom'
 
 import json from './__relaydata__/DashboardLocal.json'
 
@@ -29,7 +30,9 @@ test('Test DashboardLocal snapshot', () => {
 
       relayTestingUtils.relayWrap(
         <Provider store={store}>
-          <LocalLabbooksContainer {...fixtures} />
+          <Router>
+            <LocalLabbooksContainer {...fixtures} />
+          </Router>
         </Provider>
       , {}, json.data)
 
