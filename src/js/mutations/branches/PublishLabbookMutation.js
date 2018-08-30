@@ -19,12 +19,14 @@ export default function PublishLabbookMutation(
   owner,
   labbookName,
   labbookId,
+  setPublic,
   callback
 ) {
 
 
   const variables = {
     input: {
+      setPublic,
       owner,
       labbookName,
       clientMutationId: tempID++

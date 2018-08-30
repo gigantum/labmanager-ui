@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Sniffr from 'sniffr'
 import uuidv4 from 'uuid/v4'
 
 const pingServer = () => {
@@ -57,9 +56,7 @@ export default class Prompt extends Component {
 
 
   render() {
-    let s = new Sniffr();
-    s.sniff(navigator.userAgent)
-    let os = s.os.name;
+
     return (
       <div className="Prompt">
         <div className={this.state.promptState ? "hidden" : "Prompt__info"}>
@@ -73,26 +70,20 @@ export default class Prompt extends Component {
           <div className={this.state.failureCount >= 8 ? "Prompt__failure-container" : "hidden"}>
             <div className="Prompt__failure-text">
               <p>There was a problem loading Gigantum</p>
-              <p>Ensure Gigantum is running or restart the application</p>
+              {
+                window.location.hostname === 'localhost' ?
+                <div>
+                  <p>Ensure Gigantum is running or restart the application</p>
+                  <p>If the problem continues to persist, follow the steps <a href="https://docs.gigantum.com/docs/client-interface-fails-to-load"  rel="noopener noreferrer" target="_blank">here</a>.</p>
+
+                </div>
+                :
+                <div>
+                  <p>Please ensure you have a valid internet connection.</p>
+                  <p>If the problem continues to persist, please report it <a href="https://docs.gigantum.com/discuss"  rel="noopener noreferrer" target="_blank">here</a>.</p>
+                </div>
+              }
             </div>
-            {
-              os === 'macos' &&
-              <div
-                className="Prompt__mac">
-              </div>
-            }
-            {
-              os === 'windows' &&
-              <div
-                className="Prompt__windows">
-              </div>
-            }
-            {
-              os === 'linux' &&
-              <div
-                className="Prompt__cli">
-              </div>
-            }
           </div>
         </div>
       </div>

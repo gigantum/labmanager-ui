@@ -4,7 +4,7 @@
 
 .Prompt__info {
     position: fixed;
-    z-index: index($elements, modal);
+    z-index: index($elements, prompt);
     top: 0;
     bottom: 0;
     left: 0;
@@ -23,7 +23,7 @@
     transform: translate(-50%, -50%);
     width: 500px;
     height: 130px;
-    background: url(../images/logos/gigantum-turquise-logo.svg) no-repeat 50% 50%;
+    background: url(https://s3.amazonaws.com/io.gigantum.assets/gigantum-turquise-logo.svg) no-repeat 50% 50%;
     background-size: 100%;
 }
 
@@ -36,19 +36,19 @@
 
     width: 500px;
     height: 130px;
-    background: url(../images/logos/gigantum-turquise-logo.svg) no-repeat 50% 50%;
+    background: url(https://s3.amazonaws.com/io.gigantum.assets/gigantum-turquise-logo.svg) no-repeat 50% 50%;
     background-size: 100%;
 }
 
 .Prompt__logo--final {
     position: absolute;
-    top: 20%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
     transition: top 2s ease 0s;
     width: 500px;
     height: 130px;
-    background: url(../images/logos/gigantum-turquise-logo.svg) no-repeat 50% 50%;
+    background: url(https://s3.amazonaws.com/io.gigantum.assets/gigantum-turquise-logo.svg) no-repeat 50% 50%;
     background-size: 100%;
 }
 
@@ -65,7 +65,7 @@
 
 .Prompt__failure-container{
   position: absolute;
-  top: 35%;
+  top: 45%;
   left: calc(50% - 400px);
   width: 800px;
 
@@ -88,6 +88,9 @@
 
     p {
         margin: 0
+    }
+    a {
+        color: $turquise;
     }
 
 

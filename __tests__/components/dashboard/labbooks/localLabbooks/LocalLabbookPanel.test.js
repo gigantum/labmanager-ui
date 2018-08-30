@@ -16,6 +16,7 @@ const goToLabbook = () =>{
 
 const fixtures = {
   edge: json.data.labbookList.localLabbooks.edges[0],
+  node: json.data.labbookList.localLabbooks.edges[0],
   key:'key',
   className: "LocalLabbooks__panel",
   history: history,

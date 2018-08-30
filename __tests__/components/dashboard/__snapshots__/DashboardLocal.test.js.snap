@@ -116,7 +116,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Labbooks__filter-item"
           onClick={[Function]}
         >
-          My Labbooks 
+          My Projects 
           
         </li>
         <li
@@ -333,7 +333,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
                   className=""
                   style={undefined}
                 >
-                  857255a0-f22e-46b5-b70f-95af00d5d17e
+                  zab
                 </span>
               </span>
             </h6>
@@ -348,16 +348,13 @@ exports[`Test DashboardLocal snapshot 1`] = `
           >
             <span
               className={undefined}
-            >
-              <span
-                className=""
-                style={undefined}
-              >
-                This is a test labbook
-              </span>
-            </span>
+            />
           </p>
         </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
       </div>
       <div
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
@@ -396,7 +393,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
                   className=""
                   style={undefined}
                 >
-                  random-picture-generator
+                  untracked-labbook
                 </span>
               </span>
             </h6>
@@ -411,16 +408,133 @@ exports[`Test DashboardLocal snapshot 1`] = `
           >
             <span
               className={undefined}
-            >
-              <span
-                className=""
-                style={undefined}
-              >
-                This labBook create random piuctures.
-              </span>
-            </span>
+            />
           </p>
         </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
+      </div>
+      <div
+        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        onClick={[Function]}
+      >
+        <div
+          className="LocalLabbooks__icon-row"
+        >
+          <div
+            className="LocalLabbooks__containerStatus"
+          >
+            <button
+              className="LocalLabbooks__containerStatus--state loading"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+            >
+              
+            </button>
+          </div>
+        </div>
+        <div
+          className="LocalLabbooks__text-row"
+        >
+          <div
+            className="LocalLabbooks__title-row"
+          >
+            <h6
+              className="LocalLabbooks__panel-title"
+              onClick={[Function]}
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  untracked-2
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="LocalLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="LocalLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
+      </div>
+      <div
+        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        onClick={[Function]}
+      >
+        <div
+          className="LocalLabbooks__icon-row"
+        >
+          <div
+            className="LocalLabbooks__containerStatus"
+          >
+            <button
+              className="LocalLabbooks__containerStatus--state loading"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+            >
+              
+            </button>
+          </div>
+        </div>
+        <div
+          className="LocalLabbooks__text-row"
+        >
+          <div
+            className="LocalLabbooks__title-row"
+          >
+            <h6
+              className="LocalLabbooks__panel-title"
+              onClick={[Function]}
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  untracked
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="LocalLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="LocalLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
       </div>
       <div
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
@@ -484,6 +598,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </span>
           </p>
         </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
       </div>
       <div
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
@@ -522,77 +640,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
                   className=""
                   style={undefined}
                 >
-                  awful-intersections-demo
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="LocalLabbooks__owner"
-          >
-            Created by rjvgigantum
-          </p>
-          <p
-            className="LocalLabbooks__description"
-          >
-            <span
-              className={undefined}
-            >
-              <span
-                className=""
-                style={undefined}
-              >
-                A fun demo LabBook to automatically find and generate cringe-worthy maps of horrible intersections
-                
-                
-                
-                
-                
-                
-                Some of the code in this LabBook was originally created by Jordan Matelsky (@j6m8) and was inspired by amazing work by Peter Gorman at BarelyMaps
-              </span>
-            </span>
-          </p>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-        onClick={[Function]}
-      >
-        <div
-          className="LocalLabbooks__icon-row"
-        >
-          <div
-            className="LocalLabbooks__containerStatus"
-          >
-            <button
-              className="LocalLabbooks__containerStatus--state loading"
-              onClick={[Function]}
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
-            >
-              
-            </button>
-          </div>
-        </div>
-        <div
-          className="LocalLabbooks__text-row"
-        >
-          <div
-            className="LocalLabbooks__title-row"
-          >
-            <h6
-              className="LocalLabbooks__panel-title"
-              onClick={[Function]}
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  labbook-test-activity
+                  tracking-endabled
                 </span>
               </span>
             </h6>
@@ -610,6 +658,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
             />
           </p>
         </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
       </div>
       <div
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
@@ -648,7 +700,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
                   className=""
                   style={undefined}
                 >
-                  data-shader
+                  tracked-2
                 </span>
               </span>
             </h6>
@@ -666,6 +718,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
             />
           </p>
         </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
       </div>
       <div
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
@@ -704,133 +760,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
                   className=""
                   style={undefined}
                 >
-                  917e4606-8d98-46cb-986c-4dd424e0bff7
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="LocalLabbooks__owner"
-          >
-            Created by cbutler
-          </p>
-          <p
-            className="LocalLabbooks__description"
-          >
-            <span
-              className={undefined}
-            >
-              <span
-                className=""
-                style={undefined}
-              >
-                This is a test labbook
-              </span>
-            </span>
-          </p>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-        onClick={[Function]}
-      >
-        <div
-          className="LocalLabbooks__icon-row"
-        >
-          <div
-            className="LocalLabbooks__containerStatus"
-          >
-            <button
-              className="LocalLabbooks__containerStatus--state loading"
-              onClick={[Function]}
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
-            >
-              
-            </button>
-          </div>
-        </div>
-        <div
-          className="LocalLabbooks__text-row"
-        >
-          <div
-            className="LocalLabbooks__title-row"
-          >
-            <h6
-              className="LocalLabbooks__panel-title"
-              onClick={[Function]}
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  11c2d7ed-f4ea-4e43-ae77-cf1b7388ea0d
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="LocalLabbooks__owner"
-          >
-            Created by cbutler
-          </p>
-          <p
-            className="LocalLabbooks__description"
-          >
-            <span
-              className={undefined}
-            >
-              <span
-                className=""
-                style={undefined}
-              >
-                This is a test labbook
-              </span>
-            </span>
-          </p>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-        onClick={[Function]}
-      >
-        <div
-          className="LocalLabbooks__icon-row"
-        >
-          <div
-            className="LocalLabbooks__containerStatus"
-          >
-            <button
-              className="LocalLabbooks__containerStatus--state loading"
-              onClick={[Function]}
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
-            >
-              
-            </button>
-          </div>
-        </div>
-        <div
-          className="LocalLabbooks__text-row"
-        >
-          <div
-            className="LocalLabbooks__title-row"
-          >
-            <h6
-              className="LocalLabbooks__panel-title"
-              onClick={[Function]}
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  new-labbook-345
+                  tpub
                 </span>
               </span>
             </h6>
@@ -848,6 +778,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
             />
           </p>
         </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
       </div>
       <div
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
@@ -886,133 +820,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
                   className=""
                   style={undefined}
                 >
-                  log-volume-audit
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="LocalLabbooks__owner"
-          >
-            Created by bill2
-          </p>
-          <p
-            className="LocalLabbooks__description"
-          >
-            <span
-              className={undefined}
-            >
-              <span
-                className=""
-                style={undefined}
-              >
-                An analysis for figuring out where most of the logging material comes from, and to identifiy places to eliminated it.
-              </span>
-            </span>
-          </p>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-        onClick={[Function]}
-      >
-        <div
-          className="LocalLabbooks__icon-row"
-        >
-          <div
-            className="LocalLabbooks__containerStatus"
-          >
-            <button
-              className="LocalLabbooks__containerStatus--state loading"
-              onClick={[Function]}
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
-            >
-              
-            </button>
-          </div>
-        </div>
-        <div
-          className="LocalLabbooks__text-row"
-        >
-          <div
-            className="LocalLabbooks__title-row"
-          >
-            <h6
-              className="LocalLabbooks__panel-title"
-              onClick={[Function]}
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  does-this-fail-on-syncing
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="LocalLabbooks__owner"
-          >
-            Created by bill2
-          </p>
-          <p
-            className="LocalLabbooks__description"
-          >
-            <span
-              className={undefined}
-            >
-              <span
-                className=""
-                style={undefined}
-              >
-                Check if this fails on sync
-              </span>
-            </span>
-          </p>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-        onClick={[Function]}
-      >
-        <div
-          className="LocalLabbooks__icon-row"
-        >
-          <div
-            className="LocalLabbooks__containerStatus"
-          >
-            <button
-              className="LocalLabbooks__containerStatus--state loading"
-              onClick={[Function]}
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
-            >
-              
-            </button>
-          </div>
-        </div>
-        <div
-          className="LocalLabbooks__text-row"
-        >
-          <div
-            className="LocalLabbooks__title-row"
-          >
-            <h6
-              className="LocalLabbooks__panel-title"
-              onClick={[Function]}
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  asdasasd
+                  thisiasdmadskadssfdkjjssdfs-jasjdasj
                 </span>
               </span>
             </h6>
@@ -1030,6 +838,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
             />
           </p>
         </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
       </div>
       <div
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
@@ -1068,126 +880,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
                   className=""
                   style={undefined}
                 >
-                  temp-labook22
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="LocalLabbooks__owner"
-          >
-            Created by cbutler
-          </p>
-          <p
-            className="LocalLabbooks__description"
-          >
-            <span
-              className={undefined}
-            >
-              <span
-                className=""
-                style={undefined}
-              >
-                this is a description of a labbook sadodaadadad adsdasadsdassad ssaddadsads adsadsdad adsd adasdsadsjkdsjfjnfjdjfdjnfdjfdjfdjn . asdad das ad sad sd asd dsa d ads adsad sad . da das sad das da d da sd da dada ad s d ad
-              </span>
-            </span>
-          </p>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-        onClick={[Function]}
-      >
-        <div
-          className="LocalLabbooks__icon-row"
-        >
-          <div
-            className="LocalLabbooks__containerStatus"
-          >
-            <button
-              className="LocalLabbooks__containerStatus--state loading"
-              onClick={[Function]}
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
-            >
-              
-            </button>
-          </div>
-        </div>
-        <div
-          className="LocalLabbooks__text-row"
-        >
-          <div
-            className="LocalLabbooks__title-row"
-          >
-            <h6
-              className="LocalLabbooks__panel-title"
-              onClick={[Function]}
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  asdaaddsad
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="LocalLabbooks__owner"
-          >
-            Created by cbutler
-          </p>
-          <p
-            className="LocalLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-        onClick={[Function]}
-      >
-        <div
-          className="LocalLabbooks__icon-row"
-        >
-          <div
-            className="LocalLabbooks__containerStatus"
-          >
-            <button
-              className="LocalLabbooks__containerStatus--state loading"
-              onClick={[Function]}
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
-            >
-              
-            </button>
-          </div>
-        </div>
-        <div
-          className="LocalLabbooks__text-row"
-        >
-          <div
-            className="LocalLabbooks__title-row"
-          >
-            <h6
-              className="LocalLabbooks__panel-title"
-              onClick={[Function]}
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  test-lb
+                  testing-notifications
                 </span>
               </span>
             </h6>
@@ -1207,123 +900,15 @@ exports[`Test DashboardLocal snapshot 1`] = `
                 className=""
                 style={undefined}
               >
-                This a short description
+                sdfsdf
               </span>
             </span>
           </p>
         </div>
-      </div>
-      <div
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-        onClick={[Function]}
-      >
         <div
-          className="LocalLabbooks__icon-row"
-        >
-          <div
-            className="LocalLabbooks__containerStatus"
-          >
-            <button
-              className="LocalLabbooks__containerStatus--state loading"
-              onClick={[Function]}
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
-            >
-              
-            </button>
-          </div>
-        </div>
-        <div
-          className="LocalLabbooks__text-row"
-        >
-          <div
-            className="LocalLabbooks__title-row"
-          >
-            <h6
-              className="LocalLabbooks__panel-title"
-              onClick={[Function]}
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  labbook-37
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="LocalLabbooks__owner"
-          >
-            Created by cbutler
-          </p>
-          <p
-            className="LocalLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-        onClick={[Function]}
-      >
-        <div
-          className="LocalLabbooks__icon-row"
-        >
-          <div
-            className="LocalLabbooks__containerStatus"
-          >
-            <button
-              className="LocalLabbooks__containerStatus--state loading"
-              onClick={[Function]}
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
-            >
-              
-            </button>
-          </div>
-        </div>
-        <div
-          className="LocalLabbooks__text-row"
-        >
-          <div
-            className="LocalLabbooks__title-row"
-          >
-            <h6
-              className="LocalLabbooks__panel-title"
-              onClick={[Function]}
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  labbook-38
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="LocalLabbooks__owner"
-          >
-            Created by cbutler
-          </p>
-          <p
-            className="LocalLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
       </div>
       <div
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
@@ -1387,6 +972,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </span>
           </p>
         </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
       </div>
       <div
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
@@ -1425,63 +1014,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
                   className=""
                   style={undefined}
                 >
-                  test-activity
-                </span>
-              </span>
-            </h6>
-          </div>
-          <p
-            className="LocalLabbooks__owner"
-          >
-            Created by cbutler
-          </p>
-          <p
-            className="LocalLabbooks__description"
-          >
-            <span
-              className={undefined}
-            />
-          </p>
-        </div>
-      </div>
-      <div
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
-        onClick={[Function]}
-      >
-        <div
-          className="LocalLabbooks__icon-row"
-        >
-          <div
-            className="LocalLabbooks__containerStatus"
-          >
-            <button
-              className="LocalLabbooks__containerStatus--state loading"
-              onClick={[Function]}
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
-            >
-              
-            </button>
-          </div>
-        </div>
-        <div
-          className="LocalLabbooks__text-row"
-        >
-          <div
-            className="LocalLabbooks__title-row"
-          >
-            <h6
-              className="LocalLabbooks__panel-title"
-              onClick={[Function]}
-            >
-              <span
-                className={undefined}
-              >
-                <span
-                  className=""
-                  style={undefined}
-                >
-                  ec6d81ca-8c4b-4afc-92ff-9b4eed018156
+                  test-uploader-1
                 </span>
               </span>
             </h6>
@@ -1501,11 +1034,509 @@ exports[`Test DashboardLocal snapshot 1`] = `
                 className=""
                 style={undefined}
               >
-                This is a test labbook
+                Test uoload
               </span>
             </span>
           </p>
         </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
+      </div>
+      <div
+        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        onClick={[Function]}
+      >
+        <div
+          className="LocalLabbooks__icon-row"
+        >
+          <div
+            className="LocalLabbooks__containerStatus"
+          >
+            <button
+              className="LocalLabbooks__containerStatus--state loading"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+            >
+              
+            </button>
+          </div>
+        </div>
+        <div
+          className="LocalLabbooks__text-row"
+        >
+          <div
+            className="LocalLabbooks__title-row"
+          >
+            <h6
+              className="LocalLabbooks__panel-title"
+              onClick={[Function]}
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  test-lb
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="LocalLabbooks__owner"
+          >
+            Created by dmk
+          </p>
+          <p
+            className="LocalLabbooks__description"
+          >
+            <span
+              className={undefined}
+            >
+              <span
+                className=""
+                style={undefined}
+              >
+                This a short description
+              </span>
+            </span>
+          </p>
+        </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
+      </div>
+      <div
+        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        onClick={[Function]}
+      >
+        <div
+          className="LocalLabbooks__icon-row"
+        >
+          <div
+            className="LocalLabbooks__containerStatus"
+          >
+            <button
+              className="LocalLabbooks__containerStatus--state loading"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+            >
+              
+            </button>
+          </div>
+        </div>
+        <div
+          className="LocalLabbooks__text-row"
+        >
+          <div
+            className="LocalLabbooks__title-row"
+          >
+            <h6
+              className="LocalLabbooks__panel-title"
+              onClick={[Function]}
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  test-labbook
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="LocalLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="LocalLabbooks__description"
+          >
+            <span
+              className={undefined}
+            >
+              <span
+                className=""
+                style={undefined}
+              >
+                here is my labbook
+              </span>
+            </span>
+          </p>
+        </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
+      </div>
+      <div
+        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        onClick={[Function]}
+      >
+        <div
+          className="LocalLabbooks__icon-row"
+        >
+          <div
+            className="LocalLabbooks__containerStatus"
+          >
+            <button
+              className="LocalLabbooks__containerStatus--state loading"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+            >
+              
+            </button>
+          </div>
+        </div>
+        <div
+          className="LocalLabbooks__text-row"
+        >
+          <div
+            className="LocalLabbooks__title-row"
+          >
+            <h6
+              className="LocalLabbooks__panel-title"
+              onClick={[Function]}
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  test-building-status-2
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="LocalLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="LocalLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
+      </div>
+      <div
+        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        onClick={[Function]}
+      >
+        <div
+          className="LocalLabbooks__icon-row"
+        >
+          <div
+            className="LocalLabbooks__containerStatus"
+          >
+            <button
+              className="LocalLabbooks__containerStatus--state loading"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+            >
+              
+            </button>
+          </div>
+        </div>
+        <div
+          className="LocalLabbooks__text-row"
+        >
+          <div
+            className="LocalLabbooks__title-row"
+          >
+            <h6
+              className="LocalLabbooks__panel-title"
+              onClick={[Function]}
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  test-building-state
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="LocalLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="LocalLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
+      </div>
+      <div
+        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        onClick={[Function]}
+      >
+        <div
+          className="LocalLabbooks__icon-row"
+        >
+          <div
+            className="LocalLabbooks__containerStatus"
+          >
+            <button
+              className="LocalLabbooks__containerStatus--state loading"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+            >
+              
+            </button>
+          </div>
+        </div>
+        <div
+          className="LocalLabbooks__text-row"
+        >
+          <div
+            className="LocalLabbooks__title-row"
+          >
+            <h6
+              className="LocalLabbooks__panel-title"
+              onClick={[Function]}
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  test-building-6
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="LocalLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="LocalLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
+      </div>
+      <div
+        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        onClick={[Function]}
+      >
+        <div
+          className="LocalLabbooks__icon-row"
+        >
+          <div
+            className="LocalLabbooks__containerStatus"
+          >
+            <button
+              className="LocalLabbooks__containerStatus--state loading"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+            >
+              
+            </button>
+          </div>
+        </div>
+        <div
+          className="LocalLabbooks__text-row"
+        >
+          <div
+            className="LocalLabbooks__title-row"
+          >
+            <h6
+              className="LocalLabbooks__panel-title"
+              onClick={[Function]}
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  test-building-5
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="LocalLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="LocalLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
+      </div>
+      <div
+        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        onClick={[Function]}
+      >
+        <div
+          className="LocalLabbooks__icon-row"
+        >
+          <div
+            className="LocalLabbooks__containerStatus"
+          >
+            <button
+              className="LocalLabbooks__containerStatus--state loading"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+            >
+              
+            </button>
+          </div>
+        </div>
+        <div
+          className="LocalLabbooks__text-row"
+        >
+          <div
+            className="LocalLabbooks__title-row"
+          >
+            <h6
+              className="LocalLabbooks__panel-title"
+              onClick={[Function]}
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  test-building-4
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="LocalLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="LocalLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
+      </div>
+      <div
+        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        onClick={[Function]}
+      >
+        <div
+          className="LocalLabbooks__icon-row"
+        >
+          <div
+            className="LocalLabbooks__containerStatus"
+          >
+            <button
+              className="LocalLabbooks__containerStatus--state loading"
+              onClick={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+            >
+              
+            </button>
+          </div>
+        </div>
+        <div
+          className="LocalLabbooks__text-row"
+        >
+          <div
+            className="LocalLabbooks__title-row"
+          >
+            <h6
+              className="LocalLabbooks__panel-title"
+              onClick={[Function]}
+            >
+              <span
+                className={undefined}
+              >
+                <span
+                  className=""
+                  style={undefined}
+                >
+                  test-building-3
+                </span>
+              </span>
+            </h6>
+          </div>
+          <p
+            className="LocalLabbooks__owner"
+          >
+            Created by cbutler
+          </p>
+          <p
+            className="LocalLabbooks__description"
+          >
+            <span
+              className={undefined}
+            />
+          </p>
+        </div>
+        <div
+          className="Tooltip LocalLabbookPanel__loading"
+          data-tooltip="loading"
+        />
       </div>
       <div
         className="Labbook__loader-hidden"

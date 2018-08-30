@@ -162,7 +162,7 @@ export default class UserNote extends Component {
                           <div className={containerCSS} key={detailRecord.id}>
                             {
                               detailRecord.type !== 'NOTE' &&
-                              <div className={`DetailsRecords__action DetailsRecords__action--${detailRecord.action.toLowerCase()}`}></div>
+                              <div className={`DetailsRecords__action DetailsRecords__action--${detailRecord.action && detailRecord.action.toLowerCase()}`}></div>
                             }
                             {
                               detailRecord.data.map((item, index)=>{

@@ -3,6 +3,7 @@ import store from 'JS/redux/store'
 import React, { Component, Fragment } from 'react'
 import queryString from 'querystring'
 import classNames from 'classnames'
+import { connect } from 'react-redux'
 //components
 import WizardModal from 'Components/wizard/WizardModal'
 import Loader from 'Components/shared/Loader'
@@ -17,12 +18,11 @@ import UserIdentity from 'JS/Auth/UserIdentity'
 //config
 import config from 'JS/config'
 
-export default class Labbooks extends Component {
+class Labbooks extends Component {
 
   constructor(props){
     super(props);
 
-    const {filterText} = store.getState().labbookListing
     let {filter, orderBy, sort} = queryString.parse(this.props.history.location.search.slice(1))
     this.state = {
       'labbookModalVisible': false,
@@ -37,7 +37,6 @@ export default class Labbooks extends Component {
       'showLoginPrompt': false,
       orderBy: orderBy || 'modified_on',
       sort: sort || 'desc',
-      'filterValue': filterText,
       'filterMenuOpen': false,
     }
 
@@ -72,36 +71,16 @@ export default class Labbooks extends Component {
     document.title =  `Gigantum`
     window.addEventListener('click', this._closeSortMenu)
     window.addEventListener('click', this._closeFilterMenu)
-    this.unsubscribe = store.subscribe(() =>{
-      this.storeDidUpdate(store.getState().labbookListing)
-    })
-
   }
-
-
-  /**
-    @param {object} labbookListing
-    updates state of labbookListing when prompted to by the store
-  */
-  storeDidUpdate(labbookListing){
-    let newerState = {};
-    if(labbookListing.filterText !== this.state.filterValue){
-      newerState.filterValue = labbookListing.filterText
-    }
-    this.setState(newerState)
-  }
-
 
   /**
     * @param {}
     * fires when component unmounts
     * removes added event listeners
-    * unsubscribe from redux store
   */
   componentWillUnmount() {
-    this.unsubscribe()
     window.removeEventListener('click', this._closeSortMenu)
-    window.removeEventListener('click', this._closeFiltertMenu)
+    window.removeEventListener('click', this._closeFilterMenu)
     window.removeEventListener("scroll", this._captureScroll)
     window.removeEventListener("click", this._hideSearchClear)
 
@@ -135,7 +114,7 @@ export default class Labbooks extends Component {
   */
 
   _closeSortMenu(evt) {
-    let isSortMenu = evt.target.className.indexOf('Labbooks__sort') > -1
+    let isSortMenu = evt && evt.target && evt.target.className && (evt.target.className.indexOf('Labbooks__sort') > -1)
 
     if(!isSortMenu && this.state.sortMenuOpen) {
       this.setState({sortMenuOpen: false});
@@ -241,7 +220,7 @@ export default class Labbooks extends Component {
    * returns true if labbook's name or description exists in filtervalue, else returns false
   */
   _filterSearch(labbook){
-    if(this.state.filterValue === '' || labbook.node.name.toLowerCase().indexOf(this.state.filterValue.toLowerCase()) > -1 || labbook.node.description.toLowerCase().indexOf(this.state.filterValue.toLowerCase()) > -1){
+    if(labbook.node.name && (this.props.filterText === '' || labbook.node.name.toLowerCase().indexOf(this.props.filterText.toLowerCase()) > -1 || labbook.node.description.toLowerCase().indexOf(this.props.filterText.toLowerCase()) > -1)){
       return true;
     }
     return false;
@@ -301,13 +280,34 @@ export default class Labbooks extends Component {
   _setSortFilter(orderBy, sort) {
     if(this.state.selectedSection === 'remoteLabbooks') {
       UserIdentity.getUserIdentity().then(response => {
-        if(response.data){
-          if(response.data.userIdentity.isSessionValid){
-            this._handleSortFilter(orderBy, sort);
-          } else {
+
+        if(navigator.onLine){
+
+          if(response.data){
+
+            if(response.data.userIdentity.isSessionValid){
+
+              this._handleSortFilter(orderBy, sort);
+
+            } else {
+              this.props.auth.renewToken(true, ()=>{
+                if(!this.state.showLoginPrompt) {
+                  this.setState({'showLoginPrompt': true})
+                }
+              }, ()=>{
+                this._handleSortFilter(orderBy, sort);
+              });
+
+            }
+          }
+
+        } else{
+
+          if(!this.state.showLoginPrompt) {
             this.setState({'showLoginPrompt': true})
           }
         }
+
       })
     } else{
       this._handleSortFilter(orderBy, sort);
@@ -335,14 +335,31 @@ export default class Labbooks extends Component {
   */
   _viewRemote(){
     UserIdentity.getUserIdentity().then(response => {
-      if(response.data && response.data.userIdentity.isSessionValid){
-        this.props.history.replace(`../projects/cloud${this.props.history.location.search}`)
-        this.setState({selectedSection: 'cloud'})
-      } else {
+
+      if(navigator.onLine){
+
+        if(response.data && response.data.userIdentity.isSessionValid){
+
+          this.props.history.replace(`../projects/cloud${this.props.history.location.search}`)
+          this.setState({selectedSection: 'cloud'})
+
+        } else {
+          this.props.auth.renewToken(true, ()=>{
+            if(!this.state.showLoginPrompt) {
+              this.setState({'showLoginPrompt': true})
+            }
+          }, ()=>{
+            this.props.history.replace(`../projects/cloud${this.props.history.location.search}`)
+            this.setState({selectedSection: 'cloud'})
+          });
+
+        }
+      } else{
         if(!this.state.showLoginPrompt) {
           this.setState({'showLoginPrompt': true})
         }
       }
+
     })
   }
 
@@ -370,7 +387,7 @@ export default class Labbooks extends Component {
       case 'all':
         return 'All'
       case 'owner':
-        return 'My Labbooks'
+        return 'My Projects'
       case 'others':
         return 'Shared With Me'
       default:
@@ -387,7 +404,7 @@ export default class Labbooks extends Component {
     } else if(this.state.orderBy === 'created_on'){
       return `Creation Date ${this.state.sort === 'asc' ? '(Oldest)' : '(Newest)'}`
     } else {
-      return this.state.sort === 'asc' ? 'Z-A' : 'A-Z';
+      return this.state.sort === 'asc' ? 'A-Z' : 'Z-A';
     }
   }
 
@@ -458,7 +475,7 @@ export default class Labbooks extends Component {
                   ref="labbookSearch"
                   className="Labbooks__search no--margin"
                   placeholder="Filter Projects by name or description"
-                  defaultValue={this.state.filterValue}
+                  defaultValue={this.props.filterText}
                   onKeyUp={(evt) => this._setFilterValue(evt)}
                   onFocus={() => this.setState({showSearchCancel: true})}
                 />
@@ -484,7 +501,7 @@ export default class Labbooks extends Component {
                     className={'Labbooks__filter-item'}
                     onClick={()=>this._setfilter('owner')}
                   >
-                   My Labbooks {this.state.filter === 'owner' ?  '✓ ' : ''}
+                   My Projects {this.state.filter === 'owner' ?  '✓ ' : ''}
                   </li>
                   <li
                     className={'Labbooks__filter-item'}
@@ -531,15 +548,15 @@ export default class Labbooks extends Component {
                   </li>
                   <li
                     className="Labbooks__sort-item"
-                    onClick={()=>this._setSortFilter('name', 'desc')}
+                    onClick={()=>this._setSortFilter('name', 'asc')}
                   >
-                    A-Z {this.state.orderBy === 'name' && this.state.sort !== 'asc' ?  '✓ ' : ''}
+                    A-Z {this.state.orderBy === 'name' && this.state.sort === 'asc' ?  '✓ ' : ''}
                   </li>
                   <li
                     className="Labbooks__sort-item"
-                    onClick={()=>this._setSortFilter('name', 'asc')}
+                    onClick={()=>this._setSortFilter('name', 'desc')}
                   >
-                    Z-A {this.state.orderBy === 'name' && this.state.sort === 'asc' ?  '✓ ' : ''}
+                    Z-A {this.state.orderBy === 'name' && this.state.sort !== 'asc' ?  '✓ ' : ''}
                   </li>
                 </ul>
               </div>
@@ -615,3 +632,16 @@ export default class Labbooks extends Component {
 
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    filterText: state.labbookListing.filterText
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Labbooks);
