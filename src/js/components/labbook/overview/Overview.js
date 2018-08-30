@@ -42,12 +42,14 @@ class Overview extends Component {
       editorFullscreen: false,
     };
     this._editReadme = this._editReadme.bind(this);
+    this._handleClick = this._handleClick.bind(this);
   }
   /*
     runs state check when component mounts
   */
   componentDidMount() {
     this._setExpand();
+    window.addEventListener('click', this._handleClick)
   }
   /*
     runs state check when component updates
@@ -95,31 +97,45 @@ class Overview extends Component {
       this.setState({overflowExists: false});
     }
   }
-
+  /**
+   @param {event} evt
+   hides warning when not clicked on
+   */
+  _handleClick(evt){
+    if((evt.target.className.indexOf('Overview__readme-save') === -1) && this.state.readMeWarning){
+      this.setState({readMeWarning: null});
+    }
+  }
   _closeReadme() {
     this.setState({ editingReadme: false, simpleExists: false });
   }
   _saveReadme() {
-    const { owner, labbookName } = store.getState().routes
-    WriteReadmeMutation(
-      owner,
-      labbookName,
-      simple.value(),
-      (res, error) => {
-        if(error) {
-          console.log(error)
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: 'Readme was not set: ',
-              messageBody: error
-            }
-          })
-        } else{
-          this.setState({ editingReadme: false, simpleExists: false})
+    if(this.props.isPublishing){
+      this.setState({readMeWarning: 'publishing'})
+    } else if(this.props.isSyncing){
+      this.setState({readMeWarning: 'syncing'})
+    } else{
+      const { owner, labbookName } = store.getState().routes
+      WriteReadmeMutation(
+        owner,
+        labbookName,
+        simple.value(),
+        (res, error) => {
+          if(error) {
+            console.log(error)
+            store.dispatch({
+              type: 'ERROR_MESSAGE',
+              payload: {
+                message: 'Readme was not set: ',
+                messageBody: error
+              }
+            })
+          } else{
+            this.setState({ editingReadme: false, simpleExists: false})
+          }
         }
-      }
-    )
+      )
+    }
   }
   _editReadme() {
     this.setState({ editingReadme: true });
@@ -239,6 +255,19 @@ class Overview extends Component {
                   disabled={false}
                   onClick={() => { this._saveReadme() }}>Save
                 </button>
+                {
+                  this.state.readMeWarning &&
+                  <Fragment>
+
+                    <div className="BranchMenu__menu-pointer">
+                    </div>
+
+                    <div className="BranchMenu__button-menu">
+                      Readme cannot be edited while project is {this.state.readMeWarning}.
+                    </div>
+
+                  </Fragment>
+                }
                 <button
                   className="Overview__readme-cancel"
                   onClick={() => { this._closeReadme() }}>Cancel

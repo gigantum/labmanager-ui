@@ -38,7 +38,7 @@ export default class User extends Component {
       handles click to update state
     */
   _handleClickOutside(event) {
-    const userElementIds = ['user', 'username', 'logout']
+    const userElementIds = ['user', 'username', 'logout', 'profile']
     if(this.state.dropdownVisible && (userElementIds.indexOf(event.target.id) < 0)){
       this.setState({
         dropdownVisible: false
@@ -74,6 +74,15 @@ export default class User extends Component {
         <div className={ this.state.dropdownVisible ? 'User__dropdown--arrow' : 'hidden'}></div>
 
         <div className={this.state.dropdownVisible ? 'User__dropdown' : 'hidden'}>
+          <a
+            id="profile"
+            href="http://gigantum.com/profile"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="User__button"
+          >
+            Profile
+          </a>
           <button
             id="logout"
             className="User__button btn-margin"

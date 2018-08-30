@@ -342,7 +342,7 @@ class ContainerStatus extends Component {
    */
   _containerAction(status, evt){
 
-    if(!store.getState().labbook.isBuilding){
+    if(!store.getState().labbook.isBuilding && !this.props.isLookingUpPackages){
       if(status === "Stop"){
 
         this.setState({
@@ -402,7 +402,7 @@ class ContainerStatus extends Component {
     let newStatus = status
 
     newStatus = this.state.isMouseOver && (status === 'Running') ? 'Stop' : newStatus
-    newStatus = this.state.isMouseOver && (status === 'Stopped') ? 'Run' : newStatus
+    newStatus = this.state.isMouseOver && (status === 'Stopped' && !this.props.isLookingUpPackages) ? 'Run' : newStatus
     newStatus = this.state.isMouseOver && (status === 'Rebuild') ? 'Rebuild' : newStatus
     newStatus = this.state.isMouseOver && (status === 'Rebuild') ? 'Rebuild' : newStatus
 
@@ -472,6 +472,7 @@ class ContainerStatus extends Component {
       'Building': this.props.isBuilding || this.props.imageStatus === 'BUILD_IN_PROGRESS',
       'Syncing': this.props.isSyncing,
       'Publishing': this.props.isPublishing,
+      'LookingUp': this.props.isLookingUpPackages,
       'ContainerStatus__container-state--expanded': this.state.isMouseOver && notExcluded && !this.props.isBuilding && !(this.props.imageStatus === 'BUILD_IN_PROGRESS') ,
       'ContainerStatus__container-remove-pointer': !notExcluded || this.props.isBuilding || (this.props.imageStatus === 'BUILD_IN_PROGRESS') || this.state.isSyncing ||this.state.isPublishing
     })
@@ -586,7 +587,7 @@ class ContainerStatus extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     containerMenuOpen: state.containerStatus.containerMenuOpen,
-
+    isLookingUpPackages: state.containerStatus.isLookingUpPackages
   }
 }
 
