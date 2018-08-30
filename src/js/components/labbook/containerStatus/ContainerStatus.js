@@ -469,12 +469,12 @@ class ContainerStatus extends Component {
       'ContainerStatus__container-state--menu-open': this.props.containerMenuOpen,
       'ContainerStatus__container-state': !this.props.containerMenuOpen,
       [status]: !this.props.isBuilding && !this.props.isSyncing && !this.props.isPublishing,
-      'Building': this.props.isBuilding || this.props.imageStatus === 'BUILD_IN_PROGRESS',
+      'Building': this.props.isBuilding || this.state.imageStatus === 'BUILD_IN_PROGRESS',
       'Syncing': this.props.isSyncing,
       'Publishing': this.props.isPublishing,
       'LookingUp': this.props.isLookingUpPackages,
-      'ContainerStatus__container-state--expanded': this.state.isMouseOver && notExcluded && !this.props.isBuilding && !(this.props.imageStatus === 'BUILD_IN_PROGRESS') ,
-      'ContainerStatus__container-remove-pointer': !notExcluded || this.props.isBuilding || (this.props.imageStatus === 'BUILD_IN_PROGRESS') || this.state.isSyncing ||this.state.isPublishing
+      'ContainerStatus__container-state--expanded': this.state.isMouseOver && notExcluded && !this.props.isBuilding && !(this.state.imageStatus === 'BUILD_IN_PROGRESS') ,
+      'ContainerStatus__container-remove-pointer': !notExcluded || this.props.isBuilding || (this.state.imageStatus === 'BUILD_IN_PROGRESS') || this.state.isSyncing ||this.state.isPublishing
     })
 
     const containerMenuIconCSS = classNames({
