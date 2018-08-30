@@ -89,6 +89,7 @@ export default class FilePreview extends Component {
                 <div className="FilePreview__title-container">
                   <h5>Code &nbsp;&nbsp; <ToolTip section="codeOverview"/></h5>
                   <Link
+                    onClick={()=> window.scrollTo(0, 0)}
                     to={{pathname: `../../../../projects/${owner}/${labbookName}/code`}}
                     replace
                   >
@@ -115,6 +116,7 @@ export default class FilePreview extends Component {
                 <div className="FilePreview__title-container">
                   <h5>Input Data<ToolTip section="inputDataOverview"/></h5>
                   <Link
+                    onClick={()=> window.scrollTo(0, 0)}
                     to={{pathname: `../../../../projects/${owner}/${labbookName}/inputData`}}
                     replace
                   >
@@ -140,6 +142,7 @@ export default class FilePreview extends Component {
                 <div className="FilePreview__title-container">
                   <h5>Ouput Data<ToolTip section="outputDataOverview"/></h5>
                   <Link
+                    onClick={()=> window.scrollTo(0, 0)}
                     to={{pathname: `../../../../projects/${owner}/${labbookName}/outputData`}}
                     replace
                   >

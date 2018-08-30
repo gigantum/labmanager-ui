@@ -323,6 +323,7 @@ class Overview extends Component {
           <div className="Overview__title-container">
             <h5 className="Overview__title">Environment<ToolTip section="environmentOverview"/></h5>
             <Link
+              onClick={()=> window.scrollTo(0, 0)}
               to={{ pathname: `../../../../projects/${owner}/${labbookName}/environment` }}
               replace
             >

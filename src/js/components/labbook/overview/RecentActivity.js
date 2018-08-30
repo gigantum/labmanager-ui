@@ -148,7 +148,12 @@ export default class RecentActivity extends Component {
             <ToolTip section="recentActivity"/>
           </h5>
 
-          <Link to={`../../../../projects/${owner}/${labbookName}/activity`}>Activity Details ></Link>
+          <Link
+            onClick={()=> window.scrollTo(0, 0)}
+            to={`../../../../projects/${owner}/${labbookName}/activity`}
+          >
+            Activity Details >
+          </Link>
 
         </div>
 
