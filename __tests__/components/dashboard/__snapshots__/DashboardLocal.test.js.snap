@@ -296,8 +296,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="hidden"
         />
       </div>
-      <div
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/zab"
         onClick={[Function]}
       >
         <div
@@ -355,9 +356,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/untracked-labbook"
         onClick={[Function]}
       >
         <div
@@ -415,9 +417,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/untracked-2"
         onClick={[Function]}
       >
         <div
@@ -475,9 +478,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/untracked"
         onClick={[Function]}
       >
         <div
@@ -535,9 +539,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/dmk/trump-tweets"
         onClick={[Function]}
       >
         <div
@@ -602,9 +607,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/tracking-endabled"
         onClick={[Function]}
       >
         <div
@@ -662,9 +668,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/tracked-2"
         onClick={[Function]}
       >
         <div
@@ -722,9 +729,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/tpub"
         onClick={[Function]}
       >
         <div
@@ -782,9 +790,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/thisiasdmadskadssfdkjjssdfs-jasjdasj"
         onClick={[Function]}
       >
         <div
@@ -842,9 +851,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/dmk/testing-notifications"
         onClick={[Function]}
       >
         <div
@@ -909,9 +919,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/testing-activity-feed"
         onClick={[Function]}
       >
         <div
@@ -976,9 +987,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/test-uploader-1"
         onClick={[Function]}
       >
         <div
@@ -1043,9 +1055,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/dmk/test-lb"
         onClick={[Function]}
       >
         <div
@@ -1110,9 +1123,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/test-labbook"
         onClick={[Function]}
       >
         <div
@@ -1177,9 +1191,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/test-building-status-2"
         onClick={[Function]}
       >
         <div
@@ -1237,9 +1252,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/test-building-state"
         onClick={[Function]}
       >
         <div
@@ -1297,9 +1313,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/test-building-6"
         onClick={[Function]}
       >
         <div
@@ -1357,9 +1374,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/test-building-5"
         onClick={[Function]}
       >
         <div
@@ -1417,9 +1435,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/test-building-4"
         onClick={[Function]}
       >
         <div
@@ -1477,9 +1496,10 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
-      <div
+      </a>
+      <a
         className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        href="/projects/cbutler/test-building-3"
         onClick={[Function]}
       >
         <div
@@ -1537,7 +1557,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
           className="Tooltip LocalLabbookPanel__loading"
           data-tooltip="loading"
         />
-      </div>
+      </a>
       <div
         className="Labbook__loader-hidden"
       >

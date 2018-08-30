@@ -453,6 +453,7 @@ class Labbook extends Component {
                      setSyncingState={this._setSyncingState}
                      setPublishingState={this._setPublishingState}
                      setExportingState={this._setExportingState}
+                     isExporting={this.props.isExporting}
                      toggleBranchesView={this._toggleBranchesView}
                      isMainWorkspace={name === 'workspace' || name === `gm.workspace-${localStorage.getItem('username')}`}
                      auth={this.props.auth}
@@ -520,6 +521,8 @@ class Labbook extends Component {
                           labbookId={labbook.id}
                           setBuildingState={this._setBuildingState}
                           readme={labbook.readme}
+                          isSyncing={this.props.isSyncing}
+                          isPublishing={this.props.isPublishing}
                         />)
                       }}
                     />
@@ -533,7 +536,11 @@ class Labbook extends Component {
                               key={this.props.labbookName + '_overview'}
                               labbook={labbook}
                               description={labbook.description}
+                              labbookId={labbook.id}
+                              setBuildingState={this._setBuildingState}
                               readme={labbook.readme}
+                              isSyncing={this.props.isSyncing}
+                              isPublishing={this.props.isPublishing}
                             />)
                           }}
                         />

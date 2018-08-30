@@ -2,17 +2,18 @@
 import React, { Component, Fragment } from 'react'
 import classNames from 'classnames'
 import uuidv4 from 'uuid/v4'
+import { connect } from 'react-redux'
 //utilities
 import JobStatus from 'JS/utils/JobStatus'
 //mutations
 import ExportLabbookMutation from 'Mutations/ExportLabbookMutation'
-import PublishLabbookMutation from 'Mutations/branches/PublishLabbookMutation'
 import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
 //store
 import store from 'JS/redux/store'
+import { setContainerMenuWarningMessage} from 'JS/redux/reducers/labbook/environment/environment'
 //components
 import DeleteLabbook from './DeleteLabbook'
 import ForceSync from './ForceSync'
@@ -22,7 +23,7 @@ import CreateBranch from 'Components/labbook/branches/CreateBranch'
 import Collaborators from './collaborators/Collaborators'
 import ToolTip from 'Components/shared/ToolTip';
 
-export default class BranchMenu extends Component {
+class BranchMenu extends Component {
   constructor(props) {
 
     super(props);
@@ -48,6 +49,7 @@ export default class BranchMenu extends Component {
       'justOpened': true,
       'setPublic': false,
       'syncWarningVisible': false,
+      'publishWarningVisible': false,
       'publishModalVisible': false,
       owner,
       labbookName
@@ -113,6 +115,9 @@ export default class BranchMenu extends Component {
     if((evt.target.className.indexOf('BranchMenu__sync-button') === -1) && this.state.syncWarningVisible){
       this.setState({syncWarningVisible: false})
     }
+    if((evt.target.className.indexOf('BranchMenu__remote-button') === -1) && this.state.publishWarningVisible){
+      this.setState({publishWarningVisible: false})
+    }
 
   }
 
@@ -163,20 +168,8 @@ export default class BranchMenu extends Component {
   _showContainerMenuMessage(action, containerRunning) {
 
     let dispatchMessage = containerRunning ? `Stop Project before ${action}. \n Be sure to save your changes.` : `Project is ${action}. \n Please do not refresh the page.`
-
-    store.dispatch({
-      type: 'CONTAINER_MENU_WARNING',
-      payload: {
-        message: dispatchMessage
-      }
-    })
     this.setState({menuOpen: false});
-    store.dispatch({
-      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-      payload: {
-        containerMenuOpen: true
-      }
-    })
+    this.props.setContainerMenuWarningMessage(dispatchMessage)
   }
 
   /**
@@ -192,6 +185,8 @@ export default class BranchMenu extends Component {
           message: 'Publishing is currently only available on the main workspace branch.',
         }
       })
+    } else if(this.props.isExporting){
+      this.setState({publishWarningVisible: true})
     } else {
       this.setState({
         'publishModalVisible': !this.state.publishModalVisible
@@ -219,6 +214,8 @@ export default class BranchMenu extends Component {
           message: 'Syncing is currently only available on the main workspace branch.',
         }
       })
+    } else if(this.props.isExporting){
+      this.setState({syncWarningVisible: true})
     } else {
       const status = store.getState().containerStatus.status
 
@@ -238,87 +235,79 @@ export default class BranchMenu extends Component {
 
               if (response.data.userIdentity.isSessionValid) {
 
-                if(this.state.owner === 'gigantum-examples'){
+                store.dispatch({
+                  type: 'MULTIPART_INFO_MESSAGE',
+                  payload: {
+                    id: id,
+                    message: 'Syncing Project with Gigantum cloud ...',
+                    isLast: false,
+                    error: false
+                  }
+                })
 
-                  this.setState({syncWarningVisible: true})
+                this.props.setSyncingState(true);
+                this._showContainerMenuMessage('syncing');
 
-                } else {
-
-                  store.dispatch({
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                      id: id,
-                      message: 'Syncing Project with Gigantum cloud ...',
-                      isLast: false,
-                      error: false
-                    }
-                  })
-
-                  this.props.setSyncingState(true);
-                  this._showContainerMenuMessage('syncing');
-
-                  SyncLabbookMutation(
-                    this.state.owner,
-                    this.state.labbookName,
-                    false,
-                    (error) => {
-                      this.props.setSyncingState(false);
-                      if (error) {
-                        store.dispatch({
-                          type: 'MULTIPART_INFO_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: `Could not sync ${this.state.labbookName}`,
-                            messageBody: error,
-                            isLast: true,
-                            error: true
-                          }
-                        })
-
-                        if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1) || (error[0].message.indexOf('Merge conflict') > -1)){
-
-                          self._toggleSyncModal()
+                SyncLabbookMutation(
+                  this.state.owner,
+                  this.state.labbookName,
+                  false,
+                  (error) => {
+                    this.props.setSyncingState(false);
+                    if (error) {
+                      store.dispatch({
+                        type: 'MULTIPART_INFO_MESSAGE',
+                        payload: {
+                          id: id,
+                          message: `Could not sync ${this.state.labbookName}`,
+                          messageBody: error,
+                          isLast: true,
+                          error: true
                         }
-                      } else {
-                        BuildImageMutation(
-                          this.state.labbookName,
-                          this.state.owner,
-                          false,
-                          (response, error) => {
-                            if (error) {
-                              console.error(error)
-                              store.dispatch(
-                                {
-                                  type: 'MULTIPART_INFO_MESSAGE',
-                                  payload: {
-                                    id: id,
-                                    message: `ERROR: Failed to build ${this.state.labookName}`,
-                                    messsagesList: error,
-                                    error: true
-                                  }
-                                })
-                            }
-                          })
-                        store.dispatch({
-                          type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                          payload: {
-                            containerMenuOpen: false
-                          }
-                        })
-                        store.dispatch({
-                          type: 'MULTIPART_INFO_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: `Successfully synced ${this.state.labbookName}`,
-                            isLast: true,
-                            error: false
-                          }
-                        })
-                      }
-                    }
-                  )
+                      })
 
-                }
+                      if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1) || (error[0].message.indexOf('Merge conflict') > -1)){
+
+                        self._toggleSyncModal()
+                      }
+                    } else {
+                      BuildImageMutation(
+                        this.state.labbookName,
+                        this.state.owner,
+                        false,
+                        (response, error) => {
+                          if (error) {
+                            console.error(error)
+                            store.dispatch(
+                              {
+                                type: 'MULTIPART_INFO_MESSAGE',
+                                payload: {
+                                  id: id,
+                                  message: `ERROR: Failed to build ${this.state.labookName}`,
+                                  messsagesList: error,
+                                  error: true
+                                }
+                              })
+                          }
+                        })
+                      store.dispatch({
+                        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
+                        payload: {
+                          containerMenuOpen: false
+                        }
+                      })
+                      store.dispatch({
+                        type: 'MULTIPART_INFO_MESSAGE',
+                        payload: {
+                          id: id,
+                          message: `Successfully synced ${this.state.labbookName}`,
+                          isLast: true,
+                          error: false
+                        }
+                      })
+                    }
+                  }
+                )
 
               } else {
                 this.props.auth.renewToken(true, ()=>{
@@ -338,18 +327,7 @@ export default class BranchMenu extends Component {
         })
       } else {
         this.setState({ menuOpen: false });
-        store.dispatch({
-          type: 'CONTAINER_MENU_WARNING',
-          payload: {
-            message: 'Stop Project before syncing. \n Be sure to save your changes.'
-          }
-        });
-        store.dispatch({
-          type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-          payload: {
-            containerMenuOpen: true
-          }
-        })
+        this.props.setContainerMenuWarningMessage('Stop Project before syncing. \n Be sure to save your changes.')
       }
     }
   }
@@ -655,10 +633,6 @@ export default class BranchMenu extends Component {
       'hidden': !this.state.menuOpen,
       'BranchMenu__menu': true
     })
-    const exportCSS = classNames({
-      'BranchMenu__item--export': !this.state.exporting,
-      'BranchMenu__item--export--downloading': this.state.exporting
-    })
 
     return (
       <div className="BranchMenu flex flex--column'">
@@ -743,7 +717,7 @@ export default class BranchMenu extends Component {
                 Merge Branch
               </button></li>
 
-            <li className={exportCSS}>
+            <li className="BranchMenu__item--export">
               <button
                 onClick={(evt) => this._exportLabbook(evt)}
                 disabled={this.state.exporting}
@@ -772,6 +746,19 @@ export default class BranchMenu extends Component {
               >
                 Publish
               </button>
+              {
+                this.state.publishWarningVisible &&
+                <Fragment>
+
+                  <div className="BranchMenu__menu-pointer">
+                  </div>
+
+                  <div className="BranchMenu__button-menu">
+                    Publishing is disabled while Project is exporting.
+                  </div>
+
+                </Fragment>
+              }
             </div>
           }
 
@@ -791,7 +778,7 @@ export default class BranchMenu extends Component {
                   </div>
 
                   <div className="BranchMenu__button-menu">
-                    Syncing is disabled for example projects.
+                    Syncing is disabled while Project is exporting.
                   </div>
 
                 </Fragment>
@@ -820,3 +807,15 @@ export default class BranchMenu extends Component {
     )
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return state.packageDependencies
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      setContainerMenuWarningMessage,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BranchMenu);

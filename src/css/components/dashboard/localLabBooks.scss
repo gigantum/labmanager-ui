@@ -215,7 +215,7 @@
   text-align: center;
   word-break: break-all;
 
-  color: $jet;
+  color: $jet !important;
   background: $white;
   background-size: 50px;
 
@@ -232,7 +232,7 @@
 
 .LocalLabbooks__panel:hover {
   transition: box-shadow 0.5s;
-
+  text-decoration: none;
   box-shadow: 0 0px 12px 0 rgba(0,0,0,.50);
 }
 
