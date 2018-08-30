@@ -1,5 +1,5 @@
 # source: http://localhost:10000/api/labbook/
-# timestamp: Wed Aug 29 2018 11:51:57 GMT-0400 (EDT)
+# timestamp: Thu Aug 30 2018 18:30:42 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -557,7 +557,7 @@ type JobStatus implements Node {
 }
 
 """
-A Connection for paging through all background jobs the system is aware of.
+A Connection for paging through all background jobs the system is aware of. 
 """
 type JobStatusConnection {
   pageInfo: PageInfo!
@@ -755,6 +755,7 @@ type LabbookMutations {
   deleteExperimentalBranch(input: DeleteExperimentalBranchInput!): DeleteExperimentalBranchPayload
   mergeFromBranch(input: MergeFromBranchInput!): MergeFromBranchPayload
   workonExperimentalBranch(input: WorkonBranchInput!): WorkonBranchPayload
+  setVisibility(input: SetVisibilityInput!): SetVisibilityPayload
 }
 
 """
@@ -820,7 +821,7 @@ type LabbookRefEdge {
 
 """
 A type representing a section within a LabBook (i.e., code, input, output)
-
+    
 """
 type LabbookSection implements Node & GitRepository {
   """The ID of the object."""
@@ -856,7 +857,7 @@ input MergeFromBranchInput {
 }
 
 """
-Merge from another branch into the current active branch. Force if necessary.
+Merge from another branch into the current active branch. Force if necessary. 
 """
 type MergeFromBranchPayload {
   labbook: Labbook
@@ -1070,6 +1071,17 @@ input SetLabbookDescriptionInput {
 
 type SetLabbookDescriptionPayload {
   success: Boolean
+  clientMutationId: String
+}
+
+input SetVisibilityInput {
+  owner: String!
+  labbookName: String!
+  visibility: String!
+  clientMutationId: String
+}
+
+type SetVisibilityPayload {
   clientMutationId: String
 }
 
