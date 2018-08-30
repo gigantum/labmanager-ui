@@ -162,7 +162,6 @@ class Labbooks extends Component {
   */
   _goToLabbook = (labbookName, owner) => {
     this.setState({'labbookName': labbookName, 'owner': owner})
-    // this.props.history.replace(`/projects/${owner}/${labbookName}`)
   }
 
 
