@@ -40,12 +40,25 @@
   @include flex(flex-start, column)
 }
 
+.ActivityCard__user-initials{
+  color: white;
+  font-size: 12px;
+  align-self: center;
+  user-select: none;
+  text-shadow:
+  -0.6px -0.6px 0 #000,
+   0.6px -0.6px 0 #000,
+   -0.6px 0.6px 0 #000,
+    0.6px 0.6px 0 #000;
+}
+
 .ActivityCard__user {
   height: 24px;
   width: 24px;
   align-self: center;
-  background: url('../images/icons/user.svg') no-repeat 50% 50%;
-  background-size: 24px;
+  border-radius: 60px;
+  border: 1px solid $romanSilver;
+  @include flex(center, row);
 }
 
 .ActivityCard__time {

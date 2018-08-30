@@ -6,14 +6,26 @@
   padding: 20px 0;
   @include flex(flex-start, column);
 }
+.User__image-initials{
+  color: white;
+  font-size: 28px;
+  align-self: center;
+  user-select: none;
+  text-shadow:
+  -1px -1px 0 #000,
+   1px -1px 0 #000,
+   -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
 
 .User__image {
   height: 60px;
   width: 60px;
   align-self: center;
+  border-radius: 60px;
+  border: 3px solid $romanSilver;
+  @include flex(center, row);
 
-  background: url(../images/icons/user.svg) no-repeat 50% 50%;
-  background-size: 100%;
 }
 
 .User__name {

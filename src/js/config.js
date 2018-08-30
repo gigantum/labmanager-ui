@@ -63,6 +63,47 @@ const CONFIG = {
     return tips[section]
   },
   demoHostName: 'try.gigantum.com',
+  generateAvatar: (username) => {
+    let firstHash = 1, helper, usernameIndex, secondHash = 0;
+    //color pallete
+    let avatarColors = [
+      '#324156',
+      '#007DA7',
+      '#17D7BE',
+      '#E0EBF9',
+      '#9984BC',
+      '#703273',
+      '#A3AAB2',
+      '#6C6D6D',
+    ]
+    if (username) {
+      firstHash = 0;
+      //first hashing function, returns integer
+      for (usernameIndex = username.length - 1; usernameIndex >= 0; usernameIndex--) {
+
+          let char = username.charCodeAt(usernameIndex);
+          firstHash = (firstHash << 6 & 268435455 ) + char + ( char <<14 );
+          helper = firstHash & 266338304;
+          firstHash = helper !==0 ? firstHash^helper >> 12 : firstHash;
+
+      }
+      //second hashing function, returns integer
+
+      for (let i = 0; i < username.length; i++) {
+
+        let char = username.charCodeAt(i);
+        secondHash = ((secondHash << 5)- secondHash)+char;
+        secondHash = secondHash & secondHash;
+
+      }
+
+      secondHash = Math.abs(secondHash)
+    }
+    //finds mod of both hashing functions, returns a style
+    return {
+      background: `linear-gradient(${(firstHash + secondHash) % 360}deg, ${avatarColors[firstHash % 8]},  ${avatarColors[secondHash % 8]}`,
+    };
+  },
 }
 
 export default CONFIG
