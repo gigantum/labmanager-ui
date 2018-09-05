@@ -23,6 +23,7 @@ import {
 import { setErrorMessage, setWarningMessage } from 'JS/redux/reducers/footer'
 import { setContainerMenuWarningMessage} from 'JS/redux/reducers/labbook/environment/environment'
 import { setBuildingState} from 'JS/redux/reducers/labbook/labbook'
+import { setLookingUpPackagesState} from 'JS/redux/reducers/labbook/containerStatus'
 //Mutations
 import AddPackageComponentsMutation from 'Mutations/environment/AddPackageComponentsMutation'
 import RemovePackageComponentsMutation from 'Mutations/environment/RemovePackageComponentsMutation'
@@ -415,10 +416,11 @@ class PackageDependencies extends Component {
       disableInstall: true,
       installDependenciesButtonState: 'loading'
     })
+
     this.props.setBuildingState(true)
-
+    this.props.setLookingUpPackagesState(true)
     PackageLookup.query(labbookName, owner, filteredInput).then((response)=>{
-
+      this.props.setLookingUpPackagesState(false)
       if(response.errors){
         packages = packages.map((pkg) => {
           pkg.validity = 'valid'
@@ -429,7 +431,9 @@ class PackageDependencies extends Component {
           self.setState({installDependenciesButtonState: ''})
         }, 2000)
         this.props.setErrorMessage(`Error occured looking up packages`, response.errors)
+
         this.props.setBuildingState(false)
+
       } else{
         let resPackages = response.data.labbook.packages;
         let invalidCount = 0;
@@ -931,6 +935,7 @@ const mapDispatchToProps = dispatch => {
       setContainerMenuWarningMessage,
       setBuildingState,
       setWarningMessage,
+      setLookingUpPackagesState,
   }
 }
 

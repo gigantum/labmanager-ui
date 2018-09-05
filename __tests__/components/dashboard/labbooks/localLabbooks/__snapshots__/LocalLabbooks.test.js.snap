@@ -111,8 +111,9 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         className="hidden"
       />
     </div>
-    <div
+    <a
       className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      href="/projects/cbutler/zab"
       onClick={[Function]}
     >
       <div
@@ -170,9 +171,10 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         className="Tooltip LocalLabbookPanel__loading"
         data-tooltip="loading"
       />
-    </div>
-    <div
+    </a>
+    <a
       className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      href="/projects/cbutler/untracked-labbook"
       onClick={[Function]}
     >
       <div
@@ -230,9 +232,10 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         className="Tooltip LocalLabbookPanel__loading"
         data-tooltip="loading"
       />
-    </div>
-    <div
+    </a>
+    <a
       className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      href="/projects/cbutler/untracked-2"
       onClick={[Function]}
     >
       <div
@@ -290,9 +293,10 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         className="Tooltip LocalLabbookPanel__loading"
         data-tooltip="loading"
       />
-    </div>
-    <div
+    </a>
+    <a
       className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      href="/projects/cbutler/untracked"
       onClick={[Function]}
     >
       <div
@@ -350,9 +354,10 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         className="Tooltip LocalLabbookPanel__loading"
         data-tooltip="loading"
       />
-    </div>
-    <div
+    </a>
+    <a
       className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+      href="/projects/dmk/trump-tweets"
       onClick={[Function]}
     >
       <div
@@ -417,7 +422,7 @@ exports[`LocalLabbooks LocalLabbooks snapshot 1`] = `
         className="Tooltip LocalLabbookPanel__loading"
         data-tooltip="loading"
       />
-    </div>
+    </a>
     <div
       className="Labbook__loader-hidden"
     >

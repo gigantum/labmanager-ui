@@ -93,6 +93,7 @@
   border: 3px solid $goldenLemon;
   background-size: 20px;
 }
+
 .ContainerStatus__container-state.Stopped {
   background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
   border: 3px solid $romanSilver;
@@ -108,6 +109,19 @@
   background-size: 20px;
   margin: 0 -7px -1px 0;
   line-height: 31px;
+}
+
+.ContainerStatus__container-state.LookingUp {
+  width: 141px !important;
+  height: 31px !important;
+  font-size: 16px !important;
+  line-height: 26px !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  background: $background-color url('./../images/loaders/button-starting.svg') no-repeat 90% center !important;
+  border: 3px solid $goldenLemon !important;
+  background-size: 20px !important;
+  cursor: auto;
 }
 
 .ContainerStatus__container-state.Rebuild{

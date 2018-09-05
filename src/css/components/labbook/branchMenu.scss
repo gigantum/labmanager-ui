@@ -174,16 +174,6 @@
 
 }
 
-.BranchMenu__item--export--downloading {
-  @extend .BranchMenu__item;
-  background: url('./../images/icons/rings.svg') no-repeat 7px center;
-  background-size: 24px;
-}
-.BranchMenu__item--export--downloading:hover {
-  background: $background-color url('./../images/icons/rings.svg') no-repeat 7px center;
-  background-size: 24px;
-}
-
 .BranchMenu__item--delete{
   @extend .BranchMenu__item;
   background: url('./../images/icons/trash.svg') no-repeat 11px center;
@@ -238,7 +228,8 @@
 
 
 .BranchMenu__item--flat-button,
-.BranchMenu__item--flat-button:focus {
+.BranchMenu__item--flat-button:focus,
+.BranchMenu__item--flat-button:disabled, {
   width: 100%;
   cursor: pointer;
   margin: 1.5px 0;
