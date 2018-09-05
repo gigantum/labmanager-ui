@@ -53,6 +53,9 @@
   right: 20px;
 }
 .Favorite__description-section{
+  max-height: 80px;
+  word-break: break-all;
+  overflow: hidden;
     p{
       margin: 0;
     }

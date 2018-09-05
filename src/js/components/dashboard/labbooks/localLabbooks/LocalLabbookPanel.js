@@ -1,6 +1,7 @@
 //vendor
 import React, { Component } from 'react'
 import Highlighter from 'react-highlight-words'
+import {Link} from 'react-router-dom'
 //muations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
@@ -224,7 +225,8 @@ export default class LocalLabbookPanel extends Component {
 
 
     return (
-      <div
+      <Link
+        to={`/projects/${edge.node.owner}/${edge.node.name}`}
         onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}
         key={'local' + edge.node.name}
         className='LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between'>
@@ -288,6 +290,6 @@ export default class LocalLabbookPanel extends Component {
             className={`Tooltip LocalLabbookPanel__${this.props.visibility}`}>
           </div>
         }
-    </div>)
+    </Link>)
   }
 }

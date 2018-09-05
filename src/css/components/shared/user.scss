@@ -42,21 +42,22 @@
   width: 100px;
   padding: 5px;
   border-radius: 8px;
+  @include flex(space-between, column)
 }
 
 
 .User__button {
-  width: 100%;
   align-self: center;
   color: $white;
   border-radius: 0px;
   padding: 5px;
   background-color: transparent !important;
   border-width: 0px;
-
+  font-weight: 100;
 }
 
 .User__button:hover {
+  text-decoration: none;
   color: $turquise;
   border-width: 0px;
 }

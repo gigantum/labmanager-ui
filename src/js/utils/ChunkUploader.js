@@ -143,7 +143,9 @@ const updateChunkStatus = (file, chunkData, labbookName, owner, transactionId) =
 
 
 const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, username, filepath, section, getChunkCallback, componentCallback) => {
+
   if(!store.getState().fileBrowser.pause || (store.getState().footer.totalFiles > 1)){
+
     AddLabbookFileMutation(
       data.connectionKey,
       username,
@@ -158,10 +160,17 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
         store.dispatch({
           type: 'FINISHED_UPLOADING',
         })
+
         if(result && (error === undefined)){
+
           getChunkCallback(file, result)
+
           if(store.getState().footer.totalFiles > 1){
-            updateTotalStatus(file, data.labbookName, username, data.transactionId)
+            let lastChunk = (chunkData.totalChunks - 1) === chunkData.chunkIndex
+
+            if(lastChunk){
+              updateTotalStatus(file, data.labbookName, username, data.transactionId)
+            }
           }else{
             updateChunkStatus(file, chunkData, data.labbookName, username, data.transactionId)
           }
@@ -260,6 +269,7 @@ const ChunkUploader = {
 
           }
           else{
+    
              //if(store.getState().fileBrowser.pause === false){
               uploadFileBrowserChunk(
                 data,

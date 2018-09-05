@@ -6,6 +6,7 @@ import {StaticRouter, Link} from 'react-router';
 import {Provider} from 'react-redux'
 import Dashboard from 'Components/dashboard/Dashboard';
 import history from 'JS/history';
+import {BrowserRouter as Router} from 'react-router-dom'
 //store
 import store from "JS/redux/store"
 
@@ -15,7 +16,9 @@ test('Test Dashboard datasets', () => {
 
   const dashboard = renderer.create(
     <Provider store={store}>
-      <Dashboard match={{params: {id: 'datasets'}}} history={history}/>
+      <Router>
+        <Dashboard match={{params: {id: 'datasets'}}} history={history}/>
+      </Router>
     </Provider>
 
   );
@@ -27,7 +30,9 @@ test('Test Dashboard datasets', () => {
 test('Test Dashboard Labbooks', () => {
   const dashboard = renderer.create(
     <Provider store={store}>
-      <Dashboard match={{params: {id: 'labbbooks'}}} history={history}/>
+      <Router>
+        <Dashboard match={{params: {id: 'labbbooks'}}} history={history}/>
+      </Router>
     </Provider>
   );
   let tree = dashboard.toJSON();

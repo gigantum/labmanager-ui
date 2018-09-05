@@ -8,6 +8,7 @@ import LocalLabbookPanel from 'Components/dashboard/labbooks/localLabbooks/Local
 import relayTestingUtils from 'relay-testing-utils'
 import {MemoryRouter } from 'react-router-dom'
 import environment from 'JS/createRelayEnvironment'
+import {BrowserRouter as Router} from 'react-router-dom'
 
 const variables = {first:5}
 const goToLabbook = () =>{
@@ -29,9 +30,11 @@ test('Test LocalLabbooks rendering', () => {
   const localLabbooks = renderer.create(
 
      relayTestingUtils.relayWrap(
-       <LocalLabbookPanel
-         {...fixtures}
-       />, {}, json.data.labbookList.localLabbooks.edges[0])
+      <Router>
+        <LocalLabbookPanel
+          {...fixtures}
+        />
+      </Router>, {}, json.data.labbookList.localLabbooks.edges[0])
 
   );
 

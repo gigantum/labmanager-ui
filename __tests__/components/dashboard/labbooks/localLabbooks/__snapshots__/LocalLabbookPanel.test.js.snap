@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test LocalLabbooks rendering 1`] = `
-<div
+<a
   className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+  href="/projects/cbutler/zab"
   onClick={[Function]}
 >
   <div
@@ -60,5 +61,5 @@ exports[`Test LocalLabbooks rendering 1`] = `
     className="Tooltip LocalLabbookPanel__undefined"
     data-tooltip="undefined"
   />
-</div>
+</a>
 `;
