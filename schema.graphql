@@ -1,5 +1,5 @@
 # source: http://localhost:10000/api/labbook/
-# timestamp: Thu Aug 30 2018 18:30:42 GMT-0400 (EDT)
+# timestamp: Thu Sep 06 2018 10:20:17 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -1082,6 +1082,7 @@ input SetVisibilityInput {
 }
 
 type SetVisibilityPayload {
+  success: Boolean
   clientMutationId: String
 }
 

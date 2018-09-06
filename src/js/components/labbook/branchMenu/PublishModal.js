@@ -149,13 +149,13 @@ export default class PublishModal extends Component {
             <div className="Publish__radio-buttons">
               <div className="Publish__private">
                 <input
-                  checked={!this.state.isPublic}
+                  defaultChecked={!this.state.isPublic}
                   type="radio"
                   name="publish"
                   id="publish_private"
                   onClick={()=>{this._setPublic(false)}}
                 />
-                <label for="publish_private">
+                <label htmlFor="publish_private">
                   <b>Private</b>
                 </label>
 
@@ -163,13 +163,13 @@ export default class PublishModal extends Component {
               </div>
               <div className="Publish__public">
                 <input
-                  checked={this.state.isPublic}
+                  defaultChecked={this.state.isPublic}
                   name="publish"
                   type="radio"
                   id="publish_public"
                   onClick={()=>{this._setPublic(true)}}
                 />
-                <label for="publish_public">
+                <label htmlFor="publish_public">
                   <b>Public</b>
                 </label>
                 <p className="Publish__paragraph">Public projects are visible to everyone. Users will be able to import a copy. Only users that are added as a collaborator will be able to edit.</p>
