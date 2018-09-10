@@ -227,9 +227,17 @@
     font-family: FontAwesome !important;
   }
   .Overview__readme--editing-buttons {
+    position: relative;
     @include flex(center, row);
     button {
       margin: 0 10px;
+    }
+    .BranchMenu__menu-pointer{
+      right: auto;
+      margin-left: -55px;
+    }
+    .BranchMenu__button-menu{
+      right: auto;
     }
   }
 }

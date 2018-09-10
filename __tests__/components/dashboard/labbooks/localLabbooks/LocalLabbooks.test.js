@@ -9,7 +9,9 @@ import LocalLabbooks from 'Components/dashboard/labbooks/localLabbooks/LocalLabb
 import relayTestingUtils from 'relay-testing-utils'
 import {MemoryRouter } from 'react-router-dom'
 import environment from 'JS/createRelayEnvironment'
+import {Provider} from 'react-redux'
 import store from 'JS/redux/store'
+import {BrowserRouter as Router} from 'react-router-dom'
 
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -94,11 +96,15 @@ describe('LocalLabbooks', () => {
     const localLabbooksSnap = renderer.create(
 
        relayTestingUtils.relayWrap(
-         <LocalLabbooks
+        <Provider store={store}>
+          <Router>
+            <LocalLabbooks
 
-           {...fixtures}
+              {...fixtures}
 
-          />, {}, json.data.labbookList)
+            />
+          </Router>
+        </Provider>, {}, json.data.labbookList)
 
     )
 
@@ -116,8 +122,11 @@ describe('LocalLabbooks', () => {
    *
    *****/
   const localLabbooksShallow = mount(
-
-     <LocalLabbooks history={history} {...fixtures} feed={json.data}/>
+    <Provider store={store}>
+     <Router>
+      <LocalLabbooks history={history} {...fixtures} feed={json.data}/>
+     </Router>
+    </Provider>
 
   );
 
@@ -125,7 +134,7 @@ describe('LocalLabbooks', () => {
   it('LocalLabbooks panel length', () => {
 
 
-    expect(localLabbooksShallow.find('.LocalLabbooks__panel')).toHaveLength(11)
+    expect(localLabbooksShallow.find('.LocalLabbooks__panel')).toHaveLength(16)
   })
 
 
@@ -143,13 +152,17 @@ describe('LocalLabbooks', () => {
 
   const localLabbooksMount = mount(
     relayTestingUtils.relayWrap(
-       <LocalLabbooks
-         {...fixtures}
-         showModal={showModalTest}
-         goToLabbook={goToLabbookTest}
-         sortProcessed={sortProcessedTest}
-         relay={{loadMore: loadMore}}
-       />, {}, json.data.labbookList
+      <Provider store={store}>
+        <Router>
+          <LocalLabbooks
+            {...fixtures}
+            showModal={showModalTest}
+            goToLabbook={goToLabbookTest}
+            sortProcessed={sortProcessedTest}
+            relay={{loadMore: loadMore}}
+          />
+       </Router>
+      </Provider>, {}, json.data.labbookList
      )
   );
 

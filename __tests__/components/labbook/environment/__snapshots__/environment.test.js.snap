@@ -13,7 +13,37 @@ exports[`Test Environment rendering 1`] = `
       <h5
         className="Base__header"
       >
-        Base
+        Base    
+        <div
+          className="hidden baseEnvironment"
+        >
+          <div
+            className="ToolTip__toggle baseEnvironment"
+            onClick={[Function]}
+          >
+            <div
+              className="ToolTip__glow-container"
+            >
+              <div
+                className="ToolTip__glow-ring-outer"
+              >
+                <div
+                  className="ToolTip__glow-ring-inner"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="hidden baseEnvironment"
+          />
+          <div
+            className="hidden baseEnvironment"
+          >
+            This section shows information about the base associated with this Project.
+             Bases are a pre-built Docker image that is used as a starting point for the Project's environment.
+             Projects may only have a single base and currently cannot be changed after creation.
+          </div>
+        </div>
       </h5>
     </div>
     <div
@@ -93,7 +123,35 @@ exports[`Test Environment rendering 1`] = `
       <h5
         className="PackageDependencies__header"
       >
-        Packages
+        Packages 
+        <div
+          className="hidden packagesEnvironment"
+        >
+          <div
+            className="ToolTip__toggle packagesEnvironment"
+            onClick={[Function]}
+          >
+            <div
+              className="ToolTip__glow-container"
+            >
+              <div
+                className="ToolTip__glow-ring-outer"
+              >
+                <div
+                  className="ToolTip__glow-ring-inner"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="hidden packagesEnvironment"
+          />
+          <div
+            className="hidden packagesEnvironment"
+          >
+            This section allows you to modify packages in your environment using various package managers. To install packages not available via a package manager, use the 'Custom Docker Instructions' section below.
+          </div>
+        </div>
       </h5>
     </div>
     <div
@@ -196,7 +254,9 @@ exports[`Test Environment rendering 1`] = `
               <th>
                 Installed By
               </th>
-              <th>
+              <th
+                className="PackageDependencies__last-row"
+              >
                 Select
               </th>
             </tr>
@@ -209,9 +269,13 @@ exports[`Test Environment rendering 1`] = `
                 colorcet
               </td>
               <td>
-                v0.9.1
+                0.9.1
               </td>
-              <td />
+              <td
+                className="PackageDependencies__latest-column"
+              >
+                <span />
+              </td>
               <td>
                 User
               </td>
@@ -233,9 +297,13 @@ exports[`Test Environment rendering 1`] = `
                 holoviews
               </td>
               <td>
-                v1.10.4
+                1.10.4
               </td>
-              <td />
+              <td
+                className="PackageDependencies__latest-column"
+              >
+                <span />
+              </td>
               <td>
                 User
               </td>
@@ -257,9 +325,13 @@ exports[`Test Environment rendering 1`] = `
                 numpy
               </td>
               <td>
-                v1.14.3
+                1.14.3
               </td>
-              <td />
+              <td
+                className="PackageDependencies__latest-column"
+              >
+                <span />
+              </td>
               <td>
                 User
               </td>
@@ -281,9 +353,13 @@ exports[`Test Environment rendering 1`] = `
                 pandas
               </td>
               <td>
-                v0.23.0rc2
+                0.23.0rc2
               </td>
-              <td />
+              <td
+                className="PackageDependencies__latest-column"
+              >
+                <span />
+              </td>
               <td>
                 User
               </td>
@@ -300,21 +376,6 @@ exports[`Test Environment rendering 1`] = `
             </tr>
           </tbody>
         </table>
-        <div
-          className="PackageDependencies__remove-row"
-        >
-          <div
-            className=""
-          >
-            <button
-              className="PackageDependencies__remove-button"
-              disabled={true}
-              onClick={[Function]}
-            >
-              Remove
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -327,7 +388,37 @@ exports[`Test Environment rendering 1`] = `
       <h5
         className="CustomDockerfile__header"
       >
-        Custom Docker Instructions
+        Custom Docker Instructions 
+        <div
+          className="hidden dockerInstructionsEnvironment"
+        >
+          <div
+            className="ToolTip__toggle dockerInstructionsEnvironment"
+            onClick={[Function]}
+          >
+            <div
+              className="ToolTip__glow-container"
+            >
+              <div
+                className="ToolTip__glow-ring-outer"
+              >
+                <div
+                  className="ToolTip__glow-ring-inner"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="hidden dockerInstructionsEnvironment"
+          />
+          <div
+            className="hidden dockerInstructionsEnvironment"
+          >
+            This section allows you to add Docker instructions to modify a Project's environment. 
+             Currently only LABEL, RUN, ENV, or # are supported. 
+             Note: Docker instructions are executed after packages are installed.
+          </div>
+        </div>
       </h5>
     </div>
     <div

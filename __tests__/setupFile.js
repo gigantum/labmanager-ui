@@ -2,6 +2,7 @@ import {JSDOM} from 'jsdom';
 import fs from 'fs'
 import fetch from 'node-fetch'
 import FormData from 'form-data'
+import 'raf/polyfill';
 
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -37,7 +38,6 @@ global.fetch = fetch
 global.FormData = FormData
 
 //add file api for uploads
-const File = window.File
 global.File = window.File
 
 global.window.matchMedia = window.matchMedia || function(){ return { matches: false, addListener: () => {}, removeListener: () => {}, }; }
@@ -45,3 +45,28 @@ global.window.matchMedia = window.matchMedia || function(){ return { matches: fa
 global.requestAnimationFrame = function(callback){
   setTimeout(callback, 0);
 };
+
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());

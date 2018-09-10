@@ -26,10 +26,10 @@
 @import 'atoms/_input-text.scss';
 @import 'atoms/textarea.scss';
 @import 'atoms/table.scss';
+@import 'atoms/_radio-button.scss';
 
 //shared components
 @import 'components/shared/sideBar';
-@import 'components/shared/footer';
 @import 'components/shared/prompt';
 @import 'components/shared/loader';
 @import 'components/shared/buttonLoader';
@@ -38,7 +38,11 @@
 @import 'components/shared/helper';
 @import 'components/shared/tooltip';
 @import 'components/shared/modal';
-//
+  //footer
+@import 'components/shared/footer/footer';
+@import 'components/shared/footer/footerNotificationList';
+@import 'components/shared/footer/footerUploadBar';
+//root
 @import 'components/routes.scss';
 @import 'components/login.scss';
 @import 'components/home.scss';
@@ -173,4 +177,37 @@ code {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.Tooltip{
+  position: relative;
+  font-weight: bolder;
+  cursor: pointer;
+  &:hover::before{
+    content: "";
+    border: solid transparent;
+    border-bottom-color: $white;
+    border-width: 10px;
+    position: absolute;
+    top: 20px;
+  }
+
+  &:hover::after{
+    content: attr(data-tooltip);
+    @extend .box-shadow;
+    position: absolute;
+    min-width: 100px;
+    font-weight: 100;
+    line-height: 1.3em;
+    font-size: 16px;
+    margin: 0;
+    background: $azure;
+    color: $white;
+    padding: 5px;
+    border-radius: 5px;
+    right: 40px;
+    bottom: 10px;
+    z-index: 1;
+    font-size: .7em;
+  }
 }

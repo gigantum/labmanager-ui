@@ -215,7 +215,7 @@
   text-align: center;
   word-break: break-all;
 
-  color: $jet;
+  color: $jet !important;
   background: $white;
   background-size: 50px;
 
@@ -232,7 +232,7 @@
 
 .LocalLabbooks__panel:hover {
   transition: box-shadow 0.5s;
-
+  text-decoration: none;
   box-shadow: 0 0px 12px 0 rgba(0,0,0,.50);
 }
 
@@ -792,4 +792,34 @@
 .LocalLabbooks__highlighted{
   background: $azure;
   color: $white;
+}
+
+.LocalLabbookPanel__private{
+  height: 24px;
+  width: 24px;
+  padding: 20px;
+  background: url(../images/icons/lock-grey.svg) no-repeat center center;
+  background-size: 18px;
+  align-self: flex-end;
+}
+
+.LocalLabbookPanel__public{
+  height: 24px;
+  width: 24px;
+  padding: 20px;
+  background: url(../images/icons/earth-grey.svg) no-repeat center center;
+  background-size: 18px;
+  align-self: flex-end;
+
+}
+
+.LocalLabbookPanel__loading{
+  background: $grey !important;
+  height: 18px;
+  width: 18px;
+  padding: 14px;
+  margin: 8px;
+  opacity: 0.5;
+  border-radius: 50%;
+  align-self: flex-end;
 }

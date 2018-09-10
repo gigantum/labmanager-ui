@@ -18,7 +18,7 @@ export default class Home extends Component {
   }
   render() {
     const { isAuthenticated } = this.props.auth;
-    const { forceLoginScreen } = this.props;
+    const { forceLoginScreen, loadingRenew } = this.props;
 
     return (
       <div className="Home">
@@ -35,7 +35,11 @@ export default class Home extends Component {
 
         {
           (!isAuthenticated() || forceLoginScreen) && (
-              <Login auth={this.props.auth} forceLoginScreen={forceLoginScreen}/>
+              <Login
+                auth={this.props.auth}
+                forceLoginScreen={forceLoginScreen}
+                loadingRenew={loadingRenew}
+              />
             )
         }
 

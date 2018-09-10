@@ -58,7 +58,7 @@ const updateTotalStatus = (file, labbookName, owner, transactionId) => {
       open: true
     }
   })
-  
+
 
   if(fileCount === totalFiles){
     setTimeout(()=>{
@@ -143,7 +143,9 @@ const updateChunkStatus = (file, chunkData, labbookName, owner, transactionId) =
 
 
 const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, username, filepath, section, getChunkCallback, componentCallback) => {
+
   if(!store.getState().fileBrowser.pause || (store.getState().footer.totalFiles > 1)){
+
     AddLabbookFileMutation(
       data.connectionKey,
       username,
@@ -158,10 +160,17 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
         store.dispatch({
           type: 'FINISHED_UPLOADING',
         })
+
         if(result && (error === undefined)){
+
           getChunkCallback(file, result)
+
           if(store.getState().footer.totalFiles > 1){
-            updateTotalStatus(file, data.labbookName, username, data.transactionId)
+            let lastChunk = (chunkData.totalChunks - 1) === chunkData.chunkIndex
+
+            if(lastChunk){
+              updateTotalStatus(file, data.labbookName, username, data.transactionId)
+            }
           }else{
             updateChunkStatus(file, chunkData, data.labbookName, username, data.transactionId)
           }
@@ -220,7 +229,6 @@ const ChunkUploader = {
     */
     const getChunk = (response, result) => {
 
-
       if(response.name){ //checks if response is a file
 
         let sliceUpperBound = (fileSize > (fileLoadedSize + chunkSize))
@@ -246,17 +254,22 @@ const ChunkUploader = {
           //select type of mutation
           if(file.name.indexOf('.lbk') > -1 || file.name.indexOf('.zip') > -1){
 
-            uploadLabbookChunk(
-              file,
-              chunkData,
-              data.accessToken,
-              getChunk
-            )
+            if(!data.connectionKey){
 
-            postMessage(chunkData, false) //post progress back to worker instantiator file
+              uploadLabbookChunk(
+                file,
+                chunkData,
+                data.accessToken,
+                getChunk
+              )
+
+              postMessage(chunkData, false) //post progress back to worker instantiator file
+
+            }
 
           }
           else{
+    
              //if(store.getState().fileBrowser.pause === false){
               uploadFileBrowserChunk(
                 data,

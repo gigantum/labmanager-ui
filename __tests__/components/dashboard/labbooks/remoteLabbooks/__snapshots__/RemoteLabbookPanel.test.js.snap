@@ -34,7 +34,7 @@ exports[`Test RemoteLabbooks rendering 1`] = `
             className=""
             style={undefined}
           >
-            rootpy3
+            update-test
           </span>
         </span>
       </h6>
@@ -42,7 +42,7 @@ exports[`Test RemoteLabbooks rendering 1`] = `
     <p
       className="RemoteLabbooks__owner"
     >
-      Created by randalg
+      Created by dmk
     </p>
     <p
       className="RemoteLabbooks__description"
@@ -52,5 +52,9 @@ exports[`Test RemoteLabbooks rendering 1`] = `
       />
     </p>
   </div>
+  <div
+    className="Tooltip RemoteLabbooks__undefined"
+    data-tooltip="undefined"
+  />
 </div>
 `;

@@ -1,6 +1,7 @@
 //vendor
 import React, { Component } from 'react'
 import Highlighter from 'react-highlight-words'
+import {Link} from 'react-router-dom'
 //muations
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
@@ -31,7 +32,7 @@ export default class LocalLabbookPanel extends Component {
   * processes container lookup and assigns container status to labbook card
   */
   UNSAFE_componentWillReceiveProps(nextProps) {
-    let {environment} = nextProps
+    let {environment} = nextProps.node
     if(environment){
     let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
 
@@ -43,7 +44,7 @@ export default class LocalLabbookPanel extends Component {
   * if environment exists when components will mount it will populate container status
   */
   UNSAFE_componentWillMount(){
-    let {environment} = this.props
+    let {environment} = this.props.node
     if(environment){
       let status = this._getContainerStatusText(environment.containerStatus, environment.imageStatus)
 
@@ -106,14 +107,18 @@ export default class LocalLabbookPanel extends Component {
   */
   _startContainerMutation(){
     let self = this;
+
     const {owner, labbookName} = this.state
+
     store.dispatch({
       type: 'INFO_MESSAGE',
       payload:{
         message: `Starting ${labbookName} container`
       }
     })
+
     this.setState({'status': 'Starting', textStatus: 'Starting'})
+
     StartContainerMutation(
       labbookName,
       owner,
@@ -121,6 +126,7 @@ export default class LocalLabbookPanel extends Component {
       (response, error) =>{
 
         if(error){
+
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
@@ -128,8 +134,11 @@ export default class LocalLabbookPanel extends Component {
               messageBody: error
             }
           })
+
           self.setState({textStatus: "Stopped", status: "Stopped"})
+
         }else{
+
           self.props.history.replace(`../../projects/${owner}/${labbookName}`)
         }
       }
@@ -140,14 +149,18 @@ export default class LocalLabbookPanel extends Component {
   * stops labbbok conatainer
   */
   _stopContainerMutation(){
+
     const {owner, labbookName} = this.state
+
     let self = this
+
     store.dispatch({
       type: 'INFO_MESSAGE',
       payload:{
         message: `Stopping ${labbookName} container`
       }
     })
+
     this.setState({'status': 'Stopping', textStatus: 'Stopping'})
 
     StopContainerMutation(
@@ -157,7 +170,9 @@ export default class LocalLabbookPanel extends Component {
       (response, error) =>{
 
         if(error){
+
           console.log(error)
+
           store.dispatch({
             type: 'ERROR_MESSAGE',
             payload:{
@@ -167,7 +182,9 @@ export default class LocalLabbookPanel extends Component {
           })
 
           self.setState({textStatus: "Running", status: "Running"})
+
         }else{
+
           this.setState({'status': 'Stopped', textStatus: 'Stopped'})
         }
 
@@ -179,8 +196,11 @@ export default class LocalLabbookPanel extends Component {
   * stops labbbok conatainer
   ***/
   _updateTextStatusOver(evt, status){
+
     let newStatus = status;
+
     if(status !== 'loading'){
+
       newStatus = (status === "Running") ? 'Stop' : newStatus;
       newStatus = (status === "Stopped") ? 'Run' : newStatus;
       this.setState({textStatus: newStatus})
@@ -191,8 +211,10 @@ export default class LocalLabbookPanel extends Component {
   * stops labbbok conatainer
   ***/
   _updateTextStatusOut(evt, status){
+
     if(status !== 'loading'){
-    this.setState({textStatus: status})
+
+      this.setState({textStatus: status})
     }
   }
 
@@ -201,8 +223,10 @@ export default class LocalLabbookPanel extends Component {
     let status = this.state.status
     let textStatus = this.state.textStatus
 
+
     return (
-      <div
+      <Link
+        to={`/projects/${edge.node.owner}/${edge.node.name}`}
         onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}
         key={'local' + edge.node.name}
         className='LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between'>
@@ -210,6 +234,7 @@ export default class LocalLabbookPanel extends Component {
         <div className="LocalLabbooks__icon-row">
 
           <div className="LocalLabbooks__containerStatus">
+
             <button
               onClick={(evt)=> this._stopStartContainer(evt, status)}
               onMouseOver={(evt)=> this._updateTextStatusOver(evt, status)}
@@ -217,14 +242,19 @@ export default class LocalLabbookPanel extends Component {
               className={`LocalLabbooks__containerStatus--state ${status}`}>
               {textStatus}
             </button>
+
           </div>
+
         </div>
 
         <div className="LocalLabbooks__text-row">
+
           <div className="LocalLabbooks__title-row">
+
             <h6
               className="LocalLabbooks__panel-title"
               onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}>
+
               <Highlighter
                 highlightClassName='LocalLabbooks__highlighted'
                 searchWords={[store.getState().labbookListing.filterText]}
@@ -232,12 +262,16 @@ export default class LocalLabbookPanel extends Component {
                 caseSensitive={false}
                 textToHighlight={edge.node.name}
               />
+
             </h6>
 
           </div>
+
           <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner}</p>
+
           <p
             className="LocalLabbooks__description">
+
             <Highlighter
               highlightClassName='LocalLabbooks__highlighted'
               searchWords={[store.getState().labbookListing.filterText]}
@@ -245,8 +279,17 @@ export default class LocalLabbookPanel extends Component {
               caseSensitive={false}
               textToHighlight={edge.node.description}
             />
+
           </p>
+
         </div>
-    </div>)
+
+        { !(this.props.visibility === 'local') &&
+          <div
+            data-tooltip={`${this.props.visibility}`}
+            className={`Tooltip LocalLabbookPanel__${this.props.visibility}`}>
+          </div>
+        }
+    </Link>)
   }
 }

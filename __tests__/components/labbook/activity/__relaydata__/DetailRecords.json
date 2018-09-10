@@ -7,6 +7,12 @@
      "line": 11,
      "column": 7
     }
+   ],
+   "path": [
+    "labbook",
+    "detailRecords",
+    0,
+    "action"
    ]
   },
   {
@@ -16,6 +22,12 @@
      "line": 13,
      "column": 7
     }
+   ],
+   "path": [
+    "labbook",
+    "detailRecords",
+    0,
+    "data"
    ]
   },
   {
@@ -25,6 +37,12 @@
      "line": 14,
      "column": 7
     }
+   ],
+   "path": [
+    "labbook",
+    "detailRecords",
+    0,
+    "type"
    ]
   },
   {
@@ -34,6 +52,12 @@
      "line": 15,
      "column": 7
     }
+   ],
+   "path": [
+    "labbook",
+    "detailRecords",
+    0,
+    "show"
    ]
   },
   {
@@ -43,6 +67,12 @@
      "line": 16,
      "column": 7
     }
+   ],
+   "path": [
+    "labbook",
+    "detailRecords",
+    0,
+    "importance"
    ]
   },
   {
@@ -52,6 +82,12 @@
      "line": 17,
      "column": 7
     }
+   ],
+   "path": [
+    "labbook",
+    "detailRecords",
+    0,
+    "tags"
    ]
   }
  ],
