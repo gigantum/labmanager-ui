@@ -478,17 +478,18 @@ class Labbook extends Component {
                 <div className={(this.props.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
 
                   <div className={(this.props.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
-
-                <Branches
-                  defaultRemote={labbook.defaultRemote}
-                  branchesOpen={this.props.branchesOpen}
-                  labbook={labbook}
-                  labbookId={labbook.id}
-                  activeBranch={labbook.activeBranchName}
-                  toggleBranchesView={this._toggleBranchesView}
-                  mergeFilter={this.props.mergeFilter}
-                  setBuildingState={this._setBuildingState}
-                />
+                  <ErrorBoundary type={this.props.branchesOpen ?  'branchesError': 'hidden'} key="branches">
+                    <Branches
+                      defaultRemote={labbook.defaultRemote}
+                      branchesOpen={this.props.branchesOpen}
+                      labbook={labbook}
+                      labbookId={labbook.id}
+                      activeBranch={labbook.activeBranchName}
+                      toggleBranchesView={this._toggleBranchesView}
+                      mergeFilter={this.props.mergeFilter}
+                      setBuildingState={this._setBuildingState}
+                    />
+                  </ErrorBoundary>
 
                   <div className={(this.props.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
                 </div>
