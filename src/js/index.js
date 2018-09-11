@@ -29,7 +29,7 @@ UserIdentity.getUserIdentity().then((response)=>{
       forceLoginScreen = false;
 
     }else{
-      if(response.data.userIdentity){
+      if(response.data.userIdentity && localStorage.getItem('accessToken')){
         loadingRenew = true;
         auth.renewToken(null, null, null, true, ()=>{
           routes.setState({loadingRenew: false})
