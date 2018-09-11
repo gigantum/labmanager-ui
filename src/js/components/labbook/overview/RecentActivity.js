@@ -149,7 +149,7 @@ export default class RecentActivity extends Component {
           </h5>
 
           <Link
-            onClick={()=> window.scrollTo(0, 0)}
+            onClick={this.props.scrollToTop}
             to={`../../../../projects/${owner}/${labbookName}/activity`}
           >
             Activity Details >
@@ -168,7 +168,10 @@ export default class RecentActivity extends Component {
                 <div className="RecentActivity__fadeout hidden"></div>
                 <Link className="RecentActivity__card-link hidden" to={{
                     pathname: `../../../../projects/${owner}/${labbookName}/activity`
-                  }} replace={true} ref={index}>
+                  }} replace={true}
+                  ref={index}
+                  onClick={this.props.scrollToTop}
+                  >
                   View More in Activity Feed >
                 </Link>
               </div>
