@@ -5,12 +5,9 @@ import {
 import environment from 'JS/createRelayEnvironment'
 
 const mutation = graphql`
-  mutation SyncLabbookMutation($input: SyncLabbookInput!, $first: Int, $cursor: String, $hasNext: Boolean!){
+  mutation SyncLabbookMutation($input: SyncLabbookInput!){
     syncLabbook(input: $input){
-      updateCount
-      updatedLabbook{
-        ...Labbook_labbook
-      }
+      jobKey
       clientMutationId
     }
   }

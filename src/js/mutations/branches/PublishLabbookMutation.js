@@ -7,7 +7,7 @@ import environment from 'JS/createRelayEnvironment'
 const mutation = graphql`
   mutation PublishLabbookMutation($input: PublishLabbookInput!){
     publishLabbook(input: $input){
-      success
+      jobKey
       clientMutationId
     }
   }

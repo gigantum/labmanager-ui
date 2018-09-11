@@ -1,5 +1,5 @@
 # source: http://localhost:10000/api/labbook/
-# timestamp: Tue Sep 11 2018 15:09:47 GMT-0400 (EDT)
+# timestamp: Tue Sep 11 2018 15:22:46 GMT-0400 (EDT)
 
 schema {
   query: LabbookQuery
@@ -755,6 +755,7 @@ type LabbookMutations {
   deleteExperimentalBranch(input: DeleteExperimentalBranchInput!): DeleteExperimentalBranchPayload
   mergeFromBranch(input: MergeFromBranchInput!): MergeFromBranchPayload
   workonExperimentalBranch(input: WorkonBranchInput!): WorkonBranchPayload
+  setVisibility(input: SetVisibilityInput!): SetVisibilityPayload
 }
 
 """
@@ -943,7 +944,7 @@ input PublishLabbookInput {
 }
 
 type PublishLabbookPayload {
-  success: Boolean
+  jobKey: String
   clientMutationId: String
 }
 
@@ -1073,6 +1074,18 @@ type SetLabbookDescriptionPayload {
   clientMutationId: String
 }
 
+input SetVisibilityInput {
+  owner: String!
+  labbookName: String!
+  visibility: String!
+  clientMutationId: String
+}
+
+type SetVisibilityPayload {
+  newLabbookEdge: LabbookEdge
+  clientMutationId: String
+}
+
 input StartContainerInput {
   owner: String!
   labbookName: String!
@@ -1118,8 +1131,7 @@ input SyncLabbookInput {
 }
 
 type SyncLabbookPayload {
-  updateCount: Int
-  updatedLabbook: Labbook
+  jobKey: String
   clientMutationId: String
 }
 
