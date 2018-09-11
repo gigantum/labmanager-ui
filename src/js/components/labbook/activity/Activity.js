@@ -15,6 +15,7 @@ import PaginationLoader from './ActivityLoaders/PaginationLoader'
 import CreateBranch from '../branches/CreateBranch';
 import NewActivity from './NewActivity'
 import ToolTip from 'Components/shared/ToolTip'
+import ErrorBoundary from 'Components/shared/ErrorBoundary'
 //config
 import config from 'JS/config'
 
@@ -655,22 +656,24 @@ class Activity extends Component {
             obj.isExpandedEnd && isCompressed &&
               <div className="Activity__compressed-bar--bottom" style={{height: `${((obj.attachedCluster.length - 1) * 7.5) + 30}px`}}></div>
           }
-          <ActivityCard
-            isFirstCard={j === 0}
-            addCluster={this._addCluster}
-            compressExpanded={this._compressExpanded}
-            isCompressed={isCompressed}
-            isExpandedHead={obj.isExpandedHead}
-            isExpandedEnd={obj.isExpandedEnd}
-            isExpandedNode={obj.isExpandedNode}
-            attachedCluster={obj.attachedCluster}
-            collapsed={obj.collapsed}
-            clusterObject={this.state.clusterObject}
-            position={obj.flatIndex}
-            hoveredRollback={this.state.hoveredRollback}
-            key={`${obj.edge.node.id}_activity-card`}
-            edge={obj.edge}
-          />
+          <ErrorBoundary type="activityCardError" key={'activityCard' + obj.edge.node.id}>
+            <ActivityCard
+              isFirstCard={j === 0}
+              addCluster={this._addCluster}
+              compressExpanded={this._compressExpanded}
+              isCompressed={isCompressed}
+              isExpandedHead={obj.isExpandedHead}
+              isExpandedEnd={obj.isExpandedEnd}
+              isExpandedNode={obj.isExpandedNode}
+              attachedCluster={obj.attachedCluster}
+              collapsed={obj.collapsed}
+              clusterObject={this.state.clusterObject}
+              position={obj.flatIndex}
+              hoveredRollback={this.state.hoveredRollback}
+              key={`${obj.edge.node.id}_activity-card`}
+              edge={obj.edge}
+            />
+          </ErrorBoundary>
         </div>
         {(j === this.state.activityRecords[k].length - 1) && isCompressed &&
           <div className="Activity__submenu--flat">&nbsp;</div>

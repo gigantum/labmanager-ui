@@ -1,0 +1,53 @@
+.ComponentError {
+    @include flex(center, column);
+    align-items: center;
+  }
+
+.packageDependenciesError{
+    @extend .card;
+    background: $white url(../images/icons/warning-triangle.svg) no-repeat center 40px;
+    background-size: 80px;
+    margin: 8px 0 16px 0;
+    padding: 80px 0 0 0;
+    height: 226px;
+}
+
+.baseError{
+    @extend .card;
+    background: $white url(../images/icons/warning-triangle.svg) no-repeat center 30px;
+    background-size: 60px;
+    margin: 8px 0 16px 0;
+    padding: 70px 0 0 0;
+    height: 137px;
+}
+.labbookSectionError{
+    background: url(../images/icons/warning-triangle.svg) no-repeat center 60px;
+    background-size: 100px;
+    margin: 20px 0;
+    padding: 70px 0 0 0;
+    width: 100%
+}
+.activityCardError{
+    @extend .column-1-span-10;
+    height: 80px;
+    margin: 0;
+    z-index: index($elements, card);
+    position: relative;
+    background: $white url(../images/icons/warning-triangle.svg) no-repeat 20px center;
+    background-size: 50px;
+    border-bottom: 10px solid $azure;
+}
+.containerStatusError{
+    @extend .ContainerStatus__container-state;
+    cursor: auto !important;
+    background: $background-color url(../images/icons/warning-triangle.svg) no-repeat 90% center;
+    background-size: 20px;
+    border: 3px solid $jet !important;
+    color: $jet !important;
+}
+.branchesError{
+    background: url(../images/icons/warning-triangle.svg) no-repeat center 60px;
+    background-size: 70px;
+    padding-top: 150px;
+
+}
