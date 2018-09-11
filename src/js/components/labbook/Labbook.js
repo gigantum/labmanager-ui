@@ -259,7 +259,7 @@ class Labbook extends Component {
         onClick={()=> this._setSelectedComponent(item.id)}
         >
         <Link
-          onClick={()=> window.scrollTo(0, 0)}
+          onClick={this._scrollToTop}
           to={`../../../projects/${this.props.owner}/${this.props.match.params.labbookName}/${item.id}`}
           replace
         >
@@ -350,6 +350,12 @@ class Labbook extends Component {
 
       return prettyBranchName
     }
+  }
+  /**
+    scrolls to top of window
+  */
+  _scrollToTop(){
+    window.scrollTo(0, 0);
   }
 
   render(){
@@ -445,6 +451,7 @@ class Labbook extends Component {
                 <div className="Labbook__column-container">
 
                    <BranchMenu
+                     visibility={visibility}
                      description={labbook.description}
                      history={this.props.history}
                      collaborators={labbook.collaborators}
@@ -516,7 +523,6 @@ class Labbook extends Component {
                       exact
                       path={`${this.props.match.path}`}
                       render={() => {
-
                         return (
                           <ErrorBoundary type="labbookSectionError">
                             <Overview
@@ -528,6 +534,7 @@ class Labbook extends Component {
                               readme={labbook.readme}
                               isSyncing={this.props.isSyncing}
                               isPublishing={this.props.isPublishing}
+                              scrollToTop={this._scrollToTop}
                             />
                           </ErrorBoundary>
                         )
@@ -550,6 +557,7 @@ class Labbook extends Component {
                                   readme={labbook.readme}
                                   isSyncing={this.props.isSyncing}
                                   isPublishing={this.props.isPublishing}
+                                  scrollToTop={this._scrollToTop}
                                 />
                               </ErrorBoundary>
                             )

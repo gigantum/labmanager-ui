@@ -4,10 +4,15 @@ import {
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
 
+
 const mutation = graphql`
-  mutation SyncLabbookMutation($input: SyncLabbookInput!){
-    syncLabbook(input: $input){
-      jobKey
+  mutation SetVisibilityMutation($input: SetVisibilityInput!){
+    setVisibility(input: $input){
+      newLabbookEdge{
+        node{
+          visibility
+        }
+      }
       clientMutationId
     }
   }
@@ -15,42 +20,34 @@ const mutation = graphql`
 
 let tempID = 0;
 
-export default function SyncLabbookMutation(
+
+export default function SetVisibilityMutation(
   owner,
   labbookName,
-  force,
+  visibility,
   callback
 ) {
-
 
   const variables = {
     input: {
       owner,
       labbookName,
-      force,
-      clientMutationId: tempID++
-    },
-    first: 2,
-    cursor: null,
-    hasNext: false
+      visibility,
+      clientMutationId: '' + tempID++
+    }
   }
-
   commitMutation(
     environment,
     {
       mutation,
       variables,
-      onCompleted: (response, error) => {
-
+      onCompleted: (response, error ) => {
         if(error){
           console.log(error)
         }
-
-        callback(error)
+        callback(response, error)
       },
-      onError: err => {console.error(err)},
-      updater: (store, response) => {
-      }
+      onError: err => console.error(err),
     },
   )
 }

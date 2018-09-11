@@ -165,7 +165,7 @@ export default class UserNote extends Component {
                               <div className={`DetailsRecords__action DetailsRecords__action--${detailRecord.action && detailRecord.action.toLowerCase()}`}></div>
                             }
                             {
-                              detailRecord.data.test.map((item, index)=>{
+                              detailRecord.data.map((item, index)=>{
                                 return(
                                   <li
                                     key={detailRecord.id + '_'+ index}

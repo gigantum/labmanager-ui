@@ -318,11 +318,12 @@ class Overview extends Component {
             />
           }
           <div>
-            <RecentActivity recentActivity={this.props.labbook.overview.recentActivity} />
+            <RecentActivity recentActivity={this.props.labbook.overview.recentActivity} scrollToTop={this.props.scrollToTop} />
           </div>
           <div className="Overview__title-container">
             <h5 className="Overview__title">Environment<ToolTip section="environmentOverview"/></h5>
             <Link
+              onClick={this.props.scrollToTop}
               to={{ pathname: `../../../../projects/${owner}/${labbookName}/environment` }}
               replace
             >
@@ -341,6 +342,7 @@ class Overview extends Component {
           <div>
             <FilePreview
               ref="filePreview"
+              scrollToTop={this.props.scrollToTop}
             />
           </div>
 
