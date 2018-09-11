@@ -667,7 +667,6 @@ class PackageDependencies extends Component {
 
   render(){
     const {packageDependencies} = this.props.environment
-    const {blockClass} = this.props
 
     const packageManagersTabs = this._getPackmanagerTabs()
 
@@ -700,11 +699,6 @@ class PackageDependencies extends Component {
 
       return(
       <div className="PackageDependencies">
-
-        <div className={blockClass + '__header-container'}>
-          <h5 className="PackageDependencies__header">Packages <ToolTip section="packagesEnvironment"/></h5>
-        </div>
-
         <div className="PackageDependencies__card">
           <div className="PackageDependencies__tabs">
             <ul className="PackageDependencies__tabs-list">

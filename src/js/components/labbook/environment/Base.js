@@ -54,10 +54,6 @@ class Base extends Component {
 
       return(
         <div className="Base">
-          <div className="Base__header-container">
-            <h5 className="Base__header">Base&nbsp;&nbsp;&nbsp; <ToolTip section="baseEnvironment"/></h5>
-          </div>
-
           <div className="Base__info">
             <div className="Base__card">
 
