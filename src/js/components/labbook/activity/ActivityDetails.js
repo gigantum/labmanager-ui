@@ -16,14 +16,6 @@ export default class ActivityCard extends Component {
     this._hideElipsis = this._hideElipsis.bind(this)
   }
 
-
-  componentDidCatch(error, info) {
-    // Display fallback UI
-    this.setState({ hasError: true });
-    // You can also log the error to an error reporting service
-    console.log(error, info)
-  }
-
   /**
   *   @param {}
   *  reverse state of showExtraInfo
