@@ -8,6 +8,11 @@ import environment from 'JS/createRelayEnvironment'
 const mutation = graphql`
   mutation SetVisibilityMutation($input: SetVisibilityInput!){
     setVisibility(input: $input){
+      newLabbookEdge{
+        node{
+          visibility
+        }
+      }
       clientMutationId
     }
   }

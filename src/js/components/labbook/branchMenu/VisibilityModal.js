@@ -70,24 +70,6 @@ export default class PublishModal extends Component {
                             }
                           })
                       }
-
-                      console.log(response)
-                    //   if (response.publishLabbook && response.publishLabbook.success) {
-
-                    //     self.props.remountCollab();
-
-                    //     store.dispatch({
-                    //       type: 'MULTIPART_INFO_MESSAGE',
-                    //       payload: {
-                    //         id: id,
-                    //         message: `Added remote https://gigantum.com/${self.props.owner}/${self.props.labbookName}`,
-                    //         isLast: true,
-                    //         error: false
-                    //       }
-                    //     })
-
-                    //     self.props.setRemoteSession()
-                    //   }
                     }
                   )
                 }
