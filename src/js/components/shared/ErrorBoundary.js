@@ -16,7 +16,6 @@ export default class ErrorBoundary extends Component {
   }
 
   render() {
-    console.log(this.props.type)
     let text = 'There was an error fetching data for this component. Refresh the page and try again.'
     if(this.props.type === 'containerStatusError'){
       text = 'Error'

@@ -557,6 +557,7 @@ class Labbook extends Component {
                                   readme={labbook.readme}
                                   isSyncing={this.props.isSyncing}
                                   isPublishing={this.props.isPublishing}
+                                  scrollToTop={this._scrollToTop}
                                 />
                               </ErrorBoundary>
                             )
