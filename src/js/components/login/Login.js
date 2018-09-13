@@ -14,13 +14,6 @@ export default class Login extends Component {
   }
 
   /**
-    @param {string} route
-    update route
-  */
-  goTo(route) {
-    this.props.history.replace(`/labbooks`)
-  }
-  /**
     @param {}
     login through Auth0
   */
@@ -37,14 +30,13 @@ export default class Login extends Component {
 
   render() {
     const { isAuthenticated } = this.props.auth;
-
     const errorType = sessionStorage.getItem('LOGIN_ERROR_TYPE'),
       errorDescription = sessionStorage.getItem('LOGIN_ERROR_DESCRIPTION')
     const isUnauthorized = errorDescription === 'Gigantum is currently in a limited Beta. Access will be expanded soon!';
     return (
       <div className="Login">
         {
-          (!isAuthenticated() || this.props.forceLoginScreen)  && (
+          (!isAuthenticated())  && (
             <div className="Login__panel">
                 {
                   window.location.hostname === config.demoHostName &&
