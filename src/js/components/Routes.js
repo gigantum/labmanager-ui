@@ -181,7 +181,6 @@ class Routes extends Component {
                     render={(props) =>
                       <Home
                         loadingRenew={this.state.loadingRenew}
-                        forceLoginScreen={this.state.forceLoginScreen}
                         history={history}
                         auth={this.props.auth}
                         {...props}
@@ -213,7 +212,6 @@ class Routes extends Component {
 
                         <Home
                           loadingRenew={this.state.loadingRenew}
-                          forceLoginScreen={this.state.forceLoginScreen}
                           history={history}
                           auth={this.props.auth}
                           {...props}
@@ -225,7 +223,9 @@ class Routes extends Component {
                       path="/projects/:owner/:labbookName"
                       auth={this.props.auth}
                       render={(parentProps) =>{
-
+                          if(this.props.forceLoginScreen){
+                            return <Redirect to="/login" />
+                          }
                           const labbookName = parentProps.match.params.labbookName;
                           const owner = parentProps.match.params.owner;
 
