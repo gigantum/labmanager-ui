@@ -11,7 +11,6 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 // components
 import Home from 'Components/home/Home';
-import Login from 'Components/login/Login';
 import SideBar from 'Components/shared/SideBar';
 import Footer from 'Components/shared/footer/Footer';
 import Prompt from 'Components/shared/Prompt';
