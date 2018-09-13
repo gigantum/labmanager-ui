@@ -253,12 +253,12 @@ export default class ImportModule extends Component {
   *  preventDefault on dragOver event
   */
   _getBlob = (dataTransfer) => {
-    console.log(dataTransfer)
+
 
 
     let self = this;
     for (let i=0; i < dataTransfer.files.length; i++) {
-      console.log(dataTransfer.files)
+
 
       //let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
       let file = dataTransfer.files[0]
@@ -280,7 +280,7 @@ export default class ImportModule extends Component {
           let arrayBuffer = evt.target.result;
 
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
-          console.log(blob)
+
           self.setState(
             {files: [
               {
@@ -294,66 +294,8 @@ export default class ImportModule extends Component {
           self._fileUpload()
 
         };
-           // debugger
-           //
-          self.setState(
-                  {files: [
-                    {
-                      blob: file,
-                      file: file,
-                      //arrayBuffer: arrayBuffer,
-                      filename: file.name}
-                    ]
-                  }
-                )
-            self._fileUpload()
-        console.log('fileReader')
-        //fileReader.readAsArrayBuffer(file);
 
-
-
-        // function findColumnLength(file, callback) {
-        //
-        //   let viewArray = []
-        //   // 1 KB at a time, because we expect that the column will probably small.
-        //   var CHUNK_SIZE = 1024;
-        //   var offset = 0;
-        //   var fr = new FileReader();
-        //   fr.onload = function() {
-        //
-        //       var view = new Uint8Array(fr.result);
-        //
-        //       viewArray.push(view)
-        //
-        //       for (var i = 0; i < view.length; ++i) {
-        //           if (view[i] === 10 || view[i] === 13) {
-        //               // \n = 10 and \r = 13
-        //               // column length = offset + position of \r or \n
-        //               callback(offset + i);
-        //               return;
-        //           }
-        //       }
-        //       // \r or \n not found, continue seeking.
-        //       offset += CHUNK_SIZE;
-        //       seek();
-        //   };
-        //   fr.onerror = function() {
-        //       // Cannot read file... Do something, e.g. assume column size = 0.
-        //       callback(0);
-        //   };
-        //   seek();
-        //
-        //   function seek() {
-        //       if (offset >= file.size) {
-        //           // No \r or \n found. The column size is equal to the full
-        //           // file size
-        //           callback(file.size);
-        //           return;
-        //       }
-        //       var slice = file.slice(offset, offset + CHUNK_SIZE);
-        //       fr.readAsArrayBuffer(slice);
-        //   }
-        // }
+        fileReader.readAsArrayBuffer(file);
 
       }
     }

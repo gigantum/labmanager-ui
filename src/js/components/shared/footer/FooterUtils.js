@@ -17,7 +17,6 @@ const FooterUtils = {
    *  @return {}
    */
   getJobStatus: (result, type, key, relayStore) => {
-    console.log(type, key)
     /**
       *  @param {}
       *  refetches job status
@@ -88,7 +87,7 @@ const FooterUtils = {
                 }
               })
             }
-            console.log(response.data.jobStatus.status, type)
+
             if (response.data.jobStatus.status === 'started') {
 
               store.dispatch({
@@ -120,27 +119,8 @@ const FooterUtils = {
               if((type === "syncLabbook") || (type === "publishLabbook")){
 
                 const userArray = JSON.parse(response.data.jobStatus.jobMetadata).labbook.split('|')
-                FetchLabbook.getLabook(userArray[1], userArray[2]).then((data)=>{
-                  console.log(RelayRuntime, data)
-                  //if(relayStore){
-                      data.labbook.availableBranchNames = ['workspace', 'asddaasdasd']
-                      const node = relayStore.get(data.labbook.id)
-                      console.log(node)
-                     console.log(RelayRuntime.Observable.from(data.labbook))
-                     const labbook = relayStore.create(
-                       'client:newlabbook:' + tempID++,
-                       'labbook',
-                     );
 
-                     let observable = RelayRuntime.Observable.from(data.labbook)
-                     console.log(RelayRuntime.simpleClone(data.labbook))
-                     console.log(labbook)
-
-                     node.copyFieldsFrom(observable)
-
-
-                  //}
-                })
+                //TODO update labbook edge/node here
 
               }
 

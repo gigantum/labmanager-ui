@@ -47,18 +47,15 @@ export default function SyncLabbookMutation(
         if(error){
           console.log(error)
         }
-        // console.log(response)
-        // if(response){
-        //    FooterUtils.getJobStatus(response, 'syncLabbook', 'jobKey')
-        // }
+
         callback(error)
       },
       onError: err => {console.error(err)},
       updater: (store, response) => {
-          console.log(store, response)
-           FooterUtils.getJobStatus(response, 'syncLabbook', 'jobKey', store)
 
-
+          if(response){
+           FooterUtils.getJobStatus(response, 'syncLabbook', 'jobKey')
+          }
       }
     },
   )

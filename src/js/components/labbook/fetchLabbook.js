@@ -17,7 +17,7 @@ const containerStatusQuery = graphql`
 
 const FetchLabbook = {
   getLabook: (owner, labbookName) =>{
-    console.log(owner, labbookName)
+
     const variables = {
       'owner': owner,
       'name': labbookName,
