@@ -20,7 +20,7 @@ import ForceSync from './ForceSync'
 import LoginPrompt from './LoginPrompt'
 import PublishModal from './PublishModal'
 import VisibilityModal from './VisibilityModal'
-import CreateBranch from 'Components/labbook/branches/CreateBranch'
+import CreateBranch from 'Components/labbook/labbookHeader/branches/CreateBranch'
 import Collaborators from './collaborators/Collaborators'
 import ToolTip from 'Components/shared/ToolTip';
 

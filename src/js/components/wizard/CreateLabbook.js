@@ -4,7 +4,7 @@ import uuidv4 from 'uuid/v4'
 //utilities
 import validation from 'JS/utils/Validation'
 //components
-import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
+import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/LoginPrompt'
 //mutations
 import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
@@ -29,7 +29,6 @@ export default class CreateLabbook extends React.Component {
       'isUserValid': false,
       'showLoginPrompt': false
     };
-
 
     this.continueSave = this.continueSave.bind(this)
     this._updateTextState = this._updateTextState.bind(this)

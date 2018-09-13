@@ -17,23 +17,30 @@ export default class ForceMerge extends Component {
 
   render() {
     return (
+
       <Modal
         handleClose={()=> this.props.toggleModal('forceMergeVisible')}
         header="Force Merge"
         size="medium"
         renderContent={()=>
+
           <Fragment>
             <p className="ForceMege__text">Merge failed. Do you want to force merge?</p>
+
             <div className="ForceMege__button-container">
+
               <button
                 onClick={() => this._forceMerge()}>
                 Yes
               </button>
+
               <button
                 onClick={() => this.props.toggleModal('forceMergeVisible')}>
                 No
               </button>
+              
             </div>
+
           </Fragment>
         }
       />

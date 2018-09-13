@@ -41,6 +41,9 @@ UserIdentity.getUserIdentity().then((response)=>{
         localStorage.removeItem('email')
         localStorage.removeItem('username')
         localStorage.removeItem('expires_at')
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('id_token')
+        forceLoginScreen = true;
       }
     }
   }else{

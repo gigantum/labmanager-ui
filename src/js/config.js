@@ -10,6 +10,7 @@ const CONFIG = {
     {id:'inputData', name: 'Input Data'},
     {id:'outputData', name: 'Output Data'}
   ],
+  'defaultNavOrder': ['overview', 'activity', 'environment', 'code', 'inputData', 'outputData'],
   'modalNav': [
     {'id': 'createLabook', 'description': 'Title & Description'},
     {'id': 'selectBaseImage', 'description': 'Base Image'},
