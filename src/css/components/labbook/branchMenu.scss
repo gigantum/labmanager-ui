@@ -173,6 +173,26 @@
   background-size: 24px;
 
 }
+.BranchMenu__item--visibility-public {
+  @extend .BranchMenu__item;
+  background: url('./../images/icons/earth-grey.svg') no-repeat 10px center;
+  background-size: 17px;
+}
+.BranchMenu__item--visibility-public:hover {
+  background: $background-color url('./../images/icons/earth-grey.svg') no-repeat 10px center;
+  background-size: 17px;
+
+}
+.BranchMenu__item--visibility-private {
+  @extend .BranchMenu__item;
+  background: url('./../images/icons/lock-grey.svg') no-repeat 13px center;
+  background-size: 13px;
+}
+.BranchMenu__item--visibility-private:hover {
+  background: $background-color url('./../images/icons/lock-grey.svg') no-repeat 13px center;
+  background-size: 13px;
+
+}
 
 .BranchMenu__item--delete{
   @extend .BranchMenu__item;

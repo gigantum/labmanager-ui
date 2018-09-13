@@ -152,7 +152,7 @@ const FooterUtils = {
         store.dispatch({
           type: 'ERROR_MESSAGE',
           payload: {
-            message: "Could not find a valid job key",
+            message: "There was an error fetching job status.",
             messageBody: [{message: 'Callback error from the API'}],
             isLast: true
           }

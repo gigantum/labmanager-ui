@@ -19,6 +19,7 @@ import DeleteLabbook from './DeleteLabbook'
 import ForceSync from './ForceSync'
 import LoginPrompt from './LoginPrompt'
 import PublishModal from './PublishModal'
+import VisibilityModal from './VisibilityModal'
 import CreateBranch from 'Components/labbook/branches/CreateBranch'
 import Collaborators from './collaborators/Collaborators'
 import ToolTip from 'Components/shared/ToolTip';
@@ -51,6 +52,7 @@ class BranchMenu extends Component {
       'syncWarningVisible': false,
       'publishWarningVisible': false,
       'publishModalVisible': false,
+      'visibilityModalVisible': false,
       owner,
       labbookName
     }
@@ -67,6 +69,7 @@ class BranchMenu extends Component {
     this._remountCollab = this._remountCollab.bind(this)
     this._handleToggleModal = this._handleToggleModal.bind(this)
     this._togglePublishModal = this._togglePublishModal.bind(this)
+    this._toggleVisibilityModal = this._toggleVisibilityModal.bind(this)
     this._resetState = this._resetState.bind(this)
     this._resetPublishState = this._resetPublishState.bind(this)
     this._setRemoteSession = this._setRemoteSession.bind(this)
@@ -192,6 +195,13 @@ class BranchMenu extends Component {
         'publishModalVisible': !this.state.publishModalVisible
       })
     }
+  }
+    /**
+  *  @param {}
+  *  changes visibility of project
+  */
+  _toggleVisibilityModal() {
+    this.setState({visibilityModalVisible: !this.state.visibilityModalVisible})
   }
   /**
   *  @param {}
@@ -671,6 +681,18 @@ class BranchMenu extends Component {
             setRemoteSession={this._setRemoteSession}
           />
         }
+        {
+          this.state.visibilityModalVisible &&
+          <VisibilityModal
+            owner={this.state.owner}
+            labbookName={this.state.labbookName}
+            auth={this.props.auth}
+            toggleVisibilityModal={this._toggleVisibilityModal}
+            checkSessionIsValid={this._checkSessionIsValid}
+            resetState={this._resetState}
+            visibility={this.props.visibility}
+          />
+        }
 
         <CreateBranch
           description={this.props.description}
@@ -726,6 +748,17 @@ class BranchMenu extends Component {
                 Export
               </button>
             </li>
+            {
+              this.state.addedRemoteThisSession &&
+              <li className={`BranchMenu__item--visibility-${this.props.visibility}`}>
+              <button
+                onClick={(evt) => this._toggleVisibilityModal(evt)}
+                className="BranchMenu__item--flat-button"
+              >
+                Change Visibility
+              </button>
+            </li>
+            }
 
             <li className="BranchMenu__item--delete">
               <button

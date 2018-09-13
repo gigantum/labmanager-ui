@@ -6,6 +6,8 @@ import Loader from 'Components/shared/Loader'
 import Base from './Base'
 import PackageDependencies from './PackageDependencies'
 import CustomDockerfile from './CustomDockerfile'
+import ErrorBoundary from 'Components/shared/ErrorBoundary'
+import ToolTip from 'Components/shared/ToolTip';
 //mutations
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
@@ -135,35 +137,41 @@ class Environment extends Component {
       const {base} = env;
       return(
         <div className="Environment">
-
-            <Base
-              ref="base"
-              environment={this.props.labbook.environment}
-              environmentId={this.props.labbook.environment.id}
-              editVisible
-              containerStatus={this.props.containerStatus}
-              setComponent={this._setComponent}
-              setBase={this._setBase}
-              buildCallback={this._buildCallback}
-              blockClass="Environment"
-              base={base}
-             />
-
-            <PackageDependencies
-              componentRef={ref => this.packageDependencies = ref}
-              environment={this.props.labbook.environment}
-              environmentId={this.props.labbook.environment.id}
-              labbookId={this.props.labbook.id}
-              containerStatus={this.props.containerStatus}
-              setBase={this._setBase}
-              setComponent={this._setComponent}
-              buildCallback={this._buildCallback}
-              overview={this.props.overview}
-              base={base}
-              blockClass="Environment"
-              isLocked={this.props.isLocked}
-            />
-
+            <div className="Base__header-container">
+              <h5 className="Base__header">Base&nbsp;&nbsp;&nbsp; <ToolTip section="baseEnvironment"/></h5>
+            </div>
+            <ErrorBoundary type="baseError" key="base">
+              <Base
+                ref="base"
+                environment={this.props.labbook.environment}
+                environmentId={this.props.labbook.environment.id}
+                editVisible
+                containerStatus={this.props.containerStatus}
+                setComponent={this._setComponent}
+                setBase={this._setBase}
+                buildCallback={this._buildCallback}
+                blockClass="Environment"
+                base={base}
+              />
+             </ErrorBoundary>
+            <div className="Environment__header-container">
+              <h5 className="PackageDependencies__header">Packages <ToolTip section="packagesEnvironment"/></h5>
+            </div>
+            <ErrorBoundary type="packageDependenciesError" key="packageDependencies">
+              <PackageDependencies
+                componentRef={ref => this.packageDependencies = ref}
+                environment={this.props.labbook.environment}
+                environmentId={this.props.labbook.environment.id}
+                labbookId={this.props.labbook.id}
+                containerStatus={this.props.containerStatus}
+                setBase={this._setBase}
+                setComponent={this._setComponent}
+                buildCallback={this._buildCallback}
+                overview={this.props.overview}
+                base={base}
+                isLocked={this.props.isLocked}
+              />
+            </ErrorBoundary>
             <CustomDockerfile
               dockerfile={this.props.labbook.environment.dockerSnippet}
               buildCallback={this._buildCallback}

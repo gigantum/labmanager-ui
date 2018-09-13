@@ -2,7 +2,7 @@
 import React, { Component, Fragment } from 'react'
 import uuidv4 from 'uuid/v4'
 //mutations
-import PublishLabbookMutation from 'Mutations/branches/PublishLabbookMutation'
+import SetVisibilityMutation from 'Mutations/SetVisibilityMutation'
 //component
 import Modal from 'Components/shared/Modal'
 //store
@@ -11,8 +11,9 @@ import store from 'JS/redux/store'
 
 export default class PublishModal extends Component {
   state={
-    'public': false
+    'isPublic': this.props.visibility === 'public'
   }
+
   _setPublic(isPublic){
     this.setState({
       isPublic
@@ -23,17 +24,16 @@ export default class PublishModal extends Component {
   *  adds remote url to labbook
   *  @return {string}
   */
-  _publishLabbook() {
+  _changeVisibility() {
 
       let id = uuidv4()
       let self = this;
-
-      this.props.togglePublishModal()
+      let visibility = this.state.isPublic ? 'public': 'private';
+      this.props.toggleVisibilityModal()
 
       const {
         owner,
-        labbookName,
-        labbookId} = this.props;
+        labbookName} = this.props;
 
 
 
@@ -43,40 +43,14 @@ export default class PublishModal extends Component {
           if (response.data) {
 
             if (response.data.userIdentity.isSessionValid) {
-              if(store.getState().containerStatus.status !== 'Running'){
-                self.props.resetPublishState(true)
 
-              if (!self.props.remoteUrl) {
-                self.props.setPublishingState(true)
-
-                self.props.showContainerMenuMessage('publishing');
-
-                store.dispatch({
-                  type: 'MULTIPART_INFO_MESSAGE',
-                  payload: {
-                    id: id,
-                    message: 'Publishing Project to Gigantum cloud ...',
-                    isLast: false,
-                    error: false
-                  }
-                })
-
-
-                  PublishLabbookMutation(
+              if (this.props.visibility !== visibility) {
+                SetVisibilityMutation(
                     owner,
                     labbookName,
-                    labbookId,
-                    this.state.isPublic,
+                    visibility,
                     (response, error) => {
 
-                      self.props.setPublishingState(false)
-
-                      store.dispatch({
-                        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                        payload: {
-                          containerMenuOpen: false
-                        }
-                      })
                       if(error){
                         console.log(error)
 
@@ -84,37 +58,21 @@ export default class PublishModal extends Component {
                           type: 'ERROR_MESSAGE',
                           payload: {
                             id: id,
-                            message: 'Publish failed',
+                            message: 'Visibility change failed',
                             messageBody: error,
                           }
                         })
-                      }
-
-                      self.props.resetPublishState(false)
-
-                      if (response.publishLabbook && response.publishLabbook.success) {
-
-                        self.props.remountCollab();
-
+                      } else {
                         store.dispatch({
-                          type: 'MULTIPART_INFO_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: `Added remote https://gigantum.com/${self.props.owner}/${self.props.labbookName}`,
-                            isLast: true,
-                            error: false
-                          }
-                        })
-
-                        self.props.setRemoteSession()
+                            type: 'INFO_MESSAGE',
+                            payload:{
+                              message: `Visibility changed to ${visibility}`
+                            }
+                          })
                       }
                     }
                   )
                 }
-              } else {
-
-                self.props.showContainerMenuMessage('publishing', true)
-              }
 
             } else {
 
@@ -123,7 +81,7 @@ export default class PublishModal extends Component {
                 self.props.resetState()
 
               }, ()=>{
-                self._publishLabbook();
+                self._changeVisibility();
               });
             }
           }
@@ -138,18 +96,18 @@ export default class PublishModal extends Component {
 
     return(
       <Modal
-        header="Publish"
-        handleClose={()=> this.props.togglePublishModal() }
+        header="Change Visibility"
+        handleClose={()=> this.props.toggleVisibilityModal() }
         size="large"
         renderContent={()=>
           <div className="PublishModal">
             <div>
-              <p>You are about to publish a Project to Gigantum cloud. Select public or private below.</p>
+              <p>You are about to change the visibility of the project.</p>
             </div>
             <div className="Publish__radio-buttons">
               <div className="Publish__private">
                 <input
-                  defaultChecked={!this.state.isPublic}
+                  defaultChecked={this.props.visibility === 'private'}
                   type="radio"
                   name="publish"
                   id="publish_private"
@@ -163,7 +121,7 @@ export default class PublishModal extends Component {
               </div>
               <div className="Publish__public">
                 <input
-                  defaultChecked={this.state.isPublic}
+                  defaultChecked={this.props.visibility === 'public'}
                   name="publish"
                   type="radio"
                   id="publish_public"
@@ -176,8 +134,8 @@ export default class PublishModal extends Component {
               </div>
             </div>
             <div className="Publish__buttons">
-               <button onClick={()=>{this._publishLabbook()}}>Publish</button>
-              <button className="button--flat" onClick={()=>{this.props.togglePublishModal()}}>Cancel</button>
+               <button onClick={()=>{this._changeVisibility()}}>Save</button>
+              <button className="button--flat" onClick={()=>{this.props.toggleVisibilityModal()}}>Cancel</button>
             </div>
           </div>
         }

@@ -24,6 +24,7 @@ import Loader from 'Components/shared/Loader'
 import Branches from './branches/Branches'
 import BranchMenu from './branchMenu/BranchMenu'
 import ToolTip from 'Components/shared/ToolTip';
+import ErrorBoundary from 'Components/shared/ErrorBoundary'
 //utils
 import {getFilesFromDragEvent} from "JS/utils/html-dir-content";
 
@@ -258,7 +259,7 @@ class Labbook extends Component {
         onClick={()=> this._setSelectedComponent(item.id)}
         >
         <Link
-          onClick={()=> window.scrollTo(0, 0)}
+          onClick={this._scrollToTop}
           to={`../../../projects/${this.props.owner}/${this.props.match.params.labbookName}/${item.id}`}
           replace
         >
@@ -349,6 +350,12 @@ class Labbook extends Component {
 
       return prettyBranchName
     }
+  }
+  /**
+    scrolls to top of window
+  */
+  _scrollToTop(){
+    window.scrollTo(0, 0);
   }
 
   render(){
@@ -444,6 +451,7 @@ class Labbook extends Component {
                 <div className="Labbook__column-container">
 
                    <BranchMenu
+                     visibility={visibility}
                      description={labbook.description}
                      history={this.props.history}
                      collaborators={labbook.collaborators}
@@ -458,35 +466,37 @@ class Labbook extends Component {
                      isMainWorkspace={name === 'workspace' || name === `gm.workspace-${localStorage.getItem('username')}`}
                      auth={this.props.auth}
                     />
-
-                     <ContainerStatus
-                       ref="ContainerStatus"
-                       base={labbook.environment.base}
-                       containerStatus={labbook.environment.containerStatus}
-                       imageStatus={labbook.environment.imageStatus}
-                       labbookId={labbook.id}
-                       setBuildingState={this._setBuildingState}
-                       isBuilding={this.props.isBuilding}
-                       isSyncing={this.props.isSyncing}
-                       isPublishing={this.props.isPublishing}
-                       creationDateUtc={labbook.creationDateUtc}
-                     />
+                    <ErrorBoundary type="containerStatusError" key="containerStatus">
+                      <ContainerStatus
+                        ref="ContainerStatus"
+                        base={labbook.environment.base}
+                        containerStatus={labbook.environment.containerStatus}
+                        imageStatus={labbook.environment.imageStatus}
+                        labbookId={labbook.id}
+                        setBuildingState={this._setBuildingState}
+                        isBuilding={this.props.isBuilding}
+                        isSyncing={this.props.isSyncing}
+                        isPublishing={this.props.isPublishing}
+                        creationDateUtc={labbook.creationDateUtc}
+                      />
+                    </ErrorBoundary>
                   </div>
                 </div>
                 <div className={(this.props.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
 
                   <div className={(this.props.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
-
-                <Branches
-                  defaultRemote={labbook.defaultRemote}
-                  branchesOpen={this.props.branchesOpen}
-                  labbook={labbook}
-                  labbookId={labbook.id}
-                  activeBranch={labbook.activeBranchName}
-                  toggleBranchesView={this._toggleBranchesView}
-                  mergeFilter={this.props.mergeFilter}
-                  setBuildingState={this._setBuildingState}
-                />
+                  <ErrorBoundary type={this.props.branchesOpen ?  'branchesError': 'hidden'} key="branches">
+                    <Branches
+                      defaultRemote={labbook.defaultRemote}
+                      branchesOpen={this.props.branchesOpen}
+                      labbook={labbook}
+                      labbookId={labbook.id}
+                      activeBranch={labbook.activeBranchName}
+                      toggleBranchesView={this._toggleBranchesView}
+                      mergeFilter={this.props.mergeFilter}
+                      setBuildingState={this._setBuildingState}
+                    />
+                  </ErrorBoundary>
 
                   <div className={(this.props.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
                 </div>
@@ -513,26 +523,9 @@ class Labbook extends Component {
                       exact
                       path={`${this.props.match.path}`}
                       render={() => {
-
-                        return (<Overview
-                          key={this.props.labbookName + '_overview'}
-                          labbook={labbook}
-                          description={labbook.description}
-                          labbookId={labbook.id}
-                          setBuildingState={this._setBuildingState}
-                          readme={labbook.readme}
-                          isSyncing={this.props.isSyncing}
-                          isPublishing={this.props.isPublishing}
-                        />)
-                      }}
-                    />
-
-                    <Route path={`${this.props.match.path}/:labbookMenu`}>
-                      <Switch>
-                        <Route
-                          path={`${this.props.match.path}/overview`}
-                          render={() => {
-                            return (<Overview
+                        return (
+                          <ErrorBoundary type="labbookSectionError">
+                            <Overview
                               key={this.props.labbookName + '_overview'}
                               labbook={labbook}
                               description={labbook.description}
@@ -541,7 +534,33 @@ class Labbook extends Component {
                               readme={labbook.readme}
                               isSyncing={this.props.isSyncing}
                               isPublishing={this.props.isPublishing}
-                            />)
+                              scrollToTop={this._scrollToTop}
+                            />
+                          </ErrorBoundary>
+                        )
+                      }}
+                    />
+
+                    <Route path={`${this.props.match.path}/:labbookMenu`}>
+                      <Switch>
+                        <Route
+                          path={`${this.props.match.path}/overview`}
+                          render={() => {
+                            return (
+                              <ErrorBoundary type="labbookSectionError" key="overview">
+                                <Overview
+                                  key={this.props.labbookName + '_overview'}
+                                  labbook={labbook}
+                                  description={labbook.description}
+                                  labbookId={labbook.id}
+                                  setBuildingState={this._setBuildingState}
+                                  readme={labbook.readme}
+                                  isSyncing={this.props.isSyncing}
+                                  isPublishing={this.props.isPublishing}
+                                  scrollToTop={this._scrollToTop}
+                                />
+                              </ErrorBoundary>
+                            )
                           }}
                         />
 
@@ -550,61 +569,76 @@ class Labbook extends Component {
                           render={() => {
 
                           return (
-                            <Activity
-                              key={this.props.labbookName + '_activity'}
-                              labbook={labbook}
-                              activityRecords={this.props.activityRecords}
-                              labbookId={labbook.id}
-                              activeBranch={labbook.activeBranch}
-                              isMainWorkspace={name === 'workspace'}
-                              setBuildingState={this._setBuildingState}
-                              {...this.props}
-                            />)
+                            <ErrorBoundary type="labbookSectionError" key="activity">
+                              <Activity
+                                key={this.props.labbookName + '_activity'}
+                                labbook={labbook}
+                                activityRecords={this.props.activityRecords}
+                                labbookId={labbook.id}
+                                activeBranch={labbook.activeBranch}
+                                isMainWorkspace={name === 'workspace'}
+                                setBuildingState={this._setBuildingState}
+                                {...this.props}
+                              />
+                            </ErrorBoundary>
+                          )
                         }} />
 
                         <Route
                           path={`${this.props.match.url}/environment`}
                           render={() => {
                             return (
-                              <Environment
-                                key={this.props.labbookName + '_environment'}
-                                labbook={labbook}
-                                labbookId={labbook.id}
-                                setBuildingState={this._setBuildingState}
-                                containerStatus={this.refs.ContainerStatus}
-                                overview={labbook.overview}
-                                isLocked={isLockedEnvironment}
-                                {...this.props}
-                              />)
+                              <ErrorBoundary type="labbookSectionError" key="environment">
+                                <Environment
+                                  key={this.props.labbookName + '_environment'}
+                                  labbook={labbook}
+                                  labbookId={labbook.id}
+                                  setBuildingState={this._setBuildingState}
+                                  containerStatus={this.refs.ContainerStatus}
+                                  overview={labbook.overview}
+                                  isLocked={isLockedEnvironment}
+                                  {...this.props}
+                                />
+                              </ErrorBoundary>
+                              )
                           }}
                         />
 
                         <Route path={`${this.props.match.url}/code`} render={() => {
                           return (
-                            <Code
-                              labbook={labbook}
-                              labbookId={labbook.id}
-                              setContainerState={this._setContainerState}
-                              isLocked={isLockedBrowser}
-                            />)
+                            <ErrorBoundary type="labbookSectionError" key="code">
+                              <Code
+                                labbook={labbook}
+                                labbookId={labbook.id}
+                                setContainerState={this._setContainerState}
+                                isLocked={isLockedBrowser}
+                              />
+                            </ErrorBoundary>
+                            )
                         }} />
 
                         <Route path={`${this.props.match.url}/inputData`} render={() => {
                           return (
-                            <InputData
-                              labbook={labbook}
-                              labbookId={labbook.id}
-                              isLocked={isLockedBrowser}
-                            />)
+                            <ErrorBoundary type="labbookSectionError" key="input">
+                              <InputData
+                                labbook={labbook}
+                                labbookId={labbook.id}
+                                isLocked={isLockedBrowser}
+                              />
+                            </ErrorBoundary>
+                              )
                         }} />
 
                         <Route path={`${this.props.match.url}/outputData`} render={() => {
                           return (
-                            <OutputData
-                              labbook={labbook}
-                              labbookId={labbook.id}
-                              isLocked={isLockedBrowser}
-                            />)
+                            <ErrorBoundary type="labbookSectionError" key="output">
+                              <OutputData
+                                labbook={labbook}
+                                labbookId={labbook.id}
+                                isLocked={isLockedBrowser}
+                              />
+                            </ErrorBoundary>
+                            )
                         }} />
                       </Switch>
                     </Route>
