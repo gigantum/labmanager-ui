@@ -253,10 +253,15 @@ export default class ImportModule extends Component {
   *  preventDefault on dragOver event
   */
   _getBlob = (dataTransfer) => {
+
+
+
     let self = this;
     for (let i=0; i < dataTransfer.files.length; i++) {
 
-      let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
+
+      //let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
+      let file = dataTransfer.files[0]
       if(file.name.slice(file.name.length - 4, file.name.length) !== '.lbk' && file.name.slice(file.name.length - 4, file.name.length) !== '.zip'){
 
         this.setState({error: true})
@@ -271,6 +276,7 @@ export default class ImportModule extends Component {
         let fileReader = new FileReader();
 
         fileReader.onloadend = function (evt) {
+             // debugger
           let arrayBuffer = evt.target.result;
 
           let blob = new Blob([new Uint8Array(arrayBuffer)]);
@@ -288,7 +294,9 @@ export default class ImportModule extends Component {
           self._fileUpload()
 
         };
+
         fileReader.readAsArrayBuffer(file);
+
       }
     }
   }

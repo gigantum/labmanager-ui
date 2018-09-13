@@ -47,7 +47,7 @@ class Labbook extends Component {
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
       payload: {
-        'callbackRoute': props.history.location.pathname
+        'callbackRoute': props.location.pathname
       }
     })
   }
@@ -62,7 +62,7 @@ class Labbook extends Component {
     store.dispatch({
       type: 'UPDATE_CALLBACK_ROUTE',
       payload: {
-        'callbackRoute': nextProps.history.location.pathname
+        'callbackRoute': nextProps.location.pathname
       }
     })
   }

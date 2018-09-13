@@ -4,6 +4,8 @@ import {
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
 
+import FooterUtils from 'Components/shared/footer/FooterUtils'
+
 const mutation = graphql`
   mutation SyncLabbookMutation($input: SyncLabbookInput!){
     syncLabbook(input: $input){
@@ -50,6 +52,10 @@ export default function SyncLabbookMutation(
       },
       onError: err => {console.error(err)},
       updater: (store, response) => {
+
+          if(response){
+           FooterUtils.getJobStatus(response, 'syncLabbook', 'jobKey')
+          }
       }
     },
   )

@@ -3,44 +3,20 @@ import React, {Component} from 'react';
 import classNames from 'classnames';
 import YouTube from 'react-youtube';
 import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
-
+//history
 import history from 'JS/history';
-import {QueryRenderer, graphql} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
-import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
 // components
 import Home from 'Components/home/Home';
 import SideBar from 'Components/shared/SideBar';
 import Footer from 'Components/shared/footer/Footer';
 import Prompt from 'Components/shared/Prompt';
-import Labbook from 'Components/labbook/Labbook';
-import Loader from 'Components/shared/Loader'
+import LabbookQueryContainer from 'Components/labbook/LabbookQueryContainer';
 import Profile from 'Components/profile/Profile'
 import Helper from 'Components/shared/Helper'
 //
 import store from 'JS/redux/store'
 //config
 import config from 'JS/config'
-//utils
-import {getFilesFromDragEvent} from "JS/utils/html-dir-content";
-
-//labbook query with notes fragment
-export const LabbookQuery =  graphql`
-  query RoutesQuery($name: String!, $owner: String!, $first: Int!, $cursor: String, $hasNext: Boolean!){
-    labbook(name: $name, owner: $owner){
-      id
-      description
-      ...Labbook_labbook
-    }
-  }`
-
-
-const handleAuthentication = (auth, nextState, replace) => {
-  if (/access_token|id_token|error/.test(nextState.location.hash)) {
-    auth.handleAuthentication();
-  }
-}
 
 
 class Routes extends Component {
@@ -66,6 +42,13 @@ class Routes extends Component {
   */
   componentDidMount(){
     this._flipDemoHeaderText();
+  }
+  /**
+    @param {Error, Object} error, info
+    shows error message when runtime error occurs
+  */
+  componentDidCatch(error, info) {
+    this.setState({hasError: true})
   }
   /**
     @param {}
@@ -118,13 +101,6 @@ class Routes extends Component {
     }
   }
 
-  /**
-    @param {Error, Object} error, info
-    shows error message when runtime error occurs
-  */
-  componentDidCatch(error, info) {
-    this.setState({hasError: true})
-  }
 
   render(){
     if(!this.state.hasError){
@@ -254,47 +230,16 @@ class Routes extends Component {
                           const owner = parentProps.match.params.owner;
 
                           self.setRouteStore(owner, labbookName)
-
-                          return (<QueryRenderer
-                            environment={environment}
-                            query={LabbookQuery}
-                            variables={
-                              {
-                                name: parentProps.match.params.labbookName,
-                                owner: parentProps.match.params.owner,
-                                first: 2,
-                                hasNext: false
-                              }
-                            }
-                            render={({error, props}) => {
-
-                              if(error){
-                                console.log(error)
-                                return (<div>{error.message}</div>)
-                              }
-                              else if(props){
-                                if(props.errors){
-                                  return(<div>{props.errors[0].message}</div>)
-                                }else{
-
-
-                                  return (<Labbook
-                                    key={labbookName}
-                                    auth={this.props.auth}
-                                    labbookName={labbookName}
-                                    query={props.query}
-                                    labbook={props.labbook}
-                                    owner={owner}
-                                    {...parentProps}
-                                  />)
-                                }
-                              }
-                              else{
-                                return (<Loader />)
-                              }
-                            }
-                          }
-                        />)
+             
+                          return (
+                            <LabbookQueryContainer
+                              labbookName={parentProps.match.params.labbookName}
+                              owner={parentProps.match.params.owner}
+                              auth={this.props.auth}
+                              history={history}
+                              {...this.props}
+                              {...parentProps}
+                            /> )
                       }
 
                       }
