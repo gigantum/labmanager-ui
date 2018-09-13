@@ -12,7 +12,7 @@ import ActivityCard from './ActivityCard'
 import Loader from 'Components/shared/Loader'
 import UserNote from './UserNote'
 import PaginationLoader from './ActivityLoaders/PaginationLoader'
-import CreateBranch from '../branches/CreateBranch';
+import CreateBranch from 'Components/labbook/labbookHeader/branches/CreateBranch';
 import NewActivity from './NewActivity'
 import ToolTip from 'Components/shared/ToolTip'
 import ErrorBoundary from 'Components/shared/ErrorBoundary'
