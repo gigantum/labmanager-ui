@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux'
 //store
-import store from "JS/redux/store"
+import {
+  setHelperVisibility,
+  setResizeHelper,
+} from 'JS/redux/store/reducers/helper'
+import { setHelperVisible } from 'JS/redux/reducers/footer'
+
 
 class Helper extends Component {
   constructor(props){
     super(props)
 
-    this.state = store.getState().helper
+    this.state = {}
 
     this.state.helperMenuOpen = false;
 
@@ -32,28 +37,15 @@ class Helper extends Component {
     * update store
   */
   _toggleIsVisible(){
-    store.dispatch({
-      type: 'UPDATE_HELPER_VISIBILITY',
-      payload: {
-        isVisible: !store.getState().helper.isVisible
-      }
-    })
+    this.props.setHelperVisibility(!this.props.isVisible)
   }
   /**
     * @param {}
     * toggles menu view
   */
   _toggleMenuView(){
-    store.dispatch({
-      type: 'HELPER_VISIBLE',
-      payload:{
-        helperVisible: !this.state.helperMenuOpen
-      }
-    })
-
+    setHelperVisible(!this.state.helperMenuOpen)
     this.setState({helperMenuOpen: !this.state.helperMenuOpen})
-
-
   }
 
   /**
@@ -61,10 +53,7 @@ class Helper extends Component {
     * update store to risize component
   */
   _resize(){
-    store.dispatch({
-      type: 'RESIZE_HELPER',
-      payload: {}
-    })
+    this.props.setResizeHelper()
   }
 
   render(){
@@ -143,7 +132,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     resize: state.helper.resize,
-    isVisible: state.helper.helperMenuOpen,
+    isVisible: state.helper.isVisible,
     footerVisible: state.helper.footerVisible,
     uploadOpen: state.footer.uploadOpen
   }
@@ -151,7 +140,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-
+    setHelperVisibility,
+    setResizeHelper,
   }
 }
 

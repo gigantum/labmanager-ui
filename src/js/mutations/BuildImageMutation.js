@@ -4,7 +4,7 @@ import {
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
 //redux store
-import reduxStore from 'JS/redux/store'
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 //utils
 import FooterUtils from 'Components/shared/footer/FooterUtils'
 
@@ -43,13 +43,7 @@ export default function BuildImageMutation(
       onCompleted: (response, error) => {
         if(error){
           console.log(error)
-          reduxStore.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload:{
-              message: 'ERROR: Project failed to build:',
-              messageBody: error
-            }
-          })
+          setErrorMessage('ERROR: Project failed to build:', error)
         }
 
         FooterUtils.getJobStatus(response, 'buildImage', 'backgroundJobKey')

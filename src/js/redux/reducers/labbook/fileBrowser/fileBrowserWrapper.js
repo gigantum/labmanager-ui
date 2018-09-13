@@ -1,3 +1,5 @@
+import dispatcher from 'JS/redux/dispatcher'
+
 /**
  * constants
  */
@@ -7,6 +9,12 @@ export const PAUSE_UPLOAD = 'PAUSE_UPLOAD'
 export const PAUSE_UPLOAD_DATA= 'PAUSE_UPLOAD_DATA'
 export const PAUSE_CHUNK_UPLOAD = 'PAUSE_CHUNK_UPLOAD'
 export const RESET_CHUNK_UPLOAD = 'RESET_CHUNK_UPLOAD'
+
+/**
+ * actions
+ */
+export const setFinishedUploading = () => dispatcher(FINISHED_UPLOADING, {})
+export const setPauseChunkUpload = (data, chunkData, section, username) => dispatcher(FINISHED_UPLOADING, {data, chunkData, section, username})
 
 export default (
  state = {

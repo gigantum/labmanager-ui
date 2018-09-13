@@ -6,22 +6,12 @@ import User from './User'
 import ToolTip from 'Components/shared/ToolTip';
 //store
 import store from 'JS/redux/store'
+import { setCallbackRoute } from '/JS/redux/reducers/routes'
 //config
 import config from 'JS/config'
 
 export default class SideBar extends Component {
-  /**
-    @param {}
-    logout through Auth0
-  */
-  _updateCallbackRoute(){
-    store.dispatch({
-      type: 'UPDATE_CALLBACK_ROUTE',
-      payload: {
-        'callbackRoute': '/projects/local'
-      }
-    })
-  }
+
   /**
     @param {}
     logout through Auth0
@@ -45,7 +35,7 @@ export default class SideBar extends Component {
           <ul className='SideBar__nav'>
             <li className={isLabbooks ? 'SideBar__list-item--selected' : 'SideBar__list-item'}>
               <Link
-                onClick={() => this._updateCallbackRoute()}
+                onClick={() => setCallbackRoute('/projects/local')}
                 className={isLabbooks ? 'SideBar__nav-item SideBar__nav-item--labbooks SideBar__nav-item--selected' : 'SideBar__nav-item SideBar__nav-item--labbooks'}
                 to={{pathname: '/projects/local'}}
               >

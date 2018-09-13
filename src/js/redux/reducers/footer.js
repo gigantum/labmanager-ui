@@ -38,6 +38,10 @@ export const HELPER_VISIBLE = 'HELPER_VISIBLE'
 export const setErrorMessage = (message, messageBody) => dispatcher(ERROR_MESSAGE, {message, messageBody})
 export const setWarningMessage = (message) => dispatcher(WARNING_MESSAGE, {message})
 export const setInfoMessage = (message) => dispatcher(INFO_MESSAGE, {message})
+export const setMultiInfoMessage = (id, message, isLast, error, messageBody) => dispatcher(MULTIPART_INFO_MESSAGE, {id, message, isLast, error, messageBody})
+export const setUploadMessageUpdate = (uploadMessage, fileCount, progessBarPercentage, error, open) => dispatcher(UPLOAD_MESSAGE_UPDATE, {uploadMessage, fileCount, progessBarPercentage, error, open})
+export const setUploadMessageRemove = (uploadMessage, fileCount, progessBarPercentage, error, open) => dispatcher(UPLOAD_MESSAGE_REMOVE, {uploadMessage, fileCount, progessBarPercentage, error, open})
+export const setHelperVisible = (helperVisible) => dispatcher(HELPER_VISIBLE, {helperVisible})
 
 
 let tempId = 0
