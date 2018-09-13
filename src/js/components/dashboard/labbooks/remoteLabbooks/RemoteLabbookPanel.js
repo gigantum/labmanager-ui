@@ -11,7 +11,7 @@ import store from 'JS/redux/store'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
 //components
-import LoginPrompt from 'Components/labbook/branchMenu/LoginPrompt'
+import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/LoginPrompt'
 import Loader from 'Components/shared/Loader';
 
 export default class RemoteLabbookPanel extends Component {
