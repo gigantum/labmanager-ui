@@ -8,6 +8,7 @@ import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
+import { setWarningMessage } from 'JS/redux/reducers/footer'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
 //components
@@ -37,12 +38,7 @@ export default class RemoteLabbookPanel extends Component {
   */
   _handleDelete(edge) {
     if(localStorage.getItem('username') !== edge.node.owner){
-      store.dispatch({
-        type: 'WARNING_MESSAGE',
-        payload: {
-          message: 'You can only delete remote Projects that you have created.',
-        }
-      })
+      setWarningMessage('You can only delete remote Projects that you have created.')
     } else {
       UserIdentity.getUserIdentity().then(response => {
       if(navigator.onLine){

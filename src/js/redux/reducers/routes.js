@@ -12,6 +12,7 @@ export const UPDATE_CALLBACK_ROUTE = 'UPDATE_CALLBACK_ROUTE';
  * actions
  */
 export const setCallbackRoute = (callbackRoute) => dispatcher(UPDATE_CALLBACK_ROUTE, {callbackRoute})
+export const setUpdateAll = (owner, labbookName) => dispatcher(UPDATE_ALL, {owner, labbookName})
 
 export default (
  state = {

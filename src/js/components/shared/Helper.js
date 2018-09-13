@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import {
   setHelperVisibility,
   setResizeHelper,
-} from 'JS/redux/store/reducers/helper'
+} from 'JS/redux/reducers/helper'
 import { setHelperVisible } from 'JS/redux/reducers/footer'
 
 

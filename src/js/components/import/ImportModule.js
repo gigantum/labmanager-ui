@@ -9,6 +9,7 @@ import ChunkUploader from 'JS/utils/ChunkUploader'
 import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/LoginPrompt'
 import ToolTip from 'Components/shared/ToolTip';
 //store
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
@@ -532,13 +533,7 @@ export default class ImportModule extends Component {
         this.props.showModal()
       }
     } else {
-      store.dispatch({
-        type: 'ERROR_MESSAGE',
-        payload:{
-          message: `Cannot create a Project at this time.`,
-          messageBody: [{message: 'An internet connection is required to create a Project.'}]
-        }
-      })
+      setErrorMessage(`Cannot create a Project at this time.`, [{message: 'An internet connection is required to create a Project.'}])
     }
   }
 

@@ -7,6 +7,7 @@ import uuidv4 from 'uuid/v4'
 import {fetchQuery} from 'JS/createRelayEnvironment';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation';
 //store
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
 
 const fileExistenceQuery = graphql`
@@ -114,13 +115,7 @@ const makeDirectory = (
 
               }
             })
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not make ${path}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`ERROR: could not make ${path}`, error)
             reject(error)
           }else{
             resolve(response)

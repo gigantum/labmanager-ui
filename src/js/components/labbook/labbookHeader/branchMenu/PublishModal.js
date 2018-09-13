@@ -6,6 +6,7 @@ import PublishLabbookMutation from 'Mutations/branches/PublishLabbookMutation'
 //component
 import Modal from 'Components/shared/Modal'
 //store
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
 
 
@@ -79,15 +80,7 @@ export default class PublishModal extends Component {
                       })
                       if(error){
                         console.log(error)
-
-                        store.dispatch({
-                          type: 'ERROR_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: 'Publish failed',
-                            messageBody: error,
-                          }
-                        })
+                        setErrorMessage('Publish failed', error)
                       }
 
                       self.props.resetPublishState(false)

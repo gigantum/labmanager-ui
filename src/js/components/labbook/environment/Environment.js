@@ -12,6 +12,8 @@ import ToolTip from 'Components/shared/ToolTip';
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
 //store
+import { setErrorMessage } from 'JS/redux/reducers/footer'
+import { setRefetchPending } from 'JS/redux/reducers/labbook/environment/packageDependencies'
 import store from 'JS/redux/store'
 
 class Environment extends Component {
@@ -48,13 +50,7 @@ class Environment extends Component {
         (response, error) =>{
           if(error){
             console.log(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload:{
-                message: `Problem stopping ${labbookName}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`Problem stopping ${labbookName}`, error)
           }else{
             BuildImageMutation(
             labbookName,
@@ -64,22 +60,11 @@ class Environment extends Component {
 
 
                 if(error){
-                  store.dispatch({
-                    type: 'ERROR_MESSAGE',
-                    payload:{
-                      message: `${labbookName} failed to build`,
-                      messageBody: error
-                    }
-                  })
+                  setErrorMessage(`${labbookName} failed to build`, error)
                 }
 
                 if(refetchPending){
-                  store.dispatch({
-                    type: 'SET_REFETCH_PENDING',
-                    payload: {
-                      refetchPending: true
-                    }
-                  })
+                  setRefetchPending(true)
 
                 }
 
@@ -97,22 +82,11 @@ class Environment extends Component {
         false,
         (response, error) => {
           if(error){
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload:{
-                message: `${labbookName} failed to build`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`${labbookName} failed to build`, error)
           }
 
           if(refetchPending){
-            store.dispatch({
-              type: 'SET_REFETCH_PENDING',
-              payload: {
-                refetchPending: true
-              }
-            })
+            setRefetchPending(true)
           }
 
 

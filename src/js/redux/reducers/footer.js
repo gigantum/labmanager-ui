@@ -40,8 +40,15 @@ export const setWarningMessage = (message) => dispatcher(WARNING_MESSAGE, {messa
 export const setInfoMessage = (message) => dispatcher(INFO_MESSAGE, {message})
 export const setMultiInfoMessage = (id, message, isLast, error, messageBody) => dispatcher(MULTIPART_INFO_MESSAGE, {id, message, isLast, error, messageBody})
 export const setUploadMessageUpdate = (uploadMessage, fileCount, progessBarPercentage, error, open) => dispatcher(UPLOAD_MESSAGE_UPDATE, {uploadMessage, fileCount, progessBarPercentage, error, open})
-export const setUploadMessageRemove = (uploadMessage, fileCount, progessBarPercentage, error, open) => dispatcher(UPLOAD_MESSAGE_REMOVE, {uploadMessage, fileCount, progessBarPercentage, error, open})
+export const setUploadMessageRemove = (uploadMessage, id, progessBarPercentage) => dispatcher(UPLOAD_MESSAGE_REMOVE, {uploadMessage, id, progessBarPercentage,})
 export const setHelperVisible = (helperVisible) => dispatcher(HELPER_VISIBLE, {helperVisible})
+export const setUpdateHistoryView = () => dispatcher(UPDATE_HISTORY_VIEW, {})
+export const setResizeFooter = () => dispatcher(RESIZE_FOOTER, {})
+export const setResetFooter = () => dispatcher(RESET_FOOTER_STORE, {})
+export const setRemoveMessage = (id) => dispatcher(REMOVE_MESSAGE, {id})
+export const setToggleMessageList = (messageListOpen, viewHistory) => dispatcher(TOGGLE_MESSAGE_LIST, {messageListOpen, viewHistory})
+export const setUpdateMessageStackItemVisibility = (index) => dispatcher(UPDATE_MESSAGE_STACK_ITEM_VISIBILITY, {index})
+export const setUpdateHistoryStackItemVisibility = (index) => dispatcher(UPDATE_HISTORY_STACK_ITEM_VISIBILITY, {index})
 
 
 let tempId = 0
@@ -69,7 +76,7 @@ export default(state = {
   helperVisible: false,
   uuid: ''
 }, action) => {
-
+  if(action.type === 'MULTIPART_INFO_MESSAGE') console.log(action.payload)
   const checkHistoryStackLength = (messageStackHistory) => {
       if(messageStackHistory.length > 50){
         messageStackHistory.pop()

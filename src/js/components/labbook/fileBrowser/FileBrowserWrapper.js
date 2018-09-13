@@ -20,6 +20,7 @@ import config from 'JS/config'
 //utilities
 import ChunkUploader from 'JS/utils/ChunkUploader'
 //store
+import { setErrorMessage, setWarningMessage, setInfoMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
 
 
@@ -131,14 +132,7 @@ export default class FileBrowserWrapper extends Component {
 
         if(error){
           console.error(error)
-
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `ERROR: could not create ${key}`,
-              messageBody: error
-            }
-          })
+          setErrorMessage(`ERROR: could not create ${key}`, error)
         }
       }
     )
@@ -179,13 +173,7 @@ export default class FileBrowserWrapper extends Component {
       store.dispatch({
         type: 'STARTED_UPLOADING',
       })
-
-      store.dispatch({
-        type: 'INFO_MESSAGE',
-        payload:{
-          message: `Uploading Directories`,
-        }
-      })
+      setInfoMessage('Uploading Directories')
     }else if(fileSizeData.fileSizeNotAllowed.length > 0){
       let fileSizePromptNames = fileSizeData.fileSizePrompt.map((file) => file.name)
       let fileSizeNotAllowedNames = fileSizeData.fileSizeNotAllowed
@@ -198,23 +186,11 @@ export default class FileBrowserWrapper extends Component {
         let size = this.props.section === 'code' ? '100 MB' : '1.8 GB'
         let message = `Cannot upload files over ${size} to the ${this.props.section} directory. The following files have not been added ${fileSizeNotAllowedString}`
 
-        store.dispatch({
-          type: 'WARNING_MESSAGE',
-          payload:{
-            message: message,
-          }
-        })
+        setWarningMessage(message)
       }
 
     }else {
-
-
-      store.dispatch({
-        type: 'WARNING_MESSAGE',
-        payload:{
-          message: `Cannot upload these file types`,
-        }
-      })
+      setWarningMessage(`Cannot upload these file types`)
     }
   }
 
@@ -497,13 +473,7 @@ export default class FileBrowserWrapper extends Component {
       this.props.section,
       (response, error) => {
         if(error){
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `ERROR: could not make ${newKey}`,
-              messageBody: error
-            }
-          })
+          setErrorMessage(`ERROR: could not make ${newKey}`, error)
         }
         let all = []
 
@@ -545,13 +515,7 @@ export default class FileBrowserWrapper extends Component {
                             if(error){
                               reject(moveResponse.moveLabbookFile)
                               console.error(error)
-                              store.dispatch({
-                                type: 'ERROR_MESSAGE',
-                                payload: {
-                                  message: `ERROR: could not remove favorite ${oldKey}`,
-                                  messageBody: error
-                                }
-                              })
+                              setErrorMessage(`ERROR: could not remove favorite ${oldKey}`, error)
                             }else{
                               AddFavoriteMutation(
                                 this.props.favoriteConnection,
@@ -570,14 +534,7 @@ export default class FileBrowserWrapper extends Component {
                                     reject(moveResponse.moveLabbookFile)
 
                                     console.error(error)
-
-                                    store.dispatch({
-                                      type: 'ERROR_MESSAGE',
-                                      payload: {
-                                        message: `ERROR: could not add favorite ${newKey}`,
-                                        messageBody: error
-                                      }
-                                    })
+                                    setErrorMessage(`ERROR: could not add favorite ${newKey}`, error)
 
                                   }else{
 
@@ -591,15 +548,7 @@ export default class FileBrowserWrapper extends Component {
                         )
                       }
                     }else{
-
-                        store.dispatch({
-                          type: 'ERROR_MESSAGE',
-                          payload: {
-                            message: `ERROR: could not move ${edge.node.key}`,
-                            messageBody: error
-                          }
-                        })
-
+                        setErrorMessage(`ERROR: could not move ${edge.node.key}`, error)
                         reject(moveResponse)
                     }
                   })
@@ -632,13 +581,7 @@ export default class FileBrowserWrapper extends Component {
             (response, error) => {
               if(error){
                 console.error(error)
-                store.dispatch({
-                  type: 'ERROR_MESSAGE',
-                  payload: {
-                    message: `ERROR: could node delete file ${oldKey}`,
-                    messageBody: error
-                  }
-                })
+                setErrorMessage(`ERROR: could node delete file ${oldKey}`, error)
               }
             }
           )
@@ -676,13 +619,7 @@ export default class FileBrowserWrapper extends Component {
 
           if(error){
             console.error(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not move file ${oldKey}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`ERROR: could not move file ${oldKey}`, error)
           }else{
             if(edgeToMove.node.isFavorite){
 
@@ -700,13 +637,7 @@ export default class FileBrowserWrapper extends Component {
 
                   if(error){
                     console.error(error)
-                    store.dispatch({
-                      type: 'ERROR_MESSAGE',
-                      payload: {
-                        message: `ERROR: could not remove favorite ${oldKey}`,
-                        messageBody: error
-                      }
-                    })
+                    setErrorMessage(`ERROR: could not remove favorite ${oldKey}`, error)
                   }else{
                     if(newKey[0] === '/'){
                       newKey = newKey.slice(1)
@@ -725,13 +656,7 @@ export default class FileBrowserWrapper extends Component {
                       (response, error)=>{
                         if(error){
                           console.error(error)
-                          store.dispatch({
-                            type: 'ERROR_MESSAGE',
-                            payload: {
-                              message: `ERROR: could not add favorite ${newKey}`,
-                              messageBody: error
-                            }
-                          })
+                          setErrorMessage(`ERROR: could not add favorite ${newKey}`, error)
                         }
                       }
                     )
@@ -774,13 +699,7 @@ export default class FileBrowserWrapper extends Component {
         (response, error) => {
           if(error){
             console.error(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not delete folder ${folderKey}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`ERROR: could not delete folder ${folderKey}`, error)
           }
         }
       )
@@ -802,13 +721,7 @@ export default class FileBrowserWrapper extends Component {
 
             if(error){
               console.error(error)
-              store.dispatch({
-                type: 'ERROR_MESSAGE',
-                payload: {
-                  message: `ERROR: could not remove favorite ${edgeToDelete.node.key}`,
-                  messageBody: error
-                }
-              })
+              setErrorMessage(`ERROR: could not remove favorite ${edgeToDelete.node.key}`, error)
             }
           })
       }
@@ -840,13 +753,7 @@ export default class FileBrowserWrapper extends Component {
 
           if(error){
             console.error(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not remove favorite ${edgeToDelete.node.key}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`ERROR: could not remove favorite ${edgeToDelete.node.key}`, error)
           }else{
             DeleteLabbookFileMutation(
               this.props.connection,
@@ -860,13 +767,7 @@ export default class FileBrowserWrapper extends Component {
               (response, error) => {
                 if(error){
                   console.error(error)
-                  store.dispatch({
-                    type: 'ERROR_MESSAGE',
-                    payload: {
-                      message: `ERROR: could not delete file ${fileKey}`,
-                      messageBody: error
-                    }
-                  })
+                  setErrorMessage(`ERROR: could not delete file ${fileKey}`, error)
                 }
               }
             )
@@ -887,13 +788,7 @@ export default class FileBrowserWrapper extends Component {
         (response, error) => {
           if(error){
             console.error(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not delete file ${fileKey}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`ERROR: could not delete file ${fileKey}`, error)
           }
         }
       )
@@ -953,13 +848,7 @@ export default class FileBrowserWrapper extends Component {
         (response, error)=>{
           if(error){
             console.error(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not add favorite ${key}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`ERROR: could not add favorite ${key}`, error)
           }
         }
       )

@@ -7,7 +7,7 @@ import SetVisibilityMutation from 'Mutations/SetVisibilityMutation'
 import Modal from 'Components/shared/Modal'
 //store
 import store from 'JS/redux/store'
-
+import { setErrorMessage, setInfoMessage } from 'JS/redux/reducers/footer'
 
 export default class PublishModal extends Component {
   state={
@@ -53,22 +53,9 @@ export default class PublishModal extends Component {
 
                       if(error){
                         console.log(error)
-
-                        store.dispatch({
-                          type: 'ERROR_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: 'Visibility change failed',
-                            messageBody: error,
-                          }
-                        })
+                        setErrorMessage('Visibility change failed', error)
                       } else {
-                        store.dispatch({
-                            type: 'INFO_MESSAGE',
-                            payload:{
-                              message: `Visibility changed to ${visibility}`
-                            }
-                          })
+                        setInfoMessage(`Visibility changed to ${visibility}`)
                       }
                     }
                   )

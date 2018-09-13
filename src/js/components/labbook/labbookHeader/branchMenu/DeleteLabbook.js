@@ -7,6 +7,7 @@ import DeleteRemoteLabbookMutation from 'Mutations/DeleteRemoteLabbookMutation'
 import ButtonLoader from 'Components/shared/ButtonLoader'
 import Modal from 'Components/shared/Modal'
 //store
+import { setErrorMessage, setWarningMessage, setInfoMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
 
 export default class DeleteLabbook extends Component {
@@ -50,13 +51,7 @@ export default class DeleteLabbook extends Component {
             this.setState({deletePending: false})
 
             if(error){
-              store.dispatch({
-                'type': "ERROR_MESSAGE",
-                'payload': {
-                  'message': `The was a problem deleting ${labbookName}`,
-                  'messageList': error
-                }
-              })
+              setErrorMessage(`The was a problem deleting ${labbookName}`, error)
               this.setState({deleteLabbookButtonState: 'error'})
               setTimeout(()=>{
                 this.setState({'labbookName': '', deletePending: false, deleteLabbookButtonState: ''})
@@ -67,12 +62,7 @@ export default class DeleteLabbook extends Component {
                 }
               }, 1000)
             }else{
-              store.dispatch({
-                'type': "INFO_MESSAGE",
-                'payload': {
-                  'message': `${labbookName} has been remotely deleted`
-                }
-              })
+              setInfoMessage(`${labbookName} has been remotely deleted`)
               this.setState({deleteLabbookButtonState: 'finished'})
               setTimeout(()=>{
                 this.setState({'labbookName': '', deletePending: false, deleteLabbookButtonState: ''})
@@ -98,24 +88,13 @@ export default class DeleteLabbook extends Component {
             this.setState({deletePending: false})
 
             if(error){
-              store.dispatch({
-                'type': "ERROR_MESSAGE",
-                'payload': {
-                  'message': `The was a problem deleting ${labbookName}`,
-                  'messageList': error
-                }
-              })
+              setErrorMessage(`The was a problem deleting ${labbookName}`, error)
               this.setState({deleteLabbookButtonState: 'error'})
               setTimeout(()=>{
                 this.setState({deleteLabbookButtonState: ''})
               }, 2000)
             }else{
-              store.dispatch({
-                'type': "INFO_MESSAGE",
-                'payload': {
-                  'message': `${labbookName} has been deleted`
-                }
-              })
+              setInfoMessage(`${labbookName} has been deleted`)
               this.setState({deleteLabbookButtonState: 'finished'})
               setTimeout(()=>{
                 this.props.history.replace('../../projects/')
@@ -126,12 +105,7 @@ export default class DeleteLabbook extends Component {
       }
 
     }else{
-      store.dispatch({
-        'type': "WARNING_MESSAGE",
-        'payload': {
-          'message': `Names do not match`
-        }
-      })
+      setWarningMessage(`Names do not match`)
     }
   }
 

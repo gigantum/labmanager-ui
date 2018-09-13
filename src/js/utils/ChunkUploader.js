@@ -55,7 +55,7 @@ const updateTotalStatus = (file, labbookName, owner, transactionId) => {
   if(fileCount === totalFiles){
     setTimeout(()=>{
       setFinishedUploading()
-      setUploadMessageRemove(`Uploaded ${fileCount} of ${totalFiles} files`, fileCount, progressBarPercentage, false, false)
+      setUploadMessageRemove(`Uploaded ${fileCount} of ${totalFiles} files`, null, progressBarPercentage)
     }, 2000)
 
     CompleteBatchUploadTransactionMutation(
@@ -86,7 +86,7 @@ const updateChunkStatus = (file, chunkData, labbookName, owner, transactionId) =
   if((chunkSize * chunkIndex ) >= (fileSizeKb * 1000)){
     setFinishedUploading()
     setTimeout(()=>{
-      setUploadMessageRemove(`Uploaded ${fileSizeKb} of ${fileSizeKb} files`, 1, (100 * 100), false, false)
+      setUploadMessageRemove(`Uploaded ${fileSizeKb} of ${fileSizeKb} files`, null, (100 * 100))
     }, 2000)
 
     CompleteBatchUploadTransactionMutation(
