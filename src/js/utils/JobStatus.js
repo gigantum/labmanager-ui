@@ -30,7 +30,7 @@ const JobStatus = {
       let fetchData = function(){
 
         fetchQuery(jobStatusQuery(), variables).then((response) => {
-        //debugger;
+
           if(response.data.jobStatus.status === 'started'){
             setTimeout(()=>{
               fetchData()
@@ -52,7 +52,8 @@ const JobStatus = {
     })
   },
   updateFooterStatus: (jobKey) =>{
-      const variables = {jobKey: jobKey};
+
+    const variables = {jobKey: jobKey};
 
     return new Promise((resolve, reject) =>{
 

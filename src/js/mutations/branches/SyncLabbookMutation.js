@@ -4,13 +4,12 @@ import {
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
 
+import FooterUtils from 'Components/shared/footer/FooterUtils'
+
 const mutation = graphql`
-  mutation SyncLabbookMutation($input: SyncLabbookInput!, $first: Int, $cursor: String, $hasNext: Boolean!){
+  mutation SyncLabbookMutation($input: SyncLabbookInput!){
     syncLabbook(input: $input){
-      updateCount
-      updatedLabbook{
-        ...Labbook_labbook
-      }
+      jobKey
       clientMutationId
     }
   }
@@ -48,11 +47,18 @@ export default function SyncLabbookMutation(
         if(error){
           console.log(error)
         }
-
+        // console.log(response)
+        // if(response){
+        //    FooterUtils.getJobStatus(response, 'syncLabbook', 'jobKey')
+        // }
         callback(error)
       },
       onError: err => {console.error(err)},
       updater: (store, response) => {
+          console.log(store, response)
+           FooterUtils.getJobStatus(response, 'syncLabbook', 'jobKey', store)
+
+
       }
     },
   )

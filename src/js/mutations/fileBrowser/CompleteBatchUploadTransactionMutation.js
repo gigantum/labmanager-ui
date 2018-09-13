@@ -102,7 +102,6 @@ export default function AddLabbookFileMutation(
       onError: err => console.error(err),
       optimisticUpdater:(store)=>{
 
-
       },
       updater: (store, response) => {
 

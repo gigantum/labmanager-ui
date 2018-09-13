@@ -269,7 +269,7 @@ const ChunkUploader = {
 
           }
           else{
-    
+
              //if(store.getState().fileBrowser.pause === false){
               uploadFileBrowserChunk(
                 data,

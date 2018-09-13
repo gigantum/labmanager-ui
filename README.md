@@ -37,7 +37,7 @@ development only by answering 'n' to the question about BACKEND development.
 
 3. Install Docker following [the official instructions](https://docs.docker.com/install/).
 
-4. Install node v8.9.3 & npm v5.5.5
+4. Install node v8.9.4 & npm v6.1.0
 
    ```
    $ npm install
@@ -112,9 +112,10 @@ $ npm run update-schema
 $ npm start
 ```
 
+
 ## Contributing
 
-Gigantum uses the [Developer Certificate of Origin](https://developercertificate.org/). 
+Gigantum uses the [Developer Certificate of Origin](https://developercertificate.org/).
 This is lightweight approach that doesn't require submission and review of a
 separate contributor agreement.  Code is signed directly by the developer using
 facilities built into git.

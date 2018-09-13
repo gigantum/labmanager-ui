@@ -4,10 +4,12 @@ import {
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
 
+import FooterUtils from 'Components/shared/footer/FooterUtils'
+
 const mutation = graphql`
   mutation PublishLabbookMutation($input: PublishLabbookInput!){
     publishLabbook(input: $input){
-      success
+      jobKey
       clientMutationId
     }
   }
@@ -48,6 +50,10 @@ export default function PublishLabbookMutation(
       },
       onError: err => {console.error(err)},
       updater: (store, response) => {
+        if(response){
+           FooterUtils.getJobStatus(response, 'publishLabbook', 'jobKey')
+        }
+
       }
     },
   )
