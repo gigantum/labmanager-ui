@@ -6,13 +6,12 @@
   min-width: 960px;
 }
 
-
-
 .Routes__main {
   flex: 1 0;
   margin-left: $sideBarWidth;
   max-width: 100%;
 }
+
 .Routes__main-no-auth {
   flex: 1 0;
   max-width: 100%;

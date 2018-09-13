@@ -353,6 +353,7 @@
   function SFC({ foo, bar, children }) {
     return <div>{foo}{bar}{children}</div>;
   }
+
   SFC.propTypes = {
     foo: PropTypes.number.isRequired,
     bar: PropTypes.string,
@@ -363,6 +364,7 @@
   function SFC({ foo, bar, children }) {
     return <div>{foo}{bar}{children}</div>;
   }
+  
   SFC.propTypes = {
     foo: PropTypes.number.isRequired,
     bar: PropTypes.string,

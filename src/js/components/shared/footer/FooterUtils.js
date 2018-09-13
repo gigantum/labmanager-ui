@@ -3,7 +3,12 @@ import JobStatus from 'JS/utils/JobStatus'
 import store from 'JS/redux/store'
 import AnsiUp from 'ansi_up';
 
+import RelayRuntime from 'relay-runtime'
+
+import FetchLabbook from 'Components/labbook/fetchLabbook'
+
 const ansi_up = new AnsiUp();
+let tempID = 0
 
 const FooterUtils = {
   /**
@@ -11,7 +16,7 @@ const FooterUtils = {
    *  iterate value of index within the bounds of the array size
    *  @return {}
    */
-  getJobStatus: (result, type, key) => {
+  getJobStatus: (result, type, key, relayStore) => {
     /**
       *  @param {}
       *  refetches job status
@@ -38,10 +43,9 @@ const FooterUtils = {
 
           if (response.data &&
             response.data.jobStatus &&
-            response.data.jobStatus.jobMetadata &&
-            (response.data.jobStatus.jobMetadata.indexOf('feedback') > -1)){
+            response.data.jobStatus.jobMetadata){
 
-            let fullMessage = JSON.parse(response.data.jobStatus.jobMetadata).feedback
+            let fullMessage = (response.data.jobStatus.jobMetadata.indexOf('feedback') > -1) ? JSON.parse(response.data.jobStatus.jobMetadata).feedback : ''
             fullMessage = fullMessage.lastIndexOf('\n') === (fullMessage.length - 1)
               ? fullMessage.slice(0, fullMessage.length - 1)
               : fullMessage
@@ -112,6 +116,14 @@ const FooterUtils = {
                 }
               })
 
+              if((type === "syncLabbook") || (type === "publishLabbook")){
+
+                const userArray = JSON.parse(response.data.jobStatus.jobMetadata).labbook.split('|')
+
+                //TODO update labbook edge/node here
+
+              }
+
             } else if (response.data.jobStatus.status === 'failed') {
 
               store.dispatch({
@@ -121,7 +133,6 @@ const FooterUtils = {
                   message: message,
                   messageBody: [{message: html}],
                   isLast: true,
-
                 }
               })
 
@@ -137,13 +148,13 @@ const FooterUtils = {
 
         })
       }else{
+
         store.dispatch({
           type: 'ERROR_MESSAGE',
           payload: {
             message: "There was an error fetching job status.",
             messageBody: [{message: 'Callback error from the API'}],
-            isLast: true,
-
+            isLast: true
           }
         })
       }
