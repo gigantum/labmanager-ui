@@ -8,7 +8,7 @@ import uuidv4 from 'uuid/v4'
 //components
 import LocalLabbookPanel from 'Components/dashboard/labbooks/localLabbooks/LocalLabbookPanel'
 import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
-import ImportModule from 'Components/import/ImportModule'
+import ImportModule from './import/ImportModule'
 //helpers
 import ContainerLookup from './ContainerLookup'
 import VisibilityLookup from './VisibilityLookup'

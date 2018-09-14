@@ -1,0 +1,397 @@
+@import '~Styles/_imports.scss';
+@import '~Styles/components/labbook/containerStatus.scss';
+
+.Labbooks {
+  width: auto;
+  min-width: 760px;
+  max-width: 1285px;
+  height: 100%;
+  margin: auto;
+  padding: 0 25px;
+}
+
+.Labbooks--demo{
+  margin-top: 100px;
+}
+
+/*******************
+Labbook__nav start
+********************/
+.Labbooks__nav {
+  position: relative;
+
+  white-space: nowrap;
+
+  border-bottom: 1px solid $grey;
+
+  li {
+    padding: 0 30px;
+
+    text-align: center;
+
+    a {
+      display: inline-block;
+
+      margin: 0;
+      padding: .75rem 0;
+
+      cursor: pointer;
+      text-decoration: none;
+
+      color: $jet;
+    }
+
+    a:hover {
+      color: $selected-blue;
+    }
+  }
+
+  li.selected a {
+    position: relative;
+    bottom: -4px;
+
+    color: $selected-blue;
+
+    line-height: 15px;
+  }
+
+  @for $i from 0 through 2 {
+    li.Labbooks__nav-item--#{$i}:hover ~ hr {
+      @if $i == 0 {
+        width: 50px;
+        margin-left: 25px;
+      }
+      @if $i == 1 {
+        width: 90px;
+        margin-left: 105px;
+      }
+    }
+
+    .Labbooks__navigation-slider--#{$i} {
+      position: absolute;
+      bottom: 0;
+
+      height: 3px;
+      margin: 0;
+
+      transition: .1s ease-in-out;
+      pointer-events: none;
+
+      border: none;
+      background: $turquise;
+      @if $i == 0 {
+        width: 50px;
+        margin-left: 25px;
+      }
+      @if $i == 1 {
+        width: 90px;
+        margin-left: 105px;
+      }
+    }
+  }
+}
+
+/*******************
+Labbook__nav end
+********************/
+.Labbooks__title {
+  position: relative;
+
+  width: 280px;
+  margin: 20px 0px;
+  padding: 0;
+
+  cursor: pointer;
+
+  color: $jet;
+}
+
+.Labbooks__username {
+  margin: 20px 0 10px 0;
+  padding: 0;
+
+}
+
+.Labbooks__title-add {
+  position: absolute;
+
+  width: 20px;
+  height: 20px;
+
+  transition: all 0.3s;
+
+  border-width: 0px;
+  border-radius: 12px;
+  background: $azure url('~Images/icons/add.svg') no-repeat center center;
+  background-size: 12px;
+
+}
+
+
+.Labbooks__title:hover {
+  .Labbooks__title-add {
+    opacity: 1;
+  }
+}
+
+.Labbooks__subheader {
+  position: relative;
+
+  display: flex;
+  justify-content: flex-start;
+  height: 28px;
+  margin: 10px;
+  margin: 60px 0 10px 0;
+}
+
+.Labbooks__search-container{
+  flex-grow: 1;
+  margin-right: 20px;
+  align-self: flex-end;
+  position: relative;
+}
+
+.Labbooks__search {
+  height: 28px !important;
+  margin: 0px !important;
+  color: $azure !important;
+}
+
+.Labbooks__search[type="text"]:focus {
+  background: white;
+  border: none !important;
+  box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+.Labbooks__search-cancel{
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  top: 2px;
+  right: 6px;
+  background: url('~Images/icons/close.svg') no-repeat center center;
+  background-size: 24px;
+  cursor: pointer;
+}
+
+.Labbooks__search-cancel--text{
+  color: $romanSilver;
+  position: absolute;
+  right: 35px;
+  top: 4px;
+  text-align: right;
+}
+
+
+.Labbooks__sort {
+  color: $font-grey;
+  align-self: flex-end;
+  span {
+    display: inline-block;
+
+    width: 200px;
+    margin-left: 20px;
+
+    cursor: pointer;
+    user-select: none;
+
+    border-bottom: 1px solid $font-grey;
+  }
+  .Labbooks__sort-collapsed {
+    background: url('~Images/icons/down-arrow-silver.svg') no-repeat right;
+    background-size: 15px;
+  }
+  .Labbooks__sort-expanded {
+    background: url('~Images/icons/up-arrow-silver.svg') no-repeat right;
+    background-size: 15px;
+  }
+  ul {
+    animation: slide-down-fade-in forwards .25s;
+    position: absolute;
+    padding: 3px;
+    z-index: index($elements, popup);
+    right: 2px;
+
+    width: 200px;
+
+    cursor: pointer;
+    text-align: left;
+
+    border: 1px solid $grey;
+    background: $white;
+
+    @extend .box-shadow;
+
+    li {
+      white-space: nowrap;
+      height: 40px;
+      padding: 10px 5px !important;
+      padding-top: 2px;
+
+      user-select: none;
+
+      border-bottom: 1px solid $grey;
+    }
+
+    li:last-child{
+      border-bottom: none;
+    }
+
+
+    li:hover {
+      transition: background-color 0.25s ease-in-out;
+
+      background: $azure;
+      color: $white;
+    }
+  }
+}
+
+.Labbooks__filter {
+  margin-right: 20px;
+  color: $font-grey;
+  align-self: flex-end;
+  span {
+    display: inline-block;
+
+    width: 200px;
+    margin-left: 20px;
+
+    cursor: pointer;
+    user-select: none;
+
+    border-bottom: 1px solid $font-grey;
+  }
+  .Labbooks__filter-collapsed {
+    background: url('~Images/icons/down-arrow-silver.svg') no-repeat right;
+    background-size: 15px;
+  }
+  .Labbooks__filter-expanded {
+    background: url('~Images/icons/up-arrow-silver.svg') no-repeat right;
+    background-size: 15px;
+  }
+  ul {
+    animation: slide-down-fade-in forwards .25s;
+    padding: 3px;
+    position: absolute;
+    z-index: index($elements, popup);
+    right: 296px;
+
+    width: 200px;
+
+    cursor: pointer;
+    text-align: left;
+
+    border: 1px solid $grey;
+    background: $white;
+
+    @extend .box-shadow;
+
+    li {
+      height: 40px;
+      padding: 10px 5px !important;
+      padding-top: 2px;
+
+      user-select: none;
+
+      border-bottom: 1px solid $grey;
+    }
+    li:last-child{
+      border-bottom: none;
+    }
+
+    li:hover {
+      transition: background-color 0.25s ease-in-out;
+
+      background: $azure;
+      color: $white;
+    }
+  }
+}
+
+.Labbooks__labbook-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 125px;
+  padding-top: 20px;
+}
+
+.Labbooks__labbook-header {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  @include flex(center, column)
+}
+
+
+.Labbooks__fetch-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+  text-align: center;
+  white-space: nowrap;
+
+  font-size: 24px;
+}
+
+.Labbook__loader-hidden {
+  display: block;
+  opacity: 0;
+  height: 0;
+}
+
+.Labbook-paginating {
+  background: $white url('~Images/icons/labbooks-placeholder.svg') no-repeat center center;
+  background-size: 275px;
+  opacity: 1;
+}
+
+.Labbook-paginating__loader--0 {
+  animation: fade-in forwards 0.8s;
+}
+
+.Labbook-paginating__loader--1 {
+  animation: fade-in forwards 1.2s;
+}
+
+.Labbook-paginating__loader--2 {
+  animation: fade-in forwards 2s;
+
+}
+
+.Labbook-paginating__loader--3 {
+  animation: fade-in forwards 2.8s;
+
+}
+
+.Labbook-paginating__loader--4 {
+  animation: fade-in forwards 3.6s;
+}
+
+.Labbooks__no-results{
+  color: $romanSilver;
+  width: 100%;
+  text-align: center;
+  margin-top: 150px;
+
+  h3{
+    font-weight: 100;
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  p{
+    margin-top: 10px;
+  }
+  span{
+    font-weight: 100;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}

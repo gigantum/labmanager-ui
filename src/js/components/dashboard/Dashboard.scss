@@ -1,0 +1,10 @@
+@import '~Styles/_imports.scss';
+
+.Dashboard {
+  height: 100%;
+}
+
+.Dashboard__view {
+  width: 100%;
+  height: calc(100% - 200px);
+}

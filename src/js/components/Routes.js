@@ -31,6 +31,7 @@ class Routes extends Component {
       showYT: false,
       showDefaultMessage: true,
     }
+    
     this._setForceLoginScreen = this._setForceLoginScreen.bind(this)
     this.setRouteStore = this.setRouteStore.bind(this)
     this._flipDemoHeaderText = this._flipDemoHeaderText.bind(this)
@@ -230,7 +231,7 @@ class Routes extends Component {
                           const owner = parentProps.match.params.owner;
 
                           self.setRouteStore(owner, labbookName)
-             
+
                           return (
                             <LabbookQueryContainer
                               labbookName={parentProps.match.params.labbookName}

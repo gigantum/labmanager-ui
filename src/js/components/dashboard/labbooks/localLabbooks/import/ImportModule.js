@@ -15,7 +15,8 @@ import UserIdentity from 'JS/Auth/UserIdentity'
 //mutations
 import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
-
+//assets
+import './ImportModule.scss'
 /**
   @param {number} bytes
   converts bytes into suitable units
@@ -35,6 +36,7 @@ const _humanFileSize = (bytes)=>{
       bytes /= thresh;
       ++u;
   } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+
   return bytes.toFixed(1)+' '+units[u];
 }
 /*
@@ -107,13 +109,9 @@ const dispatchFinishedStatus = (filepath) =>{
        labbookName: localStorage.getItem("username") + "/" + route //route is labbookName
      }
    })
-
-   // if(document.getElementById('footerProgressBar')){
-   //   document.getElementById('footerProgressBar').style.width = '0%'
-   // }
 }
 
-const dropzoneIds = ['dropZone', 'dropZone__subtext', 'dropZone__title', 'dropZone__create', 'dropZone__paste', 'file__input-label', 'file__input', 'dropZone__paste-input', 'dropZone__paste-button', 'dropZone__create-header', 'dropZone__create-sub-header', 'dropZone__close'];
+const dropZoneId = uuidv4()
 
 let counter = 0;
 
@@ -134,7 +132,6 @@ export default class ImportModule extends Component {
       'remoteURL': '',
     }
 
-
     this._getBlob = this._getBlob.bind(this)
     this._dragoverHandler = this._dragoverHandler.bind(this)
     this._dropHandler = this._dropHandler.bind(this)
@@ -143,8 +140,7 @@ export default class ImportModule extends Component {
     this._fileUpload = this._fileUpload.bind(this)
     this._importingState = this._importingState.bind(this)
     this._clearState = this._clearState.bind(this)
-    this._showImportScreen = this._showImportScreen.bind(this)
-    this._hideImportScreen = this._hideImportScreen.bind(this)
+    this._toggleImportScreen = this._toggleImportScreen.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
     this._drop = this._drop.bind(this)
     this._dragover = this._dragover.bind(this)
@@ -167,7 +163,6 @@ export default class ImportModule extends Component {
 
       fileInput.onclick = (evt) =>{
         evt.cancelBubble = true;
-        //stopPropagation(evt)
         evt.stopPropagation(evt)
       }
     }
@@ -182,12 +177,13 @@ export default class ImportModule extends Component {
   *  detects when a file has been dropped
   */
   _drop(evt){
+
     if(document.getElementById('dropZone')){
-      this._hideImportScreen();
+      this._toggleImportScreen(false);
       document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
     }
 
-    if(dropzoneIds.indexOf(evt.target.id) < 0) {
+    if(evt.target.classList.contains(dropZoneId)) {
 
       evt.preventDefault();
       evt.dataTransfer.effectAllowed = 'none';
@@ -202,10 +198,14 @@ export default class ImportModule extends Component {
   _dragover(evt){
 
     if(document.getElementById('dropZone')){
-      this._showImportScreen();
+
+      this._toggleImportScreen(true);
+
       document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
     }
-    if(dropzoneIds.indexOf(evt.target.id) < 0) {
+
+    if(evt.target.classList.contains(dropZoneId) < 0) {
+
       evt.preventDefault();
       evt.dataTransfer.effectAllowed = 'none';
       evt.dataTransfer.dropEffect = 'none';
@@ -217,10 +217,15 @@ export default class ImportModule extends Component {
   */
   _dragleave(evt){
     counter--;
-    if(dropzoneIds.indexOf(evt.target.id) < 0) {
+
+    if(evt.target.classList.contains(dropZoneId) < 0)  {
+
       if(document.getElementById('dropZone')){
+
         if (counter === 0) {
-          this._hideImportScreen();
+
+          this._toggleImportScreen(false);
+
           document.getElementById('dropZone').classList.remove('ImportModule__drop-area-highlight')
         }
       }
@@ -234,19 +239,21 @@ export default class ImportModule extends Component {
   _dragenter(evt){
 
     counter++;
+
     if(document.getElementById('dropZone')){
-      this._showImportScreen();
+
+      this._toggleImportScreen(true);
+
       document.getElementById('dropZone').classList.add('ImportModule__drop-area-highlight')
     }
 
-    if(dropzoneIds.indexOf(evt.target.id) < 0) {
+    if(evt.target.classList.contains(dropZoneId) < 0) {
+
       evt.preventDefault();
       evt.dataTransfer.effectAllowed = 'none';
       evt.dataTransfer.dropEffect = 'none';
-
     }
   }
-
 
   /**
   *  @param {object} dataTransfer
@@ -258,7 +265,6 @@ export default class ImportModule extends Component {
 
     let self = this;
     for (let i=0; i < dataTransfer.files.length; i++) {
-
 
       //let file = dataTransfer.items ? dataTransfer.items[i].getAsFile() : dataTransfer.files[0];
       let file = dataTransfer.files[0]
@@ -273,6 +279,7 @@ export default class ImportModule extends Component {
       }else{
 
         this.setState({error: false})
+
         let fileReader = new FileReader();
 
         fileReader.onloadend = function (evt) {
@@ -317,7 +324,7 @@ export default class ImportModule extends Component {
   */
   _dropHandler = (evt) => {
 
-      //use evt, event is a reserved word in chrome
+    //use evt, event is a reserved word in chrome
     let dataTransfer = evt.dataTransfer
     evt.preventDefault();
     evt.dataTransfer.effectAllowed = 'none';
@@ -402,7 +409,6 @@ export default class ImportModule extends Component {
 
     const postMessage = (wokerData) => {
 
-
      if(wokerData.importLabbook){
 
         store.dispatch({
@@ -413,7 +419,6 @@ export default class ImportModule extends Component {
             id: ''
           }
         })
-
 
         let importLabbook = wokerData.importLabbook
          JobStatus.getJobStatus(importLabbook.importJobKey).then((response)=>{
@@ -442,6 +447,7 @@ export default class ImportModule extends Component {
            }
          }).catch((error)=>{
            console.log(error)
+
            store.dispatch({
              type: 'UPLOAD_MESSAGE_UPDATE',
              payload: {
@@ -489,13 +495,14 @@ export default class ImportModule extends Component {
       }
     })
   }
+
   /**
   *  @param {}
   *  sets state of app for importing
   *  @return {}
   */
   _importingState = () => {
-    //document.getElementById('dropZone__filename').classList.add('ImportModule__animation')
+
     this.setState({
       isImporting: true
     })
@@ -524,7 +531,11 @@ export default class ImportModule extends Component {
   _getImportDescriptionText(){
     return this.state.error ? 'File must be .zip' : 'Drag & Drop .zip file, or click to select.'
   }
-
+  /**
+  *  @param {}
+  *  shows create project modal
+  *  @return {}
+  */
   _showModal(evt){
 
     if (navigator.onLine){
@@ -542,24 +553,27 @@ export default class ImportModule extends Component {
     }
   }
 
-  _showImportScreen() {
-    if(!this.state.importTransition && !this.state.importingScreen) {
-      this.setState({importTransition: true});
-      setTimeout(()=>{
-        this.setState({importingScreen: true});
-      }, 250)
-    }
+  /**
+  *  @param {}
+  *  shows import screen
+  *  uses transition delay
+  *  @return {}
+  */
+  _toggleImportScreen(value) {
+
+    this.setState({importTransition: value});
+
+    setTimeout(()=>{
+      this.setState({importingScreen: value});
+    }, 250)
+
   }
 
-  _hideImportScreen() {
-    if(this.state.importingScreen) {
-      this.setState({importTransition: false});
-      setTimeout(()=>{
-        this.setState({importingScreen: false});
-      }, 250)
-    }
-  }
-
+  /**
+  *  @param {Object} evt
+  *  updated url in state
+  *  @return {}
+  */
   _updateRemoteUrl(evt){
     this.setState({
       remoteURL: evt.target.value
@@ -572,22 +586,25 @@ export default class ImportModule extends Component {
   *  @return {}
   */
   importLabbook = (evt) => {
-    const id = uuidv4()
+
+    const id = uuidv4(),
+          labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1],
+          owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2],
+          remote = `https://repo.gigantum.io/${owner}/${labbookName}.git`;
 
     let self = this;
-    const labbookName = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 1]
-    const owner = this.state.remoteURL.split('/')[this.state.remoteURL.split('/').length - 2]
-    const remote = `https://repo.gigantum.io/${owner}/${labbookName}.git`
-
 
     UserIdentity.getUserIdentity().then(response => {
+
       if(navigator.onLine){
+
         if(response.data){
 
           if(response.data.userIdentity.isSessionValid){
-            this._importingState()
-            store.dispatch(
-              {
+
+            self._importingState()
+
+            store.dispatch({
                 type: "MULTIPART_INFO_MESSAGE",
                 payload: {
                   id: id,
@@ -595,92 +612,18 @@ export default class ImportModule extends Component {
                   isLast: false,
                   error: false
                 }
-              })
-            ImportRemoteLabbookMutation(
-              owner,
-              labbookName,
-              remote,
-              (response, error) => {
-                this._clearState();
+            })
 
-                if(error){
-                  console.error(error)
-                  store.dispatch(
-                    {
-                      type: 'MULTIPART_INFO_MESSAGE',
-                      payload: {
-                        id: id,
-                        message: 'ERROR: Could not import remote Project',
-                        messageBody: error,
-                        error: true
-                    }
-                  })
+            self._importRemoteProject(owner, labbookName, remote, id);
 
-                }else if(response){
-
-                  store.dispatch(
-                    {
-                      type: 'MULTIPART_INFO_MESSAGE',
-                      payload: {
-                        id: id,
-                        message: `Successfully imported remote Project ${labbookName}`,
-                        isLast: true,
-                        error: false
-                      }
-                    })
-
-                  const labbookName = response.importRemoteLabbook.newLabbookEdge.node.name
-                  const owner = response.importRemoteLabbook.newLabbookEdge.node.owner
-
-                  BuildImageMutation(
-                  labbookName,
-                  owner,
-                  false,
-                  (response, error)=>{
-                    if(error){
-                      console.error(error)
-                      store.dispatch(
-                        {
-                          type: 'MULTIPART_INFO_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: `ERROR: Failed to build ${labbookName}`,
-                            messsagesList: error,
-                            error: true
-                        }
-                      })
-                    }
-                  })
-                  self.props.history.replace(`/projects/${owner}/${labbookName}`)
-                }else{
-
-                  BuildImageMutation(
-                  labbookName,
-                  localStorage.getItem('username'),
-                  false,
-                  (error)=>{
-                    if(error){
-                      console.error(error)
-                      store.dispatch(
-                        {
-                          type: 'MULTIPART_INFO_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: `ERROR: Failed to build ${labbookName}`,
-                            messsagesList: error,
-                            error: true
-                        }
-                      })
-                    }
-                  })
-                }
-              }
-            )
           }else{
+
             this.props.auth.renewToken(true, ()=>{
               this.setState({'showLoginPrompt': true})
             }, ()=>{
+
               this.importLabbook()
+
             });
           }
         }
@@ -698,112 +641,235 @@ export default class ImportModule extends Component {
       'showLoginPrompt': false
     })
   }
+  /**
+  *  @param {String, String, String, String}
+  *  trigers ImportRemoteLabbookMutation
+  *  @return {}
+  */
+  _importRemoteProject(owner, labbookName, remote, id){
+    let self = this;
+
+    ImportRemoteLabbookMutation(
+      owner,
+      labbookName,
+      remote,
+      (response, error) => {
+
+        this._clearState();
+
+        if(error){
+          console.error(error)
+          store.dispatch(
+            {
+              type: 'MULTIPART_INFO_MESSAGE',
+              payload: {
+                id: id,
+                message: 'ERROR: Could not import remote Project',
+                messageBody: error,
+                error: true
+            }
+          })
+
+        }else if(response){
+
+          store.dispatch(
+            {
+              type: 'MULTIPART_INFO_MESSAGE',
+              payload: {
+                id: id,
+                message: `Successfully imported remote Project ${labbookName}`,
+                isLast: true,
+                error: false
+              }
+            })
+
+          const {owner} = response.importRemoteLabbook.newLabbookEdge.node
+
+          self._buildImage(labbookName, owner, id)
+
+          self.props.history.replace(`/projects/${owner}/${labbookName}`)
+
+        }else{
+
+          const owner = localStorage.getItem('username')
+          self._buildImage(labbookName, owner, id)
+
+        }
+      }
+    )
+  }
+
+  /**
+  *  @param {String, String, String}
+  *  trigers BuildImageMutation
+  *  @return {}
+  */
+  _buildImage(labbookName, owner, id){
+    BuildImageMutation(
+      labbookName,
+      owner,
+      false,
+      (error)=> {
+
+        if(error){
+
+          console.error(error)
+
+          store.dispatch(
+            {
+              type: 'MULTIPART_INFO_MESSAGE',
+              payload: {
+                id: id,
+                message: `ERROR: Failed to build ${labbookName}`,
+                messsagesList: error,
+                error: true
+            }
+          })
+        }
+    })
+  }
 
   render(){
-    let importCSS = classNames({
-      'Labbooks__labbook-button-import': this.state.importTransition === null,
-      'Labbooks__labbook-button-import--expanding': this.state.importTransition,
-      'Labbooks__labbook-button-import--collapsing': !this.state.importTransition && this.state.importTransition !== null
+
+    const loadingMaskCSS = classNames({
+      'ImportModule__loading-mask': this.state.isImporting,
+      'hidden': !this.state.isImporting
     })
 
     return(
       <Fragment>
+
         <div
           id="dropZone"
-          type="file"
-          className="ImportModule Labbooks__panel Labbooks__panel--add Labbooks__panel--import column-4-span-3"
+          className="ImportModule Card Card--add Card--import column-4-span-3"
+          key={'addLabbook'}
           ref={(div) => this.dropZone = div}
+          type="file"
           onDragEnd={(evt) => this._dragendHandler(evt)}
           onDrop={(evt) => this._dropHandler(evt)}
-          onDragOver={(evt) => this._dragoverHandler(evt)}
-          key={'addLabbook'}>
+          onDragOver={(evt) => this._dragoverHandler(evt)}>
+
           { !this.state.importingScreen ?
-            <div className="Labbooks__labbook-main">
-              <div className="Labbooks__labbook-header">
-                <div
-                  className="Labbooks__labbook-icon">
-                  <div className="Labbooks__title-add"></div>
-                </div>
-                <div
-                  className="Labbooks__add-text">
-                  <h4>Add Project</h4>
-                </div>
-              </div>
-              <div className="Labbooks__labbook-button"
-                onClick={(evt) => { this._showModal(evt) }}>
-                Create New
-              </div>
-              <ToolTip section="createLabbook" />
-              <div className={importCSS}
-                onClick={()=>{this._showImportScreen()}}>
-                Import Existing
-              </div>
-              <ToolTip section="importLabbook" />
-            </div>
-            :
-            <div id="dropZone__title" className="Labbooks__labbook-importing">
-              <div
-                id="dropZone__close"
-                className="Labbooks__import-close"
-                onClick={() => this._hideImportScreen()}>
-              </div>
-              <div className="Labbooks__labbook-import-header"
-                id="dropZone__create"
-              >
-                <h4
-                  id="dropZone__create-header"
-                >
-                  Import Existing
-                </h4>
-                <p
-                  id="dropZone__create-sub-header"
-                >
-                  to import, do one of the following
-                </p>
-              </div>
-              <p id="dropZone__subtext">
-                Drag .zip File Here
-              </p>
-              <label
-                className="Labbooks__file-system"
-                id="file__input-label"
-                htmlFor="file__input">
-                Browse & Upload .zip File
-              </label>
-              <input
-                id="file__input"
-                className='hidden'
-                type="file"
-                onChange={(evt) => { this._fileSelected(evt.files) }}
-              />
-              <div
-                className="Labbooks__labbook-paste"
-                id="dropZone__paste"
-              >
-                <input
-                  id="dropZone__paste-input"
-                  type="text"
-                  placeholder="Paste Project URL"
-                  onChange={(evt) => this._updateRemoteUrl(evt)}
-                />
-                <button
-                  id="dropZone__paste-button"
-                  onClick={() => this.importLabbook()}
-                  disabled={!this.state.remoteURL.length && !this.state.isImporting}
-                >
-                  Go
-                </button>
-              </div>
-            </div>
+
+              <ImportMain self={this} />
+              :
+              <ImportDropZone self={this} />
+
           }
-          <div className={this.state.isImporting ? 'ImportModule__loading-mask' : 'hidden'}></div>
+
+          <div className={loadingMaskCSS}></div>
 
         </div>
+
         {
           this.state.showLoginPrompt &&
           <LoginPrompt closeModal={this._closeLoginPromptModal} />
         }
-      </Fragment>
-      )
+
+      </Fragment>)
   }
 }
+
+const ImportMain = ({self}) => {
+
+  const importCSS = classNames({
+    'btn--import': true,
+    'btn--expand': self.state.importTransition,
+    'btn--collapse': !self.state.importTransition && self.state.importTransition !== null
+  })
+
+  return(<div className="Import__labbook-main">
+
+    <div className="Import__labbook-header">
+
+      <div
+        className="Import__labbook-icon">
+        <div className="Import__add-icon"></div>
+      </div>
+
+      <div
+        className="Import__title">
+        <h4>Add Project</h4>
+      </div>
+
+    </div>
+
+    <div className="btn--import"
+      onClick={(evt) => { self._showModal(evt) }}>
+      Create New
+    </div>
+
+    <ToolTip section="createLabbook" />
+
+    <div className={importCSS}
+      onClick={()=>{self._toggleImportScreen(true)}}>
+      Import Existing
+    </div>
+
+    <ToolTip section="importLabbook" />
+
+  </div>)
+}
+
+const ImportDropZone = ({self}) =>
+  <div
+    id="dropZone"
+    className={`Import__section--import ${dropZoneId}`}>
+
+    <div
+      className={`btn--close ${dropZoneId}`}
+      onClick={() => self._toggleImportScreen(false)}>
+    </div>
+
+    <div className={`Import__dropzone  ${dropZoneId}`}>
+
+        <h4 className={`Import__h4 Import__h4--margin ${dropZoneId}`}>
+          Import Existing
+        </h4>
+
+        <p className={`Import_paragraph ${dropZoneId}`}>
+          to import, do one of the following
+        </p>
+
+    </div>
+
+    <p className={`${dropZoneId}`}>
+      Drag .zip File Here
+    </p>
+
+    <label
+      className={`Import__label--file-system ${dropZoneId}`}
+      htmlFor="file__input">
+      Browse & Upload .zip File
+    </label>
+
+    <input
+      id="file__input"
+      className='hidden'
+      type="file"
+      onChange={(evt) => { self._fileSelected(evt.files) }}
+    />
+
+    <div
+      className={`Import__section--paste ${dropZoneId}`}
+    >
+
+      <input
+        id="dropZone__filename"
+        className={`Import__input--paste ${dropZoneId}`}
+        type="text"
+        placeholder="Paste Project URL"
+        onChange={(evt) => self._updateRemoteUrl(evt)}
+      />
+
+      <button
+        className={`Import__btn--go ${dropZoneId}`}
+        onClick={() => self.importLabbook()}
+        disabled={!self.state.remoteURL.length && !self.state.isImporting}
+      >
+        Go
+      </button>
+
+    </div>
+
+  </div>

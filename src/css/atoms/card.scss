@@ -1,0 +1,41 @@
+
+.Card {
+  position: relative;
+
+  height: 300px;
+  padding: 0 1px 1px 1px;
+
+  cursor: pointer;
+  transition: box-shadow 0.5s;
+  text-align: center;
+  word-break: break-all;
+
+  color: $jet;
+  background: $white;
+  background-size: 50px;
+
+  line-height: 50px;
+
+  @extend .card;
+
+  &:empty {
+    height: 0;
+
+    border: 0;
+  };
+}
+
+.Card:hover {
+  transition: box-shadow 0.5s;
+
+  box-shadow: 0 0px 12px 0 rgba(0,0,0,.50);
+}
+
+.Card--import {
+  padding: 0px;
+}
+
+.Card:before,
+.Card:after {
+  padding: 0 10px;
+}

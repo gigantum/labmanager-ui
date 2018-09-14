@@ -68,19 +68,19 @@
 
 .ContainerStatus__container-state--menu-open {
   @extend .ContainerStatus__container-state;
-  background: $background-color url('./../images/icons/up-arrow-silver.svg') no-repeat 90% center;
+  background: $background-color url('~Images/icons/up-arrow-silver.svg') no-repeat 90% center;
 }
 
 .ContainerStatus__container-state.Running {
   border: 3px solid $turquise;
-  background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
+  background: $background-color url('~Images/icons/run.svg') no-repeat 90% center;
   background-size: 20px;
 }
 .ContainerStatus__container-state.Running:hover {
   width: 149px;
   height: 33px;
   border: 3px solid $romanSilver;
-  background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
+  background: $background-color url('~Images/icons/stop.svg') no-repeat 90% center;
   background-size: 20px;
   margin: 0 -7px -1px 0;
   line-height: 31px;
@@ -89,13 +89,13 @@
 .ContainerStatus__container-state.Building,
 .ContainerStatus__container-state.Syncing,
 .ContainerStatus__container-state.Publishing {
-  background: $background-color url('./../images/loaders/button-starting.svg') no-repeat 90% center;
+  background: $background-color url('~Images/loaders/button-starting.svg') no-repeat 90% center;
   border: 3px solid $goldenLemon;
   background-size: 20px;
 }
 
 .ContainerStatus__container-state.Stopped {
-  background: $background-color url('./../images/icons/stop.svg') no-repeat 90% center;
+  background: $background-color url('~Images/icons/stop.svg') no-repeat 90% center;
   border: 3px solid $romanSilver;
   background-size: 20px;
   @extend .box-shadow;
@@ -104,7 +104,7 @@
 .ContainerStatus__container-state.Stopped:hover {
   width: 149px;
   height: 33px;
-  background: $background-color url('./../images/icons/run.svg') no-repeat 90% center;
+  background: $background-color url('~Images/icons/run.svg') no-repeat 90% center;
   border: 3px solid $turquise;
   background-size: 20px;
   margin: 0 -7px -1px 0;
@@ -118,14 +118,14 @@
   line-height: 26px !important;
   margin: 0 !important;
   box-shadow: none !important;
-  background: $background-color url('./../images/loaders/button-starting.svg') no-repeat 90% center !important;
+  background: $background-color url('~Images/loaders/button-starting.svg') no-repeat 90% center !important;
   border: 3px solid $goldenLemon !important;
   background-size: 20px !important;
   cursor: auto;
 }
 
 .ContainerStatus__container-state.Rebuild{
-  background: $background-color url('./../images/icons/button-build.svg') no-repeat 85% center;
+  background: $background-color url('~Images/icons/button-build.svg') no-repeat 85% center;
   border: 3px solid $goldenLemon;
   cursor: pointer;
   padding: 0 15px 0 0;
@@ -133,7 +133,7 @@
 }
 .ContainerStatus__container-state.Stopping,
 .ContainerStatus__container-state.Starting {
-  background: $background-color url('./../images/loaders/button-starting.svg') no-repeat 90% center;
+  background: $background-color url('~Images/loaders/button-starting.svg') no-repeat 90% center;
   background-size: 20px;
   border: 3px solid $goldenLemon;
   opacity: 0.75;

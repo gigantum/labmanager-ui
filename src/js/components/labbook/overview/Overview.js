@@ -56,17 +56,26 @@ class Overview extends Component {
   */
   componentDidUpdate() {
     this._setExpand();
+
     if(!this.state.simpleExists){
+
       if (document.getElementById('markDown')) {
+
         simple = new SimpleMDE({
           element: document.getElementById('markDown'),
           spellChecker: true
         });
+
         simple.value(this.props.readme ? this.props.readme : '')
         this.setState({simpleExists: true})
-        let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0]
+
+        let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0],
+            sideBySideButton = document.getElementsByClassName('fa-columns')[0];
+
         fullscreenButton && fullscreenButton.addEventListener('click', () => this.setState({editorFullscreen: !this.state.editorFullscreen}))
-        let sideBySideButton = document.getElementsByClassName('fa-columns')[0]
+
+
+
         sideBySideButton && sideBySideButton.addEventListener('click', () => this.setState({editorFullscreen: true}))
       }
     }

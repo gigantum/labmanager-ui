@@ -17,13 +17,19 @@ import Validation from 'JS/utils/Validation'
 import UserIdentity from 'JS/Auth/UserIdentity'
 //config
 import config from 'JS/config'
+//assets
+import './Labbooks.scss'
 
 class Labbooks extends Component {
 
   constructor(props){
     super(props);
 
-    let {filter, orderBy, sort} = queryString.parse(this.props.history.location.search.slice(1))
+    const {
+      filter,
+      orderBy,
+      sort} = queryString.parse(this.props.history.location.search.slice(1))
+
     this.state = {
       'labbookModalVisible': false,
       'oldLabbookName': '',
@@ -61,14 +67,18 @@ class Labbooks extends Component {
     * set unsubcribe for store
   */
   UNSAFE_componentWillMount() {
-    let paths = this.props.history.location.pathname.split('/')
+
+    const paths = this.props.history.location.pathname.split('/')
     let sectionRoute = paths.length > 2 ?  paths[2] : 'local'
+
     if(paths[2] !== 'cloud' && paths[2] !== 'local'){
       sectionRoute = 'local'
     }
+
     this.setState({'selectedSection': sectionRoute})
 
     document.title =  `Gigantum`
+
     window.addEventListener('click', this._closeSortMenu)
     window.addEventListener('click', this._closeFilterMenu)
   }
@@ -87,8 +97,10 @@ class Labbooks extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    let paths = nextProps.history.location.pathname.split('/')
+
+    const paths = nextProps.history.location.pathname.split('/')
     let sectionRoute = paths.length > 2 ?  paths[2] : 'local'
+
     if(paths[2] !== 'cloud' && paths[2] !== 'local'){
 
       this.props.history.replace(`../../../../projects/local`)
@@ -120,12 +132,12 @@ class Labbooks extends Component {
       this.setState({sortMenuOpen: false});
     }
   }
+
   /**
     * @param {event} evt
     * fires when filter menu is open and the user clicks elsewhere
     * hides the filter menu dropdown from the view
   */
-
   _closeFilterMenu(evt) {
     let isFilterMenu = evt.target.className.indexOf('Labbooks__filter') > -1
 
@@ -229,24 +241,28 @@ class Labbooks extends Component {
    * @return {array} filteredLabbooks
   */
   _filterLabbooks(labbooks, filter){
-    let self = this;
-    let filteredLabbooks = [];
-    let username = localStorage.getItem('username')
+    const username = localStorage.getItem('username')
+    let self = this,
+        filteredLabbooks = [];
+
+
     if(filter === 'owner'){
+
       filteredLabbooks = labbooks.filter((labbook) => {
           return ((labbook.node.owner === username) && self._filterSearch(labbook))
       })
 
     }else if(filter === "others"){
+
       filteredLabbooks = labbooks.filter((labbook)=>{
           return (labbook.node.owner !== username  && self._filterSearch(labbook))
       })
     }else{
+
       filteredLabbooks = labbooks.filter((labbook)=>{
         return self._filterSearch(labbook)
       });
     }
-
 
     return filteredLabbooks
   }
@@ -266,6 +282,7 @@ class Labbooks extends Component {
     * triggers a refetch with new sort parameters
   */
   _handleSortFilter(orderBy, sort) {
+
     this.setState({sortMenuOpen: false, orderBy, sort});
     this._changeSearchParam({orderBy, sort})
     this.props.refetchSort(orderBy, sort)
@@ -278,6 +295,7 @@ class Labbooks extends Component {
   */
   _setSortFilter(orderBy, sort) {
     if(this.state.selectedSection === 'remoteLabbooks') {
+
       UserIdentity.getUserIdentity().then(response => {
 
         if(navigator.onLine){
@@ -290,7 +308,9 @@ class Labbooks extends Component {
 
             } else {
               this.props.auth.renewToken(true, ()=>{
+
                 if(!this.state.showLoginPrompt) {
+
                   this.setState({'showLoginPrompt': true})
                 }
               }, ()=>{
@@ -320,8 +340,10 @@ class Labbooks extends Component {
   */
 
   _changeSlider() {
-    let defaultOrder = ['local', 'cloud'];
-    let selectedIndex = defaultOrder.indexOf(this.state.selectedSection);
+
+    const defaultOrder = ['local', 'cloud'];
+    const selectedIndex = defaultOrder.indexOf(this.state.selectedSection);
+
     return (
       <hr className={'Labbooks__navigation-slider Labbooks__navigation-slider--' + selectedIndex}/>
     )
@@ -343,6 +365,7 @@ class Labbooks extends Component {
           this.setState({selectedSection: 'cloud'})
 
         } else {
+
           this.props.auth.renewToken(true, ()=>{
             if(!this.state.showLoginPrompt) {
               this.setState({'showLoginPrompt': true})
@@ -354,6 +377,7 @@ class Labbooks extends Component {
 
         }
       } else{
+
         if(!this.state.showLoginPrompt) {
           this.setState({'showLoginPrompt': true})
         }
@@ -367,12 +391,14 @@ class Labbooks extends Component {
   *  sets the filterValue in state
   */
   _setFilterValue(evt) {
+
     store.dispatch({
       type: 'SET_FILTER_TEXT',
       payload: {
         filterText: evt.target.value
       }
     })
+
     if(this.refs.labbookSearch.value !== evt.target.value){
       this.refs.labbookSearch.value = evt.target.value
     }
@@ -398,11 +424,15 @@ class Labbooks extends Component {
     *  gets orderBy and sort value and displays it to the UI more clearly
   */
   _getSelectedSort(){
+
     if(this.state.orderBy === 'modified_on'){
+
       return `Modified Date ${this.state.sort === 'asc' ? '(Oldest)' : '(Newest)'}`
     } else if(this.state.orderBy === 'created_on'){
+
       return `Creation Date ${this.state.sort === 'asc' ? '(Oldest)' : '(Newest)'}`
     } else {
+
       return this.state.sort === 'asc' ? 'A-Z' : 'Z-A';
     }
   }
@@ -417,15 +447,20 @@ class Labbooks extends Component {
   }
 
   render(){
-      let {props} = this;
-      let labbooksCSS = classNames({
+
+      const {props} = this;
+
+      const labbooksCSS = classNames({
         'Labbooks': true,
-        'is-demo': window.location.hostname === config.demoHostName,
+        'Labbooks--demo': window.location.hostname === config.demoHostName,
       })
+
       if(props.labbookList !== null || props.loading){
+
         return(
 
           <div className={labbooksCSS}>
+
             <WizardModal
               ref="wizardModal"
               handler={this.handler}
@@ -433,7 +468,7 @@ class Labbooks extends Component {
               {...props}
             />
 
-            <div className="Labbooks__title-bar">
+            <div className="Labbooks__panel-bar">
               <h6 className="Labbooks__username">{localStorage.getItem('username')}</h6>
               <h2 className="Labbooks__title" onClick={()=> this.refs.wizardModal._showModal()} >
                 Projects

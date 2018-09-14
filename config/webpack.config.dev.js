@@ -95,7 +95,7 @@ module.exports = {
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebookincubator/create-react-app/issues/290
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: ['.js', '.json', '.jsx', '.scss'],
     alias: {
 
       // Support React Native Web
@@ -105,7 +105,10 @@ module.exports = {
       'Mutations': path.resolve(__dirname, '../src/js/mutations/'),
       'JS': path.resolve(__dirname, '../src/js/'),
       'Submodules': path.resolve(__dirname, '../submodules/'),
-      'Images': path.resolve(__dirname, '../src/images/')
+      'Images': path.resolve(__dirname, '../src/images/'),
+      'Styles': path.resolve(__dirname, '../src/css/'),
+      'Fonts': path.resolve(__dirname, '../src/fonts/'),
+      'Node': path.resolve(__dirname, '../node_modules')
 
     },
     plugins: [
