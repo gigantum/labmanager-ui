@@ -227,7 +227,7 @@ class BranchMenu extends Component {
         this._checkSessionIsValid().then((response) => {
           if(navigator.onLine){
 
-            if (response.data) {
+            if (response.data && response.data.userIdentity) {
 
               if (response.data.userIdentity.isSessionValid) {
                 setMultiInfoMessage(id, 'Syncing Project with Gigantum cloud ...', false, false)

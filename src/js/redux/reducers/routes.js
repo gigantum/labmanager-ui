@@ -34,7 +34,6 @@ export default (
      labbookName: action.payload.labbookName
    };
  }else if(action.type === UPDATE_CALLBACK_ROUTE){
-
    sessionStorage.setItem('CALLBACK_ROUTE', action.payload.callbackRoute);
    return {
      ...state,

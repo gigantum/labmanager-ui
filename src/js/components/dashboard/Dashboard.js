@@ -26,7 +26,7 @@ export default class DashboardContainer extends Component {
       orderBy: orderBy || 'modified_on',
       sort: sort || 'desc',
     }
-    setCallbackRoute(props.history.location.name)
+    setCallbackRoute(props.history.location.pathname)
     this._refetchSort = this._refetchSort.bind(this)
   }
   /**
