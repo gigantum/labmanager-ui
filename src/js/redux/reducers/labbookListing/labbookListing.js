@@ -17,6 +17,10 @@ export default (
  action
 ) => {
  if(action.type === SET_FILTER_TEXT){
+   console.log({
+    ...state,
+    filterText: action.payload.filterText
+  })
   return {
     ...state,
     filterText: action.payload.filterText

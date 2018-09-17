@@ -6,7 +6,6 @@ import Modal from 'Components/shared/Modal'
 import DeleteExperimentalBranchMutation from 'Mutations/branches/DeleteExperimentalBranchMutation'
 //store
 import { setErrorMessage, setInfoMessage } from 'JS/redux/reducers/footer'
-import store from 'JS/redux/store'
 
 export default class DeleteBranch extends Component {
   constructor(props) {

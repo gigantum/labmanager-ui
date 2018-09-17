@@ -4,12 +4,8 @@ import store from 'JS/redux/store'
 import AnsiUp from 'ansi_up';
 import { setMultiInfoMessage, setErrorMessage } from 'JS/redux/reducers/footer'
 import { setForceRefetch, setRefetchPending } from 'JS/redux/reducers/labbook/environment/packageDependencies'
-import RelayRuntime from 'relay-runtime'
-
-import FetchLabbook from 'Components/labbook/fetchLabbook'
 
 const ansi_up = new AnsiUp();
-let tempID = 0
 
 const FooterUtils = {
   /**
@@ -66,7 +62,8 @@ const FooterUtils = {
               let res = [],
                   index = 0;
 
-              while ((index = fullMessage.indexOf('\n', index + 1)) > 0) {
+              while (fullMessage.indexOf('\n', index + 1) > 0) {
+                index = fullMessage.indexOf('\n', index + 1)
                 res.push(index);
               }
 
@@ -88,7 +85,7 @@ const FooterUtils = {
 
               if((type === "syncLabbook") || (type === "publishLabbook")){
 
-                const userArray = JSON.parse(response.data.jobStatus.jobMetadata).labbook.split('|')
+                // const userArray = JSON.parse(response.data.jobStatus.jobMetadata).labbook.split('|')
 
                 //TODO update labbook edge/node here
 

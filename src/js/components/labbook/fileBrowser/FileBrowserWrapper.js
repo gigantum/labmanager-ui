@@ -276,7 +276,6 @@ export default class FileBrowserWrapper extends Component {
         }).length === 0
 
         if(isFileAllowed){
-          const batchUpload = (files.length > 1)
 
           let newKey = prefix;
 

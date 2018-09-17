@@ -1,8 +1,6 @@
 //vendor
 import React, { Component } from 'react';
 import store from 'JS/redux/store'
-//components
-import Loader from 'Components/shared/Loader'
 //config
 import config from 'JS/config'
 

@@ -25,6 +25,7 @@ class OutputDataBrowser extends Component {
     loads more if branches are switched
   */
   componentDidUpdate(){
+    this.props.loadStatus(this.state.moreLoading);
     if(!this.state.moreLoading && this.props.output.allFiles && this.props.output.allFiles.edges.length < 3 && this.props.output.allFiles.pageInfo.hasNextPage){
       this._loadMore();
     }
@@ -34,6 +35,7 @@ class OutputDataBrowser extends Component {
     handle state and add listeners when component mounts
   */
   componentDidMount() {
+    this.props.loadStatus(this.state.moreLoading);
     if(this.props.output.allFiles &&
       this.props.output.allFiles.pageInfo.hasNextPage) {
         this._loadMore()
@@ -74,8 +76,6 @@ class OutputDataBrowser extends Component {
   }
 
   render(){
-
-    this.props.loadStatus(this.state.moreLoading);
     if(this.props.output && this.props.output.allFiles){
       let outputFiles = this.props.output.allFiles
       if(this.props.output.allFiles.edges.length === 0){

@@ -3,7 +3,6 @@ import auth0 from 'auth0-js';
 import {AUTH_CONFIG} from './auth0-variables';
 import RemoveUserIdentityMutation from 'Mutations/RemoveUserIdentityMutation'
 //store
-import store from 'JS/redux/store'
 import { setLogout, setLoginError } from 'JS/redux/reducers/login'
 
 export default class Auth {

@@ -90,7 +90,6 @@ class Routes extends Component {
   render(){
     if(!this.state.hasError){
       let authed = this.props.auth.isAuthenticated();
-      let self = this
       let headerCSS = classNames({
         'Header': authed,
         'hidden': !authed,

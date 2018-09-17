@@ -19,7 +19,6 @@ import config from 'JS/config'
 //store
 import { setErrorMessage } from 'JS/redux/reducers/footer'
 import { setFilterText } from 'JS/redux/reducers/labbookListing/labbookListing'
-import store from 'JS/redux/store'
 
 class Labbooks extends Component {
 
@@ -458,7 +457,7 @@ class Labbooks extends Component {
               <div className="Labbooks__search-container">
                 {
                   this.state.showSearchCancel &&
-                  (store.getState().labbookListing.filterText.length !== 0) &&
+                  (this.props.filterText.length !== 0) &&
                   <Fragment>
                     <div
                       className="Labbooks__search-cancel"

@@ -253,7 +253,6 @@ const onlyUnique = (value, index, self) =>  {
 
 const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck, totalFiles) => {
     let folderPaths = []
-    let directoryExists = []
 
     files.forEach((fileItem)=>{
 
@@ -314,7 +313,8 @@ const FolderUpload = {
     let batchCount = 0
     let batchCallbackCount = 0
     let transactionId = uuidv4()
-    let isPaused = false;
+    // commented until pause functionality is available
+    // let isPaused = false;
     /**
     *  @param {object} fileItem
     *  recursive function that loops through a object that replicates a folders structure
@@ -345,7 +345,8 @@ const FolderUpload = {
                 chunkLoader,
                 transactionId,
                 (result, pause)=>{
-                  isPaused = pause
+                  // commented until pause functionality is available
+                  // isPaused = pause
 
                   if(!store.getState().fileBrowser.pause){
                     setPauseUploadData(files, count, transactionId, prefix, totalFiles)
