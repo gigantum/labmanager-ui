@@ -12,7 +12,9 @@ import store from 'JS/redux/store'
 import UserIdentity from 'JS/Auth/UserIdentity'
 //components
 import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/LoginPrompt'
-import Loader from 'Components/shared/Loader';
+import Loader from 'Components/shared/Loader'
+//assets
+import './RemoteLabbookPanel.scss'
 
 export default class RemoteLabbookPanel extends Component {
 
@@ -226,32 +228,36 @@ export default class RemoteLabbookPanel extends Component {
 
   render(){
     let edge = this.props.edge;
-    let descriptionCss = classNames({
-      'RemoteLabbooks__text-row': true,
+
+    const descriptionCss = classNames({
+      'RemoteLabbooks__row RemoteLabbooks__row--text': true,
       'blur': this.state.isImporting
     })
-    let deleteCSS = classNames({
-      'RemoteLabbooks__cloud-delete': localStorage.getItem('username') === edge.node.owner,
-      'RemoteLabbooks__cloud-delete--disabled': localStorage.getItem('username') !== edge.node.owner,
+
+    const deleteCSS = classNames({
+      'RemoteLabbooks__icon': true,
+      'RemoteLabbooks__icon--delete': localStorage.getItem('username') === edge.node.owner,
+      'RemoteLabbooks__icon--delete-disabled': localStorage.getItem('username') !== edge.node.owner,
     })
+
     return (
       <div
         key={edge.node.name}
-        className='RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between'>
+        className='Card column-4-span-3 flex flex--column justify--space-between'>
         {
 
         }
-        <div className="RemoteLabbooks__icon-row">
+        <div className="RemoteLabbooks__row RemoteLabbooks__row--icon">
         {
           this.props.existsLocally ?
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           ></button>
           :
           <button
             disabled={this.state.isImporting}
-            className="RemoteLabbooks__cloud-download"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud-download"
             onClick={()=>this.importLabbook(edge.node.owner, edge.node.name)}
           ></button>
         }
@@ -263,7 +269,8 @@ export default class RemoteLabbookPanel extends Component {
         </div>
 
         <div className={descriptionCss}>
-          <div className="RemoteLabbooks__title-row">
+
+          <div className="RemoteLabbooks__row RemoteLabbooks__row--title">
             <h6
               className="RemoteLabbooks__panel-title">
               <Highlighter
@@ -276,9 +283,11 @@ export default class RemoteLabbookPanel extends Component {
             </h6>
 
           </div>
-          <p className="RemoteLabbooks__owner">{'Created by ' + edge.node.owner}</p>
+
+          <p className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner">{'Created by ' + edge.node.owner}</p>
+
           <p
-            className="RemoteLabbooks__description">
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description">
             <Highlighter
               highlightClassName='LocalLabbooks__highlighted'
               searchWords={[store.getState().labbookListing.filterText]}

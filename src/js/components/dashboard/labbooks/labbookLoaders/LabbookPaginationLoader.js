@@ -1,12 +1,14 @@
 //vendor
 import React, { Component } from 'react'
 import classNames from 'classnames'
+//assets
+import './LabbookPaginationLoader.scss'
 
-export default class remoteLabbooksPaginationLoader extends Component {
+export default class LabbookPaginationLoader extends Component {
   render(){
     let PaginationLoaderCSS = classNames({
-      [`LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--${this.props.index}`]: this.props.isLoadingMore,
-      'Labbook__loader-hidden': !this.props.isLoadingMore,
+      [`Card column-4-span-3 flex flex--column justify--space-between LabbookPaginationLoader LabbookPaginationLoader--${this.props.index}`]: this.props.isLoadingMore,
+      'LabbookPaginationLoader--hidden': !this.props.isLoadingMore,
     })
 
     return(

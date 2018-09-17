@@ -1,0 +1,69 @@
+@import '~Styles/_imports.scss';
+
+.LabbookFilterBy {
+  margin-right: 20px;
+  color: $font-grey;
+  align-self: flex-end;
+}
+
+.LabbookFilterBy__selector{
+    display: inline-block;
+
+    width: 200px;
+    margin-left: 20px;
+
+    cursor: pointer;
+    user-select: none;
+
+    border-bottom: 1px solid $font-grey;
+
+    &--open{
+      background: url('~Images/icons/up-arrow-silver.svg') no-repeat right;
+      background-size: 15px;
+    }
+
+    &--collapsed{
+      background: url('~Images/icons/down-arrow-silver.svg') no-repeat right;
+      background-size: 15px;
+    }
+}
+
+.LabbookFilterBy__menu{
+    animation: slide-down-fade-in forwards .25s;
+    padding: 3px;
+    position: absolute;
+    z-index: index($elements, popup);
+    right: 296px;
+
+    width: 200px;
+
+    cursor: pointer;
+    text-align: left;
+
+    border: 1px solid $grey;
+    background: $white;
+
+    @extend .box-shadow;
+ }
+
+.LabbookFilterBy__list-item{
+
+  height: 40px;
+  padding: 10px 5px !important;
+  padding-top: 2px;
+
+  user-select: none;
+
+  border-bottom: 1px solid $grey;
+
+  &:last-child{
+    border-bottom: none;
+  }
+
+  &:hover {
+    transition: background-color 0.25s ease-in-out;
+
+    background: $azure;
+    color: $white;
+  }
+}

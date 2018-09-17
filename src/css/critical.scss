@@ -26,6 +26,7 @@
 @import 'atoms/textarea.scss';
 @import 'atoms/table.scss';
 @import 'atoms/_radio-button.scss';
+@import 'atoms/card.scss';
 
 //shared components
 @import 'components/shared/sideBar';
@@ -46,10 +47,6 @@
 @import 'components/routes.scss';
 @import 'components/login.scss';
 @import 'components/home.scss';
-//dashboard components
-// @import 'components/dashboard/dashboard';
-@import 'components/dashboard/localLabBooks.scss';
-@import 'components/dashboard/remoteLabBooks.scss';
 //import
 @import 'components/import/importModules.scss';
 //labbook components

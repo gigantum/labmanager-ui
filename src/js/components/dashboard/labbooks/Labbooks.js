@@ -11,6 +11,8 @@ import LocalLabbooksContainer, {LocalLabbooks} from 'Components/dashboard/labboo
 import RemoteLabbooks from 'Components/dashboard/labbooks/remoteLabbooks/RemoteLabbooks'
 import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/LoginPrompt'
 import ToolTip from 'Components/shared/ToolTip'
+import LabbookFilterBy from './filters/LabbookFilterBy'
+import LabbookSort from './filters/LabbookSort'
 //utils
 import Validation from 'JS/utils/Validation'
 //queries
@@ -51,11 +53,10 @@ class Labbooks extends Component {
     this._goToLabbook = this._goToLabbook.bind(this)
     this._showModal = this._showModal.bind(this)
     this._filterSearch = this._filterSearch.bind(this)
-    this._changeSlider = this._changeSlider.bind(this)
     this._setSortFilter = this._setSortFilter.bind(this)
     this._closeLoginPromptModal = this._closeLoginPromptModal.bind(this)
     this._filterLabbooks = this._filterLabbooks.bind(this)
-    this._setfilter = this._setfilter.bind(this)
+    this._setFilter = this._setFilter.bind(this)
     this._changeSearchParam = this._changeSearchParam.bind(this)
     this._hideSearchClear = this._hideSearchClear.bind(this)
     this._setFilterValue = this._setFilterValue.bind(this)
@@ -211,7 +212,7 @@ class Labbooks extends Component {
    * @param {string} filter
    sets state updates filter
   */
-  _setfilter(filter){
+  _setFilter(filter){
     this.setState({filterMenuOpen: false, filter});
     this._changeSearchParam({filter})
   }
@@ -231,7 +232,7 @@ class Labbooks extends Component {
    * returns true if labbook's name or description exists in filtervalue, else returns false
   */
   _filterSearch(labbook){
-    if(labbook.node.name && (this.props.filterText === '' || labbook.node.name.toLowerCase().indexOf(this.props.filterText.toLowerCase()) > -1 || labbook.node.description.toLowerCase().indexOf(this.props.filterText.toLowerCase()) > -1)){
+    if(labbook.node && labbook.node.name && (this.props.filterText === '' || labbook.node.name.toLowerCase().indexOf(this.props.filterText.toLowerCase()) > -1 || labbook.node.description.toLowerCase().indexOf(this.props.filterText.toLowerCase()) > -1)){
       return true;
     }
     return false;
@@ -335,22 +336,6 @@ class Labbooks extends Component {
 
   /**
     * @param {}
-    * fires in component render
-    * sets classnames for navigation slider to work as intended
-  */
-
-  _changeSlider() {
-
-    const defaultOrder = ['local', 'cloud'];
-    const selectedIndex = defaultOrder.indexOf(this.state.selectedSection);
-
-    return (
-      <hr className={'Labbooks__navigation-slider Labbooks__navigation-slider--' + selectedIndex}/>
-    )
-  }
-
-  /**
-    * @param {}
     * fires when user selects remote labbook view
     * checks user auth before changing selectedSection state
   */
@@ -403,39 +388,6 @@ class Labbooks extends Component {
       this.refs.labbookSearch.value = evt.target.value
     }
   }
-  /**
-    *  @param {}
-    *  gets filter value and displays it to the UI more clearly
-  */
-  _getFilter(){
-    switch(this.state.filter){
-      case 'all':
-        return 'All'
-      case 'owner':
-        return 'My Projects'
-      case 'others':
-        return 'Shared With Me'
-      default:
-        return this.state.filter
-    }
-  }
-  /**
-    *  @param {}
-    *  gets orderBy and sort value and displays it to the UI more clearly
-  */
-  _getSelectedSort(){
-
-    if(this.state.orderBy === 'modified_on'){
-
-      return `Modified Date ${this.state.sort === 'asc' ? '(Oldest)' : '(Newest)'}`
-    } else if(this.state.orderBy === 'created_on'){
-
-      return `Creation Date ${this.state.sort === 'asc' ? '(Oldest)' : '(Newest)'}`
-    } else {
-
-      return this.state.sort === 'asc' ? 'A-Z' : 'Z-A';
-    }
-  }
 
   /**
     *  @param {object} newValues
@@ -457,6 +409,18 @@ class Labbooks extends Component {
 
       if(props.labbookList !== null || props.loading){
 
+        const localNavItemCSS = classNames({
+          'Labbooks__nav-item': true,
+          'Labbooks__nav-item--local': true,
+          'Labbooks__nav-item--selected': this.state.selectedSection === 'local'
+        })
+
+        const cloudNavItemCSS = classNames({
+          'Labbooks__nav-item': true,
+          'Labbooks__nav-item--cloud': true,
+          'Labbooks__nav-item--selected': this.state.selectedSection === 'cloud'
+        })
+
         return(
 
           <div className={labbooksCSS}>
@@ -477,15 +441,15 @@ class Labbooks extends Component {
             </div>
             <div className="Labbooks__menu  mui-container flex-0-0-auto">
               <ul className="Labbooks__nav  flex flex--row">
-                <li className={this.state.selectedSection === 'local' ? 'Labbooks__nav-item--0 selected' : 'Labbooks__nav-item--0' }>
+                <li className={localNavItemCSS}>
                   <a onClick={()=> this._setSection('local')}>Local</a>
                 </li>
-                <li className={this.state.selectedSection === 'cloud' ? 'Labbooks__nav-item--1 selected' : 'Labbooks__nav-item--1' }>
+                <li className={cloudNavItemCSS}>
                   <a onClick={()=> this._setSection('cloud')}>Cloud</a>
                 </li>
-                {
-                  this._changeSlider()
-                }
+
+                <hr className={`Labbooks__navigation-slider Labbooks__navigation-slider--${this.state.selectedSection}`}/>
+
                 <ToolTip section="cloudLocal" />
               </ul>
 
@@ -514,86 +478,16 @@ class Labbooks extends Component {
                   onFocus={() => this.setState({showSearchCancel: true})}
                 />
               </div>
-              <div className="Labbooks__filter">
-                Filter by:
-                <span
-                  className={this.state.filterMenuOpen ? 'Labbooks__filter-expanded' : 'Labbooks__filter-collapsed'}
-                  onClick={() => !this.setState({ filterMenuOpen: !this.state.filterMenuOpen })}
-                >
-                  {this._getFilter()}
-                </span>
-                <ul
-                  className={this.state.filterMenuOpen ? 'Labbooks__filter-menu' : 'hidden'}
-                >
-                  <li
-                    className={'Labbooks__filter-item'}
-                    onClick={()=>this._setfilter('all')}
-                  >
-                    All {this.state.filter === 'all' ?  '✓ ' : ''}
-                  </li>
-                  <li
-                    className={'Labbooks__filter-item'}
-                    onClick={()=>this._setfilter('owner')}
-                  >
-                   My Projects {this.state.filter === 'owner' ?  '✓ ' : ''}
-                  </li>
-                  <li
-                    className={'Labbooks__filter-item'}
-                    onClick={()=>this._setfilter('others')}
-                  >
-                    Shared with me {this.state.filter === 'others' ?  '✓ ' : ''}
-                  </li>
-                </ul>
-              </div>
-              <div className="Labbooks__sort">
-                Sort by:
-                <span
-                  className={this.state.sortMenuOpen ? 'Labbooks__sort-expanded' : 'Labbooks__sort-collapsed'}
-                  onClick={() => !this.setState({ sortMenuOpen: !this.state.sortMenuOpen })}
-                >
-                  {this._getSelectedSort()}
-                </span>
-                <ul
-                  className={this.state.sortMenuOpen ? 'Labbooks__sort-menu' : 'hidden'}
-                >
-                  <li
-                    className={'Labbooks__sort-item'}
-                    onClick={()=>this._setSortFilter('modified_on', 'desc')}
-                  >
-                    Modified Date (Newest) {this.state.orderBy === 'modified_on' && this.state.sort !== 'asc' ?  '✓ ' : ''}
-                  </li>
-                  <li
-                    className={'Labbooks__sort-item'}
-                    onClick={()=>this._setSortFilter('modified_on', 'asc')}
-                  >
-                    Modified Date (Oldest) {this.state.orderBy === 'modified_on' && this.state.sort === 'asc' ?  '✓ ' : ''}
-                  </li>
-                  <li
-                    className={'Labbooks__sort-item'}
-                    onClick={()=>this._setSortFilter('created_on', 'desc')}
-                  >
-                    Creation Date (Newest) {this.state.orderBy === 'created_on' && this.state.sort !== 'asc' ?  '✓ ' : ''}
-                  </li>
-                  <li
-                    className={'Labbooks__sort-item'}
-                    onClick={()=>this._setSortFilter('created_on', 'asc')}
-                  >
-                    Creation Date (Oldest) {this.state.orderBy === 'created_on' && this.state.sort === 'asc' ?  '✓ ' : ''}
-                  </li>
-                  <li
-                    className="Labbooks__sort-item"
-                    onClick={()=>this._setSortFilter('name', 'asc')}
-                  >
-                    A-Z {this.state.orderBy === 'name' && this.state.sort === 'asc' ?  '✓ ' : ''}
-                  </li>
-                  <li
-                    className="Labbooks__sort-item"
-                    onClick={()=>this._setSortFilter('name', 'desc')}
-                  >
-                    Z-A {this.state.orderBy === 'name' && this.state.sort !== 'asc' ?  '✓ ' : ''}
-                  </li>
-                </ul>
-              </div>
+
+              <LabbookFilterBy
+                {...this.state}
+                setFilter={this._setFilter}
+              />
+              <LabbookSort
+                {...this.state}
+                setSortFilter={this._setSortFilter}
+              />
+
             </div>
             {
               props.loading ?

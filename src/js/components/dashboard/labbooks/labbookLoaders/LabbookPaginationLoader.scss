@@ -1,0 +1,33 @@
+@import '~Styles/_imports.scss';
+
+.LabbookPaginationLoader {
+  background: $white url('~Images/icons/labbooks-placeholder.svg') no-repeat center center;
+  background-size: 275px;
+  opacity: 1;
+
+  &--0{
+    animation: fade-in forwards 0.8s;
+  }
+
+  &--1{
+    animation: fade-in forwards 1.2s;
+  }
+
+  &--2{
+    animation: fade-in forwards 2s;
+  }
+
+  &--3{
+    animation: fade-in forwards 2.8s;
+  }
+
+  &--4{
+    animation: fade-in forwards 3.6s;
+  }
+
+  &---hidden {
+    display: block;
+    opacity: 0;
+    height: 0;
+  }
+}

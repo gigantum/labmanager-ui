@@ -20,10 +20,11 @@
 .Import__labbook-header{
   position: relative;
 
+  align-items: center;
+
   color: $lightBlue;
 
   @include flex(center, row);
-  align-items: center;
 }
 
 .Import__labbook-icon {

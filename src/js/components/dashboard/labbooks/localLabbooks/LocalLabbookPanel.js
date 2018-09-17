@@ -7,7 +7,8 @@ import StartContainerMutation from 'Mutations/StartContainerMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
 //store
 import store from 'JS/redux/store'
-
+//assets
+import './LocalLabbookPanel.scss'
 /**
 *  labbook panel is to only render the edge passed to it
 */
@@ -229,9 +230,9 @@ export default class LocalLabbookPanel extends Component {
         to={`/projects/${edge.node.owner}/${edge.node.name}`}
         onClick={() => this.props.goToLabbook(edge.node.name, edge.node.owner)}
         key={'local' + edge.node.name}
-        className='LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between'>
+        className='Card Card--text column-4-span-3 flex flex--column justify--space-between'>
 
-        <div className="LocalLabbooks__icon-row">
+        <div className="LocalLabbooks__row--icons">
 
           <div className="LocalLabbooks__containerStatus">
 
@@ -239,7 +240,7 @@ export default class LocalLabbookPanel extends Component {
               onClick={(evt)=> this._stopStartContainer(evt, status)}
               onMouseOver={(evt)=> this._updateTextStatusOver(evt, status)}
               onMouseOut={(evt)=> this._updateTextStatusOut(evt, status)}
-              className={`LocalLabbooks__containerStatus--state ${status}`}>
+              className={`ContainerStatus__container-state LocalLabbooks__containerStatus--state ${status}`}>
               {textStatus}
             </button>
 
@@ -247,9 +248,9 @@ export default class LocalLabbookPanel extends Component {
 
         </div>
 
-        <div className="LocalLabbooks__text-row">
+        <div className="LocalLabbooks__row--text">
 
-          <div className="LocalLabbooks__title-row">
+          <div>
 
             <h6
               className="LocalLabbooks__panel-title"
@@ -267,10 +268,10 @@ export default class LocalLabbookPanel extends Component {
 
           </div>
 
-          <p className="LocalLabbooks__owner">{'Created by ' + edge.node.owner}</p>
+          <p className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner ">{'Created by ' + edge.node.owner}</p>
 
           <p
-            className="LocalLabbooks__description">
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description">
 
             <Highlighter
               highlightClassName='LocalLabbooks__highlighted'
