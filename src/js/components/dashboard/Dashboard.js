@@ -7,7 +7,7 @@ import LocalLabbooksContainer from './labbooks/localLabbooks/LocalLabbooksContai
 import RemoteLabbooksContainer from './labbooks/remoteLabbooks/RemoteLabbooksContainer';
 import environment from 'JS/createRelayEnvironment'
 //store
-import { setCallbackRoute } from '/JS/redux/reducers/routes'
+import { setCallbackRoute } from 'JS/redux/reducers/routes'
 
 const LocalListingQuery = graphql`query DashboardLocalQuery($first: Int!, $cursor: String, $orderBy: String $sort: String){
   ...LocalLabbooksContainer_labbookList
