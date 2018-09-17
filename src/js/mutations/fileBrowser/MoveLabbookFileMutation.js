@@ -5,7 +5,7 @@ import {
 import RelayRuntime from 'relay-runtime'
 import environment from 'JS/createRelayEnvironment'
 
-import reduxStore from 'JS/redux/store'
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 
 const mutation = graphql`
   mutation MoveLabbookFileMutation($input: MoveLabbookFileInput!){
@@ -96,14 +96,7 @@ export default function MoveLabbookFileMutation(
 
         if(error){
           console.log(error)
-          reduxStore.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload:{
-              message: `ERROR: Could not Move labbook file ${srcPath}`,
-              messageBody: error,
-            }
-          })
-
+          setErrorMessage(`ERROR: Could not Move labbook file ${srcPath}`, error)
         }
         callback(response, error)
       },

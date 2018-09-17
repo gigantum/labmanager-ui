@@ -12,8 +12,8 @@ export const UPDATE_CONTAINER_MENU_VISIBILITY = 'UPDATE_CONTAINER_MENU_VISIBILIT
  * actions
  */
 export const setContainerMenuWarningMessage = (message) => {
-  dispatcher('CONTAINER_MENU_WARNING', {message})
-  dispatcher('UPDATE_CONTAINER_MENU_VISIBILITY', {containerMenuOpen: true})
+  dispatcher(CONTAINER_MENU_WARNING, {message})
+  dispatcher(UPDATE_CONTAINER_MENU_VISIBILITY, {containerMenuOpen: true})
 }
 export const setContainerMenuVisibility = (containerMenuOpen) => dispatcher(UPDATE_CONTAINER_MENU_VISIBILITY, {containerMenuOpen})
 export const setCloseEnvironmentMenus = () => dispatcher(CLOSE_ENVIRONMENT_MENUS, {})

@@ -1,5 +1,4 @@
 //vendor
-import store from 'JS/redux/store'
 import React, { Component, Fragment } from 'react'
 import queryString from 'querystring'
 import classNames from 'classnames'
@@ -17,6 +16,9 @@ import Validation from 'JS/utils/Validation'
 import UserIdentity from 'JS/Auth/UserIdentity'
 //config
 import config from 'JS/config'
+//store
+import { setErrorMessage } from 'JS/redux/reducers/footer'
+import { setFilterText } from 'JS/redux/reducers/labbookListing/labbookListing'
 
 class Labbooks extends Component {
 
@@ -367,12 +369,8 @@ class Labbooks extends Component {
   *  sets the filterValue in state
   */
   _setFilterValue(evt) {
-    store.dispatch({
-      type: 'SET_FILTER_TEXT',
-      payload: {
-        filterText: evt.target.value
-      }
-    })
+    setFilterText(evt.target.value)
+
     if(this.refs.labbookSearch.value !== evt.target.value){
       this.refs.labbookSearch.value = evt.target.value
     }
@@ -459,7 +457,7 @@ class Labbooks extends Component {
               <div className="Labbooks__search-container">
                 {
                   this.state.showSearchCancel &&
-                  (store.getState().labbookListing.filterText.length !== 0) &&
+                  (this.props.filterText.length !== 0) &&
                   <Fragment>
                     <div
                       className="Labbooks__search-cancel"
@@ -607,13 +605,7 @@ class Labbooks extends Component {
 
         UserIdentity.getUserIdentity().then(response => {
           if(response.data && response.data.userIdentity.isSessionValid){
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `Failed to fetch Projects.`,
-                messageBody: [{ message: 'There was an error while fetching Projects. This likely means you have a corrupted Project directory.' }]
-              }
-            })
+            setErrorMessage(`Failed to fetch Projects.`, [{ message: 'There was an error while fetching Projects. This likely means you have a corrupted Project directory.' }])
             return (
               <div className="Labbooks__fetch-error">
                 There was an error attempting to fetch Projects. <br />

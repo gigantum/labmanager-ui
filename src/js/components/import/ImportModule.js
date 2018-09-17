@@ -9,6 +9,7 @@ import ChunkUploader from 'JS/utils/ChunkUploader'
 import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/LoginPrompt'
 import ToolTip from 'Components/shared/ToolTip';
 //store
+import { setErrorMessage, setMultiInfoMessage, setUploadMessageUpdate } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
@@ -48,7 +49,8 @@ const dispatchLoadingProgress = (wokerData) =>{
   bytesUploaded =  bytesUploaded < totalBytes ? bytesUploaded : totalBytes;
   let totalBytesString = _humanFileSize(totalBytes)
   let bytesUploadedString = _humanFileSize(bytesUploaded)
-
+  let percentage = (Math.floor((bytesUploaded/totalBytes) * 100) <= 100) ? Math.floor((bytesUploaded/totalBytes) * 100) : 100
+  setUploadMessageUpdate(`${bytesUploadedString} of ${totalBytesString} uploaded`, '', percentage)
   store.dispatch({
     type: 'UPLOAD_MESSAGE_UPDATE',
     payload: {
@@ -532,13 +534,7 @@ export default class ImportModule extends Component {
         this.props.showModal()
       }
     } else {
-      store.dispatch({
-        type: 'ERROR_MESSAGE',
-        payload:{
-          message: `Cannot create a Project at this time.`,
-          messageBody: [{message: 'An internet connection is required to create a Project.'}]
-        }
-      })
+      setErrorMessage(`Cannot create a Project at this time.`, [{message: 'An internet connection is required to create a Project.'}])
     }
   }
 
@@ -586,16 +582,7 @@ export default class ImportModule extends Component {
 
           if(response.data.userIdentity.isSessionValid){
             this._importingState()
-            store.dispatch(
-              {
-                type: "MULTIPART_INFO_MESSAGE",
-                payload: {
-                  id: id,
-                  message: 'Importing Project please wait',
-                  isLast: false,
-                  error: false
-                }
-              })
+            setMultiInfoMessage(id, 'Importing Project please wait', false, false)
             ImportRemoteLabbookMutation(
               owner,
               labbookName,
@@ -605,32 +592,13 @@ export default class ImportModule extends Component {
 
                 if(error){
                   console.error(error)
-                  store.dispatch(
-                    {
-                      type: 'MULTIPART_INFO_MESSAGE',
-                      payload: {
-                        id: id,
-                        message: 'ERROR: Could not import remote Project',
-                        messageBody: error,
-                        error: true
-                    }
-                  })
+                  setMultiInfoMessage(id, 'ERROR: Could not import remote Project', null, true, error)
 
                 }else if(response){
-
-                  store.dispatch(
-                    {
-                      type: 'MULTIPART_INFO_MESSAGE',
-                      payload: {
-                        id: id,
-                        message: `Successfully imported remote Project ${labbookName}`,
-                        isLast: true,
-                        error: false
-                      }
-                    })
-
                   const labbookName = response.importRemoteLabbook.newLabbookEdge.node.name
                   const owner = response.importRemoteLabbook.newLabbookEdge.node.owner
+                  setMultiInfoMessage(id, `Successfully imported remote Project ${labbookName}`, true, false)
+
 
                   BuildImageMutation(
                   labbookName,
@@ -639,16 +607,7 @@ export default class ImportModule extends Component {
                   (response, error)=>{
                     if(error){
                       console.error(error)
-                      store.dispatch(
-                        {
-                          type: 'MULTIPART_INFO_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: `ERROR: Failed to build ${labbookName}`,
-                            messsagesList: error,
-                            error: true
-                        }
-                      })
+                      setMultiInfoMessage(id, `ERROR: Failed to build ${labbookName}`, null, true, error)
                     }
                   })
                   self.props.history.replace(`/projects/${owner}/${labbookName}`)
@@ -661,16 +620,7 @@ export default class ImportModule extends Component {
                   (error)=>{
                     if(error){
                       console.error(error)
-                      store.dispatch(
-                        {
-                          type: 'MULTIPART_INFO_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: `ERROR: Failed to build ${labbookName}`,
-                            messsagesList: error,
-                            error: true
-                        }
-                      })
+                      setMultiInfoMessage(id, `ERROR: Failed to build ${labbookName}`, null, true, error)
                     }
                   })
                 }

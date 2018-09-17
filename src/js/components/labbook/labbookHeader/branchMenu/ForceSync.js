@@ -7,21 +7,14 @@ import SyncLabbookMutation from 'Mutations/branches/SyncLabbookMutation'
 import Modal from 'Components/shared/Modal'
 //store
 import store from 'JS/redux/store'
+import { setMultiInfoMessage } from 'JS/redux/reducers/footer'
 
 
 export default class ForceSync extends Component {
   _forceSync(){
     const id = uuidv4;
     const {owner, labbookName} = store.getState().routes
-    store.dispatch({
-      type: 'MULTIPART_INFO_MESSAGE',
-      payload: {
-        id: id,
-        message: 'Syncing Project with Gigantum cloud ...',
-        isLast: false,
-        error: false
-      }
-    })
+    setMultiInfoMessage(id, 'Syncing Project with Gigantum cloud ...', false, false)
 
     SyncLabbookMutation(
       owner,
@@ -29,29 +22,9 @@ export default class ForceSync extends Component {
       true,
       (error) => {
         if (error) {
-          store.dispatch({
-            type: 'MULTIPART_INFO_MESSAGE',
-            payload: {
-              id: id,
-              message: `Could not 'force' sync ${labbookName}`,
-              messageBody: error,
-              isLast: true,
-              error: true
-            }
-          })
-
-
+          setMultiInfoMessage(id, `Could not 'force' sync ${labbookName}`, true, true, error)
         } else {
-
-          store.dispatch({
-            type: 'MULTIPART_INFO_MESSAGE',
-            payload: {
-              id: id,
-              message: `Successfully 'force' synced ${labbookName}`,
-              isLast: true,
-              error: false
-            }
-          })
+          setMultiInfoMessage(id, `Successfully 'force' synced ${labbookName}`, true, false,)
         }
       }
     )

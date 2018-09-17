@@ -3,9 +3,8 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
-//redux store
-import reduxStore from 'JS/redux/store'
-
+//store
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 
 const mutation = graphql`
   mutation AddCollaboratorMutation($input: AddLabbookCollaboratorInput!){
@@ -43,13 +42,7 @@ export default function AddCollaboratorMutation(
       onCompleted: (response, error) => {
         if(error){
           console.log(error)
-          reduxStore.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload:{
-              message: `ERROR: Could not add Collaborator ${username}`,
-              messageBody: error
-            }
-          })
+          setErrorMessage(`ERROR: Could not add Collaborator ${username}`, error)
         }
         callback(response, error)
       },

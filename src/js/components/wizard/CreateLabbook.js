@@ -11,7 +11,7 @@ import BuildImageMutation from 'Mutations/BuildImageMutation'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
 //store
-import store from 'JS/redux/store'
+import { setMultiInfoMessage } from 'JS/redux/reducers/footer'
 
 export default class CreateLabbook extends React.Component {
   constructor(props){
@@ -60,17 +60,7 @@ export default class CreateLabbook extends React.Component {
           if(response.data){
 
             if(response.data.userIdentity.isSessionValid){
-
-              store.dispatch(
-                {
-                  type: "MULTIPART_INFO_MESSAGE",
-                  payload: {
-                    id: id,
-                    message: 'Importing Project please wait',
-                    isLast: false,
-                    error: false
-                  }
-                })
+              setMultiInfoMessage(id, 'Importing Project please wait', false, false)
               ImportRemoteLabbookMutation(
                 owner,
                 labbookName,
@@ -80,32 +70,12 @@ export default class CreateLabbook extends React.Component {
 
                   if(error){
                     console.error(error)
-                    store.dispatch(
-                      {
-                        type: 'MULTIPART_INFO_MESSAGE',
-                        payload: {
-                          id: id,
-                          message: 'ERROR: Could not import remote Project',
-                          messageBody: error,
-                          error: true
-                      }
-                    })
+                    setMultiInfoMessage(id, 'ERROR: Could not import remote Project', null, true, error)
 
                   }else if(response){
-
-                    store.dispatch(
-                      {
-                        type: 'MULTIPART_INFO_MESSAGE',
-                        payload: {
-                          id: id,
-                          message: `Successfully imported remote Project ${labbookName}`,
-                          isLast: true,
-                          error: false
-                        }
-                      })
-
                     const labbookName = response.importRemoteLabbook.newLabbookEdge.node.name
                     const owner = response.importRemoteLabbook.newLabbookEdge.node.owner
+                    setMultiInfoMessage(id, `Successfully imported remote Project ${labbookName}`, true, false)
 
                     BuildImageMutation(
                     labbookName,
@@ -114,16 +84,7 @@ export default class CreateLabbook extends React.Component {
                     (response, error)=>{
                       if(error){
                         console.error(error)
-                        store.dispatch(
-                          {
-                            type: 'MULTIPART_INFO_MESSAGE',
-                            payload: {
-                              id: id,
-                              message: `ERROR: Failed to build ${labbookName}`,
-                              messsagesList: error,
-                              error: true
-                          }
-                        })
+                        setMultiInfoMessage(id, `ERROR: Failed to build ${labbookName}`, null, true, error)
                       }
                     })
                     self.props.history.replace(`/projects/${owner}/${labbookName}`)
@@ -136,16 +97,7 @@ export default class CreateLabbook extends React.Component {
                     (response, error)=>{
                       if(error){
                         console.error(error)
-                        store.dispatch(
-                          {
-                            type: 'MULTIPART_INFO_MESSAGE',
-                            payload: {
-                              id: id,
-                              message: `ERROR: Failed to build ${labbookName}`,
-                              messsagesList: error,
-                              error: true
-                          }
-                        })
+                        setMultiInfoMessage(id, `ERROR: Failed to build ${labbookName}`, null, true, error)
                       }
                     })
                   }
@@ -153,17 +105,7 @@ export default class CreateLabbook extends React.Component {
               )
             }else{
               this.props.auth.renewToken(true, ()=>{
-                store.dispatch(
-                  {
-                    type: "MULTIPART_INFO_MESSAGE",
-                    payload: {
-                      id: id,
-                      message: 'ERROR: User session not valid for remote import',
-                      messsagesList: [{message:'User must be authenticated to perform this action.'}],
-                      error: true
-                    }
-                  })
-
+                setMultiInfoMessage(id, 'ERROR: User session not valid for remote import', null, true, [{message:'User must be authenticated to perform this action.'}])
                 this.setState({'showLoginPrompt': true})
               }, ()=>{
                 this.continueSave();

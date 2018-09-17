@@ -5,6 +5,8 @@ import ImportLabbookMutation from 'Mutations/ImportLabbookMutation'
 import AddLabbookFileMutation from 'Mutations/fileBrowser/AddLabbookFileMutation'
 import CompleteBatchUploadTransactionMutation from 'Mutations/fileBrowser/CompleteBatchUploadTransactionMutation'
 import store from 'JS/redux/store'
+import { setUploadMessageUpdate, setUploadMessageRemove, setWarningMessage } from 'JS/redux/reducers/footer'
+import { setFinishedUploading, setPauseChunkUpload } from 'JS/redux/reducers/labbook/fileBrowser/fileBrowserWrapper'
 
 /**
   @param {number} bytes
@@ -47,34 +49,13 @@ const updateTotalStatus = (file, labbookName, owner, transactionId) => {
 
   let fileCount = store.getState().footer.fileCount + 1
   let totalFiles = store.getState().footer.totalFiles
-
-  store.dispatch({
-    type: 'UPLOAD_MESSAGE_UPDATE',
-    payload:{
-      uploadMessage: `Uploaded ${fileCount} of ${totalFiles} files`,
-      fileCount: (store.getState().footer.fileCount + 1),
-      progessBarPercentage: ((fileCount/totalFiles) * 100),
-      error: false,
-      open: true
-    }
-  })
-
+  let progressBarPercentage = ((fileCount/totalFiles) * 100)
+  setUploadMessageUpdate(`Uploaded ${fileCount} of ${totalFiles} files`, fileCount, progressBarPercentage)
 
   if(fileCount === totalFiles){
     setTimeout(()=>{
-      store.dispatch({
-        type: 'FINISHED_UPLOADING',
-      })
-      store.dispatch({
-        type: 'UPLOAD_MESSAGE_REMOVE',
-        payload:{
-          uploadMessage: `Uploaded ${fileCount} of ${totalFiles} files`,
-          fileCount: (store.getState().footer.fileCount + 1),
-          progessBarPercentage: ((fileCount/totalFiles) * 100),
-          error: false,
-          open: false
-        }
-      })
+      setFinishedUploading()
+      setUploadMessageRemove(`Uploaded ${fileCount} of ${totalFiles} files`, null, progressBarPercentage)
     }, 2000)
 
     CompleteBatchUploadTransactionMutation(
@@ -100,32 +81,12 @@ const updateChunkStatus = (file, chunkData, labbookName, owner, transactionId) =
   let chunkIndex = chunkData.chunkIndex + 1
   let uploadedChunkSize = ((chunkSize/1000) * chunkIndex) >fileSizeKb ? humanFileSize(fileSizeKb) : humanFileSize((chunkSize/1000) * chunkIndex)
   let fileSize = humanFileSize(fileSizeKb)
-  store.dispatch({
-    type: 'UPLOAD_MESSAGE_UPDATE',
-    payload:{
-      uploadMessage: `${uploadedChunkSize} of ${fileSize} files`,
-      fileCount: 1,
-      progessBarPercentage: (((chunkSize * chunkIndex)/(fileSizeKb * 1000)) * 100),
-      error: false,
-      open: true
-    }
-  })
+  setUploadMessageUpdate(`${uploadedChunkSize} of ${fileSize} files`, 1, (((chunkSize * chunkIndex)/(fileSizeKb * 1000)) * 100))
 
   if((chunkSize * chunkIndex ) >= (fileSizeKb * 1000)){
-    store.dispatch({
-      type: 'FINISHED_UPLOADING',
-    })
+    setFinishedUploading()
     setTimeout(()=>{
-      store.dispatch({
-        type: 'UPLOAD_MESSAGE_REMOVE',
-        payload:{
-          uploadMessage: `Uploaded ${fileSizeKb} of ${fileSizeKb} files`,
-          fileCount: 1,
-          progessBarPercentage: (100 * 100),
-          error: false,
-          open: false
-        }
-      })
+      setUploadMessageRemove(`Uploaded ${fileSizeKb} of ${fileSizeKb} files`, null, (100 * 100))
     }, 2000)
 
     CompleteBatchUploadTransactionMutation(
@@ -157,9 +118,7 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
       section,
       data.transactionId,
       (result, error)=>{
-        store.dispatch({
-          type: 'FINISHED_UPLOADING',
-        })
+        setFinishedUploading()
 
         if(result && (error === undefined)){
 
@@ -176,27 +135,13 @@ const uploadFileBrowserChunk = (data, chunkData, file, chunk, accessToken, usern
           }
         }else{
           let errorBody = error.length && error[0].message ? error[0].message: error
-          store.dispatch({
-            type: 'WARNING_MESSAGE',
-            payload: {
-              message: errorBody,
-            }
-          })
+          setWarningMessage(errorBody)
         }
 
     })
   }else if(chunk.fileSizeKb > (48 * 1000)){
 
-
-     store.dispatch({
-       type: 'PAUSE_CHUNK_UPLOAD',
-       payload:{
-         data,
-         chunkData,
-         section,
-         username
-       }
-     })
+    setPauseChunkUpload(data, chunkData, section, username)
   }
 
 }

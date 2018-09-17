@@ -3,7 +3,6 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'JS/createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
 import uuidv4 from 'uuid/v4'
 
 
@@ -16,51 +15,51 @@ const mutation = graphql`
   }
 `;
 
+// commented until fully implimented
+// function sharedUpdater(store, labbookId, connectionKey, node) {
 
-function sharedUpdater(store, labbookId, connectionKey, node) {
+//   const labbookProxy = store.get(labbookId);
+//   if(labbookProxy){
+//     const conn = RelayRuntime.ConnectionHandler.getConnection(
+//       labbookProxy,
+//       connectionKey
+//     );
 
-  const labbookProxy = store.get(labbookId);
-  if(labbookProxy){
-    const conn = RelayRuntime.ConnectionHandler.getConnection(
-      labbookProxy,
-      connectionKey
-    );
+//     if(conn){
+//       const newEdge = RelayRuntime.ConnectionHandler.createEdge(
+//         store,
+//         conn,
+//         node,
+//         "newLabbookFileEdge"
+//       )
 
-    if(conn){
-      const newEdge = RelayRuntime.ConnectionHandler.createEdge(
-        store,
-        conn,
-        node,
-        "newLabbookFileEdge"
-      )
-
-      RelayRuntime.ConnectionHandler.insertEdgeAfter(
-        conn,
-        newEdge
-      );
-    }
-  }
-}
+//       RelayRuntime.ConnectionHandler.insertEdgeAfter(
+//         conn,
+//         newEdge
+//       );
+//     }
+//   }
+// }
 
 
-  function deleteEdge(store, labbookID, deletedID, connectionKey) {
+//   function deleteEdge(store, labbookID, deletedID, connectionKey) {
 
-    const labbookProxy = store.get(labbookID);
-    if(labbookProxy){
+//     const labbookProxy = store.get(labbookID);
+//     if(labbookProxy){
 
-      const conn = RelayRuntime.ConnectionHandler.getConnection(
-        labbookProxy,
-        connectionKey,
-      );
+//       const conn = RelayRuntime.ConnectionHandler.getConnection(
+//         labbookProxy,
+//         connectionKey,
+//       );
 
-      if(conn){
-        RelayRuntime.ConnectionHandler.deleteNode(
-          conn,
-          deletedID,
-        );
-      }
-    }
-  }
+//       if(conn){
+//         RelayRuntime.ConnectionHandler.deleteNode(
+//           conn,
+//           deletedID,
+//         );
+//       }
+//     }
+//   }
 
 export default function AddLabbookFileMutation(
   connectionKey,
@@ -73,7 +72,6 @@ export default function AddLabbookFileMutation(
 ) {
 
   const id = uuidv4()
-  const optimisticId = uuidv4()
 
   const variables = {
     input: {

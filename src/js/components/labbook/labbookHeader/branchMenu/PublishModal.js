@@ -1,11 +1,13 @@
 //vendor
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import uuidv4 from 'uuid/v4'
 //mutations
 import PublishLabbookMutation from 'Mutations/branches/PublishLabbookMutation'
 //component
 import Modal from 'Components/shared/Modal'
 //store
+import { setErrorMessage, setMultiInfoMessage } from 'JS/redux/reducers/footer'
+import { setContainerMenuVisibility} from 'JS/redux/reducers/labbook/environment/environment'
 import store from 'JS/redux/store'
 
 
@@ -50,17 +52,7 @@ export default class PublishModal extends Component {
                 self.props.setPublishingState(true)
 
                 self.props.showContainerMenuMessage('publishing');
-
-                store.dispatch({
-                  type: 'MULTIPART_INFO_MESSAGE',
-                  payload: {
-                    id: id,
-                    message: 'Publishing Project to Gigantum cloud ...',
-                    isLast: false,
-                    error: false
-                  }
-                })
-
+                setMultiInfoMessage(id, 'Publishing Project to Gigantum cloud ...', false, false)
 
                   PublishLabbookMutation(
                     owner,
@@ -70,24 +62,10 @@ export default class PublishModal extends Component {
                     (response, error) => {
 
                       self.props.setPublishingState(false)
-
-                      store.dispatch({
-                        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                        payload: {
-                          containerMenuOpen: false
-                        }
-                      })
+                      setContainerMenuVisibility(false)
                       if(error){
                         console.log(error)
-
-                        store.dispatch({
-                          type: 'ERROR_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: 'Publish failed',
-                            messageBody: error,
-                          }
-                        })
+                        setErrorMessage('Publish failed', error)
                       }
 
                       self.props.resetPublishState(false)
@@ -95,17 +73,7 @@ export default class PublishModal extends Component {
                       if (response.publishLabbook && response.publishLabbook.success) {
 
                         self.props.remountCollab();
-
-                        store.dispatch({
-                          type: 'MULTIPART_INFO_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: `Added remote https://gigantum.com/${self.props.owner}/${self.props.labbookName}`,
-                            isLast: true,
-                            error: false
-                          }
-                        })
-
+                        setMultiInfoMessage(id, `Added remote https://gigantum.com/${self.props.owner}/${self.props.labbookName}`, true, false)
                         self.props.setRemoteSession()
                       }
                     }

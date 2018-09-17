@@ -1,8 +1,16 @@
+import dispatcher from 'JS/redux/dispatcher'
+
 /**
  * constants
  */
 export const SET_COLLABORATORS = 'SET_COLLABORATORS'
 export const SET_CANMANAGECOLLABORATORS = 'SET_CANMANAGECOLLABORATORS'
+
+/**
+ * actions
+*/
+export const setCollaborators = (collaborators) => dispatcher(SET_COLLABORATORS, {collaborators})
+export const setCanManageCollaborators = (canManageCollaborators) => dispatcher(SET_CANMANAGECOLLABORATORS, {canManageCollaborators})
 
 
 export default (

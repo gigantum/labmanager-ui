@@ -26,6 +26,7 @@ class InputDataBrowser extends Component {
     loads more if branches are switched
   */
   componentDidUpdate(){
+    this.props.loadStatus(this.state.moreLoading);
     if(!this.state.moreLoading && this.props.input.allFiles && this.props.input.allFiles.edges.length < 3 && this.props.input.allFiles.pageInfo.hasNextPage){
       this._loadMore();
     }
@@ -35,6 +36,7 @@ class InputDataBrowser extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
+    this.props.loadStatus(this.state.moreLoading);
     if(this.props.input.allFiles &&
       this.props.input.allFiles.pageInfo.hasNextPage) {
       this._loadMore()
@@ -65,14 +67,13 @@ class InputDataBrowser extends Component {
 
          self._loadMore()
        } else {
-        //this.setState({'moreLoading': false});
+        this.setState({'moreLoading': false});
       }
      }
    );
   }
 
   render(){
-    this.props.loadStatus(this.state.moreLoading);
     if(this.props.input && this.props.input.allFiles){
       let inputFiles = this.props.input.allFiles
       if(this.props.input.allFiles.edges.length === 0){

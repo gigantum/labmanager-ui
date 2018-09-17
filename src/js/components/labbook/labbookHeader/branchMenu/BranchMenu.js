@@ -12,8 +12,9 @@ import BuildImageMutation from 'Mutations/BuildImageMutation'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
 //store
+import { setErrorMessage, setWarningMessage, setInfoMessage, setMultiInfoMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
-import { setContainerMenuWarningMessage} from 'JS/redux/reducers/labbook/environment/environment'
+import { setContainerMenuWarningMessage, setContainerMenuVisibility} from 'JS/redux/reducers/labbook/environment/environment'
 //components
 import DeleteLabbook from './DeleteLabbook'
 import ForceSync from './ForceSync'
@@ -84,12 +85,7 @@ class BranchMenu extends Component {
     window.addEventListener('click', this._closeMenu)
     let username = localStorage.getItem('username')
     if ((this.props.owner === username) && this.props.defaultRemote && !this.state.canManageCollaborators) {
-      store.dispatch({
-        type: 'INFO_MESSAGE',
-        payload: {
-          message: `${username} needs to log out and then log back in to validate for remote operations`
-        }
-      })
+      setInfoMessage(`${username} needs to log out and then log back in to validate for remote operations`)
     }
 
   }
@@ -182,12 +178,7 @@ class BranchMenu extends Component {
   */
   _togglePublishModal() {
     if (!this.props.isMainWorkspace) {
-      store.dispatch({
-        type: 'WARNING_MESSAGE',
-        payload: {
-          message: 'Publishing is currently only available on the main workspace branch.',
-        }
-      })
+      setWarningMessage('Publishing is currently only available on the main workspace branch.')
     } else if(this.props.isExporting){
       this.setState({publishWarningVisible: true})
     } else {
@@ -218,12 +209,7 @@ class BranchMenu extends Component {
   */
   _sync() {
     if (!this.props.isMainWorkspace) {
-      store.dispatch({
-        type: 'WARNING_MESSAGE',
-        payload: {
-          message: 'Syncing is currently only available on the main workspace branch.',
-        }
-      })
+      setWarningMessage('Syncing is currently only available on the main workspace branch.')
     } else if(this.props.isExporting){
       this.setState({syncWarningVisible: true})
     } else {
@@ -241,20 +227,10 @@ class BranchMenu extends Component {
         this._checkSessionIsValid().then((response) => {
           if(navigator.onLine){
 
-            if (response.data) {
+            if (response.data && response.data.userIdentity) {
 
               if (response.data.userIdentity.isSessionValid) {
-
-                store.dispatch({
-                  type: 'MULTIPART_INFO_MESSAGE',
-                  payload: {
-                    id: id,
-                    message: 'Syncing Project with Gigantum cloud ...',
-                    isLast: false,
-                    error: false
-                  }
-                })
-
+                setMultiInfoMessage(id, 'Syncing Project with Gigantum cloud ...', false, false)
                 this.props.setSyncingState(true);
                 this._showContainerMenuMessage('syncing');
 
@@ -265,17 +241,7 @@ class BranchMenu extends Component {
                   (error) => {
                     this.props.setSyncingState(false);
                     if (error) {
-                      store.dispatch({
-                        type: 'MULTIPART_INFO_MESSAGE',
-                        payload: {
-                          id: id,
-                          message: `Could not sync ${this.state.labbookName}`,
-                          messageBody: error,
-                          isLast: true,
-                          error: true
-                        }
-                      })
-
+                      setMultiInfoMessage(id, `Could not sync ${this.state.labbookName}`, true, true, error)
                       if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1) || (error[0].message.indexOf('Merge conflict') > -1)){
 
                         self._toggleSyncModal()
@@ -288,33 +254,11 @@ class BranchMenu extends Component {
                         (response, error) => {
                           if (error) {
                             console.error(error)
-                            store.dispatch(
-                              {
-                                type: 'MULTIPART_INFO_MESSAGE',
-                                payload: {
-                                  id: id,
-                                  message: `ERROR: Failed to build ${this.state.labookName}`,
-                                  messsagesList: error,
-                                  error: true
-                                }
-                              })
+                            setMultiInfoMessage(id, `ERROR: Failed to build ${this.state.labookName}`, null, true, error)
                           }
                         })
-                      store.dispatch({
-                        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                        payload: {
-                          containerMenuOpen: false
-                        }
-                      })
-                      store.dispatch({
-                        type: 'MULTIPART_INFO_MESSAGE',
-                        payload: {
-                          id: id,
-                          message: `Successfully synced ${this.state.labbookName}`,
-                          isLast: true,
-                          error: false
-                        }
-                      })
+                      setContainerMenuVisibility(false)
+                      setMultiInfoMessage(id, `Successfully synced ${this.state.labbookName}`, true, false)
                     }
                   }
                 )
@@ -352,12 +296,7 @@ class BranchMenu extends Component {
     const username = localStorage.getItem('username')
 
     if(owner !== username){
-      store.dispatch({
-        type: 'WARNING_MESSAGE',
-        payload: {
-          message: `Only ${owner} can add and remove collaborators in this labbook.`,
-        }
-      })
+      setWarningMessage(`Only ${owner} can add and remove collaborators in this labbook.`)
     }
   }
   /**
@@ -446,13 +385,7 @@ class BranchMenu extends Component {
     let copyText = document.getElementById('BranchMenu-copy')
     copyText.select();
     document.execCommand("Copy");
-
-    store.dispatch({
-      type: 'INFO_MESSAGE',
-      payload: {
-        'message':`${copyText.value} copied!`
-      }
-    })
+    setInfoMessage(`${copyText.value} copied!`)
   }
 
   /**
@@ -470,23 +403,13 @@ class BranchMenu extends Component {
         this.props.setExportingState(false);
 
         if (data.jobStatus.result) {
-          store.dispatch({
-            type: 'INFO_MESSAGE',
-            payload: {
-              message: `Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`,
-            }
-          })
+          setInfoMessage(`Export file ${data.jobStatus.result} is available in the export directory of your Gigantum working directory.`)
         }
 
         this.setState({ exporting: false });
       }else{
         setTimeout(()=>{
-          store.dispatch({
-            type: 'INFO_MESSAGE',
-            payload: {
-              message: `Exporting...`,
-            }
-          })
+          setInfoMessage('Exporting...')
           self._jobStatus(jobKey)
         },500)
 
@@ -498,13 +421,7 @@ class BranchMenu extends Component {
       console.log(error)
 
       let errorArray = [{'message': 'Export failed.'}]
-      store.dispatch({
-        type: 'ERROR_MESSAGE',
-        payload: {
-          message: `${this.state.labbookName} failed to export `,
-          messageBody: errorArray
-        }
-      })
+      setErrorMessage(`${this.state.labbookName} failed to export `, errorArray)
       this.setState({ exporting: false });
     })
   }
@@ -517,12 +434,7 @@ class BranchMenu extends Component {
   _exportLabbook = (evt) => {
     if(store.getState().containerStatus.status !== 'Running'){
       this.setState({ exporting: true, menuOpen: false });
-      store.dispatch({
-        type: 'INFO_MESSAGE',
-        payload: {
-          message: `Exporting ${this.state.labbookName} Project`,
-        }
-      })
+      setInfoMessage(`Exporting ${this.state.labbookName} Project`)
       this.props.setExportingState(true);
       ExportLabbookMutation(this.state.owner, this.state.labbookName, (response, error) => {
         if (response.exportLabbook) {
@@ -531,13 +443,7 @@ class BranchMenu extends Component {
         } else {
           console.log(error)
           this.props.setExportingState(false);
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: 'Export Failed',
-              messageBody: error
-            }
-          })
+          setErrorMessage('Export Failed', error)
         }
       })
     } else {

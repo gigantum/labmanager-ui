@@ -10,6 +10,9 @@ import WorkonExperimentalBranchMutation from 'Mutations/branches/WorkonExperimen
 import MergeFromBranchMutation from 'Mutations/branches/MergeFromBranchMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
+import { setErrorMessage, setInfoMessage } from 'JS/redux/reducers/footer'
+import { setContainerMenuWarningMessage} from 'JS/redux/reducers/labbook/environment/environment'
+import { setForceCancelRefetch } from 'JS/redux/reducers/labbook/environment/packageDependencies'
 import store from 'JS/redux/store'
 
 export default class BranchCard extends Component {
@@ -53,12 +56,7 @@ export default class BranchCard extends Component {
     const {owner, labbookName} = this.state
     const revision = null
     const cleanActiveBranchName = this._sanitizeBranchName(branchName)
-    store.dispatch({
-      type: 'INFO_MESSAGE',
-      payload:{
-        message: `Checking out ${cleanActiveBranchName}`,
-      }
-    })
+    setInfoMessage(`Checking out ${cleanActiveBranchName}`)
 
     requestAnimationFrame(() => {
 
@@ -77,13 +75,7 @@ export default class BranchCard extends Component {
 
         if(error){
           console.error(error);
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload:{
-              message: "Problem Checking out Branch, check if you have a valid session and connection",
-              messageBody: error,
-            }
-          })
+          setErrorMessage('Problem Checking out Branch, check if you have a valid session and connection', error)
 
           self.setState({
             showLoader: false,
@@ -91,13 +83,7 @@ export default class BranchCard extends Component {
           })
 
         }else{
-          store.dispatch({
-            type: 'FORCE_CANCEL_REFETCH',
-            payload: {
-              forceCancelRefetch: true,
-            }
-          })
-
+          setForceCancelRefetch(true)
           self.setState({
             showLoader: false,
             buttonLoaderStateSwitch: 'finished'
@@ -136,14 +122,7 @@ export default class BranchCard extends Component {
     const cleanActiveBranchName = this._sanitizeBranchName(activeBranchName)
     const cleanOtherBranchName = this._sanitizeBranchName(otherBranchName)
     let self = this
-
-    store.dispatch({
-      type: 'INFO_MESSAGE',
-      payload:{
-        message: `Merging ${cleanOtherBranchName} into ${cleanActiveBranchName}`,
-      }
-    })
-
+    setInfoMessage(`Merging ${cleanOtherBranchName} into ${cleanActiveBranchName}`)
     this.setState({showLoader: true, buttonLoaderStateMerge: 'loading'})
 
     MergeFromBranchMutation(
@@ -154,13 +133,7 @@ export default class BranchCard extends Component {
       (response, error)=>{
 
         if(error){
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload:{
-              message: `There was a problem merging ${cleanOtherBranchName} into ${cleanActiveBranchName}`,
-              messageBody: error,
-            }
-          })
+          setErrorMessage(`There was a problem merging ${cleanOtherBranchName} into ${cleanActiveBranchName}`, error)
 
           if(error[0].message.indexOf('Cannot merge') > -1){
             self.setState({
@@ -172,13 +145,7 @@ export default class BranchCard extends Component {
 
         }
         if(response.mergeFromBranch && response.mergeFromBranch.labbook){
-          store.dispatch({
-            type: 'INFO_MESSAGE',
-            payload:{
-              message: `${cleanOtherBranchName} merged into ${cleanActiveBranchName} successfully`,
-            }
-          })
-
+          setInfoMessage(`${cleanOtherBranchName} merged into ${cleanActiveBranchName} successfully`)
           self.setState({showLoader: false, buttonLoaderStateMerge: 'finished'})
         }
         setTimeout(() => {
@@ -234,18 +201,7 @@ export default class BranchCard extends Component {
   if(store.getState().containerStatus.status !== 'Running'){
     this._toggleModal(modal)
   } else {
-    store.dispatch({
-      type: 'CONTAINER_MENU_WARNING',
-      payload: {
-        message: 'Stop Project before deleting branches. \n Be sure to save your changes.',
-      }
-    })
-    store.dispatch({
-      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-      payload: {
-        containerMenuOpen: true
-      }
-    })
+    setContainerMenuWarningMessage('Stop Project before deleting branches. \n Be sure to save your changes.')
   }
 }
 

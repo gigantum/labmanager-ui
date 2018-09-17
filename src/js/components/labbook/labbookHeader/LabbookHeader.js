@@ -13,6 +13,13 @@ import ErrorBoundary from 'Components/shared/ErrorBoundary'
 import Config from 'JS/config'
 //store
 import store from 'JS/redux/store'
+import {
+  setSyncingState,
+  setPublishingState,
+  setExportingState,
+  setModalVisible,
+  setUpdateDetailView,
+} from 'JS/redux/reducers/labbook/labbook'
 
 class LabbookHeader extends Component {
   constructor(props){
@@ -69,14 +76,7 @@ class LabbookHeader extends Component {
     if(componentName !== this.props.selectedComponent){
 
       if(store.getState().detailView.selectedComponent === true){
-
-        store.dispatch({
-          type: 'UPDATE_DETAIL_VIEW',
-          payload: {
-            detailMode: false
-          }
-        })
-
+        setUpdateDetailView(false)
       }
     }
 
@@ -113,13 +113,7 @@ class LabbookHeader extends Component {
      this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isExporting': isExporting })
 
      if (this.props.isExporting !== isExporting) {
-       store.dispatch(
-         {
-           type: 'IS_EXPORTING',
-           payload: {
-             'isExporting': isExporting
-           }
-         })
+        setExportingState(isExporting)
      }
   }
 
@@ -130,15 +124,7 @@ class LabbookHeader extends Component {
   _showLabbookModal = () => {
 
     if(!this.props.modalVisible){
-
-      store.dispatch(
-        {
-          type: 'MODAL_VISIBLE',
-          payload:{
-            'modalVisible': true
-          }
-      })
-
+      setModalVisible(true)
     }
   }
 
@@ -157,13 +143,7 @@ class LabbookHeader extends Component {
     }
 
     if(this.props.modalVisible){
-      store.dispatch(
-        {
-          type: 'MODAL_VISIBLE',
-          payload:{
-            'modalVisible': false
-          }
-      })
+      setModalVisible(false)
     }
   }
 
@@ -177,13 +157,7 @@ class LabbookHeader extends Component {
     this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isPublishing': isPublishing })
 
     if (this.props.isPublishing !== isPublishing) {
-      store.dispatch(
-        {
-          type: 'IS_PUBLISHING',
-          payload: {
-            'isPublishing': isPublishing
-          }
-        })
+      setPublishingState(isPublishing)
     }
   }
 
@@ -196,14 +170,7 @@ class LabbookHeader extends Component {
     this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isSyncing': isSyncing })
 
     if (this.props.isSyncing !== isSyncing) {
-
-      store.dispatch({
-          type: 'IS_SYNCING',
-          payload: {
-            'isSyncing': isSyncing
-          }
-      })
-
+      setSyncingState(isSyncing)
     }
   }
 

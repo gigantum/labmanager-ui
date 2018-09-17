@@ -7,7 +7,12 @@ import uuidv4 from 'uuid/v4'
 import {fetchQuery} from 'JS/createRelayEnvironment';
 import MakeLabbookDirectoryMutation from 'Mutations/fileBrowser/MakeLabbookDirectoryMutation';
 //store
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
+import { setUploadMessageUpdate } from 'JS/redux/reducers/footer'
+import { setFinishedUploading, setPauseUploadData } from 'JS/redux/reducers/labbook/fileBrowser/fileBrowserWrapper'
+
+
 
 const fileExistenceQuery = graphql`
   query folderUploadQuery($labbookName: String!, $owner: String!, $path: String!){
@@ -104,23 +109,8 @@ const makeDirectory = (
         (response, error)=>{
           if(error){
             console.error(error)
-
-            store.dispatch({
-              type: 'UPLOAD_MESSAGE_UPDATE',
-              payload: {
-                uploadMessage: `ERROR: cannot upload`,
-                uploadError: true,
-                id: labbookName + path
-
-              }
-            })
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not make ${path}`,
-                messageBody: error
-              }
-            })
+            setUploadMessageUpdate(`ERROR: cannot upload`, labbookName + path, null, true)
+            setErrorMessage(`ERROR: could not make ${path}`, error)
             reject(error)
           }else{
             resolve(response)
@@ -263,7 +253,6 @@ const onlyUnique = (value, index, self) =>  {
 
 const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, connectionKey, fileCheck, totalFiles) => {
     let folderPaths = []
-    let directoryExists = []
 
     files.forEach((fileItem)=>{
 
@@ -300,9 +289,7 @@ const CreateFolders = (files, prefix, section, labbookName, owner, sectionId, co
         }else{
           fileCheck(files[0])
           if(totalFiles === 0){
-            store.dispatch({
-              type: 'FINISHED_UPLOADING',
-            })
+            setFinishedUploading()
           }
         }
       }
@@ -326,7 +313,8 @@ const FolderUpload = {
     let batchCount = 0
     let batchCallbackCount = 0
     let transactionId = uuidv4()
-    let isPaused = false;
+    // commented until pause functionality is available
+    // let isPaused = false;
     /**
     *  @param {object} fileItem
     *  recursive function that loops through a object that replicates a folders structure
@@ -357,22 +345,11 @@ const FolderUpload = {
                 chunkLoader,
                 transactionId,
                 (result, pause)=>{
-                  isPaused = pause
+                  // commented until pause functionality is available
+                  // isPaused = pause
 
                   if(!store.getState().fileBrowser.pause){
-
-
-                    store.dispatch({
-                      type: "PAUSE_UPLOAD_DATA",
-                      payload:{
-                        files,
-                        count: count,
-                        transactionId,
-                        prefix,
-                        totalFiles
-                      }
-                    })
-
+                    setPauseUploadData(files, count, transactionId, prefix, totalFiles)
                   }
 
 

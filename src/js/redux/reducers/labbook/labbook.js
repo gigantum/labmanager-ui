@@ -24,6 +24,12 @@ export const MERGE_MODE = 'MERGE_MODE'
 
 export const setBuildingState = (isBuilding) => dispatcher(IS_BUILDING, {isBuilding})
 export const setMergeMode = (branchesOpen, mergeFilter) => dispatcher(MERGE_MODE, {branchesOpen, mergeFilter})
+export const setSyncingState = (isSyncing) => dispatcher(IS_SYNCING, {isSyncing})
+export const setPublishingState = (isPublishing) => dispatcher(IS_PUBLISHING, {isPublishing})
+export const setExportingState = (isExporting) => dispatcher(IS_EXPORTING, {isExporting})
+export const setModalVisible = (modalVisible) => dispatcher(MODAL_VISIBLE, {modalVisible})
+export const setUpdateDetailView = (detailMode) => dispatcher(UPDATE_DETAIL_VIEW, {detailMode})
+export const setStickyDate = (isSticky, isExpanded) => dispatcher(UPDATE_STICKY_STATE, {isSticky, isExpanded})
 
 
 export default (

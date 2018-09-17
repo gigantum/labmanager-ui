@@ -1,3 +1,5 @@
+import dispatcher from 'JS/redux/dispatcher'
+
 /**
  * constants
  */
@@ -6,7 +8,11 @@ export const UPDATE_OWNER = 'UPDATE_OWNER';
 export const UPDATE_ALL = 'UPDATE_ALL';
 export const UPDATE_CALLBACK_ROUTE = 'UPDATE_CALLBACK_ROUTE';
 
-
+/**
+ * actions
+ */
+export const setCallbackRoute = (callbackRoute) => dispatcher(UPDATE_CALLBACK_ROUTE, {callbackRoute})
+export const setUpdateAll = (owner, labbookName) => dispatcher(UPDATE_ALL, {owner, labbookName})
 
 export default (
  state = {
@@ -28,7 +34,6 @@ export default (
      labbookName: action.payload.labbookName
    };
  }else if(action.type === UPDATE_CALLBACK_ROUTE){
- 
    sessionStorage.setItem('CALLBACK_ROUTE', action.payload.callbackRoute);
    return {
      ...state,

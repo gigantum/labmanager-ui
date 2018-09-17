@@ -12,10 +12,7 @@ import Modal from 'Components/shared/Modal'
 import CreateLabbookMutation from 'Mutations/CreateLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
-import store from 'JS/redux/store'
-
-
-
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 
 export default class WizardModal extends React.Component {
   constructor(props){
@@ -200,15 +197,7 @@ export default class WizardModal extends React.Component {
       (response, error) => {
         if(error){
 
-
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `An error occured while trying to create Project '${name}'.`,
-              messageBody: error
-            }
-          })
-
+          setErrorMessage(`An error occured while trying to create Project '${name}'.`, error)
           this.setState({
             modalBlur: false ,
             createLabbookButtonState: 'error'
@@ -221,7 +210,7 @@ export default class WizardModal extends React.Component {
           },2000)
 
         }else{
-          
+
           const {owner, name} = response.createLabbook.labbook
 
           this.setState({
@@ -257,14 +246,7 @@ export default class WizardModal extends React.Component {
       (response, error)=>{
         if(error){
           console.error(error)
-          store.dispatch(
-            {
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: Failed to build ${name}`,
-                messsagesList: error
-            }
-          })
+          setErrorMessage(`ERROR: Failed to build ${name}`, error)
         }
       })
   }

@@ -5,7 +5,17 @@ import FooterNotificationList from './FooterNotificationList'
 import FooterUploadBar from './FooterUploadBar'
 import { connect } from 'react-redux'
 //store
-import store from "JS/redux/store"
+import {
+  setUpdateMessageStackItemVisibility,
+  setUpdateHistoryStackItemVisibility,
+  setResizeFooter,
+  setUploadMessageRemove,
+  setResetFooter,
+  setRemoveMessage,
+  setToggleMessageList,
+ } from 'JS/redux/reducers/footer'
+import { setPauseUpload } from 'JS/redux/reducers/labbook/fileBrowser/fileBrowserWrapper'
+
 
 class Footer extends Component {
 
@@ -63,8 +73,7 @@ class Footer extends Component {
   _clearState() {
 
     document.getElementById('footerProgressBar').style.opacity = 0;
-
-    store.dispatch({type: 'RESET_FOOTER_STORE', payload: {}})
+    this.props.setResetFooter()
 
     setTimeout(() => {
       document.getElementById('footerProgressBar').style.width = "0%";
@@ -80,38 +89,21 @@ class Footer extends Component {
    stops user and pops a modal prompting them to cancel continue or save changes
   */
   _pauseUpload() {
-    store.dispatch({
-      type: 'PAUSE_UPLOAD',
-      payload: {
-        pause: true
-      }
-    })
+    setPauseUpload(true)
   }
   /**
   @param {}
   gets upload message which tracks progess
  */
   _closeFooter() {
-    store.dispatch({
-      type: 'UPLOAD_MESSAGE_REMOVE',
-      payload: {
-        uploadMessage: '',
-        id: '',
-        progressBarPercentage: 0
-      }
-    })
+    this.props.setUploadMessageRemove('', '', 0)
   }
   /**
   @param {object} messageItem
   gets upload message which tracks progess
  */
   _removeMessage(messageItem) {
-    store.dispatch({
-      type: 'REMOVE_MESSAGE',
-      payload: {
-        id: messageItem.id
-      }
-    })
+    setRemoveMessage(messageItem.id)
   }
   /**
   @param {}
@@ -121,15 +113,7 @@ class Footer extends Component {
  */
 
   _toggleMessageList() {
-
-      store.dispatch({
-        type: 'TOGGLE_MESSAGE_LIST',
-        payload: {
-          messageListOpen: !this.props.messageListOpen,
-          viewHistory: true
-        }
-      })
-
+    this.props.setToggleMessageList(!this.props.messageListOpen, true)
   }
   /**
   @param {Int}
@@ -138,25 +122,19 @@ class Footer extends Component {
   @return {}
  */
   _showMessageBody(index) {
+    if(!this.props.viewHistory){
+      this.props.setUpdateMessageStackItemVisibility(index)
 
-      store.dispatch({
-        type: !this.props.viewHistory
-        ? 'UPDATE_MESSAGE_STACK_ITEM_VISIBILITY'
-        : 'UPDATE_HISTORY_STACK_ITEM_VISIBILITY',
-        payload: {
-            index
-        }
-      })
+    } else{
+      this.props.setUpdateHistoryStackItemVisibility(index)
+    }
   }
   /**
     * @param {}
     * update store to risize component
   */
   _resize(){
-    store.dispatch({
-      type: 'RESIZE_FOOTER',
-      payload: {}
-    })
+    this.props.setResizeFooter()
   }
 
   render() {
@@ -209,6 +187,13 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    setUpdateMessageStackItemVisibility,
+    setUpdateHistoryStackItemVisibility,
+    setResizeFooter,
+    setUploadMessageRemove,
+    setResetFooter,
+    setRemoveMessage,
+    setToggleMessageList,
   }
 }
 
