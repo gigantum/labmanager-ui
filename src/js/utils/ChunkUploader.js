@@ -50,7 +50,7 @@ const updateTotalStatus = (file, labbookName, owner, transactionId) => {
   let fileCount = store.getState().footer.fileCount + 1
   let totalFiles = store.getState().footer.totalFiles
   let progressBarPercentage = ((fileCount/totalFiles) * 100)
-  setUploadMessageUpdate(`Uploaded ${fileCount} of ${totalFiles} files`, fileCount, progressBarPercentage, false, true)
+  setUploadMessageUpdate(`Uploaded ${fileCount} of ${totalFiles} files`, fileCount, progressBarPercentage)
 
   if(fileCount === totalFiles){
     setTimeout(()=>{
@@ -81,7 +81,7 @@ const updateChunkStatus = (file, chunkData, labbookName, owner, transactionId) =
   let chunkIndex = chunkData.chunkIndex + 1
   let uploadedChunkSize = ((chunkSize/1000) * chunkIndex) >fileSizeKb ? humanFileSize(fileSizeKb) : humanFileSize((chunkSize/1000) * chunkIndex)
   let fileSize = humanFileSize(fileSizeKb)
-  setUploadMessageUpdate(`${uploadedChunkSize} of ${fileSize} files`, 1, (((chunkSize * chunkIndex)/(fileSizeKb * 1000)) * 100), false, true)
+  setUploadMessageUpdate(`${uploadedChunkSize} of ${fileSize} files`, 1, (((chunkSize * chunkIndex)/(fileSizeKb * 1000)) * 100))
 
   if((chunkSize * chunkIndex ) >= (fileSizeKb * 1000)){
     setFinishedUploading()

@@ -16,6 +16,9 @@ export const RESET_CHUNK_UPLOAD = 'RESET_CHUNK_UPLOAD'
 export const setFinishedUploading = () => dispatcher(FINISHED_UPLOADING, {})
 export const setPauseChunkUpload = (data, chunkData, section, username) => dispatcher(PAUSE_CHUNK_UPLOAD, {data, chunkData, section, username})
 export const setPauseUpload = (pause) => dispatcher(PAUSE_UPLOAD, {pause})
+export const setPauseUploadData = (files, count, transactionId, prefix, totalFiles) => dispatcher(PAUSE_UPLOAD_DATA, {files, count, transactionId, prefix, totalFiles})
+export const setStartedUploading = () => dispatcher(STARTED_UPLOADING, {})
+export const setResetChunkUpload = () => dispatcher(RESET_CHUNK_UPLOAD, {})
 
 export default (
  state = {

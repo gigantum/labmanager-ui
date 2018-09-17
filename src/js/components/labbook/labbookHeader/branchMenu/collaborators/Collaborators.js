@@ -8,6 +8,7 @@ import environment from 'JS/createRelayEnvironment'
 import CollaboratorsModal from './CollaboratorsModal'
 //store
 import store from 'JS/redux/store'
+import { setCollaborators, setCanManageCollaborators } from 'JS/redux/reducers/labbook/branchMenu/collaborators/collaborators'
 
 export const CollaboratorsQuery =  graphql`
   query CollaboratorsQuery($name: String!, $owner: String!){
@@ -102,23 +103,8 @@ export const CollaboratorsQuery =  graphql`
           render={({props, error})=> {
               if(props){
                 const {labbook} = props
-                store.dispatch({
-                  type: 'SET_COLLABORATORS',
-                  payload: {
-                    collaborators: {
-                      [labbookName]: labbook.collaborators
-                    }
-                  }
-                })
-
-                store.dispatch({
-                  type: 'SET_CANMANAGECOLLABORATORS',
-                  payload: {
-                    canManageCollaborators: {
-                      [labbookName]: labbook.canManageCollaborators
-                    }
-                  }
-                })
+                setCollaborators({[labbookName]: labbook.collaborators})
+                setCanManageCollaborators({[labbookName]: labbook.canManageCollaborators})
                 const collaboratorButtonCSS = classNames({
                   'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
                   'BranchMenu__item--flat-button':  true

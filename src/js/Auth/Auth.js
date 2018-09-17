@@ -4,6 +4,7 @@ import {AUTH_CONFIG} from './auth0-variables';
 import RemoveUserIdentityMutation from 'Mutations/RemoveUserIdentityMutation'
 //store
 import store from 'JS/redux/store'
+import { setLogout, setLoginError } from 'JS/redux/reducers/login'
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
@@ -45,12 +46,7 @@ export default class Auth {
   }
 
   login() {
-    store.dispatch({
-      type: 'LOGOUT',
-      payload: {
-        logout: false
-      }
-    })
+    setLogout(false)
     this.auth0.authorize();
   }
 
@@ -66,12 +62,7 @@ export default class Auth {
       } else if (err) {
 
         history.replace('/login')
-        store.dispatch({
-          type: 'LOGIN_ERROR',
-          payload: {
-            error: err
-          }
-        })
+        setLoginError(err)
         sessionStorage.setItem('LOGIN_ERROR_TYPE', err.error)
         sessionStorage.setItem('LOGIN_ERROR_DESCRIPTION', err.errorDescription)
         //  alert(`Error: ${err.error}. Check the console for further details.`); TODO make this a modal or redirect to login failure page
@@ -105,14 +96,7 @@ export default class Auth {
   }
 
   logout() {
-
-    store.dispatch({
-      type: 'LOGOUT',
-      payload: {
-        logout: true
-      }
-    })
-
+    setLogout(true)
     RemoveUserIdentityMutation(() => {
       //redirect to root when user logs out
 

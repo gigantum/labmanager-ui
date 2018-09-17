@@ -20,7 +20,20 @@ import config from 'JS/config'
 //utilities
 import ChunkUploader from 'JS/utils/ChunkUploader'
 //store
-import { setErrorMessage, setWarningMessage, setInfoMessage } from 'JS/redux/reducers/footer'
+import {
+  setErrorMessage,
+  setWarningMessage,
+  setInfoMessage,
+  setUploadMessageSetter,
+  setUploadMessageRemove
+ } from 'JS/redux/reducers/footer'
+import {
+  setStartedUploading,
+  setPauseUpload,
+  setPauseUploadData,
+  setResetChunkUpload,
+} from 'JS/redux/reducers/labbook/fileBrowser/fileBrowserWrapper'
+import { setUpdateDetailView } from 'JS/redux/reducers/labbook/labbook'
 import store from 'JS/redux/store'
 
 
@@ -156,23 +169,10 @@ export default class FileBrowserWrapper extends Component {
   _creteFilesFooterMessage(totalFiles, hasDirectoryUpload, fileSizeData){
 
     if(totalFiles > 0){
-      store.dispatch({
-        type: 'STARTED_UPLOADING',
-      })
-
-      store.dispatch({
-        type: 'UPLOAD_MESSAGE_SETTER',
-        payload:{
-          uploadMessage: `Preparing Upload for ${totalFiles} files`,
-          id: Math.random() * 10000,
-          totalFiles: totalFiles
-        }
-      })
+      setStartedUploading()
+      setUploadMessageSetter(`Preparing Upload for ${totalFiles} files`, Math.random() * 10000, totalFiles)
     }else if(hasDirectoryUpload && (totalFiles === 0)){
-
-      store.dispatch({
-        type: 'STARTED_UPLOADING',
-      })
+      setStartedUploading()
       setInfoMessage('Uploading Directories')
     }else if(fileSizeData.fileSizeNotAllowed.length > 0){
       let fileSizePromptNames = fileSizeData.fileSizePrompt.map((file) => file.name)
@@ -882,13 +882,7 @@ export default class FileBrowserWrapper extends Component {
     this.setState({
       "selectedFile": file
     })
-
-    store.dispatch({
-      type: 'UPDATE_DETAIL_VIEW',
-      payload: {
-        detailMode: true
-      }
-    })
+    setUpdateDetailView(true)
   }
   /**
   *  @param {}
@@ -896,13 +890,7 @@ export default class FileBrowserWrapper extends Component {
   *
   */
   _continueUpload(){
-    store.dispatch({
-      type: 'PAUSE_UPLOAD',
-      payload: {
-        pause: false
-      }
-    })
-
+    setPauseUpload(false)
     const {files, count, prefix, totalFiles} = store.getState().fileBrowser
     const {connection, section, parentId} = this.props
     const {owner, labbookName} = this.state
@@ -926,23 +914,8 @@ export default class FileBrowserWrapper extends Component {
 
       this._chunkLoader(chunkUploadData.data, ()=>{}, chunkUploadData.chunkData.chunkIndex)
     }
-
-    store.dispatch({
-      type: "PAUSE_UPLOAD_DATA",
-      payload:{
-        files: [],
-        count: 0,
-        transactionId: '',
-        prefix: '',
-        totalFiles: 0
-      }
-    })
-
-    store.dispatch({
-      type: "RESET_CHUNK_UPLOAD",
-      payload:{
-      }
-    })
+    setPauseUploadData([], 0, '', '', 0)
+    setResetChunkUpload()
   }
 
   /**
@@ -954,24 +927,9 @@ export default class FileBrowserWrapper extends Component {
     const {connection} = this.props
     const {owner, labbookName} = this.state
     const {transactionId} = store.getState().fileBrowser
-
-    store.dispatch({
-      type: 'PAUSE_UPLOAD',
-      payload: {
-        pause: false
-      }
-    })
-
+    setPauseUpload(false)
     let uploadData = store.getState().footer.uploadStack[0]
-
-    store.dispatch({
-      type: 'UPLOAD_MESSAGE_REMOVE',
-      payload: {
-        message: '',
-        id: uploadData.id,
-        progessBarPercentage:  0
-      }
-    })
+    setUploadMessageRemove('', uploadData.id, 0)
 
     CompleteBatchUploadTransactionMutation(
        connection,
@@ -995,24 +953,9 @@ export default class FileBrowserWrapper extends Component {
       const {connection} = this.props
       const {owner, labbookName} = this.state
       const {transactionId} = store.getState().fileBrowser
-
-      store.dispatch({
-         type: 'PAUSE_UPLOAD',
-         payload: {
-           pause: false
-         }
-      })
-
+      setPauseUpload(false)
       let uploadData = store.getState().footer.uploadStack[0]
-
-      store.dispatch({
-        type: 'UPLOAD_MESSAGE_REMOVE',
-        payload: {
-          message: '',
-          id: uploadData.id,
-          progessBarPercentage:  0
-        }
-      })
+      setUploadMessageRemove('', uploadData.id, 0)
 
       CompleteBatchUploadTransactionMutation(
         connection,

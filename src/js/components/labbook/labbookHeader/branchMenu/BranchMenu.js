@@ -12,9 +12,9 @@ import BuildImageMutation from 'Mutations/BuildImageMutation'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
 //store
-import { setErrorMessage, setWarningMessage, setInfoMessage } from 'JS/redux/reducers/footer'
+import { setErrorMessage, setWarningMessage, setInfoMessage, setMultiInfoMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
-import { setContainerMenuWarningMessage} from 'JS/redux/reducers/labbook/environment/environment'
+import { setContainerMenuWarningMessage, setContainerMenuVisibility} from 'JS/redux/reducers/labbook/environment/environment'
 //components
 import DeleteLabbook from './DeleteLabbook'
 import ForceSync from './ForceSync'
@@ -230,17 +230,7 @@ class BranchMenu extends Component {
             if (response.data) {
 
               if (response.data.userIdentity.isSessionValid) {
-
-                store.dispatch({
-                  type: 'MULTIPART_INFO_MESSAGE',
-                  payload: {
-                    id: id,
-                    message: 'Syncing Project with Gigantum cloud ...',
-                    isLast: false,
-                    error: false
-                  }
-                })
-
+                setMultiInfoMessage(id, 'Syncing Project with Gigantum cloud ...', false, false)
                 this.props.setSyncingState(true);
                 this._showContainerMenuMessage('syncing');
 
@@ -251,17 +241,7 @@ class BranchMenu extends Component {
                   (error) => {
                     this.props.setSyncingState(false);
                     if (error) {
-                      store.dispatch({
-                        type: 'MULTIPART_INFO_MESSAGE',
-                        payload: {
-                          id: id,
-                          message: `Could not sync ${this.state.labbookName}`,
-                          messageBody: error,
-                          isLast: true,
-                          error: true
-                        }
-                      })
-
+                      setMultiInfoMessage(id, `Could not sync ${this.state.labbookName}`, true, true, error)
                       if((error[0].message.indexOf('MergeError') > -1 ) || (error[0].message.indexOf('Cannot merge') > -1) || (error[0].message.indexOf('Merge conflict') > -1)){
 
                         self._toggleSyncModal()
@@ -274,33 +254,11 @@ class BranchMenu extends Component {
                         (response, error) => {
                           if (error) {
                             console.error(error)
-                            store.dispatch(
-                              {
-                                type: 'MULTIPART_INFO_MESSAGE',
-                                payload: {
-                                  id: id,
-                                  message: `ERROR: Failed to build ${this.state.labookName}`,
-                                  messsagesList: error,
-                                  error: true
-                                }
-                              })
+                            setMultiInfoMessage(id, `ERROR: Failed to build ${this.state.labookName}`, null, true, error)
                           }
                         })
-                      store.dispatch({
-                        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-                        payload: {
-                          containerMenuOpen: false
-                        }
-                      })
-                      store.dispatch({
-                        type: 'MULTIPART_INFO_MESSAGE',
-                        payload: {
-                          id: id,
-                          message: `Successfully synced ${this.state.labbookName}`,
-                          isLast: true,
-                          error: false
-                        }
-                      })
+                      setContainerMenuVisibility(false)
+                      setMultiInfoMessage(id, `Successfully synced ${this.state.labbookName}`, true, false)
                     }
                   }
                 )

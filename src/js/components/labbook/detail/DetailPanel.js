@@ -6,7 +6,7 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 //store
-import store from 'JS/redux/store'
+import { setUpdateDetailView } from 'JS/redux/reducers/labbook/labbook'
 
 class DetailPanel extends Component {
   constructor(props){
@@ -55,14 +55,7 @@ class DetailPanel extends Component {
     updates redux store to close detail panel
   */
   _closePanel(){
-
-    store.dispatch({
-      type: 'UPDATE_DETAIL_VIEW',
-      payload: {
-        detailMode: false
-      }
-    })
-
+    setUpdateDetailView(false)
   }
   render(){
       //added hidden to className to prevent dialogue from showing until this feature is fully implemented

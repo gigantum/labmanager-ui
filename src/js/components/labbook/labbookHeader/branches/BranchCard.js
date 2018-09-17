@@ -11,6 +11,8 @@ import MergeFromBranchMutation from 'Mutations/branches/MergeFromBranchMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import { setErrorMessage, setInfoMessage } from 'JS/redux/reducers/footer'
+import { setContainerMenuWarningMessage} from 'JS/redux/reducers/labbook/environment/environment'
+import { setForceCancelRefetch } from 'JS/redux/reducers/labbook/environment/packageDependencies'
 import store from 'JS/redux/store'
 
 export default class BranchCard extends Component {
@@ -81,13 +83,7 @@ export default class BranchCard extends Component {
           })
 
         }else{
-          store.dispatch({
-            type: 'FORCE_CANCEL_REFETCH',
-            payload: {
-              forceCancelRefetch: true,
-            }
-          })
-
+          setForceCancelRefetch(true)
           self.setState({
             showLoader: false,
             buttonLoaderStateSwitch: 'finished'
@@ -205,18 +201,7 @@ export default class BranchCard extends Component {
   if(store.getState().containerStatus.status !== 'Running'){
     this._toggleModal(modal)
   } else {
-    store.dispatch({
-      type: 'CONTAINER_MENU_WARNING',
-      payload: {
-        message: 'Stop Project before deleting branches. \n Be sure to save your changes.',
-      }
-    })
-    store.dispatch({
-      type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-      payload: {
-        containerMenuOpen: true
-      }
-    })
+    setContainerMenuWarningMessage('Stop Project before deleting branches. \n Be sure to save your changes.')
   }
 }
 

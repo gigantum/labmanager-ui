@@ -18,6 +18,7 @@ import UserIdentity from 'JS/Auth/UserIdentity'
 import config from 'JS/config'
 //store
 import { setErrorMessage } from 'JS/redux/reducers/footer'
+import { setFilterText } from 'JS/redux/reducers/labbookListing/labbookListing'
 import store from 'JS/redux/store'
 
 class Labbooks extends Component {
@@ -369,12 +370,8 @@ class Labbooks extends Component {
   *  sets the filterValue in state
   */
   _setFilterValue(evt) {
-    store.dispatch({
-      type: 'SET_FILTER_TEXT',
-      payload: {
-        filterText: evt.target.value
-      }
-    })
+    setFilterText(evt.target.value)
+
     if(this.refs.labbookSearch.value !== evt.target.value){
       this.refs.labbookSearch.value = evt.target.value
     }

@@ -39,7 +39,8 @@ export const setErrorMessage = (message, messageBody) => dispatcher(ERROR_MESSAG
 export const setWarningMessage = (message) => dispatcher(WARNING_MESSAGE, {message})
 export const setInfoMessage = (message) => dispatcher(INFO_MESSAGE, {message})
 export const setMultiInfoMessage = (id, message, isLast, error, messageBody) => dispatcher(MULTIPART_INFO_MESSAGE, {id, message, isLast, error, messageBody})
-export const setUploadMessageUpdate = (uploadMessage, fileCount, progessBarPercentage, error, open) => dispatcher(UPLOAD_MESSAGE_UPDATE, {uploadMessage, fileCount, progessBarPercentage, error, open})
+export const setUploadMessageSetter = (uploadMessage, id, totalFiles) => dispatcher(UPLOAD_MESSAGE_SETTER, {uploadMessage, id, totalFiles})
+export const setUploadMessageUpdate = (uploadMessage, id, percentage, uploadError) => dispatcher(UPLOAD_MESSAGE_UPDATE, {uploadMessage, id, percentage, uploadError})
 export const setUploadMessageRemove = (uploadMessage, id, progessBarPercentage) => dispatcher(UPLOAD_MESSAGE_REMOVE, {uploadMessage, id, progessBarPercentage,})
 export const setHelperVisible = (helperVisible) => dispatcher(HELPER_VISIBLE, {helperVisible})
 export const setUpdateHistoryView = () => dispatcher(UPDATE_HISTORY_VIEW, {})
@@ -76,7 +77,7 @@ export default(state = {
   helperVisible: false,
   uuid: ''
 }, action) => {
-  if(action.type === 'MULTIPART_INFO_MESSAGE') console.log(action.payload)
+
   const checkHistoryStackLength = (messageStackHistory) => {
       if(messageStackHistory.length > 50){
         messageStackHistory.pop()
