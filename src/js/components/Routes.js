@@ -14,7 +14,7 @@ import LabbookQueryContainer from 'Components/labbook/LabbookQueryContainer';
 import Profile from 'Components/profile/Profile'
 import Helper from 'Components/shared/Helper'
 //store
-import { setUpdateAll } from '/JS/redux/reducers/routes'
+import { setUpdateAll } from 'JS/redux/reducers/routes'
 //config
 import config from 'JS/config'
 

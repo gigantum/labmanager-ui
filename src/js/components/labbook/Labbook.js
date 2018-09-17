@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import store from "JS/redux/store"
 import { setContainerMenuWarningMessage } from 'JS/redux/reducers/labbook/environment/environment'
 import { setMergeMode, setBuildingState, setStickyDate } from 'JS/redux/reducers/labbook/labbook'
-import { setCallbackRoute } from '/JS/redux/reducers/routes'
+import { setCallbackRoute } from 'JS/redux/reducers/routes'
 import { setLatestPackages } from 'JS/redux/reducers/labbook/environment/packageDependencies'
 //components
 import LabbookHeader from './labbookHeader/LabbookHeader'

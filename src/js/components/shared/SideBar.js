@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import User from './User'
 import ToolTip from 'Components/shared/ToolTip';
 //store
-import { setCallbackRoute } from '/JS/redux/reducers/routes'
+import { setCallbackRoute } from 'JS/redux/reducers/routes'
 //config
 import config from 'JS/config'
 
