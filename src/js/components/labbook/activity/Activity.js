@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import classNames from 'classnames'
 //store
+import { setContainerMenuWarningMessage } from 'JS/redux/reducers/labbook/environment/environment'
 import store from 'JS/redux/store'
 //Components
 import ActivityCard from './ActivityCard'
@@ -464,19 +465,7 @@ class Activity extends Component {
     if(canEditEnvironment) {
       this.setState({selectedNode: node, createBranchVisible: true})
     } else {
-      store.dispatch({
-        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-        payload: {
-          containerMenuOpen: true
-        }
-      })
-
-      store.dispatch({
-        type: 'CONTAINER_MENU_WARNING',
-        payload: {
-          message: 'Stop Project before editing the environment. \n Be sure to save your changes.'
-        }
-      })
+      setContainerMenuWarningMessage('Stop Project before editing the environment. \n Be sure to save your changes.')
     }
   }
 
@@ -501,18 +490,7 @@ class Activity extends Component {
     if(canEditEnvironment){
       this.setState({createBranchVisible: true, selectedNode: null})
     } else {
-      store.dispatch({
-        type: 'CONTAINER_MENU_WARNING',
-        payload: {
-          message: 'Stop Project before creating branches. \n Be sure to save your changes.'
-        }
-      })
-      store.dispatch({
-        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-        payload: {
-          containerMenuOpen: true
-        }
-      })
+      setContainerMenuWarningMessage('Stop Project before creating branches. \n Be sure to save your changes.')
     }
   }
 

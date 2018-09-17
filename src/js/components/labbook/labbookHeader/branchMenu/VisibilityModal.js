@@ -1,13 +1,11 @@
 //vendor
-import React, { Component, Fragment } from 'react'
-import uuidv4 from 'uuid/v4'
+import React, { Component } from 'react'
 //mutations
 import SetVisibilityMutation from 'Mutations/SetVisibilityMutation'
 //component
 import Modal from 'Components/shared/Modal'
 //store
-import store from 'JS/redux/store'
-
+import { setErrorMessage, setInfoMessage } from 'JS/redux/reducers/footer'
 
 export default class PublishModal extends Component {
   state={
@@ -26,7 +24,6 @@ export default class PublishModal extends Component {
   */
   _changeVisibility() {
 
-      let id = uuidv4()
       let self = this;
       let visibility = this.state.isPublic ? 'public': 'private';
       this.props.toggleVisibilityModal()
@@ -53,22 +50,9 @@ export default class PublishModal extends Component {
 
                       if(error){
                         console.log(error)
-
-                        store.dispatch({
-                          type: 'ERROR_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: 'Visibility change failed',
-                            messageBody: error,
-                          }
-                        })
+                        setErrorMessage('Visibility change failed', error)
                       } else {
-                        store.dispatch({
-                            type: 'INFO_MESSAGE',
-                            payload:{
-                              message: `Visibility changed to ${visibility}`
-                            }
-                          })
+                        setInfoMessage(`Visibility changed to ${visibility}`)
                       }
                     }
                   )

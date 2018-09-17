@@ -11,6 +11,10 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 //store
 import store from "JS/redux/store"
+import { setContainerMenuWarningMessage } from 'JS/redux/reducers/labbook/environment/environment'
+import { setMergeMode, setBuildingState, setStickyDate } from 'JS/redux/reducers/labbook/labbook'
+import { setCallbackRoute } from 'JS/redux/reducers/routes'
+import { setLatestPackages } from 'JS/redux/reducers/labbook/environment/packageDependencies'
 //components
 import LabbookHeader from './labbookHeader/LabbookHeader'
 import Login from 'Components/login/Login';
@@ -37,13 +41,7 @@ class Labbook extends Component {
     this._setBuildingState = this._setBuildingState.bind(this)
     this._toggleBranchesView = this._toggleBranchesView.bind(this)
     this._branchViewClickedOff = this._branchViewClickedOff.bind(this)
-
-    store.dispatch({
-      type: 'UPDATE_CALLBACK_ROUTE',
-      payload: {
-        'callbackRoute': props.location.pathname
-      }
-    })
+    setCallbackRoute(props.location.pathname)
   }
 
   UNSAFE_componentWillMount() {
@@ -52,13 +50,7 @@ class Labbook extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-
-    store.dispatch({
-      type: 'UPDATE_CALLBACK_ROUTE',
-      payload: {
-        'callbackRoute': nextProps.location.pathname
-      }
-    })
+    setCallbackRoute(nextProps.location.pathname)
   }
 
   /**
@@ -79,12 +71,8 @@ class Labbook extends Component {
     removes event listeners
   */
   componentWillUnmount() {
-    store.dispatch({
-      type: 'SET_LATEST_PACKAGES',
-      payload: {
-        latestPackages: {}
-      }
-    })
+    setLatestPackages({})
+
     window.removeEventListener('scroll', this._setStickHeader)
 
     window.removeEventListener('click', this._branchViewClickedOff)
@@ -128,23 +116,11 @@ class Labbook extends Component {
     let sticky = 50;
     let isSticky = window.pageYOffset >= sticky
     if((store.getState().labbook.isSticky !== isSticky) || (store.getState().labbook.isExpanded !== isExpanded)) {
-      store.dispatch({
-        type: 'UPDATE_STICKY_STATE',
-        payload: {
-          isSticky,
-          isExpanded
-        }
-      })
+      setStickyDate(isSticky, isExpanded)
     }
 
     if(isSticky){
-      store.dispatch({
-        type: 'MERGE_MODE',
-        payload: {
-          brancfahesOpen: false,
-          mergeFilter: false
-        }
-      })
+      setMergeMode(false, false)
     }
   }
 
@@ -157,12 +133,7 @@ class Labbook extends Component {
     this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({'isBuilding': isBuilding})
 
     if(this.props.isBuilding !== isBuilding){
-      store.dispatch(
-        {type: 'IS_BUILDING',
-        payload:{
-          'isBuilding': isBuilding
-        }
-      })
+      setBuildingState(isBuilding)
     }
   }
 
@@ -172,26 +143,9 @@ class Labbook extends Component {
   */
   _toggleBranchesView(branchesOpen, mergeFilter){
     if(store.getState().containerStatus.status !== 'Running'){
-      store.dispatch({
-        type: 'MERGE_MODE',
-        payload: {
-          branchesOpen,
-          mergeFilter
-        }
-      })
+      setMergeMode(branchesOpen, mergeFilter)
     } else {
-      store.dispatch({
-        type: 'CONTAINER_MENU_WARNING',
-        payload: {
-          message: 'Stop Project before switching branches. \n Be sure to save your changes.',
-        }
-      })
-      store.dispatch({
-        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-        payload: {
-          containerMenuOpen: true
-        }
-      })
+      setContainerMenuWarningMessage('Stop Project before switching branches. \n Be sure to save your changes.')
     }
   }
   /**
@@ -225,11 +179,11 @@ class Labbook extends Component {
           <div className="Labbook__inner-container flex flex--row">
 
             <div className="Labbook__component-container flex flex--column">
-
                <LabbookHeader
                  setBuildingState={this._setBuildingState}
                  toggleBranchesView={this._toggleBranchesView}
                  branchName={branchName}
+                 isSticky={this.props.isSticky}
                  {...this.props} />
 
                <div className="Labbook__view mui-container flex flex-1-0-auto">

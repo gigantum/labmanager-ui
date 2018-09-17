@@ -21,6 +21,7 @@ export const setForceCancelRefetch = (forceCancelRefetch) => dispatcher(FORCE_CA
 export const setLatestPackages = (latestPackages) => dispatcher(SET_LATEST_PACKAGES, {latestPackages})
 export const setRefetchOccuring = (refetchOccuring) => dispatcher(SET_REFETCH_OCCURING, {refetchOccuring})
 export const setRefetchQueued = (refetchQueued) => dispatcher(SET_REFETCH_QUEUED, {refetchQueued})
+export const setRefetchPending = (refetchPending) => dispatcher(SET_REFETCH_PENDING, {refetchPending})
 export const setPackageMenuVisible = (packageMenuVisible) => dispatcher(TOGGLE_PACKAGE_MENU, {packageMenuVisible})
 
 

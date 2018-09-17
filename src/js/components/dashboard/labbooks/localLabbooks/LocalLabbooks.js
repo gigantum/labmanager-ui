@@ -4,7 +4,6 @@ import {
   createPaginationContainer,
   graphql
 } from 'react-relay'
-import uuidv4 from 'uuid/v4'
 //components
 import LocalLabbookPanel from 'Components/dashboard/labbooks/localLabbooks/LocalLabbookPanel'
 import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
@@ -12,8 +11,6 @@ import ImportModule from './import/ImportModule'
 //helpers
 import ContainerLookup from './lookups/ContainerLookup'
 import VisibilityLookup from './lookups/VisibilityLookup'
-//store
-import store from 'JS/redux/store'
 //assets
 import './LocalLabBooks.scss'
 
@@ -39,6 +36,7 @@ export class LocalLabbooks extends Component {
   * adds event listener for pagination and fetches container status
   */
   componentDidMount() {
+    this.mounted = true;
     if(!this.props.loading){
       window.addEventListener('scroll', this._captureScroll);
 
@@ -59,7 +57,7 @@ export class LocalLabbooks extends Component {
   * removes event listener for pagination and removes timeout for container status
   */
   componentWillUnmount() {
-
+    this.mounted = false;
     clearTimeout(this.containerLookup)
 
     window.removeEventListener("scroll", this._captureScroll)
@@ -92,7 +90,6 @@ export class LocalLabbooks extends Component {
   */
   _visibilityLookup(){
     let self = this;
-    let uuid = uuidv4()
 
     let idArr = this.props.localLabbooks.localLabbooks.edges.map(edges =>edges.node.id)
 
@@ -125,8 +122,9 @@ export class LocalLabbooks extends Component {
 
             query(ids, index)
           }
-
-          self.setState({visibilityList: visibilityListCopy})
+          if(self.mounted){
+            self.setState({visibilityList: visibilityListCopy})
+          }
         }
 
 
@@ -159,12 +157,12 @@ export class LocalLabbooks extends Component {
           containerListCopy.set(node.id, node)
 
         })
-
-        self.setState({containerList: containerListCopy})
-
-        this.containerLookup = setTimeout(()=>{
-          self._containerLookup()
-        }, 10000)
+        if(self.mounted){
+          self.setState({containerList: containerListCopy})
+          this.containerLookup = setTimeout(()=>{
+            self._containerLookup()
+          }, 10000)
+        }
       }
 
     })
@@ -197,7 +195,6 @@ export class LocalLabbooks extends Component {
     *  loads more labbooks using the relay pagination container
   */
   _loadMore = () => {
-    let self = this
     this.setState({
       'isPaginating': true
     })
@@ -226,7 +223,7 @@ export class LocalLabbooks extends Component {
 
       let labbooks = !this.props.loading ? this.props.filterLabbooks(labbookList.localLabbooks.edges, this.props.filterState) : [];
 
-      const importVisible = (this.props.section === 'local' || !this.props.loading) && !store.getState().labbookListing.filterText;
+      const importVisible = (this.props.section === 'local' || !this.props.loading) && !this.props.filterText;
 
       return(
 
@@ -257,11 +254,12 @@ export class LocalLabbooks extends Component {
                     history={this.props.history}
                     node={this.state.containerList.has(edge.node.id) && this.state.containerList.get(edge.node.id)}
                     visibility={visibility}
+                    filterText={this.props.filterText}
                     goToLabbook={this.props.goToLabbook}/>
                 )
               })
 
-              : !this.props.loading && store.getState().labbookListing.filterText &&
+              : !this.props.loading && this.props.filterText &&
 
                 <div className="Labbooks__no-results">
 

@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom'
 import StartContainerMutation from 'Mutations/StartContainerMutation'
 import StopContainerMutation from 'Mutations/StopContainerMutation'
 //store
+import { setErrorMessage, setInfoMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
 //assets
 import './LocalLabbookPanel.scss'
@@ -80,26 +81,11 @@ export default class LocalLabbookPanel extends Component {
     }else if(status === "Running"){
       this._stopContainerMutation()
     } else if(status === "loading"){
-      store.dispatch({
-        type: 'INFO_MESSAGE',
-        payload:{
-          message: `Container status is still loading. The status will update when it is available.`
-        }
-      })
+      setInfoMessage('Container status is still loading. The status will update when it is available.')
     }else if(status === "Building"){
-      store.dispatch({
-        type: 'INFO_MESSAGE',
-        payload:{
-          message: `Container is still building and the process may not be interrupted.`
-        }
-      })
+      setInfoMessage('Container is still building and the process may not be interrupted.')
     } else {
-      store.dispatch({
-        type: 'INFO_MESSAGE',
-        payload:{
-          message: `Container must be rebuilt. Open Project first and then try to run again.`
-        }
-      })
+      setInfoMessage('Container must be rebuilt. Open Project first and then try to run again.')
     }
   }
   /***
@@ -110,14 +96,7 @@ export default class LocalLabbookPanel extends Component {
     let self = this;
 
     const {owner, labbookName} = this.state
-
-    store.dispatch({
-      type: 'INFO_MESSAGE',
-      payload:{
-        message: `Starting ${labbookName} container`
-      }
-    })
-
+    setInfoMessage(`Starting ${labbookName} container`)
     this.setState({'status': 'Starting', textStatus: 'Starting'})
 
     StartContainerMutation(
@@ -127,15 +106,7 @@ export default class LocalLabbookPanel extends Component {
       (response, error) =>{
 
         if(error){
-
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload:{
-              message: `There was a problem starting ${this.state.labbookName}, go to Project and try again`,
-              messageBody: error
-            }
-          })
-
+          setErrorMessage(`There was a problem starting ${this.state.labbookName}, go to Project and try again`, error)
           self.setState({textStatus: "Stopped", status: "Stopped"})
 
         }else{
@@ -154,14 +125,7 @@ export default class LocalLabbookPanel extends Component {
     const {owner, labbookName} = this.state
 
     let self = this
-
-    store.dispatch({
-      type: 'INFO_MESSAGE',
-      payload:{
-        message: `Stopping ${labbookName} container`
-      }
-    })
-
+    setInfoMessage(`Stopping ${labbookName} container`)
     this.setState({'status': 'Stopping', textStatus: 'Stopping'})
 
     StopContainerMutation(
@@ -173,15 +137,7 @@ export default class LocalLabbookPanel extends Component {
         if(error){
 
           console.log(error)
-
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload:{
-              message: `There was a problem stopping ${this.state.labbookName} container`,
-              messageBody: error
-            }
-          })
-
+          setErrorMessage(`There was a problem stopping ${this.state.labbookName} container`, error)
           self.setState({textStatus: "Running", status: "Running"})
 
         }else{

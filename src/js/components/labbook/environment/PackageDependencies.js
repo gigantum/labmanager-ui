@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 //components
 import ButtonLoader from 'Components/shared/ButtonLoader'
 import Loader from 'Components/shared/Loader'
-import ToolTip from 'Components/shared/ToolTip';
 //store
 import store from 'JS/redux/store'
 import {

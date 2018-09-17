@@ -4,17 +4,10 @@ import classNames from 'classnames'
 import Moment from 'moment'
 
 //store
-import store from 'JS/redux/store'
+import { setUpdateHistoryView } from 'JS/redux/reducers/footer'
 
 
 export default class FooterNotificationList extends Component {
-
-  _toggleViewHistory(){
-    store.dispatch({
-      type: 'UPDATE_HISTORY_VIEW',
-      payload: {}
-    })
-  }
 
   render() {
 
@@ -48,7 +41,7 @@ export default class FooterNotificationList extends Component {
       <div className={footerMessageSectionClass}>
         <div
           className={viewAllButtonClass}
-          onClick={()=> this._toggleViewHistory()}
+          onClick={()=> setUpdateHistoryView()}
         >
           View All
         </div>

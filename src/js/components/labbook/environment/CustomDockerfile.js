@@ -8,7 +8,9 @@ import ToolTip from 'Components/shared/ToolTip';
 import AddCustomDockerMutation from 'Mutations/AddCustomDockerMutation'
 //store
 import store from 'JS/redux/store'
+import { setContainerMenuWarningMessage} from 'JS/redux/reducers/labbook/environment/environment'
 //config
+import { setErrorMessage, setWarningMessage } from 'JS/redux/reducers/footer'
 import config from 'JS/config'
 
 export default class CustomDockerfile extends Component {
@@ -70,13 +72,7 @@ export default class CustomDockerfile extends Component {
             (res, error) => {
               if(error) {
                 console.log(error)
-                store.dispatch({
-                  type: 'ERROR_MESSAGE',
-                  payload: {
-                    message: 'Dockerfile was not set: ',
-                    messageBody: error
-                  }
-                })
+                setErrorMessage('Dockerfile was not set: ', error)
                 this.setState({savingDockerfile: false})
               } else {
                 this.props.buildCallback();
@@ -85,35 +81,13 @@ export default class CustomDockerfile extends Component {
             }
           )
         } else {
-          store.dispatch({
-            type: 'WARNING_MESSAGE',
-            payload: {
-              message: 'Invalid command entered. Commands must begin with: LABEL, RUN, ENV, or #',
-            }
-          })
+          setWarningMessage('Invalid command entered. Commands must begin with: LABEL, RUN, ENV, or #')
         }
       } else {
-        store.dispatch({
-          type: 'CONTAINER_MENU_WARNING',
-          payload: {
-            message: 'Stop Project before editing the environment. \n Be sure to save your changes.'
-          }
-        })
-        store.dispatch({
-          type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-          payload: {
-            containerMenuOpen: true
-          }
-        })
+        setContainerMenuWarningMessage('Stop Project before editing the environment. \n Be sure to save your changes.')
       }
     } else {
-      store.dispatch({
-        type: 'ERROR_MESSAGE',
-        payload:{
-          message: `Cannot remove package at this time.`,
-          messageBody: [{message: 'An internet connection is required to modify the environment.'}]
-        }
-      })
+      setErrorMessage(`Cannot remove package at this time.`, [{message: 'An internet connection is required to modify the environment.'}])
     }
 
   }
@@ -124,18 +98,7 @@ export default class CustomDockerfile extends Component {
     if(canEditEnvironment) {
       this.setState({editingDockerfile: true});
     } else {
-      store.dispatch({
-        type: 'CONTAINER_MENU_WARNING',
-        payload: {
-          message: 'Stop Project before editing the environment. \n Be sure to save your changes.'
-        }
-      })
-      store.dispatch({
-        type: 'UPDATE_CONTAINER_MENU_VISIBILITY',
-        payload: {
-          containerMenuOpen: true
-        }
-      })
+      setContainerMenuWarningMessage('Stop Project before editing the environment. \n Be sure to save your changes.')
     }
 
   }

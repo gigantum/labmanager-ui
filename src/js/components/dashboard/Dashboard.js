@@ -6,10 +6,11 @@ import DatasetSets from './datasets/DatasetSets';
 import LocalLabbooksContainer from './labbooks/localLabbooks/LocalLabbooksContainer';
 import RemoteLabbooksContainer from './labbooks/remoteLabbooks/RemoteLabbooksContainer';
 import environment from 'JS/createRelayEnvironment'
-//store
-import store from "JS/redux/store"
 //assets
 import './Dashboard.scss'
+//redux
+import { setCallbackRoute } from 'JS/redux/reducers/routes'
+
 
 const LocalListingQuery = graphql`query DashboardLocalQuery($first: Int!, $cursor: String, $orderBy: String $sort: String){
   ...LocalLabbooksContainer_labbookList
@@ -28,12 +29,7 @@ export default class DashboardContainer extends Component {
       orderBy: orderBy || 'modified_on',
       sort: sort || 'desc',
     }
-    store.dispatch({
-      type: 'UPDATE_CALLBACK_ROUTE',
-      payload: {
-        'callbackRoute': props.history.location.pathname
-      }
-    })
+    setCallbackRoute(props.history.location.pathname)
     this._refetchSort = this._refetchSort.bind(this)
   }
   /**
@@ -44,12 +40,7 @@ export default class DashboardContainer extends Component {
     this.setState({
       selectedComponent: nextProps.match.params.id
     })
-    store.dispatch({
-      type: 'UPDATE_CALLBACK_ROUTE',
-      payload: {
-        'callbackRoute': nextProps.history.location.pathname
-      }
-    })
+    setCallbackRoute(nextProps.history.location.pathname)
   }
 
   /**

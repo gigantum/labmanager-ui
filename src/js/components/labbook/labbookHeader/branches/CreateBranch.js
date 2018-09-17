@@ -11,6 +11,7 @@ import Modal from 'Components/shared/Modal'
 import validation from 'JS/utils/Validation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
 
 export default class CreateBranchModal extends Component {
@@ -154,13 +155,7 @@ export default class CreateBranchModal extends Component {
 
 
         if (error) {
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: "Problem Creating new branch",
-              messageBody: error
-            }
-          })
+          setErrorMessage('Problem Creating new branch', error)
 
           setTimeout(()=> {
             this.setState({buttonLoaderCreateBranch: 'error'})
@@ -176,13 +171,7 @@ export default class CreateBranchModal extends Component {
               false,
               (response, error) => {
                 if(error){
-                  store.dispatch({
-                    type: 'ERROR_MESSAGE',
-                    payload:{
-                      message: `${labbookName} failed to build`,
-                      messageBody: error
-                    }
-                  })
+                  setErrorMessage(`${labbookName} failed to build`, error)
                 }
 
                 return "finished"

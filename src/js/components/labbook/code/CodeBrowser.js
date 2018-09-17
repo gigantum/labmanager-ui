@@ -23,6 +23,7 @@ class CodeBrowser extends Component {
     loads more if branches are switched
   */
   componentDidUpdate(){
+    this.props.loadStatus(this.state.moreLoading);
     if(!this.state.moreLoading && this.props.code.allFiles && this.props.code.allFiles.edges.length < 3 && this.props.code.allFiles.pageInfo.hasNextPage){
       this._loadMore();
     }
@@ -32,6 +33,7 @@ class CodeBrowser extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
+    this.props.loadStatus(this.state.moreLoading);
     if(this.props.code.allFiles &&
       this.props.code.allFiles.pageInfo.hasNextPage) {
         this._loadMore() //routes query only loads 2, call loadMore
@@ -74,8 +76,6 @@ class CodeBrowser extends Component {
   }
 
   render(){
-
-    this.props.loadStatus(this.state.moreLoading);
     if(this.props.code && this.props.code.allFiles){
 
       let codeFiles = this.props.code.allFiles

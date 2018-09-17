@@ -4,7 +4,6 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import PackageCount from 'Components/labbook/overview/PackageCount'
 import Loader from 'Components/shared/Loader'
-import ToolTip from 'Components/shared/ToolTip';
 
 class Base extends Component {
 

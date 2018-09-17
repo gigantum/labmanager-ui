@@ -21,6 +21,7 @@ import WriteReadmeMutation from 'Mutations/WriteReadmeMutation'
 import SetLabbookDescriptionMutation from 'Mutations/SetLabbookDescriptionMutation'
 //store
 import store from 'JS/redux/store'
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 
 let simple;
 
@@ -132,13 +133,7 @@ class Overview extends Component {
         (res, error) => {
           if(error) {
             console.log(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: 'Readme was not set: ',
-                messageBody: error
-              }
-            })
+            setErrorMessage('Readme was not set: ', error)
           } else{
             this.setState({ editingReadme: false, simpleExists: false})
           }
@@ -160,13 +155,7 @@ class Overview extends Component {
       (res, error) => {
         if(error) {
           console.log(error)
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: 'Description was not set: ',
-              messageBody: error
-            }
-          })
+          setErrorMessage('Description was not set: ', error)
         } else{
           this.setState({ editingDescription: false, lastSavedDescription: this.state.descriptionText.replace(/\n/g,' '), savingDescription: false})
         }

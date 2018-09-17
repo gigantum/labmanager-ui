@@ -8,7 +8,7 @@ import DeleteCollaboratorMutation from 'Mutations/DeleteCollaboratorMutation'
 import ButtonLoader from 'Components/shared/ButtonLoader'
 import Modal from 'Components/shared/Modal'
 //store
-import store from 'JS/redux/store'
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 //config
 import config from 'JS/config'
 import fetchQuery from 'JS/fetch'
@@ -166,15 +166,7 @@ export default class CollaboratorModal extends Component {
           this.collaboratorSearch.value = ''
 
           if (error) {
-
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `Could not add collaborator`,
-                messageBody: error
-              }
-            })
-
+            setErrorMessage(`Could not add collaborator`, error)
             this.setState({buttonLoaderAddCollaborator: 'error'})
 
           } else {
@@ -217,14 +209,7 @@ export default class CollaboratorModal extends Component {
           button.disabled = false;
         }
         if (error) {
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `Could not remove collaborator`,
-              messageBody: error
-            }
-          })
-
+          setErrorMessage(`Could not remove collaborator`, error)
           buttonLoaderRemoveCollaborator[collaborator] = 'error'
 
           this.setState({buttonLoaderRemoveCollaborator})

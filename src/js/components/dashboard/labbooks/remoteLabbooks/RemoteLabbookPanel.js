@@ -8,6 +8,7 @@ import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
 //store
 import store from 'JS/redux/store'
+import { setWarningMessage, setMultiInfoMessage } from 'JS/redux/reducers/footer'
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
 //components
@@ -39,12 +40,7 @@ export default class RemoteLabbookPanel extends Component {
   */
   _handleDelete(edge) {
     if(localStorage.getItem('username') !== edge.node.owner){
-      store.dispatch({
-        type: 'WARNING_MESSAGE',
-        payload: {
-          message: 'You can only delete remote Projects that you have created.',
-        }
-      })
+      setWarningMessage('You can only delete remote Projects that you have created.')
     } else {
       UserIdentity.getUserIdentity().then(response => {
       if(navigator.onLine){
@@ -112,16 +108,7 @@ export default class RemoteLabbookPanel extends Component {
 
         if(response.data.userIdentity.isSessionValid){
           this._importingState()
-          store.dispatch(
-            {
-              type: "MULTIPART_INFO_MESSAGE",
-              payload: {
-                id: id,
-                message: 'Importing Project please wait',
-                isLast: false,
-                error: false
-              }
-            })
+          setMultiInfoMessage(id, 'Importing Project please wait', false, false )
           ImportRemoteLabbookMutation(
             owner,
             labbookName,
@@ -131,31 +118,12 @@ export default class RemoteLabbookPanel extends Component {
 
               if(error){
                 console.error(error)
-                store.dispatch(
-                  {
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                        id: id,
-                        message: 'ERROR: Could not import remote Project',
-                        messageBody: error,
-                        error: true
-                  }
-                })
-
+                setMultiInfoMessage(id, 'ERROR: Could not import remote Project', null, true, error )
               }else if(response){
-
-                store.dispatch({
-                    type: 'MULTIPART_INFO_MESSAGE',
-                    payload: {
-                        id: id,
-                        message: `Successfully imported remote Project ${labbookName}`,
-                        isLast: true,
-                        error: false
-                    }
-                 })
-
                 const labbookName = response.importRemoteLabbook.newLabbookEdge.node.name
                 const owner = response.importRemoteLabbook.newLabbookEdge.node.owner
+                setMultiInfoMessage(id, `Successfully imported remote Project ${labbookName}`, true, false )
+
 
                 BuildImageMutation(
                 labbookName,
@@ -166,20 +134,10 @@ export default class RemoteLabbookPanel extends Component {
                   if(error){
 
                     console.error(error)
+                    setMultiInfoMessage(id, `ERROR: Failed to build ${labbookName}`, null, true, error )
+                  }
 
-                    store.dispatch({
-                        type: 'MULTIPART_INFO_MESSAGE',
-                        payload: {
-                          id: id,
-                          message: `ERROR: Failed to build ${labbookName}`,
-                          messsagesList: error,
-                          error: true
-                        }
-                     })
-
-                    }
-
-                  })
+                })
 
                   self.props.history.replace(`/projects/${owner}/${labbookName}`)
               }else{
@@ -191,20 +149,8 @@ export default class RemoteLabbookPanel extends Component {
                   (error)=>{
 
                     if(error){
-
                       console.error(error)
-
-                      store.dispatch(
-                        {
-                          type: 'MULTIPART_INFO_MESSAGE',
-                          payload: {
-                            id: id,
-                            message: `ERROR: Failed to build ${labbookName}`,
-                            messsagesList: error,
-                            error: true
-                        }
-                      })
-
+                      setMultiInfoMessage(id, `ERROR: Failed to build ${labbookName}`, null, true, error )
                     }
 
                  })

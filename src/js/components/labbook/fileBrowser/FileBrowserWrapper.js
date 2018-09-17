@@ -20,6 +20,20 @@ import config from 'JS/config'
 //utilities
 import ChunkUploader from 'JS/utils/ChunkUploader'
 //store
+import {
+  setErrorMessage,
+  setWarningMessage,
+  setInfoMessage,
+  setUploadMessageSetter,
+  setUploadMessageRemove
+ } from 'JS/redux/reducers/footer'
+import {
+  setStartedUploading,
+  setPauseUpload,
+  setPauseUploadData,
+  setResetChunkUpload,
+} from 'JS/redux/reducers/labbook/fileBrowser/fileBrowserWrapper'
+import { setUpdateDetailView } from 'JS/redux/reducers/labbook/labbook'
 import store from 'JS/redux/store'
 
 
@@ -131,14 +145,7 @@ export default class FileBrowserWrapper extends Component {
 
         if(error){
           console.error(error)
-
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `ERROR: could not create ${key}`,
-              messageBody: error
-            }
-          })
+          setErrorMessage(`ERROR: could not create ${key}`, error)
         }
       }
     )
@@ -162,30 +169,11 @@ export default class FileBrowserWrapper extends Component {
   _creteFilesFooterMessage(totalFiles, hasDirectoryUpload, fileSizeData){
 
     if(totalFiles > 0){
-      store.dispatch({
-        type: 'STARTED_UPLOADING',
-      })
-
-      store.dispatch({
-        type: 'UPLOAD_MESSAGE_SETTER',
-        payload:{
-          uploadMessage: `Preparing Upload for ${totalFiles} files`,
-          id: Math.random() * 10000,
-          totalFiles: totalFiles
-        }
-      })
+      setStartedUploading()
+      setUploadMessageSetter(`Preparing Upload for ${totalFiles} files`, Math.random() * 10000, totalFiles)
     }else if(hasDirectoryUpload && (totalFiles === 0)){
-
-      store.dispatch({
-        type: 'STARTED_UPLOADING',
-      })
-
-      store.dispatch({
-        type: 'INFO_MESSAGE',
-        payload:{
-          message: `Uploading Directories`,
-        }
-      })
+      setStartedUploading()
+      setInfoMessage('Uploading Directories')
     }else if(fileSizeData.fileSizeNotAllowed.length > 0){
       let fileSizePromptNames = fileSizeData.fileSizePrompt.map((file) => file.name)
       let fileSizeNotAllowedNames = fileSizeData.fileSizeNotAllowed
@@ -198,23 +186,11 @@ export default class FileBrowserWrapper extends Component {
         let size = this.props.section === 'code' ? '100 MB' : '1.8 GB'
         let message = `Cannot upload files over ${size} to the ${this.props.section} directory. The following files have not been added ${fileSizeNotAllowedString}`
 
-        store.dispatch({
-          type: 'WARNING_MESSAGE',
-          payload:{
-            message: message,
-          }
-        })
+        setWarningMessage(message)
       }
 
     }else {
-
-
-      store.dispatch({
-        type: 'WARNING_MESSAGE',
-        payload:{
-          message: `Cannot upload these file types`,
-        }
-      })
+      setWarningMessage(`Cannot upload these file types`)
     }
   }
 
@@ -300,7 +276,6 @@ export default class FileBrowserWrapper extends Component {
         }).length === 0
 
         if(isFileAllowed){
-          const batchUpload = (files.length > 1)
 
           let newKey = prefix;
 
@@ -497,13 +472,7 @@ export default class FileBrowserWrapper extends Component {
       this.props.section,
       (response, error) => {
         if(error){
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload: {
-              message: `ERROR: could not make ${newKey}`,
-              messageBody: error
-            }
-          })
+          setErrorMessage(`ERROR: could not make ${newKey}`, error)
         }
         let all = []
 
@@ -545,13 +514,7 @@ export default class FileBrowserWrapper extends Component {
                             if(error){
                               reject(moveResponse.moveLabbookFile)
                               console.error(error)
-                              store.dispatch({
-                                type: 'ERROR_MESSAGE',
-                                payload: {
-                                  message: `ERROR: could not remove favorite ${oldKey}`,
-                                  messageBody: error
-                                }
-                              })
+                              setErrorMessage(`ERROR: could not remove favorite ${oldKey}`, error)
                             }else{
                               AddFavoriteMutation(
                                 this.props.favoriteConnection,
@@ -570,14 +533,7 @@ export default class FileBrowserWrapper extends Component {
                                     reject(moveResponse.moveLabbookFile)
 
                                     console.error(error)
-
-                                    store.dispatch({
-                                      type: 'ERROR_MESSAGE',
-                                      payload: {
-                                        message: `ERROR: could not add favorite ${newKey}`,
-                                        messageBody: error
-                                      }
-                                    })
+                                    setErrorMessage(`ERROR: could not add favorite ${newKey}`, error)
 
                                   }else{
 
@@ -591,15 +547,7 @@ export default class FileBrowserWrapper extends Component {
                         )
                       }
                     }else{
-
-                        store.dispatch({
-                          type: 'ERROR_MESSAGE',
-                          payload: {
-                            message: `ERROR: could not move ${edge.node.key}`,
-                            messageBody: error
-                          }
-                        })
-
+                        setErrorMessage(`ERROR: could not move ${edge.node.key}`, error)
                         reject(moveResponse)
                     }
                   })
@@ -632,13 +580,7 @@ export default class FileBrowserWrapper extends Component {
             (response, error) => {
               if(error){
                 console.error(error)
-                store.dispatch({
-                  type: 'ERROR_MESSAGE',
-                  payload: {
-                    message: `ERROR: could node delete file ${oldKey}`,
-                    messageBody: error
-                  }
-                })
+                setErrorMessage(`ERROR: could node delete file ${oldKey}`, error)
               }
             }
           )
@@ -676,13 +618,7 @@ export default class FileBrowserWrapper extends Component {
 
           if(error){
             console.error(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not move file ${oldKey}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`ERROR: could not move file ${oldKey}`, error)
           }else{
             if(edgeToMove.node.isFavorite){
 
@@ -700,13 +636,7 @@ export default class FileBrowserWrapper extends Component {
 
                   if(error){
                     console.error(error)
-                    store.dispatch({
-                      type: 'ERROR_MESSAGE',
-                      payload: {
-                        message: `ERROR: could not remove favorite ${oldKey}`,
-                        messageBody: error
-                      }
-                    })
+                    setErrorMessage(`ERROR: could not remove favorite ${oldKey}`, error)
                   }else{
                     if(newKey[0] === '/'){
                       newKey = newKey.slice(1)
@@ -725,13 +655,7 @@ export default class FileBrowserWrapper extends Component {
                       (response, error)=>{
                         if(error){
                           console.error(error)
-                          store.dispatch({
-                            type: 'ERROR_MESSAGE',
-                            payload: {
-                              message: `ERROR: could not add favorite ${newKey}`,
-                              messageBody: error
-                            }
-                          })
+                          setErrorMessage(`ERROR: could not add favorite ${newKey}`, error)
                         }
                       }
                     )
@@ -774,13 +698,7 @@ export default class FileBrowserWrapper extends Component {
         (response, error) => {
           if(error){
             console.error(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not delete folder ${folderKey}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`ERROR: could not delete folder ${folderKey}`, error)
           }
         }
       )
@@ -802,13 +720,7 @@ export default class FileBrowserWrapper extends Component {
 
             if(error){
               console.error(error)
-              store.dispatch({
-                type: 'ERROR_MESSAGE',
-                payload: {
-                  message: `ERROR: could not remove favorite ${edgeToDelete.node.key}`,
-                  messageBody: error
-                }
-              })
+              setErrorMessage(`ERROR: could not remove favorite ${edgeToDelete.node.key}`, error)
             }
           })
       }
@@ -840,13 +752,7 @@ export default class FileBrowserWrapper extends Component {
 
           if(error){
             console.error(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not remove favorite ${edgeToDelete.node.key}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`ERROR: could not remove favorite ${edgeToDelete.node.key}`, error)
           }else{
             DeleteLabbookFileMutation(
               this.props.connection,
@@ -860,13 +766,7 @@ export default class FileBrowserWrapper extends Component {
               (response, error) => {
                 if(error){
                   console.error(error)
-                  store.dispatch({
-                    type: 'ERROR_MESSAGE',
-                    payload: {
-                      message: `ERROR: could not delete file ${fileKey}`,
-                      messageBody: error
-                    }
-                  })
+                  setErrorMessage(`ERROR: could not delete file ${fileKey}`, error)
                 }
               }
             )
@@ -887,13 +787,7 @@ export default class FileBrowserWrapper extends Component {
         (response, error) => {
           if(error){
             console.error(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not delete file ${fileKey}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`ERROR: could not delete file ${fileKey}`, error)
           }
         }
       )
@@ -953,13 +847,7 @@ export default class FileBrowserWrapper extends Component {
         (response, error)=>{
           if(error){
             console.error(error)
-            store.dispatch({
-              type: 'ERROR_MESSAGE',
-              payload: {
-                message: `ERROR: could not add favorite ${key}`,
-                messageBody: error
-              }
-            })
+            setErrorMessage(`ERROR: could not add favorite ${key}`, error)
           }
         }
       )
@@ -993,13 +881,7 @@ export default class FileBrowserWrapper extends Component {
     this.setState({
       "selectedFile": file
     })
-
-    store.dispatch({
-      type: 'UPDATE_DETAIL_VIEW',
-      payload: {
-        detailMode: true
-      }
-    })
+    setUpdateDetailView(true)
   }
   /**
   *  @param {}
@@ -1007,13 +889,7 @@ export default class FileBrowserWrapper extends Component {
   *
   */
   _continueUpload(){
-    store.dispatch({
-      type: 'PAUSE_UPLOAD',
-      payload: {
-        pause: false
-      }
-    })
-
+    setPauseUpload(false)
     const {files, count, prefix, totalFiles} = store.getState().fileBrowser
     const {connection, section, parentId} = this.props
     const {owner, labbookName} = this.state
@@ -1037,23 +913,8 @@ export default class FileBrowserWrapper extends Component {
 
       this._chunkLoader(chunkUploadData.data, ()=>{}, chunkUploadData.chunkData.chunkIndex)
     }
-
-    store.dispatch({
-      type: "PAUSE_UPLOAD_DATA",
-      payload:{
-        files: [],
-        count: 0,
-        transactionId: '',
-        prefix: '',
-        totalFiles: 0
-      }
-    })
-
-    store.dispatch({
-      type: "RESET_CHUNK_UPLOAD",
-      payload:{
-      }
-    })
+    setPauseUploadData([], 0, '', '', 0)
+    setResetChunkUpload()
   }
 
   /**
@@ -1065,24 +926,9 @@ export default class FileBrowserWrapper extends Component {
     const {connection} = this.props
     const {owner, labbookName} = this.state
     const {transactionId} = store.getState().fileBrowser
-
-    store.dispatch({
-      type: 'PAUSE_UPLOAD',
-      payload: {
-        pause: false
-      }
-    })
-
+    setPauseUpload(false)
     let uploadData = store.getState().footer.uploadStack[0]
-
-    store.dispatch({
-      type: 'UPLOAD_MESSAGE_REMOVE',
-      payload: {
-        message: '',
-        id: uploadData.id,
-        progessBarPercentage:  0
-      }
-    })
+    setUploadMessageRemove('', uploadData.id, 0)
 
     CompleteBatchUploadTransactionMutation(
        connection,
@@ -1106,24 +952,9 @@ export default class FileBrowserWrapper extends Component {
       const {connection} = this.props
       const {owner, labbookName} = this.state
       const {transactionId} = store.getState().fileBrowser
-
-      store.dispatch({
-         type: 'PAUSE_UPLOAD',
-         payload: {
-           pause: false
-         }
-      })
-
+      setPauseUpload(false)
       let uploadData = store.getState().footer.uploadStack[0]
-
-      store.dispatch({
-        type: 'UPLOAD_MESSAGE_REMOVE',
-        payload: {
-          message: '',
-          id: uploadData.id,
-          progessBarPercentage:  0
-        }
-      })
+      setUploadMessageRemove('', uploadData.id, 0)
 
       CompleteBatchUploadTransactionMutation(
         connection,

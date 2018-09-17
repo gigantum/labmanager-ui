@@ -2,13 +2,10 @@
 import JobStatus from 'JS/utils/JobStatus'
 import store from 'JS/redux/store'
 import AnsiUp from 'ansi_up';
-
-import RelayRuntime from 'relay-runtime'
-
-import FetchLabbook from 'Components/labbook/fetchLabbook'
+import { setMultiInfoMessage, setErrorMessage } from 'JS/redux/reducers/footer'
+import { setForceRefetch, setRefetchPending } from 'JS/redux/reducers/labbook/environment/packageDependencies'
 
 const ansi_up = new AnsiUp();
-let tempID = 0
 
 const FooterUtils = {
   /**
@@ -65,7 +62,8 @@ const FooterUtils = {
               let res = [],
                   index = 0;
 
-              while ((index = fullMessage.indexOf('\n', index + 1)) > 0) {
+              while (fullMessage.indexOf('\n', index + 1) > 0) {
+                index = fullMessage.indexOf('\n', index + 1)
                 res.push(index);
               }
 
@@ -74,68 +72,27 @@ const FooterUtils = {
             }
 
             if((response.data.jobStatus.status === 'started' || response.data.jobStatus.status === 'finished') && store.getState().packageDependencies.refetchPending){
-              store.dispatch({
-                type: 'FORCE_REFETCH',
-                payload: {
-                  forceRefetch: true,
-                }
-              })
-              store.dispatch({
-                type: 'SET_REFETCH_PENDING',
-                payload: {
-                  refetchPending: false
-                }
-              })
+              setForceRefetch(true)
+              setRefetchPending(false)
             }
 
             if (response.data.jobStatus.status === 'started') {
-
-              store.dispatch({
-                type: 'MULTIPART_INFO_MESSAGE',
-                payload: {
-                  id: response.data.jobStatus.id,
-                  message: message,
-                  messageBody: [{message: html}],
-                  isLast: false,
-                  error: false
-                }
-              })
-
+              setMultiInfoMessage(response.data.jobStatus.id, message, false, false, [{message: html}])
               refetch()
 
             } else if (response.data.jobStatus.status === 'finished') {
-
-              store.dispatch({
-                type: 'MULTIPART_INFO_MESSAGE',
-                payload: {
-                  id: response.data.jobStatus.id,
-                  message: message,
-                  messageBody: [{message: html}],
-                  isLast: true,
-
-                }
-              })
+              setMultiInfoMessage( response.data.jobStatus.id, message, true, null, [{message: html}])
 
               if((type === "syncLabbook") || (type === "publishLabbook")){
 
-                const userArray = JSON.parse(response.data.jobStatus.jobMetadata).labbook.split('|')
+                // const userArray = JSON.parse(response.data.jobStatus.jobMetadata).labbook.split('|')
 
                 //TODO update labbook edge/node here
 
               }
 
             } else if (response.data.jobStatus.status === 'failed') {
-
-              store.dispatch({
-                type: 'MULTIPART_INFO_MESSAGE',
-                payload: {
-                  id: response.data.jobStatus.id,
-                  message: message,
-                  messageBody: [{message: html}],
-                  isLast: true,
-                }
-              })
-
+              setMultiInfoMessage( response.data.jobStatus.id, message, true, null, [{message: html}])
             } else {
               //refetch status data not ready
               refetch()
@@ -148,15 +105,7 @@ const FooterUtils = {
 
         })
       }else{
-
-        store.dispatch({
-          type: 'ERROR_MESSAGE',
-          payload: {
-            message: "There was an error fetching job status.",
-            messageBody: [{message: 'Callback error from the API'}],
-            isLast: true
-          }
-        })
+        setErrorMessage('There was an error fetching job status.', [{message: 'Callback error from the API'}])
       }
 
     }

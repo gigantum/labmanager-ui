@@ -5,6 +5,7 @@ import Moment from 'moment'
 import RemoveFavoriteMutation from 'Mutations/fileBrowser/RemoveFavoriteMutation'
 import AddFavoriteMutation from 'Mutations/fileBrowser/AddFavoriteMutation'
 //store
+import { setErrorMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
 //utils
 import {humanFileSize} from 'JS/utils/ChunkUploader'
@@ -39,13 +40,7 @@ export default class RecentCard extends Component {
             (response, error)=>{
               if(error){
                 console.error(error)
-                store.dispatch({
-                  type: 'ERROR_MESSAGE',
-                  payload: {
-                    message: `ERROR: could not add favorite ${this.props.key}`,
-                    messageBody: error
-                  }
-                })
+                setErrorMessage(`ERROR: could not add favorite ${this.props.key}`, error)
               }
             }
           )

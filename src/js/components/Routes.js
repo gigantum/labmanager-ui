@@ -13,8 +13,8 @@ import Prompt from 'Components/shared/Prompt';
 import LabbookQueryContainer from 'Components/labbook/LabbookQueryContainer';
 import Profile from 'Components/profile/Profile'
 import Helper from 'Components/shared/Helper'
-//
-import store from 'JS/redux/store'
+//store
+import { setUpdateAll } from 'JS/redux/reducers/routes'
 //config
 import config from 'JS/config'
 
@@ -31,9 +31,8 @@ class Routes extends Component {
       showYT: false,
       showDefaultMessage: true,
     }
-    
+
     this._setForceLoginScreen = this._setForceLoginScreen.bind(this)
-    this.setRouteStore = this.setRouteStore.bind(this)
     this._flipDemoHeaderText = this._flipDemoHeaderText.bind(this)
 
   }
@@ -64,20 +63,6 @@ class Routes extends Component {
   }
 
   /**
-    @param{string, string} owner,labbookName
-    sets owner and labbookName in store for use in labbook queriesß
-  */
-  setRouteStore(owner, labbookName){
-
-    store.dispatch({
-      type: 'UPDATE_ALL',
-      payload:{
-        'owner': owner,
-        labbookName: labbookName
-      }
-    })
-  }
-  /**
     @param{}
     logs user out in using auth0
   */
@@ -106,7 +91,6 @@ class Routes extends Component {
   render(){
     if(!this.state.hasError){
       let authed = this.props.auth.isAuthenticated();
-      let self = this
       let headerCSS = classNames({
         'Header': authed,
         'hidden': !authed,
@@ -230,7 +214,7 @@ class Routes extends Component {
                           const labbookName = parentProps.match.params.labbookName;
                           const owner = parentProps.match.params.owner;
 
-                          self.setRouteStore(owner, labbookName)
+                          setUpdateAll(owner, labbookName)
 
                           return (
                             <LabbookQueryContainer

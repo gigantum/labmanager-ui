@@ -5,7 +5,7 @@ import Modal from 'Components/shared/Modal'
 //Mutations
 import DeleteExperimentalBranchMutation from 'Mutations/branches/DeleteExperimentalBranchMutation'
 //store
-import store from 'JS/redux/store'
+import { setErrorMessage, setInfoMessage } from 'JS/redux/reducers/footer'
 
 export default class DeleteBranch extends Component {
   constructor(props) {
@@ -50,20 +50,9 @@ export default class DeleteBranch extends Component {
       labbookId,
       (response, error) => {
         if(error){
-          store.dispatch({
-            type: 'ERROR_MESSAGE',
-            payload:{
-              message: `There was a problem deleting ${cleanBranchName}`,
-              messageBody: error,
-            }
-          })
+          setErrorMessage(`There was a problem deleting ${cleanBranchName}`, error)
         }else{
-          store.dispatch({
-            type: 'INFO_MESSAGE',
-            payload:{
-              message: `Deleted ${cleanBranchName} successfully`
-            }
-          })
+          setInfoMessage(`Deleted ${cleanBranchName} successfully`)
         }
       }
     )
