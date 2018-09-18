@@ -6,7 +6,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
 >
   <div />
   <div
-    className="Labbooks__title-bar"
+    className="Labbooks__panel-bar"
   >
     <h6
       className="Labbooks__username"
@@ -27,7 +27,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
       className="Labbooks__nav  flex flex--row"
     >
       <li
-        className="Labbooks__nav-item--0 selected"
+        className="Labbooks__nav-item Labbooks__nav-item--local Labbooks__nav-item--selected"
       >
         <a
           onClick={[Function]}
@@ -36,7 +36,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
         </a>
       </li>
       <li
-        className="Labbooks__nav-item--1"
+        className="Labbooks__nav-item Labbooks__nav-item--cloud"
       >
         <a
           onClick={[Function]}
@@ -45,7 +45,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
         </a>
       </li>
       <hr
-        className="Labbooks__navigation-slider Labbooks__navigation-slider--0"
+        className="Labbooks__navigation-slider Labbooks__navigation-slider--local"
       />
       <div
         className="hidden cloudLocal"
@@ -93,34 +93,34 @@ exports[`Test DashboardLocal snapshot 1`] = `
       />
     </div>
     <div
-      className="Labbooks__filter"
+      className="LabbookFilterBy"
     >
       Filter by:
       <span
-        className="Labbooks__filter-collapsed"
+        className="LabbookFilterBy__selector LabbookFilterBy__selector--collapsed"
         onClick={[Function]}
       >
         All
       </span>
       <ul
-        className="hidden"
+        className="LabbookFilterBy__menu hidden"
       >
         <li
-          className="Labbooks__filter-item"
+          className="LabbookFilterBy__list-item"
           onClick={[Function]}
         >
           All 
           ✓ 
         </li>
         <li
-          className="Labbooks__filter-item"
+          className="LabbookFilterBy__list-item"
           onClick={[Function]}
         >
           My Projects 
           
         </li>
         <li
-          className="Labbooks__filter-item"
+          className="LabbookFilterBy__list-item"
           onClick={[Function]}
         >
           Shared with me 
@@ -129,55 +129,55 @@ exports[`Test DashboardLocal snapshot 1`] = `
       </ul>
     </div>
     <div
-      className="Labbooks__sort"
+      className="LabbookSort"
     >
       Sort by:
       <span
-        className="Labbooks__sort-collapsed"
+        className="LabbookSort__selector LabbookSort__selector--collapsed"
         onClick={[Function]}
       >
         Modified Date (Newest)
       </span>
       <ul
-        className="hidden"
+        className="LabbookSort__menu hidden"
       >
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           Modified Date (Newest) 
-          ✓ 
+          
         </li>
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           Modified Date (Oldest) 
           
         </li>
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           Creation Date (Newest) 
           
         </li>
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           Creation Date (Oldest) 
           
         </li>
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           A-Z 
           
         </li>
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           Z-A 
@@ -187,13 +187,13 @@ exports[`Test DashboardLocal snapshot 1`] = `
     </div>
   </div>
   <div
-    className="LocalLabbooks__labbooks"
+    className="Labbooks__listing"
   >
     <div
-      className="LocalLabbooks__sizer grid"
+      className="grid"
     >
       <div
-        className="ImportModule Labbooks__panel Labbooks__panel--add Labbooks__panel--import column-4-span-3"
+        className="ImportModule Card Card--add Card--import column-4-span-3"
         id="dropZone"
         onDragEnd={[Function]}
         onDragOver={[Function]}
@@ -201,20 +201,20 @@ exports[`Test DashboardLocal snapshot 1`] = `
         type="file"
       >
         <div
-          className="Labbooks__labbook-main"
+          className="Import__labbook-main"
         >
           <div
-            className="Labbooks__labbook-header"
+            className="Import__labbook-header"
           >
             <div
-              className="Labbooks__labbook-icon"
+              className="Import__labbook-icon"
             >
               <div
-                className="Labbooks__title-add"
+                className="Import__add-icon"
               />
             </div>
             <div
-              className="Labbooks__add-text"
+              className="Import__title"
             >
               <h4>
                 Add Project
@@ -222,7 +222,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </div>
           </div>
           <div
-            className="Labbooks__labbook-button"
+            className="btn--import"
             onClick={[Function]}
           >
             Create New
@@ -256,7 +256,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </div>
           </div>
           <div
-            className="Labbooks__labbook-button-import"
+            className="btn--import"
             onClick={[Function]}
           >
             Import Existing
@@ -297,18 +297,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </div>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/zab"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -318,11 +318,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -340,12 +338,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -358,18 +356,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/untracked-labbook"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -379,11 +377,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -401,12 +397,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -419,18 +415,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/untracked-2"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -440,11 +436,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -462,12 +456,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -480,18 +474,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/untracked"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -501,11 +495,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -523,12 +515,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -541,18 +533,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/dmk/trump-tweets"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -562,11 +554,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -584,12 +574,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by dmk
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -609,18 +599,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/tracking-endabled"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -630,11 +620,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -652,12 +640,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -670,18 +658,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/tracked-2"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -691,11 +679,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -713,12 +699,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -731,18 +717,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/tpub"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -752,11 +738,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -774,12 +758,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -792,18 +776,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/thisiasdmadskadssfdkjjssdfs-jasjdasj"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -813,11 +797,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -835,12 +817,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -853,18 +835,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/dmk/testing-notifications"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -874,11 +856,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -896,12 +876,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by dmk
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -921,18 +901,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/testing-activity-feed"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -942,11 +922,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -964,12 +942,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -989,18 +967,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/test-uploader-1"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1010,11 +988,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -1032,12 +1008,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1057,18 +1033,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/dmk/test-lb"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1078,11 +1054,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -1100,12 +1074,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by dmk
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1125,18 +1099,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/test-labbook"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1146,11 +1120,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -1168,12 +1140,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1193,18 +1165,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/test-building-status-2"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1214,11 +1186,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -1236,12 +1206,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1254,18 +1224,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/test-building-state"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1275,11 +1245,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -1297,12 +1265,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1315,18 +1283,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/test-building-6"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1336,11 +1304,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -1358,12 +1324,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1376,18 +1342,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/test-building-5"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1397,11 +1363,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -1419,12 +1383,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1437,18 +1401,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/test-building-4"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1458,11 +1422,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -1480,12 +1442,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1498,18 +1460,18 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <a
-        className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
         href="/projects/cbutler/test-building-3"
         onClick={[Function]}
       >
         <div
-          className="LocalLabbooks__icon-row"
+          className="LocalLabbooks__row--icons"
         >
           <div
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1519,11 +1481,9 @@ exports[`Test DashboardLocal snapshot 1`] = `
           </div>
         </div>
         <div
-          className="LocalLabbooks__text-row"
+          className="LocalLabbooks__row--text"
         >
-          <div
-            className="LocalLabbooks__title-row"
-          >
+          <div>
             <h6
               className="LocalLabbooks__panel-title"
               onClick={[Function]}
@@ -1541,12 +1501,12 @@ exports[`Test DashboardLocal snapshot 1`] = `
             </h6>
           </div>
           <p
-            className="LocalLabbooks__owner"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
           >
             Created by cbutler
           </p>
           <p
-            className="LocalLabbooks__description"
+            className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1559,27 +1519,27 @@ exports[`Test DashboardLocal snapshot 1`] = `
         />
       </a>
       <div
-        className="Labbook__loader-hidden"
+        className="LabbookPaginationLoader--hidden"
       >
         <div />
       </div>
       <div
-        className="Labbook__loader-hidden"
+        className="LabbookPaginationLoader--hidden"
       >
         <div />
       </div>
       <div
-        className="Labbook__loader-hidden"
+        className="LabbookPaginationLoader--hidden"
       >
         <div />
       </div>
       <div
-        className="Labbook__loader-hidden"
+        className="LabbookPaginationLoader--hidden"
       >
         <div />
       </div>
       <div
-        className="Labbook__loader-hidden"
+        className="LabbookPaginationLoader--hidden"
       >
         <div />
       </div>

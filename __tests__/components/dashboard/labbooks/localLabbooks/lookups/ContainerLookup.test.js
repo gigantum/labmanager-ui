@@ -2,8 +2,8 @@
       import React from 'react'
       import renderer from 'react-test-renderer'
       import {mount} from 'enzyme'
-      import json from './__relaydata__/LocalLabbooks.json'
-      import ContainerLookup from 'Components/dashboard/labbooks/localLabbooks/ContainerLookup';
+      import json from './../__relaydata__/LocalLabbooks.json'
+      import ContainerLookup from 'Components/dashboard/labbooks/localLabbooks/lookups/ContainerLookup';
 
       import relayTestingUtils from 'relay-testing-utils'
 

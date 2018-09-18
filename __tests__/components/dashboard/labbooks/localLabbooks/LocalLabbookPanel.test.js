@@ -10,7 +10,7 @@ import {MemoryRouter } from 'react-router-dom'
 import environment from 'JS/createRelayEnvironment'
 import {BrowserRouter as Router} from 'react-router-dom'
 
-const variables = {first:5}
+const variables = {first: 5}
 const goToLabbook = () =>{
 
 }

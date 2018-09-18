@@ -12,7 +12,7 @@ exports[`Test Dashboard Labbooks 1`] = `
     >
       <div />
       <div
-        className="Labbooks__title-bar"
+        className="Labbooks__panel-bar"
       >
         <h6
           className="Labbooks__username"
@@ -33,7 +33,7 @@ exports[`Test Dashboard Labbooks 1`] = `
           className="Labbooks__nav  flex flex--row"
         >
           <li
-            className="Labbooks__nav-item--0 selected"
+            className="Labbooks__nav-item Labbooks__nav-item--local Labbooks__nav-item--selected"
           >
             <a
               onClick={[Function]}
@@ -42,7 +42,7 @@ exports[`Test Dashboard Labbooks 1`] = `
             </a>
           </li>
           <li
-            className="Labbooks__nav-item--1"
+            className="Labbooks__nav-item Labbooks__nav-item--cloud"
           >
             <a
               onClick={[Function]}
@@ -51,7 +51,7 @@ exports[`Test Dashboard Labbooks 1`] = `
             </a>
           </li>
           <hr
-            className="Labbooks__navigation-slider Labbooks__navigation-slider--0"
+            className="Labbooks__navigation-slider Labbooks__navigation-slider--local"
           />
           <div
             className="hidden cloudLocal"
@@ -99,34 +99,34 @@ exports[`Test Dashboard Labbooks 1`] = `
           />
         </div>
         <div
-          className="Labbooks__filter"
+          className="LabbookFilterBy"
         >
           Filter by:
           <span
-            className="Labbooks__filter-collapsed"
+            className="LabbookFilterBy__selector LabbookFilterBy__selector--collapsed"
             onClick={[Function]}
           >
             All
           </span>
           <ul
-            className="hidden"
+            className="LabbookFilterBy__menu hidden"
           >
             <li
-              className="Labbooks__filter-item"
+              className="LabbookFilterBy__list-item"
               onClick={[Function]}
             >
               All 
               ✓ 
             </li>
             <li
-              className="Labbooks__filter-item"
+              className="LabbookFilterBy__list-item"
               onClick={[Function]}
             >
               My Projects 
               
             </li>
             <li
-              className="Labbooks__filter-item"
+              className="LabbookFilterBy__list-item"
               onClick={[Function]}
             >
               Shared with me 
@@ -135,55 +135,55 @@ exports[`Test Dashboard Labbooks 1`] = `
           </ul>
         </div>
         <div
-          className="Labbooks__sort"
+          className="LabbookSort"
         >
           Sort by:
           <span
-            className="Labbooks__sort-collapsed"
+            className="LabbookSort__selector LabbookSort__selector--collapsed"
             onClick={[Function]}
           >
             Modified Date (Newest)
           </span>
           <ul
-            className="hidden"
+            className="LabbookSort__menu hidden"
           >
             <li
-              className="Labbooks__sort-item"
+              className="LabbookSort__list-item"
               onClick={[Function]}
             >
               Modified Date (Newest) 
-              ✓ 
+              
             </li>
             <li
-              className="Labbooks__sort-item"
+              className="LabbookSort__list-item"
               onClick={[Function]}
             >
               Modified Date (Oldest) 
               
             </li>
             <li
-              className="Labbooks__sort-item"
+              className="LabbookSort__list-item"
               onClick={[Function]}
             >
               Creation Date (Newest) 
               
             </li>
             <li
-              className="Labbooks__sort-item"
+              className="LabbookSort__list-item"
               onClick={[Function]}
             >
               Creation Date (Oldest) 
               
             </li>
             <li
-              className="Labbooks__sort-item"
+              className="LabbookSort__list-item"
               onClick={[Function]}
             >
               A-Z 
               
             </li>
             <li
-              className="Labbooks__sort-item"
+              className="LabbookSort__list-item"
               onClick={[Function]}
             >
               Z-A 
@@ -193,13 +193,13 @@ exports[`Test Dashboard Labbooks 1`] = `
         </div>
       </div>
       <div
-        className="LocalLabbooks__labbooks"
+        className="Labbooks__listing"
       >
         <div
-          className="LocalLabbooks__sizer grid"
+          className="grid"
         >
           <div
-            className="ImportModule Labbooks__panel Labbooks__panel--add Labbooks__panel--import column-4-span-3"
+            className="ImportModule Card Card--add Card--import column-4-span-3"
             id="dropZone"
             onDragEnd={[Function]}
             onDragOver={[Function]}
@@ -207,20 +207,20 @@ exports[`Test Dashboard Labbooks 1`] = `
             type="file"
           >
             <div
-              className="Labbooks__labbook-main"
+              className="Import__labbook-main"
             >
               <div
-                className="Labbooks__labbook-header"
+                className="Import__labbook-header"
               >
                 <div
-                  className="Labbooks__labbook-icon"
+                  className="Import__labbook-icon"
                 >
                   <div
-                    className="Labbooks__title-add"
+                    className="Import__add-icon"
                   />
                 </div>
                 <div
-                  className="Labbooks__add-text"
+                  className="Import__title"
                 >
                   <h4>
                     Add Project
@@ -228,7 +228,7 @@ exports[`Test Dashboard Labbooks 1`] = `
                 </div>
               </div>
               <div
-                className="Labbooks__labbook-button"
+                className="btn--import"
                 onClick={[Function]}
               >
                 Create New
@@ -262,7 +262,7 @@ exports[`Test Dashboard Labbooks 1`] = `
                 </div>
               </div>
               <div
-                className="Labbooks__labbook-button-import"
+                className="btn--import"
                 onClick={[Function]}
               >
                 Import Existing
@@ -303,27 +303,27 @@ exports[`Test Dashboard Labbooks 1`] = `
             />
           </div>
           <div
-            className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--0"
+            className="Card column-4-span-3 flex flex--column justify--space-between LabbookPaginationLoader LabbookPaginationLoader--0"
           >
             <div />
           </div>
           <div
-            className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--1"
+            className="Card column-4-span-3 flex flex--column justify--space-between LabbookPaginationLoader LabbookPaginationLoader--1"
           >
             <div />
           </div>
           <div
-            className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--2"
+            className="Card column-4-span-3 flex flex--column justify--space-between LabbookPaginationLoader LabbookPaginationLoader--2"
           >
             <div />
           </div>
           <div
-            className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--3"
+            className="Card column-4-span-3 flex flex--column justify--space-between LabbookPaginationLoader LabbookPaginationLoader--3"
           >
             <div />
           </div>
           <div
-            className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--4"
+            className="Card column-4-span-3 flex flex--column justify--space-between LabbookPaginationLoader LabbookPaginationLoader--4"
           >
             <div />
           </div>

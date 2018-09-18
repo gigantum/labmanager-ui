@@ -2,18 +2,18 @@
 
 exports[`Test LocalLabbooks rendering 1`] = `
 <a
-  className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+  className="Card Card--text column-4-span-3 flex flex--column justify--space-between"
   href="/projects/cbutler/zab"
   onClick={[Function]}
 >
   <div
-    className="LocalLabbooks__icon-row"
+    className="LocalLabbooks__row--icons"
   >
     <div
       className="LocalLabbooks__containerStatus"
     >
       <button
-        className="LocalLabbooks__containerStatus--state loading"
+        className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
         onClick={[Function]}
         onMouseOut={[Function]}
         onMouseOver={[Function]}
@@ -23,11 +23,9 @@ exports[`Test LocalLabbooks rendering 1`] = `
     </div>
   </div>
   <div
-    className="LocalLabbooks__text-row"
+    className="LocalLabbooks__row--text"
   >
-    <div
-      className="LocalLabbooks__title-row"
-    >
+    <div>
       <h6
         className="LocalLabbooks__panel-title"
         onClick={[Function]}
@@ -45,12 +43,12 @@ exports[`Test LocalLabbooks rendering 1`] = `
       </h6>
     </div>
     <p
-      className="LocalLabbooks__owner"
+      className="LocalLabbooks__paragraph LocalLabbooks__paragraph--owner "
     >
       Created by cbutler
     </p>
     <p
-      className="LocalLabbooks__description"
+      className="LocalLabbooks__paragraph LocalLabbooks__paragraph--description"
     >
       <span
         className={undefined}

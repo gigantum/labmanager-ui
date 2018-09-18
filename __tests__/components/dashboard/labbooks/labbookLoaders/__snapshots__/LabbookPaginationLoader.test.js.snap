@@ -2,7 +2,7 @@
 
 exports[`Snapshot LabbookPaginationLoader LabbookPaginationLoader isLoading false 1`] = `
 <div
-  className="Labbook__loader-hidden"
+  className="LabbookPaginationLoader--hidden"
 >
   <div />
 </div>
@@ -10,7 +10,7 @@ exports[`Snapshot LabbookPaginationLoader LabbookPaginationLoader isLoading fals
 
 exports[`Snapshot LabbookPaginationLoader LabbookPaginationLoader isLoading true 1`] = `
 <div
-  className="LocalLabbooks__panel column-4-span-3 flex flex--column justify--space-between Labbook-paginating Labbook-paginating__loader--undefined"
+  className="Card column-4-span-3 flex flex--column justify--space-between LabbookPaginationLoader LabbookPaginationLoader--undefined"
 >
   <div />
 </div>

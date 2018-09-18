@@ -134,7 +134,7 @@ describe('LocalLabbooks', () => {
   it('LocalLabbooks panel length', () => {
 
 
-    expect(localLabbooksShallow.find('.LocalLabbooks__panel')).toHaveLength(16)
+    expect(localLabbooksShallow.find('.LocalLabbooks__panel')).toHaveLength(5)
   })
 
 
@@ -173,7 +173,7 @@ describe('LocalLabbooks', () => {
 
   it('Simulates opening create labbook', () => {
 
-    localLabbooksMount.find('.Labbooks__labbook-button').simulate('click');
+    localLabbooksMount.find('.btn--import').at(0).simulate('click');
 
     expect(showModalTest).toHaveProperty('callCount', 1);
   });
@@ -181,7 +181,7 @@ describe('LocalLabbooks', () => {
 
   it('Simulates opening a labbook', () => {
 
-    localLabbooksMount.find('.LocalLabbooks__panel').at(4).simulate('click');
+    localLabbooksMount.find('.Card').at(4).simulate('click');
 
 
     expect(goToLabbookTest).toHaveProperty('callCount', 1);
