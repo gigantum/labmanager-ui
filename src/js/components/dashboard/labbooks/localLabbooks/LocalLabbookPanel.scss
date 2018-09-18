@@ -1,0 +1,205 @@
+@import '~Styles/_imports.scss';
+
+
+.Card--text{
+  text-decoration: none;
+
+  color: $jet;
+
+  &:hover{
+    text-decoration: none;
+
+    color: $jet;
+  }
+}
+
+.LocalLabbooks__row{
+
+  &--icons{
+    height: 68px;
+    padding: 20px 20px 10px;
+
+    @include flex(space-between, row);
+  }
+
+  &--text {
+    flex: 1;
+
+    height: 100px;
+    padding: 10px 20px;
+
+    text-align: left;
+  }
+}
+
+.LocalLabbooks__paragraph{
+  color: $romanSilver;
+
+  font-size: 14px;
+
+  &--owner{
+    height: 20px;
+    margin: 2px;
+
+    line-height: 20px;
+  }
+
+  &--description{
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+
+    max-height: 130px;
+
+    white-space: pre-line;
+    text-overflow: ellipsis;
+    word-break: initial;
+
+    line-height: 20px;
+
+    -webkit-line-clamp: 6;
+    box-orient: vertical;
+  }
+}
+
+.LocalLabbooks__highlighted{
+  color: $white;
+  background: $azure;
+}
+
+.LocalLabbookPanel__private{
+  align-self: flex-end;
+
+  width: 24px;
+  height: 24px;
+  padding: 20px;
+
+  background: url(~Images/icons/lock-grey.svg) no-repeat center center;
+  background-size: 18px;
+}
+
+.LocalLabbookPanel__public{
+  align-self: flex-end;
+
+  width: 24px;
+  height: 24px;
+  padding: 20px;
+
+  background: url(~Images/icons/earth-grey.svg) no-repeat center center;
+  background-size: 18px;
+
+}
+
+.LocalLabbookPanel__loading{
+  align-self: flex-end;
+
+  width: 18px;
+  height: 18px;
+  margin: 8px;
+  padding: 14px;
+
+  opacity: 0.5;
+  border-radius: 50%;
+  background: $grey !important;
+}
+
+/****************************
+* Container Status
+*****************************/
+
+.LocalLabbooks__containerStatus {
+  width: 100%;
+
+  color: white;
+
+  font-weight: 100;
+
+  @include flex(flex-end, row);
+}
+
+.LocalLabbooks__containerStatus--state {
+  z-index: index($elements, button);
+
+  width: 141px;
+  height: 31px;
+  padding: 0 10px 0 0;
+
+  cursor: pointer;
+  transition: height 0.5s, width 0.5s, box-shadow 0.5s;
+  text-align: center;
+
+  color: $romanSilver !important;
+  border: 2px solid rgba(0,0,0,0);
+  border-radius: 20px;
+  background-color: transparent !important;
+
+  font-size: 16px;
+  line-height: 26px;
+
+  @extend .box-shadow;
+
+  &:hover,
+   :focus{
+    color: $romanSilver;
+  }
+
+  &.loading,
+   .loading:hover,
+   .loading:focus{
+     opacity: 0.5;
+     background: $grey !important;
+   }
+
+   &.Stopped{
+     transition: box-shadow 0.5s;
+
+     border: 3px solid $romanSilver;
+     background: $background-color url('~Images/icons/stop.svg') no-repeat 90% center;
+     background-size: 20px;
+
+     @extend .box-shadow;
+   }
+
+   &.Stopped:hover{
+     border: 3px solid $turquise;
+     background: $background-color url('~Images/icons/run.svg') no-repeat 90% center;
+     background-size: 20px;
+     box-shadow: 0 0px 12px 0 rgba(0, 0, 0, 0.5);
+   }
+
+   .Running{
+     transition: box-shadow 0.5s;
+
+     border: 3px solid $turquise;
+     background: $background-color url('~Images/icons/run.svg') no-repeat 90% center;
+     background-size: 20px;
+   }
+
+   &.Running:hover{
+     border: 3px solid $romanSilver;
+     background: $background-color url('~Images/icons/stop.svg') no-repeat 90% center;
+     background-size: 20px;
+     box-shadow: 0 0px 12px 0 rgba(0, 0, 0, 0.5);
+   }
+
+   &.Building,
+    .Stopping,
+    .Starting{
+      cursor: auto;
+
+      opacity: 0.75;
+      color: $jet !important;
+      border: 3px solid $goldenLemon;
+      background: none;
+   }
+
+   &.Rebuild{
+     padding: 0 15px 0 0;
+
+     cursor: pointer;
+
+     border: 3px solid $goldenLemon;
+     background: $background-color url('~Images/icons/button-build.svg') no-repeat 85% center;
+     background-size: 20px;
+   }
+}

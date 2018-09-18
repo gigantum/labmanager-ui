@@ -31,6 +31,7 @@ class Routes extends Component {
       showYT: false,
       showDefaultMessage: true,
     }
+
     this._setForceLoginScreen = this._setForceLoginScreen.bind(this)
     this._flipDemoHeaderText = this._flipDemoHeaderText.bind(this)
 

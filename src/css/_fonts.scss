@@ -2,19 +2,19 @@
 	font-family: "NunitoSans";
 	font-weight: normal;
 	font-style: normal;
-	src: url("./../fonts/nunito-sans/NunitoSans-Regular.ttf");
+	src: url("~Fonts/nunito-sans/NunitoSans-Regular.ttf");
 }
 
 @font-face {
 	font-family: "NunitoSans";
-	src: url("./../fonts/nunito-sans/NunitoSans-Bold.ttf");
+	src: url("~Fonts/nunito-sans/NunitoSans-Bold.ttf");
 	font-weight: bold;
 	font-style: bold;
 }
 
 @font-face {
 	font-family: "NunitoSans";
-	src: url("./../fonts/nunito-sans/NunitoSans-Light.ttf");
+	src: url("~Fonts/nunito-sans/NunitoSans-Light.ttf")y;
 	font-weight: 100;
 	font-style: 100;
 }
@@ -23,12 +23,12 @@
   font-family: 'Font Awesome 5 Free';
   font-style: normal;
   font-weight: 900;
-  src: url('./../fonts/font-awesome/fa-solid-900.eot');
-  src: url('./../fonts/font-awesome/fa-solid-900.eot?#iefix') format('embedded-opentype'),
-  url('./../fonts/font-awesome/fa-solid-900.woff2') format('woff2'),
-  url('./../fonts/font-awesome/fa-solid-900.woff') format('woff'),
-  url('./../fonts/font-awesome/fa-solid-900.ttf') format('truetype'),
-  url('./../fonts/font-awesome/fa-solid-900.svg#fontawesome') format('svg');
+  src: url('~Fonts/font-awesome/fa-solid-900.eot');
+  src: url('~Fonts/font-awesome/fa-solid-900.eot?#iefix') format('embedded-opentype'),
+  url('~Fonts/font-awesome/fa-solid-900.woff2') format('woff2'),
+  url('~Fonts/font-awesome/fa-solid-900.woff') format('woff'),
+  url('~Fonts/font-awesome/fa-solid-900.ttf') format('truetype'),
+  url('~Fonts/font-awesome/fa-solid-900.svg#fontawesome') format('svg');
 }
 
 body * {

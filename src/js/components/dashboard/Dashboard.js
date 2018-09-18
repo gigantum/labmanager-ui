@@ -6,8 +6,11 @@ import DatasetSets from './datasets/DatasetSets';
 import LocalLabbooksContainer from './labbooks/localLabbooks/LocalLabbooksContainer';
 import RemoteLabbooksContainer from './labbooks/remoteLabbooks/RemoteLabbooksContainer';
 import environment from 'JS/createRelayEnvironment'
-//store
+//assets
+import './Dashboard.scss'
+//redux
 import { setCallbackRoute } from 'JS/redux/reducers/routes'
+
 
 const LocalListingQuery = graphql`query DashboardLocalQuery($first: Int!, $cursor: String, $orderBy: String $sort: String){
   ...LocalLabbooksContainer_labbookList
@@ -60,11 +63,12 @@ export default class DashboardContainer extends Component {
   _displaySelectedComponent(){
     if(this.state.selectedComponent === 'datasets'){
 
-      return (
-        <DatasetSets/>)
+      return (<DatasetSets/>)
     }else{
-      let paths = this.props.history.location.pathname.split('/')
-      let sectionRoute = paths.length > 2 ?  paths[2] : 'local'
+
+      const paths = this.props.history.location.pathname.split('/')
+      const sectionRoute = paths.length > 2 ?  paths[2] : 'local'
+
       if(paths[2] !== 'cloud' && paths[2] !== 'local'){
         this.props.history.replace(`../../../../projects/local`)
       }
@@ -81,9 +85,12 @@ export default class DashboardContainer extends Component {
           }}
           render={({error, props}) => {
             if (error) {
+
               console.log(error)
             } else if (props) {
+
               if (sectionRoute === 'cloud'){
+
                 return (
                   <RemoteLabbooksContainer
                     auth={this.props.auth}
@@ -93,6 +100,7 @@ export default class DashboardContainer extends Component {
                   />
                 )
               } else {
+
                 return (
                   <LocalLabbooksContainer
                     auth={this.props.auth}

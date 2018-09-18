@@ -1,0 +1,248 @@
+@import '~Styles/_imports.scss';
+
+.Labbooks {
+  width: auto;
+  min-width: 760px;
+  max-width: 1285px;
+  height: 100%;
+  margin: auto;
+  padding: 0 25px;
+}
+
+.Labbooks--demo{
+  margin-top: 100px;
+}
+
+/*******************
+Labbook__nav start
+********************/
+.Labbooks__nav {
+  position: relative;
+
+  white-space: nowrap;
+
+  border-bottom: 1px solid $grey;
+}
+
+.Labbooks__nav-item {
+  padding: 0 30px;
+
+  text-align: center;
+
+  a {
+    display: inline-block;
+
+    margin: 0;
+    padding: .75rem 0;
+
+    cursor: pointer;
+    text-decoration: none;
+
+    color: $jet;
+  }
+
+  a:hover {
+    color: $selected-blue;
+
+    text-decoration: none
+  }
+
+  &--selected a {
+    position: relative;
+    bottom: -4px;
+
+    color: $selected-blue;
+
+    line-height: 15px;
+  }
+
+  &--local:hover ~ hr{
+    width: 50px;
+    margin-left: 25px;
+  }
+
+  &--cloud:hover ~ hr{
+    width: 90px;
+    margin-left: 105px;
+  }
+}
+
+.Labbooks__navigation-slider{
+  position: absolute;
+  bottom: 0;
+
+  height: 3px;
+  margin: 0;
+
+  transition: .1s ease-in-out;
+  pointer-events: none;
+
+  border: none;
+  background: $turquise;
+
+  &--local{
+    width: 50px;
+    margin-left: 25px;
+  }
+
+  &--cloud{
+    width: 90px;
+    margin-left: 105px;
+  }
+}
+
+
+/*******************
+Labbook__nav end
+********************/
+.Labbooks__title {
+  position: relative;
+
+  width: 280px;
+  margin: 20px 0px;
+  padding: 0;
+
+  cursor: pointer;
+
+  color: $jet;
+}
+
+.Labbooks__username {
+  margin: 20px 0 10px 0;
+  padding: 0;
+
+}
+
+.Labbooks__title-add {
+  position: absolute;
+
+  width: 20px;
+  height: 20px;
+
+  transition: all 0.3s;
+
+  border-width: 0px;
+  border-radius: 12px;
+  background: $azure url('~Images/icons/add.svg') no-repeat center center;
+  background-size: 12px;
+
+}
+
+
+.Labbooks__title:hover {
+  .Labbooks__title-add {
+    opacity: 1;
+  }
+}
+
+.Labbooks__subheader {
+  position: relative;
+
+  display: flex;
+  justify-content: flex-start;
+  height: 28px;
+  margin: 10px;
+  margin: 60px 0 10px 0;
+}
+
+.Labbooks__search-container{
+  flex-grow: 1;
+  margin-right: 20px;
+  align-self: flex-end;
+  position: relative;
+}
+
+.Labbooks__search {
+  height: 28px !important;
+  margin: 0px !important;
+  color: $azure !important;
+}
+
+.Labbooks__search[type="text"]:focus {
+  background: white;
+  border: none !important;
+  box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+.Labbooks__search-cancel{
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  top: 2px;
+  right: 6px;
+  background: url('~Images/icons/close.svg') no-repeat center center;
+  background-size: 24px;
+  cursor: pointer;
+}
+
+.Labbooks__search-cancel--text{
+  color: $romanSilver;
+  position: absolute;
+  right: 35px;
+  top: 4px;
+  text-align: right;
+}
+
+.Labbooks__labbook-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 125px;
+  padding-top: 20px;
+}
+
+.Labbooks__labbook-header {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  @include flex(center, column)
+}
+
+
+.Labbooks__fetch-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+  text-align: center;
+  white-space: nowrap;
+
+  font-size: 24px;
+}
+
+.Labbooks__no-results{
+  color: $romanSilver;
+  width: 100%;
+  text-align: center;
+  margin-top: 150px;
+}
+
+.Labbooks__h3{
+  font-weight: 100;
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.Labbooks__paragraph--margin{
+  margin-top: 10px;
+}
+
+.Labbooks__span{
+  font-weight: 100;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.Labbooks__listing {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  height: calc(100% - 90px);
+
+  @include flex(center, row);
+}

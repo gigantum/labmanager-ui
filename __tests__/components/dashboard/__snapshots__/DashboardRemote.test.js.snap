@@ -6,7 +6,7 @@ exports[`Test DashboardRemote 1`] = `
 >
   <div />
   <div
-    className="Labbooks__title-bar"
+    className="Labbooks__panel-bar"
   >
     <h6
       className="Labbooks__username"
@@ -27,7 +27,7 @@ exports[`Test DashboardRemote 1`] = `
       className="Labbooks__nav  flex flex--row"
     >
       <li
-        className="Labbooks__nav-item--0"
+        className="Labbooks__nav-item Labbooks__nav-item--local"
       >
         <a
           onClick={[Function]}
@@ -36,7 +36,7 @@ exports[`Test DashboardRemote 1`] = `
         </a>
       </li>
       <li
-        className="Labbooks__nav-item--1 selected"
+        className="Labbooks__nav-item Labbooks__nav-item--cloud Labbooks__nav-item--selected"
       >
         <a
           onClick={[Function]}
@@ -45,7 +45,7 @@ exports[`Test DashboardRemote 1`] = `
         </a>
       </li>
       <hr
-        className="Labbooks__navigation-slider Labbooks__navigation-slider--1"
+        className="Labbooks__navigation-slider Labbooks__navigation-slider--cloud"
       />
       <div
         className="hidden cloudLocal"
@@ -93,34 +93,34 @@ exports[`Test DashboardRemote 1`] = `
       />
     </div>
     <div
-      className="Labbooks__filter"
+      className="LabbookFilterBy"
     >
       Filter by:
       <span
-        className="Labbooks__filter-collapsed"
+        className="LabbookFilterBy__selector LabbookFilterBy__selector--collapsed"
         onClick={[Function]}
       >
         All
       </span>
       <ul
-        className="hidden"
+        className="LabbookFilterBy__menu hidden"
       >
         <li
-          className="Labbooks__filter-item"
+          className="LabbookFilterBy__list-item"
           onClick={[Function]}
         >
           All 
           ✓ 
         </li>
         <li
-          className="Labbooks__filter-item"
+          className="LabbookFilterBy__list-item"
           onClick={[Function]}
         >
           My Projects 
           
         </li>
         <li
-          className="Labbooks__filter-item"
+          className="LabbookFilterBy__list-item"
           onClick={[Function]}
         >
           Shared with me 
@@ -129,55 +129,55 @@ exports[`Test DashboardRemote 1`] = `
       </ul>
     </div>
     <div
-      className="Labbooks__sort"
+      className="LabbookSort"
     >
       Sort by:
       <span
-        className="Labbooks__sort-collapsed"
+        className="LabbookSort__selector LabbookSort__selector--collapsed"
         onClick={[Function]}
       >
         Modified Date (Newest)
       </span>
       <ul
-        className="hidden"
+        className="LabbookSort__menu hidden"
       >
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           Modified Date (Newest) 
-          ✓ 
+          
         </li>
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           Modified Date (Oldest) 
           
         </li>
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           Creation Date (Newest) 
           
         </li>
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           Creation Date (Oldest) 
           
         </li>
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           A-Z 
           
         </li>
         <li
-          className="Labbooks__sort-item"
+          className="LabbookSort__list-item"
           onClick={[Function]}
         >
           Z-A 
@@ -187,33 +187,33 @@ exports[`Test DashboardRemote 1`] = `
     </div>
   </div>
   <div
-    className="LocalLabbooks__labbooks"
+    className="Labbooks__listing"
   >
     <div
-      className="LocalLabbooks__sizer grid"
+      className="grid"
     >
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud-download"
             disabled={false}
             onClick={[Function]}
           />
           <button
-            className="RemoteLabbooks__cloud-delete--disabled"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete-disabled"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -231,12 +231,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by dmk
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -249,26 +249,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete--disabled"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete-disabled"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -286,12 +286,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by dmk
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -304,27 +304,27 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud-download"
             disabled={false}
             onClick={[Function]}
           />
           <button
-            className="RemoteLabbooks__cloud-delete--disabled"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete-disabled"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -342,12 +342,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by bill2
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -360,26 +360,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete--disabled"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete-disabled"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -397,12 +397,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by dmk
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -415,26 +415,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete--disabled"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete-disabled"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -452,12 +452,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by dmk
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -470,26 +470,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -507,12 +507,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by cbutler
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -525,26 +525,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -562,12 +562,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by cbutler
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -580,26 +580,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -617,12 +617,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by cbutler
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -635,26 +635,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -672,12 +672,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by cbutler
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -690,27 +690,27 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud-download"
             disabled={false}
             onClick={[Function]}
           />
           <button
-            className="RemoteLabbooks__cloud-delete--disabled"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete-disabled"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -728,12 +728,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by bill2
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -746,26 +746,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -783,12 +783,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by cbutler
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -801,26 +801,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete--disabled"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete-disabled"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -838,12 +838,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by gigantum-examples
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -856,26 +856,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -893,12 +893,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by cbutler
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -911,26 +911,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -948,12 +948,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by cbutler
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -966,27 +966,27 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud-download"
             disabled={false}
             onClick={[Function]}
           />
           <button
-            className="RemoteLabbooks__cloud-delete--disabled"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete-disabled"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -1004,12 +1004,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by joel
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1022,27 +1022,27 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud-download"
             disabled={false}
             onClick={[Function]}
           />
           <button
-            className="RemoteLabbooks__cloud-delete--disabled"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete-disabled"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -1060,12 +1060,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by gigantum-examples
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1078,26 +1078,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete--disabled"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete-disabled"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -1115,12 +1115,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by randalg
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1133,26 +1133,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -1170,12 +1170,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by cbutler
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1188,27 +1188,27 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud-download"
             disabled={false}
             onClick={[Function]}
           />
           <button
-            className="RemoteLabbooks__cloud-delete--disabled"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete-disabled"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -1226,12 +1226,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by dmk
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1244,26 +1244,26 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="RemoteLabbooks__panel column-4-span-3 flex flex--column justify--space-between"
+        className="Card column-4-span-3 flex flex--column justify--space-between"
       >
         <div
-          className="RemoteLabbooks__icon-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--icon"
         >
           <button
-            className="RemoteLabbooks__cloud-download--exists"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--cloud"
             disabled={true}
           />
           <button
-            className="RemoteLabbooks__cloud-delete"
+            className="RemoteLabbooks__icon RemoteLabbooks__icon--delete"
             disabled={false}
             onClick={[Function]}
           />
         </div>
         <div
-          className="RemoteLabbooks__text-row"
+          className="RemoteLabbooks__row RemoteLabbooks__row--text"
         >
           <div
-            className="RemoteLabbooks__title-row"
+            className="RemoteLabbooks__row RemoteLabbooks__row--title"
           >
             <h6
               className="RemoteLabbooks__panel-title"
@@ -1281,12 +1281,12 @@ exports[`Test DashboardRemote 1`] = `
             </h6>
           </div>
           <p
-            className="RemoteLabbooks__owner"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--owner"
           >
             Created by cbutler
           </p>
           <p
-            className="RemoteLabbooks__description"
+            className="RemoteLabbooks__paragraph RemoteLabbooks__paragraph--description"
           >
             <span
               className={undefined}
@@ -1299,27 +1299,27 @@ exports[`Test DashboardRemote 1`] = `
         />
       </div>
       <div
-        className="Labbook__loader-hidden"
+        className="LabbookPaginationLoader--hidden"
       >
         <div />
       </div>
       <div
-        className="Labbook__loader-hidden"
+        className="LabbookPaginationLoader--hidden"
       >
         <div />
       </div>
       <div
-        className="Labbook__loader-hidden"
+        className="LabbookPaginationLoader--hidden"
       >
         <div />
       </div>
       <div
-        className="Labbook__loader-hidden"
+        className="LabbookPaginationLoader--hidden"
       >
         <div />
       </div>
       <div
-        className="Labbook__loader-hidden"
+        className="LabbookPaginationLoader--hidden"
       >
         <div />
       </div>

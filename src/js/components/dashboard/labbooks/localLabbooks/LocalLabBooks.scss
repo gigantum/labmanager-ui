@@ -1,0 +1,27 @@
+@import '~Styles/_imports.scss';
+
+.LocalLabbooks {
+  width: auto;
+  min-width: 760px;
+  max-width: 1285px;
+  height: 100%;
+  margin: auto;
+  padding: 0 25px;
+}
+
+.LocalLabbooks__title {
+  position: relative;
+
+  width: 280px;
+  margin: 20px 0px;
+  padding: 0;
+
+  cursor: pointer;
+
+  color: $jet;
+}
+
+.LocalLabbooks__username {
+  margin: 20px 0 10px 0;
+  padding: 0;
+}

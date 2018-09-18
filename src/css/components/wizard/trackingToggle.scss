@@ -6,12 +6,6 @@
     align-items: center;
 }
 
-// .TrackingToggle__label--on {
-//   width: 40px;
-//   border: 1px solid $azure;
-//   height: 16px;
-//   border-radius: 8px;
-// }
 .TrackingToggle__checkbox--on {
   border: 1px solid $azure;
 }
@@ -55,21 +49,21 @@
   background-color: $romanSilver;
   border-radius:10px;
   display:inline-block;
-  width: 11px;
-  padding: 0;
+  width: 11px !important;
+  padding: 0 !important;
   text-align:center;
   font:bold 10px/28px Arial,Sans-Serif;
   color:#999;
   transition:margin-left 0.2s ease-in-out;
   margin: 0px 1px 4px 2px;
-  height: 11px;
+  height: 11px !important;
 }
 
 .TrackingToggle label:before {
   content:attr(data-off);
    width: 0;
    height: 0;
-   border: 0px;
+   border: 0px !important;
 }
 
 .TrackingToggle input:checked + label {

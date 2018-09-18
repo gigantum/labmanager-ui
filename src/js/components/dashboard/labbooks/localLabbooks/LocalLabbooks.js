@@ -7,10 +7,13 @@ import {
 //components
 import LocalLabbookPanel from 'Components/dashboard/labbooks/localLabbooks/LocalLabbookPanel'
 import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
-import ImportModule from 'Components/import/ImportModule'
+import ImportModule from './import/ImportModule'
 //helpers
-import ContainerLookup from './ContainerLookup'
-import VisibilityLookup from './VisibilityLookup'
+import ContainerLookup from './lookups/ContainerLookup'
+import VisibilityLookup from './lookups/VisibilityLookup'
+//assets
+import './LocalLabBooks.scss'
+
 
 export class LocalLabbooks extends Component {
   constructor(props){
@@ -224,9 +227,9 @@ export class LocalLabbooks extends Component {
 
       return(
 
-        <div className='LocalLabbooks__labbooks'>
+        <div className='Labbooks__listing'>
 
-          <div className="LocalLabbooks__sizer grid">
+          <div className="grid">
             {
               importVisible &&
 
@@ -235,7 +238,6 @@ export class LocalLabbooks extends Component {
                   {...this.props}
                   showModal={this.props.showModal}
                   history={this.props.history}
-                  className="LocalLabbooks__panel column-4-span-3 LocalLabbooks__panel--import"
                 />
 
             }
@@ -261,9 +263,10 @@ export class LocalLabbooks extends Component {
 
                 <div className="Labbooks__no-results">
 
-                  <h3>No Results Found</h3>
+                  <h3 className="Labbooks__h3">No Results Found</h3>
 
-                  <p>Edit your filters above or <span
+                  <p className="Labbooks__paragraph--margin">Edit your filters above or <span
+                    className="Labbooks__span"
                     onClick={()=> this.props.setFilterValue({target: {value: ''}})}
                   >clear
 

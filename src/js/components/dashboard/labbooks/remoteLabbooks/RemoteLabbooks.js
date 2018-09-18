@@ -12,6 +12,8 @@ import LabbooksPaginationLoader from '../labbookLoaders/LabbookPaginationLoader'
 import UserIdentity from 'JS/Auth/UserIdentity'
 //store
 import store from 'JS/redux/store'
+//assets
+import './RemoteLabbooks.scss'
 
 class RemoteLabbooks extends Component {
   constructor(props){
@@ -116,8 +118,8 @@ class RemoteLabbooks extends Component {
       let labbooks = this.props.filterLabbooks(this.props.remoteLabbooks.remoteLabbooks.edges, this.props.filterState)
 
       return(
-        <div className='LocalLabbooks__labbooks'>
-        <div className="LocalLabbooks__sizer grid">
+        <div className='Labbooks__listing'>
+        <div className="grid">
           {
             labbooks.length ?
             labbooks.map((edge) => {
@@ -126,8 +128,7 @@ class RemoteLabbooks extends Component {
                   toggleDeleteModal={this._toggleDeleteModal}
                   labbookListId={this.props.remoteLabbooksId}
                   key={edge.node.owner + edge.node.name}
-                  ref={'LocalLabbookPanel' + edge.node.name}
-                  className="LocalLabbooks__panel"
+                  ref={'RemoteLabbookPanel' + edge.node.name}
                   edge={edge}
                   history={this.props.history}
                   existsLocally={edge.node.isLocal}
@@ -138,12 +139,17 @@ class RemoteLabbooks extends Component {
             :
             !this.state.isPaginating &&
             store.getState().labbookListing.filterText &&
+
             <div className="Labbooks__no-results">
-              <h3>No Results Found</h3>
+
+              <h3 className="Labbooks__h3">No Results Found</h3>
+
               <p>Edit your filters above or <span
+                className="Labbooks__span"
                 onClick={()=> this.props.setFilterValue({target: {value: ''}})}
               >clear
               </span> to try again.</p>
+
             </div>
           }
           {
@@ -151,7 +157,7 @@ class RemoteLabbooks extends Component {
 
                 return (
                   <LabbooksPaginationLoader
-                    key={'LocalLabbooks_paginationLoader' + index}
+                    key={'RemoteLabbooks_paginationLoader' + index}
                     index={index}
                     isLoadingMore={this.state.isPaginating}
                   />
