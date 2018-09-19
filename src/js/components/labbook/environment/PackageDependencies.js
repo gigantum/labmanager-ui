@@ -90,6 +90,7 @@ class PackageDependencies extends Component {
     let newPackages= this.props.environment.packageDependencies
 
     if(newPackages.edges && newPackages.edges.length < 3 && newPackages.pageInfo.hasNextPage){
+      console.log('component update load more')
       this._loadMore();
     }
 
@@ -139,6 +140,7 @@ class PackageDependencies extends Component {
   */
   componentDidMount() {
     if(this.props.environment.packageDependencies.pageInfo.hasNextPage){
+      console.log('mount load more')
       this._loadMore() //routes query only loads 2, call loadMore
     } else{
       if(!store.getState().packageDependencies.latestFetched){
@@ -160,26 +162,32 @@ class PackageDependencies extends Component {
     logs callback
   */
   _loadMore() {
-    totalCount += 5;
-    let self = this;
-    this.props.relay.loadMore(
-    5, // Fetch the next 5 feed items
-    (response, error) => {
+    if(!this.state.loadingMore){
+      this.setState({loadingMore: true})
+      console.log('load more running')
+      totalCount += 5;
+      let self = this;
+      this.props.relay.loadMore(
+      5, // Fetch the next 5 feed items
+      (response, error) => {
+        self.setState({loadingMore: false})
 
-       if(error){
-         console.error(error)
+         if(error){
+           console.error(error)
+         }
+         console.log(self.props.environment.packageDependencies, self.props.environment.packageDependencies.pageInfo.hasNextPage)
+         if(self.props.environment.packageDependencies &&
+           self.props.environment.packageDependencies.pageInfo.hasNextPage) {
+             console.log('recursive load more')
+           self._loadMore()
+
+         }else{
+           self._refetch()
+         }
+
        }
-
-       if(self.props.environment.packageDependencies &&
-         self.props.environment.packageDependencies.pageInfo.hasNextPage) {
-         self._loadMore()
-
-       }else{
-         self._refetch()
-       }
-
-     }
-   );
+     );
+    }
   }
   /*
     @param

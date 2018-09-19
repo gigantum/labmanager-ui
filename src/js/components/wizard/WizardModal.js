@@ -220,11 +220,10 @@ export default class WizardModal extends React.Component {
           setTimeout(()=>{
             self._buildImage(name, owner)
 
-
-            self.props.history.push(`../projects/${owner}/${name}`)
-
             this.setState({
               createLabbookButtonState: ''
+            }, ()=>{
+              self.props.history.push(`../projects/${owner}/${name}`)
             })
           },2000)
 

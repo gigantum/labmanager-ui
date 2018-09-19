@@ -232,9 +232,9 @@ module.exports = {
     ],
   },
   plugins: [
-    new BundleAnalyzerPlugin({
-           analyzerMode: 'static'
-    }), //comment back in when needed
+    // new BundleAnalyzerPlugin({
+    //        analyzerMode: 'static'
+    // }), //comment back in when needed
     new webpack.optimize.CommonsChunkPlugin({
          name: 'node-static',
          filename: 'node-static.js',

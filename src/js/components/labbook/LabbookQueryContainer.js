@@ -7,7 +7,8 @@ import environment from 'JS/createRelayEnvironment'
 //components
 import Labbook from './Labbook'
 import Loader from 'Components/shared/Loader'
-
+//store
+import { setUpdateAll } from 'JS/redux/reducers/routes'
 //labbook query with notes fragment
 export const LabbookQuery =  graphql`
   query LabbookQueryContainerQuery($name: String!, $owner: String!, $first: Int!, $cursor: String, $hasNext: Boolean!){
@@ -19,6 +20,10 @@ export const LabbookQuery =  graphql`
   }`
 
 class LabbookQueryContainer extends Component {
+
+  componentDidMount(){
+    setUpdateAll(this.props.owner, this.props.labbookName)
+  }
 
   render(){
       const parentProps = this.props
