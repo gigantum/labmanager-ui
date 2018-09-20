@@ -13,8 +13,6 @@ import Prompt from 'Components/shared/Prompt';
 import LabbookQueryContainer from 'Components/labbook/LabbookQueryContainer';
 import Profile from 'Components/profile/Profile'
 import Helper from 'Components/shared/Helper'
-//store
-import { setUpdateAll } from 'JS/redux/reducers/routes'
 //config
 import config from 'JS/config'
 
@@ -211,10 +209,6 @@ class Routes extends Component {
                           if(this.props.forceLoginScreen){
                             return <Redirect to="/login" />
                           }
-                          const labbookName = parentProps.match.params.labbookName;
-                          const owner = parentProps.match.params.owner;
-
-                          setUpdateAll(owner, labbookName)
 
                           return (
                             <LabbookQueryContainer

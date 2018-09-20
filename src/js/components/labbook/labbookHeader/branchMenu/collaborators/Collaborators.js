@@ -1,7 +1,8 @@
-
 import {QueryRenderer, graphql} from 'react-relay'
 import React, { Component } from 'react'
 import classNames from 'classnames'
+import { connect } from 'react-redux'
+
 //environment
 import environment from 'JS/createRelayEnvironment'
 //components
@@ -21,7 +22,7 @@ export const CollaboratorsQuery =  graphql`
   }`
 
 
-  export default class CollaboratorButton extends Component {
+class CollaboratorButton extends Component {
     constructor(props){
     	super(props);
     	this.state = {
@@ -31,6 +32,27 @@ export const CollaboratorsQuery =  graphql`
       };
 
       this._toggleCollaborators = this._toggleCollaborators.bind(this)
+    }
+
+    static getDerivedStateFromProps(nextProps, nextState){
+      return nextProps.checkSessionIsValid().then((res) => {
+        if(res.data && res.data.userIdentity && res.data.userIdentity.isSessionValid) {
+          return{
+            ...nextState,
+            sessionValid: true,
+          }
+        } else {
+          return{
+            ...nextState,
+            sessionValid: false,
+          }
+        }
+      })
+    }
+
+    componentDidMount(){
+      this.props.setCollaborators({[this.props.labbookName]: this.collaborators})
+      this.props.setCanManageCollaborators({[this.props.labbookName]: this.canManageCollaborators})
     }
 
     _toggleCollaborators(){
@@ -78,22 +100,12 @@ export const CollaboratorsQuery =  graphql`
     }
 
     render(){
+      // console.log('here in render')
       let self = this
       const {labbookName, owner} = this.props
       let {collaborators, canManageCollaborators} = store.getState().collaborators;
       collaborators = collaborators && collaborators[labbookName];
       canManageCollaborators = canManageCollaborators && canManageCollaborators[labbookName];
-      this.props.checkSessionIsValid().then((res) => {
-        if(res.data && res.data.userIdentity && res.data.userIdentity.isSessionValid) {
-          if(this.state.sessionValid === false){
-            this.setState({sessionValid: true})
-          }
-        } else {
-          if(this.state.sessionValid === true){
-            this.setState({sessionValid: false})
-          }
-        }
-      })
       return(
         <QueryRenderer
           query={CollaboratorsQuery}
@@ -108,23 +120,22 @@ export const CollaboratorsQuery =  graphql`
 
                 const {labbook} = props
 
-                setCollaborators({[labbookName]: labbook.collaborators})
-
-                setCanManageCollaborators({[labbookName]: labbook.canManageCollaborators})
+                this.canManageCollaborators = labbook.canManageCollaborators
+                this.collaborators = labbook.collaborators
 
                 const collaboratorButtonCSS = classNames({
-                  'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
-                  'BranchMenu__btn--flat':  true
-                })
+                    'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
+                    'BranchMenu__btn--flat':  true
+                  }),
 
-                const collaboratorCSS = classNames({
-                  'BranchMenu__item BranchMenu__item--collaborators': true,
-                  'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
-                })
+                  collaboratorCSS = classNames({
+                    'BranchMenu__item BranchMenu__item--collaborators': true,
+                    'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
+                  }),
 
-                const collaboratorFilteredArr = labbook.collaborators && labbook.collaborators.filter((name)=>{
-                  return name !== owner
-                })
+                  collaboratorFilteredArr = labbook.collaborators && labbook.collaborators.filter((name)=>{
+                    return name !== owner
+                  });
 
                 const collaboratorNames = self._getCollaboratorList(labbook.collaborators, collaboratorFilteredArr)
 
@@ -222,3 +233,18 @@ export const CollaboratorsQuery =  graphql`
 
     }
   }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setCollaborators,
+    setCanManageCollaborators,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CollaboratorButton);
