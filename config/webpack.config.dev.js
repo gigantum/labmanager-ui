@@ -108,7 +108,9 @@ module.exports = {
       'Images': path.resolve(__dirname, '../src/images/'),
       'Styles': path.resolve(__dirname, '../src/css/'),
       'Fonts': path.resolve(__dirname, '../src/fonts/'),
-      'Node': path.resolve(__dirname, '../node_modules')
+      'Node': path.resolve(__dirname, '../node_modules'),
+      'react-dom': path.resolve(__dirname, '../node_modules/react-dom'),
+      'lodash': path.resolve(__dirname, '../node_modules/lodash'),
 
     },
     plugins: [
