@@ -134,15 +134,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         enforce: 'pre',
-        use: [
-          {
-            options: {
-              formatter: eslintFormatter,
-
-            },
-            loader: require.resolve('eslint-loader'),
-          },
-        ],
+        loader: "eslint-loader",
         include: paths.appSrc,
       },
       // ** ADDING/UPDATING LOADERS **
@@ -229,28 +221,43 @@ module.exports = {
       // Remember to add the new extension(s) to the "file" loader exclusion list.
     ],
   },
+  mode:'development',
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
   plugins: [
     // new BundleAnalyzerPlugin({
     //        analyzerMode: 'static'
     // }), //comment back in when needed
-    new webpack.optimize.CommonsChunkPlugin({
-         name: 'node-static',
-         filename: 'node-static.js',
-         minChunks(module, count) {
-             var context = module.context;
-             return context && context.indexOf('node_modules') >= 0;
-         },
-     }),
+
+    // new webpack.optimize.CommonsChunkPlugin({
+    //      name: 'node-static',
+    //      filename: 'node-static.js',
+    //      minChunks(module, count) {
+    //          var context = module.context;
+    //          return context && context.indexOf('node_modules') >= 0;
+    //      },
+    //  }),
+
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     // In development, this will be an empty string.
-    new InterpolateHtmlPlugin(env.raw),
+
     // Generates an `index.html` file with the <script> injected.
+    new webpack.LoaderOptionsPlugin({ options: {} }),
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.appHtml,
     }),
+    // new ScriptExtHtmlWebpackPlugin({
+    //   defaultAttribute: 'async'
+    // }),
+    new InterpolateHtmlPlugin(env.raw),
+    //removed webpack4
+    // new InterpolateHtmlPlugin(env.raw),
 
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.

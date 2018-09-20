@@ -1,7 +1,6 @@
 //vendor
 import React, { Component } from 'react'
 import { DragSource, DropTarget } from 'react-dnd'
-import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import classNames from 'classnames'
 //Mutations
@@ -96,13 +95,6 @@ class FavoriteCard extends Component {
 
 		this._updateIndexMutation = this._updateIndexMutation.bind(this)
 		this._removeFavorite = this._removeFavorite.bind(this)
-  }
-
-  static propTypes = {
-    connectDragSource: PropTypes.func.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
-    id: PropTypes.any.isRequired,
-    moveCard: PropTypes.func.isRequired,
   }
 
 	/*
