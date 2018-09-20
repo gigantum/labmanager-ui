@@ -20,6 +20,8 @@ import {
   setModalVisible,
   setUpdateDetailView,
 } from 'JS/redux/reducers/labbook/labbook'
+//assets
+import './LabbookHeader.scss'
 
 class LabbookHeader extends Component {
   constructor(props){
@@ -29,41 +31,6 @@ class LabbookHeader extends Component {
     this._setSelectedComponent = this._setSelectedComponent.bind(this)
     this._showLabbookModal = this._showLabbookModal.bind(this)
     this._hideLabbookModal = this._hideLabbookModal.bind(this)
-  }
-
-  /**
-    @param {object, int}
-    retruns jsx for nav items and sets selected
-    @return {jsx}
-  */
-  _getNavItem(item, index){
-
-    const pathArray = this.props.location.pathname.split('/')
-    const selectedPath = (pathArray.length > 4 ) ? pathArray[pathArray.length - 1] : 'overview' // sets avtive nav item to overview if there is no menu item in the url
-    const navItemCSS = classNames({
-      'selected': selectedPath === item.id,
-      ['Labbook__navigation-item Labbook__navigation-item--' + item.id]: !selectedPath !== item.id,
-      ['Labbook__navigation-item--' + index]: true,
-    });
-
-    return (
-      <li
-        id={item.id}
-        key={item.id}
-        className={navItemCSS}
-        onClick={()=> this._setSelectedComponent(item.id)}
-        >
-
-        <Link
-          onClick={this._scrollToTop}
-          to={`../../../projects/${this.props.owner}/${this.props.match.params.labbookName}/${item.id}`}
-          replace>
-
-          {item.name}
-
-        </Link>
-
-      </li>)
   }
 
   /**
@@ -86,23 +53,20 @@ class LabbookHeader extends Component {
     @param {object} item
     returns nav jsx
   */
-  _changeSlider() {
+  _getSelectedIndex() {
 
     const pathArray = this.props.location.pathname.split('/')
     const selectedPath = (pathArray.length > 4 ) ? pathArray[pathArray.length - 1] : 'overview'
     const defaultOrder = Config.defaultNavOrder;
     const selectedIndex = defaultOrder.indexOf(selectedPath);
 
-    return (
-      <hr className={' Labbook__navigation-slider Labbook__navigation-slider--' + selectedIndex}/>
-    )
+    return selectedIndex
   }
 
   /*********************
    * child functions
    *
    *********************/
-
   /**
    @param {boolean} isExporting
    updates container status state
@@ -161,10 +125,11 @@ class LabbookHeader extends Component {
     }
   }
 
-  /**
-    @param {boolean} isSyncing
-    updates container status state
-    updates labbook state
+  /*****
+  *  @param {boolean} isSyncing
+  *  updates container status state
+  *  updates labbook state
+  *  @return {}
   */
   _setSyncingState = (isSyncing) => {
     this.refs['ContainerStatus'] && this.refs['ContainerStatus'].setState({ 'isSyncing': isSyncing })
@@ -178,88 +143,44 @@ class LabbookHeader extends Component {
     const {labbookName, labbook, branchesOpen, branchName} = this.props
     const {visibility} = labbook
 
-    const branchNameCSS = classNames({
-      'Labbook__branch-title': true,
-      'Labbook__branch-title--open': branchesOpen,
-      'Labbook__branch-title--closed': !branchesOpen
-    })
+    const selectedIndex = this._getSelectedIndex()
 
     const labbookHeaderCSS = classNames({
-      'Labbook__header': true,
-      'is-sticky': this.props.isSticky,
-      'is-expanded': this.props.isExpanded
+      'LabbookHeader': true,
+      'LabbookHeader--sticky': this.props.isSticky,
     })
 
-    const labbookLockCSS = classNames({
-      [`Labbook__${visibility}`]: true,
-      [`Labbook__${visibility}--sticky`]: this.props.isSticky
+    const branchesErrorCSS = classNames({
+      'BranchesError': this.props.branchesOpen,
+      'hidden': !this.props.branchesOpen
     })
 
     return(
 
-     <div className="Labbook__header-container">
+     <div className="LabbookHeader__wrapper">
 
        <div className={labbookHeaderCSS}>
 
-         <div className="Labbook__row-container">
+         <div className="LabbookHeader__bar">
 
-          <div className="Labbook__column-container--flex-1">
+          <div className="LabbookHeader__columnContainer LabbookHeader__columnContainer--flex-1">
 
-            <div className="Labbook__name-title">
+            <LabbookTitle
+              self={this}
+              visibility={visibility}
+              labbook={labbook}
+              branchName={branchName}
+              labbookName={labbookName}
+            />
 
-              <div>
-                {`${labbook.owner}/${labbookName}${this.props.isSticky ? '/ ': ''}`}
-              </div>
-
-              {
-                this.props.isSticky &&
-                <div className="Labbook__name-branch">{branchName}</div>
-              }
-
-              {  ((visibility === 'private') ||
-                  (visibility === 'public')) &&
-
-                  <div className={labbookLockCSS}></div>
-              }
-
-              {
-                this.props.isExpanded &&
-
-                <div className="Labbook__navigation-container--header flex-0-0-auto column-1-span-11">
-                  <ul className="Labbook__navigation Labbook__navigation--header flex flex--row">
-                   {
-                     Config.navigation_items.map((item, index) => {
-                       return (this._getNavItem(item, index))
-                     })
-                   }
-                   {
-                     this._changeSlider()
-                   }
-                 </ul>
-
-               </div>
-              }
-            </div>
-
-            <div className={branchNameCSS}>
-
-              <div
-                className="Labbook__name"
-                onClick={()=> this.props.toggleBranchesView(!branchesOpen, false)}>
-                  {branchName}
-              </div>
-
-              <div
-                onClick={()=> this.props.toggleBranchesView(!branchesOpen, false)}
-                className="Labbook__branch-toggle">
-              </div>
-
-               <ToolTip section="branchView"/>
-
-            </div>
+            <BranchName
+               self={this}
+               branchesOpen={branchesOpen}
+               branchName={branchName}
+            />
        </div>
 
-       <div className="Labbook__column-container">
+       <div className="LabbookHeader__columnContainer">
 
           <BranchMenu
             visibility={visibility}
@@ -299,44 +220,41 @@ class LabbookHeader extends Component {
 
        </div>
 
-       <div className={(this.props.branchesOpen) ? "Labbook__branches-container":" Labbook__branches-container Labbook__branches-container--collapsed"}>
+       <ErrorBoundary
+         type={branchesErrorCSS}
+         key="branches">
 
-         <div className={(this.props.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--upper' : 'hidden'}></div>
+         <Branches
+           defaultRemote={labbook.defaultRemote}
+           branchesOpen={this.props.branchesOpen}
+           labbook={labbook}
+           labbookId={labbook.id}
+           activeBranch={labbook.activeBranchName}
+           toggleBranchesView={this.props.toggleBranchesView}
+           mergeFilter={this.props.mergeFilter}
+           setBuildingState={this.props.setBuildingState}
+         />
 
-         <ErrorBoundary
-           type={this.props.branchesOpen ?  'branchesError': 'hidden'}
-           key="branches">
-
-           <Branches
-             defaultRemote={labbook.defaultRemote}
-             branchesOpen={this.props.branchesOpen}
-             labbook={labbook}
-             labbookId={labbook.id}
-             activeBranch={labbook.activeBranchName}
-             toggleBranchesView={this.props.toggleBranchesView}
-             mergeFilter={this.props.mergeFilter}
-             setBuildingState={this.props.setBuildingState}
-           />
-
-         </ErrorBoundary>
-
-         <div className={(this.props.branchesOpen) ? 'Labbook__branches-shadow Labbook__branches-shadow--lower' : 'hidden'}></div>
-
-       </div>
+       </ErrorBoundary>
 
      </div>
 
-     <div className="Labbook__navigation-container mui-container flex-0-0-auto">
+     <div className="LabbookHeader__navContainer flex-0-0-auto">
 
-          <ul className="Labbook__navigation flex flex--row">
+          <ul className="LabbookHeader__nav flex flex--row">
             {
               Config.navigation_items.map((item, index) => {
-                return (this._getNavItem(item, index))
+                return (
+                  <NavItem
+                    self={this}
+                    item={item}
+                    index={index}
+                    key={item.id}
+                  />)
               })
             }
-            {
-             (this._changeSlider())
-            }
+
+            <hr className={`LabbookHeader__navSlider LabbookHeader__navSlider--${selectedIndex}`} />
           </ul>
 
       </div>
@@ -345,5 +263,96 @@ class LabbookHeader extends Component {
           )
   }
 }
+
+const LabbookTitle = ({self, visibility, labbook, branchName, labbookName}) => {
+
+  const labbookLockCSS = classNames({
+    [`LabbookHeader__${visibility}`]: true,
+    [`LabbookHeader__${visibility}--sticky`]: self.props.isSticky
+  })
+
+  const title = `${labbook.owner}/${labbookName}${self.props.isSticky ? '/ ': ''}`
+
+  return (
+    <div className="LabbookHeader__section--title">
+
+      <div>
+        {title}
+      </div>
+
+      {
+        self.props.isSticky &&
+        <div className="LabbookHeader__branchName">{branchName}</div>
+      }
+
+      {  ((visibility === 'private') ||
+          (visibility === 'public')) &&
+
+          <div className={labbookLockCSS}></div>
+      }
+    </div>
+  )
+}
+
+const BranchName = ({self, branchesOpen, branchName}) =>{
+
+  const branchNameCSS = classNames({
+    'LabbookHeader__branchTitle': true,
+    'LabbookHeader__branchTitle--open': branchesOpen,
+    'LabbookHeader__branchTitle--closed': !branchesOpen
+  })
+
+  return(
+    <div className={branchNameCSS}>
+
+      <div
+        className="LabbookHeader__name"
+        onClick={()=> self.props.toggleBranchesView(!branchesOpen, false)}>
+          {branchName}
+      </div>
+
+      <div
+        onClick={()=> self.props.toggleBranchesView(!branchesOpen, false)}
+        className="LabbookHeader__branchToggle">
+      </div>
+
+       <ToolTip section="branchView"/>
+    </div>
+  )
+}
+/**
+    @param {object, int}
+    retruns jsx for nav items and sets selected
+    @return {jsx}
+*/
+const NavItem = ({self, item, index}) => {
+
+    const pathArray = self.props.location.pathname.split('/')
+    const selectedPath = (pathArray.length > 4 ) ? pathArray[pathArray.length - 1] : 'overview' // sets avtive nav item to overview if there is no menu item in the url
+
+    const navItemCSS = classNames({
+      'LabbookHeader__navItem--selected': selectedPath === item.id,
+      [`LabbookHeader__navItem LabbookHeader__navItem--${item.id}`]: !selectedPath !== item.id,
+      [`LabbookHeader__navItem--${index}`]: true
+    });
+
+    return (
+      <li
+        id={item.id}
+        className={navItemCSS}
+        onClick={()=> self._setSelectedComponent(item.id)}
+        >
+
+        <Link
+          onClick={self._scrollToTop}
+          to={`../../../projects/${self.props.owner}/${self.props.match.params.labbookName}/${item.id}`}
+          replace>
+
+          {item.name}
+
+        </Link>
+
+      </li>)
+  }
 
 export default LabbookHeader

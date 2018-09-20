@@ -50,7 +50,7 @@ class LabbookSort extends Component {
     })
 
     const labbookSortMenuCSS = classNames({
-      'LabbookSort__menu': true,
+      'LabbookSort__menu box-shadow': true,
       'hidden': !state.sortMenuOpen
     })
 

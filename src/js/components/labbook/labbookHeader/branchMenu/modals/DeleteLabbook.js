@@ -9,6 +9,8 @@ import Modal from 'Components/shared/Modal'
 //store
 import { setErrorMessage, setWarningMessage, setInfoMessage } from 'JS/redux/reducers/footer'
 import store from 'JS/redux/store'
+//assets
+import './DeleteLabbook.scss'
 
 export default class DeleteLabbook extends Component {
   constructor(props){

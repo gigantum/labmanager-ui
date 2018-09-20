@@ -1,3 +1,8 @@
+@mixin boxShadow(){
+    box-shadow: 0 0px 12px 0 rgba(0,0,0,.10);
+}
+
+
 @mixin modal($height, $width) {
   position: fixed;
   left: 50%;
@@ -12,8 +17,10 @@
   border-radius: 8px;
   background-color: $white;
   animation: slide-up-fade-in forwards .25s;
-  @extend .box-shadow;
+
+  @include boxShadow();
 }
+
 
 @mixin modalHeader(){
   padding: 5px 0 5px 0px;
@@ -47,7 +54,8 @@
 
   border: 1px solid $white;
   background-color: $white;
-  @extend .box-shadow;
+
+  @include boxShadow();
 
 }
 

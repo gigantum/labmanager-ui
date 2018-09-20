@@ -9,6 +9,8 @@ import CollaboratorsModal from './CollaboratorsModal'
 //store
 import store from 'JS/redux/store'
 import { setCollaborators, setCanManageCollaborators } from 'JS/redux/reducers/labbook/branchMenu/collaborators/collaborators'
+//assets
+import './Collaborators.scss'
 
 export const CollaboratorsQuery =  graphql`
   query CollaboratorsQuery($name: String!, $owner: String!){
@@ -101,17 +103,22 @@ export const CollaboratorsQuery =  graphql`
             owner: owner
           }}
           render={({props, error})=> {
+
               if(props){
+
                 const {labbook} = props
+
                 setCollaborators({[labbookName]: labbook.collaborators})
+
                 setCanManageCollaborators({[labbookName]: labbook.canManageCollaborators})
+
                 const collaboratorButtonCSS = classNames({
                   'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
-                  'BranchMenu__item--flat-button':  true
+                  'BranchMenu__btn--flat':  true
                 })
 
                 const collaboratorCSS = classNames({
-                  'BranchMenu__item--collaborators': true,
+                  'BranchMenu__item BranchMenu__item--collaborators': true,
                   'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
                 })
 

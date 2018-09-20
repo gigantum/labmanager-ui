@@ -48,7 +48,7 @@ class LabbookFilterBy extends Component {
     })
 
     const labbookFilterMenuCSS = classNames({
-      'LabbookFilterBy__menu': true,
+      'LabbookFilterBy__menu box-shadow': true,
       'hidden': !state.filterMenuOpen
     })
 

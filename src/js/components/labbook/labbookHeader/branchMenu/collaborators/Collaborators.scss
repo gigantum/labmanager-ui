@@ -1,0 +1,15 @@
+@import '~Styles/_imports.scss';
+
+
+
+
+.BranchMenu__collaborators-list-container {
+  height: 200px;
+  border: 1px solid $background-color;
+  ul {
+    @include flex(flex-start, column);
+    flex-wrap: wrap;
+    padding: 0 13px;
+    overflow: auto;
+  }
+}

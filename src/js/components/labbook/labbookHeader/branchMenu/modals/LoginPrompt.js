@@ -4,6 +4,10 @@ import React, { Component } from 'react'
 import Modal from 'Components/shared/Modal'
 //auth
 import Auth from 'JS/Auth/Auth';
+//assets
+import './LoginPrompt.scss';
+
+
 const auth = new Auth()
 
 export default class LoginPrompt extends Component {
@@ -30,7 +34,7 @@ export default class LoginPrompt extends Component {
               <p>Your authentication token has expired and must be renewed to perform this action.</p>
               <p>Do you want login?</p>
             </div>
-            <div className="LoginPrompt__button-container">
+            <div className="LoginPrompt__buttonContainer">
               <button onClick={()=>{this._login()}}>Yes</button>
               <button onClick={()=>{this._dontLogin()}}>no</button>
             </div>
