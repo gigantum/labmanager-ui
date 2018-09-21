@@ -10,6 +10,8 @@ import CollaboratorsModal from './CollaboratorsModal'
 //store
 import store from 'JS/redux/store'
 import { setCollaborators, setCanManageCollaborators } from 'JS/redux/reducers/labbook/branchMenu/collaborators/collaborators'
+//assets
+import './Collaborators.scss'
 
 export const CollaboratorsQuery =  graphql`
   query CollaboratorsQuery($name: String!, $owner: String!){
@@ -113,23 +115,27 @@ class CollaboratorButton extends Component {
             owner: owner
           }}
           render={({props, error})=> {
+
               if(props){
+
                 const {labbook} = props
+
                 this.canManageCollaborators = labbook.canManageCollaborators
                 this.collaborators = labbook.collaborators
+
                 const collaboratorButtonCSS = classNames({
-                  'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
-                  'BranchMenu__item--flat-button':  true
-                })
+                    'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
+                    'BranchMenu__btn--flat':  true
+                  }),
 
-                const collaboratorCSS = classNames({
-                  'BranchMenu__item--collaborators': true,
-                  'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
-                })
+                  collaboratorCSS = classNames({
+                    'BranchMenu__item BranchMenu__item--collaborators': true,
+                    'disabled': !labbook.canManageCollaborators && this.state.sessionValid,
+                  }),
 
-                const collaboratorFilteredArr = labbook.collaborators && labbook.collaborators.filter((name)=>{
-                  return name !== owner
-                })
+                  collaboratorFilteredArr = labbook.collaborators && labbook.collaborators.filter((name)=>{
+                    return name !== owner
+                  });
 
                 const collaboratorNames = self._getCollaboratorList(labbook.collaborators, collaboratorFilteredArr)
 

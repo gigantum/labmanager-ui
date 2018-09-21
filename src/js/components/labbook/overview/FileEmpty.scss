@@ -1,0 +1,53 @@
+@import '~Styles/_imports.scss';
+
+.FileEmpty {
+    margin: 0.5rem 0 1rem 0;
+    border: 1px dashed $romanSilver;
+    width: 100%;
+    height: 200px;
+    text-align: center;
+    color: $romanSilver;
+}
+
+.FileEmpty__container {
+    line-height: 6px;
+    margin-top: 50px;
+    padding-top: 40px;
+
+  &--code{
+    background: url(~Images/icons/code-grey.svg) no-repeat 50% 5px;
+    background-size: 30px;
+  }
+
+  &--inputData{
+    background: url(~Images/icons/data-input-grey.svg) no-repeat 50% 5px;
+    background-size: 30px;
+  }
+
+  &--outputData{
+    background: url(~Images/icons/data-output-grey.svg) no-repeat 50% 5px;
+    background-size: 30px;
+  }
+
+  &--edit{
+      background: url(~Images/icons/edit.svg) no-repeat 50% 5px;
+      background-size: 30px;
+  }
+}
+
+.FileEmpty__text {
+
+  &--main {
+    font-size: 18px;
+  }
+
+  &--sub {
+      font-size: 15px;
+      text-decoration: underline;
+
+      &:hover {
+          color: $turquise;
+          cursor: pointer;
+      }
+  }
+}

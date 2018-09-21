@@ -1,6 +1,7 @@
 //vendor
 import React, { Component } from 'react'
-
+//assets
+import './PackageCount.scss'
 
 export default class PackageCount extends Component {
 

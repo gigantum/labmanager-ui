@@ -1,6 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-import classNames from 'classnames'
 //components
 import DeleteBranch from './DeleteBranch'
 import ForceMerge from './ForceMerge'
@@ -14,6 +13,8 @@ import { setErrorMessage, setInfoMessage } from 'JS/redux/reducers/footer'
 import { setContainerMenuWarningMessage} from 'JS/redux/reducers/labbook/environment/environment'
 import { setForceCancelRefetch } from 'JS/redux/reducers/labbook/environment/packageDependencies'
 import store from 'JS/redux/store'
+//assets
+import './BranchCard.scss'
 
 export default class BranchCard extends Component {
   constructor(props){
@@ -206,24 +207,20 @@ export default class BranchCard extends Component {
 }
 
   render(){
-    const {owner, showLoader} = this.state
-    const isCurrentBranch = (this.props.name === this.props.activeBranchName)
-    const branchName = this._sanitizeBranchName(this.props.name)
-    const showDelete = !isCurrentBranch && (this.props.name !== `gm.workspace-${owner}`)
-
-    const branchCardCSS = classNames({
-      'BranchCard': true
-    })
+    const {owner, showLoader} = this.state,
+          isCurrentBranch = (this.props.name === this.props.activeBranchName),
+          branchName = this._sanitizeBranchName(this.props.name),
+          showDelete = !isCurrentBranch && (this.props.name !== `gm.workspace-${owner}`);
 
     return(
-      <div className={branchCardCSS}>
+      <div className="BranchCard Card">
         { isCurrentBranch &&
-          <div className="BranchCard--current-banner">
+          <div className="BranchCard--currentBanner">
             CURRENT BRANCH
           </div>
 
         }
-        <h6 className="BranchCard__title">{branchName}</h6>
+        <h6 className="BranchCard__h6">{branchName}</h6>
         { this.state.deleteModalVisible &&
           <DeleteBranch
             key="BranchDelete__modal"
@@ -247,7 +244,7 @@ export default class BranchCard extends Component {
         {showDelete &&
           <button
             onClick={()=> {this._handleToggleModal('deleteModalVisible')}}
-            className="BranchCard__delete-labbook">
+            className="BranchCard__btn--deleteLabbook button--flat">
           </button>
         }
 

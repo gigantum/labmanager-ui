@@ -1,4 +1,4 @@
-
+@import '~Styles/_imports.scss';
 
 .RecentActivity__title-container{
   align-items: center;
@@ -11,7 +11,6 @@
 .RecentActivity__card {
   min-height: 150px;
   padding: 20px 20px 60px 20px;
-  @extend .card;
 }
 
 .RecentActivity__card-date {

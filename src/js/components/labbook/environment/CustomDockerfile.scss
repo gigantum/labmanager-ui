@@ -1,3 +1,5 @@
+@import '~Styles/_imports.scss';
+
 .CustomDockerfile {
   position: relative;
   hr {
@@ -17,10 +19,12 @@
   color: $romanSilver;
   p{
     margin: 5px 0;
+
+    &:first-child {
+      margin: 0 0 10px 0;
+    }
   }
-  p:first-child {
-    margin: 0 0 10px 0;
-  }
+
   code {
     font-family: monospace;
   }
@@ -32,7 +36,6 @@
  }
 
 .CustomDockerfile__content {
-  @extend .card;
   padding: 10px !important;
   color: $jet;
   white-space: pre-wrap;
@@ -66,48 +69,61 @@
 
     @include flex(space-between, row);
   }
+
   .empty {
     color: $romanSilver;
     opacity: 0.5;
     font-style: oblique;
   }
-  .column-1-span-11{
-    align-self: center;
+
+  code{
+    text-align: left;
   }
 }
 
-.CustomDockerfile__content-input {
+.CustomDockerfile__textarea {
+  padding: 10px;
   height: 200px;
   font-family: monospace;
   font-size: 1em;
+  resize:vertical;
+  width: calc(100% - 40px);
+  margin: 20px;
 }
 
-.CustomDockerfile__content-input:focus {
+.CustomDockerfile__textarea:focus {
   border: 2px solid #26a69a;
   box-shadow: 0 1px 0 0 #26a69a;
   outline: none;
 }
 
-.CustomDockerfile__content-edit-button,
-.CustomDockerfile__content-edit-button:hover,
-.CustomDockerfile__content-edit-button:focus,
-.CustomDockerfile__content-edit-button:disabled {
-  height: 22px;
-  width: 22px;
-  border: 0px;
-  background: url('./../images/icons/edit.svg') no-repeat center center;
-  background-size: 22px;
-}
-.CustomDockerfile__content-edit-button:disabled {
-  opacity: 0.2;
-}
-
-.CustomDockerfile__content-cancel-button,
-.CustomDockerfile__content-cancel-button:hover,
-.CustomDockerfile__content-cancel-button:focus {
-  padding: 0;
-}
-
-.CustomDockerfile__button-container{
+.CustomDockerfile__buttonContainer{
+  margin: 0 20px 20px;
   @include flex(flex-end, row);
+}
+
+.CustomDockerfile__btn {
+
+  &--edit,
+   --edit:hover,
+   --edit:focus,
+   --edit:disabled {
+    height: 22px;
+    width: 22px;
+    border: 0px;
+    background: url('~Images/icons/edit.svg') no-repeat center center;
+    background-size: 22px;
+
+  }
+
+  &--edit:disabled{
+      opacity: 0.2;
+  }
+
+  &--cancel,
+   --cancel:hover,
+   --cancel:focus {
+    padding: 0;
+  }
+
 }

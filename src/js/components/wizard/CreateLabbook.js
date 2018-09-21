@@ -4,7 +4,7 @@ import uuidv4 from 'uuid/v4'
 //utilities
 import validation from 'JS/utils/Validation'
 //components
-import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/LoginPrompt'
+import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/modals/LoginPrompt'
 //mutations
 import ImportRemoteLabbookMutation from 'Mutations/ImportRemoteLabbookMutation'
 import BuildImageMutation from 'Mutations/BuildImageMutation'
