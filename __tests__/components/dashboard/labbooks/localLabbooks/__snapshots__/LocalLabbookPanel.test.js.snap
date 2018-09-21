@@ -13,7 +13,7 @@ exports[`Test LocalLabbooks rendering 1`] = `
       className="LocalLabbooks__containerStatus"
     >
       <button
-        className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+        className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
         onClick={[Function]}
         onMouseOut={[Function]}
         onMouseOver={[Function]}

@@ -1,0 +1,15 @@
+@import '~Styles/_imports.scss';
+
+.Environment {
+  width: 100%;
+}
+
+.Environment__headerContainer {
+  @include flex(left, row)
+}
+
+.Environment__header {
+  font-weight: light;
+  color: $font-grey;
+  font-size: 22px;
+}
