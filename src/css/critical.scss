@@ -47,10 +47,7 @@
 @import 'components/routes.scss';
 @import 'components/login.scss';
 @import 'components/home.scss';
-//import
-@import 'components/import/importModules.scss';
 //labbook components
-@import 'components/labbook/labbook.scss';
 @import 'components/labbook/activity.scss';
 @import 'components/labbook/detail.scss';
 @import 'components/labbook/userNote.scss';
@@ -60,29 +57,20 @@
 @import 'components/labbook/detailPanel.scss';
 @import 'components/labbook/favorite.scss';
 @import 'components/labbook/recent.scss';
-@import 'components/labbook/branches/branches.scss';
-@import 'components/labbook/branches/branchCard.scss';
-@import 'components/labbook/branches/createBranch.scss';
-@import 'components/labbook/branches/forceMerge.scss';
-@import 'components/labbook/branches/collaborators.scss';
-@import 'components/labbook/branchMenu.scss';
-@import 'components/labbook/codeBlock.scss';
-//environment
-@import 'components/labbook/environment/environment.scss';
-@import 'components/labbook/environment/packageDependencies.scss';
-@import 'components/labbook/environment/base.scss';
-@import 'components/labbook/environment/customDockerfile.scss';
-//overview
-@import 'components/labbook/overview/overview.scss';
-@import 'components/labbook/overview/filePreview.scss';
-@import 'components/labbook/overview/fileEmpty.scss';
-@import 'components/labbook/overview/recentActivity.scss';
 //wizard components
 @import 'components/wizard/wizardModal';
 @import 'components/wizard/selectBase';
 @import 'components/wizard/createLabbook';
 @import 'components/wizard/baseDetails';
 @import 'components/wizard/trackingToggle';
+
+body * {
+  font-family: "NunitoSans";
+}
+
+body .fa {
+  font-family: "Font Awesome 5 Free";
+}
 
 .modal__cover{
   position: fixed;
@@ -99,12 +87,6 @@
   z-index: index($elements, modalCover);
 }
 
-.LoginPrompt{
-  text-align: center;
-}
-.LoginPrompt__button-container {
-  @include flex(space-around, row);
-}
 
 
 

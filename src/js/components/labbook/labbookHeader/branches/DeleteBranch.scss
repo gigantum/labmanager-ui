@@ -1,0 +1,22 @@
+@import '~Styles/_imports.scss';
+
+.DeleteBranch__text{
+  align-content: center;
+  align-self: center;
+
+  word-break: normal;
+  word-wrap: normal;
+
+  &--red{
+    color: $crimson;
+  }
+}
+
+.DeleteBranch__buttonContainer{
+  align-content: center;
+  align-self: center;
+
+  width: 150px;
+
+  @include flex(space-around, row);
+}

@@ -1,8 +1,14 @@
+@import '~Styles/_imports.scss';
+
 .Overview {
   height: auto;
   color: $romanSilver;
   font-weight: 100;
   width: 100%;
+
+  &--fullscreen {
+    z-index: index($elements, modal);
+  }
 
   .Base__header-container {
     display: none;
@@ -21,15 +27,13 @@
   }
 }
 
-.Overview.fullscreen {
-  z-index: index($elements, modal);
-}
-
-.Overview__title-container {
+.Overview__container {
   align-items: center;
+
   a {
     color: $dark-blue;
   }
+
   @include flex(space-between, row);
 }
 
@@ -55,31 +59,35 @@
     /*
       have to use extend as ReactMarkDown does not inherit classNames
     */
-    @extend .column-1-span-9;
+    @include spanColumns(9);
     margin-bottom: 0;
   }
+
   button {
     margin-top: 2px;
   }
+
   .column-1-span-1 {
     @include flex(flex-start, column);
   }
+
   .empty {
     color: $romanSilver;
     opacity: 0.5;
     font-style: oblique;
   }
+
 }
 
-.Overview__description-input {
+.Overview__input--description {
   height: 100px;
   resize: none;
-}
 
-.Overview__description-input:focus {
-  border: 2px solid #26a69a;
-  box-shadow: 0 1px 0 0 #26a69a;
-  outline: none;
+  &:focus {
+    border: 2px solid #26a69a;
+    box-shadow: 0 1px 0 0 #26a69a;
+    outline: none;
+  }
 }
 
 .Overview__description-edit-button,
@@ -88,7 +96,7 @@
   height: 22px;
   width: 22px;
   border: 0px;
-  background: url('./../images/icons/edit.svg') no-repeat center center;
+  background: url('~Images/icons/edit.svg') no-repeat center center;
   background-size: 22px;
 }
 
@@ -102,21 +110,6 @@
   font-weight: light;
 }
 
-.Overview__card {
-  background-color: $white;
-  padding: 15px;
-  color: $jet;
-  width: 250px;
-  font-size: 12px;
-  height: 180px;
-  @extend .box-shadow;
-
-  p {
-    padding: 0px;
-    margin: 2px;
-  }
-}
-
 .Overview__image-container {
   padding: 0 10px;
   @include flex(center, column);
@@ -127,53 +120,8 @@
 
 }
 
-.Overview__card-text {
-  padding: 0px;
-  width: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.Overview__modal {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  z-index: index($elements, modal);
-  width: 800px;
-  height: 600px;
-
-  margin: -300px 0 0 -400px;
-
-  border: 1px solid $grey;
-  background-color: $grey-light;
-  @extend .box-shadow;
-
-  .SelectBaseImage__progress-button {
-    display: none;
-  }
-
-}
-
-.Overview__modal-close {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  cursor: pointer;
-}
-
 .Overview__package-dependencies {
   margin: 10px;
-
-  .Overview__card-text {
-      width: 170px;
-      background-color: $white;
-      border-radius: 0px;
-
-      p {
-        margin: 0 5px 0 0;
-      }
-  }
 }
 
 .Overview__name {
@@ -215,7 +163,6 @@
 
 
 .Overview__readme--editing {
-  @extend .card;
   padding: 10px;
   color: $romanSilver;
   z-index: index($elements, card);
@@ -223,43 +170,32 @@
   background: white;
   min-height: 200px;
   @include flex(center, column);
+
   .fa {
     font-family: FontAwesome !important;
   }
+
   .Overview__readme--editing-buttons {
     position: relative;
     @include flex(center, row);
+
     button {
       margin: 0 10px;
     }
+
     .BranchMenu__menu-pointer{
       right: auto;
       margin-left: -55px;
     }
+
     .BranchMenu__button-menu{
       right: auto;
     }
   }
 }
 
-
-
-.Overview__readme--empty {
-  @extend .card;
-  text-align: center;
-  padding: 0 10px;
-  cursor: pointer;
-  opacity: 0.5;
-  color: $romanSilver;
-  z-index: index($elements, card);
-  position: relative;
-  background: white;
-  min-height: 120px;
-  @include flex(center, column);
-}
-
 .Overview__readme {
-  @extend .card;
+
   padding: 10px 50px;
   color: $romanSilver;
   z-index: index($elements, card);
@@ -397,6 +333,7 @@
 .Overview__readme-buttons {
   @include flex(center, row);
 }
+
 .Overview__readme-fadeout {
   position: relative;
   bottom: 2em;
@@ -407,7 +344,6 @@
   );
 }
 
-
 .Overview__readme-bar-less{
   margin: 30px 0 15px;
   position: relative;
@@ -415,6 +351,7 @@
   justify-content: center;
   width: 100%;
 }
+
 .Overview__readme-bar-more{
   @extend .Overview__readme-bar-less;
   margin-top: 0;
@@ -433,6 +370,7 @@
   width: calc(50% - 50px);
 
 }
+
 .Overview__readme-bar-more:hover:after,
 .Overview__readme-bar-more:hover:before,
 .Overview__readme-bar-less:hover:after,
@@ -465,7 +403,7 @@
   width: 22px;
   padding: 5px;
   border: 0px;
-  background: url('./../images/icons/edit.svg') no-repeat center center;
+  background: url('~Images/icons/edit.svg') no-repeat center center;
   background-size: 22px;
   position: absolute;
   margin-left: 10px;
@@ -483,7 +421,7 @@
 .Overview__readme-more:focus {
   color: $slateBlue;
   border: 0px;
-  background: url('../images/icons/down-arrow-slate.svg') no-repeat 80px;
+  background: url('~Images/icons/down-arrow-slate.svg') no-repeat 80px;
   background-size: 15px;
   padding-right: 40px;
 }
@@ -491,7 +429,7 @@
 .Overview__readme-more:hover {
   color: $turquise;
   border: 0px;
-  background: url('../images/icons/down-arrow-turquise.svg') no-repeat 80px;
+  background: url('~Images/icons/down-arrow-turquise.svg') no-repeat 80px;
   background-size: 15px;
   padding-right: 40px;
 }
@@ -500,7 +438,7 @@
 .Overview__readme-less:focus {
   color: $slateBlue;
   border: 0px;
-  background: url('../images/icons/up-arrow-slate.svg') no-repeat 87px;
+  background: url('~Images/icons/up-arrow-slate.svg') no-repeat 87px;
   background-size: 15px;
   padding-right: 40px;
 }
@@ -508,7 +446,7 @@
 .Overview__readme-less:hover {
   color: $turquise;
   border: 0px;
-  background: url('../images/icons/up-arrow-turquise.svg') no-repeat 87px;
+  background: url('~Images/icons/up-arrow-turquise.svg') no-repeat 87px;
   background-size: 15px;
   padding-right: 40px;
 }

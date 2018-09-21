@@ -136,8 +136,6 @@
   font-size: 16px;
   line-height: 26px;
 
-  @extend .box-shadow;
-
   &:hover,
    :focus{
     color: $romanSilver;
@@ -157,7 +155,7 @@
      background: $background-color url('~Images/icons/stop.svg') no-repeat 90% center;
      background-size: 20px;
 
-     @extend .box-shadow;
+     @include boxShadow();
    }
 
    &.Stopped:hover{

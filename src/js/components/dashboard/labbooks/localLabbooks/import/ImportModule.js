@@ -6,7 +6,7 @@ import uuidv4 from 'uuid/v4'
 import JobStatus from 'JS/utils/JobStatus'
 import ChunkUploader from 'JS/utils/ChunkUploader'
 //components
-import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/LoginPrompt'
+import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/modals/LoginPrompt'
 import ToolTip from 'Components/shared/ToolTip';
 //store
 import store from 'JS/redux/store'

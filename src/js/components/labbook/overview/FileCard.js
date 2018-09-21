@@ -1,5 +1,7 @@
 //vendor
 import React, { Component } from 'react'
+//assets
+import './FileCard.scss'
 
 export default class Overview extends Component {
 
@@ -17,7 +19,7 @@ export default class Overview extends Component {
     paths.pop()
     let path = paths.join('/')
     return(
-      <div className="FileCard column-3-span-4">
+      <div className="FileCard Card Card--auto Card--no-hover column-3-span-4">
         <div className="FileCard__favorite"></div>
         <h6 title={name} className="FileCard__name">{truncatedName}</h6>
         <p className="FileCard__key">{path}</p>

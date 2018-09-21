@@ -70,3 +70,5 @@ global.requestAnimationFrame = function(callback){
             clearTimeout(id);
         };
 }());
+
+// export default {}

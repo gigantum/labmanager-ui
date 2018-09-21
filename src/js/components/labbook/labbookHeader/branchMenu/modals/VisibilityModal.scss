@@ -1,0 +1,38 @@
+@import '~Styles/_imports.scss';
+
+
+.VisibilityModal{
+  @include flex(space-between, column);
+  height: 100%;
+}
+
+.VisibilityModal__buttonContainer{
+  @include flex(space-between, row);
+  width: 340px;
+  margin: 0 auto;
+}
+
+.VisibilityModal__private{
+  label{
+    width: 130px;
+    text-align: right;
+    background: url(~Images/icons/lock.svg) no-repeat 40px center;
+    background-size: 20px;
+    color: $slateBlue;
+  }
+}
+
+.VisibilityModal__public{
+  label{
+    width: 124px;
+    text-align: right;
+    background: url(~Images/icons/earth.svg) no-repeat 40px center;
+    background-size: 20px;
+    color: $slateBlue;
+  }
+}
+
+.VisibilityModal__paragraph{
+  padding: 0 0 0 80px;
+  color: $romanSilver;
+}

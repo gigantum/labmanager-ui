@@ -12,8 +12,10 @@ import { setErrorMessage } from 'JS/redux/reducers/footer'
 //config
 import config from 'JS/config'
 import fetchQuery from 'JS/fetch'
+//assets
+import './CollaboratorsModal.scss'
 
-export default class CollaboratorModal extends Component {
+export default class CollaboratorsModal extends Component {
   constructor(props){
   	super(props);
     const {
@@ -35,15 +37,17 @@ export default class CollaboratorModal extends Component {
     this._addCollaborator = this._addCollaborator.bind(this)
     this._removeCollaborator = this._removeCollaborator.bind(this)
     this._completeColloborator = this._completeColloborator.bind(this)
+
   }
 
   componentDidMount() {
-    let buttonLoaderRemoveCollaborator = {}
 
+    let buttonLoaderRemoveCollaborator = {}
 
     this.props.collaborators.forEach((collaborator) => {
 
       buttonLoaderRemoveCollaborator[collaborator] = ''
+
     })
 
     this.setState({buttonLoaderRemoveCollaborator})
@@ -55,7 +59,9 @@ export default class CollaboratorModal extends Component {
   *  @return {}
   */
   _setSelectedIndex(iterate){
+
     let newSelectedIndex = this.state.selectedIndex + iterate;
+
     newSelectedIndex = (newSelectedIndex < 0) ? this.state.colloboratorSearchList.length - 1 : newSelectedIndex
     newSelectedIndex = (newSelectedIndex >= this.state.colloboratorSearchList.length) ? 0 : newSelectedIndex
 
@@ -67,20 +73,27 @@ export default class CollaboratorModal extends Component {
   *  @return {}
   */
   _getUsers(evt){
+
     let userInput = evt.target.value
+
     if((userInput.length > 2) && (evt.key !== "Enter")){
+
       const apiURL = evt.target.value.indexOf('@') > 0 ? config.userAPI.getUserEmailQueryString(evt.target.value) : config.userAPI.getUsersQueryString(evt.target.value)
 
       fetchQuery(apiURL).then((response) => {
 
           let collaborators = response.hits.hit.map((hit)=>{
+
             return hit.fields
           })
 
           this.setState({colloboratorSearchList: collaborators})
       })
+
     }else{
+
       this.setState({colloboratorSearchList: []})
+
     }
 
 
@@ -95,6 +108,7 @@ export default class CollaboratorModal extends Component {
   *  @return {}
   */
   _handleInputKeys(evt){
+
     if ((evt.type === 'click') || (evt.key === "Enter")) {
 
       if(this.state.colloboratorSearchList.length > 0){
@@ -102,9 +116,13 @@ export default class CollaboratorModal extends Component {
           const collaborator = this.state.colloboratorSearchList[this.state.selectedIndex]
 
           this._completeColloborator(collaborator)
+
       }else{
+
         this._addCollaborator()
+
       }
+
     } else if(evt.key === 'ArrowDown'){
 
       this._setSelectedIndex(1)
@@ -125,6 +143,7 @@ export default class CollaboratorModal extends Component {
   *  @return {}
   */
   _completeColloborator(collaborator){
+
     if(collaborator){
 
       this.collaboratorSearch.value = collaborator.username
@@ -166,10 +185,13 @@ export default class CollaboratorModal extends Component {
           this.collaboratorSearch.value = ''
 
           if (error) {
+
             setErrorMessage(`Could not add collaborator`, error)
+
             this.setState({buttonLoaderAddCollaborator: 'error'})
 
           } else {
+
             this.setState({buttonLoaderAddCollaborator: 'finished'})
 
           }
@@ -191,9 +213,9 @@ export default class CollaboratorModal extends Component {
 
     const {collaborator, button} = params
 
-    button.disabled = true;
-
     let {buttonLoaderRemoveCollaborator} = this.state
+
+    button.disabled = true;
 
     buttonLoaderRemoveCollaborator[collaborator] = 'loading'
 
@@ -204,35 +226,47 @@ export default class CollaboratorModal extends Component {
       this.state.owner,
       collaborator,
       (response, error) => {
+
         this.refs[collaborator] && this.refs[collaborator].classList.remove('loading');
+
         if(button){
           button.disabled = false;
         }
+
         if (error) {
+
           setErrorMessage(`Could not remove collaborator`, error)
+
           buttonLoaderRemoveCollaborator[collaborator] = 'error'
 
           this.setState({buttonLoaderRemoveCollaborator})
-        }else{
+
+        } else{
+
           buttonLoaderRemoveCollaborator[collaborator] = 'finished'
 
           this.setState({buttonLoaderRemoveCollaborator})
+
         }
 
         setTimeout(() => {
           buttonLoaderRemoveCollaborator[collaborator] = ''
 
           this.setState({buttonLoaderRemoveCollaborator})
+
         }, 2000)
+
       }
     )
   }
 
   render(){
+
     const autoCompleteMenu = classNames({
-      'CollaboratorModal__auto-compelte-menu': true,
-      'CollaboratorModal__auto-compelte-menu--visible': this.state.colloboratorSearchList.length > 0
+      'CollaboratorsModal__auto-compelte-menu box-shadow': true,
+      'CollaboratorsModal__auto-compelte-menu--visible': this.state.colloboratorSearchList.length > 0
     })
+
     return(
       <Modal
         header="Manage Collaborators"
@@ -242,10 +276,10 @@ export default class CollaboratorModal extends Component {
         renderContent={()=>
           <div>
 
-          <div className="CollaboratorModal__add">
+          <div className="CollaboratorsModal__add">
 
             <input
-              className="CollaboratorModal__input--collaborators"
+              className="CollaboratorsModal__input--collaborators"
               ref={el => this.collaboratorSearch = el}
 
               onChange={(evt) => this._getUsers(evt)}
@@ -258,22 +292,22 @@ export default class CollaboratorModal extends Component {
             />
 
             <div className={autoCompleteMenu}>
-              <ul className="CollaboratorModal__list">
+              <ul className="CollaboratorsModal__list">
                 {
                   this.state.colloboratorSearchList.map((collaborator, index)=>{
 
                     const listItemCSS = classNames({
-                      'CollaboratorModal__list-item': true,
-                      'CollaboratorModal__list-item--selected': (index === this.state.selectedIndex )
+                      'CollaboratorsModal__listItem': true,
+                      'CollaboratorsModal__listItem--selected': (index === this.state.selectedIndex )
                     })
                     return <li
                       onClick={() => this._completeColloborator(collaborator)}
                       className={listItemCSS}
                       key={collaborator.username}>
 
-                      <div className="CollaboratorModal__list-item--username">{collaborator.username}</div>
+                      <div className="CollaboratorsModal__listItem--username">{collaborator.username}</div>
 
-                      <div className="CollaboratorModal__list-item--name">{collaborator.name}</div>
+                      <div className="CollaboratorsModal__listItem--name">{collaborator.name}</div>
 
                    </li>
                   }
@@ -283,7 +317,7 @@ export default class CollaboratorModal extends Component {
             </div>
 
             <ButtonLoader
-              className="CollaboratorModal__button--add"
+              className="CollaboratorsModal__btn--add"
               ref="addCollaborator"
 
               buttonState={this.state.buttonLoaderAddCollaborator}
@@ -296,21 +330,21 @@ export default class CollaboratorModal extends Component {
 
           </div>
 
-          <div className="CollaboratorModal__collaborators">
+          <div className="CollaboratorsModal__collaborators">
 
-            <h5 className="CollaboratorModal__sub-header">Collaborators</h5>
+            <h5 className="CollaboratorsModal__h5">Collaborators</h5>
 
-            <div className="CollaboratorModal__list-container">
+            <div className="CollaboratorsModal__listContainer">
 
               {this.props.collaborators &&
 
-                <ul className="CollaboratorModal__list">
+                <ul className="CollaboratorsModal__list">
                   {
                     this.props.collaborators.map((collaborator) => {
 
                       const collaboratorItemCSS = classNames({
-                        "CollaboratorModal--item-me": collaborator === localStorage.getItem('username'),
-                        "CollaboratorModal--item": !(collaborator === localStorage.getItem('username'))
+                        "CollaboratorsModal__item CollaboratorsModal__item--me": collaborator === localStorage.getItem('username'),
+                        "CollaboratorsModal__item": !(collaborator === localStorage.getItem('username'))
                       })
 
                       return (
@@ -326,7 +360,7 @@ export default class CollaboratorModal extends Component {
                               ref={collaborator}
                               buttonState={this.state.buttonLoaderRemoveCollaborator[collaborator]}
                               buttonText={""}
-                              className="CollaboratorModal__button"
+                              className="CollaboratorsModal__btn"
                               params={{collaborator, button: this}}
                               buttonDisabled={collaborator === localStorage.getItem('username')}
                               clicked={this._removeCollaborator}

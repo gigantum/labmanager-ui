@@ -2,6 +2,8 @@
 import React, {Component, Fragment} from 'react';
 //component
 import Modal from 'Components/shared/Modal'
+//assets
+import './ForceMerge.scss'
 
 export default class ForceMerge extends Component {
   /**
@@ -27,7 +29,7 @@ export default class ForceMerge extends Component {
           <Fragment>
             <p className="ForceMege__text">Merge failed. Do you want to force merge?</p>
 
-            <div className="ForceMege__button-container">
+            <div className="ForceMege__buttonContainer">
 
               <button
                 onClick={() => this._forceMerge()}>
@@ -38,7 +40,7 @@ export default class ForceMerge extends Component {
                 onClick={() => this.props.toggleModal('forceMergeVisible')}>
                 No
               </button>
-              
+
             </div>
 
           </Fragment>

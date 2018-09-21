@@ -1,0 +1,74 @@
+@import '~Styles/_imports.scss';
+
+.CreateBranch {
+  height: 100%;
+  @include flex(space-between, column);
+}
+
+.CreateBranch__nav {
+  @include flex(space-between, row);
+}
+
+.CreateBranch__navGroup {
+  @include flex(flex-end, row);
+}
+
+.CreateBranch_navItem{
+  width: 100px;
+  align-content: center;
+  text-align: center;
+}
+
+
+.CreateBranch__btn--progress {
+  margin: 0 10px;
+}
+
+.CreateBranch__error {
+  color: $crimson;
+}
+
+
+.CreateBranch__input--invalid[type=text]{
+  &:focus,
+  &:hover {
+    color: $crimson;
+    border-color: $crimson;
+  }
+}
+
+
+.CreateBranch__warning {
+  text-align: right;
+  margin: 0px;
+
+  &--hidden {
+    color: $turquise;
+    visibility: hidden;
+  }
+
+  &--green {
+    color: $turquise;
+  }
+
+  &--yellow {
+    color: $goldenLemon;
+  }
+
+  &--red {
+    color: $crimson;
+  }
+}
+
+.CreateBranch__input--description {
+  width: calc(100% - 5px);
+  height: 100px;
+  resize: none;
+  padding: 10px;
+
+  &:focus {
+    border: 2px solid #26a69a;
+    box-shadow: 0 1px 0 0 #26a69a;
+    outline: none;
+  }
+}

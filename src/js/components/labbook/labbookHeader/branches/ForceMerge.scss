@@ -1,10 +1,12 @@
+@import '~Styles/_imports.scss';
+
 .ForceMege__text{
   margin: 60px 0;
   text-align: center;
   align-self: center;
 }
 
-.ForceMege__button-container{
+.ForceMege__buttonContainer{
   @include flex(space-around, row);
   align-self: center;
   width: 200px;

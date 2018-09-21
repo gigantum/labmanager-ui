@@ -12,7 +12,7 @@ import { setWarningMessage, setMultiInfoMessage } from 'JS/redux/reducers/footer
 //queries
 import UserIdentity from 'JS/Auth/UserIdentity'
 //components
-import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/LoginPrompt'
+import LoginPrompt from 'Components/labbook/labbookHeader/branchMenu/modals/LoginPrompt'
 import Loader from 'Components/shared/Loader'
 //assets
 import './RemoteLabbookPanel.scss'

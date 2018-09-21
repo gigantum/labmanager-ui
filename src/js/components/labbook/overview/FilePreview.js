@@ -14,6 +14,8 @@ import ToolTip from 'Components/shared/ToolTip'
 import environment from 'JS/createRelayEnvironment'
 //store
 import store from 'JS/redux/store'
+//assets
+import './FilePreview.scss'
 
 let filePreviewQuery = graphql`query FilePreviewQuery($name: String!, $owner: String!, $first: Int!){
   labbook(name: $name, owner: $owner){
@@ -86,7 +88,7 @@ export default class FilePreview extends Component {
           return(
             <div className="FilePreview">
               <div className="FilePreview__section">
-                <div className="FilePreview__title-container">
+                <div className="FilePreview__container">
                   <h5>Code &nbsp;&nbsp; <ToolTip section="codeOverview"/></h5>
                   <Link
                     onClick={this.props.scrollToTop}
@@ -113,7 +115,7 @@ export default class FilePreview extends Component {
 
               </div>
               <div className="FilePreview__section">
-                <div className="FilePreview__title-container">
+                <div className="FilePreview__container">
                   <h5>Input Data<ToolTip section="inputDataOverview"/></h5>
                   <Link
                     onClick={this.props.scrollToTop}
@@ -139,7 +141,7 @@ export default class FilePreview extends Component {
                 </div>
               </div>
               <div className="FilePreview__section">
-                <div className="FilePreview__title-container">
+                <div className="FilePreview__container">
                   <h5>Ouput Data<ToolTip section="outputDataOverview"/></h5>
                   <Link
                     onClick={this.props.scrollToTop}

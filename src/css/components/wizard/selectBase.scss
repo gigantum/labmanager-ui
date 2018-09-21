@@ -64,6 +64,7 @@
 }
 
 .SelectBase__tab {
+  white-space: nowrap;
   @extend .tab;
   width: 125px;
 }

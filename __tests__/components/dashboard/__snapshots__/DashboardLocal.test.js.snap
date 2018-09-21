@@ -103,7 +103,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
         All
       </span>
       <ul
-        className="LabbookFilterBy__menu hidden"
+        className="LabbookFilterBy__menu box-shadow hidden"
       >
         <li
           className="LabbookFilterBy__list-item"
@@ -139,7 +139,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
         Modified Date (Newest)
       </span>
       <ul
-        className="LabbookSort__menu hidden"
+        className="LabbookSort__menu box-shadow hidden"
       >
         <li
           className="LabbookSort__list-item"
@@ -308,7 +308,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -367,7 +367,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -426,7 +426,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -485,7 +485,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -544,7 +544,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -610,7 +610,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -669,7 +669,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -728,7 +728,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -787,7 +787,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -846,7 +846,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -912,7 +912,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -978,7 +978,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1044,7 +1044,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1110,7 +1110,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1176,7 +1176,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1235,7 +1235,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1294,7 +1294,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1353,7 +1353,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1412,7 +1412,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}
@@ -1471,7 +1471,7 @@ exports[`Test DashboardLocal snapshot 1`] = `
             className="LocalLabbooks__containerStatus"
           >
             <button
-              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading"
+              className="ContainerStatus__container-state LocalLabbooks__containerStatus--state loading box-shadow"
               onClick={[Function]}
               onMouseOut={[Function]}
               onMouseOver={[Function]}

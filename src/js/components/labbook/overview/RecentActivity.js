@@ -9,6 +9,8 @@ import CodeBlock from 'Components/labbook/renderers/CodeBlock'
 import ToolTip from 'Components/shared/ToolTip';
 //store
 import store from 'JS/redux/store'
+//assets
+import './RecentActivity.scss'
 
 export default class RecentActivity extends Component {
 
@@ -160,7 +162,7 @@ export default class RecentActivity extends Component {
         <div className="RecentActivity__list grid">
           {
             recentActivity.map((edge, index) => {
-              return (<div key={edge.id} className="RecentActivity__card column-3-span-4">
+              return (<div key={edge.id} className="RecentActivity__card Card Card--auto Card--no-hover column-3-span-4">
                 <div className="RecentActivity__card-date">{this._getDate(edge)}</div>
                 <div className="RecentActivity__card-detail">
                   {this._renderDetail(edge)}
