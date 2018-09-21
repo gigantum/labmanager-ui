@@ -5,6 +5,8 @@ import SyntaxHighlighterHLJS from 'react-syntax-highlighter';
 import {githubGist} from 'react-syntax-highlighter/styles/hljs';
 import customizedStyling from './CodeBlockStyle';
 import classNames from 'classnames';
+//assets
+import './CodeBlock.scss'
 
 
 class CodeBlock extends React.PureComponent {

@@ -22,6 +22,8 @@ import SetLabbookDescriptionMutation from 'Mutations/SetLabbookDescriptionMutati
 //store
 import store from 'JS/redux/store'
 import { setErrorMessage } from 'JS/redux/reducers/footer'
+//assets
+import './Overview.scss'
 
 let simple;
 
@@ -176,85 +178,147 @@ class Overview extends Component {
   }
 
   render() {
-    let overviewCSS = classNames({
-      'Overview': true,
-      'fullscreen': this.state.editorFullscreen
-    })
-    let readmeCSS = classNames({
-      'ReadmeMarkdown--expanded': this.state.readmeExpanded,
-      'ReadmeMarkdown': !this.state.readmeExpanded
-    })
-    let descriptionCSS = this.state.descriptionText ? 'column-1-span-10' : 'column-1-span-10 empty'
+
+    const overviewCSS = classNames({
+            'Overview': true,
+            'Overview--fullscreen': this.state.editorFullscreen
+          }),
+
+          readmeCSS = classNames({
+            'ReadmeMarkdown--expanded': this.state.readmeExpanded,
+            'ReadmeMarkdown': !this.state.readmeExpanded
+          }),
+
+          overviewReadmeEditingCSS = classNames({
+            'Overview__readme--editing': this.state.editingReadme,
+            'hidden': !this.state.editingReadme
+          }),
+
+          overviewReadmeCSS = classNames({
+            'Overview__readme Card Card--auto Card--no-hover': !this.state.editingReadme,
+            'hidden': this.state.editingReadme
+          }),
+
+          descriptionCSS = classNames({
+            'column-1-span-10': true,
+            'empty': !this.state.descriptionText
+          }),
+
+          overviewReadmeButtonCSS = classNames({
+            'Overview__readme-edit-button': (this.state.editingReadme || !this.props.readme ),
+            'hidden': this.state.editingReadme || !this.props.readme
+          });
+
+
+
     if (this.props.labbook) {
+
       const { owner, labbookName } = store.getState().routes
+
       return (
+
         <div className={overviewCSS}>
+
           <ToolTip section="descriptionOverview"/>
+
           <div className="Overview__description grid column-1-span-12">
-          {
-            this.state.editingDescription ?
-            <Fragment>
-              <textarea
-                maxLength="260"
-                className="Overview__description-input column-1-span-10"
-                type="text"
-                onChange={(evt)=>{this.setState({descriptionText: evt.target.value.replace(/\n/g,' ')})}}
-                placeholder="Short description of Project"
-                defaultValue={this.state.descriptionText ? this.state.descriptionText: ''}
+
+            {
+              this.state.editingDescription ?
+
+              <Fragment>
+
+                <textarea
+                  maxLength="260"
+                  className="Overview__input--description column-1-span-10"
+                  type="text"
+                  onChange={(evt)=>{this.setState({descriptionText: evt.target.value.replace(/\n/g,' ')})}}
+                  placeholder="Short description of Project"
+                  defaultValue={this.state.descriptionText ? this.state.descriptionText: ''}
+                >
+                </textarea>
+
+                <div className="column-1-span-1">
+
+                  <button
+                    disabled={this.state.savingDescription}
+                    onClick={()=> this._saveDescription()}
+                    className="Overview__description-save-button"
+                  >
+                    Save
+                  </button>
+
+                  <button
+                    onClick={()=> this.setState({editingDescription: false, descriptionText: this.state.lastSavedDescription })}
+                    className="Overview__description-cancel-button button--flat">
+                    Cancel
+                  </button>
+
+                </div>
+
+              </Fragment>
+
+              :
+
+              <Fragment>
+
+                <ReactMarkdown
+                  className={descriptionCSS}
+                  source={this.state.descriptionText ? this.state.descriptionText : 'No description provided.'} />
+
+                <div className="column-1-span-1">
+
+                  <button
+                    onClick={()=> this.setState({editingDescription: true})}
+                    className="Overview__description-edit-button">
+                  </button>
+
+                </div>
+
+              </Fragment>
+
+            }
+
+          </div>
+
+          <div className="Overview__container">
+
+            <h5 className="Overview__title">
+              Readme <ToolTip section="readMe"/>
+
+              <button
+                className={overviewReadmeButtonCSS}
+                onClick={()=>this.setState({ editingReadme: true })}
               >
-              </textarea>
-              <div className="column-1-span-1">
-                <button
-                  disabled={this.state.savingDescription}
-                  onClick={()=> this._saveDescription()}
-                  className="Overview__description-save-button"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={()=> this.setState({editingDescription: false, descriptionText: this.state.lastSavedDescription })}
-                  className="Overview__description-cancel-button button--flat"
-                >
-                  Cancel
-                </button>
-              </div>
-            </Fragment>
-            :
-            <Fragment>
-              <ReactMarkdown className={descriptionCSS} source={this.state.descriptionText ? this.state.descriptionText : 'No description provided.'} />
-              <div className="column-1-span-1">
-                <button
-                  onClick={()=> this.setState({editingDescription: true})}
-                  className="Overview__description-edit-button"
-                >
-                </button>
-              </div>
-            </Fragment>
-          }
-          </div>
-          <div className="Overview__title-container">
-            <h5 className="Overview__title">Readme <ToolTip section="readMe"/>
-            <button
-              className={this.state.editingReadme || !this.props.readme ? 'hidden': 'Overview__readme-edit-button'}
-              onClick={()=>this.setState({ editingReadme: true })}
-            >
-            </button>
+              </button>
+
             </h5>
+
           </div>
+
           {
             this.state.editingReadme &&
-            <div className={this.state.editingReadme ? 'Overview__readme--editing' : 'hidden'}>
-              <textarea ref="markdown"
+
+            <div className={overviewReadmeEditingCSS}>
+
+              <textarea
+                ref="markdown"
                 className="Overview__readme-editor"
-                id="markDown"></textarea>
-              <div className="Overview__readme--editing-buttons">
+                id="markDown">
+              </textarea>
+
+              <div className="Overview__readme--editing-buttons Card Card--auto Card--no-hover">
+
                 <button
                   className="Overview__readme-save"
                   disabled={false}
-                  onClick={() => { this._saveReadme() }}>Save
+                  onClick={() => { this._saveReadme() }}>
+                  Save
                 </button>
+
                 {
                   this.state.readMeWarning &&
+
                   <Fragment>
 
                     <div className="BranchMenu__menu-pointer">
@@ -276,24 +340,31 @@ class Overview extends Component {
           {
             this.props.readme ?
               <div
-                className={this.state.editingReadme ? 'hidden' : 'Overview__readme'}
-              >
-                <ReactMarkdown className={readmeCSS} source={this.props.readme}  renderers={{code: props => <CodeBlock  {...props }/>}} />
+                className={overviewReadmeCSS}>
+
+                <ReactMarkdown
+                  className={readmeCSS}
+                  source={this.props.readme}
+                  renderers={{code: props => <CodeBlock  {...props }/>}}
+                />
+
                 {
                   this.state.overflowExists && !this.state.readmeExpanded &&
+
                   <div className="Overview__readme-fadeout"></div>
                 }
+
                 <div className="Overview__readme-buttons">
                   {
                     this.state.overflowExists && (this.state.readmeExpanded ?
-                    <div className="Overview__readme-bar-less">
-                      <button
-                        className="Overview__readme-less"
-                        onClick={() => { this.setState({ readmeExpanded: false }) }}
-                      >
-                        Collapse
-                      </button>
-                    </div>
+                      <div className="Overview__readme-bar-less">
+                        <button
+                          className="Overview__readme-less"
+                          onClick={() => { this.setState({ readmeExpanded: false }) }}
+                        >
+                          Collapse
+                        </button>
+                      </div>
                       :
                       <div className="Overview__readme-bar-more">
                         <button
@@ -305,49 +376,64 @@ class Overview extends Component {
                       </div>)
                   }
                 </div>
+
               </div>
+
               :
               !this.state.editingReadme &&
-            <FileEmpty
-              section="edit"
-              mainText="This Project does not have a readme."
-              subText="Click here to create one"
-              callback ={this._editReadme}
-            />
+                <FileEmpty
+                  section="edit"
+                  mainText="This Project does not have a readme."
+                  subText="Click here to create one"
+                  callback ={this._editReadme}
+                />
           }
+
           <div>
+
             <RecentActivity recentActivity={this.props.labbook.overview.recentActivity} scrollToTop={this.props.scrollToTop} />
+
           </div>
-          <div className="Overview__title-container">
-            <h5 className="Overview__title">Environment<ToolTip section="environmentOverview"/></h5>
+
+          <div className="Overview__container">
+
+            <h5 className="Overview__title">
+              Environment<ToolTip section="environmentOverview"/>
+            </h5>
+
             <Link
               onClick={this.props.scrollToTop}
               to={{ pathname: `../../../../projects/${owner}/${labbookName}/environment` }}
-              replace
-            >
+              replace>
               Environment Details >
-              </Link>
+            </Link>
+
           </div>
+
           <div className="Overview__environment">
+
             <Base
               ref="base"
               environment={this.props.labbook.environment}
               blockClass="Overview"
               overview={this.props.labbook.overview}
             />
+
           </div>
 
           <div>
+
             <FilePreview
               ref="filePreview"
               scrollToTop={this.props.scrollToTop}
             />
-          </div>
 
+          </div>
 
         </div>
       )
     } else {
+
       return (<Loader />)
     }
   }
