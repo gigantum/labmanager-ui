@@ -153,6 +153,7 @@ module.exports = {
           /\.html$/,
           /\.(js|jsx)$/,
           /\.css$/,
+          /\.scss$/,
           /\.json$/,
           /\.bmp$/,
           /\.gif$/,
@@ -179,10 +180,17 @@ module.exports = {
         test: /\.(js|jsx)$/,
         include: paths.appSrc,
         loader: require.resolve('babel-loader'),
+        options: {
 
+          compact: true,
+        }
       },
 
       {
+        exclude: [
+          /\.css$/,
+          /\.scss$/
+        ],
         test: /\.(js|jsx)$/,
         include: paths.submodules,
         loader: require.resolve('babel-loader'),
@@ -205,20 +213,27 @@ module.exports = {
         loader: ExtractTextPlugin.extract(
           Object.assign(
             {
-              fallback: require.resolve('style-loader'),
+              fallback: {
+                loader: require.resolve('style-loader'),
+                options: {
+                  hmr: false,
+                },
+              },
               use: [
                 {
                   loader: require.resolve('css-loader'),
                   options: {
                     importLoaders: 1,
                     minimize: true,
-                    sourceMap: true,
+                    sourceMap: false,
                   },
                 },
                 {
                   loader: require.resolve('postcss-loader'),
                   options: {
-                    ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
+                    // Necessary for external CSS imports to work
+                    // https://github.com/facebookincubator/create-react-app/issues/2677
+                    ident: 'postcss',
                     plugins: () => [
                       require('postcss-flexbugs-fixes'),
                       autoprefixer({
@@ -240,6 +255,7 @@ module.exports = {
                   }
                 }
               ],
+
             },
             extractTextPluginOptions
           )
@@ -278,28 +294,28 @@ module.exports = {
   //   // ],
   // },
 
-//   optimization: {
-//     minimize: true,
-//     minimizer: [
-//         new UglifyJsPlugin({
-//             sourceMap: true,
-//             uglifyOptions: {
-//                 compress: {
-//                     unused: false,
-//                     dead_code: false,
-//                     warnings: true
-//                 },
-//                 output: {
-//                     comments: true
-//                 }
-//             }
-//         })
-//     ]
-// },
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new UglifyJsPlugin({
+          sourceMap: true,
+          uglifyOptions: {
+              compress: {
+                  unused: false,
+                  dead_code: false,
+                  warnings: true
+              },
+              output: {
+                  comments: true
+              }
+          }
+        })
+      ]
+  },
   plugins: [
 
-    new ProgressBarPlugin(),
     new webpack.LoaderOptionsPlugin({ options: { debug: true } }),
+    new ProgressBarPlugin(),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -398,8 +414,10 @@ module.exports = {
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
   node: {
+    dgram: 'empty',
     fs: 'empty',
     net: 'empty',
     tls: 'empty',
+    child_process: 'empty',
   },
 };

@@ -18,11 +18,11 @@ import Validation from 'JS/utils/Validation'
 import UserIdentity from 'JS/Auth/UserIdentity'
 //config
 import config from 'JS/config'
-//assets
-import './Labbooks.scss'
 //store
 import { setErrorMessage } from 'JS/redux/reducers/footer'
 import { setFilterText } from 'JS/redux/reducers/labbookListing/labbookListing'
+//assets
+import './Labbooks.scss'
 
 class Labbooks extends Component {
 
