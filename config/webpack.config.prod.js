@@ -12,6 +12,8 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -54,6 +56,14 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: 'source-map',
   // In production, we only want to load the polyfills and the app code.
+  // entry: {
+  //   main: paths.appIndexJs,
+  //   Dashboard: paths.dahshboardJs,
+  //   Labbook: paths.labbookJs,
+  //   Activity: paths.labbookActivityJs,
+  //   Environment: paths.labbookEnvironmentJs,
+  //   Overview: paths.labbookOverviewJs,
+  // },
   entry: [
     require.resolve('./polyfills'),
     paths.appIndexJs,
@@ -240,8 +250,56 @@ module.exports = {
       // Remember to add the new extension(s) to the "file" loader exclusion list.
     ],
   },
+  // optimization:{
+  //   runtimeChunk: 'single',
+  //   splitChunks: {
+  //     chunks: 'all',
+  //     maxInitialRequests: Infinity,
+  //     minSize: 0,
+  //     cacheGroups: {
+  //       vendor: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         name(module) {
+  //           // get the name. E.g. node_modules/packageName/not/this/part.js
+  //           // or node_modules/packageName
+  //           const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+  //           // npm package names are URL-safe, but some servers don't like @ symbols
+  //           return `npm.${packageName.replace('@', '')}`;
+  //         },
+  //       },
+  //     },
+  //   },
+  //   // minimizer: [
+  //   //   new UglifyJsPlugin({
+  //   //     cache: true,
+  //   //     parallel: true,
+  //   //   })
+  //   // ],
+  // },
+
+//   optimization: {
+//     minimize: true,
+//     minimizer: [
+//         new UglifyJsPlugin({
+//             sourceMap: true,
+//             uglifyOptions: {
+//                 compress: {
+//                     unused: false,
+//                     dead_code: false,
+//                     warnings: true
+//                 },
+//                 output: {
+//                     comments: true
+//                 }
+//             }
+//         })
+//     ]
+// },
   plugins: [
-    new webpack.LoaderOptionsPlugin({ options: {} }),
+
+    new ProgressBarPlugin(),
+    new webpack.LoaderOptionsPlugin({ options: { debug: true } }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">

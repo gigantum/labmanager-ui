@@ -1,5 +1,3 @@
-'use strict';
-
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -41,30 +39,43 @@ module.exports = {
   // These are the "entry points" to our application.
   // This means they will be the "root" imports that are included in JS bundle.
   // The first two entry points enable "hot" CSS and auto-refreshes for JS.
-  entry: [
-    // Include an alternative client for WebpackDevServer. A client's job is to
-    // connect to WebpackDevServer by a socket and get notified about changes.
-    // When you save a file, the client will either apply hot updates (in case
-    // of CSS changes), or refresh the page (in case of JS changes). When you
-    // make a syntax error, this client will display a syntax error overlay.
-    // Note: instead of the default WebpackDevServer client, we use a custom one
-    // to bring better experience for Create React App users. You can replace
-    // the line below with these two lines if you prefer the stock client:
-    // require.resolve('webpack-dev-server/client') + '?/',
-    // require.resolve('webpack/hot/dev-server'),
-    require.resolve('react-dev-utils/webpackHotDevClient'),
-    // We ship a few polyfills by default:
-    require.resolve('./polyfills'),
-    // Errors should be considered fatal in development
-    require.resolve('react-error-overlay'),
-    // Finally, this is your app's code:
-    paths.appIndexJs,
-    paths.dahshboardJs,
-    paths.labbookJs
-    // We include the app code last so that if there is a runtime error during
-    // initialization, it doesn't blow up the WebpackDevServer client, and
-    // changing JS code would still trigger a refresh.
-  ],
+
+
+
+  // entry: [
+  //   // Include an alternative client for WebpackDevServer. A client's job is to
+  //   // connect to WebpackDevServer by a socket and get notified about changes.
+  //   // When you save a file, the client will either apply hot updates (in case
+  //   // of CSS changes), or refresh the page (in case of JS changes). When you
+  //   // make a syntax error, this client will display a syntax error overlay.
+  //   // Note: instead of the default WebpackDevServer client, we use a custom one
+  //   // to bring better experience for Create React App users. You can replace
+  //   // the line below with these two lines if you prefer the stock client:
+  //   // require.resolve('webpack-dev-server/client') + '?/',
+  //   // require.resolve('webpack/hot/dev-server'),
+  //   require.resolve('react-dev-utils/webpackHotDevClient'),
+  //   // We ship a few polyfills by default:
+  //   require.resolve('./polyfills'),
+  //   // Errors should be considered fatal in development
+  //   require.resolve('react-error-overlay'),
+  //   // Finally, this is your app's code:
+  //   paths.appIndexJs,
+  //   paths.dahshboardJs,
+  //   paths.labbookJs
+  //   // We include the app code last so that if there is a runtime error during
+  //   // initialization, it doesn't blow up the WebpackDevServer client, and
+  //   // changing JS code would still trigger a refresh.
+  // ],
+
+
+  entry: {
+    main: paths.appIndexJs,
+    Dashboard: paths.dahshboardJs,
+    Labbook: paths.labbookJs,
+    Activity: paths.labbookActivityJs,
+    Environment: paths.labbookEnvironmentJs,
+    Overview: paths.labbookOverviewJs,
+  },
   output: {
     // Next line is not used in dev but WebpackDevServer crashes without it:
     path: paths.appBuild,
@@ -109,8 +120,6 @@ module.exports = {
       'Styles': path.resolve(__dirname, '../src/css/'),
       'Fonts': path.resolve(__dirname, '../src/fonts/'),
       'Node': path.resolve(__dirname, '../node_modules'),
-      'react-dom': path.resolve(__dirname, '../node_modules/react-dom'),
-      'lodash': path.resolve(__dirname, '../node_modules/lodash'),
 
     },
     plugins: [
@@ -225,14 +234,30 @@ module.exports = {
   },
   mode:'development',
   optimization: {
+    runtimeChunk: 'single',
     splitChunks: {
-      chunks: 'all'
-    }
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `npm.${packageName.replace('@', '')}`;
+          },
+        },
+      },
+    },
   },
   plugins: [
-    // new BundleAnalyzerPlugin({
-    //        analyzerMode: 'static'
-    // }), //comment back in when needed
+    new BundleAnalyzerPlugin({
+           analyzerMode: 'static'
+    }), //comment back in when needed
 
     // new webpack.optimize.CommonsChunkPlugin({
     //      name: 'node-static',
@@ -281,6 +306,7 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.HashedModuleIdsPlugin(),
     // new HardSourceWebpackPlugin({
     //   // Either an absolute path or relative to webpack's options.context.
     //   cacheDirectory: 'node_modules/.cache/hard-source/[confighash]',
@@ -326,6 +352,8 @@ module.exports = {
   // cumbersome.
   performance: {
     hints: "warning",
+    // maxAssetSize: 900000,
+    // maxEntrypointSize: 10000000,
   },
   externals:[{
     xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'

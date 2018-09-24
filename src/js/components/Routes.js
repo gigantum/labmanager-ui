@@ -2,20 +2,32 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
 import YouTube from 'react-youtube';
+import Loadable from 'react-loadable';
 import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'; //keep browser router, reloads page with Router in labbook view
 //history
 import history from 'JS/history';
 // components
-import Home from 'Components/home/Home';
+// import Home from 'Components/home/Home';
 import SideBar from 'Components/shared/SideBar';
 import Footer from 'Components/shared/footer/Footer';
 import Prompt from 'Components/shared/Prompt';
-import LabbookQueryContainer from 'Components/labbook/LabbookQueryContainer';
+// import LabbookQueryContainer from 'Components/labbook/LabbookQueryContainer';
 import Profile from 'Components/profile/Profile'
 import Helper from 'Components/shared/Helper'
 //config
 import config from 'JS/config'
 
+const Loading = () => <div></div>;
+
+const Home = Loadable({
+  loader: () => import('Components/home/Home'),
+  loading: Loading,
+})
+
+const LabbookQueryContainer = Loadable({
+  loader: () => import('Components/labbook/LabbookQueryContainer'),
+  loading: Loading,
+})
 
 class Routes extends Component {
 

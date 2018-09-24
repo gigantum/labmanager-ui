@@ -1,12 +1,20 @@
 //vendor
 import React, { Component } from 'react'
-import SimpleMDE from 'simplemde'
-import { WithContext as ReactTags } from 'react-tag-input';
+// import SimpleMDE from 'simplemde'
+// import { WithContext as ReactTags } from 'react-tag-input';
+import Loadable from 'react-loadable';
 //mutations
 import CreateUserNoteMutation from 'Mutations/CreateUserNoteMutation'
 //store
 import store from 'JS/redux/store'
 let simple;
+
+const Loading = () => <div></div>;
+
+const ReactTags = Loadable({
+  loader: () => import('react-tag-input').then(({WithContext})=> WithContext ),
+  loading: Loading,
+})
 
 export default class UserNote extends Component {
   constructor(props){
@@ -28,16 +36,19 @@ export default class UserNote extends Component {
     after component mounts apply simplemde to the dom element id:markdown
   */
   componentDidMount() {
-    if(document.getElementById('markDown')){
-      simple = new SimpleMDE({
-        element: document.getElementById('markDown'),
-        spellChecker: true
-      });
-      let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0]
-      fullscreenButton && fullscreenButton.addEventListener('click', () => this.props.changeFullScreenState())
-      let sideBySideButton = document.getElementsByClassName('fa-columns')[0]
-      sideBySideButton && sideBySideButton.addEventListener('click', () => this.props.changeFullScreenState(true))
-    }
+    import('simplemde').then((comp)=> {
+      if(document.getElementById('markDown')){
+        const Simple = comp.default;
+        simple = new Simple({
+          element: document.getElementById('markDown'),
+          spellChecker: true
+        });
+        let fullscreenButton = document.getElementsByClassName('fa-arrows-alt')[0]
+        fullscreenButton && fullscreenButton.addEventListener('click', () => this.props.changeFullScreenState())
+        let sideBySideButton = document.getElementsByClassName('fa-columns')[0]
+        sideBySideButton && sideBySideButton.addEventListener('click', () => this.props.changeFullScreenState(true))
+      }
+    })
   }
 
   /**
