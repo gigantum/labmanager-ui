@@ -142,7 +142,7 @@ export default class FilePreview extends Component {
               </div>
               <div className="FilePreview__section">
                 <div className="FilePreview__container">
-                  <h5>Ouput Data<ToolTip section="outputDataOverview"/></h5>
+                  <h5>Output Data<ToolTip section="outputDataOverview"/></h5>
                   <Link
                     onClick={this.props.scrollToTop}
                     to={{pathname: `../../../../projects/${owner}/${labbookName}/outputData`}}

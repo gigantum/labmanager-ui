@@ -1,0 +1,425 @@
+@import '~Styles/_imports.scss';
+
+.Activity {
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 10px;
+  width: 100%;
+  height: calc(100% - 13px);
+  position: relative;
+
+  &.fullscreen {
+    z-index: index($elements, modal);
+  }
+
+}
+
+.Activity__new-record-wrapper{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+}
+
+.Activity__new-record{
+  cursor: pointer;
+  text-align: center;
+  line-height: 40px;
+  position: fixed;
+
+  height: 40px;
+  z-index: index($elements, popup);
+  width: 200px;
+  color: $white;
+  border-radius: 20px;
+  top: 100px;
+
+  border: 1px solid $turquise;
+
+  padding: 0 20px 0 0;
+  background: $turquise url('~Images/icons/up-arrow-white.svg') no-repeat calc(100% - 15px) center;
+  background-size: 22px;
+
+  &.is-demo{
+    top: 200px;
+  }
+
+  &:hover{
+    color: $turquise;
+    border: 1px solid $turquise;
+    background: #fefefe url('~Images/icons/up-arrow-turquise.svg') no-repeat calc(100% - 15px) center;
+    background-size: 22px;
+  }
+}
+
+
+.Activity__sizer {
+  width: 100%;
+}
+
+
+.Activity__date-tab {
+  position: relative;
+  margin: 30px 1px 0 0;
+  z-index: index($elements, date);
+  height: 50px;
+  width: 115px;
+  border: 2px solid $azure;
+  border-radius: 40px;
+  background: $white;
+
+  font-weight: lighter;
+  @include flex(center, row)
+
+  &.note {
+    z-index: index($elements, card) !important;
+
+    &:before {
+      height: 48px;
+    }
+  }
+
+  &:before {
+    top: 48px;
+    left: 38px;
+  }
+
+  &.fixed{
+    position: fixed;
+    z-index: index($elements, fixedDate) +1;
+    top: 50px;
+
+    &:before {
+      display: none !important;
+    }
+  }
+
+  &.not-visible{
+    visibility: hidden;
+    z-index: index($elements, card);
+
+    &:before{
+      visibility: visible;
+    }
+  }
+
+  &.is-demo{
+    top: 100px;
+  }
+
+  &.is-expanded{
+    top: 90px;
+  }
+
+  &.is-expanded.is-demo{
+    top: 140px;
+  }
+
+}
+
+.Activity__next-button-container {
+  text-align: center;
+}
+
+.Activity__date-sub{
+  @include flex(center, column)
+}
+
+.Activity__date-month,
+.Activity__date-year {
+  text-transform: uppercase;
+  align-self: center;
+  color: $jet;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.Activity__date-day {
+  align-self: center;
+  color: $jet;
+  font-size: 38px;
+  margin-right: 5px;
+  font-weight: 400;
+}
+
+.Activity__user-note {
+  @include flex(flex-start, row);
+  z-index: index($elements, card) + 1;
+  position: relative;
+  height: 49px;
+  transition: height 0.5s;
+}
+
+.Activity__user-note-menu-icon {
+
+  background: $azure url('~Images/icons/menu-add.svg') no-repeat center center;
+  background-size: 20px;
+  height: 20px;
+  width: 20px;
+  border-radius: 15px;
+  position: relative;
+  top: 14px;
+  left: 32px;
+  transition: all 0.125s ease;
+  cursor: pointer;
+}
+
+.Activity__user-note-menu-icon:hover {
+    height: 24px;
+    width: 24px;
+    top: 12px;
+    left: 30px;
+    background-size: 24px;
+}
+
+.Activity__user-note-menu {
+  @include flex(flex-start, row);
+  top: 13px;
+  height: 34px;
+  border-radius: 0 40px 40px 0;
+  padding: 5px 40px;
+  display: none;
+  background: $grey-background;
+  position: relative;
+
+  .Activity__add-note{
+    @include flex(flex-start, row);
+    h5 {
+      margin: 6px;
+      font-weight: 600;
+      font-size: 16px;
+      color: $romanSilver;
+      user-select: none;
+    }
+    button {
+      background: $azure url('~Images/icons/menu-add.svg') no-repeat center center;
+      border-radius: 25px;
+      width: 25px;
+      height: 25px;
+      background-size: 25px;
+      padding: 0;
+      transition: all 0.125s;
+    }
+    button:hover {
+      background: $turquise url('~Images/icons/menu-add-turquise.svg') no-repeat center center;
+      background-size: 25px;
+    }
+    .Activity__hide-note-button{
+      background: $azure url('~Images/icons/menu-add.svg') no-repeat center center !important;
+      transform: rotate(45deg);
+
+    }
+    .Activity__hide-note-button:hover{
+      background: $azure url('~Images/icons/menu-add-turquise.svg') no-repeat center center !important;
+      transform: rotate(45deg);
+    }
+  }
+  .Activity__add-branch{
+    margin-left: 10px;
+    @include flex(flex-start, row);
+    h5 {
+      margin: 6px;
+      font-weight: 600;
+      font-size: 16px;
+      color: $romanSilver;
+      user-select: none;
+    }
+    button {
+      background: $azure url('~Images/icons/menu-add.svg') no-repeat center center;
+      border-radius: 25px;
+      width: 25px;
+      height: 25px;
+      background-size: 25px;
+      padding: 0;
+    }
+    button:hover {
+      background: $turquise url('~Images/icons/menu-add-turquise.svg') no-repeat center center;
+      background-size: 25px;
+    }
+  }
+}
+
+.Activity__user-note.open-menu {
+  height: 60px;
+  .Activity__user-note-menu{
+    display: flex;
+  }
+  .Activity__user-note-menu-icon{
+    z-index: index($elements, button);
+    width: 40px !important;
+    height: 40px !important;
+    left: 23px !important;
+    top: calc(50% - 18px) !important;
+    border-radius: 40px !important;
+    background-size: 40px !important;
+    transform: rotate(45deg);
+  }
+}
+
+.Activity__submenu--flat {
+  height: 0;
+}
+
+.Activity__submenu-circle {
+  position: relative;
+  background: $romanSilver;
+  height: 12px;
+  width: 12px;
+  border-radius: 15px;
+  left: 36px;
+  z-index: index($elements, card);
+  top: calc(50% - 6px);
+  background-size: 12px;
+  transition: all 0.125s ease;
+}
+
+.Activity__submenu-container {
+  height: 30px;
+  transition: height .125s;
+  @include flex(flex-start, row)
+}
+
+.Activity__submenu-container.open-menu {
+  height: 60px;
+  .Activity__submenu-subcontainer{
+    display: flex;
+    h5{
+      display: block;
+    }
+  }
+  .Activity__submenu-circle{
+    background: $azure url('~Images/icons/menu-add.svg') no-repeat center center !important;
+    width: 40px !important;
+    height: 40px !important;
+    left: 23px !important;
+    top: calc(50% - 20px) !important;
+    border-radius: 40px !important;
+    background-size: 40px !important;
+    transform: rotate(45deg);
+  }
+}
+
+.Activity__submenu-container:hover > .Activity__submenu-circle {
+
+  background: $azure url('~Images/icons/menu-add.svg') no-repeat center center;
+  height: 20px;
+  width: 20px;
+  background-size: 20px;
+  left: 31.5px;
+  top: calc(50% - 10px);
+  cursor: pointer;
+}
+
+.Activity__card-container:not(.next-element) .ActivityCard__wrapper:nth-child(1) > .Activity__submenu-container:hover > .Activity__submenu-circle {
+  z-index: index($elements, button);
+}
+.Activity__card-container:not(.next-element) .ActivityCard__wrapper:nth-child(1) > .Activity__submenu-container.open-menu{
+  .Activity__submenu-circle{
+    z-index: index($elements, button);
+  }
+}
+
+.Activity__submenu-subcontainer {
+  @include flex(flex-start, row);
+  top: 13px;
+  height: 34px;
+  border-radius: 0 40px 40px 0;
+  padding: 5px 40px;
+  display: none;
+  background: $grey-background;
+  position: relative;
+
+  .Activity__rollback{
+    cursor: pointer;
+    @include flex(flex-start, row);
+    h5 {
+      margin: 6px;
+      display: none;
+      font-weight: 600;
+      font-size: 16px;
+      color: $romanSilver;
+      user-select: none;
+    }
+
+    button {
+      background: $azure url('~Images/icons/menu-rollback.svg') no-repeat center center;
+      border-radius: 25px;
+      width: 25px;
+      height: 25px;
+      background-size: 25px;
+      padding: 0;
+      border: none;
+    }
+  }
+
+  .Activity__rollback:hover{
+    h5 {
+      color: $turquise;
+    }
+    button {
+      border: none;
+      background: $turquise url('~Images/icons/menu-rollback-turquise.svg') no-repeat center center;
+      background-size: 25px;
+    }
+  }
+}
+
+.Activity__add {
+  margin-bottom: 30px;
+}
+
+.Activity__add:before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: index($elements, card);
+  top: calc(100% + 10px);
+  left: 40px;
+  border: 4px solid $romanSilver;
+  border-width: 0 0 0 4px;
+  width: 1px;
+  height: 30px;
+  transition: height 0.125s;
+}
+
+.UserActivity__container.fullscreen {
+  z-index: index($elements, modal);
+  position: fixed;
+}
+
+.ActivityExtended:before {
+  height: 60px !important;
+  transition: height 0.125s;
+}
+
+.Activity__card-container--last .ActivityCard__wrapper:last-child:before {
+  display: none;
+}
+
+.Activity__compressed-bar--bottom{
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: index($elements, pseudoCard);
+  top: 100%;
+  left: 40px;
+  border: 3px solid $romanSilver;
+  border-width: 0 0 0 4px;
+  width: 1px;
+  height: 30px;
+  transition: height 0.125s;
+}
+
+
+.Activity__compressed-bar--top{
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: index($elements, pseudoCard);
+  top: -1px;
+  left: 40px;
+  border: 3px solid $romanSilver;
+  border-width: 0 0 0 4px;
+  width: 1px;
+  height: 30px;
+  transition: height 0.125s;
+}
