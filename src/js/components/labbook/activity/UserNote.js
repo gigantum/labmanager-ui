@@ -1,7 +1,5 @@
 //vendor
 import React, { Component } from 'react'
-// import SimpleMDE from 'simplemde'
-// import { WithContext as ReactTags } from 'react-tag-input';
 import Loadable from 'react-loadable';
 //mutations
 import CreateUserNoteMutation from 'Mutations/CreateUserNoteMutation'

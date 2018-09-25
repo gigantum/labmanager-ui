@@ -19,12 +19,6 @@ import { setLatestPackages } from 'JS/redux/reducers/labbook/environment/package
 //components
 import LabbookHeader from './labbookHeader/LabbookHeader'
 import Login from 'Components/login/Login';
-// import Activity from './activity/Activity'
-// import Code from './code/Code'
-// import InputData from './inputData/InputData'
-// import OutputData from './outputData/OutputData'
-// import Overview from './overview/Overview'
-// import Environment from './environment/Environment'
 import Loader from 'Components/shared/Loader'
 import ErrorBoundary from 'Components/shared/ErrorBoundary'
 //utils
@@ -41,31 +35,26 @@ const Overview = Loadable({
   loading: Loading,
   delay: 500,
 })
-
 const Activity = Loadable({
   loader: () => import('./activity/Activity'),
   loading: Loading,
   delay: 500,
 })
-
 const Code = Loadable({
   loader: () => import('./code/Code'),
   loading: Loading,
   delay: 500,
 })
-
 const InputData = Loadable({
   loader: () => import('./inputData/InputData'),
   loading: Loading,
   delay: 500,
 })
-
 const OutputData = Loadable({
   loader: () => import('./outputData/OutputData'),
   loading: Loading,
   delay: 500,
 })
-
 const Environment = Loadable({
   loader: () => import('./environment/Environment'),
   loading: Loading,

@@ -7,11 +7,9 @@ import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-do
 //history
 import history from 'JS/history';
 // components
-// import Home from 'Components/home/Home';
 import SideBar from 'Components/shared/SideBar';
 import Footer from 'Components/shared/footer/Footer';
 import Prompt from 'Components/shared/Prompt';
-// import LabbookQueryContainer from 'Components/labbook/LabbookQueryContainer';
 import Profile from 'Components/profile/Profile'
 import Helper from 'Components/shared/Helper'
 //config
