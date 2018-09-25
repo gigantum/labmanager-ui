@@ -1,9 +1,9 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
-import uuidv4 from 'uuid/v4'
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
+import uuidv4 from 'uuid/v4';
 
 
 const mutation = graphql`
@@ -35,10 +35,9 @@ export default function UpdateFavoriteMutation(
   updatedIndex,
   favorite,
   section,
-  callback
+  callback,
 ) {
-
-  const clientMutationId = uuidv4()
+  const clientMutationId = uuidv4();
 
   const variables = {
     input: {
@@ -48,47 +47,43 @@ export default function UpdateFavoriteMutation(
       updatedDescription,
       updatedIndex,
       section,
-      clientMutationId
-    }
-  }
+      clientMutationId,
+    },
+  };
 
   commitMutation(
     environment,
     {
       mutation,
       variables,
-      onCompleted: (response, error ) => {
-        if(error){
-          console.log(error)
+      onCompleted: (response, error) => {
+        if (error) {
+          console.log(error);
         }
-        callback(response, error)
+        callback(response, error);
       },
       onError: err => console.error(err),
 
-      optimisticUpdater:(store)=>{
+      optimisticUpdater: (store) => {
+        const node = store.get(favorite.id);
 
-        const node = store.get(favorite.id)
-
-        if(node){
-          node.setValue(updatedDescription, 'description')
-          node.setValue(updatedIndex, 'index')
+        if (node) {
+          node.setValue(updatedDescription, 'description');
+          node.setValue(updatedIndex, 'index');
         }
-
       },
 
-      updater: (store, response)=>{
+      updater: (store, response) => {
+        if (response && response.updateFavorite) {
+          const node = store.get(response.updateFavorite.updatedFavoriteEdge.node.id);
 
-        if(response && response.updateFavorite){
-
-          const node = store.get(response.updateFavorite.updatedFavoriteEdge.node.id)
-
-          if(node){
-            node.setValue(updatedDescription, 'description')
-            node.setValue(updatedIndex, 'index')
+          if (node) {
+            node.setValue(updatedDescription, 'description');
+            node.setValue(updatedIndex, 'index');
           }
         }
-      }
+      },
 
     },
-  )
+  );
 }

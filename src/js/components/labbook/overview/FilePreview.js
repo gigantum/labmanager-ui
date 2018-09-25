@@ -1,23 +1,23 @@
-//vendor
-import React, { Component } from 'react'
+// vendor
+import React, { Component } from 'react';
 import {
   QueryRenderer,
-  graphql
-} from 'react-relay'
-import {Link} from 'react-router-dom';
-//components
-import Loader from 'Components/shared/Loader'
-import FileCard from './FileCard'
-import FileEmpty from './FileEmpty'
-import ToolTip from 'Components/shared/ToolTip'
-//utilites
-import environment from 'JS/createRelayEnvironment'
-//store
-import store from 'JS/redux/store'
-//assets
-import './FilePreview.scss'
+  graphql,
+} from 'react-relay';
+import { Link } from 'react-router-dom';
+// components
+import Loader from 'Components/shared/Loader';
+import FileCard from './FileCard';
+import FileEmpty from './FileEmpty';
+import ToolTip from 'Components/shared/ToolTip';
+// utilites
+import environment from 'JS/createRelayEnvironment';
+// store
+import store from 'JS/redux/store';
+// assets
+import './FilePreview.scss';
 
-let filePreviewQuery = graphql`query FilePreviewQuery($name: String!, $owner: String!, $first: Int!){
+const filePreviewQuery = graphql`query FilePreviewQuery($name: String!, $owner: String!, $first: Int!){
   labbook(name: $name, owner: $owner){
     code{
       favorites(first: $first){
@@ -66,33 +66,30 @@ let filePreviewQuery = graphql`query FilePreviewQuery($name: String!, $owner: St
     }
   }
 }
-`
+`;
 
 export default class FilePreview extends Component {
-
-  render(){
-    const {owner, labbookName} = store.getState().routes
-    return(
-    <QueryRenderer
-      variables={{
+  render() {
+    const { owner, labbookName } = store.getState().routes;
+    return (
+      <QueryRenderer
+        variables={{
         name: labbookName,
-        owner: owner,
-        first: 3
+        owner,
+        first: 3,
       }}
-      query={filePreviewQuery}
-      environment={environment}
-      render={({error, props}) =>{
-
-        if(props){
-
-          return(
+        query={filePreviewQuery}
+        environment={environment}
+        render={({ error, props }) => {
+        if (props) {
+          return (
             <div className="FilePreview">
               <div className="FilePreview__section">
                 <div className="FilePreview__container">
-                  <h5>Code &nbsp;&nbsp; <ToolTip section="codeOverview"/></h5>
+                  <h5>Code &nbsp;&nbsp; <ToolTip section="codeOverview" /></h5>
                   <Link
                     onClick={this.props.scrollToTop}
-                    to={{pathname: `../../../../projects/${owner}/${labbookName}/code`}}
+                    to={{ pathname: `../../../../projects/${owner}/${labbookName}/code` }}
                     replace
                   >
                     Code Details >
@@ -102,9 +99,7 @@ export default class FilePreview extends Component {
                 <div className="FilePreview__list grid">
                   {
                     props.labbook.code.favorites && props.labbook.code.favorites.edges.length ?
-                    props.labbook.code.favorites.edges.map(edge =>{
-                      return <FileCard key={edge.node.id} edge={edge} />
-                    }) :
+                    props.labbook.code.favorites.edges.map(edge => <FileCard key={edge.node.id} edge={edge} />) :
                     <FileEmpty
                       section="code"
                       mainText="This Project has No Code Favorites"
@@ -116,10 +111,10 @@ export default class FilePreview extends Component {
               </div>
               <div className="FilePreview__section">
                 <div className="FilePreview__container">
-                  <h5>Input Data<ToolTip section="inputDataOverview"/></h5>
+                  <h5>Input Data<ToolTip section="inputDataOverview" /></h5>
                   <Link
                     onClick={this.props.scrollToTop}
-                    to={{pathname: `../../../../projects/${owner}/${labbookName}/inputData`}}
+                    to={{ pathname: `../../../../projects/${owner}/${labbookName}/inputData` }}
                     replace
                   >
                     Input Data Details >
@@ -129,9 +124,7 @@ export default class FilePreview extends Component {
                 <div className="FilePreview__list grid">
                   {
                     props.labbook.input.favorites &&
-                    props.labbook.input.favorites.edges.length ? props.labbook.input.favorites.edges.map(edge =>{
-                      return <FileCard key={edge.node.id} edge={edge} />
-                    }) :
+                    props.labbook.input.favorites.edges.length ? props.labbook.input.favorites.edges.map(edge => <FileCard key={edge.node.id} edge={edge} />) :
                     <FileEmpty
                       section="inputData"
                       mainText="This Project has No Input Favorites"
@@ -142,10 +135,10 @@ export default class FilePreview extends Component {
               </div>
               <div className="FilePreview__section">
                 <div className="FilePreview__container">
-                  <h5>Output Data<ToolTip section="outputDataOverview"/></h5>
+                  <h5>Output Data<ToolTip section="outputDataOverview" /></h5>
                   <Link
                     onClick={this.props.scrollToTop}
-                    to={{pathname: `../../../../projects/${owner}/${labbookName}/outputData`}}
+                    to={{ pathname: `../../../../projects/${owner}/${labbookName}/outputData` }}
                     replace
                   >
                     Output Data Details >
@@ -155,9 +148,7 @@ export default class FilePreview extends Component {
                 <div className="FilePreview__list grid">
                   {
                     props.labbook.output.favorites &&
-                    props.labbook.output.favorites.edges.length ? props.labbook.output.favorites.edges.map(edge =>{
-                      return <FileCard key={edge.node.id} edge={edge} />
-                    }) :
+                    props.labbook.output.favorites.edges.length ? props.labbook.output.favorites.edges.map(edge => <FileCard key={edge.node.id} edge={edge} />) :
                     <FileEmpty
                       section="outputData"
                       mainText="This Project has No Output Favorites"
@@ -167,15 +158,12 @@ export default class FilePreview extends Component {
                 </div>
               </div>
             </div>
-          )
-        }else if(error){
-
-          return(<div>{error.message}</div>)
-        }else{
-          return(<Loader />)
+          );
+        } else if (error) {
+          return (<div>{error.message}</div>);
         }
+          return (<Loader />);
       }}
-
-    />)
+      />);
   }
 }

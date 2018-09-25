@@ -1,29 +1,28 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 export default class User extends Component {
-
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
       familyName: localStorage.getItem('family_name') || '',
       username: localStorage.getItem('username') || '',
       givenName: localStorage.getItem('given_name') || '',
       email: localStorage.getItem('email') || '',
-      dropdownVisible: false
-    }
+      dropdownVisible: false,
+    };
 
-    this._toggleDropdown = this._toggleDropdown.bind(this)
+    this._toggleDropdown = this._toggleDropdown.bind(this);
     this.handleClickOutside = this._handleClickOutside.bind(this);
   }
 
-    componentDidMount() {
-     document.addEventListener('mousedown', this._handleClickOutside.bind(this));
-   }
+  componentDidMount() {
+    document.addEventListener('mousedown', this._handleClickOutside.bind(this));
+  }
 
-   componentWillUnmount() {
-      document.removeEventListener('mousedown', this._handleClickOutside.bind(this));
-   }
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this._handleClickOutside.bind(this));
+  }
 
   /**
     @param {}
@@ -31,20 +30,20 @@ export default class User extends Component {
   */
   logout() {
     this.props.auth.logout();
-    this._toggleDropdown()
+    this._toggleDropdown();
   }
   /**
       @param {}
       handles click to update state
     */
   _handleClickOutside(event) {
-    const userElementIds = ['user', 'username', 'logout', 'profile']
-    if(this.state.dropdownVisible && (userElementIds.indexOf(event.target.id) < 0)){
+    const userElementIds = ['user', 'username', 'logout', 'profile'];
+    if (this.state.dropdownVisible && (userElementIds.indexOf(event.target.id) < 0)) {
       this.setState({
-        dropdownVisible: false
-      })
+        dropdownVisible: false,
+      });
     }
-   }
+  }
 
   /**
     @param {}
@@ -52,8 +51,8 @@ export default class User extends Component {
   */
   _toggleDropdown() {
     this.setState({
-      dropdownVisible: !this.state.dropdownVisible
-    })
+      dropdownVisible: !this.state.dropdownVisible,
+    });
   }
 
 
@@ -61,17 +60,19 @@ export default class User extends Component {
     return (
       <div
         id="user"
-        className="User">
-        <div className="User__image"> </div>
+        className="User"
+      >
+        <div className="User__image" />
         <h6
           id="username"
-          onClick={() => { this._toggleDropdown()}}
-          className={this.state.dropdownVisible ? 'User__name--active' :  'User__name'}>
-            {this.state.username}
+          onClick={() => { this._toggleDropdown(); }}
+          className={this.state.dropdownVisible ? 'User__name--active' : 'User__name'}
+        >
+          {this.state.username}
 
         </h6>
 
-        <div className={ this.state.dropdownVisible ? 'User__dropdown--arrow' : 'hidden'}></div>
+        <div className={this.state.dropdownVisible ? 'User__dropdown--arrow' : 'hidden'} />
 
         <div className={this.state.dropdownVisible ? 'User__dropdown' : 'hidden'}>
           <a
@@ -89,13 +90,12 @@ export default class User extends Component {
             onClick={this.logout.bind(this)}
           >
             Logout
-        </button>
+          </button>
 
         </div>
 
 
-
       </div>
-    )
+    );
   }
 }

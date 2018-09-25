@@ -1,15 +1,13 @@
 // vendor
-import React, { Component } from 'react'
-import {createPaginationContainer, graphql} from 'react-relay'
+import React, { Component } from 'react';
+import { createPaginationContainer, graphql } from 'react-relay';
 
-//componenets
-import InputFavoriteList from './InputFavoriteList'
-import FileEmpty from 'Components/labbook/overview/FileEmpty'
+// componenets
+import InputFavoriteList from './InputFavoriteList';
+import FileEmpty from 'Components/labbook/overview/FileEmpty';
 
-//store
-import store from 'JS/redux/store'
-
-
+// store
+import store from 'JS/redux/store';
 
 
 class InputFavorites extends Component {
@@ -17,16 +15,16 @@ class InputFavorites extends Component {
     update component when props are reloaded
   */
   UNSAFE_componentWillReceiveProps(nextProps) {
-
-    //this._loadMore() //routes query only loads 2, call loadMore
-    if(nextProps.input && nextProps.input.favorites && nextProps.input.favorites.pageInfo.hasNextPage && nextProps.input.favorites.edges.length < 3){
+    // this._loadMore() //routes query only loads 2, call loadMore
+    if (nextProps.input && nextProps.input.favorites && nextProps.input.favorites.pageInfo.hasNextPage && nextProps.input.favorites.edges.length < 3) {
       this.props.relay.loadMore(
-       1, // Fetch the next 10 feed items
-       (response, error) => {
-         if(error){
-           console.error(error)
-        }
-      })
+        1, // Fetch the next 10 feed items
+        (response, error) => {
+          if (error) {
+            console.error(error);
+          }
+        },
+      );
     }
   }
 
@@ -34,14 +32,15 @@ class InputFavorites extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    if(this.props.input && this.props.input.favorites && this.props.input.favorites.pageInfo.hasNextPage && this.props.input.favorites.edges.length < 3){
+    if (this.props.input && this.props.input.favorites && this.props.input.favorites.pageInfo.hasNextPage && this.props.input.favorites.edges.length < 3) {
       this.props.relay.loadMore(
-       1, // Fetch the next 10 feed items
-       (response, error) => {
-         if(error){
-           console.error(error)
-        }
-      })
+        1, // Fetch the next 10 feed items
+        (response, error) => {
+          if (error) {
+            console.error(error);
+          }
+        },
+      );
     }
   }
 
@@ -52,57 +51,50 @@ class InputFavorites extends Component {
     logs callback
   */
   _loadMore() {
-
     this.props.relay.loadMore(
-     3, // Fetch the next 10 feed items
-     (response, error) => {
-
-       if(error){
-         console.error(error)
-       }
-
-     }
-   );
+      3, // Fetch the next 10 feed items
+      (response, error) => {
+        if (error) {
+          console.error(error);
+        }
+      },
+    );
   }
 
 
-  render(){
-    if(this.props.input && this.props.input.favorites){
-      if(this.props.input.favorites.edges.length > 0){
-        const favorites = this.props.input.favorites.edges.filter((edge)=>{
-          return edge && (edge.node !== undefined)
-        })
-        return(
+  render() {
+    if (this.props.input && this.props.input.favorites) {
+      if (this.props.input.favorites.edges.length > 0) {
+        const favorites = this.props.input.favorites.edges.filter(edge => edge && (edge.node !== undefined));
+        return (
           <div className="Favorite">
             <InputFavoriteList
               labbookName={this.props.labbookName}
               inputId={this.props.inputId}
-              section={'input'}
+              section="input"
               favorites={favorites}
               owner={this.props.owner}
             />
 
-            <div className={this.props.input.favorites.pageInfo.hasNextPage ? "Favorite__action-bar" : "hidden"}>
+            <div className={this.props.input.favorites.pageInfo.hasNextPage ? 'Favorite__action-bar' : 'hidden'}>
               <button
                 className="Favorite__load-more"
-                onClick={()=>{this._loadMore()}}
+                onClick={() => { this._loadMore(); }}
               >
                 Load More
               </button>
             </div>
-        </div>
-        )
-      }else{
-        return(
-          <FileEmpty
-            section="inputData"
-            mainText="This Project has No Input Favorites"
-          />
-        )
+          </div>
+        );
       }
-    }else{
-      return(<div>No Files Found</div>)
+      return (
+        <FileEmpty
+          section="inputData"
+          mainText="This Project has No Input Favorites"
+        />
+      );
     }
+    return (<div>No Files Found</div>);
   }
 }
 
@@ -135,12 +127,12 @@ export default createPaginationContainer(
           }
         }
 
-      }`
+      }`,
   },
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.input && props.input.favorites
+      return props.input && props.input.favorites;
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -148,16 +140,15 @@ export default createPaginationContainer(
         first: totalCount,
       };
     },
-    getVariables(props, {count, cursor}, fragmentVariables) {
-
-      let root = ""
-      const {owner, labbookName} = store.getState().routes
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      const root = '';
+      const { owner, labbookName } = store.getState().routes;
       return {
         first: count,
         cursor,
         root,
-        owner: owner,
-        name: labbookName
+        owner,
+        name: labbookName,
       };
     },
     query: graphql`
@@ -176,7 +167,7 @@ export default createPaginationContainer(
            }
         }
       }
-    `
-  }
+    `,
+  },
 
-)
+);

@@ -2,7 +2,7 @@ import Labbooks from '../Labbooks';
 import {
   createFragmentContainer,
   graphql,
-} from 'react-relay'
+} from 'react-relay';
 
 export default createFragmentContainer(
   Labbooks,
@@ -13,5 +13,5 @@ export default createFragmentContainer(
         ...LocalLabbooks_localLabbooks
       }
     }
-  `
+  `,
 );

@@ -1,9 +1,10 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
+import RelayRuntime from 'relay-runtime';
+
 let tempID = 0;
 const mutation = graphql`
   mutation RemovePackageComponentsMutation($input: RemovePackageComponentsInput!){
@@ -16,21 +17,21 @@ const mutation = graphql`
 
 function sharedUpdater(store, parentID, deletedIdArr, connectionKey) {
   const environmentProxy = store.get(parentID);
-  if(environmentProxy) {
-    deletedIdArr.forEach(deleteId =>{
+  if (environmentProxy) {
+    deletedIdArr.forEach((deleteId) => {
       const conn = RelayRuntime.ConnectionHandler.getConnection(
         environmentProxy,
         connectionKey,
       );
 
-      if(conn){
+      if (conn) {
         RelayRuntime.ConnectionHandler.deleteNode(
           conn,
           deleteId,
         );
-        store.delete(deleteId)
+        store.delete(deleteId);
       }
-    })
+    });
   }
 }
 
@@ -43,15 +44,12 @@ export default function RemovePackageComponentsMutation(
   clientMutationId,
   environmentId,
   connection,
-  callback
+  callback,
 ) {
-
-  const config = packageIDArr.map(id => {
-    return {
-      type: 'NODE_DELETE',
-      deletedIDFieldName: id,
-    }
-  })
+  const config = packageIDArr.map(id => ({
+    type: 'NODE_DELETE',
+    deletedIDFieldName: id,
+  }));
 
 
   const variables = {
@@ -60,9 +58,9 @@ export default function RemovePackageComponentsMutation(
       owner,
       manager,
       packages,
-      clientMutationId: tempID++
-    }
-  }
+      clientMutationId: tempID++,
+    },
+  };
   commitMutation(
     environment,
     {
@@ -70,18 +68,18 @@ export default function RemovePackageComponentsMutation(
       variables,
       config,
       onCompleted: (response, error) => {
-        if(error){
-          console.log(error)
+        if (error) {
+          console.log(error);
         }
-        callback(response, error)
+        callback(response, error);
       },
       onError: err => console.error(err),
       updater: (store, response) => {
-        sharedUpdater(store, environmentId, packageIDArr, 'PackageDependencies_packageDependencies')
+        sharedUpdater(store, environmentId, packageIDArr, 'PackageDependencies_packageDependencies');
       },
       optimisticUpdater: (store) => {
-        sharedUpdater(store, environmentId, packageIDArr, 'PackageDependencies_packageDependencies')
+        sharedUpdater(store, environmentId, packageIDArr, 'PackageDependencies_packageDependencies');
       },
     },
-  )
+  );
 }

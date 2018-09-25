@@ -1,48 +1,45 @@
-//vendor
-import React, {Component, Fragment} from 'react';
-//components
-import Modal from 'Components/shared/Modal'
-//Mutations
-import DeleteExperimentalBranchMutation from 'Mutations/branches/DeleteExperimentalBranchMutation'
-//store
-import { setErrorMessage, setInfoMessage } from 'JS/redux/reducers/footer'
-//assets
-import './DeleteBranch.scss'
+// vendor
+import React, { Component, Fragment } from 'react';
+// components
+import Modal from 'Components/shared/Modal';
+// Mutations
+import DeleteExperimentalBranchMutation from 'Mutations/branches/DeleteExperimentalBranchMutation';
+// store
+import { setErrorMessage, setInfoMessage } from 'JS/redux/reducers/footer';
+// assets
+import './DeleteBranch.scss';
 
 export default class DeleteBranch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      eneteredBranchName: ''
+      eneteredBranchName: '',
     };
-
   }
   /**
   *  @param {object} event
   *  updates state of eneteredBranchName
   *  @return {}
   */
-  _updateBranchText(evt){
+  _updateBranchText(evt) {
     this.setState({
-      'eneteredBranchName': evt.target.value
-    })
+      eneteredBranchName: evt.target.value,
+    });
   }
   /**
   *  @param {}
   *  triggers DeleteExperimentalBranchMutation
   *  @return {}
   */
-  _deleteBranch(){
-
-
-    this.props.toggleModal('deleteModalVisible')
+  _deleteBranch() {
+    this.props.toggleModal('deleteModalVisible');
     const {
       owner,
       labbookName,
       labbookId,
       branchName,
-      cleanBranchName
-    } = this.props
+      cleanBranchName,
+    } = this.props;
 
 
     DeleteExperimentalBranchMutation(
@@ -51,19 +48,17 @@ export default class DeleteBranch extends Component {
       branchName,
       labbookId,
       (response, error) => {
-        if(error){
-          setErrorMessage(`There was a problem deleting ${cleanBranchName}`, error)
-        }else{
-          setInfoMessage(`Deleted ${cleanBranchName} successfully`)
+        if (error) {
+          setErrorMessage(`There was a problem deleting ${cleanBranchName}`, error);
+        } else {
+          setInfoMessage(`Deleted ${cleanBranchName} successfully`);
         }
-      }
-    )
-
+      },
+    );
   }
 
   render() {
-
-    const {owner, cleanBranchName} = this.props
+    const { owner, cleanBranchName } = this.props;
 
     return (
 
@@ -71,8 +66,8 @@ export default class DeleteBranch extends Component {
         handleClose={() => this.props.toggleModal('deleteModalVisible')}
         size="medium"
         header="Delete Branch"
-        renderContent={()=>
-          <Fragment>
+        renderContent={() =>
+          (<Fragment>
             <p className="DeleteBranch__text DeleteBranch__text--red">
               You are going to delete {owner}/{cleanBranchName}. Deleted branches cannot be restored. Are you sure?
             </p>
@@ -82,22 +77,23 @@ export default class DeleteBranch extends Component {
             </p>
 
             <input
-              onChange={(evt) => {this._updateBranchText(evt)}}
-              onKeyUp={(evt) => {this._updateBranchText(evt)}}
+              onChange={(evt) => { this._updateBranchText(evt); }}
+              onKeyUp={(evt) => { this._updateBranchText(evt); }}
               className="DeleteBranch__text"
               type="text"
-              placeholder={"Enter branch name here"}
+              placeholder="Enter branch name here"
             />
             <div className="DeleteBranch__buttonContainer">
               <button
                 disabled={cleanBranchName !== this.state.eneteredBranchName}
-                onClick={() => this._deleteBranch()}>
+                onClick={() => this._deleteBranch()}
+              >
                 Confirm
               </button>
             </div>
-          </Fragment>
+           </Fragment>)
         }
       />
-    )
+    );
   }
 }

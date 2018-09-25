@@ -1,9 +1,9 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import uuidV4 from 'uuid/v4'
-import environment from 'JS/createRelayEnvironment'
+} from 'react-relay';
+import uuidV4 from 'uuid/v4';
+import environment from 'JS/createRelayEnvironment';
 
 const mutation = graphql`
   mutation CreateExperimentalBranchMutation($input: CreateExperimentalBranchInput!, $first: Int, $cursor: String, $hasNext: Boolean!){
@@ -22,10 +22,9 @@ export default function CreateExperimentalBranchMutation(
   branchName,
   revision,
   description,
-  callback
+  callback,
 ) {
-
-  const clientMutationId = uuidV4()
+  const clientMutationId = uuidV4();
   const variables = {
     input: {
       owner,
@@ -33,28 +32,27 @@ export default function CreateExperimentalBranchMutation(
       branchName,
       revision,
       description,
-      clientMutationId
+      clientMutationId,
     },
     first: 2,
     cursor: null,
-    hasNext: false
-  }
+    hasNext: false,
+  };
   commitMutation(
     environment,
     {
       mutation,
       variables,
       onCompleted: (response, error) => {
-
-        if(error){
-          console.log(error)
+        if (error) {
+          console.log(error);
         }
 
-        callback(response, error)
+        callback(response, error);
       },
-      onError: err => {console.error(err)},
+      onError: (err) => { console.error(err); },
       updater: (store, response) => {
-      }
+      },
     },
-  )
+  );
 }

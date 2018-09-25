@@ -1,10 +1,10 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
-//utils
-import FooterUtils from 'Components/shared/footer/FooterUtils'
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
+// utils
+import FooterUtils from 'Components/shared/footer/FooterUtils';
 
 const mutation = graphql`
   mutation ImportLabbookMutation($input: ImportLabbookInput!){
@@ -22,9 +22,9 @@ export default function ImportLabbookMutation(
   blob,
   chunk,
   accessToken,
-  callback
+  callback,
 ) {
-  let uploadables = [blob, accessToken]
+  const uploadables = [blob, accessToken];
 
   const variables = {
     input: {
@@ -36,28 +36,26 @@ export default function ImportLabbookMutation(
         filename: chunk.filename,
         uploadId: chunk.uploadId,
       },
-      clientMutationId: '' + tempID++
+      clientMutationId: `${tempID++}`,
     },
 
-  }
+  };
   commitMutation(
     environment,
     {
       mutation,
       variables,
       uploadables,
-      onCompleted: (response, error ) => {
-
-
-        if(error){
-          console.log(error)
+      onCompleted: (response, error) => {
+        if (error) {
+          console.log(error);
         }
-        if(response){
-          FooterUtils.getJobStatus(response, 'importLabbook', 'importJobKey')
-          FooterUtils.getJobStatus(response, 'importLabbook', 'buildImageJobKey')
+        if (response) {
+          FooterUtils.getJobStatus(response, 'importLabbook', 'importJobKey');
+          FooterUtils.getJobStatus(response, 'importLabbook', 'buildImageJobKey');
         }
 
-        callback(response, error)
+        callback(response, error);
       },
       onError: err => console.error(err),
 
@@ -65,5 +63,5 @@ export default function ImportLabbookMutation(
 
       },
     },
-  )
+  );
 }

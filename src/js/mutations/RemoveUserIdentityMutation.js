@@ -1,8 +1,8 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
 
 
 const mutation = graphql`
@@ -15,25 +15,22 @@ const mutation = graphql`
 
 let tempID = 0;
 
-export default function RemoveUserIdentityMutation(
-  callback
-) {
+export default function RemoveUserIdentityMutation(callback) {
   const variables = {
     input: {
-      clientMutationId: '' + tempID++
-    }
-  }
+      clientMutationId: `${tempID++}`,
+    },
+  };
   commitMutation(
     environment,
     {
       mutation,
       variables,
-      onCompleted: (response, error ) => {
-
-        if(error){
-          console.log(error)
+      onCompleted: (response, error) => {
+        if (error) {
+          console.log(error);
         }
-        callback(response, error)
+        callback(response, error);
       },
       onError: err => console.error(err),
 
@@ -41,5 +38,5 @@ export default function RemoveUserIdentityMutation(
 
       },
     },
-  )
+  );
 }

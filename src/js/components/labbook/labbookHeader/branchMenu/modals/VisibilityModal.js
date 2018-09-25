@@ -1,41 +1,39 @@
-//vendor
-import React, { Component } from 'react'
-import uuidv4 from 'uuid/v4'
-//mutations
-import SetVisibilityMutation from 'Mutations/SetVisibilityMutation'
-import PublishLabbookMutation from 'Mutations/branches/PublishLabbookMutation'
-//component
-import Modal from 'Components/shared/Modal'
-//store
-import { setErrorMessage, setInfoMessage, setMultiInfoMessage} from 'JS/redux/reducers/footer'
-import { setContainerMenuVisibility} from 'JS/redux/reducers/labbook/environment/environment'
-import store from 'JS/redux/store'
-//assets
-import './VisibilityModal.scss'
+// vendor
+import React, { Component } from 'react';
+import uuidv4 from 'uuid/v4';
+// mutations
+import SetVisibilityMutation from 'Mutations/SetVisibilityMutation';
+import PublishLabbookMutation from 'Mutations/branches/PublishLabbookMutation';
+// component
+import Modal from 'Components/shared/Modal';
+// store
+import { setErrorMessage, setInfoMessage, setMultiInfoMessage } from 'JS/redux/reducers/footer';
+import { setContainerMenuVisibility } from 'JS/redux/reducers/labbook/environment/environment';
+import store from 'JS/redux/store';
+// assets
+import './VisibilityModal.scss';
 
 
 export default class PublishModal extends Component {
+  constructor(props) {
+    super(props);
 
-  constructor(props){
-    super(props)
-
-    this._publishLabbook = this._publishLabbook.bind(this)
-    this._changeVisibility = this._changeVisibility.bind(this)
-
+    this._publishLabbook = this._publishLabbook.bind(this);
+    this._changeVisibility = this._changeVisibility.bind(this);
   }
 
   state = {
-    'isPublic': (this.props.visibility === 'public')
+    isPublic: (this.props.visibility === 'public'),
   }
   /**
   *  @param {boolean}
   *  sets public state
   *  @return {string}
   */
-  _setPublic(isPublic){
+  _setPublic(isPublic) {
     this.setState({
-      isPublic
-    })
+      isPublic,
+    });
   }
 
   /**
@@ -44,58 +42,48 @@ export default class PublishModal extends Component {
   *  @return {string}
   */
   _changeVisibility() {
+    const self = this;
+    const visibility = this.state.isPublic ? 'public' : 'private';
 
-      let self = this;
-      let visibility = this.state.isPublic ? 'public': 'private';
+    this.props.toggleModal(this.props.modalStateValue);
 
-      this.props.toggleModal(this.props.modalStateValue)
-
-      const {
-        owner,
-        labbookName} = this.props;
+    const {
+      owner,
+      labbookName,
+    } = this.props;
 
 
-      this.props.checkSessionIsValid().then((response) => {
-
-        if(navigator.onLine){
-
-          if (response.data) {
-
-            if (response.data.userIdentity.isSessionValid) {
-
-              if (this.props.visibility !== visibility) {
-
-                SetVisibilityMutation(
-                    owner,
-                    labbookName,
-                    visibility,
-                    (response, error) => {
-
-                      if(error){
-                        console.log(error)
-                        setErrorMessage('Visibility change failed', error)
-                      } else {
-                        setInfoMessage(`Visibility changed to ${visibility}`)
-                      }
-                    }
-                  )
-                }
-
-            } else {
-
-              self.props.auth.renewToken(true, ()=>{
-
-                self.props.resetState()
-
-              }, ()=>{
-                self._changeVisibility();
-              });
+    this.props.checkSessionIsValid().then((response) => {
+      if (navigator.onLine) {
+        if (response.data) {
+          if (response.data.userIdentity.isSessionValid) {
+            if (this.props.visibility !== visibility) {
+              SetVisibilityMutation(
+                owner,
+                labbookName,
+                visibility,
+                (response, error) => {
+                  if (error) {
+                    console.log(error);
+                    setErrorMessage('Visibility change failed', error);
+                  } else {
+                    setInfoMessage(`Visibility changed to ${visibility}`);
+                  }
+                },
+              );
             }
+          } else {
+            self.props.auth.renewToken(true, () => {
+              self.props.resetState();
+            }, () => {
+              self._changeVisibility();
+            });
           }
-        } else{
-          self.props.resetState()
         }
-      })
+      } else {
+        self.props.resetState();
+      }
+    });
   }
 
   /**
@@ -104,128 +92,97 @@ export default class PublishModal extends Component {
   *  @return {string}
   */
   _publishLabbook() {
+    const id = uuidv4();
+    const self = this;
 
-      let id = uuidv4()
-      let self = this;
+    this.props.toggleModal();
 
-      this.props.toggleModal()
+    const {
+      owner,
+      labbookName,
+      labbookId,
+    } = this.props;
 
-      const {
-        owner,
-        labbookName,
-        labbookId} = this.props;
-
-      this.props.checkSessionIsValid().then((response) => {
-
-        if(navigator.onLine){
-
-          if (response.data) {
-
-            if (response.data.userIdentity.isSessionValid) {
-
-              if(store.getState().containerStatus.status !== 'Running'){
-
-                self.props.resetPublishState(true)
+    this.props.checkSessionIsValid().then((response) => {
+      if (navigator.onLine) {
+        if (response.data) {
+          if (response.data.userIdentity.isSessionValid) {
+            if (store.getState().containerStatus.status !== 'Running') {
+              self.props.resetPublishState(true);
 
               if (!self.props.remoteUrl) {
-
-                self.props.setPublishingState(true)
+                self.props.setPublishingState(true);
 
                 self.props.showContainerMenuMessage('publishing');
 
-                setMultiInfoMessage(id, 'Publishing Project to Gigantum cloud ...', false, false)
+                setMultiInfoMessage(id, 'Publishing Project to Gigantum cloud ...', false, false);
 
                 PublishLabbookMutation(
-                    owner,
-                    labbookName,
-                    labbookId,
-                    this.state.isPublic,
-                    (response, error) => {
+                  owner,
+                  labbookName,
+                  labbookId,
+                  this.state.isPublic,
+                  (response, error) => {
+                    self.props.setPublishingState(false);
 
-                      self.props.setPublishingState(false)
+                    setContainerMenuVisibility(false);
 
-                      setContainerMenuVisibility(false)
+                    if (error) {
+                      console.log(error);
 
-                      if(error){
+                      setErrorMessage('Publish failed', error);
+                    }
 
-                        console.log(error)
+                    self.props.resetPublishState(false);
 
-                        setErrorMessage('Publish failed', error)
-                      }
+                    if (response.publishLabbook && response.publishLabbook.success) {
+                      self.props.remountCollab();
 
-                      self.props.resetPublishState(false)
+                      setMultiInfoMessage(id, `Added remote https://gigantum.com/${self.props.owner}/${self.props.labbookName}`, true, false);
 
-                      if (response.publishLabbook && response.publishLabbook.success) {
-
-                        self.props.remountCollab();
-
-                        setMultiInfoMessage(id, `Added remote https://gigantum.com/${self.props.owner}/${self.props.labbookName}`, true, false)
-
-                        self.props.setRemoteSession()
-                      }
-
-                  })
-
-                }
-
-              } else {
-
-                self.props.showContainerMenuMessage('publishing', true)
-
+                      self.props.setRemoteSession();
+                    }
+                  },
+                );
               }
-
             } else {
-
-              self.props.auth.renewToken(true, ()=>{
-
-                self.props.resetState()
-
-              }, ()=>{
-
-                self._publishLabbook();
-
-              });
-
+              self.props.showContainerMenuMessage('publishing', true);
             }
-
+          } else {
+            self.props.auth.renewToken(true, () => {
+              self.props.resetState();
+            }, () => {
+              self._publishLabbook();
+            });
           }
-
-        } else{
-
-          self.props.resetState()
-
         }
-      })
-  }
-
-  _modifyVisibility(){
-
-      if(this.props.header === 'Publish'){
-
-        this._publishLabbook()
-
-      }else{
-
-        this._changeVisibility()
-
+      } else {
+        self.props.resetState();
       }
+    });
+  }
 
+  _modifyVisibility() {
+    if (this.props.header === 'Publish') {
+      this._publishLabbook();
+    } else {
+      this._changeVisibility();
+    }
   }
 
 
-  render(){
+  render() {
+    const { props } = this;
 
-    const {props} = this
-
-    return(
+    return (
 
       <Modal
         header={props.header}
-        handleClose={()=> props.toggleModal(props.modalStateValue) }
+        handleClose={() => props.toggleModal(props.modalStateValue)}
         size="large"
-        renderContent={()=>
+        renderContent={() =>
 
-          <div className="VisibilityModal">
+          (<div className="VisibilityModal">
 
             <div>
 
@@ -242,7 +199,7 @@ export default class PublishModal extends Component {
                   type="radio"
                   name="publish"
                   id="publish_private"
-                  onClick={()=>{this._setPublic(false)}}
+                  onClick={() => { this._setPublic(false); }}
                 />
 
                 <label htmlFor="publish_private">
@@ -260,7 +217,7 @@ export default class PublishModal extends Component {
                   name="publish"
                   type="radio"
                   id="publish_public"
-                  onClick={()=>{this._setPublic(true)}}
+                  onClick={() => { this._setPublic(true); }}
                 />
 
                 <label htmlFor="publish_public">
@@ -275,14 +232,14 @@ export default class PublishModal extends Component {
 
             <div className="VisibilityModal__buttons">
 
-              <button onClick={()=>{this._modifyVisibility()}}>{props.buttonText}</button>
-              <button className="button--flat" onClick={()=>{props.toggleModal(props.modalStateValue)}}>Cancel</button>
+              <button onClick={() => { this._modifyVisibility(); }}>{props.buttonText}</button>
+              <button className="button--flat" onClick={() => { props.toggleModal(props.modalStateValue); }}>Cancel</button>
 
             </div>
 
-          </div>
+           </div>)
         }
       />
-    )
+    );
   }
 }

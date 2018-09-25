@@ -70,6 +70,7 @@
   },
   "dependencies": {
     "@babel/traverse": "^7.1.0",
+    "@nenado/interpolate-html-plugin": "^1.0.2",
     "ansi_up": "^3.0.0",
     "blob": "0.0.4",
     "classnames": "^2.2.5",

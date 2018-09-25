@@ -1,8 +1,8 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
 
 const mutation = graphql`
   mutation CreateUserNoteMutation($input: CreateUserNoteInput!){
@@ -44,9 +44,8 @@ export default function CreateUserNoteMutation(
   objects,
   tags,
   labbookId,
-  callback
+  callback,
 ) {
-
   const variables = {
     input: {
       labbookName,
@@ -54,32 +53,31 @@ export default function CreateUserNoteMutation(
       body,
       owner,
       tags,
-      clientMutationId: tempID++
-    }
-  }
+      clientMutationId: tempID++,
+    },
+  };
   commitMutation(
     environment,
     {
       mutation,
       variables,
-      configs: [{ //commented out until nodes are returned
+      configs: [{ // commented out until nodes are returned
         type: 'RANGE_ADD',
         parentID: labbookId,
         connectionInfo: [{
           key: 'Activity_activityRecords',
-          rangeBehavior: 'prepend'
+          rangeBehavior: 'prepend',
         }],
-        edgeName: 'newActivityRecordEdge'
+        edgeName: 'newActivityRecordEdge',
       }],
       onCompleted: (response, error) => {
-
-        if(error){
-          console.log(error)
+        if (error) {
+          console.log(error);
         }
 
-        callback(response, error)
+        callback(response, error);
       },
-      onError: err => console.error(err)
-    }
-  )
+      onError: err => console.error(err),
+    },
+  );
 }

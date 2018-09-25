@@ -1,10 +1,10 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
-import uuidv4 from 'uuid/v4'
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
+import RelayRuntime from 'relay-runtime';
+import uuidv4 from 'uuid/v4';
 
 
 const mutation = graphql`
@@ -31,23 +31,19 @@ const mutation = graphql`
 
 
 function sharedUpdater(store, parentId, connectionKey, node, tempId) {
-
   const labbookProxy = store.get(parentId);
 
-  if(labbookProxy){
-
+  if (labbookProxy) {
     const conn = RelayRuntime.ConnectionHandler.getConnection(
       labbookProxy,
-      connectionKey
+      connectionKey,
     );
 
-    if(conn){
-
-      if(tempId){
-
+    if (conn) {
+      if (tempId) {
         RelayRuntime.ConnectionHandler.deleteNode(
           conn,
-          tempId
+          tempId,
         );
       }
 
@@ -55,14 +51,13 @@ function sharedUpdater(store, parentId, connectionKey, node, tempId) {
         store,
         conn,
         node,
-        "newFavoriteEdge"
-      )
+        'newFavoriteEdge',
+      );
 
       RelayRuntime.ConnectionHandler.insertEdgeAfter(
         conn,
-        newEdge
+        newEdge,
       );
-
     }
   }
 }
@@ -79,10 +74,10 @@ export default function AddFavoriteMutation(
   isDir,
   fileItem,
   section,
-  callback
+  callback,
 ) {
-  const tempId = uuidv4()
-  const clientMutationId = uuidv4()
+  const tempId = uuidv4();
+  const clientMutationId = uuidv4();
   const variables = {
     input: {
       owner,
@@ -91,55 +86,50 @@ export default function AddFavoriteMutation(
       description,
       isDir,
       section,
-      clientMutationId
-    }
-  }
+      clientMutationId,
+    },
+  };
 
   commitMutation(
     environment,
     {
       mutation,
       variables,
-      onCompleted: (response, error ) => {
-        if(error){
-          console.log(error)
+      onCompleted: (response, error) => {
+        if (error) {
+          console.log(error);
         }
-        callback(response, error)
+        callback(response, error);
       },
       onError: err => console.error(err),
-      optimisticUpdater:(store)=>{
+      optimisticUpdater: (store) => {
+        const node = store.create(tempId, 'Favorite');
 
-        const node = store.create(tempId, 'Favorite')
+        node.setValue(tempId, 'id');
+        node.setValue(false, 'isDir');
+        node.setValue(key, 'key');
+        node.setValue(description, 'description');
 
-        node.setValue(tempId, "id")
-        node.setValue(false, 'isDir')
-        node.setValue(key, 'key')
-        node.setValue(description, 'description')
-
-        sharedUpdater(store, parentId, favoriteKey, node)
-
+        sharedUpdater(store, parentId, favoriteKey, node);
       },
 
       updater: (store, response) => {
+        if (response.addFavorite && response.addFavorite.newFavoriteEdge) {
+          const node = store.get(response.addFavorite.newFavoriteEdge.node.id);
+          node.setValue(response.addFavorite.newFavoriteEdge.node.id, 'id');
+          node.setValue(false, 'isDir');
+          node.setValue(response.addFavorite.newFavoriteEdge.node.key, 'key');
+          node.setValue(response.addFavorite.newFavoriteEdge.node.description, 'description');
+          node.setValue(response.addFavorite.newFavoriteEdge.node.index, 'index');
 
-        if(response.addFavorite && response.addFavorite.newFavoriteEdge){
-          const node = store.get(response.addFavorite.newFavoriteEdge.node.id)
-          node.setValue(response.addFavorite.newFavoriteEdge.node.id, "id")
-          node.setValue(false, 'isDir')
-          node.setValue(response.addFavorite.newFavoriteEdge.node.key, 'key')
-          node.setValue(response.addFavorite.newFavoriteEdge.node.description, 'description')
-          node.setValue(response.addFavorite.newFavoriteEdge.node.index, 'index')
-
-          sharedUpdater(store, parentId, favoriteKey, node, tempId)
-
+          sharedUpdater(store, parentId, favoriteKey, node, tempId);
         }
 
-        const fileNode = store.get(fileItem.node.id)
-        if(fileNode){
-          fileNode.setValue(true, 'isFavorite')
+        const fileNode = store.get(fileItem.node.id);
+        if (fileNode) {
+          fileNode.setValue(true, 'isFavorite');
         }
-
-      }
+      },
     },
-  )
+  );
 }

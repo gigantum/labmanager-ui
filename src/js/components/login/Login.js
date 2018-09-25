@@ -1,14 +1,14 @@
-//vendor
+// vendor
 import React, { Component } from 'react';
-import store from 'JS/redux/store'
-//config
-import config from 'JS/config'
+import store from 'JS/redux/store';
+// config
+import config from 'JS/config';
 
-//import CreatePage from './components/CreatePage';
+// import CreatePage from './components/CreatePage';
 export default class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = store.getState().login
+    this.state = store.getState().login;
   }
 
   /**
@@ -29,16 +29,16 @@ export default class Login extends Component {
   render() {
     const { isAuthenticated } = this.props.auth;
     const errorType = sessionStorage.getItem('LOGIN_ERROR_TYPE'),
-      errorDescription = sessionStorage.getItem('LOGIN_ERROR_DESCRIPTION')
+      errorDescription = sessionStorage.getItem('LOGIN_ERROR_DESCRIPTION');
     const isUnauthorized = errorDescription === 'Gigantum is currently in a limited Beta. Access will be expanded soon!';
     return (
       <div className="Login">
         {
-          (!isAuthenticated())  && (
+          (!isAuthenticated()) && (
             <div className="Login__panel">
                 {
                   window.location.hostname === config.demoHostName &&
-                <div className="demo-header">Login or create an account to try out Gigantum. <a href="https://docs.gigantum.com/docs/frequently-asked-questions#section-why-do-i-need-to-log-in" rel="noopener noreferrer" target="_blank" >Why?</a></div>
+                  <div className="demo-header">Login or create an account to try out Gigantum. <a href="https://docs.gigantum.com/docs/frequently-asked-questions#section-why-do-i-need-to-log-in" rel="noopener noreferrer" target="_blank" >Why?</a></div>
                 }
               { errorType &&
 
@@ -48,7 +48,7 @@ export default class Login extends Component {
 
                     <div className="Login__error">
                       <div className="Login__error-type">
-                        <div className="Login__error-exclamation"></div>
+                        <div className="Login__error-exclamation" />
                         <div>{errorType}</div>
                       </div>
                       <div className="Login__error-description">
@@ -74,27 +74,29 @@ export default class Login extends Component {
               }
 
               <div
-                className="Login__logo">
-              </div>
+                className="Login__logo"
+              />
               {
                 this.props.loadingRenew ?
-                <button
-                  disabled
-                  className="Login__button--loading">
+                  <button
+                    disabled
+                    className="Login__button--loading"
+                  >
                   Logging In
-                  <div className="Code__loading"></div>
-                </button>
+                    <div className="Code__loading" />
+                  </button>
                 :
-                <button
-                  className="Login__button"
-                  onClick={this.login.bind(this)}>
+                  <button
+                    className="Login__button"
+                    onClick={this.login.bind(this)}
+                  >
                   Log In
-                </button>
+                  </button>
               }
             </div>
           )
         }
       </div>
-    )
+    );
   }
 }

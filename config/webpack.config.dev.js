@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
+const InterpolateHtmlPlugin = require('@nenado/interpolate-html-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
@@ -40,42 +40,43 @@ module.exports = {
   // This means they will be the "root" imports that are included in JS bundle.
   // The first two entry points enable "hot" CSS and auto-refreshes for JS.
 
+  entry: [
+    // Include an alternative client for WebpackDevServer. A client's job is to
+    // connect to WebpackDevServer by a socket and get notified about changes.
+    // When you save a file, the client will either apply hot updates (in case
+    // of CSS changes), or refresh the page (in case of JS changes). When you
+    // make a syntax error, this client will display a syntax error overlay.
+    // Note: instead of the default WebpackDevServer client, we use a custom one
+    // to bring better experience for Create React App users. You can replace
+    // the line below with these two lines if you prefer the stock client:
+    // require.resolve('webpack-dev-server/client') + '?/',
+    // require.resolve('webpack/hot/dev-server'),
+    require.resolve('react-dev-utils/webpackHotDevClient'),
+    // We ship a few polyfills by default:
+    require.resolve('./polyfills'),
+    // Errors should be considered fatal in development
+    require.resolve('react-error-overlay'),
+    // Finally, this is your app's code:
+    paths.appIndexJs,
+    paths.dahshboardJs,
+    paths.labbookJs,
+    paths.labbookActivityJs,
+    paths.labbookEnvironmentJs,
+    paths.labbookOverviewJs,
+    // We include the app code last so that if there is a runtime error during
+    // initialization, it doesn't blow up the WebpackDevServer client, and
+    // changing JS code would still trigger a refresh.
+  ],
 
 
-  // entry: [
-  //   // Include an alternative client for WebpackDevServer. A client's job is to
-  //   // connect to WebpackDevServer by a socket and get notified about changes.
-  //   // When you save a file, the client will either apply hot updates (in case
-  //   // of CSS changes), or refresh the page (in case of JS changes). When you
-  //   // make a syntax error, this client will display a syntax error overlay.
-  //   // Note: instead of the default WebpackDevServer client, we use a custom one
-  //   // to bring better experience for Create React App users. You can replace
-  //   // the line below with these two lines if you prefer the stock client:
-  //   // require.resolve('webpack-dev-server/client') + '?/',
-  //   // require.resolve('webpack/hot/dev-server'),
-  //   require.resolve('react-dev-utils/webpackHotDevClient'),
-  //   // We ship a few polyfills by default:
-  //   require.resolve('./polyfills'),
-  //   // Errors should be considered fatal in development
-  //   require.resolve('react-error-overlay'),
-  //   // Finally, this is your app's code:
-  //   paths.appIndexJs,
-  //   paths.dahshboardJs,
-  //   paths.labbookJs
-  //   // We include the app code last so that if there is a runtime error during
-  //   // initialization, it doesn't blow up the WebpackDevServer client, and
-  //   // changing JS code would still trigger a refresh.
-  // ],
-
-
-  entry: {
-    main: paths.appIndexJs,
-    Dashboard: paths.dahshboardJs,
-    Labbook: paths.labbookJs,
-    Activity: paths.labbookActivityJs,
-    Environment: paths.labbookEnvironmentJs,
-    Overview: paths.labbookOverviewJs,
-  },
+  // entry: {
+  //   main: paths.appIndexJs,
+  //   Dashboard: paths.dahshboardJs,
+  //   Labbook: paths.labbookJs,
+  //   Activity: paths.labbookActivityJs,
+  //   Environment: paths.labbookEnvironmentJs,
+  //   Overview: paths.labbookOverviewJs,
+  // },
   output: {
     // Next line is not used in dev but WebpackDevServer crashes without it:
     path: paths.appBuild,
@@ -255,9 +256,9 @@ module.exports = {
     },
   },
   plugins: [
-    new BundleAnalyzerPlugin({
-           analyzerMode: 'static'
-    }), //comment back in when needed
+    // new BundleAnalyzerPlugin({
+    //        analyzerMode: 'static'
+    // }), //comment back in when needed
     // new webpack.optimize.CommonsChunkPlugin({
     //      name: 'node-static',
     //      filename: 'node-static.js',
@@ -351,8 +352,8 @@ module.exports = {
   // cumbersome.
   performance: {
     hints: "warning",
-    // maxAssetSize: 900000,
-    // maxEntrypointSize: 10000000,
+    maxAssetSize: 3000000,
+    maxEntrypointSize: 10000000,
   },
   externals:[{
     xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'

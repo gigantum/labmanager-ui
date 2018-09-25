@@ -1,9 +1,9 @@
-//vendor
-import {graphql} from 'react-relay'
-//environment
-import {fetchQuery} from 'JS/createRelayEnvironment';
+// vendor
+import { graphql } from 'react-relay';
+// environment
+import { fetchQuery } from 'JS/createRelayEnvironment';
 
-const ContainerLookupQuery = graphql `
+const ContainerLookupQuery = graphql`
   query ContainerLookupQuery($ids: [String]!){
     labbookList{
       localById(ids: $ids){
@@ -20,24 +20,22 @@ const ContainerLookupQuery = graphql `
 const ContainerLookup = {
   query: (ids) => {
     const variables = {
-      ids
+      ids,
     };
 
     return new Promise((resolve, reject) => {
-
-      let fetchData = function() {
-
+      const fetchData = function () {
         fetchQuery(ContainerLookupQuery(), variables).then((response) => {
-          resolve(response)
+          resolve(response);
         }).catch((error) => {
-          console.log(error)
-          reject(error)
-        })
-      }
+          console.log(error);
+          reject(error);
+        });
+      };
 
-      fetchData()
-    })
-  }
-}
+      fetchData();
+    });
+  },
+};
 
-export default ContainerLookup
+export default ContainerLookup;

@@ -1,15 +1,15 @@
-//vendor
-import { createPaginationContainer, graphql } from 'react-relay'
-//component
-import MostRecent from './MostRecent'
-//store
-import store from 'JS/redux/store'
+// vendor
+import { createPaginationContainer, graphql } from 'react-relay';
+// component
+import MostRecent from './MostRecent';
+// store
+import store from 'JS/redux/store';
 
 
 export default createPaginationContainer(
-    MostRecent,
-    {
-        code: graphql`
+  MostRecent,
+  {
+    code: graphql`
             fragment MostRecentCode_code on LabbookSection{
               allFiles(after: $cursor, first: $first)@connection(key: "MostRecentCode_allFiles"){
                 edges{
@@ -31,28 +31,28 @@ export default createPaginationContainer(
                 }
               }
             }`,
+  },
+  {
+    direction: 'forward',
+    getConnectionFromProps(props) {
+      return props.code && props.code.allFiles;
     },
-    {
-        direction: 'forward',
-        getConnectionFromProps(props) {
-            return props.code && props.code.allFiles
-        },
-        getFragmentVariables(prevVars, totalCount) {
-            return {
-                ...prevVars,
-                first: totalCount,
-            };
-        },
-        getVariables(props, { count, cursor }, fragmentVariables) {
-            const { owner, labbookName } = store.getState().routes
-            return {
-                first: count,
-                cursor,
-                owner: owner,
-                name: labbookName
-            };
-        },
-        query: graphql`
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        first: totalCount,
+      };
+    },
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      const { owner, labbookName } = store.getState().routes;
+      return {
+        first: count,
+        cursor,
+        owner,
+        name: labbookName,
+      };
+    },
+    query: graphql`
             query MostRecentCodePaginationQuery(
               $first: Int
               $cursor: String
@@ -68,6 +68,6 @@ export default createPaginationContainer(
                  }
               }
             }
-          `
-    }
-)
+          `,
+  },
+);

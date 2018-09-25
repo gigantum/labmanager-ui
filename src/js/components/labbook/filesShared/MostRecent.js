@@ -1,19 +1,19 @@
 // vendor
-import React, { Component } from 'react'
-//componenets
-import FileEmpty from 'Components/labbook/overview/FileEmpty'
-import MostRecentList from './MostRecentList'
-//store
-import store from 'JS/redux/store'
+import React, { Component } from 'react';
+// componenets
+import FileEmpty from 'Components/labbook/overview/FileEmpty';
+import MostRecentList from './MostRecentList';
+// store
+import store from 'JS/redux/store';
 
 export default class MostRecent extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
-    let pathArray = store.getState().routes.callbackRoute.split('/')
+    const pathArray = store.getState().routes.callbackRoute.split('/');
 
-    let selectedPath = (pathArray.length > 4) ? pathArray[pathArray.length - 1] : 'overview'
-    let fullPathName = selectedPath
+    let selectedPath = (pathArray.length > 4) ? pathArray[pathArray.length - 1] : 'overview';
+    const fullPathName = selectedPath;
 
     if (selectedPath === 'inputData' || selectedPath === 'outputData') {
       selectedPath = selectedPath.substring(0, selectedPath.length - 4);
@@ -24,19 +24,18 @@ export default class MostRecent extends Component {
       showAmount: 3,
       files: this.props[selectedPath],
       selectedPath,
-      fullPathName
-    }
-
+      fullPathName,
+    };
   }
 
   /**
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    if(this.state.files.allFiles &&
+    if (this.state.files.allFiles &&
         this.state.files.allFiles.pageInfo.hasNextPage) {
-          this._loadMore() //routes query only loads 2, call loadMore
-      };
+      this._loadMore(); // routes query only loads 2, call loadMore
+    }
   }
 
   /**
@@ -45,86 +44,76 @@ export default class MostRecent extends Component {
     increments by 10
     logs callback
   */
- _loadMore() {
-    let self = this
+  _loadMore() {
+    const self = this;
 
-    this.setState({loading: true})
+    this.setState({ loading: true });
     this.props.relay.loadMore(
-     100, // Fetch the next 100 feed items
-     (response, error) => {
-       let files = self.props[this.state.selectedPath]
+      100, // Fetch the next 100 feed items
+      (response, error) => {
+        const files = self.props[this.state.selectedPath];
 
-       if(files.allFiles &&
+        if (files.allFiles &&
         files.allFiles.pageInfo.hasNextPage) {
-        self._loadMore()
-      } else {
-        self.setState({loading: false})
-      }
-       if(error){
-         console.error(error)
-       }
-
-     }
-   );
+          self._loadMore();
+        } else {
+          self.setState({ loading: false });
+        }
+        if (error) {
+          console.error(error);
+        }
+      },
+    );
   }
 
   _showMore() {
-      this.setState({showAmount: this.state.showAmount + 3})
+    this.setState({ showAmount: this.state.showAmount + 3 });
   }
 
   _sortFiles(files) {
-    return files.sort((a, b) =>{
-        return  b.node.modifiedAt - a.node.modifiedAt;
-    })
+    return files.sort((a, b) => b.node.modifiedAt - a.node.modifiedAt);
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({ files: nextProps[this.state.selectedPath]});
-
+    this.setState({ files: nextProps[this.state.selectedPath] });
   }
 
 
-  render(){
+  render() {
+    if (this.state.files && this.state.files.allFiles) {
+      let loadingClass = (this.state.showAmount < this.state.files.allFiles.edges.length) ? 'Recent__action-bar' : 'hidden';
+      loadingClass = (this.state.loading) ? 'Recent__action-bar--loading' : loadingClass;
 
-    if(this.state.files && this.state.files.allFiles){
-      let loadingClass = (this.state.showAmount < this.state.files.allFiles.edges.length) ? 'Recent__action-bar' : 'hidden'
-      loadingClass = (this.state.loading) ? 'Recent__action-bar--loading' : loadingClass
-
-      if(this.state.files.allFiles.edges.length > 0){
-
-        let allFiles = this.state.files.allFiles.edges.filter((edge)=>{
-          return edge && edge.node && (edge.node !== undefined) && !edge.node.isDir
-        })
+      if (this.state.files.allFiles.edges.length > 0) {
+        let allFiles = this.state.files.allFiles.edges.filter(edge => edge && edge.node && (edge.node !== undefined) && !edge.node.isDir);
         allFiles = this._sortFiles(allFiles);
-        return(
+        return (
           <div className="Recent">
             <MostRecentList
-                allFiles={allFiles}
-                showAmount={this.state.showAmount}
-                edgeId={this.props.edgeId}
+              allFiles={allFiles}
+              showAmount={this.state.showAmount}
+              edgeId={this.props.edgeId}
             />
 
             <div className={loadingClass}>
               <button
                 className="Recent__load-more"
-                onClick={()=>{this._showMore()}}
+                onClick={() => { this._showMore(); }}
               >
                 Load More
               </button>
             </div>
           </div>
 
-        )
-      }else{
-        return(
-          <FileEmpty
-            section={this.state.fullPathName}
-            mainText="This Project has No Recent Files"
-          />
-        )
+        );
       }
-    }else{
-      return(<div>No Files Found</div>)
+      return (
+        <FileEmpty
+          section={this.state.fullPathName}
+          mainText="This Project has No Recent Files"
+        />
+      );
     }
+    return (<div>No Files Found</div>);
   }
 }

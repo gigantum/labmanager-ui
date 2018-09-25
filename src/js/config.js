@@ -1,24 +1,24 @@
-import tips from './tips'
+import tips from './tips';
 
 const CONFIG = {
-  'api': process.env.NODE_ENV,
-  'navigation_items': [
-    {id:'overview', name: 'Overview'},
-    {id:'activity', name: 'Activity', 'fragment': '...Activity_labbook'},
-    {id:'environment', name: 'Environment', 'fragment': '...Environment_labbook'},
-    {id:'code', name: 'Code'},
-    {id:'inputData', name: 'Input Data'},
-    {id:'outputData', name: 'Output Data'}
+  api: process.env.NODE_ENV,
+  navigation_items: [
+    { id: 'overview', name: 'Overview' },
+    { id: 'activity', name: 'Activity', fragment: '...Activity_labbook' },
+    { id: 'environment', name: 'Environment', fragment: '...Environment_labbook' },
+    { id: 'code', name: 'Code' },
+    { id: 'inputData', name: 'Input Data' },
+    { id: 'outputData', name: 'Output Data' },
   ],
-  'defaultNavOrder': ['overview', 'activity', 'environment', 'code', 'inputData', 'outputData'],
-  'modalNav': [
-    {'id': 'createLabook', 'description': 'Title & Description'},
-    {'id': 'selectBaseImage', 'description': 'Base Image'},
-    {'id': 'selectDevelopmentEnvironment', 'description': 'Dev Environment'},
-    {'id': 'addEnvironmentPackage', 'description': 'Add Dependencies'},
-    {'id': 'successMessage', 'description': 'Success'}
+  defaultNavOrder: ['overview', 'activity', 'environment', 'code', 'inputData', 'outputData'],
+  modalNav: [
+    { id: 'createLabook', description: 'Title & Description' },
+    { id: 'selectBaseImage', description: 'Base Image' },
+    { id: 'selectDevelopmentEnvironment', description: 'Dev Environment' },
+    { id: 'addEnvironmentPackage', description: 'Add Dependencies' },
+    { id: 'successMessage', description: 'Success' },
   ],
-  'months': [
+  months: [
     'Jan',
     'Feb',
     'Mar',
@@ -30,40 +30,36 @@ const CONFIG = {
     'Sep',
     'Oct',
     'Nov',
-    'Dec'
+    'Dec',
   ],
-  'fileBrowser':{
-    'excludedFiles': [
+  fileBrowser: {
+    excludedFiles: [
       'DS_Store',
       'zip',
       'lbk',
       'pyc',
-      'gitkeep'
-    ]
+      'gitkeep',
+    ],
   },
 
-  containerStatus:{
-    canEditEnvironment: (status) => {
-      return (status === 'Stopped') || (status === 'Rebuild')
-    }
+  containerStatus: {
+    canEditEnvironment: status => (status === 'Stopped') || (status === 'Rebuild'),
   },
   userAPI: {
     getUsersQueryString: (userInput) => {
-      const sanitizedUserInput = userInput.replace(/-/g, ' ')
-      const apiURL = `https://m9eq4m3z0f.execute-api.us-east-1.amazonaws.com/prod?q=${sanitizedUserInput}*&q.options={fields: ['username^5','name']}&size=10`
+      const sanitizedUserInput = userInput.replace(/-/g, ' ');
+      const apiURL = `https://m9eq4m3z0f.execute-api.us-east-1.amazonaws.com/prod?q=${sanitizedUserInput}*&q.options={fields: ['username^5','name']}&size=10`;
 
-      return encodeURI(apiURL)
+      return encodeURI(apiURL);
     },
     getUserEmailQueryString: (email) => {
-      const apiURL = `https://m9eq4m3z0f.execute-api.us-east-1.amazonaws.com/prod?q=${email}&q.options={fields: ['email']}&size=10`
+      const apiURL = `https://m9eq4m3z0f.execute-api.us-east-1.amazonaws.com/prod?q=${email}&q.options={fields: ['email']}&size=10`;
 
-      return encodeURI(apiURL)
-    }
+      return encodeURI(apiURL);
+    },
   },
-  getToolTipText: (section) =>{
-    return tips[section]
-  },
+  getToolTipText: section => tips[section],
   demoHostName: 'try.gigantum.com',
-}
+};
 
-export default CONFIG
+export default CONFIG;

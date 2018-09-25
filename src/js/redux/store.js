@@ -1,11 +1,11 @@
 import {
   createStore,
   compose,
-  applyMiddleware
-} from "redux"
+  applyMiddleware,
+} from 'redux';
 
-import reducers from "./combinedReducers"
-import { persistPreferences }   from '../utils/localStorage'
+import reducers from './combinedReducers';
+import { persistPreferences } from '../utils/localStorage';
 
 import { getPreferences } from './preferences/preferences';
 
@@ -23,9 +23,5 @@ const localStorageMiddleware = store => next => (action) => {
 
 export default createStore(
   reducers,
-  composeEnhancers(
-    applyMiddleware(
-      localStorageMiddleware
-    ),
-  )
+  composeEnhancers(applyMiddleware(localStorageMiddleware)),
 );

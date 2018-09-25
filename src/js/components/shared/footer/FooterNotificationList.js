@@ -1,76 +1,73 @@
-//vendor
-import React, { Component } from 'react'
-import classNames from 'classnames'
-import Moment from 'moment'
+// vendor
+import React, { Component } from 'react';
+import classNames from 'classnames';
+import Moment from 'moment';
 
-//store
-import { setUpdateHistoryView } from 'JS/redux/reducers/footer'
+// store
+import { setUpdateHistoryView } from 'JS/redux/reducers/footer';
 
 
 export default class FooterNotificationList extends Component {
-
   render() {
+    const messageList = this.props.parentState.viewHistory ? this.props.parentState.messageStackHistory : this.props.parentState.messageStack;
 
-    let messageList = this.props.parentState.viewHistory ? this.props.parentState.messageStackHistory : this.props.parentState.messageStack;
+    const messageListOpenItems = messageList.filter(message => message.messageBodyOpen);
 
-    let messageListOpenItems = messageList.filter((message) => {
-        return message.messageBodyOpen
-    })
+    const footerMessageSectionClass = classNames({
+      'Footer__messages-section': true,
+      'Footer__messages-section--collapsed': !this.props.parentState.messageListOpen,
+      'Footer__message-section--helper-open': this.props.parentState.helperVisible,
+    });
 
-    let footerMessageSectionClass = classNames({
-        'Footer__messages-section': true,
-        'Footer__messages-section--collapsed': !this.props.parentState.messageListOpen,
-        'Footer__message-section--helper-open': this.props.parentState.helperVisible
-    })
+    const footerMessageListClass = classNames({
+      'Footer__message-list': true,
+      'Footer__message-list--collapsed': !this.props.parentState.messageListOpen,
+    });
 
-    let footerMessageListClass = classNames({
-        'Footer__message-list': true,
-        'Footer__message-list--collapsed': !this.props.parentState.messageListOpen,
-    })
+    const viewAllButtonClass = classNames({
+      'Footer__button--view-all': true,
+      hidden: (this.props.parentState.viewHistory || !this.props.parentState.messageListOpen),
+    });
 
-    let viewAllButtonClass = classNames({
-        'Footer__button--view-all': true,
-        'hidden': (this.props.parentState.viewHistory || !this.props.parentState.messageListOpen)
-    })
-
-    let height = messageList.length > 6 ?  260 : messageList.length * 60;
-    height = messageListOpenItems.length > 0 ?  document.body.clientHeight - 200 : height;
+    let height = messageList.length > 6 ? 260 : messageList.length * 60;
+    height = messageListOpenItems.length > 0 ? document.body.clientHeight - 200 : height;
 
 
     return (
       <div className={footerMessageSectionClass}>
         <div
           className={viewAllButtonClass}
-          onClick={()=> setUpdateHistoryView()}
+          onClick={() => setUpdateHistoryView()}
         >
           View All
         </div>
-        <div className={footerMessageListClass} style={{height: `${height}px`}}>
+        <div className={footerMessageListClass} style={{ height: `${height}px` }}>
 
           <ul>
             {
-              messageList.map((messageItem, index)=>{
+              messageList.map((messageItem, index) => {
                 const messageBodyClasses = classNames({
                   'Footer__message-body-content': true,
-                  'hidden': !messageItem.messageBodyOpen
-                })
+                  hidden: !messageItem.messageBodyOpen,
+                });
 
                 const toggleButton = classNames({
                   'Footer__button--toggle': true,
-                  'open': messageItem.messageBodyOpen
-                })
+                  open: messageItem.messageBodyOpen,
+                });
 
                 const bodyCSS = classNames({
                   'Footer__body-height': messageItem.messageBodyOpen,
-                  [messageItem.className]: true
-                })
-                return(
+                  [messageItem.className]: true,
+                });
+                return (
                   <li
                     key={messageItem.id + index}
-                    className={bodyCSS}>
+                    className={bodyCSS}
+                  >
                     <div className="Footer__message-body">
                       <div className="Footer__flex-container">
-                        <div className="Footer__message-icon"></div>
+                        <div className="Footer__message-icon" />
 
                         <div className="Footer__message-time">{Moment(messageItem.date).fromNow()}</div>
                         <div className="Footer__message-item">
@@ -83,9 +80,8 @@ export default class FooterNotificationList extends Component {
                           <div className="Footer__message-expand">
                             <div
                               className={toggleButton}
-                              onClick={()=>{this.props.showMessageBody(index)}}>
-
-                            </div>
+                              onClick={() => { this.props.showMessageBody(index); }}
+                            />
                           </div>
 
                         }
@@ -95,31 +91,28 @@ export default class FooterNotificationList extends Component {
 
                         <ul>
                           {
-                            messageItem.messageBody && messageItem.messageBody.map((item, index)=> {
-
-                              return(
-                                <li
-                                  key={messageItem.id + index}>
-                                  <div className="Footer__message-body-content--text" dangerouslySetInnerHTML={{__html: item.message}}>
-
-                                  </div>
-                                </li>)
-                            })
+                            messageItem.messageBody && messageItem.messageBody.map((item, index) => (
+                              <li
+                                key={messageItem.id + index}
+                              >
+                                <div className="Footer__message-body-content--text" dangerouslySetInnerHTML={{ __html: item.message }} />
+                              </li>))
                           }
                         </ul>
                       </div>
                     </div>
 
-                  </li>)
+                  </li>);
                 })
               }
 
-              {
+            {
                   (messageList.length === 0) &&
 
                   <li
 
-                    className="Footer__message">
+                    className="Footer__message"
+                  >
                     <div className="Footer__message-body">
                       <div className="Footer__flex-container">
 
@@ -129,13 +122,13 @@ export default class FooterNotificationList extends Component {
                           </p>
                         </div>
                       </div>
-                     </div>
-                   </li>
+                    </div>
+                  </li>
                }
 
-            </ul>
+          </ul>
         </div>
       </div>
-    )
+    );
   }
 }

@@ -1,9 +1,7 @@
-//vendor
-import {
-  graphql,
-} from 'react-relay'
-//environment
-import {fetchQuery} from 'JS/createRelayEnvironment';
+// vendor
+import { graphql } from 'react-relay';
+// environment
+import { fetchQuery } from 'JS/createRelayEnvironment';
 
 const containerStatusQuery = graphql`
   query fetchLabbookQuery($name: String!, $owner: String!, $first: Int!, $hasNext: Boolean!, $cursor: String){
@@ -13,36 +11,31 @@ const containerStatusQuery = graphql`
     ...Labbook_labbook
   }
 }
-`
+`;
 
 const FetchLabbook = {
-  getLabook: (owner, labbookName) =>{
-
+  getLabook: (owner, labbookName) => {
     const variables = {
-      'owner': owner,
-      'name': labbookName,
-      'first': 2,
-      'cursor': null,
-      'hasNext': false
-    }
+      owner,
+      name: labbookName,
+      first: 2,
+      cursor: null,
+      hasNext: false,
+    };
 
-    return new Promise((resolve, reject) =>{
-
-      let fetchData = function(){
-
+    return new Promise((resolve, reject) => {
+      const fetchData = function () {
         fetchQuery(containerStatusQuery(), variables).then((response) => {
+          resolve(response.data);
+        }).catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+      };
 
-          resolve(response.data)
+      fetchData();
+    });
+  },
+};
 
-        }).catch((error) =>{
-          console.log(error)
-          reject(error)
-        })
-      }
-
-      fetchData()
-    })
-  }
-}
-
-export default FetchLabbook
+export default FetchLabbook;
