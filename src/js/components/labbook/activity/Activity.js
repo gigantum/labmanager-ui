@@ -19,6 +19,8 @@ import ToolTip from 'Components/shared/ToolTip'
 import ErrorBoundary from 'Components/shared/ErrorBoundary'
 //config
 import config from 'JS/config'
+//assets
+import './Activity.scss'
 
 
 //local variables
@@ -160,10 +162,14 @@ class Activity extends Component {
    * @return {}
    */
   _handleVisibilityChange() {
+
     if(this.state.newActivityForcePaused) {
+
       this._stopRefetch()
       this.setState({newActivityForcePaused: false})
+
     } else if(this.state.refetchForcePaused) {
+
       this._refetch()
       this.setState({refetchForcePaused: false})
     }
@@ -189,7 +195,9 @@ class Activity extends Component {
    * @return {}
    */
   _startRefetch(){
+
     if(this.state.newActivityPolling){
+
       this.setState({
         'refetchEnabled': true,
         'newActivityPolling': false,
@@ -205,6 +213,7 @@ class Activity extends Component {
    * @return {}
    */
   _stopRefetch(){
+
     let self = this
 
     if(!this.state.newActivityPolling){
@@ -245,7 +254,6 @@ class Activity extends Component {
 
      }
 
-
       getNewActivity()
 
    }
@@ -254,9 +262,10 @@ class Activity extends Component {
   /**
   * @param {}
   * refetches component looking for new edges to insert at the top of the activity feed
-  *
+  * @return {}
   */
   _refetch(){
+
     let self = this
     let relay = this.props.relay
     let activityRecords = this.props.labbook.activityRecords
@@ -266,12 +275,19 @@ class Activity extends Component {
     relay.refetchConnection(
       counter,
       (response, error) => {
+
         self.refetchTimeout = setTimeout(function(){
+
             if(self.state.refetchEnabled && isMounted && document.visibilityState === 'visible'){
+
               self._refetch()
+
             } else if(self.state.refetchEnabled && isMounted && document.visibilityState !== 'visible') {
+
               self.setState({refetchForcePaused: true})
+
             }
+
         }, 5000)
 
       },
@@ -287,7 +303,9 @@ class Activity extends Component {
   */
   _loadMore() {
     let self = this;
+
     pagination = true
+
     this.setState({
       'isPaginating': true
     })
@@ -298,12 +316,17 @@ class Activity extends Component {
        if(error){
          console.error(error)
        }
+
        if((this.props.labbook.activityRecords.pageInfo.hasNextPage) && (this._countUnexpandedRecords() < 7) && (this._countUnexpandedRecords() > 2)){
+
         self._loadMore();
+
        } else{
+
         this.setState({
           'isPaginating': false
         })
+
        }
      },{
        name: 'labbook'
@@ -319,10 +342,13 @@ class Activity extends Component {
   *  counts visible non clustered activity records
   */
   _countUnexpandedRecords(){
-    let records = this.props.labbook.activityRecords.edges;
-    let hiddenCount = 0;
-    let recordCount = 0;
+
+    let records = this.props.labbook.activityRecords.edges,
+        hiddenCount = 0,
+        recordCount = 0;
+
     let visibleRecords = records.filter((record) => {
+
       if(record){
         if(!record.node.show){
           hiddenCount++;
@@ -333,11 +359,15 @@ class Activity extends Component {
           }
         }
       }
+
       return record && record.node && record.node.show
     })
+
     if(hiddenCount > 0) {
+
       recordCount ++;
     }
+
     return visibleRecords.length + recordCount;
   }
   /**
@@ -346,27 +376,36 @@ class Activity extends Component {
     *
   */
   _setStickyDate(){
-    let isDemo = window.location.hostname === config.demoHostName
-    let upperBound = isDemo ? 170: 120;
-    let lowerBound = isDemo ? 130 : 80;
-    let isExpanded = (window.pageYOffset < this.offsetDistance) && (window.pageYOffset > upperBound)
-    this.offsetDistance = window.pageYOffset;
-    let stickyDate = null;
+    let isDemo = window.location.hostname === config.demoHostName,
+        upperBound = isDemo ? 170: 120,
+        lowerBound = isDemo ? 130 : 80,
+        isExpanded = (window.pageYOffset < this.offsetDistance) && (window.pageYOffset > upperBound),
+        stickyDate = null;
+
+    this.offsetDistance = window.pageYOffset
+
     this.dates.forEach((date)=> {
+
       if(date && date.e){
+
         let bounds = date.e.getBoundingClientRect()
+
         if((!isExpanded && bounds.top < lowerBound) || (isExpanded && bounds.top < upperBound)){
+
           stickyDate = date.time
           date.e.classList.add('not-visible')
           date.e.nextSibling && date.e.nextSibling.classList.add('next-element')
+
         } else {
+
           date.e.classList.remove('not-visible')
           date.e.nextSibling && date.e.nextSibling.classList.remove('next-element')
-
         }
       }
     })
+
     if (stickyDate !== this.state.stickyDate){
+
       this.setState({stickyDate})
     }
   }
@@ -376,10 +415,11 @@ class Activity extends Component {
   *
   */
   _handleScroll(evt){
-    this._setStickyDate()
-    let {isPaginating} = this.state
 
-    let activityRecords = this.props.labbook.activityRecords,
+    this._setStickyDate()
+
+    let {isPaginating} = this.state,
+        activityRecords = this.props.labbook.activityRecords,
         root = document.getElementById('root'),
         distanceY = window.innerHeight + document.documentElement.scrollTop + 1000,
         expandOn = root.scrollHeight;
@@ -402,10 +442,9 @@ class Activity extends Component {
   *   @return {Object}
   */
   _transformActivity(activityRecords){
-    let activityTime = {}
-
-    let count = 0;
-    let previousTimeHash = null;
+    let activityTime = {},
+        count = 0,
+        previousTimeHash = null;
 
     activityRecords.edges.forEach((edge, index) => {
 
@@ -758,7 +797,7 @@ class Activity extends Component {
       'fullscreen': this.state.editorFullscreen
     })
     let newActivityCSS= classNames({
-      'Activity__new-record': true,
+      'Activity__new-record box-shadow': true,
       'is-demo': window.location.hostname === config.demoHostName
     })
 
@@ -788,13 +827,26 @@ class Activity extends Component {
             <div className={stickyDateCSS}>
               <div className="Activity__date-day">{this.state.stickyDate.split('_')[2]}</div>
               <div className="Activity__date-sub">
-                <div className="Activity__date-month">{ config.months[parseInt(this.state.stickyDate.split('_')[1], 10)] }</div>
+
+                <div className="Activity__date-month">
+                  {
+                    config.months[parseInt(this.state.stickyDate.split('_')[1], 10)]
+                  }
+                </div>
+
                 <div className="Activity__date-year">{this.state.stickyDate.split('_')[0]}</div>
               </div>
             </div>
+
           }
-          <div key={this.props.labbook + '_labbooks__container'} className="Activity__inner-container flex flex--row flex--wrap justify--flex-start">
-            <div key={this.props.labbook + '_labbooks__labook-id-container'} className="Activity__sizer flex-1-0-auto">
+
+          <div
+            key={this.props.labbook + '_labbooks__container'}
+            className="Activity__inner-container flex flex--row flex--wrap justify--flex-start">
+            <div
+              key={this.props.labbook + '_labbooks__labook-id-container'}
+              className="Activity__sizer flex-1-0-auto">
+
               <CreateBranch
                 ref="createBranch"
                 selected={this.state.selectedNode}
@@ -803,6 +855,7 @@ class Activity extends Component {
                 toggleModal={this._toggleCreateModal}
                 setBuildingState={this.props.setBuildingState}
               />
+
               {
                 recordDates.map((k, i) => {
                   let clusterElements = [];

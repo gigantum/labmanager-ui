@@ -1,0 +1,583 @@
+@import '~Styles/_imports.scss';
+
+
+.ActivityCard {
+  transition: all 0.125s;
+  margin: 0;
+  padding: 0 10px;
+  color: $romanSilver;
+  z-index: index($elements, card);
+  position: relative;
+  background: white;
+  min-height: 80px;
+  border-bottom: 10px solid $azure;
+  @include flex(flex-start, row)
+
+  &--collapsed {
+    height: 80px;
+  }
+
+  &--faded {
+    filter: grayscale(100%);
+    opacity: 0.5;
+  }
+}
+
+.LargeIcon {
+  background-size: 38px;
+}
+
+.SmallIcon {
+  background-size: 22px !important;
+}
+
+.ActivityCard__loader {
+  margin: 20px 0px;
+  height: 40px;
+  background: $white url('~Images/icons/paragraph.svg') repeat-X 10px center;
+  padding: 0 5px;
+  background-size: 30px 30px;
+}
+
+.ActivityCard__wrapper{
+    position: relative;
+
+    &:before,
+     .Activity__date-tab:before {
+      content: "";
+      display: block;
+      position: absolute;
+      z-index: index($elements, pseudoCard);
+      top: 100%;
+      left: 40px;
+      border: 3px solid $romanSilver;
+      border-width: 0 0 0 4px;
+      width: 1px;
+      height: 30px;
+      transition: height 0.125s;
+    }
+}
+
+.ActivityCard__title {
+  h6 {
+    padding: 5px;
+    word-break: break-word;
+  }
+  &.open {
+    cursor: pointer;
+    background: url('~Images/icons/up-arrow-silver.svg') no-repeat 98% center;
+    background-size: 20px;
+  }
+
+  &.open:hover {
+    color: $turquise;
+    cursor: pointer;
+    background: url('~Images/icons/up-arrow-turquise.svg') no-repeat 98% center;
+    background-size: 20px;
+  }
+
+  &.closed {
+    cursor: pointer;
+    background: url('~Images/icons/down-arrow-silver.svg') no-repeat 98% center;
+    background-size: 20px;
+  }
+
+  &.closed:hover {
+    color: $turquise;
+    background: url('~Images/icons/down-arrow-turquise.svg') no-repeat 98% center;
+    background-size: 20px;
+  }
+
+}
+
+
+.ActivityCard__row {
+  p {
+    padding: 5px 15px;
+    border-left: 1px solid $romanSilver;
+    flex: 1 1 auto;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  p:nth-child(1) {
+    border-left: 0px solid white;
+    padding: 5px 15px 5px 0;
+  }
+}
+
+.ActivityCard__stack {
+  margin: 5px 0;
+  font-size: 18px;
+  @include flex(flex-start, column)
+}
+
+.ActivityCard__user {
+  height: 24px;
+  width: 24px;
+  align-self: center;
+  background: url('~Images/icons/user.svg') no-repeat 50% 50%;
+  background-size: 24px;
+}
+
+.ActivityCard__time {
+  align-self: center;
+  max-width: 120px;
+  margin: 2px 0;
+  color: $romanSilver;
+  font-size: 14px;
+  font-weight: bold;
+
+}
+
+.ActivityCard__markdown-container{
+  ul > li{
+    display:list-item;
+    list-style-type: disc !important;
+    padding-left: 15px;
+  }
+
+  ul{
+    list-style-type: disc !important;
+    padding-left: 40px;
+  }
+
+  ol > li{
+    display:list-item;
+    list-style-type: decimal !important;
+    padding-left: 15px;
+  }
+
+  overflow: auto;
+
+  height: auto;
+  //max-height: 300px;
+  padding: 10px;
+  border-bottom: 1px dashed $font-grey;
+  border-left: 1px dashed $font-grey;
+  border-right: 1px dashed $font-grey;
+}
+
+.ActivityCard__toggle-button {
+  align-self: flex-end;
+
+  width: 120px;
+
+  cursor: pointer;
+
+  background: none;
+  width: 200px;
+  border: 0;
+  color: $romanSilver;
+}
+
+.ActivityCard__toggle-button:focus {
+  background: none;
+  border: 0;
+  color: $romanSilver;
+}
+
+.ActivityCard__toggle-icon {
+   width: 20px;
+   height: 20px;
+ }
+
+.ActivityCard__toggle-button.open .ActivityCard__toggle-icon {
+  transform: rotate(90deg);
+
+  background: url('~Images/icons/down-arrow.svg') no-repeat 90% center;
+  background-size: 10px;
+}
+
+.ActivityCard__toggle-button.closed .ActivityCard__toggle-icon {
+  background: url('~Images/icons/down-arrow.svg') no-repeat 90% center;
+  background-size: 10px;
+}
+
+.ActivityCard__expanded-view {
+  overflow: hidden;
+  border-top: 2px solid $azure;
+  min-height: 0px;
+  transition: height 0.5s;
+}
+
+.ActivityCard__expanded-view.no-height {
+  height: 0px;
+  padding: 0px;
+  border: 0px;
+}
+
+
+.ActivityCard__commit-message {
+  width: calc(100% - 240px);
+  align-self: center;
+  flex: 1 0 auto;
+  font-size: 16px;
+  margin: 18px 40px 18px 15px;
+}
+
+.ActivityCard__tags-list {
+  li {
+    padding: 0 10px 0 0
+  }
+
+  li:before {
+   display: inline-block;
+
+   width: 12px;
+   height: 12px;
+   margin: 0 5px;
+
+   content: '';
+ }
+}
+
+.ActivityCard__badge--code,
+.ActivityDetail__badge--code {
+  background: url('~Images/icons/code.svg') no-repeat center center;
+}
+.ActivityCard__badge--code {
+  @extend .LargeIcon;
+}
+.ActivityDetail__badge--code {
+  @extend .SmallIcon;
+}
+.ActivityCard__badge--code_executed{
+   @extend .LargeIcon;
+}
+.ActivityDetail__badge--code_executed {
+  @extend .SmallIcon;
+}
+.ActivityCard__badge--result,
+.ActivityDetail__badge--result {
+  background: url('~Images/icons/result.svg') no-repeat center center;
+}
+
+.ActivityCard__badge--result {
+  @extend .LargeIcon;
+}
+
+.ActivityCard__badge--code_executed,
+.ActivityDetail__badge--code_executed {
+    background: url('~Images/icons/code-run.svg') no-repeat center center;
+    @extend .SmallIcon;
+}
+
+.ActivityCard__collapsed-container,
+.ActivityCard__collapsed-text {
+  text-align: center;
+  width: 100%;
+}
+
+.ActivityCard__ellipsis,
+.ActivityCard__ellipsis:focus {
+  width: 40px;
+  border-radius: 10px;
+  height: 60px;
+
+  position: absolute;
+
+  left: calc(50% - 20px);
+  bottom: -30px;
+  cursor: pointer;
+
+  background: url('~Images/icons/ellipsis.svg') no-repeat center center;
+  background-size: 30px 30px;
+}
+
+
+
+.ActivityCard__ellipsis:hover {
+  background: url('~Images/icons/ellipsis.svg') no-repeat center center;
+  background-size: 32px 32px;
+}
+
+.ActivityCard__ellipsis-detail {
+  z-index: index($elements, card);
+}
+
+.ActivityCard.ActivityCard__loader-hidden {
+  display: block;
+  opacity: 0;
+  height: 0;
+}
+
+.ActivityCard.ActivityCard__loader {
+  opacity: 1;
+  height: auto !important;
+  min-height: 50px;
+}
+
+.ActivityCard.ActivityCard__loader--1 {
+  transition: opacity 0.8s;
+}
+
+.ActivityCard.ActivityCard__loader--2 {
+  transition: opacity 1.2s;
+}
+
+.ActivityCard.ActivityCard__loader--3 {
+  transition: opacity 2s;
+}
+
+.ActivityCard.ActivityCard__loader--4 {
+  transition: opacity 2.8s;
+}
+
+.ActivityCard.ActivityCard__loader--5 {
+  transition: opacity 3.6s;
+}
+
+.ActivityDetail__details {
+  position: relative;
+  margin: -1px 0px;
+}
+
+.ActivityDetail__details-title {
+  border-top: 1px solid $romanSilver;
+  padding: 5px;
+  cursor: pointer;
+
+  p {
+    margin: 0;
+  }
+}
+
+.ActivityDetail__details-title--open:hover {
+  color: $turquise;
+  background: url('~Images/icons/up-arrow-turquise.svg') no-repeat 94% center;
+  background-size: 20px;
+
+}
+
+.ActivityDetail__details-title--closed:hover {
+  color: $turquise;
+  background: url('~Images/icons/down-arrow-turquise.svg') no-repeat 94% center;
+  background-size: 20px;
+
+}
+
+.ActivityDetail__details-title--open {
+  background: url('~Images/icons/up-arrow-silver.svg') no-repeat 94% center;
+  background-size: 20px;
+}
+
+.ActivityDetail__details-title--closed {
+  background: url('~Images/icons/down-arrow-silver.svg') no-repeat 94% center;
+  background-size: 20px;
+}
+
+.ActivityDetail__header {
+  font-weight: 600;
+  @include flex(flex-start, row)
+}
+
+.ActivityDetail__content {
+  align-self: center;
+}
+
+.ActivityCard__content {
+  max-width: calc(100% - 100px);
+  width: calc(100% - 100px);
+  flex: 1;
+}
+
+
+.ActivityCard__badge {
+
+  height: 60px;
+  width: 60px;
+  margin: 10px 20px 0 0;
+  text-align: center;
+  align-self: top;
+  line-height: 40px;
+  color: $jet;
+}
+.ActivityCard__badge:before {
+  font-size: 40px !important;
+}
+.ActivityDetail__badge {
+  height: 40px;
+  width: 40px;
+  margin: 0 20px 0 0;
+  text-align: center;
+  align-self: center;
+  line-height: 40px;
+  color: $jet;
+}
+.ActivityDetail__badge:before {
+  font-size: 20px !important;
+}
+
+
+.ActivityDetail__badge--result {
+  @extend .SmallIcon;
+}
+
+.ActivityCard__badge--note,
+.ActivityDetail__badge--note {
+  background: url('~Images/icons/note.svg') no-repeat center center;
+}
+
+.ActivityCard__badge--note {
+  @extend .LargeIcon;
+}
+.ActivityDetail__badge--note {
+  @extend .SmallIcon;
+}
+
+.ActivityCard__badge--input_data,
+.ActivityDetail__badge--input_data {
+  background: url('~Images/icons/data-input.svg') no-repeat center center;
+}
+
+.ActivityCard__badge--input_data {
+  @extend .LargeIcon;
+}
+
+.ActivityDetail__badge--input_data {
+  @extend .SmallIcon;
+}
+
+.ActivityCard__badge--output_data,
+.ActivityDetail__badge--output_data {
+    background: url('~Images/icons/data-output.svg') no-repeat center center;
+}
+
+.ActivityCard__badge--output_data {
+  @extend .LargeIcon;
+}
+.ActivityDetail__badge--output_data {
+  @extend .SmallIcon;
+}
+
+.ActivityCard__badge--environment,
+.ActivityDetail__badge--environment {
+  background: url('~Images/icons/environment.svg') no-repeat center center;
+
+}
+.ActivityCard__badge--environment {
+  @extend .LargeIcon;
+}
+.ActivityDetail__badge--environment {
+  @extend .SmallIcon;
+}
+
+.ActivityCard__badge--labbook {
+  background: url('~Images/icons/labbooks-blue.svg') no-repeat center center;
+  @extend .LargeIcon;
+}
+
+.ActivityDetail__badge--labbook {
+  background: url('~Images/icons/labbooks-blue.svg') no-repeat center center;
+  @extend .SmallIcon;
+}
+
+.ActivityCard--cluster {
+  margin: 0;
+  color: $romanSilver;
+  z-index: index($elements, card);
+  position: relative;
+  cursor: pointer;
+  border-right: 12px solid transparent;
+  transition: all 0.125s;
+  height: 50px;
+
+  &--layer1,
+   --layer2,
+   --layer3 {
+    @include flex(center, row);
+    @include boxShadow();
+
+    transition: all 0.125s;
+    position: absolute;
+    height: 32px;
+    width: 100%;
+    background: white;
+    border-bottom: 3px solid $azure;
+  }
+
+  &--layer1{
+    padding-top: 3px;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+
+  &--layer2{
+    left: 6px;
+    top: 7px;
+    z-index: -1;
+  }
+
+  &--layer3{
+    left: 12px;
+    top: 15px;
+    z-index: -2;
+  }
+
+  &--cluster.faded {
+    filter: grayscale(100%);
+    opacity: 0.5;
+  }
+
+}
+
+.ActivityCard--cluster:hover .ActivityCard__cluster--layer1{
+  color: $turquise;
+  top: -5px;
+}
+.ActivityCard--cluster:hover .ActivityCard__cluster--layer3{
+  top: 20px;
+}
+
+.ActivityCard__expanded{
+  margin-left: 20px;
+  animation: slide-down-fade-in forwards .5s;
+}
+
+.ActivityCard__container{
+  margin: 0 !important;
+}
+
+.ActivityCard__start-node{
+  animation: slide-down-fade-in forwards .5s;
+  z-index: index($elements, card);
+  cursor: pointer;
+  position: absolute;
+  height: 100%;
+  width: 20px;
+
+  top: 62px;
+  height: 100%;
+  border-top: 4px solid $romanSilver;
+  width: 13px;
+  border-left: 4px solid $romanSilver;
+  border-bottom: 4px solid $romanSilver;
+}
+
+.ActivityDetail__details:not(.note):before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 3;
+  border: 1px dashed #b9babc;
+  height: calc(100% - 73px);
+  width: 1px;
+  top: 41px;
+  left: 25px;
+}
+.ActivityCard__wrapper:last-child:before{
+  height: 80px;
+}
+
+.ActivityDetail__details-title.ActivityDetail__details-title--closed:before {
+  position: absolute;
+  content: "";
+  height: 1px;
+  width: 1px;
+  border: 1px solid white;
+  top: 41px;
+  left: 25px;
+  z-index: index($elements, card) + 1;
+}
