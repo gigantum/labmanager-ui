@@ -196,7 +196,7 @@ export default class LocalLabbookPanel extends Component {
               onClick={(evt)=> this._stopStartContainer(evt, status)}
               onMouseOver={(evt)=> this._updateTextStatusOver(evt, status)}
               onMouseOut={(evt)=> this._updateTextStatusOut(evt, status)}
-              className={`ContainerStatus__container-state LocalLabbooks__containerStatus--state ${status}`}>
+              className={`ContainerStatus__container-state LocalLabbooks__containerStatus--state ${status} box-shadow`}>
               {textStatus}
             </button>
 

@@ -1,0 +1,13 @@
+@import '~Styles/_imports.scss';
+
+.ForceSync{
+  @include modal(300px, 500px);
+  @include flex(space-between, column);
+  align-items: center;
+  padding: 20px 40px;
+}
+
+.ForceSync__buttonContainer{
+  width: 200px;
+  @include flex(space-between, row);
+}

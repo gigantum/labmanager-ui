@@ -35,6 +35,16 @@
   padding: 0px;
 }
 
+.Card--auto{
+  @extend .Card;
+  height: auto;
+}
+
+.Card--no-hover:hover{
+  cursor: default;
+  box-shadow: 0 0px 12px 0 rgba(0,0,0,.10);
+}
+
 .Card:before,
 .Card:after {
   padding: 0 10px;

@@ -15,6 +15,8 @@ import StopContainerMutation from 'Mutations/StopContainerMutation'
 import { setErrorMessage } from 'JS/redux/reducers/footer'
 import { setRefetchPending } from 'JS/redux/reducers/labbook/environment/packageDependencies'
 import store from 'JS/redux/store'
+//assets
+import './Environment.scss'
 
 class Environment extends Component {
   constructor(props){
@@ -111,7 +113,7 @@ class Environment extends Component {
       const {base} = env;
       return(
         <div className="Environment">
-            <div className="Base__header-container">
+            <div className="Base__headerContainer">
               <h5 className="Base__header">Base&nbsp;&nbsp;&nbsp; <ToolTip section="baseEnvironment"/></h5>
             </div>
             <ErrorBoundary type="baseError" key="base">
@@ -128,7 +130,7 @@ class Environment extends Component {
                 base={base}
               />
              </ErrorBoundary>
-            <div className="Environment__header-container">
+            <div className="Environment__headerContainer">
               <h5 className="PackageDependencies__header">Packages <ToolTip section="packagesEnvironment"/></h5>
             </div>
             <ErrorBoundary type="packageDependenciesError" key="packageDependencies">

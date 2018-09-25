@@ -4,9 +4,11 @@ import classNames from 'classnames'
 //componenets
 import Loader from 'Components/shared/Loader'
 import BranchCard from './BranchCard'
-
+//assets
+import './Branches.scss'
 
 export default class Branches extends Component {
+
   constructor(props){
     super(props)
     this.state = {
@@ -19,6 +21,7 @@ export default class Branches extends Component {
     this._determineVisibleBranchCount = this._determineVisibleBranchCount.bind(this)
     this._windowResize = this._windowResize.bind(this)
   }
+
   /**
     subscribe to store to update state
   */
@@ -33,6 +36,7 @@ export default class Branches extends Component {
   UNSAFE_componentWillMount() {
     window.removeEventListener('resize', this._windowResize)
   }
+
   /**
   *  @param {}
   *  triggers on resize
@@ -45,6 +49,7 @@ export default class Branches extends Component {
       this.setState({width: width})
     }
   }
+
   /**
   * @param {number} value
   * updates list position in state
@@ -53,6 +58,7 @@ export default class Branches extends Component {
   _updatePosition(index){
     this.setState({listPositionIndex: (this.state.listPositionIndex + index)})
   }
+
   /**
   * @param {array} branches
   * updates list position in state
@@ -70,6 +76,7 @@ export default class Branches extends Component {
 
     return filteredBranches
   }
+
   /**
   * @param {}
   * determines how many branches are visible based on window width
@@ -86,79 +93,112 @@ export default class Branches extends Component {
   }
 
   render(){
+
     if(this.props.labbook){
-      const listPositionIndex = this.state.listPositionIndex
-      const {labbook} = this.props
 
-      const branchArrayToFilter = this.props.mergeFilter ?  labbook.mergeableBranchNames : labbook.availableBranchNames
+      const listPositionIndex = this.state.listPositionIndex,
 
-      const branches = this._filterBranches(branchArrayToFilter);
-      const branchesVisibleCount = this._determineVisibleBranchCount();
+            {labbook} = this.props,
 
-      const showRightBumper = (listPositionIndex < (labbook.availableBranchNames.length - branchesVisibleCount))
+            branchArrayToFilter = this.props.mergeFilter ?  labbook.mergeableBranchNames : labbook.availableBranchNames,
 
+            branches = this._filterBranches(branchArrayToFilter),
+
+            branchesVisibleCount = this._determineVisibleBranchCount(),
+
+            showRightBumper = (listPositionIndex < (labbook.availableBranchNames.length - branchesVisibleCount)),
+
+            width = listPositionIndex * (this.state.width/branches.length),
+
+            widthPX = `-${width}px`;
+
+      /*****************************
+       * CSS ClassNames
+       ******************************/
 
       const branchesCSS = classNames({
-        'Branches': this.props.branchesOpen,
-        'Branches--closed': !this.props.branchesOpen
-      })
+               "Branches": this.props.branchesOpen,
+               "Branches Branches--collapsed": !this.props.branchesOpen
+            }),
 
-      const leftBumperCSS = classNames({
-        'Branches__slider-button--left': (listPositionIndex > 0),
-        'hidden': !(listPositionIndex > 0)
-      })
+            branchesListCoverCSS = classNames({
+              'Branches__list-cover': this.props.branchesOpen,
+              'Branches__list-cover--closed': !this.props.branchesOpen
+            }),
 
-      const branchesListCSS = classNames({
-        'Branches__branches-list': true,
-        'Branches__branches-list--collapsed': !this.props.branchesOpen
-      })
+            branchesShadowUpperCSS = classNames({
+              'Branches__shadow Branches__shadow--upper': this.props.branchesOpen,
+              'hidden': !this.props.branchesOpen
+            }),
 
-      const rightBumperCSS = classNames({
-        'Branches__slider-button--right': this.props.branchesOpen && (showRightBumper),
-        'hidden': !(this.props.branchesOpen && (showRightBumper))
-      })
-      const width = listPositionIndex * (this.state.width/branches.length)
+            branchesShadowLowerCSS = classNames({
+              'Branches__shadow Branches__shadow--lower': this.props.branchesOpen,
+              'hidden': !this.props.branchesOpen
+            }),
 
-      const widthPX = `-${width}px`;
+            leftBumperCSS = classNames({
+              'Branches__btn--slider Branches__btn--left': (listPositionIndex > 0),
+              'hidden': !(listPositionIndex > 0)
+            }),
+
+            branchesListCSS = classNames({
+              'Branches__list': true,
+              'Branches__list--collapsed': !this.props.branchesOpen
+            }),
+
+            rightBumperCSS = classNames({
+              'Branches__btn--slider Branches__btn--right': this.props.branchesOpen && (showRightBumper),
+              'hidden': !(this.props.branchesOpen && (showRightBumper))
+            });
 
       return(
-        <div ref="Branches__branchesList__cover" className={branchesCSS}>
-          <div
-            onClick={() => {this.props.toggleBranchesView(false, false)}}
-            className="Branhces__button--close"></div>
-          <button
-            onClick={() => {this._updatePosition(-1)}}
-            className={leftBumperCSS}></button>
-          <div
-            ref="Branches__branchesList"
-            className={branchesListCSS}
-            style={{left: (listPositionIndex > 0) ? widthPX : ' 0vw'}}>
 
-            {
-              branches.map((name)=>{
-                return (
+        <div className={branchesCSS}>
 
-                  <div
-                    key={name}
-                    className="Branches__card-wrapper">
-                      <BranchCard
-                        activeBranchName={this.props.labbook.activeBranchName}
-                        name={name}
-                        labbookId={this.props.labbookId}
-                        mergeFilter={this.props.mergeFilter}
-                        branchesOpen={this.props.branchesOpen}
-                        setBuildingState={this.props.setBuildingState}
-                      />
-                  </div>)
-              })
-            }
+          <div className={branchesShadowUpperCSS}></div>
 
-          </div>
+            <div ref="Branches__branchesList__cover" className={branchesListCoverCSS}>
 
-          <button
-            onClick={() => {this._updatePosition(1)}}
-            className={rightBumperCSS}></button>
+              <div
+                onClick={() => {this.props.toggleBranchesView(false, false)}}
+                className="Branches__btn--close"></div>
 
+              <button
+                onClick={() => {this._updatePosition(-1)}}
+                className={leftBumperCSS}></button>
+
+              <div
+                ref="Branches__branchesList"
+                className={branchesListCSS}
+                style={{left: (listPositionIndex > 0) ? widthPX : ' 0vw'}}>
+
+                {
+                  branches.map((name)=>{
+                    return (
+
+                      <div
+                        key={name}
+                        className="Branches__cardWrapper">
+                          <BranchCard
+                            activeBranchName={this.props.labbook.activeBranchName}
+                            name={name}
+                            labbookId={this.props.labbookId}
+                            mergeFilter={this.props.mergeFilter}
+                            branchesOpen={this.props.branchesOpen}
+                            setBuildingState={this.props.setBuildingState}
+                          />
+                      </div>)
+                  })
+                }
+
+              </div>
+
+              <button
+                onClick={() => {this._updatePosition(1)}}
+                className={rightBumperCSS}></button>
+
+            </div>
+            <div className={branchesShadowLowerCSS}></div>
         </div>
       )
     } else{

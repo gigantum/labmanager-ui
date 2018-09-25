@@ -1,0 +1,8 @@
+@import '~Styles/_imports.scss';
+
+.LoginPrompt{
+  text-align: center;
+}
+.LoginPrompt__buttonContainer {
+  @include flex(space-around, row);
+}

@@ -1,6 +1,7 @@
 //vendor
 import React, { Component, Fragment } from 'react'
 import ReactMarkdown from 'react-markdown'
+import classNames from 'classnames'
 //Components
 import CodeBlock from 'Components/labbook/renderers/CodeBlock'
 import ToolTip from 'Components/shared/ToolTip';
@@ -12,6 +13,8 @@ import { setContainerMenuWarningMessage} from 'JS/redux/reducers/labbook/environ
 //config
 import { setErrorMessage, setWarningMessage } from 'JS/redux/reducers/footer'
 import config from 'JS/config'
+//assets
+import './CustomDockerfile.scss'
 
 export default class CustomDockerfile extends Component {
   constructor(props){
@@ -105,50 +108,69 @@ export default class CustomDockerfile extends Component {
 
 
   render() {
-    let dockerfileCSS = this.state.dockerfileContent ? 'column-1-span-11' : 'column-1-span-11 empty'
+    const dockerfileCSS = classNames({
+      'column-1-span-11': true,
+      'empty': !this.state.dockerfileContent
+    })
+
     let renderedContent = this.state.dockerfileContent ? '```\n' + this.state.dockerfileContent + '\n```' : 'No commands provided.'
+
     return (
       <div className="CustomDockerfile">
-        <div className="Environment__header-container">
+
+        <div className="Environment__headerContainer">
+
           <h5 className="CustomDockerfile__header">
             Custom Docker Instructions <ToolTip section="dockerInstructionsEnvironment"/>
             {
               !this.state.editingDockerfile &&
               <button
                 onClick={()=> this._editDockerfile()}
-                className="CustomDockerfile__content-edit-button"
+                className="CustomDockerfile__btn--edit"
               >
               </button>
             }
           </h5>
+
         </div>
+
         <div className="CustomDockerfile__sub-header">
+
             <p>Add commands below to modify your environment. Note: Docker instructions are executed after packages are installed.</p>
+
             <div className="CustomDockerfile--code-snippet flex">
               <p>For example, to install a pip package from a Github repo add:</p>
               <code>RUN pip install git+https://git.repo/some_pkg.git</code>
             </div>
+
         </div>
-        <div className="CustomDockerfile__content grid column-1-span-12">
+
+        <div className="CustomDockerfile__content Card Card--auto Card--no-hover grid column-1-span-12">
         {
             this.state.editingDockerfile ?
+
             <Fragment>
+
               <textarea
-                className="CustomDockerfile__content-input column-1-span-11"
+                className="CustomDockerfile__textarea"
                 type="text"
                 onChange={(evt)=>{this.setState({dockerfileContent: evt.target.value})}}
                 placeholder="Enter dockerfile commands here"
                 defaultValue={this.state.dockerfileContent ? this.state.dockerfileContent: ''}
               >
               </textarea>
-              <div className="CustomDockerfile__button-container column-1-span-11">
+
+              <div className="CustomDockerfile__buttonContainer">
+
                 <div className="column-1-span-2">
+
                   <button
                     onClick={()=> this.setState({editingDockerfile: false, dockerfileContent: this.state.lastSavedDockerfileContent })}
                     className="CustomDockerfile__content-cancel-button button--flat"
                   >
                     Cancel
                   </button>
+
                   <button
                     disabled={this.state.savingDockerfile}
                     onClick={()=> this._saveDockerfile()}
@@ -156,22 +178,33 @@ export default class CustomDockerfile extends Component {
                   >
                     Save
                   </button>
+
                 </div>
+
               </div>
+
             </Fragment>
+
             :
+
             <Fragment>
+
               <div className={dockerfileCSS}>
+
                     <ReactMarkdown
-                      renderers={{code: props => <CodeBlock  {...props } language="dockerfile"/>}}
+                      renderers={{code: props =>
+                        <CodeBlock  {...props } language="dockerfile"/>}
+                      }
                       className="ReactMarkdown"
                       source={renderedContent}
                     />
+
               </div>
+
             </Fragment>
           }
-        </div>
 
+        </div>
 
       </div>
     )

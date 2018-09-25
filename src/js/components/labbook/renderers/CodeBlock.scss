@@ -1,3 +1,5 @@
+@import '~Styles/_imports.scss';
+
 .CodeBlock {
     background: $slateBlue !important;
     max-width: 800px !important;
@@ -8,6 +10,7 @@
       background: $jet !important;
     }
 }
+
 .CodeBlock--docker{
   background: $white !important;
   code{

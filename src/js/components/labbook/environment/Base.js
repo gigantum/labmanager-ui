@@ -4,6 +4,8 @@ import {createFragmentContainer, graphql} from 'react-relay'
 //components
 import PackageCount from 'Components/labbook/overview/PackageCount'
 import Loader from 'Components/shared/Loader'
+//assets
+import './Base.scss'
 
 class Base extends Component {
 
@@ -54,27 +56,33 @@ class Base extends Component {
       return(
         <div className="Base">
           <div className="Base__info">
-            <div className="Base__card">
+            <div className="Base__card Card--auto Card--no-hover">
 
-              <div className="Base__image-container">
-                <img height="70" width="70" src={base.icon} alt={base.name} />
+              <div className="Base__imageContainer">
+                <img
+                  className="Base__image"
+                  height="70"
+                  width="70"
+                  src={base.icon}
+                  alt={base.name}
+                />
 
                 <div className="Base__title">
                   <h6 className="Base__name">{base.name}</h6>
-                  <p>{base.osClass + ' ' + base.osRelease}</p>
+                  <p className="Base__paragraph">{base.osClass + ' ' + base.osRelease}</p>
                 </div>
 
               </div>
 
-              <div className="Base__card-text">
+              <div className="Base__cardText">
 
                 <div>
-                  <p>{base.description}</p>
+                  <p className="Base__paragraph">{base.description}</p>
                 </div>
 
                 <div className="Base__categories">
 
-                  <div className="Base__categories-languages">
+                  <div className="Base__languages">
                     <h6>Languages</h6>
                     <ul>
                       {
@@ -85,7 +93,7 @@ class Base extends Component {
                     </ul>
                   </div>
 
-                  <div className="Base__categories-tools">
+                  <div className="Base__tools">
                     <h6>Tools</h6>
                     <ul>
                       {

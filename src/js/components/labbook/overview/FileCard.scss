@@ -1,0 +1,34 @@
+@import '~Styles/_imports.scss';
+
+
+.FileCard {
+  position: relative;
+  padding: 15px 10px;
+  height: 200px;
+  overflow: hidden;
+}
+
+.FileCard__key {
+  font-size: 12px;
+}
+
+.FileCard__description {
+  font-size: 14px;
+}
+
+.FileCard__name {
+  margin-top: 20px;
+  color: $jet;
+  font-size: 16px;
+
+}
+
+.FileCard__favorite {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: url(~Images/icons/star__on.svg) no-repeat 50% 50%;
+  height: 20px;
+  width: 20px;
+  background-size: 16px;
+}

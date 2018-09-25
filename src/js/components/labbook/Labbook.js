@@ -29,6 +29,8 @@ import Loader from 'Components/shared/Loader'
 import ErrorBoundary from 'Components/shared/ErrorBoundary'
 //utils
 import {getFilesFromDragEvent} from "JS/utils/html-dir-content";
+//assets
+import './Labbook.scss'
 
 import Config from 'JS/config'
 
@@ -208,24 +210,23 @@ class Labbook extends Component {
       const labbookCSS = classNames({
         'Labbook': true,
         'Labbook--detail-mode': this.props.detailMode,
-        'Labbook-branch-mode': branchesOpen,
-        'is-demo': window.location.hostname === Config.demoHostName,
+        'Labbook--branch-mode': branchesOpen,
+        'Labbook--demo-mode': window.location.hostname === Config.demoHostName,
       })
 
       return(
         <div className={labbookCSS}>
 
-          <div className="Labbook__inner-container flex flex--row">
+          <div className="Labbook__spacer flex flex--column">
 
-            <div className="Labbook__component-container flex flex--column">
+
                <LabbookHeader
                  setBuildingState={this._setBuildingState}
                  toggleBranchesView={this._toggleBranchesView}
                  branchName={branchName}
-                 isSticky={this.props.isSticky}
                  {...this.props} />
 
-               <div className="Labbook__view mui-container flex flex-1-0-auto">
+               <div className="Labbook__routes flex flex-1-0-auto">
 
                   <Switch>
                     <Route
@@ -398,8 +399,6 @@ class Labbook extends Component {
               </div>
 
             </div>
-
-          </div>
 
           <div className="Labbook__veil"></div>
 

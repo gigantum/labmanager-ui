@@ -8,7 +8,8 @@ import Modal from 'Components/shared/Modal'
 //store
 import store from 'JS/redux/store'
 import { setMultiInfoMessage } from 'JS/redux/reducers/footer'
-
+//assets
+import './ForceSync.scss'
 
 export default class ForceSync extends Component {
   _forceSync(){
@@ -44,7 +45,7 @@ export default class ForceSync extends Component {
               <p><b>**Note: This will overwrite any conflicting files with the copy from the server.</b></p>
               <p>Do you want "force" sync anyway?</p>
             </div>
-            <div className="ForceSync__buttons">
+            <div className="ForceSync__buttonContainer">
               <button onClick={()=>{this._forceSync()}}>Yes</button>
               <button onClick={()=>{this.props.toggleSyncModal()}}>No</button>
             </div>

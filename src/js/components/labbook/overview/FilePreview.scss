@@ -1,0 +1,13 @@
+@import '~Styles/_imports.scss';
+
+.FilePreview__section {
+  margin-top: 20px;
+}
+
+.FilePreview__container {
+  align-items: center;
+  @include flex(space-between, row);
+  a {
+    color: $dark-blue;
+  }
+}
