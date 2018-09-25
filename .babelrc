@@ -6,6 +6,7 @@
  "plugins": [
    "relay",
    "transform-class-properties",
+   "syntax-dynamic-import",
    [
      "module-resolver",
      {

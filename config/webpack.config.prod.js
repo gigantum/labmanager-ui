@@ -12,6 +12,8 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -54,6 +56,14 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: 'source-map',
   // In production, we only want to load the polyfills and the app code.
+  // entry: {
+  //   main: paths.appIndexJs,
+  //   Dashboard: paths.dahshboardJs,
+  //   Labbook: paths.labbookJs,
+  //   Activity: paths.labbookActivityJs,
+  //   Environment: paths.labbookEnvironmentJs,
+  //   Overview: paths.labbookOverviewJs,
+  // },
   entry: [
     require.resolve('./polyfills'),
     paths.appIndexJs,
@@ -143,6 +153,7 @@ module.exports = {
           /\.html$/,
           /\.(js|jsx)$/,
           /\.css$/,
+          /\.scss$/,
           /\.json$/,
           /\.bmp$/,
           /\.gif$/,
@@ -169,10 +180,17 @@ module.exports = {
         test: /\.(js|jsx)$/,
         include: paths.appSrc,
         loader: require.resolve('babel-loader'),
+        options: {
 
+          compact: true,
+        }
       },
 
       {
+        exclude: [
+          /\.css$/,
+          /\.scss$/
+        ],
         test: /\.(js|jsx)$/,
         include: paths.submodules,
         loader: require.resolve('babel-loader'),
@@ -195,20 +213,27 @@ module.exports = {
         loader: ExtractTextPlugin.extract(
           Object.assign(
             {
-              fallback: require.resolve('style-loader'),
+              fallback: {
+                loader: require.resolve('style-loader'),
+                options: {
+                  hmr: false,
+                },
+              },
               use: [
                 {
                   loader: require.resolve('css-loader'),
                   options: {
                     importLoaders: 1,
                     minimize: true,
-                    sourceMap: true,
+                    sourceMap: false,
                   },
                 },
                 {
                   loader: require.resolve('postcss-loader'),
                   options: {
-                    ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
+                    // Necessary for external CSS imports to work
+                    // https://github.com/facebookincubator/create-react-app/issues/2677
+                    ident: 'postcss',
                     plugins: () => [
                       require('postcss-flexbugs-fixes'),
                       autoprefixer({
@@ -230,6 +255,7 @@ module.exports = {
                   }
                 }
               ],
+
             },
             extractTextPluginOptions
           )
@@ -240,7 +266,54 @@ module.exports = {
       // Remember to add the new extension(s) to the "file" loader exclusion list.
     ],
   },
+  // optimization:{
+  //   runtimeChunk: 'single',
+  //   splitChunks: {
+  //     chunks: 'all',
+  //     maxInitialRequests: Infinity,
+  //     minSize: 0,
+  //     cacheGroups: {
+  //       vendor: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         name(module) {
+  //           // get the name. E.g. node_modules/packageName/not/this/part.js
+  //           // or node_modules/packageName
+  //           const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+  //           // npm package names are URL-safe, but some servers don't like @ symbols
+  //           return `npm.${packageName.replace('@', '')}`;
+  //         },
+  //       },
+  //     },
+  //   },
+  //   // minimizer: [
+  //   //   new UglifyJsPlugin({
+  //   //     cache: true,
+  //   //     parallel: true,
+  //   //   })
+  //   // ],
+  // },
+
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new UglifyJsPlugin({
+          sourceMap: true,
+          uglifyOptions: {
+              compress: {
+                  unused: false,
+                  dead_code: false,
+                  warnings: true
+              },
+              output: {
+                  comments: true
+              }
+          }
+        })
+      ]
+  },
   plugins: [
+    new ProgressBarPlugin(),
     new webpack.LoaderOptionsPlugin({ options: {} }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
@@ -340,8 +413,10 @@ module.exports = {
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
   node: {
+    dgram: 'empty',
     fs: 'empty',
     net: 'empty',
     tls: 'empty',
+    child_process: 'empty',
   },
 };

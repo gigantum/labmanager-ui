@@ -9,6 +9,7 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
+import Loadable from 'react-loadable';
 //store
 import store from "JS/redux/store"
 import { setContainerMenuWarningMessage } from 'JS/redux/reducers/labbook/environment/environment'
@@ -18,12 +19,6 @@ import { setLatestPackages } from 'JS/redux/reducers/labbook/environment/package
 //components
 import LabbookHeader from './labbookHeader/LabbookHeader'
 import Login from 'Components/login/Login';
-import Activity from './activity/Activity'
-import Code from './code/Code'
-import InputData from './inputData/InputData'
-import OutputData from './outputData/OutputData'
-import Overview from './overview/Overview'
-import Environment from './environment/Environment'
 import Loader from 'Components/shared/Loader'
 import ErrorBoundary from 'Components/shared/ErrorBoundary'
 //utils
@@ -32,6 +27,39 @@ import {getFilesFromDragEvent} from "JS/utils/html-dir-content";
 import './Labbook.scss'
 
 import Config from 'JS/config'
+
+const Loading = () => <Loader></Loader>;
+
+const Overview = Loadable({
+  loader: () => import('./overview/Overview'),
+  loading: Loading,
+  delay: 500,
+})
+const Activity = Loadable({
+  loader: () => import('./activity/Activity'),
+  loading: Loading,
+  delay: 500,
+})
+const Code = Loadable({
+  loader: () => import('./code/Code'),
+  loading: Loading,
+  delay: 500,
+})
+const InputData = Loadable({
+  loader: () => import('./inputData/InputData'),
+  loading: Loading,
+  delay: 500,
+})
+const OutputData = Loadable({
+  loader: () => import('./outputData/OutputData'),
+  loading: Loading,
+  delay: 500,
+})
+const Environment = Loadable({
+  loader: () => import('./environment/Environment'),
+  loading: Loading,
+  delay: 500,
+})
 
 class Labbook extends Component {
   constructor(props){

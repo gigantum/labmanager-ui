@@ -4,6 +4,7 @@ import uuidv4 from 'uuid/v4'
 const pingServer = () => {
   let apiHost = process.env.NODE_ENV === 'development' ? 'localhost:10000' : window.location.host
   const url = `${window.location.protocol}//${apiHost}${process.env.PING_API}?v=${uuidv4()}`;
+
   return fetch(url, {
     'method': 'GET'
   }).then(response => {
