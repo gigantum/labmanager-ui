@@ -67,7 +67,11 @@ module.exports = {
   entry: [
     require.resolve('./polyfills'),
     paths.appIndexJs,
-    paths.dahshboardJs
+    paths.dahshboardJs,
+    paths.labbookJs,
+    paths.labbookActivityJs,
+    paths.labbookEnvironmentJs,
+    paths.labbookOverviewJs,
   ],
   mode: 'production',
   output: {
