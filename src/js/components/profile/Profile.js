@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 export default class Home extends Component {
-  constructor(props){
-    super(props)
-    let username = localStorage.getItem('username')
-    let email = localStorage.getItem('email')
-    let firstName = localStorage.getItem('given_name')
-    let lastName = localStorage.getItem('family_name')
+  constructor(props) {
+    super(props);
+    const username = localStorage.getItem('username');
+    const email = localStorage.getItem('email');
+    const firstName = localStorage.getItem('given_name');
+    const lastName = localStorage.getItem('family_name');
     this.state = {
       username,
       email,
       firstName,
-      lastName
-    }
+      lastName,
+    };
   }
 
   /**
@@ -20,22 +20,22 @@ export default class Home extends Component {
    * updates user text state and stores for updating
    *
    */
-  _updateTextState(evt, type){
+  _updateTextState(evt, type) {
     this.setState({
-      [type]: evt.target.value
-    })
+      [type]: evt.target.value,
+    });
   }
   /**
    * @param {event, string}
    * uses state and updates user settings via the api
    *
    */
-  _saveUserUpdates(){
+  _saveUserUpdates() {
 
   }
 
   render() {
-    return(
+    return (
       <div className="Profile">
         <h3>Profile</h3>
 
@@ -56,8 +56,8 @@ export default class Home extends Component {
           <div className="Profile__input-row">
             <label>Email</label>
             <input
-              onKeyUp={(evt)=> this._updateTextState(evt, 'email')}
-              onChange={(evt)=> this._updateTextState(evt, 'email')}
+              onKeyUp={evt => this._updateTextState(evt, 'email')}
+              onChange={evt => this._updateTextState(evt, 'email')}
               type="text"
               placeholder={this.state.email}
             />
@@ -65,8 +65,8 @@ export default class Home extends Component {
           <div className="Profile__input-row">
             <label>First Name</label>
             <input
-              onKeyUp={(evt)=> this._updateTextState(evt, 'firstName')}
-              onChange={(evt)=> this._updateTextState(evt, 'firstName')}
+              onKeyUp={evt => this._updateTextState(evt, 'firstName')}
+              onChange={evt => this._updateTextState(evt, 'firstName')}
               type="text"
               placeholder={this.state.firstName}
             />
@@ -74,8 +74,8 @@ export default class Home extends Component {
           <div className="Profile__input-row">
             <label>Last Name</label>
             <input
-              onKeyUp={(evt)=> this._updateTextState(evt, 'lastName')}
-              onChange={(evt)=> this._updateTextState(evt, 'lastName')}
+              onKeyUp={evt => this._updateTextState(evt, 'lastName')}
+              onChange={evt => this._updateTextState(evt, 'lastName')}
               type="text"
               placeholder={this.state.lastName}
             />
@@ -87,6 +87,6 @@ export default class Home extends Component {
         </div>
 
       </div>
-    )
+    );
   }
 }

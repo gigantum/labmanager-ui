@@ -1,32 +1,31 @@
 // vendor
-import React, { Component } from 'react'
-import {createPaginationContainer, graphql} from 'react-relay'
-//Config
-import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper'
-//store
-import store from 'JS/redux/store'
+import React, { Component } from 'react';
+import { createPaginationContainer, graphql } from 'react-relay';
+// Config
+import FileBrowserWrapper from 'Components/labbook/fileBrowser/FileBrowserWrapper';
+// store
+import store from 'JS/redux/store';
 
 class OutputDataBrowser extends Component {
-  constructor(props){
+  constructor(props) {
   	super(props);
-    const {owner, labbookName} = store.getState().routes
+    const { owner, labbookName } = store.getState().routes;
     this.state = {
-      'show': false,
-      'message': '',
-      'files': [],
-      'moreLoading': false,
+      show: false,
+      message: '',
+      files: [],
+      moreLoading: false,
       owner,
-      labbookName
-    }
-
+      labbookName,
+    };
   }
 
   /*
     loads more if branches are switched
   */
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.props.loadStatus(this.state.moreLoading);
-    if(!this.state.moreLoading && this.props.output.allFiles && this.props.output.allFiles.edges.length < 3 && this.props.output.allFiles.pageInfo.hasNextPage){
+    if (!this.state.moreLoading && this.props.output.allFiles && this.props.output.allFiles.edges.length < 3 && this.props.output.allFiles.pageInfo.hasNextPage) {
       this._loadMore();
     }
   }
@@ -36,11 +35,11 @@ class OutputDataBrowser extends Component {
   */
   componentDidMount() {
     this.props.loadStatus(this.state.moreLoading);
-    if(this.props.output.allFiles &&
+    if (this.props.output.allFiles &&
       this.props.output.allFiles.pageInfo.hasNextPage) {
-        this._loadMore()
+      this._loadMore();
     } else {
-      this.setState({'moreLoading': false});
+      this.setState({ moreLoading: false });
     }
   }
 
@@ -51,40 +50,40 @@ class OutputDataBrowser extends Component {
     logs callback
   */
   _loadMore() {
-    this.setState({'moreLoading': true});
-    let self = this;
+    this.setState({ moreLoading: true });
+    const self = this;
     this.props.relay.loadMore(
-     100, // Fetch the next 100 feed items
-     (response, error) => {
-       if(error){
-         console.error(error)
-       }
+      100, // Fetch the next 100 feed items
+      (response, error) => {
+        if (error) {
+          console.error(error);
+        }
 
-       if(self.props.output.allFiles &&
+        if (self.props.output.allFiles &&
         self.props.output.allFiles.pageInfo.hasNextPage) {
-          self._loadMore()
-      } else {
-        this.setState({'moreLoading': false})
-      }
-     }
-   );
+          self._loadMore();
+        } else {
+          this.setState({ moreLoading: false });
+        }
+      },
+    );
   }
 
-  setRootFolder(key){
-    this.setState({rootFolder: key})
-    this._loadMore()
+  setRootFolder(key) {
+    this.setState({ rootFolder: key });
+    this._loadMore();
   }
 
-  render(){
-    if(this.props.output && this.props.output.allFiles){
-      let outputFiles = this.props.output.allFiles
-      if(this.props.output.allFiles.edges.length === 0){
+  render() {
+    if (this.props.output && this.props.output.allFiles) {
+      let outputFiles = this.props.output.allFiles;
+      if (this.props.output.allFiles.edges.length === 0) {
         outputFiles = {
           edges: [],
-          pageInfo: this.props.output.allFiles.pageInfo
-        }
+          pageInfo: this.props.output.allFiles.pageInfo,
+        };
       }
-      return(
+      return (
         <FileBrowserWrapper
           ref="OutputBrowser"
           files={outputFiles}
@@ -98,10 +97,9 @@ class OutputDataBrowser extends Component {
           isLocked={this.props.isLocked}
           {...this.props}
         />
-      )
-    }else {
-      return(<div>No Files Found</div>)
+      );
     }
+    return (<div>No Files Found</div>);
   }
 }
 
@@ -132,12 +130,12 @@ export default createPaginationContainer(
           }
         }
 
-      }`
+      }`,
   },
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.output && props.output.allFiles
+      return props.output && props.output.allFiles;
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -145,15 +143,14 @@ export default createPaginationContainer(
         count: totalCount,
       };
     },
-    getVariables(props, {count, cursor}, fragmentVariables) {
-
-      const {owner, labbookName} = store.getState().routes
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      const { owner, labbookName } = store.getState().routes;
 
       return {
         first: count,
         cursor,
-        owner: owner,
-        name: labbookName
+        owner,
+        name: labbookName,
       };
     },
     query: graphql`
@@ -172,6 +169,6 @@ export default createPaginationContainer(
           }
         }
       }
-    `
-  }
-)
+    `,
+  },
+);

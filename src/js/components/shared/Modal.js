@@ -1,36 +1,33 @@
-//vendor
-import React, { Component, Fragment } from 'react'
-import classNames from 'classnames'
+// vendor
+import React, { Component, Fragment } from 'react';
+import classNames from 'classnames';
 
 export default class Modal extends Component {
-
-  componentDidMount(){
-    document.getElementById('root').classList.add('no-overflow')
+  componentDidMount() {
+    document.getElementById('root').classList.add('no-overflow');
   }
-  componentWillUnmount(){
-    document.getElementById('root').classList.remove('no-overflow')
-
+  componentWillUnmount() {
+    document.getElementById('root').classList.remove('no-overflow');
   }
 
   render() {
-    let modelContentCSS = classNames({
-      'Modal__content': true,
-      [this.props.size]: this.props.size, //large, medium, small
-      [this.props.icon]: this.props.icon
-    })
+    const modelContentCSS = classNames({
+      Modal__content: true,
+      [this.props.size]: this.props.size, // large, medium, small
+      [this.props.icon]: this.props.icon,
+    });
     return (
       <div className="Modal">
 
-        <div className="Modal__cover"></div>
+        <div className="Modal__cover" />
 
         <div className={modelContentCSS}>
           {
             this.props.handleClose &&
             <div
               className="Modal__close"
-              onClick={()=> this.props.handleClose()}
-            >
-            </div>
+              onClick={() => this.props.handleClose()}
+            />
           }
           <div className="Modal__container">
             {
@@ -41,7 +38,7 @@ export default class Modal extends Component {
               this.props.header &&
               <Fragment>
                 <h4 className="Modal__header">{this.props.header}</h4>
-                <hr></hr>
+                <hr />
               </Fragment>
             }
             <div className="Modal__sub-container">
@@ -52,6 +49,6 @@ export default class Modal extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }

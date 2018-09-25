@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
-//components
-import User from './User'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+// components
+import User from './User';
 
 
 export default class Header extends Component {
@@ -15,25 +15,25 @@ export default class Header extends Component {
   render() {
     const { isAuthenticated } = this.props.auth;
     return (
-      <div className={'Header flex flex--row justify--space-between'}>
-        <div className={'flex justify--space-around flex-1-0-auto'}>
+      <div className="Header flex flex--row justify--space-between">
+        <div className="flex justify--space-around flex-1-0-auto">
 
-          <ul className='Header__nav flex flex--row justify--space-between'>
+          <ul className="Header__nav flex flex--row justify--space-between">
             <li>
               <Link
                 className="Header__nav-item Header__nav-item--datasets flex flex--row justify--space-between"
-                to={{pathname: '/datasets'}}
+                to={{ pathname: '/datasets' }}
               >
-                <div className="Header__datasets-icon"></div>
+                <div className="Header__datasets-icon" />
                 Datasets
               </Link>
             </li>
             <li>
               <Link
                 className="Header__nav-item Header__nav-item--labbooks flex flex--row justify--space-between"
-                to={{pathname: '/projects'}}
+                to={{ pathname: '/projects' }}
               >
-                <div className="Header__labbook-icon"></div>
+                <div className="Header__labbook-icon" />
                 Projects
               </Link>
             </li>
@@ -42,11 +42,11 @@ export default class Header extends Component {
 
           {
             isAuthenticated() && (
-                <User {...this.props} />
+            <User {...this.props} />
               )
           }
         </div>
       </div>
-    )
+    );
   }
 }

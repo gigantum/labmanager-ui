@@ -1,10 +1,9 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
-import uuidv4 from 'uuid/v4'
-
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
+import uuidv4 from 'uuid/v4';
 
 
 const mutation = graphql`
@@ -68,10 +67,9 @@ export default function AddLabbookFileMutation(
   cancel,
   rollback,
   transactionId,
-  callback
+  callback,
 ) {
-
-  const id = uuidv4()
+  const id = uuidv4();
 
   const variables = {
     input: {
@@ -80,9 +78,9 @@ export default function AddLabbookFileMutation(
       cancel,
       rollback,
       transactionId,
-      clientMutationId: id
-    }
-  }
+      clientMutationId: id,
+    },
+  };
 
 
   commitMutation(
@@ -90,20 +88,19 @@ export default function AddLabbookFileMutation(
     {
       mutation,
       variables,
-      onCompleted: (response, error ) => {
-
-        if(error){
-          console.log(error)
+      onCompleted: (response, error) => {
+        if (error) {
+          console.log(error);
         }
-        callback(response, error)
+        callback(response, error);
       },
       onError: err => console.error(err),
-      optimisticUpdater:(store)=>{
+      optimisticUpdater: (store) => {
 
       },
       updater: (store, response) => {
 
       },
     },
-  )
+  );
 }

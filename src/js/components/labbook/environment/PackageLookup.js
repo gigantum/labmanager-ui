@@ -1,9 +1,7 @@
-//vendor
-import {
-  graphql,
-} from 'react-relay'
-//environment
-import {fetchQuery} from 'JS/createRelayEnvironment';
+// vendor
+import { graphql } from 'react-relay';
+// environment
+import { fetchQuery } from 'JS/createRelayEnvironment';
 
 const PackageLookupQuery = graphql`
   query PackageLookupQuery($owner: String!, $name: String!, $input: [PackageComponentInput]!){
@@ -24,25 +22,22 @@ const PackageLookupQuery = graphql`
 
 
 const PackageLookup = {
-  query: (name, owner, input ) =>{
+  query: (name, owner, input) => {
+    const variables = { name, owner, input };
 
-    const variables = {name, owner, input};
-
-    return new Promise((resolve, reject) =>{
-
-      let fetchData = function(){
-
+    return new Promise((resolve, reject) => {
+      const fetchData = function () {
         fetchQuery(PackageLookupQuery(), variables).then((response) => {
-          resolve(response)
-        }).catch((error) =>{
-          console.log(error)
-          reject(error)
-        })
-      }
+          resolve(response);
+        }).catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+      };
 
-      fetchData()
-    })
-  }
-}
+      fetchData();
+    });
+  },
+};
 
-export default PackageLookup
+export default PackageLookup;

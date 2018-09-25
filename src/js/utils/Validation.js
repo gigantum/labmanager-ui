@@ -1,6 +1,6 @@
 const validation = {
-  labbookName: (input) =>{
-    const isMatch = !(input.match(/^(?!-)(?!.*--)[a-z0-9-]+(?!-)$/) === null)
+  labbookName: (input) => {
+    const isMatch = !(input.match(/^(?!-)(?!.*--)[a-z0-9-]+(?!-)$/) === null);
 
     return isMatch;
   },
@@ -9,7 +9,7 @@ const validation = {
     const isMatch = !(input.match(/^(?!-)(?!.*--)[a-z0-9-]+(?!-)$/) === null) && !input.endsWith('-');
 
     return isMatch;
-  }
-}
+  },
+};
 
-export default validation
+export default validation;

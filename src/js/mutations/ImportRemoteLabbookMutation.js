@@ -1,8 +1,8 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
 
 const mutation = graphql`
   mutation ImportRemoteLabbookMutation($input: ImportRemoteLabbookInput!){
@@ -24,35 +24,33 @@ export default function ImportRemoteLabbookMutation(
   owner,
   labbookName,
   remoteUrl,
-  callback
+  callback,
 ) {
-
   const variables = {
     input: {
       owner,
       labbookName,
       remoteUrl,
-      clientMutationId: '' + tempID++
+      clientMutationId: `${tempID++}`,
     },
 
-  }
+  };
   commitMutation(
     environment,
     {
       mutation,
       variables,
-      onCompleted: (response, error ) => {
-
-        if(error){
-          console.log(error)
+      onCompleted: (response, error) => {
+        if (error) {
+          console.log(error);
         }
-        callback(response, error)
+        callback(response, error);
       },
       onError: err => console.error(err),
 
       updater: (store) => {
 
-      }
-    }
-  )
+      },
+    },
+  );
 }

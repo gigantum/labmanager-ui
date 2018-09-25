@@ -1,33 +1,33 @@
 // vendor
-import React, { Component } from 'react'
-import {createPaginationContainer, graphql} from 'react-relay'
-//componenets
-import CodeFavoriteList from './CodeFavoriteList'
-import FileEmpty from 'Components/labbook/overview/FileEmpty'
-//store
-import store from 'JS/redux/store'
+import React, { Component } from 'react';
+import { createPaginationContainer, graphql } from 'react-relay';
+// componenets
+import CodeFavoriteList from './CodeFavoriteList';
+import FileEmpty from 'Components/labbook/overview/FileEmpty';
+// store
+import store from 'JS/redux/store';
 
 class CodeFavorites extends Component {
-  constructor(props){
+  constructor(props) {
   	super(props);
     this.state = {
       loading: false,
-    }
+    };
   }
   /*
     update component when props are reloaded
   */
   UNSAFE_componentWillReceiveProps(nextProps) {
-
-    //this._loadMore() //routes query only loads 2, call loadMore
-    if(nextProps.code && nextProps.code.favorites && nextProps.code.favorites.pageInfo.hasNextPage && nextProps.code.favorites.edges.length < 3){
+    // this._loadMore() //routes query only loads 2, call loadMore
+    if (nextProps.code && nextProps.code.favorites && nextProps.code.favorites.pageInfo.hasNextPage && nextProps.code.favorites.edges.length < 3) {
       this.props.relay.loadMore(
-       1, // Fetch the next 10 feed items
-       (response, error) => {
-         if(error){
-           console.error(error)
-        }
-      })
+        1, // Fetch the next 10 feed items
+        (response, error) => {
+          if (error) {
+            console.error(error);
+          }
+        },
+      );
     }
   }
 
@@ -35,15 +35,16 @@ class CodeFavorites extends Component {
     handle state and addd listeners when component mounts
   */
   componentDidMount() {
-    //this._loadMore() //routes query only loads 2, call loadMore
-    if(this.props.code && this.props.code.favorites && this.props.code.favorites.pageInfo.hasNextPage && this.props.code.favorites.edges.length < 3){
+    // this._loadMore() //routes query only loads 2, call loadMore
+    if (this.props.code && this.props.code.favorites && this.props.code.favorites.pageInfo.hasNextPage && this.props.code.favorites.edges.length < 3) {
       this.props.relay.loadMore(
-       1, // Fetch the next 10 feed items
-       (response, error) => {
-         if(error){
-           console.error(error)
-        }
-      })
+        1, // Fetch the next 10 feed items
+        (response, error) => {
+          if (error) {
+            console.error(error);
+          }
+        },
+      );
     }
   }
 
@@ -54,43 +55,38 @@ class CodeFavorites extends Component {
     logs callback
   */
   _loadMore() {
-    let self = this
+    const self = this;
 
-    this.setState({loading: true})
+    this.setState({ loading: true });
 
     this.props.relay.loadMore(
-     3, // Fetch the next 10 feed items
-     (response, error) => {
+      3, // Fetch the next 10 feed items
+      (response, error) => {
+        self.setState({ loading: false });
 
-       self.setState({loading: false})
-
-       if(error){
-         console.error(error)
-       }
-
-     }
-   );
+        if (error) {
+          console.error(error);
+        }
+      },
+    );
   }
 
 
-  render(){
+  render() {
+    if (this.props.code && this.props.code.favorites) {
+      let loadingClass = (this.props.code.favorites.pageInfo.hasNextPage) ? 'Favorite__action-bar' : 'hidden';
+      loadingClass = (this.state.loading) ? 'Favorite__action-bar--loading' : loadingClass;
 
-    if(this.props.code && this.props.code.favorites){
-      let loadingClass = (this.props.code.favorites.pageInfo.hasNextPage) ? 'Favorite__action-bar' : 'hidden'
-      loadingClass = (this.state.loading) ? 'Favorite__action-bar--loading' : loadingClass
+      if (this.props.code.favorites.edges.length > 0) {
+        const favorites = this.props.code.favorites.edges.filter(edge => edge && (edge.node !== undefined));
 
-      if(this.props.code.favorites.edges.length > 0){
-        const favorites = this.props.code.favorites.edges.filter((edge)=>{
-          return edge && (edge.node !== undefined)
-        })
-
-        return(
+        return (
 
           <div className="Favorite">
             <CodeFavoriteList
               labbookName={this.props.labbookName}
               codeId={this.props.codeId}
-              section={'code'}
+              section="code"
               favorites={favorites}
               owner={this.props.owner}
             />
@@ -99,25 +95,23 @@ class CodeFavorites extends Component {
             <div className={loadingClass}>
               <button
                 className="Favorite__load-more"
-                onClick={()=>{this._loadMore()}}
+                onClick={() => { this._loadMore(); }}
               >
                 Load More
               </button>
             </div>
           </div>
 
-        )
-      }else{
-        return(
-          <FileEmpty
-            section="code"
-            mainText="This Project has No Code Favorites"
-          />
-        )
+        );
       }
-    }else{
-      return(<div>No Files Found</div>)
+      return (
+        <FileEmpty
+          section="code"
+          mainText="This Project has No Code Favorites"
+        />
+      );
     }
+    return (<div>No Files Found</div>);
   }
 }
 
@@ -149,12 +143,12 @@ export default createPaginationContainer(
             endCursor
           }
         }
-      }`
+      }`,
   },
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.code && props.code.favorites
+      return props.code && props.code.favorites;
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -162,13 +156,13 @@ export default createPaginationContainer(
         first: totalCount,
       };
     },
-    getVariables(props, {count, cursor}, fragmentVariables) {
-      const {owner, labbookName} = store.getState().routes
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      const { owner, labbookName } = store.getState().routes;
       return {
         first: count,
         cursor,
-        owner: owner,
-        name: labbookName
+        owner,
+        name: labbookName,
       };
     },
     query: graphql`
@@ -187,7 +181,7 @@ export default createPaginationContainer(
            }
         }
       }
-    `
-  }
+    `,
+  },
 
-)
+);

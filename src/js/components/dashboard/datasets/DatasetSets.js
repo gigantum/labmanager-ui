@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 // import {
 //   QueryRenderer,
 //   graphql
@@ -6,15 +6,12 @@ import React, { Component } from 'react'
 // import environment from 'JS/createRelayEnvironment'
 
 
-
 export default class DatasetSets extends Component {
-
-  render(){
-
-    return(
+  render() {
+    return (
       <div className="Datasets">
         <h1>Datasets</h1>
       </div>
-    )
+    );
   }
 }

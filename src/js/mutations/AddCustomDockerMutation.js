@@ -1,8 +1,8 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
 
 
 const mutation = graphql`
@@ -23,29 +23,28 @@ export default function AddCustomDockerMutation(
   owner,
   labbookName,
   dockerContent,
-  callback
+  callback,
 ) {
-
   const variables = {
     input: {
       owner,
       labbookName,
       dockerContent,
-      clientMutationId: '' + tempID++
-    }
-  }
+      clientMutationId: `${tempID++}`,
+    },
+  };
   commitMutation(
     environment,
     {
       mutation,
       variables,
-      onCompleted: (response, error ) => {
-        if(error){
-          console.log(error)
+      onCompleted: (response, error) => {
+        if (error) {
+          console.log(error);
         }
-        callback(response, error)
+        callback(response, error);
       },
       onError: err => console.error(err),
     },
-  )
+  );
 }

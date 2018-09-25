@@ -1,26 +1,25 @@
-//vendor
-import React, { Component } from 'react'
-//assets
-import './PackageCount.scss'
+// vendor
+import React, { Component } from 'react';
+// assets
+import './PackageCount.scss';
 
 export default class PackageCount extends Component {
+  render() {
+    const { overview } = this.props;
 
-  render(){
-    const {overview} = this.props
-
-    let totalPackageCount = overview.numPipPackages + overview.numAptPackages + overview.numConda2Packages + overview.numConda3Packages
-    return(
+    const totalPackageCount = overview.numPipPackages + overview.numAptPackages + overview.numConda2Packages + overview.numConda3Packages;
+    return (
 
       <div className="PackageCount">
         <div className="PackageCount__dependencies">
-          <h6 className={'Overview__header'}>Packages</h6>
+          <h6 className="Overview__header">Packages</h6>
           <ul className="flex flex--wrap">
             { (overview.numPipPackages > 0) &&
               <li key="numPipPackages" className="PackageCount__item">{`${overview.numPipPackages} pip package(s)` }</li>
             }
 
             { (overview.numAptPackages > 0) &&
-              <li key="numAptPackages" className="PackageCount__item">{`${overview.numAptPackages } apt package(s)` }</li>
+              <li key="numAptPackages" className="PackageCount__item">{`${overview.numAptPackages} apt package(s)` }</li>
             }
 
             { (overview.numConda2Packages > 0) &&
@@ -33,12 +32,10 @@ export default class PackageCount extends Component {
 
             {
               (totalPackageCount === 0) &&
-              <li className="PackageCount__item" key="totalNone">{'0 pip, apt-get, and conda packages'}</li>
+              <li className="PackageCount__item" key="totalNone">0 pip, apt-get, and conda packages</li>
             }
           </ul>
         </div>
-      </div>)
-
-
+      </div>);
   }
 }

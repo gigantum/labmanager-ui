@@ -1,8 +1,8 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
 
 const mutation = graphql`
   mutation StartDevToolMutation($input: StartDevToolInput!){
@@ -20,28 +20,28 @@ export default function AddEnvironmentPackageMutation(
   owner,
   labbookName,
   devTool,
-  callback
+  callback,
 ) {
   const variables = {
     input: {
       labbookName,
       owner,
       devTool,
-      clientMutationId:  tempID++
-    }
-  }
+      clientMutationId: tempID++,
+    },
+  };
   commitMutation(
     environment,
     {
       mutation,
       variables,
       onCompleted: (response, error) => {
-        if(error){
-          console.log(error)
+        if (error) {
+          console.log(error);
         }
-        callback(response, error)
+        callback(response, error);
       },
-      onError: err => console.error(err)
+      onError: err => console.error(err),
     },
-  )
+  );
 }

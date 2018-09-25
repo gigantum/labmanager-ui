@@ -1,10 +1,10 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
 
-import FooterUtils from 'Components/shared/footer/FooterUtils'
+import FooterUtils from 'Components/shared/footer/FooterUtils';
 
 const mutation = graphql`
   mutation PublishLabbookMutation($input: PublishLabbookInput!){
@@ -22,18 +22,16 @@ export default function PublishLabbookMutation(
   labbookName,
   labbookId,
   setPublic,
-  callback
+  callback,
 ) {
-
-
   const variables = {
     input: {
       setPublic,
       owner,
       labbookName,
-      clientMutationId: tempID++
-    }
-  }
+      clientMutationId: tempID++,
+    },
+  };
 
   commitMutation(
     environment,
@@ -41,20 +39,18 @@ export default function PublishLabbookMutation(
       mutation,
       variables,
       onCompleted: (response, error) => {
-
-        if(error){
-          console.log(error)
+        if (error) {
+          console.log(error);
         }
 
-        callback(response, error)
+        callback(response, error);
       },
-      onError: err => {console.error(err)},
+      onError: (err) => { console.error(err); },
       updater: (store, response) => {
-        if(response){
-           FooterUtils.getJobStatus(response, 'publishLabbook', 'jobKey')
+        if (response) {
+          FooterUtils.getJobStatus(response, 'publishLabbook', 'jobKey');
         }
-
-      }
+      },
     },
-  )
+  );
 }

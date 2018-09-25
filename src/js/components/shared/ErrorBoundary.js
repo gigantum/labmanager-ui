@@ -1,33 +1,31 @@
-//vendor
-import React, { Component } from 'react'
+// vendor
+import React, { Component } from 'react';
 
 export default class ErrorBoundary extends Component {
-
-  constructor(){
-    super()
+  constructor() {
+    super();
     this.state = {
-      hasError: false
-    }
+      hasError: false,
+    };
   }
 
-  componentDidCatch(error, info){
-    console.log(error, info)
-    this.setState({hasError: true})
+  componentDidCatch(error, info) {
+    console.log(error, info);
+    this.setState({ hasError: true });
   }
 
   render() {
-    let text = 'There was an error fetching data for this component. Refresh the page and try again.'
-    if(this.props.type === 'containerStatusError'){
-      text = 'Error'
+    let text = 'There was an error fetching data for this component. Refresh the page and try again.';
+    if (this.props.type === 'containerStatusError') {
+      text = 'Error';
     }
-    if(this.state.hasError){
+    if (this.state.hasError) {
       return (
         <div className={`ComponentError ${this.props.type}`}>
-            <p>{text}</p>
+          <p>{text}</p>
         </div>
-      )
-    } else{
-      return this.props.children
+      );
     }
+    return this.props.children;
   }
 }

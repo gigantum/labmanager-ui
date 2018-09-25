@@ -1,9 +1,9 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import environment from 'JS/createRelayEnvironment'
-import RelayRuntime from 'relay-runtime'
+} from 'react-relay';
+import environment from 'JS/createRelayEnvironment';
+import RelayRuntime from 'relay-runtime';
 
 const mutation = graphql`
   mutation DeleteRemoteLabbookMutation($input: DeleteRemoteLabbookInput!){
@@ -15,21 +15,20 @@ const mutation = graphql`
 `;
 let tempID = 0;
 
-function sharedUpdater(store, parentId,  deletedId, connectionKey) {
+function sharedUpdater(store, parentId, deletedId, connectionKey) {
   const labbookProxy = store.get(parentId);
-  if(labbookProxy) {
+  if (labbookProxy) {
     const conn = RelayRuntime.ConnectionHandler.getConnection(
       labbookProxy,
       connectionKey,
     );
-    if(conn){
+    if (conn) {
       RelayRuntime.ConnectionHandler.deleteNode(
         conn,
         deletedId,
       );
-      store.delete(deletedId)
+      store.delete(deletedId);
     }
-
   }
 }
 
@@ -41,32 +40,31 @@ export default function DeleteRemoteLabbookMutation(
   nodeID,
   parentID,
   connection,
-  callback
+  callback,
 ) {
   const variables = {
     input: {
       labbookName,
       owner,
       confirm,
-      clientMutationId: '' + tempID++
-    }
-  }
+      clientMutationId: `${tempID++}`,
+    },
+  };
   commitMutation(
     environment,
     {
       mutation,
       variables,
       onCompleted: (response, error) => {
-
-        if(error){
-          console.log(error)
+        if (error) {
+          console.log(error);
         }
 
-        callback(response, error)
+        callback(response, error);
       },
       updater: (store, response) => {
-        sharedUpdater(store, parentID, nodeID, connection)
+        sharedUpdater(store, parentID, nodeID, connection);
       },
     },
-  )
+  );
 }

@@ -1,30 +1,29 @@
-//vendor
-import React, { Component } from 'react'
-import classNames from 'classnames'
-//assets
-import './LabbookFilterBy.scss'
+// vendor
+import React, { Component } from 'react';
+import classNames from 'classnames';
+// assets
+import './LabbookFilterBy.scss';
 
 
 class LabbookFilterBy extends Component {
-
   state = {
-    filterMenuOpen: false
+    filterMenuOpen: false,
   }
 
   /**
     *  @param {}
     *  gets filter value and displays it to the UI more clearly
   */
-  _getFilter(){
-    switch(this.props.filter){
+  _getFilter() {
+    switch (this.props.filter) {
       case 'all':
-        return 'All'
+        return 'All';
       case 'owner':
-        return 'My Projects'
+        return 'My Projects';
       case 'others':
-        return 'Shared With Me'
+        return 'Shared With Me';
       default:
-        return this.props.filter
+        return this.props.filter;
     }
   }
 
@@ -33,26 +32,25 @@ class LabbookFilterBy extends Component {
     *  update sort menu
     *  @return {}
   */
-  _toggleFilterMenu(){
-    this.setState({ filterMenuOpen: !this.state.filterMenuOpen })
+  _toggleFilterMenu() {
+    this.setState({ filterMenuOpen: !this.state.filterMenuOpen });
   }
 
-  render(){
-
-    const {props, state} = this;
+  render() {
+    const { props, state } = this;
 
     const labbookFilterSeclectorCSS = classNames({
-      'LabbookFilterBy__selector': true,
+      LabbookFilterBy__selector: true,
       'LabbookFilterBy__selector--open': state.filterMenuOpen,
-      'LabbookFilterBy__selector--collapsed': !state.filterMenuOpen
-    })
+      'LabbookFilterBy__selector--collapsed': !state.filterMenuOpen,
+    });
 
     const labbookFilterMenuCSS = classNames({
       'LabbookFilterBy__menu box-shadow': true,
-      'hidden': !state.filterMenuOpen
-    })
+      hidden: !state.filterMenuOpen,
+    });
 
-    return(
+    return (
 
       <div className="LabbookFilterBy">
         Filter by:
@@ -67,24 +65,24 @@ class LabbookFilterBy extends Component {
         >
           <li
             className="LabbookFilterBy__list-item"
-            onClick={()=> props.setFilter('all')}
+            onClick={() => props.setFilter('all')}
           >
-            All {props.filter === 'all' ?  '✓ ' : ''}
+            All {props.filter === 'all' ? '✓ ' : ''}
           </li>
           <li
             className="LabbookFilterBy__list-item"
-            onClick={()=> props.setFilter('owner')}
+            onClick={() => props.setFilter('owner')}
           >
-           My Projects {props.filter === 'owner' ?  '✓ ' : ''}
+           My Projects {props.filter === 'owner' ? '✓ ' : ''}
           </li>
           <li
             className="LabbookFilterBy__list-item"
-            onClick={()=> props.setFilter('others')}
+            onClick={() => props.setFilter('others')}
           >
-            Shared with me {props.filter === 'others' ?  '✓ ' : ''}
+            Shared with me {props.filter === 'others' ? '✓ ' : ''}
           </li>
         </ul>
-      </div>)
+      </div>);
   }
 }
 

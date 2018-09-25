@@ -1,9 +1,9 @@
 import {
   commitMutation,
   graphql,
-} from 'react-relay'
-import RelayRuntime from 'relay-runtime'
-import environment from 'JS/createRelayEnvironment'
+} from 'react-relay';
+import RelayRuntime from 'relay-runtime';
+import environment from 'JS/createRelayEnvironment';
 
 
 const mutation = graphql`
@@ -26,10 +26,9 @@ export default function DeleteLabbookFileMutation(
   filePath,
   section,
   edgesToDelete,
-  callback
+  callback,
 ) {
-
-  const isDirectory = (filePath.indexOf('.') < 0)
+  const isDirectory = (filePath.indexOf('.') < 0);
 
   const variables = {
     input: {
@@ -38,15 +37,14 @@ export default function DeleteLabbookFileMutation(
       filePath,
       section,
       isDirectory,
-      clientMutationId: '' + tempID++
-    }
-  }
-  let recentConnectionKey = section === 'code' ? 'MostRecentCode_allFiles' :
-  section === 'input' ? 'MostRecentInput_allFiles' :
-    'MostRecentOutput_allFiles'
+      clientMutationId: `${tempID++}`,
+    },
+  };
+  const recentConnectionKey = section === 'code' ? 'MostRecentCode_allFiles' :
+    section === 'input' ? 'MostRecentInput_allFiles' :
+      'MostRecentOutput_allFiles';
 
   function sharedUpdater(store, labbookID, deletedID, connectionKey) {
-
     const userProxy = store.get(labbookID);
 
     const conn = RelayRuntime.ConnectionHandler.getConnection(
@@ -54,7 +52,7 @@ export default function DeleteLabbookFileMutation(
       connectionKey,
     );
 
-    if(conn){
+    if (conn) {
       RelayRuntime.ConnectionHandler.deleteNode(
         conn,
         deletedID,
@@ -71,18 +69,18 @@ export default function DeleteLabbookFileMutation(
         type: 'NODE_DELETE',
         deletedIDFieldName: deleteLabbookFileId,
         connectionKeys: [{
-          key: connectionKey
+          key: connectionKey,
         }, {
-          key: recentConnectionKey
+          key: recentConnectionKey,
         }],
         parentId: labbookId,
-        pathToConnection: ['labbook', 'allFiles']
-      },],
-      onCompleted: (response, error ) => {
-        if(error){
-          console.log(error)
+        pathToConnection: ['labbook', 'allFiles'],
+      }],
+      onCompleted: (response, error) => {
+        if (error) {
+          console.log(error);
         }
-        callback(response, error)
+        callback(response, error);
       },
       onError: err => console.error(err),
 
@@ -90,14 +88,13 @@ export default function DeleteLabbookFileMutation(
         sharedUpdater(store, labbookId, deleteLabbookFileId, connectionKey);
         sharedUpdater(store, labbookId, deleteLabbookFileId, recentConnectionKey);
 
-        if(Array.isArray(edgesToDelete)){
+        if (Array.isArray(edgesToDelete)) {
           edgesToDelete.forEach((edge) => {
-
-            if(edge){
+            if (edge) {
               sharedUpdater(store, labbookId, edge.node.id, connectionKey);
               sharedUpdater(store, labbookId, deleteLabbookFileId, recentConnectionKey);
             }
-          })
+          });
         }
       },
       optimisticUpdater: (store) => {
@@ -105,5 +102,5 @@ export default function DeleteLabbookFileMutation(
         sharedUpdater(store, labbookId, deleteLabbookFileId, recentConnectionKey);
       },
     },
-  )
+  );
 }

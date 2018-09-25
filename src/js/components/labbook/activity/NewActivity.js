@@ -1,9 +1,7 @@
-//vendor
-import {
-  graphql,
-} from 'react-relay'
-//environment
-import {fetchQuery} from 'JS/createRelayEnvironment';
+// vendor
+import { graphql } from 'react-relay';
+// environment
+import { fetchQuery } from 'JS/createRelayEnvironment';
 
 
 const activityFetchQuery = graphql`
@@ -18,29 +16,25 @@ const activityFetchQuery = graphql`
        }
      }
    }
- }`
+ }`;
 
 const NewActivity = {
-  getNewActivity: (name, owner) =>{
+  getNewActivity: (name, owner) => {
     const variables = {
       name,
       owner,
-      first: 1
+      first: 1,
     };
 
-    return new Promise((resolve, reject) =>{
+    return new Promise((resolve, reject) => {
+      fetchQuery(activityFetchQuery(), variables).then((response, error) => {
+        resolve(response);
+      }).catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+    });
+  },
+};
 
-        fetchQuery(activityFetchQuery(), variables).then((response, error) => {
-
-           resolve(response)
-
-        }).catch((error) =>{
-          console.log(error)
-          reject(error)
-        })
-
-    })
-  }
-}
-
-export default NewActivity
+export default NewActivity;
